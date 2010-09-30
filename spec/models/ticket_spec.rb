@@ -1,11 +1,12 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe Ticket, "The Ticket class" do
+describe Ticket, "class" do
   before(:each) do
     FakeWeb.allow_net_connect = false
   end
 
   it "should fetch the Ticket schema" do
+    pending
     @schema = Factory.build(:schema, :resource => :tickets)
     FakeWeb.register_uri(:get, "http://localhost/#{@schema.resource}/fields", :body => @schema.to_json)
     
@@ -14,9 +15,10 @@ describe Ticket, "The Ticket class" do
   end
   
   it "fetch a ticket by ID" do
-    @ticket = Factory.build(:ticket)
-    FakeWeb.register_uri(:get, "http://localhost/tickets/#{@ticket.id}.json", :body => @ticket.to_json)
+    @fake_ticket = Factory(:ticket)
+    FakeWeb.register_uri(:get, "http://localhost/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.to_athena_json)
     @ticket = Ticket.find(1)
+    @ticket.should_not be_nil
     @ticket.should be_valid
   end
   
@@ -53,20 +55,33 @@ describe Ticket, "A ticket" do
   end
 
   it "should generate a Schema specifc its own properties" do
+    pending
+  end
+
+  it "should flatten ATHENA props into attributes" do
+    pending
   end
 
   it "should provide a hash of properties" do
+    pending
   end
 
   it "should allow read access to properties" do
+    pending
   end
 
   it "should allow write access to properties" do
+    pending
   end
 
   it "should save modified properties" do
+    pending
   end
 
-
+  it "should serialize to the JSON format used by ATHENA" do
+    @ticket = Factory.build(:ticket, :field => 'value')
+    @json = { :id => @ticket.id, :name => @ticket.name, :props => { :field => 'value' } }.to_json
+    @ticket.to_athena_json.should == @json
+  end
 
 end
