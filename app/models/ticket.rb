@@ -1,5 +1,5 @@
 class Ticket < AthenaResource::Base
-  self.site = 'http://localhost'
+  self.site = ArtfulLy::Application.config.tickets_site
   self.format = :json
 
   def to_athena_json
