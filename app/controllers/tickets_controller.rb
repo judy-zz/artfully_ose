@@ -1,6 +1,6 @@
 class TicketsController < ApplicationController
   def index
-    @tickets = Ticket.find(:all, :params => { :q => params[:q] })
+    @tickets = Ticket.find(:all, :params => params) 
   end
 
   def new
