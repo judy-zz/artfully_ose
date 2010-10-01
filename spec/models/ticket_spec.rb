@@ -3,6 +3,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Ticket, "class" do
   before(:each) do
     FakeWeb.allow_net_connect = false
+    Ticket.site = 'http://localhost'
   end
 
   it "should fetch the Ticket schema" do
@@ -22,15 +23,16 @@ describe Ticket, "class" do
     @ticket.should be_valid
   end
   
-  it "should return nil for invalid IDs" do
-    FakeWeb.register_uri(:get, "http://localhost/tickets/0", :status => ["404", "Not Found"])
-    @ticket = Ticket.find(0)
-    @ticket.should be_nil
+  it "should raise ResourceNotFound for invalid IDs" do
+    FakeWeb.register_uri(:get, "http://localhost/tickets/0.json", :status => ["404", "Not Found"])
+    lambda { Ticket.find(0) }.should raise_error(ActiveResource::ResourceNotFound)
   end
 
-  it "should find tickets based on properties" do
-    @ticket = Ticket.find(:all, :price => "50")
-    @ticket.price.should == 50
+  it "should generate a query string for a single parameter search" do
+    @ticket = Factory(:ticket, :price => 50)
+    FakeWeb.register_uri(:get, "http://localhost/tickets.json?price=50", :body => "[#{@ticket.to_athena_json}]" )
+    @tickets = Ticket.find(:all, :params => {:price => "50"})
+    @tickets.map { |ticket| ticket.props.price.should == 50 }
   end
 
   describe "with basic CRUD operations" do
