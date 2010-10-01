@@ -1,11 +1,38 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
-describe Ticket, "class" do
+describe Ticket do
   before(:each) do
     FakeWeb.allow_net_connect = false
     Ticket.site = 'http://localhost'
   end
 
+  describe "#find" do
+    it "fetch a ticket by ID" do
+      @fake_ticket = Factory(:ticket)
+      FakeWeb.register_uri(:get, "http://localhost/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.to_athena_json)
+      @ticket = Ticket.find(1)
+      @ticket.should_not be_nil
+      @ticket.should be_valid
+    end
+
+    it "should raise ForbiddenAccess when attempting to fetch all tickets" do
+      FakeWeb.register_uri(:get, "http://localhost/tickets.json", :status => "403")
+      lambda { Ticket.all }.should raise_error(ActiveResource::ForbiddenAccess)
+    end
+    
+    it "should raise ResourceNotFound for invalid IDs" do
+      FakeWeb.register_uri(:get, "http://localhost/tickets/0.json", :status => ["404", "Not Found"])
+      lambda { Ticket.find(0) }.should raise_error(ActiveResource::ResourceNotFound)
+    end
+
+    it "should generate a query string for a single parameter search" do
+      @ticket = Factory(:ticket, :price => 50)
+      FakeWeb.register_uri(:get, "http://localhost/tickets.json?price=50", :body => "[#{@ticket.to_athena_json}]" )
+      @tickets = Ticket.find(:all, :params => {:price => "50"})
+      @tickets.map { |ticket| ticket.props.price.should == 50 }
+    end
+  end
+  
   it "should fetch the Ticket schema" do
     pending
     @schema = Factory.build(:schema, :resource => :tickets)
@@ -14,32 +41,16 @@ describe Ticket, "class" do
     @schema = Ticket.schema
     @schema.should_not be_nil
   end
-  
-  it "fetch a ticket by ID" do
-    @fake_ticket = Factory(:ticket)
-    FakeWeb.register_uri(:get, "http://localhost/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.to_athena_json)
-    @ticket = Ticket.find(1)
-    @ticket.should_not be_nil
-    @ticket.should be_valid
-  end
-  
-  it "should raise ResourceNotFound for invalid IDs" do
-    FakeWeb.register_uri(:get, "http://localhost/tickets/0.json", :status => ["404", "Not Found"])
-    lambda { Ticket.find(0) }.should raise_error(ActiveResource::ResourceNotFound)
-  end
 
-  it "should generate a query string for a single parameter search" do
-    @ticket = Factory(:ticket, :price => 50)
-    FakeWeb.register_uri(:get, "http://localhost/tickets.json?price=50", :body => "[#{@ticket.to_athena_json}]" )
-    @tickets = Ticket.find(:all, :params => {:price => "50"})
-    @tickets.map { |ticket| ticket.props.price.should == 50 }
-  end
-
-  describe "with basic CRUD operations" do
+  describe "#destroy" do
     it "should delete a Ticket with a given ID" do
-      pending
+      FakeWeb.register_uri(:delete, "http://localhost/tickets/1.json", :status => "204")
+      @ticket = Factory(:ticket)
+      @ticket.destroy
     end
+  end
 
+  describe "#save" do
     it "should save changes to an exisiting Ticket" do
       pending
     end
@@ -48,19 +59,8 @@ describe Ticket, "class" do
       pending
     end
   end
-end
-
-
-describe Ticket, "A ticket" do
-  before(:each) do
-    FakeWeb.allow_net_connect = false
-  end
 
   it "should generate a Schema specifc its own properties" do
-    pending
-  end
-
-  it "should flatten ATHENA props into attributes" do
     pending
   end
 
