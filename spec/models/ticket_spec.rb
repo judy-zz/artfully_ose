@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + '/../spec_helper'
+require 'spec_helper'
 
 describe Ticket do
   before(:each) do
@@ -16,7 +16,7 @@ describe Ticket do
     end
 
     it "should raise ForbiddenAccess when attempting to fetch all tickets" do
-      FakeWeb.register_uri(:get, "http://localhost/tickets.json", :status => "403")
+      FakeWeb.register_uri(:get, "http://localhost/tickets/.json", :status => "403")
       lambda { Ticket.all }.should raise_error(ActiveResource::ForbiddenAccess)
     end
     
@@ -27,7 +27,7 @@ describe Ticket do
 
     it "should generate a query string for a single parameter search" do
       @ticket = Factory(:ticket, :price => 50)
-      FakeWeb.register_uri(:get, "http://localhost/tickets.json?price=50", :body => "[#{@ticket.to_athena_json}]" )
+      FakeWeb.register_uri(:get, "http://localhost/tickets/.json?price=50", :body => "[#{@ticket.to_athena_json}]" )
       @tickets = Ticket.find(:all, :params => {:price => "50"})
       @tickets.map { |ticket| ticket.props.price.should == 50 }
     end
@@ -61,22 +61,6 @@ describe Ticket do
   end
 
   it "should generate a Schema specifc its own properties" do
-    pending
-  end
-
-  it "should provide a hash of properties" do
-    pending
-  end
-
-  it "should allow read access to properties" do
-    pending
-  end
-
-  it "should allow write access to properties" do
-    pending
-  end
-
-  it "should save modified properties" do
     pending
   end
 

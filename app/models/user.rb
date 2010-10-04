@@ -1,4 +1,11 @@
+require 'role_model'
+
 class User < ActiveRecord::Base
+
+  include RoleModel
+  roles_attribute :roles_mask
+  roles :producer
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
