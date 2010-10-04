@@ -1,4 +1,7 @@
 class TicketsController < ApplicationController
+
+  before_filter :clean_params
+
   def index
     @tickets = Ticket.find(:all, :params => params) 
   end
@@ -21,4 +24,9 @@ class TicketsController < ApplicationController
   def show
     @ticket = Ticket.find(params[:id])
   end
+
+  private
+    def clean_params
+      params.delete_if { |key, value| value.blank? }
+    end
 end

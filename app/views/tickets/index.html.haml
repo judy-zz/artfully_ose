@@ -1,6 +1,12 @@
 = form_tag('/tickets', :method => :get) do
   = label_tag(:PRICE, "Price:")
+  %br
   = text_field_tag(:PRICE)
+  %br
+  = label_tag(:PERFORMANCE, "Performance Date:")
+  %br
+  = text_field_tag(:PERFORMANCE)
+  %br
   = submit_tag("Search")
 
 = render :partial => 'ticket', :collection => @tickets
