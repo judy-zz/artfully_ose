@@ -13,4 +13,5 @@ group :test, :development do
   gem 'shoulda'
   gem 'fakeweb'
   gem 'factory_girl_rails'
+  gem 'cucumber-rails'
 end
