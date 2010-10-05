@@ -1,9 +1,10 @@
 class TicketsController < ApplicationController
-
-  before_filter :clean_params
-
   def index
-    @tickets = Ticket.find(:all, :params => params) 
+    #TODO: Move this into the model and perform intersection on known fields.
+    search_for = {}
+    search_for[:PRICE] = params[:PRICE] unless params[:PRICE].blank?
+    search_for[:PERFORMANCE] = params[:PERFORMANCE] unless params[:PERFORMANCE].blank?
+    @tickets = Ticket.find(:all, :params => search_for) unless search_for.empty? 
   end
 
   def new
@@ -24,9 +25,4 @@ class TicketsController < ApplicationController
   def show
     @ticket = Ticket.find(params[:id])
   end
-
-  private
-    def clean_params
-      params.delete_if { |key, value| value.blank? }
-    end
 end

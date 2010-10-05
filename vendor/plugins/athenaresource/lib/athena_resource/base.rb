@@ -17,4 +17,8 @@ module AthenaResource
         end
     end
   end
+
+  class Base < ActiveResource::Base
+    include Search 
+  end
 end
