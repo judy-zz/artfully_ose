@@ -14,13 +14,42 @@ body{
 }
 #header{
   background:#eee;
-  padding:40px 0;
+  height:120px;
   margin-bottom:10px;
 }
-#header h1{
+#header h1 a{
   margin:0 40px;
   font-size:2em;
   color:#666;
+  line-height:120px;
+  text-decoration:none;
+}
+
+#session_nav{
+  float:right;
+  margin:10px;
+  font-size:.8em;
+}
+
+#menu{
+  margin:0 10px 40px;
+  overflow:auto;
+}
+
+#menu li{
+  float:left;
+  margin-right:5px;
+  font-size:.8em;
+}
+
+#menu li a{
+  color:#eee;
+  text-decoration:none;
+  display:block;
+  padding:7px 10px;
+  background:#666;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
 }
 
 #content{

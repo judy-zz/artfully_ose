@@ -8,8 +8,8 @@
   = text_field_tag(:PERFORMANCE)
   %br
   = submit_tag("Search")
-
-%ul.ticket-list
-  -@tickets.each do |ticket|
-    %li
-      = render ticket
+- unless @tickets.nil?
+  %ul.ticket-list
+    -@tickets.each do |ticket|
+      %li
+        = render ticket
