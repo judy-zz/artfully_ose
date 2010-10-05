@@ -18,6 +18,6 @@ class User < ActiveRecord::Base
 
   private
     def add_default_role
-      self.roles << :producer if self.roles.blank?
+      roles << :producer if roles.empty?
     end
 end

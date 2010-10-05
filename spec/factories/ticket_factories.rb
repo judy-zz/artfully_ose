@@ -15,7 +15,7 @@ Factory.define :ticket, :default_strategy => :build do |t|
   t.name 'ticket'
 end
 
-Factory.define :ticket_with_fields, :default_strategy => :build do |t|
+Factory.define :ticket_with_fields, :class => Ticket, :default_strategy => :build do |t|
   t.id Factory.next :id
   t.name 'ticket'
   5.times do 
