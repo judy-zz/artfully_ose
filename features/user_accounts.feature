@@ -13,3 +13,8 @@ Feature: User accounts
       And I press "Sign in"
     Then I should see "Signed in successfully."
 
+  Scenario: Sign out as a user
+    Given I am logged in
+      And I am on the root page
+    When I follow "Sign out"
+    Then I should see "Signed out successfully."

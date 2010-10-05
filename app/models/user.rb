@@ -3,7 +3,6 @@ require 'role_model'
 class User < ActiveRecord::Base
 
   include RoleModel
-  roles_attribute :roles_mask
   roles :producer, :admin
 
   # Include default devise modules. Others available are:
