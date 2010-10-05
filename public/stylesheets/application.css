@@ -30,7 +30,7 @@ body{
 .ticket-list{
   font-size:.8em;
 }
-.ticket-list .ticket{
+.ticket{
   border:1px solid #ccc;
   background:#eee;
   margin:10px 0;
@@ -38,6 +38,12 @@ body{
 }
 .ticket h5{
   font-size:1.3em;
+  font-weight:normal;
+  line-height:1.3em;
+}
+
+.ticket h5 a{
+  color:#333;
 }
 .ticket h6{
  color:#666;
@@ -45,3 +51,4 @@ body{
  margin-bottom:5px;
  padding-bottom:5px;
 }
+

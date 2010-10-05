@@ -1,5 +1,5 @@
 .ticket
-  %h5= ticket.props.TITLE
+  %h5= link_to ticket.props.TITLE, ticket
   %h6= "$#{ticket.props.PRICE}"
   %ul.info
     - ticket.props.attributes.each do |key, value|
