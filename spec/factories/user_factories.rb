@@ -1,4 +1,8 @@
+Factory.sequence :email do |n|
+  "test#{n}@test.com"
+end
+
 Factory.define :user do |u|
-  u.email 'test@test.com'
+  u.email { Factory.next :email }
   u.password 'password'
 end
