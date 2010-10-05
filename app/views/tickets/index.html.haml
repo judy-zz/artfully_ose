@@ -9,4 +9,7 @@
   %br
   = submit_tag("Search")
 
-= render :partial => 'ticket', :collection => @tickets
+%ul.ticket-list
+  -@tickets.each do |ticket|
+    %li
+      = render ticket

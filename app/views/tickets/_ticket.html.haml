@@ -1,3 +1,6 @@
-%pre
-  - ticket.props.attributes.each do |prop|
-    = p prop
+.ticket
+  %h5= ticket.props.TITLE
+  %h6= "$#{ticket.props.PRICE}"
+  %ul.info
+    - ticket.props.attributes.each do |key, value|
+      %li= "#{key}:#{value}" unless key.eql?('TITLE') or key.eql?('PRICE')

@@ -1,0 +1,47 @@
+body{
+  font-family:Arial, Tahoma, sans-serif;
+  font-size:11pt;
+}
+#page{
+  width:960px;
+  margin:40px auto;
+  padding-bottom:40px;
+  -moz-box-shadow: 3px 3px 3px #aaa;
+  -webkit-box-shadow: 3px 3px 3px #aaa;
+  box-shadow: 3px 3px 3px #aaa;
+  border:1px solid #ddd;
+
+}
+#header{
+  background:#eee;
+  padding:40px 0;
+  margin-bottom:10px;
+}
+#header h1{
+  margin:0 40px;
+  font-size:2em;
+  color:#666;
+}
+
+#content{
+  margin:0 10px;
+}
+
+.ticket-list{
+  font-size:.8em;
+}
+.ticket-list .ticket{
+  border:1px solid #ccc;
+  background:#eee;
+  margin:10px 0;
+  padding:10px;
+}
+.ticket h5{
+  font-size:1.3em;
+}
+.ticket h6{
+ color:#666;
+ border-bottom:1px solid #ccc;
+ margin-bottom:5px;
+ padding-bottom:5px;
+}
