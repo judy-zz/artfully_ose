@@ -10,7 +10,7 @@ describe Ticket do
     it "fetch a ticket by ID" do
       @fake_ticket = Factory(:ticket)
       FakeWeb.register_uri(:get, "http://localhost/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.to_athena_json)
-      @ticket = Ticket.find(1)
+      @ticket = Ticket.find(@fake_ticket.id)
       @ticket.should_not be_nil
       @ticket.should be_valid
     end
@@ -32,36 +32,23 @@ describe Ticket do
       @tickets.map { |ticket| ticket.props.price.should == 50 }
     end
   end
-  
-  it "should fetch the Ticket schema" do
-    pending
-    @schema = Factory.build(:schema, :resource => :tickets)
-    FakeWeb.register_uri(:get, "http://localhost/#{@schema.resource}/fields", :body => @schema.to_json)
-    
-    @schema = Ticket.schema
-    @schema.should_not be_nil
-  end
 
   describe "#destroy" do
     it "should delete a Ticket with a given ID" do
-      FakeWeb.register_uri(:delete, "http://localhost/tickets/1.json", :status => "204")
       @ticket = Factory(:ticket)
+      FakeWeb.register_uri(:delete, "http://localhost/tickets/#{@ticket.id}.json", :status => "204")
       @ticket.destroy
     end
   end
 
   describe "#save" do
     it "should save changes to an exisiting Ticket" do
-      pending
+      pending "stories that require this"
     end
 
     it "should create a new Ticket when saving an new ticket" do
-      pending
+      pending "stories that require this"
     end
-  end
-
-  it "should generate a Schema specifc its own properties" do
-    pending
   end
 
   it "should serialize to the JSON format used by ATHENA" do
@@ -69,5 +56,14 @@ describe Ticket do
     @json = { :id => @ticket.id, :name => @ticket.name, :props => { :field => 'value' } }.to_json
     @ticket.to_athena_json.should == @json
   end
+  
+  it "should fetch the Ticket schema from ATHENA" do
+    fields = []
+    10.times { fields << Factory(:field).attributes }
+    FakeWeb.register_uri(:get, "http://localhost/tickets/fields/.json", :body => fields.to_json)
 
+    Field.find(:all).each do |field|
+      Ticket.schema.should include(field.name)
+    end 
+  end
 end

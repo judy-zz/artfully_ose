@@ -11,7 +11,7 @@ Factory.sequence :value do |n|
 end
 
 Factory.define :ticket, :default_strategy => :build do |t|
-  t.id Factory.next :id
+  t.id { Factory.next :id }
   t.name 'ticket'
 end
 
