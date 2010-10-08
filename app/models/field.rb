@@ -1,5 +1,5 @@
 class Field < AthenaResource::Base
-  self.site = ArtfulLy::Application.config.tickets_site
+  self.site = Artfully::Application.config.tickets_site
   self.format = :json
   self.prefix = '/tickets/'
 

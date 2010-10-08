@@ -1,4 +1,4 @@
-ArtfulLy::Application.routes.draw do
+Artfully::Application.routes.draw do
   devise_for :users
   resources :tickets
 

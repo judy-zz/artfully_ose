@@ -4,4 +4,4 @@
 require File.expand_path('../config/application', __FILE__)
 require 'rake'
 
-ArtfulLy::Application.load_tasks
+Artfully::Application.load_tasks
