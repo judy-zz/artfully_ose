@@ -3,7 +3,6 @@ set :repository,  "git@github.com:fracturedatlas/artful.ly.git"
 set :deploy_to, "/var/www/artful.ly"
 
 set :scm, :git
-set :scm_passphrase,  Proc.new { Capistrano::CLI.password_prompt('Git Password: ') }
 set :branch, "master"
 set :deploy_via, :remote_cache
 
