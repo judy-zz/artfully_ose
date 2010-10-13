@@ -26,4 +26,17 @@ class Ticket < AthenaResource::Base
     props.each_key { |key| } 
     {:id => self.id, :name => self.name, :props => props}.to_json
   end
+
+  def self.generate_for_performance(performance, quantity, price)
+    tickets = []
+    params = {  :PRICE        => price,
+                :VENUE        => performance.venue,
+                :PERFORMANCE  => performance.performed_on,
+                :EVENT        => performance.title } 
+
+    quantity.to_i.times do
+      tickets << Ticket.create(params)
+    end
+    tickets
+  end
 end

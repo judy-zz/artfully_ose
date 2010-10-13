@@ -1,4 +1,6 @@
 - form_for @performance do |f|
+  = render "shared/error_messages", :target => @performance
+
   = f.label :title
   = f.text_field :title
   %br

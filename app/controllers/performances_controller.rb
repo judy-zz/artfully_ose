@@ -9,7 +9,12 @@ class PerformancesController < ApplicationController
 
   def create
     @performance = Performance.create(params[:performance])
-    redirect_to(@performance, :notice => 'Performance was successfully created!')
+    if @performance.save
+      Ticket.generate_for_performance(@performance, params[:seats], params[:price])
+      redirect_to(@performance, :notice => 'Created a new performance.')
+    else
+      render :action => "new"
+    end
   end
 
   def edit

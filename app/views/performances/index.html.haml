@@ -1,1 +1,5 @@
-= render @performances
+%ul.performance-list
+  - @performances.each do |performance|
+    %li= render performance
+
+= link_to "New Performance", new_performance_path

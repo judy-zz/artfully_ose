@@ -66,4 +66,17 @@ describe Ticket do
       Ticket.schema.should include(field.name)
     end 
   end
+
+  it "should generate tickets given a performance, quantity, and price" do
+    FakeWeb.register_uri(:post, "http://localhost/tickets/.json", :status => "200")
+    @performance = Factory.build(:performance)
+    @tickets = Ticket.generate_for_performance(@performance, 5, 100)
+    @tickets.size.should == 5
+    @tickets.each do |ticket|
+      ticket.PRICE.should == 100
+      ticket.VENUE.should == @performance.venue
+      ticket.PERFORMANCE.should == @performance.performed_on
+      ticket.EVENT.should == @performance.title
+    end
+  end
 end
