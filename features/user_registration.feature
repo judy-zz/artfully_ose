@@ -1,7 +1,7 @@
 Feature: User registration
   In order to use the application
   a user
-  wants wants to be able to register
+  wants to be able to register
   
   Scenario: Register as a producer
     Given I am on the new user registration page
