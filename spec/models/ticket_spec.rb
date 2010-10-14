@@ -6,10 +6,41 @@ describe Ticket do
     Ticket.site = 'http://localhost'
   end
 
+  describe "attributes" do
+    before(:each) do
+      @ticket = Factory(:ticket)
+    end
+
+    it "should include name" do
+      @ticket.respond_to?(:name).should be_true
+    end
+
+    it "should have name set to 'ticket'" do
+      @ticket.attributes.should include(:name)
+      @ticket.name.should == 'ticket'
+    end
+
+    it "should include EVENT" do
+      @ticket.respond_to?(:EVENT).should be_true
+    end
+
+    it "should include VENUE" do
+      @ticket.respond_to?(:VENUE).should be_true
+    end
+
+    it "should include PERFORMANCE" do
+      @ticket.respond_to?(:PERFORMANCE).should be_true
+    end
+
+    it "should include SOLD" do
+      @ticket.respond_to?(:SOLD).should be_true
+    end
+  end
+
   describe "#find" do
     it "fetch a ticket by ID" do
       @fake_ticket = Factory(:ticket)
-      FakeWeb.register_uri(:get, "http://localhost/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.to_athena_json)
+      FakeWeb.register_uri(:get, "http://localhost/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.encode)
       @ticket = Ticket.find(@fake_ticket.id)
       @ticket.should_not be_nil
       @ticket.should be_valid
@@ -26,10 +57,10 @@ describe Ticket do
     end
 
     it "should generate a query string for a single parameter search" do
-      @ticket = Factory(:ticket, :price => 50)
-      FakeWeb.register_uri(:get, "http://localhost/tickets/.json?price=50", :body => "[#{@ticket.to_athena_json}]" )
-      @tickets = Ticket.find(:all, :params => {:price => "50"})
-      @tickets.map { |ticket| ticket.props.price.should == 50 }
+      @ticket = Factory(:ticket, :PRICE => 50)
+      FakeWeb.register_uri(:get, "http://localhost/tickets/.json?PRICE=eq50", :body => "[#{@ticket.encode}]" )
+      @tickets = Ticket.find(:all, :params => {:PRICE => "eq50"})
+      @tickets.map { |ticket| ticket.PRICE.should == 50 }
     end
   end
 
@@ -51,22 +82,18 @@ describe Ticket do
     end
   end
 
-  it "should serialize to the JSON format used by ATHENA" do
-    @ticket = Factory.build(:ticket, :field => 'value')
-    @json = { :id => @ticket.id, :name => @ticket.name, :props => { :field => 'value' } }.to_json
-    @ticket.to_athena_json.should == @json
+  it "should serialize and encode to the JSON format used by ATHENA without an ID" do
+    @ticket = Factory.build(:ticket, :EVENT => "Test Ticket")
+    @json = { :name => @ticket.name, :props => { :EVENT => "Test Ticket" } }.to_json
+    @ticket.encode.should == @json
+  end
+
+  it "should serialize and encode to the JSON format used by ATHENA with an ID" do
+    @ticket = Factory.build(:ticket_with_id, :EVENT => "Test Ticket")
+    @json = { :name => @ticket.name, :id => @ticket.id, :props => { :EVENT => "Test Ticket" } }.to_json
+    @ticket.encode.should == @json
   end
   
-  it "should fetch the Ticket schema from ATHENA" do
-    fields = []
-    10.times { fields << Factory(:field).attributes }
-    FakeWeb.register_uri(:get, "http://localhost/tickets/fields/.json", :body => fields.to_json)
-
-    Field.find(:all).each do |field|
-      Ticket.schema.should include(field.name)
-    end 
-  end
-
   it "should generate tickets given a performance, quantity, and price" do
     FakeWeb.register_uri(:post, "http://localhost/tickets/.json", :status => "200")
     @performance = Factory.build(:performance)
@@ -75,7 +102,7 @@ describe Ticket do
     @tickets.each do |ticket|
       ticket.PRICE.should == 100
       ticket.VENUE.should == @performance.venue
-      ticket.PERFORMANCE.should == @performance.performed_on
+      ticket.PERFORMANCE.should == @performance.performed_on.to_s
       ticket.EVENT.should == @performance.title
     end
   end

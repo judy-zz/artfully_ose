@@ -1,6 +1,12 @@
+require 'athena_resource/formats'
+
 module AthenaResource
   class Base < ActiveResource::Base
     class << self
+      def format
+        read_inheritable_attribute(:format) || AthenaResource::Formats::AthenaFormat
+      end
+
       def collection_path(prefix_options = {}, query_options = nil)
         check_prefix_options(prefix_options)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
@@ -16,9 +22,13 @@ module AthenaResource
           end
         end
     end
+
+    def encode(options={})
+      return self.class.format.encode(attributes, options) if self.class.format.respond_to? :encode
+      super(options)
+    end
   end
 
   class Base < ActiveResource::Base
-    include Search 
   end
-end
+end 
