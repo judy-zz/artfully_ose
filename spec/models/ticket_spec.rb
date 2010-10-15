@@ -50,7 +50,7 @@ describe Ticket do
       FakeWeb.register_uri(:get, "http://localhost/tickets/.json", :status => "403")
       lambda { Ticket.all }.should raise_error(ActiveResource::ForbiddenAccess)
     end
-    
+
     it "should raise ResourceNotFound for invalid IDs" do
       FakeWeb.register_uri(:get, "http://localhost/tickets/0.json", :status => ["404", "Not Found"])
       lambda { Ticket.find(0) }.should raise_error(ActiveResource::ResourceNotFound)
@@ -93,7 +93,7 @@ describe Ticket do
     @json = { :name => @ticket.name, :id => @ticket.id, :props => { :EVENT => "Test Ticket" } }.to_json
     @ticket.encode.should == @json
   end
-  
+
   it "should generate tickets given a performance, quantity, and price" do
     FakeWeb.register_uri(:post, "http://localhost/tickets/.json", :status => "200")
     @performance = Factory.build(:performance)

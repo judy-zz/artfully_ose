@@ -7,8 +7,13 @@
   %br
   = text_field_tag(:PERFORMANCE)
   %br
+  = label_tag(:limit, "Limit number of results to:")
+  %br
+  = text_field_tag(:limit)
+  %br
   = submit_tag("Search")
 - unless @tickets.nil?
+  = "Found #{pluralize(@tickets.size, 'ticket')}"
   %ul.ticket-list
     -@tickets.each do |ticket|
       %li

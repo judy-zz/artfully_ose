@@ -1,9 +1,14 @@
-Feature: Performance creation 
+Feature: Performance creation
   In order to create a performance and its tickets
   a producer
-  wants to be able to create a new performance and have tickets generated from its details 
-  
-  Scenario: Creating a new performance 
+  wants to be able to create a new performance and have tickets generated from its details
+
+  Background:
+    Given ATHENA is up and running
+    And I can save Tickets to ATHENA
+    And I can get Tickets from ATHENA
+
+  Scenario: Creating a new performance
     Given I am logged in
       And I am on the new performance page
     When I fill in "Title" with "Some Title"
@@ -13,4 +18,3 @@ Feature: Performance creation
       And I press "Save"
     Then I should see "Created a new performance."
       And I should see "Some Title at Some Venue"
-      And I should see "100 Seats"

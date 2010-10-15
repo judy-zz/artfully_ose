@@ -6,6 +6,7 @@ gem 'haml'
 gem 'devise'
 gem 'cancan'
 gem 'role_model'
+gem 'escape_utils'
 
 
 group :test, :development do
