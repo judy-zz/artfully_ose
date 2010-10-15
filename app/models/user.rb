@@ -2,6 +2,8 @@ require 'role_model'
 
 class User < ActiveRecord::Base
 
+  has_many :performances
+
   include RoleModel
   roles :producer, :admin
 
