@@ -14,11 +14,19 @@ class Ticket < AthenaResource::Base
     @attributes[:name] ||= 'ticket'
   end
 
+  def self.find_by_performance(performance)
+    params = {  'VENUE'       => "=#{performance.venue}",
+                'PERFORMANCE' => "=#{performance.performed_on.as_json}",
+                'EVENT'       => "=#{performance.title}"
+             } 
+    self.find(:all, :params => params)
+  end
+
   def self.generate_for_performance(performance, quantity, price)
     tickets = []
     params = {  :PRICE        => price,
                 :VENUE        => performance.venue,
-                :PERFORMANCE  => performance.performed_on.to_s,
+                :PERFORMANCE  => performance.performed_on,
                 :EVENT        => performance.title
              } 
 

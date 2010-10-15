@@ -102,7 +102,7 @@ describe Ticket do
     @tickets.each do |ticket|
       ticket.PRICE.should == 100
       ticket.VENUE.should == @performance.venue
-      ticket.PERFORMANCE.should == @performance.performed_on.to_s
+      ticket.PERFORMANCE.should == @performance.performed_on
       ticket.EVENT.should == @performance.title
     end
   end
