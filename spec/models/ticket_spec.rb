@@ -65,20 +65,32 @@ describe Ticket do
   end
 
   describe "#destroy" do
-    it "should delete a Ticket with a given ID" do
-      @ticket = Factory(:ticket)
+    it "should issue a DELETE when destroying a ticket" do
+      @ticket = Factory(:ticket, :id => 1)
       FakeWeb.register_uri(:delete, "http://localhost/tickets/#{@ticket.id}.json", :status => "204")
       @ticket.destroy
+
+      FakeWeb.last_request.method.should == "DELETE"
+      FakeWeb.last_request.path.should == "/tickets/#{@ticket.id}.json"
     end
   end
 
   describe "#save" do
-    it "should save changes to an exisiting Ticket" do
-      pending "stories that require this"
+    it "should issue a PUT when updating a ticket" do
+      @ticket = Factory(:ticket, :id => 1)
+      FakeWeb.register_uri(:put, "http://localhost/tickets/#{@ticket.id}.json", :status => "200")
+      @ticket.save
+
+      FakeWeb.last_request.method.should == "PUT"
+      FakeWeb.last_request.path.should == "/tickets/#{@ticket.id}.json"
     end
 
-    it "should create a new Ticket when saving an new ticket" do
-      pending "stories that require this"
+    it "should issue a POST when creating a new Ticket" do
+      FakeWeb.register_uri(:post, "http://localhost/tickets/.json", :status => "200")
+      @ticket = Factory.create(:ticket)
+
+      FakeWeb.last_request.method.should == "POST"
+      FakeWeb.last_request.path.should == "/tickets/.json"
     end
   end
 
@@ -104,6 +116,24 @@ describe Ticket do
       ticket.VENUE.should == @performance.venue
       ticket.PERFORMANCE.should == @performance.performed_on
       ticket.EVENT.should == @performance.title
+    end
+  end
+
+  describe "searching"do
+    it "by performance" do
+      FakeWeb.register_uri(:get, %r|http://localhost/tickets/.json\?|, :status => "200", :body => "[]")
+      now = DateTime.now
+      params = { :PERFORMANCE => now }
+      Ticket.search(params)
+      FakeWeb.last_request.path.should == "/tickets/.json?PERFORMANCE=%3D#{CGI::escape now.as_json}"
+
+    end
+
+    it "should add _limit to the query string when included in the arguments" do
+      FakeWeb.register_uri(:get, 'http://localhost/tickets/.json?_limit=10', :status => "200", :body => "[]")
+      params = { :limit => "10" }
+      Ticket.search(params)
+      FakeWeb.last_request.path.should == "/tickets/.json?_limit=10"
     end
   end
 end

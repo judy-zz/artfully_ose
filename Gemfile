@@ -17,4 +17,5 @@ group :test, :development do
   gem 'nokogiri'
   gem 'capybara'
   gem 'cucumber-rails'
+  gem 'awesome_print'
 end
