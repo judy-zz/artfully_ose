@@ -66,7 +66,7 @@ describe Ticket do
 
   describe "#destroy" do
     it "should issue a DELETE when destroying a ticket" do
-      @ticket = Factory(:ticket, :id => 1)
+      @ticket = Factory(:ticket_with_id)
       FakeWeb.register_uri(:delete, "http://localhost/tickets/#{@ticket.id}.json", :status => "204")
       @ticket.destroy
 
@@ -77,7 +77,7 @@ describe Ticket do
 
   describe "#save" do
     it "should issue a PUT when updating a ticket" do
-      @ticket = Factory(:ticket, :id => 1)
+      @ticket = Factory(:ticket_with_id)
       FakeWeb.register_uri(:put, "http://localhost/tickets/#{@ticket.id}.json", :status => "200")
       @ticket.save
 
