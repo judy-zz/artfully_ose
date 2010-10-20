@@ -9,7 +9,6 @@ class TicketCollection
   end
 
   def fetch_all!
-    p "Fetching all, captain!"
     @tickets = raw.collect do |ticket|
       to_ticket(ticket)
     end
