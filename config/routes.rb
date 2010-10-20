@@ -3,7 +3,7 @@ Artfully::Application.routes.draw do
 
   resources :tickets, :only => [:index, :show]
   resources :performances
-  resources :transactions, :only => [:create, :show]
+  resources :transactions, :only => [:create, :show, :destroy]
 
   root :to => "index#index"
 end
