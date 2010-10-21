@@ -39,8 +39,8 @@ class Ticket < AthenaResource::Base
   def self.search(params)
     search_for = {}
 
-    search_for[:PRICE] = "=#{params[:PRICE]}" unless params[:PRICE].blank?
-    search_for[:PERFORMANCE] = "=#{params[:PERFORMANCE]}" unless params[:PERFORMANCE].blank?
+    search_for[:PRICE] =        params[:PRICE] unless params[:PRICE].blank?
+    search_for[:PERFORMANCE] =  params[:PERFORMANCE] unless params[:PERFORMANCE].blank?
     search_for[:_limit] = params[:limit] unless params[:limit].blank?
     Ticket.find(:all, :params => search_for) unless search_for.empty?
   end

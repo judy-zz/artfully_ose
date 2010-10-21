@@ -1,6 +1,5 @@
 .ticket
-  %h5= #link_to ticket.TITLE, ticket
-  %h6= "$#{ticket.PRICE}"
-  %ul.info
-    - ticket.attributes.each do |key, value|
-      %li= "#{key}:#{value}" unless key.eql?('TITLE') or key.eql?('PRICE')
+  .event= link_to ticket.EVENT, ticket
+  .venue= ticket.VENUE
+  .performance= l(DateTime.parse(ticket.PERFORMANCE))
+  .price= "$#{ticket.PRICE}"
