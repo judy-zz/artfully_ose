@@ -1,0 +1,8 @@
+%h3 Ticket Order
+%h4 Enter Payment Details
+
+%ul.ticket-list
+  - @transaction.tickets.each do |ticket|
+    %li
+      = render ticket
+= link_to "Cancel Order", transaction_path(@transaction), :method => :delete, :confirm => 'Are you sure?'

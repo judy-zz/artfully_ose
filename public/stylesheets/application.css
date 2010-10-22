@@ -57,15 +57,18 @@ body{
 }
 
 .ticket-list{
-  font-size:.8em;
+  overflow:auto;
 }
 .ticket{
+  width:420px;
+  font-size:.8em;
   border:1px solid #ccc;
   background:#eee;
-  margin:10px 0;
+  margin:10px;
   padding:10px;
+  float:left;
 }
-.ticket h5{
+.ticket .event{
   font-size:1.3em;
   font-weight:normal;
   line-height:1.3em;

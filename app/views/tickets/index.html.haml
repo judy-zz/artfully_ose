@@ -12,9 +12,13 @@
   = text_field_tag(:limit)
   %br
   = submit_tag("Search")
+
 - unless @tickets.nil?
   = "Found #{pluralize(@tickets.size, 'ticket')}"
-  %ul.ticket-list
-    -@tickets.each do |ticket|
-      %li
-        = render ticket
+  = form_tag('/transactions', :method => :post) do
+    %ul.ticket-list
+      -@tickets.each do |ticket|
+        %li
+          = render ticket
+          = hidden_field_tag "tickets[]", ticket.id
+    = submit_tag("Buy Tickets") unless @tickets.empty?

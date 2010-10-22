@@ -19,7 +19,7 @@ class Ticket < AthenaResource::Base
     params = {  'VENUE'       => "=#{performance.venue}",
                 'PERFORMANCE' => "=#{performance.performed_on.as_json}",
                 'EVENT'       => "=#{performance.title}"
-             } 
+             }
     self.find(:all, :params => params)
   end
 
@@ -29,11 +29,20 @@ class Ticket < AthenaResource::Base
                 :VENUE        => performance.venue,
                 :PERFORMANCE  => performance.performed_on,
                 :EVENT        => performance.title
-             } 
+             }
 
     quantity.to_i.times do
       tickets << Ticket.create(params)
     end
     tickets
+  end
+
+  def self.search(params)
+    search_for = {}
+
+    search_for[:PRICE] =        params[:PRICE] unless params[:PRICE].blank?
+    search_for[:PERFORMANCE] =  params[:PERFORMANCE] unless params[:PERFORMANCE].blank?
+    search_for[:_limit] = params[:limit] unless params[:limit].blank?
+    Ticket.find(:all, :params => search_for) unless search_for.empty?
   end
 end
