@@ -14,4 +14,28 @@ class Payment < AthenaResource::Base
     attribute 'billing_address', :string
     attribute 'credit_card', :string
   end
+
+  def shipping_address=(address_or_hash)
+    if address_or_hash.kind_of? Address
+      super(address_or_hash)
+    elsif
+      super(Address.new(address_or_hash))
+    end
+  end
+
+  def billing_address=(address_or_hash)
+    if address_or_hash.kind_of? Address
+      super(address_or_hash)
+    elsif
+      super(Address.new(address_or_hash))
+    end
+  end
+
+  def credit_card=(credit_card_or_hash)
+    if credit_card_or_hash.kind_of? CreditCard
+      super(credit_card_or_hash)
+    elsif
+      super(CreditCard.new(credit_card_or_hash))
+    end
+  end
 end

@@ -16,4 +16,22 @@ class Address
   aliased_attr_accessor :firstName, :lastName, :company,
                         :streetAddress, :city, :state, :postalCode, :country
 
+  def initialize(attrs = {})
+    load(attrs)
+  end
+
+  def load(attrs)
+    attrs.each do |attr, value|
+      self.send(attr.to_s+'=', value)
+    end
+  end
+
+  def attributes
+    hsh = {}
+    %w( first_name last_name company street_address city state postal_code country ).each do |attr|
+      hsh[attr.to_sym] = self.send(attr)
+    end
+    hsh
+  end
+
 end

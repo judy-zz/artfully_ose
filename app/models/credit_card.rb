@@ -13,4 +13,22 @@ class CreditCard
   aliased_attr_accessor :number, :expirationDate, :cardholderName, :cvv
 
   validates_presence_of :number, :expiration_date, :cardholder_name, :cvv
+
+  def initialize(attrs = {})
+    load(attrs)
+  end
+
+  def load(attrs)
+    attrs.each do |attr, value|
+      self.send(attr.to_s+'=', value)
+    end
+  end
+
+  def attributes
+    hsh = {}
+    %w( number expiration_date cardholder_name cvv ).each do |attr|
+      hsh[attr.to_sym] = self.send(attr)
+    end
+    hsh
+  end
 end
