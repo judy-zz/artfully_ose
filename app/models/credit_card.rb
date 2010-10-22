@@ -1,4 +1,6 @@
 class CreditCard
+  include ActiveModel::Validations
+
   # Note: This is used to provide a more ruby-friendly set of accessors that will still serialize properly.
   def self.aliased_attr_accessor(*accessors)
     attr_accessor(*accessors)
@@ -9,4 +11,6 @@ class CreditCard
   end
 
   aliased_attr_accessor :number, :expirationDate, :cardholderName, :cvv
+
+  validates_presence_of :number, :expiration_date, :cardholder_name, :cvv
 end

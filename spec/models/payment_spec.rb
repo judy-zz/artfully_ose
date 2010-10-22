@@ -17,7 +17,7 @@ describe Payment do
   end
 
   it "should be invalid without an amount" do
-    @payment.amount = nil
+    @payment = Factory(:payment, :amount => nil)
     @payment.should_not be_valid
   end
 
@@ -26,4 +26,27 @@ describe Payment do
     @payment.should_not be_valid
   end
 
+  it "should be invalid with an invalid shipping address" do
+    @shipping_address = Address.new
+    @shipping_address.should_not be_valid
+    @payment.shipping_address = @shipping_address
+    @payment.should_not be_valid
+    @payment.errors.size.should == 1
+  end
+
+  it "should be invalid with an invalid billing address" do
+    @billing_address = Address.new
+    @billing_address.should_not be_valid
+    @payment.billing_address = @billing_address
+    @payment.should_not be_valid
+    @payment.errors.size.should == 1
+  end
+
+  it "should be invalid with an invalid credit card" do
+    @credit_card = CreditCard.new
+    @credit_card.should_not be_valid
+    @payment.credit_card = @credit_card
+    @payment.should_not be_valid
+    @payment.errors.size.should == 1
+  end
 end
