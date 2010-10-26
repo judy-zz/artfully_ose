@@ -22,6 +22,7 @@ class TransactionsController < ApplicationController
   end
 
   def show
+    @payment = Payment.new
     @transaction = Transaction.find(params[:id])
   end
 end

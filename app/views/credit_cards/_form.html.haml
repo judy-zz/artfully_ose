@@ -1,0 +1,25 @@
+= parent_form.fields_for :credit_card do |cc_form|
+  = cc_form.label "Number"
+  %br
+  = cc_form.text_field :number
+  %br
+
+  = cc_form.label "Expiration Month"
+  %br
+  = cc_form.text_field :expiration_month
+  %br
+
+  = cc_form.label "Expiration Year"
+  %br
+  = cc_form.text_field :expiration_year
+  %br
+
+  = cc_form.label "Cardholder Name"
+  %br
+  = cc_form.text_field :cardholder_name
+  %br
+
+  = cc_form.label "CVV"
+  %br
+  = cc_form.text_field :cvv
+  %br

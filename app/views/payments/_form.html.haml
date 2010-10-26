@@ -1,0 +1,12 @@
+= form_for payment do |payment_form|
+  %h3 Customer Information
+  = render :partial => 'customers/form', :locals => { :parent_form => payment_form }
+
+  %h3 Credit Card Information
+  = render :partial => 'credit_cards/form', :locals => { :parent_form => payment_form }
+
+  %h3 Billing Address
+  = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :address => :billing_address }
+
+  %h3 Shipping Address
+  = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :address => :shipping_address }

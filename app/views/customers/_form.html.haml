@@ -1,0 +1,30 @@
+= parent_form.fields_for :customer do |customer_form|
+  = customer_form.label "First Name"
+  %br
+  = customer_form.text_field :first_name
+  %br
+
+  = customer_form.label "Last Name"
+  %br
+  = customer_form.text_field :last_name
+  %br
+
+  = customer_form.label "Company"
+  %br
+  = customer_form.text_field :company
+  %br
+
+  = customer_form.label "Phone"
+  %br
+  = customer_form.text_field :phone
+  %br
+
+  = customer_form.label "Fax"
+  %br
+  = customer_form.text_field :fax
+  %br
+
+  = customer_form.label "Email"
+  %br
+  = customer_form.text_field :email
+  %br
