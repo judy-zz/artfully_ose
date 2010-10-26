@@ -1,10 +1,8 @@
-require 'athena_resource/formats'
-
 module AthenaResource
   class Base < ActiveResource::Base
     class << self
       def format
-        read_inheritable_attribute(:format) || AthenaResource::Formats::AthenaFormat
+        read_inheritable_attribute(:format) || ActiveResource::Formats::JsonFormat
       end
 
       def collection_path(prefix_options = {}, query_options = nil)
@@ -21,11 +19,6 @@ module AthenaResource
             raise(MissingPrefixParam, "#{p} prefix_option is missing") if p_options[p].blank?
           end
         end
-    end
-
-    def encode(options={})
-      return self.class.format.encode(attributes, options) if self.class.format.respond_to? :encode
-      super(options)
     end
   end
 
