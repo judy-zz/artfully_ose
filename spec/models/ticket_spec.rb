@@ -94,18 +94,6 @@ describe Ticket do
     end
   end
 
-  it "should serialize and encode to the JSON format used by ATHENA without an ID" do
-    @ticket = Factory.build(:ticket, :EVENT => "Test Ticket")
-    @json = { :name => @ticket.name, :props => { :EVENT => "Test Ticket" } }.to_json
-    @ticket.encode.should == @json
-  end
-
-  it "should serialize and encode to the JSON format used by ATHENA with an ID" do
-    @ticket = Factory.build(:ticket_with_id, :EVENT => "Test Ticket")
-    @json = { :name => @ticket.name, :id => @ticket.id, :props => { :EVENT => "Test Ticket" } }.to_json
-    @ticket.encode.should == @json
-  end
-
   it "should generate tickets given a performance, quantity, and price" do
     FakeWeb.register_uri(:post, "http://localhost/tickets/.json", :status => "200")
     @performance = Factory.build(:performance)

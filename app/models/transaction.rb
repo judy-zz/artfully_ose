@@ -1,5 +1,6 @@
 class Transaction < ActiveResource::Base
   headers['X-ATHENA-Key'] = 'artful.ly'
+  self.headers["User-agent"] = "artful.ly"
 
   self.site = Artfully::Application.config.tickets_site
   self.format = :json

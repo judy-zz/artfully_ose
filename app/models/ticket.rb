@@ -1,5 +1,6 @@
 class Ticket < AthenaResource::Base
   self.site = Artfully::Application.config.tickets_site
+  self.headers["User-agent"] = "artful.ly"
 
   schema do
     attribute 'name',         :string
