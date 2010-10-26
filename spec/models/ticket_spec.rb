@@ -123,9 +123,9 @@ describe Ticket do
     it "by performance" do
       FakeWeb.register_uri(:get, %r|http://localhost/tickets/.json\?|, :status => "200", :body => "[]")
       now = DateTime.now
-      params = { :PERFORMANCE => "=#{now.as_json}" }
+      params = { :PERFORMANCE => "eq#{now.as_json}" }
       Ticket.search(params)
-      FakeWeb.last_request.path.should == "/tickets/.json?PERFORMANCE=%3D#{CGI::escape now.as_json}"
+      FakeWeb.last_request.path.should == "/tickets/.json?PERFORMANCE=eq#{CGI::escape now.as_json}"
 
     end
 

@@ -16,9 +16,9 @@ class Ticket < AthenaResource::Base
   end
 
   def self.find_by_performance(performance)
-    params = {  'VENUE'       => "=#{performance.venue}",
-                'PERFORMANCE' => "=#{performance.performed_on.as_json}",
-                'EVENT'       => "=#{performance.title}"
+    params = {  'VENUE'       => "eq#{performance.venue}",
+                'PERFORMANCE' => "eq#{performance.performed_on.as_json}",
+                'EVENT'       => "eq#{performance.title}"
              }
     self.find(:all, :params => params)
   end
