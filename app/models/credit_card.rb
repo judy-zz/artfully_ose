@@ -15,6 +15,8 @@ class CreditCard
   validates_presence_of :number, :expiration_date, :cardholder_name, :cvv
 
   def initialize(attrs = {})
+    prepare_attr!(attrs)
+    p attrs
     load(attrs)
   end
 
@@ -31,4 +33,13 @@ class CreditCard
     end
     hsh
   end
+
+  private
+    def prepare_attr!(attributes)
+      day = attributes.delete('expiration_date(3i)')
+      month = attributes.delete('expiration_date(2i)')
+      year = attributes.delete('expiration_date(1i)')
+
+      attributes['expiration_date'] = "#{month}/#{year}"
+    end
 end

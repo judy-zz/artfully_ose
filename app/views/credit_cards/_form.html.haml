@@ -4,14 +4,9 @@
   = cc_form.text_field :number
   %br
 
-  = cc_form.label "Expiration Month"
+  = cc_form.label "Expiration Date"
   %br
-  = cc_form.text_field :expiration_month
-  %br
-
-  = cc_form.label "Expiration Year"
-  %br
-  = cc_form.text_field :expiration_year
+  = cc_form.date_select :expiration_date, :order => [:month, :year], :use_month_numbers => true, :start_year => Time.now.year, :end_year => Time.now.year + 10
   %br
 
   = cc_form.label "Cardholder Name"

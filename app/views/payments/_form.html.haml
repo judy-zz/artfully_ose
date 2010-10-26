@@ -10,3 +10,5 @@
 
   %h3 Shipping Address
   = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :address => :shipping_address }
+
+  = payment_form.submit "Purchase"

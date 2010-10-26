@@ -1,4 +1,6 @@
 class Payment < AthenaResource::Base
+  self.site = Artfully::Application.config.tickets_site
+  self.headers["User-agent"] = "artful.ly"
 
   validates_numericality_of :amount, :greater_than => 0
   validates_presence_of :shipping_address, :billing_address, :credit_card
