@@ -6,6 +6,7 @@
     %li
       = render ticket
 
+= render "shared/error_messages", :target => @payment
 = render :partial => 'payments/form', :locals => {:payment => @payment}
 
 

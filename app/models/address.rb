@@ -1,9 +1,6 @@
 class Address
   include ActiveModel::Validations
 
-  validates_presence_of :firstName, :lastName, :company,
-                        :streetAddress, :city, :state, :postalCode, :country
-
   # Note: This is used to provide a more ruby-friendly set of accessors that will still serialize properly.
   def self.aliased_attr_accessor(*accessors)
     attr_accessor(*accessors)
@@ -15,6 +12,10 @@ class Address
 
   aliased_attr_accessor :firstName, :lastName, :company,
                         :streetAddress, :city, :state, :postalCode, :country
+
+  validates_presence_of :first_name, :last_name, :company,
+                        :street_address, :city, :state, :postal_code, :country
+
 
   def initialize(attrs = {})
     load(attrs)
@@ -33,5 +34,4 @@ class Address
     end
     hsh
   end
-
 end

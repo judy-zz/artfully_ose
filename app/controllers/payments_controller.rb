@@ -1,11 +1,16 @@
 class PaymentsController < ApplicationController
   def create
+    @transaction = Transaction.find(params[:transaction])
     @payment = Payment.new(params[:payment])
+    @payment.amount = 10
     if @payment.valid?
-#     @payment.save
-#     redirect_to @payment
+      if @payment.confirmed?
+        #save
+      else
+        render 'payments/show'
+      end
     else
-      render :action => "new"
+      render 'transactions/show'
     end
 
   end

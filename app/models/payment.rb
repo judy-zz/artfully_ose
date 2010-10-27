@@ -5,7 +5,7 @@ class Payment < AthenaResource::Base
   validates_numericality_of :amount, :greater_than => 0
   validates_presence_of :shipping_address, :billing_address, :credit_card
 
-  validates_each :shipping_address, :billing_address, :credit_card do |model, attr, value|
+  validates_each :shipping_address, :billing_address, :credit_card, :customer do |model, attr, value|
     model.errors.add(attr, "is invalid") unless model.send(attr).valid?
   end
 
@@ -17,27 +17,9 @@ class Payment < AthenaResource::Base
     attribute 'credit_card', :string
   end
 
-  def shipping_address=(address_or_hash)
-    if address_or_hash.kind_of? Address
-      super(address_or_hash)
-    elsif
-      super(Address.new(address_or_hash))
-    end
-  end
-
-  def billing_address=(address_or_hash)
-    if address_or_hash.kind_of? Address
-      super(address_or_hash)
-    elsif
-      super(Address.new(address_or_hash))
-    end
-  end
-
-  def credit_card=(credit_card_or_hash)
-    if credit_card_or_hash.kind_of? CreditCard
-      super(credit_card_or_hash)
-    elsif
-      super(CreditCard.new(credit_card_or_hash))
-    end
+  def load(attributes)
+    @attributes['shipping_address'] = Address.new(attributes.delete('shipping_address')) if attributes.has_key? 'shipping_address'
+    @attributes['billing_address'] = Address.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
+    super(attributes)
   end
 end

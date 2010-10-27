@@ -1,4 +1,5 @@
 = form_for payment do |payment_form|
+  = hidden_field_tag :transaction, @transaction.id
   %h3 Customer Information
   = render :partial => 'customers/form', :locals => { :parent_form => payment_form }
 

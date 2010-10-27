@@ -53,19 +53,19 @@ describe Payment do
   describe "with nested attributes" do
     it "should accept nested attributes for shipping address" do
       @shipping_address = Factory(:address)
-      @payment = Factory(:payment, :shipping_address => @shipping_address.attributes)
+      @payment = Factory(:payment, :shipping_address => @shipping_address)
       @payment.shipping_address.attributes.should == @shipping_address.attributes
     end
 
     it "should accept nested attributes for billing address" do
       @billing_address = Factory(:address)
-      @payment = Factory(:payment, :billing_address => @billing_address.attributes)
+      @payment = Factory(:payment, :billing_address => @billing_address)
       @payment.billing_address.attributes.should == @billing_address.attributes
     end
 
-    it "should accept nested attributes for billing address" do
+    it "should accept nested attributes for credit card" do
       @credit_card = Factory(:credit_card)
-      @payment = Factory(:payment, :credit_card => @credit_card.attributes)
+      @payment = Factory(:payment, :credit_card => @credit_card)
       @payment.credit_card.attributes.should == @credit_card.attributes
     end
 

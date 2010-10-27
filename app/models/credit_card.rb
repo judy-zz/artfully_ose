@@ -15,8 +15,7 @@ class CreditCard
   validates_presence_of :number, :expiration_date, :cardholder_name, :cvv
 
   def initialize(attrs = {})
-    prepare_attr!(attrs)
-    p attrs
+    prepare_attr!(attrs) unless attrs.has_key? :expiration_date
     load(attrs)
   end
 
