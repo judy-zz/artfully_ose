@@ -11,7 +11,6 @@ class CreditCard
   end
 
   aliased_attr_accessor :number, :expirationDate, :cardholderName, :cvv
-
   validates_presence_of :number, :expiration_date, :cardholder_name, :cvv
 
   def initialize(attrs = {})
@@ -35,10 +34,12 @@ class CreditCard
 
   private
     def prepare_attr!(attributes)
-      day = attributes.delete('expiration_date(3i)')
-      month = attributes.delete('expiration_date(2i)')
-      year = attributes.delete('expiration_date(1i)')
+      unless attributes.empty?
+        day = attributes.delete('expiration_date(3i)')
+        month = attributes.delete('expiration_date(2i)')
+        year = attributes.delete('expiration_date(1i)')
 
-      attributes['expiration_date'] = "#{month}/#{year}"
+        attributes['expiration_date'] = Date.parse("#{year}-#{month}-#{day}")
+      end
     end
 end

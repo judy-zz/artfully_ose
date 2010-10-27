@@ -1,15 +1,15 @@
 = form_for payment do |payment_form|
   = hidden_field_tag :transaction, @transaction.id
   %h3 Customer Information
-  = render :partial => 'customers/form', :locals => { :parent_form => payment_form }
+  = render :partial => 'customers/form', :locals => { :parent_form => payment_form, :target => @payment.customer }
 
   %h3 Credit Card Information
-  = render :partial => 'credit_cards/form', :locals => { :parent_form => payment_form }
+  = render :partial => 'credit_cards/form', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
 
   %h3 Billing Address
-  = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :address => :billing_address }
+  = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :target => @payment.billing_address }
 
   %h3 Shipping Address
-  = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :address => :shipping_address }
+  = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :target => @payment.shipping_address }
 
   = payment_form.submit "Purchase"

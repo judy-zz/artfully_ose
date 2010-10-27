@@ -1,4 +1,4 @@
-= parent_form.fields_for :credit_card do |cc_form|
+= parent_form.fields_for target do |cc_form|
   = cc_form.label "Number"
   %br
   = cc_form.text_field :number

@@ -1,4 +1,4 @@
-= parent_form.fields_for :customer do |customer_form|
+= parent_form.fields_for target do |customer_form|
   = customer_form.label "First Name"
   %br
   = customer_form.text_field :first_name
