@@ -9,7 +9,6 @@ class Payment < AthenaResource::Base
     model.errors.add(attr, "is invalid") unless model.send(attr).valid?
   end
 
-
   schema do
     attribute 'amount', :string
     attribute 'shipping_address', :string
@@ -39,4 +38,11 @@ class Payment < AthenaResource::Base
   def credit_card
     @attributes['credit_card'] ||= CreditCard.new
   end
+
+  attr_accessor :confirmed
+
+  def confirmed?
+    @confirmed
+  end
+
 end

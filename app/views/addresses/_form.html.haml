@@ -1,40 +1,40 @@
-= parent_form.fields_for target do |addr_form|
+= parent_form.fields_for address_type do |addr_form|
   = addr_form.label "First Name"
   %br
-  = addr_form.text_field :first_name
+  = addr_form.text_field :first_name, :value => target.first_name
   %br
 
   = addr_form.label "Last Name"
   %br
-  = addr_form.text_field :last_name
+  = addr_form.text_field :last_name, :value => target.last_name
   %br
 
   = addr_form.label "Company"
   %br
-  = addr_form.text_field :company
+  = addr_form.text_field :company, :value => target.company
   %br
 
   = addr_form.label "Street Address"
   %br
-  = addr_form.text_field :street_address
+  = addr_form.text_field :street_address, :value => target.street_address
   %br
 
   = addr_form.label "City"
   %br
-  = addr_form.text_field :city
+  = addr_form.text_field :city, :value => target.city
   %br
 
   = addr_form.label "State"
   %br
-  = addr_form.text_field :state
+  = addr_form.text_field :state, :value => target.state
   %br
 
   = addr_form.label "Postal Code"
   %br
-  = addr_form.text_field :postal_code
+  = addr_form.text_field :postal_code, :value => target.postal_code
   %br
 
   = addr_form.label "Country"
   %br
-  = addr_form.text_field :country
+  = addr_form.text_field :country, :value => target.country
   %br
