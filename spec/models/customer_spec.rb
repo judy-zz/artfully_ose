@@ -15,7 +15,7 @@ describe Customer do
     end
   end
 
-  %w( firstName lastName company phone fax email ).each do |attribute|
+  %w( firstName lastName email ).each do |attribute|
     it "should not be valid if #{attribute.underscore} is blank" do
       @customer = Factory(:customer, attribute.underscore => nil)
       @customer.should_not be_valid
