@@ -15,7 +15,7 @@ describe Address do
     end
   end
 
-  %w( firstName lastName company streetAddress city state postalCode country ).each do |attribute|
+  %w( firstName lastName streetAddress city state postalCode ).each do |attribute|
     it "should not be valid if #{attribute.underscore} is blank" do
       @address = Factory(:address, attribute.underscore => nil)
       @address.should_not be_valid

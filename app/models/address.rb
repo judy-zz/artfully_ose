@@ -10,11 +10,8 @@ class Address
     end
   end
 
-  aliased_attr_accessor :firstName, :lastName, :company,
-                        :streetAddress, :city, :state, :postalCode, :country
-
-  validates_presence_of :first_name, :last_name, :company,
-                        :street_address, :city, :state, :postal_code, :country
+  aliased_attr_accessor :firstName, :lastName, :company, :streetAddress, :city, :state, :postalCode, :country
+  validates_presence_of :first_name, :last_name, :street_address, :city, :state, :postal_code
 
 
   def initialize(attrs = {})
