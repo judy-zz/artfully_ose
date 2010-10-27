@@ -25,6 +25,17 @@ body{
   text-decoration:none;
 }
 
+#error_explanation {
+  background:#aaa;
+  padding:10px;
+  margin:10px;
+}
+#error_explanation li{
+  font-size:.8em;
+  margin-left:20px;
+}
+
+
 #session_nav{
   float:right;
   margin:10px;
