@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Ticket do
   before(:each) do
-    FakeWeb.allow_net_connect = false
     Ticket.site = 'http://localhost'
   end
 

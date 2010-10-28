@@ -2,10 +2,8 @@ require 'spec_helper'
 
 describe Transaction do
   before(:each) do
-    FakeWeb.allow_net_connect = false
     Transaction.site = 'http://localhost'
   end
-
 
   describe "as a remote resource" do
     it "use JsonFormat" do

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 describe Field do
   before(:each) do
-    FakeWeb.allow_net_connect = false
     Field.site = 'http://localhost'
   end
 
@@ -18,6 +17,6 @@ describe Field do
     FakeWeb.register_uri(:get, "http://localhost/tickets/fields/.json", :body => "[#{fake_field.attributes.to_json}]")
 
     fields = Field.find(:all)
-    fields.first.should == fake_field 
+    fields.first.should == fake_field
   end
 end

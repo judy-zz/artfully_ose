@@ -24,6 +24,8 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
-end
 
-FakeWeb.allow_net_connect = false
+  config.before(:each) { FakeWeb.clean_registry }
+  config.before(:all) { FakeWeb.allow_net_connect = false }
+
+end
