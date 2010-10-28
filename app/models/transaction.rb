@@ -7,6 +7,7 @@ class Transaction < ActiveResource::Base
   self.prefix = "/tickets/"
 
   schema do
+    attribute 'tickets',      :string
     attribute 'lockExpires',  :string
     attribute 'lockedByApi',  :string
     attribute 'lockedByIp',   :string
@@ -14,16 +15,8 @@ class Transaction < ActiveResource::Base
   end
 
   def tickets
-    @tickets ||= TicketCollection.new(attributes[:tickets])
-  end
-
-  def tickets=(tickets)
-    tickets.replace(tickets)
-  end
-
-  def encode
-    @attributes[:tickets] = tickets.to_a
-    @attributes.to_json
+    @attributes['tickets'] ||= []
+    @attributes['tickets']
   end
 
   #TODO: Move this to macro at some point.

@@ -50,24 +50,17 @@ describe Transaction do
       @transaction.tickets.should be_empty
     end
 
-    it "should allow for tickets to be appended via tickets<<" do
+    it "should only accept numerical Ticket IDs" do
       @transaction = Factory(:transaction)
-      @transaction.tickets.should be_empty
-
-      @ticket = Factory(:ticket)
-      @transaction.tickets << @ticket
+      @transaction.tickets << "2"
       @transaction.tickets.size.should == 1
-      @transaction.tickets.first.should == @ticket
+      @transaction.tickets.first.should == "2"
     end
   end
 
   it "should include ticket IDs when encoded" do
     @transaction = Factory(:transaction)
-    @ticket = Factory(:ticket_with_id)
-    @transaction.tickets << @ticket
-
-    @transaction.encode.should =~ /{\"tickets\":\[\"#{@ticket.id}\"\]}/
+    @transaction.tickets << "2"
+    @transaction.encode.should =~ /{\"tickets\":\[\"2\"\]}/
   end
-
-
 end

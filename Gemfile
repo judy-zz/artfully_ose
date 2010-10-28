@@ -7,6 +7,7 @@ gem 'devise'
 gem 'cancan'
 gem 'role_model'
 gem 'escape_utils'
+gem 'transitions', :require => ['transitions','active_record/transitions']
 
 
 group :test, :development do
