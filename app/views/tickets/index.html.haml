@@ -16,7 +16,7 @@
 
 - unless @tickets.nil?
   = "Found #{pluralize(@tickets.size, 'ticket')}"
-  = form_tag('/transactions', :method => :post) do
+  = form_tag('/orders', :method => :post) do
     %ul.ticket-list
       -@tickets.each do |ticket|
         %li

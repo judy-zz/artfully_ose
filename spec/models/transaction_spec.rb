@@ -58,9 +58,20 @@ describe Transaction do
     end
   end
 
+  it "should not be valid if it does not exist on the remote" do
+    # Probably need to rescue from a 404 error.
+    pending "fixes on remote"
+  end
+
+  it "should not be valid with if lockExpires as passed" do
+    pending "validates timeliness"
+    @transaction = Factory(:transaction, :lockExpires => DateTime.now - 12.hours)
+    @transaction.should_not be_valid
+  end
+
   it "should include ticket IDs when encoded" do
     @transaction = Factory(:transaction)
     @transaction.tickets << "2"
-    @transaction.encode.should =~ /{\"tickets\":\[\"2\"\]}/
+    @transaction.encode.should =~ /\"tickets\":\[\"2\"\]/
   end
 end

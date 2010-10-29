@@ -3,6 +3,13 @@ class Order < ActiveRecord::Base
 
   belongs_to :user
 
+  validates_presence_of :transaction_id
+
+  validates_each :transaction do |model, attr, value|
+    model.errors.add(attr, "is invalid") unless model.send(attr).valid?
+  end
+
+
   state_machine do
     state :started
     state :submitted
@@ -13,7 +20,7 @@ class Order < ActiveRecord::Base
   end
 
   def transaction
-    @transaction ||= Transaction.find(transaction_id)
+    @transaction ||= Transaction.find(transaction_id) unless transaction_id.nil?
   end
 
   def transaction=(transaction)
@@ -26,12 +33,20 @@ class Order < ActiveRecord::Base
     @tickets ||= proxies_for(transaction.tickets)
   end
 
+  def tickets=(tickets)
+    release_transaction!
+    unless tickets.empty?
+      self.transaction = Transaction.create(:tickets => tickets)
+      @tickets = proxies_for(tickets)
+    end
+  end
+
   private
+    def release_transaction!
+      Transaction.delete(self.transaction_id) unless self.transaction_id.nil?
+    end
+
     def proxies_for(ticket_ids)
-      proxies = []
-      ticket_ids.each do |ticket_id|
-        proxies << TicketProxy.new(ticket_id)
-      end
-      proxies
+      ticket_ids.map { |ticket_id| TicketProxy.new(ticket_id) }
     end
 end

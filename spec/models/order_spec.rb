@@ -34,4 +34,23 @@ describe Order do
       @transaction.tickets.should include(ticket.id)
     end
   end
+
+  it "should attempt to delete an existing transaction when updated" do
+    @order = Factory(:order)
+    FakeWeb.register_uri(:delete, "http://localhost/tickets/transactions/#{@order.transaction.id}.json", :status => 200)
+    @order.tickets = []
+    FakeWeb.last_request.path.should == "/tickets/transactions/#{@order.transaction.id}.json"
+    FakeWeb.last_request.method.should == "DELETE"
+  end
+
+  it "should create a transaction behind the scenes when tickets are specified" do
+    @transaction = Factory(:transaction, :tickets => [1,2])
+    FakeWeb.register_uri(:post, "http://localhost/tickets/transactions/.json", :status => 200, :body => @transaction.encode)
+    FakeWeb.register_uri(:delete, "http://localhost/tickets/transactions/#{@transaction.id}.json", :status => 200)
+    @order = Factory.build(:order, :transaction => @transaction)
+    @order.tickets = [1,2]
+    @order.tickets.each do |ticket|
+      @order.transaction.tickets.should include(ticket.id)
+    end
+  end
 end

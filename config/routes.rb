@@ -6,5 +6,7 @@ Artfully::Application.routes.draw do
   resources :transactions, :only => [:create, :show, :destroy]
   resources :payments, :only => [:create, :show, :destroy]
 
+  resources :orders
+
   root :to => "index#index"
 end

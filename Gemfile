@@ -19,4 +19,5 @@ group :test, :development do
   gem 'capybara'
   gem 'cucumber-rails'
   gem 'awesome_print'
+  gem 'uuid'
 end

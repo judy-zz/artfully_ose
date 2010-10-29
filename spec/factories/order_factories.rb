@@ -1,2 +1,3 @@
-Factory.define(:order) do
+Factory.define(:order) do |o|
+  o.transaction { Factory(:transaction) }
 end
