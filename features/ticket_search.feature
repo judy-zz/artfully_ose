@@ -1,15 +1,11 @@
 Feature: Ticket search
   In order to find tickets for purcahse
-  a user
-  wants to be able to enter details about existing tickets
+  a user wants to be able to enter details about existing tickets
 
-  Scenario: Selecting tickets for purchase
-    Pending
-    Given the following ticket exists:
-      | id | EVENT       | VENUE    | PERFORMANCE         |
-      | 1  | Jersey Boys | Broadway | 2002-05-30T09:00:00 |
-      | 2  | Jersey Boys | Broadway | 2002-05-30T09:00:00 |
-      | 3  | Jersey Boys | Broadway | 2002-05-30T09:00:00 |
-      And I have
-    When I fill in "Performance Date" with "2002-05-30T09:00:00"
-      And I press "Search"
+  Scenario: Getting to the search page
+    Given I am on the root page
+    When I follow "Tickets"
+    Then I should see "Search for Tickets"
+      And I should see "Price:"
+      And I should see "Performance Date:"
+      And I should see "Limit number of results to"
