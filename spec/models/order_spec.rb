@@ -27,9 +27,11 @@ describe Order do
     FakeWeb.last_request.path.should == "/tickets/transactions/#{@transaction.id}.json"
   end
 
-  it "should have access to the tickets locked in the transaction" do
+  it "should proxy the tickets locked in the transaction" do
     @transaction = Factory(:transaction, :tickets => [1,2,3])
     @order = Factory(:order, :transaction => @transaction)
-    @order.tickets.should == @transaction.tickets
+    @order.tickets.each do |ticket|
+      @transaction.tickets.should include(ticket.id)
+    end
   end
 end
