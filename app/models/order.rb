@@ -58,7 +58,10 @@ class Order < ActiveRecord::Base
     end
 
     def release_transaction!
-      Transaction.delete(self.transaction_id) unless self.transaction_id.nil?
+      begin
+        self.transaction.destroy unless self.transaction.nil?
+      rescue ActiveResource::ServerError, ActiveResource::ResourceNotFound
+      end
     end
 
     def proxies_for(ticket_ids)
