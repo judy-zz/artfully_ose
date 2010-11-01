@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
     @order = Order.new
     @order.tickets = params[:tickets]
     if @order.save
-      redirect_to @order, :action => :edit
+      redirect_to edit_order_url(@order)
     else
       flash[:error] = @order.errors
       redirect_to :back
