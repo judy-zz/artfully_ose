@@ -15,7 +15,6 @@ describe Transaction do
       Transaction.all
       FakeWeb.last_request.path.should == "/tickets/transactions/.json"
     end
-
   end
 
   describe "attributes" do

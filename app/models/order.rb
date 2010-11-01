@@ -2,11 +2,14 @@ class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 
   belongs_to :user
-
   validates_presence_of :transaction_id
+  validates_presence_of :tickets
+
+  before_validation :create_transaction!
+  before_destroy :release_transaction!
 
   validates_each :transaction do |model, attr, value|
-    model.errors.add(attr, "is invalid") unless model.send(attr).valid?
+    model.errors.add(attr, "is invalid") unless (!model.send(attr).nil?) && model.send(attr).valid?
   end
 
 
@@ -26,7 +29,7 @@ class Order < ActiveRecord::Base
   def transaction=(transaction)
     raise TypeError, "Expecting a Transaction" unless transaction.kind_of? Transaction
     @transaction = transaction
-    update_attribute(:transaction_id, @transaction.id)
+    self.transaction_id = @transaction.id
   end
 
   def tickets
@@ -34,19 +37,31 @@ class Order < ActiveRecord::Base
   end
 
   def tickets=(tickets)
-    release_transaction!
-    unless tickets.empty?
-      self.transaction = Transaction.create(:tickets => tickets)
-      @tickets = proxies_for(tickets)
-    end
+    @tickets = proxies_for(tickets)
   end
 
   private
+    def create_transaction!
+      begin
+        self.transaction = Transaction.create(:tickets => self.tickets.map { |ticket| ticket.id })
+      rescue ActiveResource::ResourceConflict
+        self.errors.add(:tickets, "could not be locked")
+      end if needs_new_transaction?
+    end
+
+    def needs_new_transaction?
+      self.transaction_id.nil? || !same_tickets?
+    end
+
+    def same_tickets?
+      self.tickets.map{ |ticket| ticket.id.to_i }.sort == self.transaction.tickets.map{ |ticket| ticket.to_i }.sort
+    end
+
     def release_transaction!
       Transaction.delete(self.transaction_id) unless self.transaction_id.nil?
     end
 
     def proxies_for(ticket_ids)
-      ticket_ids.map { |ticket_id| TicketProxy.new(ticket_id) }
+      ticket_ids.map { |ticket_id| TicketProxy.new(ticket_id) } || []
     end
 end

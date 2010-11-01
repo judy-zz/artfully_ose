@@ -2,10 +2,10 @@ class OrdersController < ApplicationController
   def create
     @order = Order.new
     @order.tickets = params[:tickets]
-    if @order.valid?
-      @order.save!
+    if @order.save
       redirect_to @order, :action => :edit
     else
+      flash[:error] = @order.errors
       redirect_to :back
     end
   end
@@ -18,14 +18,13 @@ class OrdersController < ApplicationController
   end
 
   def destroy
-    @transaction = Transaction.find(params[:id])
-    @transaction.destroy
+    @order = Order.find(params[:id])
+    @order.destroy
     redirect_to root_url
   end
 
   def show
-    @payment = Payment.new
-    @transaction = Transaction.find(params[:id])
+    @order = Order.find(params[:id])
   end
 
 end
