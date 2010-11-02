@@ -1,10 +1,12 @@
 %h3 Ticket Order
 %h4 Enter Payment Details
 
-%ul.ticket-list
+%ul.line-items
   - @order.tickets.each do |ticket|
     %li
       = render :partial => 'tickets/line_item', :object => ticket
+  %li.total
+    = "Total: $#{@order.total}"
 
 - unless @needs_confirmation
   = render "shared/error_messages", :target => @payment

@@ -104,6 +104,15 @@ describe Order, "and Payments" do
     @order = Factory(:order)
   end
 
+  it "should sum up the price of the tickets via total" do
+    @ticket1 = Factory(:ticket, :id => 1, :PRICE => "100")
+    @ticket2 = Factory(:ticket, :id => 2, :PRICE => "33")
+    FakeWeb.register_uri(:get, "http://localhost/tickets/#{@ticket1.id}.json", :status => 200, :body => @ticket1.encode)
+    FakeWeb.register_uri(:get, "http://localhost/tickets/#{@ticket2.id}.json", :status => 200, :body => @ticket2.encode)
+    @order.tickets = [1,2]
+    @order.total.should == @ticket1.PRICE.to_i + @ticket2.PRICE.to_i
+  end
+
   describe "when transitioning state based on the response from ATHENA" do
     it "should submit the Payment to ATHENA when the payment is confirmed by the user" do
       FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":true }')

@@ -20,7 +20,7 @@ class OrdersController < ApplicationController
 
     if params[:payment] && @order.started?
       @payment = Payment.new(params[:payment])
-      @payment.amount = 100 #TODO: Sum the order
+      @payment.amount = @order.total
       if @payment.valid?
         if payment_confirmed?
           @order.pay_with(@payment)

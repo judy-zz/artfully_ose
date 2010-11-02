@@ -47,6 +47,10 @@ class Order < ActiveRecord::Base
     @tickets = proxies_for(tickets)
   end
 
+  def total
+    @tickets.inject(0) { |sum, ticket| sum + ticket.PRICE.to_i }
+  end
+
   def pay_with(payment)
     payment.save
     if payment.approved?

@@ -8,6 +8,7 @@ class Ticket < AthenaResource::Base
     attribute 'VENUE',        :string
     attribute 'PERFORMANCE',  :string
     attribute 'SOLD',         :string
+    attribute 'PRICE',        :integer
   end
 
   def initialize(*args)

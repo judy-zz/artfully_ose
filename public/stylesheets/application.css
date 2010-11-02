@@ -102,7 +102,6 @@ h3 {
 .line-item {
   font-size:.8em;
   border-bottom:1px solid #ccc;
-  overflow:auto;
   padding:.5em 0;
   margin:1em 0;
 }
