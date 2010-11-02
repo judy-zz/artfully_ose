@@ -15,6 +15,18 @@ class OrdersController < ApplicationController
   end
 
   def update
+    @order = Order.find(params[:id])
+
+    case @order.state
+      when "started"
+        @payment = Payment.new(params[:payment])
+        @order.add_payment(@payment)
+        @order.save
+      when "submitted"
+        @payment = Payment.new(params[:payment])
+        @order.confirm_payment(@payment)
+        @order.save
+    end
   end
 
   def destroy
@@ -26,5 +38,4 @@ class OrdersController < ApplicationController
   def show
     @order = Order.find(params[:id])
   end
-
 end

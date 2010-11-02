@@ -83,4 +83,29 @@ describe Payment do
       @payment.customer.attributes.should == @customer.attributes
     end
   end
+
+  it "should respond to approved?" do
+    @payment.respond_to?(:approved?).should be_true
+  end
+
+  it "should be approved when ATHENA returns success as true" do
+    FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":true}')
+    @payment.save
+    @payment.approved?.should be_true
+  end
+
+  it "should respond to rejected?" do
+    @payment.respond_to?(:rejected?).should be_true
+  end
+
+  it "should be rejected when ATHENA returns success as false" do
+    FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":false}')
+    @payment.save
+    @payment.rejected?.should be_true
+  end
+
+  it "should be neither accepted nor rejected until saved" do
+    @payment.rejected?.should be_false
+    @payment.approved?.should be_false
+  end
 end

@@ -15,6 +15,8 @@ class Payment < AthenaResource::Base
     attribute 'billing_address', :string
     attribute 'credit_card', :string
     attribute 'customer', :string
+
+    attribute 'success', :string
   end
 
   def load(attributes)
@@ -43,6 +45,14 @@ class Payment < AthenaResource::Base
 
   def confirmed?
     @confirmed
+  end
+
+  def approved?
+    self.success == true
+  end
+
+  def rejected?
+    self.success == false
   end
 
 end

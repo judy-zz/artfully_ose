@@ -98,3 +98,65 @@ describe Order do
     FakeWeb.last_request.path.should == "/tickets/transactions/#{@transaction_id}.json"
   end
 end
+
+describe Order, "and Payments" do
+  before(:each) do
+    @order = Factory(:order)
+  end
+
+  describe "when transitioning to the submitted state" do
+    before(:each) do
+      @order.state.should == "started"
+    end
+
+    it "should respond to submit!" do
+      @order.respond_to?(:submit!).should be_true
+    end
+
+    it "should transition to submitted when a valid Payment is added" do
+      @payment = Factory(:payment)
+      @payment.should be_valid
+      @order.add_payment(@payment)
+      @order.state.should == "submitted"
+    end
+
+    it "should not transition to submitted when an invalid Payment is added" do
+      @payment = Payment.new
+      @payment.should_not be_valid
+      @order.add_payment(@payment)
+      @order.state.should == "started"
+    end
+  end
+
+  describe "when transitioning state based on the response from ATHENA" do
+    before(:each) do
+      @order = Factory(:order, :state => "submitted")
+      @order.state.should == "submitted"
+    end
+
+    it "should submit the Payment to ATHENA when the payment is confirmed by the user" do
+      FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":true }')
+      @payment = Factory(:payment)
+      @payment.should be_valid
+      @order.confirm_payment(@payment)
+      FakeWeb.last_request.method.should == "POST"
+      FakeWeb.last_request.path.should == '/payments/.json'
+    end
+
+    it "should transition to approved when the payment is approved" do
+      FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":true }')
+      @payment = Factory(:payment)
+      @payment.should be_valid
+      @order.confirm_payment(@payment)
+      @order.state.should == "approved"
+    end
+
+    it "should tranisition to rejected when the Payment is rejected" do
+      FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":false }')
+      @payment = Factory(:payment)
+      @payment.should be_valid
+      @order.confirm_payment(@payment)
+      @order.state.should == "rejected"
+    end
+  end
+end

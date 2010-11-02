@@ -14,13 +14,25 @@ class Order < ActiveRecord::Base
 
 
   state_machine do
-    state :started
-    state :submitted
-    state :confirmed
-    state :approved
-    state :rejected
-    state :finished
+    state :started      # The Order is associated with a Transaction (which may or may not still be valid)
+    state :submitted    # The Order has given a valid
+    state :approved     # ATHENA has approved the payment
+    state :rejected     # ATHENA has rejected the payment
+
+    event :submit do
+      transitions :from => :started, :to => :submitted
+    end
+
+    event :approve do
+      transitions :from => :submitted, :to => :approved
+    end
+
+    event :reject do
+      transitions :from => :submitted, :to => :rejected
+    end
   end
+
+
 
   def transaction
     @transaction ||= Transaction.find(transaction_id) unless transaction_id.nil?
@@ -38,6 +50,19 @@ class Order < ActiveRecord::Base
 
   def tickets=(tickets)
     @tickets = proxies_for(tickets)
+  end
+
+  def add_payment(payment)
+    submit! if payment.valid?
+  end
+
+  def confirm_payment(payment)
+    payment.save
+    if payment.approved?
+      approve!
+    elsif payment.rejected?
+      reject!
+    end
   end
 
   private
