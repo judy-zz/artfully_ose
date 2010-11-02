@@ -1,22 +1,22 @@
 = parent_form.fields_for target do |customer_form|
   %ul
     %li.element.left
-      = customer_form.label "First Name"
+      = customer_form.label :first_name, "First Name"
       .input-fix
         = customer_form.text_field :first_name
 
     %li.element.right
-      = customer_form.label "Last Name"
+      = customer_form.label :last_name, "Last Name"
       .input-fix
         = customer_form.text_field :last_name
 
 
     %li.element.left
-      = customer_form.label "Phone"
+      = customer_form.label :phone, "Phone"
       .input-fix
         = customer_form.text_field :phone
 
     %li.element.right
-      = customer_form.label "Email"
+      = customer_form.label :email, "Email"
       .input-fix
         = customer_form.text_field :email

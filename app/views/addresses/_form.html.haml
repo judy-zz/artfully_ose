@@ -1,41 +1,41 @@
 = parent_form.fields_for address_type, target do |addr_form|
   %ul
     %li.element.left
-      = addr_form.label "First Name"
+      = addr_form.label :first_name, "First Name"
       .input-fix
         = addr_form.text_field :first_name
 
     %li.element.right
-      = addr_form.label "Last Name"
+      = addr_form.label :last_name, "Last Name"
       .input-fix
         = addr_form.text_field :last_name
 
     %li.element
-      = addr_form.label "Company"
+      = addr_form.label :company, "Company"
       .input-fix
         = addr_form.text_field :company
 
     %li.element
-      = addr_form.label "Street Address"
+      = addr_form.label :street_address, "Street Address"
       .input-fix
         = addr_form.text_field :street_address
 
     %li.element.left
-      = addr_form.label "City"
+      = addr_form.label :city, "City"
       .input-fix
         = addr_form.text_field :city
 
     %li.element.right
-      = addr_form.label "State"
+      = addr_form.label :state, "State"
       .input-fix
         = addr_form.text_field :state
 
     %li.element.left
-      = addr_form.label "Postal Code"
+      = addr_form.label :postal_code, "Postal Code"
       .input-fix
         = addr_form.text_field :postal_code
 
     %li.element.right
-      = addr_form.label "Country"
+      = addr_form.label :country, "Country"
       .input-fix
         = addr_form.text_field :country
