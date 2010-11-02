@@ -26,14 +26,6 @@ describe Payment do
     @payment.should_not be_valid
   end
 
-  it "should be invalid with an invalid shipping address" do
-    @shipping_address = Address.new
-    @shipping_address.should_not be_valid
-    @payment.shipping_address = @shipping_address
-    @payment.should_not be_valid
-    @payment.errors.size.should == 1
-  end
-
   it "should be invalid with an invalid billing address" do
     @billing_address = Address.new
     @billing_address.should_not be_valid
@@ -59,12 +51,6 @@ describe Payment do
   end
 
   describe "with nested attributes" do
-    it "should accept nested attributes for shipping address" do
-      @shipping_address = Factory(:address)
-      @payment = Factory(:payment, :shipping_address => @shipping_address)
-      @payment.shipping_address.attributes.should == @shipping_address.attributes
-    end
-
     it "should accept nested attributes for billing address" do
       @billing_address = Factory(:address)
       @payment = Factory(:payment, :billing_address => @billing_address)

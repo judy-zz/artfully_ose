@@ -8,7 +8,4 @@
   %h3 Billing Address
   = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
 
-  %h3 Shipping Address
-  = render :partial => 'addresses/form', :locals => { :parent_form => payment_form, :target => @payment.shipping_address, :address_type => :shipping_address }
-
   = payment_form.submit "Purchase"

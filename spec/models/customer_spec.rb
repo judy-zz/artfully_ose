@@ -5,7 +5,7 @@ describe Customer do
     @customer = Factory(:customer)
   end
 
-  %w( firstName lastName company phone fax email ).each do |attribute|
+  %w( firstName lastName phone email ).each do |attribute|
     it "should respond to #{attribute.underscore}" do
       @customer.respond_to?(attribute.underscore).should be_true
     end

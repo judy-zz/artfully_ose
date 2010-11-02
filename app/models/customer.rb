@@ -11,7 +11,7 @@ class Customer
     end
   end
 
-  aliased_attr_accessor :firstName, :lastName, :company, :phone, :fax, :email
+  aliased_attr_accessor :firstName, :lastName, :company, :phone, :email
   validates_presence_of :first_name, :last_name, :email
 
   def initialize(attrs = {})
@@ -26,7 +26,7 @@ class Customer
 
   def attributes
     hsh = {}
-    %w( first_name last_name company phone fax email ).each do |attr|
+    %w( first_name last_name company phone email ).each do |attr|
       hsh[attr.to_sym] = self.send(attr)
     end
     hsh
