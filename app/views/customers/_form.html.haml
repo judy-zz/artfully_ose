@@ -1,30 +1,36 @@
 = parent_form.fields_for target do |customer_form|
-  = customer_form.label "First Name"
-  %br
-  = customer_form.text_field :first_name
-  %br
+  %ul
+    %li.element.left
+      = customer_form.label "First Name"
+      .input-fix
+        = customer_form.text_field :first_name
 
-  = customer_form.label "Last Name"
-  %br
-  = customer_form.text_field :last_name
-  %br
 
-  = customer_form.label "Company"
-  %br
-  = customer_form.text_field :company
-  %br
+    %li.element.right
+      = customer_form.label "Last Name"
+      .input-fix
+        = customer_form.text_field :last_name
 
-  = customer_form.label "Phone"
-  %br
-  = customer_form.text_field :phone
-  %br
 
-  = customer_form.label "Fax"
-  %br
-  = customer_form.text_field :fax
-  %br
+    %li.element
+      = customer_form.label "Company"
+      .input-fix
+        = customer_form.text_field :company
 
-  = customer_form.label "Email"
-  %br
-  = customer_form.text_field :email
-  %br
+
+    %li.element.left
+      = customer_form.label "Phone"
+      .input-fix
+        = customer_form.text_field :phone
+
+
+    %li.element.right
+      = customer_form.label "Fax"
+      .input-fix
+        = customer_form.text_field :fax
+
+
+    %li.element
+      = customer_form.label "Email"
+      .input-fix
+        = customer_form.text_field :email

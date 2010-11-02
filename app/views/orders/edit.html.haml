@@ -4,7 +4,7 @@
 %ul.ticket-list
   - @order.tickets.each do |ticket|
     %li
-      = render ticket
+      = render :partial => 'tickets/line_item', :object => ticket
 
 - unless @needs_confirmation
   = render "shared/error_messages", :target => @payment

@@ -1,40 +1,41 @@
 = parent_form.fields_for address_type, target do |addr_form|
-  = addr_form.label "First Name"
-  %br
-  = addr_form.text_field :first_name
-  %br
+  %ul
+    %li.element.left
+      = addr_form.label "First Name"
+      .input-fix
+        = addr_form.text_field :first_name
 
-  = addr_form.label "Last Name"
-  %br
-  = addr_form.text_field :last_name
-  %br
+    %li.element.right
+      = addr_form.label "Last Name"
+      .input-fix
+        = addr_form.text_field :last_name
 
-  = addr_form.label "Company"
-  %br
-  = addr_form.text_field :company
-  %br
+    %li.element
+      = addr_form.label "Company"
+      .input-fix
+        = addr_form.text_field :company
 
-  = addr_form.label "Street Address"
-  %br
-  = addr_form.text_field :street_address
-  %br
+    %li.element
+      = addr_form.label "Street Address"
+      .input-fix
+        = addr_form.text_field :street_address
 
-  = addr_form.label "City"
-  %br
-  = addr_form.text_field :city
-  %br
+    %li.element.left
+      = addr_form.label "City"
+      .input-fix
+        = addr_form.text_field :city
 
-  = addr_form.label "State"
-  %br
-  = addr_form.text_field :state
-  %br
+    %li.element.right
+      = addr_form.label "State"
+      .input-fix
+        = addr_form.text_field :state
 
-  = addr_form.label "Postal Code"
-  %br
-  = addr_form.text_field :postal_code
-  %br
+    %li.element.left
+      = addr_form.label "Postal Code"
+      .input-fix
+        = addr_form.text_field :postal_code
 
-  = addr_form.label "Country"
-  %br
-  = addr_form.text_field :country
-  %br
+    %li.element.right
+      = addr_form.label "Country"
+      .input-fix
+        = addr_form.text_field :country

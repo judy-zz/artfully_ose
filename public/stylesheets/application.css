@@ -25,6 +25,14 @@ body{
   text-decoration:none;
 }
 
+h3 {
+  font-size:1.5em;
+  line-height:2em;
+  background:#ccc;
+  clear:both;
+  padding:0 10px;
+  margin:10px 0;
+}
 #error_explanation {
   background:#aaa;
   padding:10px;
@@ -63,10 +71,6 @@ body{
   -webkit-border-radius:5px;
 }
 
-#content{
-  margin:0 10px;
-}
-
 .ticket-list{
   overflow:auto;
 }
@@ -95,3 +99,17 @@ body{
  padding-bottom:5px;
 }
 
+.line-item {
+  font-size:.8em;
+  border-bottom:1px solid #ccc;
+  overflow:auto;
+  padding:.5em 0;
+  margin:1em 0;
+}
+
+.line-item .name {
+}
+
+.line-item .price {
+  float:right;
+}

@@ -1,20 +1,18 @@
 = parent_form.fields_for target do |cc_form|
-  = cc_form.label "Number"
-  %br
-  = cc_form.text_field :number
-  %br
-
-  = cc_form.label "Expiration Date"
-  %br
-  = cc_form.date_select :expiration_date, :order => [:month, :year], :use_month_numbers => true, :start_year => Time.now.year, :end_year => Time.now.year + 10
-  %br
-
-  = cc_form.label "Cardholder Name"
-  %br
-  = cc_form.text_field :cardholder_name
-  %br
-
-  = cc_form.label "CVV"
-  %br
-  = cc_form.text_field :cvv
-  %br
+  %ul
+    %li.element
+      = cc_form.label "Cardholder Name"
+      .input-fix
+        = cc_form.text_field :cardholder_name
+    %li.element.left
+      = cc_form.label "Number"
+      .input-fix
+        = cc_form.text_field :number
+    %li.element.right
+      = cc_form.label "CVV"
+      .input-fix
+        = cc_form.text_field :cvv
+    %li.element
+      = cc_form.label "Expiration Date"
+      .input-fix
+        = cc_form.date_select :expiration_date, :order => [:month, :year], :use_month_numbers => true, :start_year => Time.now.year, :end_year => Time.now.year + 10
