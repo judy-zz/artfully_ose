@@ -1,0 +1,16 @@
+%h3 Ticket Order
+%h4 Enter Payment Details
+
+%ul.ticket-list
+  - @order.tickets.each do |ticket|
+    %li
+      = render ticket
+
+- unless @needs_confirmation
+  = render "shared/error_messages", :target => @payment
+  = form_for @order do |f|
+    = render :partial => 'payments/form', :locals => {:payment => @payment}
+- else
+  Confirm your order!
+
+= link_to "Cancel Order", order_path(@order), :method => :delete, :confirm => 'Are you sure?'

@@ -15,20 +15,15 @@ class Order < ActiveRecord::Base
 
   state_machine do
     state :started      # The Order is associated with a Transaction (which may or may not still be valid)
-    state :submitted    # The Order has given a valid
     state :approved     # ATHENA has approved the payment
     state :rejected     # ATHENA has rejected the payment
 
-    event :submit do
-      transitions :from => :started, :to => :submitted
-    end
-
     event :approve do
-      transitions :from => :submitted, :to => :approved
+      transitions :from => :started, :to => :approved
     end
 
     event :reject do
-      transitions :from => :submitted, :to => :rejected
+      transitions :from => :started, :to => :rejected
     end
   end
 
@@ -52,11 +47,7 @@ class Order < ActiveRecord::Base
     @tickets = proxies_for(tickets)
   end
 
-  def add_payment(payment)
-    submit! if payment.valid?
-  end
-
-  def confirm_payment(payment)
+  def pay_with(payment)
     payment.save
     if payment.approved?
       approve!
