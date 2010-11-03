@@ -26,9 +26,11 @@ class Address
 
   def attributes
     hsh = {}
-    %w( first_name last_name company street_address city state postal_code country ).each do |attr|
-      hsh[attr.to_sym] = self.send(attr)
-    end
+    %w( first_name last_name company street_address city state postal_code country ).each { |attr| hsh[attr.to_sym] = self.send(attr) }
     hsh
+  end
+
+  def as_json(options = nil)
+    attributes.as_json
   end
 end

@@ -50,8 +50,7 @@ class Order < ActiveRecord::Base
   end
 
   def pay_with(payment)
-    payment.errors.clear
-    payment.save
+    payment.authorize!
     if payment.approved?
       approve!
     elsif payment.rejected?

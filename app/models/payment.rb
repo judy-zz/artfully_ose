@@ -35,12 +35,6 @@ class Payment < AthenaResource::Base
     @attributes['credit_card'] ||= CreditCard.new
   end
 
-  attr_accessor :confirmed
-
-  def confirmed?
-    @confirmed
-  end
-
   def approved?
     self.success == true
   end
@@ -49,4 +43,13 @@ class Payment < AthenaResource::Base
     self.success == false
   end
 
+  def authorize!
+    errors.clear
+    billing_address.errors.clear
+    credit_card.errors.clear
+    customer.errors.clear
+    connection.post("/payments/transactions/authorize", encode, self.class.headers).tap do |response|
+      load_attributes_from_response(response)
+    end
+  end
 end

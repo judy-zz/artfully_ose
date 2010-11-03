@@ -1,15 +1,13 @@
 require 'spec_helper'
 
 describe Payment do
-
   before(:each) do
     @payment = Factory(:payment)
   end
 
-  it "should include amount" do
+  it "should respond to amount" do
     @payment.respond_to?(:amount).should be_true
   end
-
 
   it "should be valid with an amount set" do
     @payment.amount = 10.00
@@ -70,28 +68,44 @@ describe Payment do
     end
   end
 
-  it "should respond to approved?" do
-    @payment.respond_to?(:approved?).should be_true
-  end
+  describe "authorization" do
 
-  it "should be approved when ATHENA returns success as true" do
-    FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":true}')
-    @payment.save
-    @payment.approved?.should be_true
-  end
+    it "should be neither accepted nor rejected until saved" do
+      @payment.rejected?.should be_false
+      @payment.approved?.should be_false
+    end
 
-  it "should respond to rejected?" do
-    @payment.respond_to?(:rejected?).should be_true
-  end
+    it "should request authorization from ATHENA" do
+      FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
+      @body = @payment.encode  #Capture the body before we make the request.
+      @payment.authorize!
+      FakeWeb.last_request.method.should == "POST"
+      FakeWeb.last_request.path.should == '/payments/transactions/authorize'
+      FakeWeb.last_request.body.should == @body
+    end
 
-  it "should be rejected when ATHENA returns success as false" do
-    FakeWeb.register_uri(:post, 'http://localhost/payments/.json', :status => 200, :body => '{ "success":false}')
-    @payment.save
-    @payment.rejected?.should be_true
-  end
+    describe "approval" do
+      it "should respond to approved?" do
+        @payment.respond_to?(:approved?).should be_true
+      end
 
-  it "should be neither accepted nor rejected until saved" do
-    @payment.rejected?.should be_false
-    @payment.approved?.should be_false
+      it "should be approved when ATHENA returns success as true" do
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
+        @payment.authorize!
+        @payment.approved?.should be_true
+      end
+    end
+
+    describe "rejection" do
+      it "should respond to rejected?" do
+        @payment.respond_to?(:rejected?).should be_true
+      end
+
+      it "should be rejected when ATHENA returns success as false" do
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": false }')
+        @payment.authorize!
+        @payment.rejected?.should be_true
+      end
+    end
   end
 end

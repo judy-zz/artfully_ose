@@ -32,6 +32,10 @@ class CreditCard
     hsh
   end
 
+  def as_json(options = nil)
+    attributes.as_json
+  end
+
   private
     def prepare_attr!(attributes)
       unless attributes.empty?

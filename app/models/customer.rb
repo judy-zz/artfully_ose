@@ -32,4 +32,8 @@ class Customer
     hsh
   end
 
+  def as_json(options = nil)
+    attributes.as_json
+  end
+
 end
