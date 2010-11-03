@@ -23,8 +23,10 @@ class OrdersController < ApplicationController
       @payment.amount = @order.total
       if @payment.valid?
         if payment_confirmed?
+          redirect_to :root
           @order.pay_with(@payment)
           @order.save
+          redirect_to @order
         else
           @needs_confirmation = true
         end

@@ -27,8 +27,6 @@ class Order < ActiveRecord::Base
     end
   end
 
-
-
   def transaction
     @transaction ||= Transaction.find(transaction_id) unless transaction_id.nil?
   end
@@ -52,6 +50,7 @@ class Order < ActiveRecord::Base
   end
 
   def pay_with(payment)
+    payment.errors.clear
     payment.save
     if payment.approved?
       approve!
