@@ -48,7 +48,7 @@ class Order < ActiveRecord::Base
   end
 
   def total
-    @tickets.inject(0) { |sum, ticket| sum + ticket.PRICE.to_i }
+    self.tickets.inject(0) { |sum, ticket| sum + ticket.PRICE.to_i }
   end
 
   def pay_with(payment)
