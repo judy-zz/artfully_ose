@@ -15,8 +15,8 @@ class CreditCard
     end
   end
 
-  aliased_attr_accessor :number, :expirationDate, :cardholderName, :cvv
-  validates_presence_of :number, :expiration_date, :cardholder_name, :cvv
+  aliased_attr_accessor :cardNumber, :expirationDate, :cardholderName, :cvv
+  validates_presence_of :card_number, :expiration_date, :cardholder_name, :cvv
 
   def initialize(attrs = {})
     prepare_attr!(attrs) unless attrs.has_key? :expiration_date

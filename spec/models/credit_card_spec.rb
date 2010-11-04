@@ -5,13 +5,8 @@ describe CreditCard do
     @card = CreditCard.new
   end
 
-  %w( number expirationDate cardholderName cvv ).each do |attribute|
-    it "should respond to #{attribute.underscore}" do
-      @card.respond_to?(attribute.underscore).should be_true
-    end
-
-    it "should respond to #{attribute.underscore}=" do
-      @card.respond_to?(attribute.underscore + '=').should be_true
-    end
+  %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|
+    it { should respond_to attribute.underscore }
+    it { should respond_to attribute.underscore + '=' }
   end
 end
