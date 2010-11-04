@@ -19,7 +19,7 @@ class Order < ActiveRecord::Base
     state :rejected     # ATHENA has rejected the payment
 
     event :approve do
-      transitions :from => :started, :to => :approved
+      transitions :from => [ :started, :rejected ], :to => :approved
     end
 
     event :reject do

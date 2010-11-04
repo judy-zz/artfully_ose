@@ -18,21 +18,22 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find(params[:id])
 
-    if params[:payment] && @order.started?
+    if params[:payment] && @order.started? or @order.rejected?
       @payment = Payment.new(params[:payment])
       @payment.amount = @order.total
       if @payment.valid?
         if payment_confirmed?
-          redirect_to :root
           @order.pay_with(@payment)
           @order.save
-          redirect_to @order
+          redirect_to @order and return
         else
           @needs_confirmation = true
+          render :edit and return
         end
+      else
+        render :edit and return
       end
     end
-    render :edit
   end
 
   def destroy
