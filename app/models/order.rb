@@ -49,6 +49,10 @@ class Order < ActiveRecord::Base
     self.tickets.inject(0) { |sum, ticket| sum + ticket.PRICE.to_i }
   end
 
+  def unfinished?
+    started? or rejected?
+  end
+
   def pay_with(payment)
     payment.authorize!
     if payment.approved?

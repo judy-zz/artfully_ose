@@ -18,21 +18,21 @@ class OrdersController < ApplicationController
   def update
     @order = Order.find(params[:id])
 
-    if params[:payment] && @order.started? or @order.rejected?
+    if @order.unfinished?
       @payment = Payment.new(params[:payment])
       @payment.amount = @order.total
+
       if @payment.valid?
         if payment_confirmed?
-          @order.pay_with(@payment)
-          @order.save
-          redirect_to @order and return
+          submit_payment and return
         else
-          @needs_confirmation = true
-          render :edit and return
+          request_confirmation and return
         end
       else
         render :edit and return
       end
+    else
+      redirect_to @order, :notice => "This order is already finished!"
     end
   end
 
@@ -48,5 +48,17 @@ class OrdersController < ApplicationController
   private
     def payment_confirmed?
       not params[:confirmation].blank?
+    end
+
+    def submit_payment
+      @order.pay_with(@payment)
+      @order.save
+      redirect_to @order, :notice => 'Thank you for your order!'
+    end
+
+    def request_confirmation
+      @needs_confirmation = true
+      flash[:notice] = 'Please confirm your payment details'
+      render :edit
     end
 end

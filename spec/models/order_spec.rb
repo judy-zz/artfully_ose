@@ -11,6 +11,16 @@ describe Order do
     @order.transaction.should == @transaction
   end
 
+  it "should be marked as unfinished in the started state" do
+    @order.state = 'started'
+    @order.should be_unfinished
+  end
+
+  it "should be marked as unfinished in the rejected state" do
+    @order.state = 'rejected'
+    @order.should be_unfinished
+  end
+
   it "should raise a TypeError when assigning a non-Transaction" do
     lambda { @order.transaction = 5 }.should raise_error(TypeError, "Expecting a Transaction")
   end
