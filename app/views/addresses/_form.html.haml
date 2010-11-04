@@ -16,9 +16,14 @@
         = addr_form.text_field :company
 
     %li.element
-      = addr_form.label :street_address, "Street Address"
+      = addr_form.label :street_address1, "Street Address"
       .input-fix
-        = addr_form.text_field :street_address
+        = addr_form.text_field :street_address1
+
+    %li.element
+      = addr_form.label :street_address2, "Street Address"
+      .input-fix
+        = addr_form.text_field :street_address2
 
     %li.element.left
       = addr_form.label :city, "City"
