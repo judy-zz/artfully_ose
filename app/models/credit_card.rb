@@ -8,7 +8,6 @@ class CreditCard
       attr = attr.to_s.camelize(:lower)
       class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
         def #{attr}() @attributes['#{attr}'] end
-        def #{attr}=() @attributes['#{attr}'] end
         def #{attr}=(#{attr}) @attributes['#{attr}'] = #{attr} end
         def #{attr.underscore}() @attributes['#{attr}'] end
         def #{attr.underscore}=(#{attr}) @attributes['#{attr}'] = #{attr} end
