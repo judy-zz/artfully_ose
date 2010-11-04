@@ -11,15 +11,16 @@ class Payment < AthenaResource::Base
 
   schema do
     attribute 'amount', :string
-    attribute 'billing_address', :string
-    attribute 'credit_card', :string
+    attribute 'billingAddress', :string
+    attribute 'creditCard', :string
     attribute 'customer', :string
 
     attribute 'success', :string
   end
 
   def load(attributes)
-    @attributes['billing_address'] = Address.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
+    @attributes['billingAddress'] = Address.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
+    @attributes['creditCard'] = CreditCard.new(attributes.delete('credit_card')) if attributes.has_key? 'credit_card'
     super(attributes)
   end
 
@@ -27,12 +28,24 @@ class Payment < AthenaResource::Base
     @attributes['customer'] ||= Customer.new
   end
 
-  def billing_address
-    @attributes['billing_address'] ||= Address.new
+  def billingAddress
+    @attributes['billingAddress'] ||= Address.new
   end
 
-  def credit_card
-    @attributes['credit_card'] ||= CreditCard.new
+  alias :billing_address :billingAddress
+
+  def billing_address=(address)
+    self.billingAddress = address
+  end
+
+  def creditCard
+    @attributes['creditCard'] ||= CreditCard.new
+  end
+
+  alias :credit_card :creditCard
+
+  def credit_card=(credit_card)
+    self.creditCard = credit_card
   end
 
   def approved?
@@ -44,10 +57,6 @@ class Payment < AthenaResource::Base
   end
 
   def authorize!
-    errors.clear
-    billing_address.errors.clear
-    credit_card.errors.clear
-    customer.errors.clear
     connection.post("/payments/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end

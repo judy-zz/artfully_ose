@@ -30,7 +30,14 @@ class Address
     hsh
   end
 
+  #TODO: Rework attribute storage so we don't have to collect these separately.
+  def camelcase_attributes
+    hsh = {}
+    %w( firstName lastName company streetAddress city state postalCode country ).each { |attr| hsh[attr.to_sym] = self.send(attr) }
+    hsh
+  end
+
   def as_json(options = nil)
-    attributes.as_json
+    camelcase_attributes.as_json
   end
 end

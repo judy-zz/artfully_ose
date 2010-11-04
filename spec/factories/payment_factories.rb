@@ -4,7 +4,6 @@ end
 
 Factory.define :payment, :default_strategy => :build do |p|
   p.amount 100
-  p.shipping_address { Factory(:address) }
   p.billing_address { Factory(:address) }
   p.credit_card { Factory(:credit_card) }
   p.customer { Factory(:customer) }

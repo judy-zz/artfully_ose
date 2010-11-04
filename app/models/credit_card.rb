@@ -32,8 +32,17 @@ class CreditCard
     hsh
   end
 
+  #TODO: Rework attribute storage so we don't have to collect these separately.
+  def camelcase_attributes
+    hsh = {}
+    %w( number expirationDate cardholderName cvv ).each do |attr|
+      hsh[attr.to_sym] = self.send(attr)
+    end
+    hsh
+  end
+
   def as_json(options = nil)
-    attributes.as_json
+    camelcase_attributes.as_json
   end
 
   private

@@ -1,12 +1,22 @@
 require 'spec_helper'
 
 describe Payment do
+  subject { Factory(:payment) }
+
   before(:each) do
     @payment = Factory(:payment)
   end
 
-  it "should respond to amount" do
-    @payment.respond_to?(:amount).should be_true
+  %w( amount customer ).each do |attribute|
+    it { should respond_to attribute }
+    it { should respond_to attribute + '=' }
+  end
+
+  %w( creditCard billingAddress ).each do |attribute|
+    it { should respond_to(attribute) }
+    it { should respond_to(attribute + '=') }
+    it { should respond_to(attribute.underscore) }
+    it { should respond_to(attribute.underscore + '=') }
   end
 
   it "should be valid with an amount set" do
@@ -46,6 +56,16 @@ describe Payment do
     @payment.customer = @customer
     @payment.should_not be_valid
     @payment.errors.size.should == 1
+  end
+
+  it "should use camelCase for billingAddress" do
+    @payment.attributes.should have_key(:billingAddress)
+    @payment.attributes.should_not have_key(:billing_address)
+  end
+
+  it "should use camelCase for creditCard" do
+    @payment.attributes.should have_key(:creditCard)
+    @payment.attributes.should_not have_key(:credit_card)
   end
 
   describe "with nested attributes" do
