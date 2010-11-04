@@ -31,7 +31,7 @@ class CreditCard
   end
 
   def as_json(options = nil)
-    @attributes.as_json
+    prepare_for_encode(@attributes).as_json
   end
 
   private
@@ -43,5 +43,11 @@ class CreditCard
 
         attributes['expiration_date'] = Date.parse("#{year}-#{month}-#{day}")
       end
+    end
+
+    def prepare_for_encode(attributes)
+      hash = attributes.dup
+      hash['expirationDate'] = self.expiration_date.strftime('%m/%Y')
+      hash
     end
 end
