@@ -52,7 +52,12 @@ class Order < ActiveRecord::Base
   def pay_with(payment)
     payment.authorize!
     if payment.approved?
-      approve!
+      payment.settle!
+      if payment.approved?
+        approve!
+      elsif
+        reject!
+      end
     elsif payment.rejected?
       reject!
     end
