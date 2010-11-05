@@ -1,4 +1,4 @@
-class Ticket < AthenaResource::Base
+class Athena::Ticket < AthenaResource::Base
   self.site = Artfully::Application.config.tickets_site
   self.headers["User-agent"] = "artful.ly"
 
@@ -33,7 +33,7 @@ class Ticket < AthenaResource::Base
              }
 
     quantity.to_i.times do
-      tickets << Ticket.create(params)
+      tickets << Athena::Ticket.create(params)
     end
     tickets
   end
@@ -44,6 +44,6 @@ class Ticket < AthenaResource::Base
     search_for[:price] =        params[:price] unless params[:price].blank?
     search_for[:performance] =  params[:performance] unless params[:performance].blank?
     search_for[:_limit] = params[:limit] unless params[:limit].blank?
-    Ticket.find(:all, :params => search_for) unless search_for.empty?
+    Athena::Ticket.find(:all, :params => search_for) unless search_for.empty?
   end
 end

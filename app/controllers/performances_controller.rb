@@ -5,7 +5,7 @@ class PerformancesController < ApplicationController
   def index
     @performances = Performance.all
   end
-  
+
   def new
     @performance = Performance.new
   end
@@ -13,7 +13,7 @@ class PerformancesController < ApplicationController
   def create
     @performance = Performance.create(params[:performance])
     if @performance.valid?
-      Ticket.generate_for_performance(@performance, params[:seats], params[:price])
+      Athena::Ticket.generate_for_performance(@performance, params[:seats], params[:price])
       @performance.user = current_user
       @performance.save
       redirect_to(@performance, :notice => 'Created a new performance.')
@@ -33,6 +33,6 @@ class PerformancesController < ApplicationController
 
   def show
     @performance = Performance.find(params[:id])
-    @tickets = Ticket.find_by_performance(@performance)
+    @tickets = Athena::Ticket.find_by_performance(@performance)
   end
 end

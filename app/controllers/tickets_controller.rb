@@ -1,9 +1,9 @@
 class TicketsController < ApplicationController
   def index
-    @tickets = Ticket.search(params)
+    @tickets = Athena::Ticket.search(params)
   end
 
   def show
-    @ticket = Ticket.find(params[:id])
+    @ticket = Athena::Ticket.find(params[:id])
   end
 end
