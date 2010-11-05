@@ -6,34 +6,16 @@ describe Ticket do
   end
 
   describe "attributes" do
-    before(:each) do
-      @ticket = Factory(:ticket)
-    end
+    subject { Factory(:ticket) }
 
-    it "should include name" do
-      @ticket.respond_to?(:name).should be_true
-    end
+    it { should respond_to :name }
+    it { should respond_to :event }
+    it { should respond_to :venue }
+    it { should respond_to :performance }
+    it { should respond_to :sold }
+    it { should respond_to :price }
 
-    it "should have name set to 'ticket'" do
-      @ticket.attributes.should include(:name)
-      @ticket.name.should == 'ticket'
-    end
-
-    it "should include EVENT" do
-      @ticket.respond_to?(:EVENT).should be_true
-    end
-
-    it "should include VENUE" do
-      @ticket.respond_to?(:VENUE).should be_true
-    end
-
-    it "should include PERFORMANCE" do
-      @ticket.respond_to?(:PERFORMANCE).should be_true
-    end
-
-    it "should include SOLD" do
-      @ticket.respond_to?(:SOLD).should be_true
-    end
+    specify { subject.name.should eql('ticket') }
   end
 
   describe "#find" do
@@ -56,10 +38,10 @@ describe Ticket do
     end
 
     it "should generate a query string for a single parameter search" do
-      @ticket = Factory(:ticket, :PRICE => 50)
-      FakeWeb.register_uri(:get, "http://localhost/tickets/.json?PRICE=eq50", :body => "[#{@ticket.encode}]" )
-      @tickets = Ticket.find(:all, :params => {:PRICE => "eq50"})
-      @tickets.map { |ticket| ticket.PRICE.should == 50 }
+      @ticket = Factory(:ticket, :price => 50)
+      FakeWeb.register_uri(:get, "http://localhost/tickets/.json?price=eq50", :body => "[#{@ticket.encode}]" )
+      @tickets = Ticket.find(:all, :params => {:price => "eq50"})
+      @tickets.map { |ticket| ticket.price.should == 50 }
     end
   end
 
@@ -99,10 +81,10 @@ describe Ticket do
     @tickets = Ticket.generate_for_performance(@performance, 5, 100)
     @tickets.size.should == 5
     @tickets.each do |ticket|
-      ticket.PRICE.should == 100
-      ticket.VENUE.should == @performance.venue
-      ticket.PERFORMANCE.should == @performance.performed_on
-      ticket.EVENT.should == @performance.title
+      ticket.price.should == 100
+      ticket.venue.should == @performance.venue
+      ticket.performance.should == @performance.performed_on
+      ticket.event.should == @performance.title
     end
   end
 
@@ -110,9 +92,9 @@ describe Ticket do
     it "by performance" do
       FakeWeb.register_uri(:get, %r|http://localhost/tickets/.json\?|, :status => "200", :body => "[]")
       now = DateTime.now
-      params = { :PERFORMANCE => "eq#{now.as_json}" }
+      params = { :performance => "eq#{now.as_json}" }
       Ticket.search(params)
-      FakeWeb.last_request.path.should == "/tickets/.json?PERFORMANCE=eq#{CGI::escape now.as_json}"
+      FakeWeb.last_request.path.should == "/tickets/.json?performance=eq#{CGI::escape now.as_json}"
 
     end
 

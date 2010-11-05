@@ -16,6 +16,6 @@ Feature: Ticket search
     And I fill in "Performance Date" with "eq2002-05-30T09:00:00"
     And I fill in "Limit" with "10"
     And I press "Search"
-    Then the last request to ATHENA should include "PRICE=eq50"
-    And the last request to ATHENA should include "PERFORMANCE=eq2002-05-30T09:00:00"
+    Then the last request to ATHENA should include "price=eq50"
+    And the last request to ATHENA should include "performance=eq2002-05-30T09:00:00"
     And the last request to ATHENA should include "_limit=10"

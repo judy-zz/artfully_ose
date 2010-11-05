@@ -46,7 +46,7 @@ class Order < ActiveRecord::Base
   end
 
   def total
-    self.tickets.inject(0) { |sum, ticket| sum + ticket.PRICE.to_i }
+    self.tickets.inject(0) { |sum, ticket| sum + ticket.price.to_i }
   end
 
   def unfinished?

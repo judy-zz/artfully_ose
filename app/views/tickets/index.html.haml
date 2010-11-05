@@ -1,12 +1,12 @@
 %h2 Search for Tickets
 = form_tag('/tickets', :method => :get) do
-  = label_tag(:PRICE, "Price:")
+  = label_tag(:price, "Price:")
   %br
-  = text_field_tag(:PRICE)
+  = text_field_tag(:price)
   %br
-  = label_tag(:PERFORMANCE, "Performance Date:")
+  = label_tag(:performance, "Performance Date:")
   %br
-  = text_field_tag(:PERFORMANCE)
+  = text_field_tag(:performance)
   %br
   = label_tag(:limit, "Limit number of results to:")
   %br

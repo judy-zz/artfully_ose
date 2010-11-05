@@ -4,11 +4,11 @@ class Ticket < AthenaResource::Base
 
   schema do
     attribute 'name',         :string
-    attribute 'EVENT',        :string
-    attribute 'VENUE',        :string
-    attribute 'PERFORMANCE',  :string
-    attribute 'SOLD',         :string
-    attribute 'PRICE',        :integer
+    attribute 'event',        :string
+    attribute 'venue',        :string
+    attribute 'performance',  :string
+    attribute 'sold',         :string
+    attribute 'price',        :integer
   end
 
   def initialize(*args)
@@ -17,19 +17,19 @@ class Ticket < AthenaResource::Base
   end
 
   def self.find_by_performance(performance)
-    params = {  'VENUE'       => "eq#{performance.venue}",
-                'PERFORMANCE' => "eq#{performance.performed_on.as_json}",
-                'EVENT'       => "eq#{performance.title}"
+    params = {  'venue'       => "eq#{performance.venue}",
+                'performance' => "eq#{performance.performed_on.as_json}",
+                'event'       => "eq#{performance.title}"
              }
     self.find(:all, :params => params)
   end
 
   def self.generate_for_performance(performance, quantity, price)
     tickets = []
-    params = {  :PRICE        => price,
-                :VENUE        => performance.venue,
-                :PERFORMANCE  => performance.performed_on,
-                :EVENT        => performance.title
+    params = {  :price        => price,
+                :venue        => performance.venue,
+                :performance  => performance.performed_on,
+                :event        => performance.title
              }
 
     quantity.to_i.times do
@@ -41,8 +41,8 @@ class Ticket < AthenaResource::Base
   def self.search(params)
     search_for = {}
 
-    search_for[:PRICE] =        params[:PRICE] unless params[:PRICE].blank?
-    search_for[:PERFORMANCE] =  params[:PERFORMANCE] unless params[:PERFORMANCE].blank?
+    search_for[:price] =        params[:price] unless params[:price].blank?
+    search_for[:performance] =  params[:performance] unless params[:performance].blank?
     search_for[:_limit] = params[:limit] unless params[:limit].blank?
     Ticket.find(:all, :params => search_for) unless search_for.empty?
   end

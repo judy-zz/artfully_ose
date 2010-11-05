@@ -1,5 +1,5 @@
 .ticket
-  .event= link_to ticket.EVENT, ticket
-  .venue= ticket.VENUE
-  .performance= l(DateTime.parse(ticket.PERFORMANCE), :format => :short)
-  .price= "$#{ticket.PRICE}"
+  .event= link_to ticket.event, ticket
+  .venue= ticket.venue
+  .performance= l(DateTime.parse(ticket.performance), :format => :short)
+  .price= "$#{ticket.price}"

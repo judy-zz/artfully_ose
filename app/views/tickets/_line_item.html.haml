@@ -1,5 +1,5 @@
 .line-item
-  .price= "$#{line_item.PRICE}"
+  .price= "$#{line_item.price}"
   .name
-    = link_to line_item.EVENT, line_item
-    = "at #{l(DateTime.parse(line_item.PERFORMANCE), :format => :short)}"
+    = link_to line_item.event, line_item
+    = "at #{l(DateTime.parse(line_item.performance), :format => :short)}"
