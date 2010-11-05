@@ -106,7 +106,7 @@ describe Payment do
 
     describe "approval" do
       it "should respond to approved?" do
-        @payment.respond_to?(:approved?).should be_true
+        @payment.should respond_to :approved?
       end
 
       it "should be approved when ATHENA returns success as true" do
@@ -114,17 +114,27 @@ describe Payment do
         @payment.authorize!
         @payment.approved?.should be_true
       end
+
+      it "should return true when ATHENA returns success as true" do
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
+        @payment.authorize!.should be_true
+      end
     end
 
     describe "rejection" do
       it "should respond to rejected?" do
-        @payment.respond_to?(:rejected?).should be_true
+        @payment.should respond_to :rejected?
       end
 
       it "should be rejected when ATHENA returns success as false" do
         FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": false }')
         @payment.authorize!
         @payment.rejected?.should be_true
+      end
+
+      it "should return false when ATHENA returns success as false" do
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": false }')
+        @payment.authorize!.should be_false
       end
     end
   end

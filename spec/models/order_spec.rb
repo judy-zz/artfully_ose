@@ -124,10 +124,12 @@ describe Order, "and Payments" do
   end
 
   describe "when transitioning state based on the response from ATHENA" do
+    before(:each) do
+      @payment = Factory(:payment)
+    end
+
     it "should submit the Payment to ATHENA when the payment is confirmed by the user" do
       FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
-      @payment = Factory(:payment)
-      @payment.should be_valid
       @order.pay_with(@payment, :settle => false)
       FakeWeb.last_request.method.should == "POST"
       FakeWeb.last_request.path.should == '/payments/transactions/authorize'
@@ -135,18 +137,22 @@ describe Order, "and Payments" do
 
     it "should transition to approved when the payment is approved" do
       FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
-      @payment = Factory(:payment)
-      @payment.should be_valid
       @order.pay_with(@payment, :settle => false)
       @order.state.should == "approved"
     end
 
     it "should tranisition to rejected when the Payment is rejected" do
       FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":false}')
-      @payment = Factory(:payment)
-      @payment.should be_valid
       @order.pay_with(@payment, :settle => false)
       @order.state.should == "rejected"
+    end
+
+    it "should settle immediately when an authorized payment is submitted" do
+      FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true}')
+      FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/settle', :status => 200, :body => '{ "success": true}')
+      @order.pay_with(@payment)
+      FakeWeb.last_request.method.should == "POST"
+      FakeWeb.last_request.path.should == '/payments/transactions/settle'
     end
   end
 end

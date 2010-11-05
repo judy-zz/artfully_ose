@@ -54,20 +54,12 @@ class Order < ActiveRecord::Base
   end
 
   def pay_with(payment, options = {})
-    authorize_payment(payment) ? approve! : reject!
+    options[:settle] = true if options[:settle].nil?
+
+    payment.authorize! ? approve! : reject!
     if options[:settle] and approved?
-      settle_payment(payment)
+      payment.settle!
     end
-  end
-
-  def authorize_payment(payment)
-    payment.authorize!
-    payment.approved?
-  end
-
-  def settle_payment(payment)
-    payment.settle!
-    payment.approved?
   end
 
   private

@@ -60,11 +60,13 @@ class Payment < AthenaResource::Base
     connection.post("/payments/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
+    approved?
   end
 
   def settle!
     connection.post("/payments/transactions/settle", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
+    approved?
   end
 end
