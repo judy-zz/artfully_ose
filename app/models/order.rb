@@ -53,18 +53,21 @@ class Order < ActiveRecord::Base
     started? or rejected?
   end
 
-  def pay_with(payment)
-    payment.authorize!
-    if payment.approved?
-      payment.settle!
-      if payment.approved?
-        approve!
-      elsif
-        reject!
-      end
-    elsif payment.rejected?
-      reject!
+  def pay_with(payment, options = {})
+    authorize_payment(payment) ? approve! : reject!
+    if options[:settle] and approved?
+      settle_payment(payment)
     end
+  end
+
+  def authorize_payment(payment)
+    payment.authorize!
+    payment.approved?
+  end
+
+  def settle_payment(payment)
+    payment.settle!
+    payment.approved?
   end
 
   private

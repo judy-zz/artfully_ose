@@ -128,7 +128,7 @@ describe Order, "and Payments" do
       FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
       @payment = Factory(:payment)
       @payment.should be_valid
-      @order.pay_with(@payment)
+      @order.pay_with(@payment, :settle => false)
       FakeWeb.last_request.method.should == "POST"
       FakeWeb.last_request.path.should == '/payments/transactions/authorize'
     end
@@ -137,7 +137,7 @@ describe Order, "and Payments" do
       FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
       @payment = Factory(:payment)
       @payment.should be_valid
-      @order.pay_with(@payment)
+      @order.pay_with(@payment, :settle => false)
       @order.state.should == "approved"
     end
 
@@ -145,7 +145,7 @@ describe Order, "and Payments" do
       FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":false}')
       @payment = Factory(:payment)
       @payment.should be_valid
-      @order.pay_with(@payment)
+      @order.pay_with(@payment, :settle => false)
       @order.state.should == "rejected"
     end
   end
