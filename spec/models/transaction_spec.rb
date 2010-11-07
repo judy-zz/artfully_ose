@@ -18,29 +18,13 @@ describe Athena::Transaction do
   end
 
   describe "attributes" do
-    before(:each) do
-      @transaction = Factory(:transaction)
-    end
+    subject { Factory(:transaction) }
 
-    it "should include tickets" do
-      @transaction.respond_to?(:tickets).should be_true
-    end
-
-    it "should include lockExpires" do
-      @transaction.respond_to?(:lockExpires).should be_true
-    end
-
-    it "should include lockedByApi" do
-      @transaction.respond_to?(:lockedByApi).should be_true
-    end
-
-    it "should include lockedByIp" do
-      @transaction.respond_to?(:lockedByIp).should be_true
-    end
-
-    it "should include status" do
-      @transaction.respond_to?(:status).should be_true
-    end
+    it { should respond_to :tickets     }
+    it { should respond_to :lockExpires }
+    it { should respond_to :lockedByApi }
+    it { should respond_to :lockedByIp  }
+    it { should respond_to :status      }
   end
 
   describe "#tickets" do
