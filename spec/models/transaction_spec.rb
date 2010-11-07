@@ -1,18 +1,18 @@
 require 'spec_helper'
 
-describe Transaction do
+describe Athena::Transaction do
   before(:each) do
-    Transaction.site = 'http://localhost'
+    Athena::Transaction.site = 'http://localhost'
   end
 
   describe "as a remote resource" do
     it "use JsonFormat" do
-      Transaction.format.should == ActiveResource::Formats::JsonFormat
+      Athena::Transaction.format.should == ActiveResource::Formats::JsonFormat
     end
 
     it "should use the prefix /tickets/" do
       FakeWeb.register_uri(:any, "http://localhost/tickets/transactions/.json", :status => 200, :body => "[]")
-      Transaction.all
+      Athena::Transaction.all
       FakeWeb.last_request.path.should == "/tickets/transactions/.json"
     end
   end

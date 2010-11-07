@@ -1,4 +1,4 @@
-class Transaction < ActiveResource::Base
+class Athena::Transaction < ActiveResource::Base
   headers['X-ATHENA-Key'] = 'artful.ly'
   self.headers["User-agent"] = "artful.ly"
 

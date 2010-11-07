@@ -28,11 +28,11 @@ class Order < ActiveRecord::Base
   end
 
   def transaction
-    @transaction ||= Transaction.find(transaction_id) unless transaction_id.nil?
+    @transaction ||= Athena::Transaction.find(transaction_id) unless transaction_id.nil?
   end
 
   def transaction=(transaction)
-    raise TypeError, "Expecting a Transaction" unless transaction.kind_of? Transaction
+    raise TypeError, "Expecting a Transaction" unless transaction.kind_of? Athena::Transaction
     @transaction = transaction
     self.transaction_id = @transaction.id
   end
@@ -65,7 +65,7 @@ class Order < ActiveRecord::Base
   private
     def create_transaction!
       begin
-        self.transaction = Transaction.create(:tickets => self.tickets.map { |ticket| ticket.id })
+        self.transaction = Athena::Transaction.create(:tickets => self.tickets.map { |ticket| ticket.id })
       rescue ActiveResource::ResourceConflict
         self.errors.add(:tickets, "could not be locked")
       end if needs_new_transaction?
