@@ -1,4 +1,4 @@
-class TicketProxy
+class Athena::Proxy::Ticket
 
   attr_reader :id
 

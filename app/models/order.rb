@@ -87,6 +87,6 @@ class Order < ActiveRecord::Base
     end
 
     def proxies_for(ticket_ids)
-      ticket_ids.map { |ticket_id| TicketProxy.new(ticket_id) } || []
+      ticket_ids.map { |ticket_id| Athena::Proxy::Ticket.new(ticket_id) } || []
     end
 end
