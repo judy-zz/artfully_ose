@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Payment::Customer do
+describe Athena::Payment::Customer do
   before(:each) do
     @customer = Factory(:customer)
   end

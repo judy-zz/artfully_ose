@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Payment::Address do
+describe Athena::Payment::Address do
   before(:each) do
     @address = Factory(:address)
   end

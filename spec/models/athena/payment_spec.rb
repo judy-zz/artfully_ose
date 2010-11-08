@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Payment do
+describe Athena::Payment do
   subject { Factory(:payment) }
 
   before(:each) do
@@ -35,7 +35,7 @@ describe Payment do
   end
 
   it "should be invalid with an invalid billing address" do
-    @billing_address = Payment::Address.new
+    @billing_address = Athena::Payment::Address.new
     @billing_address.should_not be_valid
     @payment.billing_address = @billing_address
     @payment.should_not be_valid
@@ -43,7 +43,7 @@ describe Payment do
   end
 
   it "should be invalid with an invalid credit card" do
-    @credit_card = Payment::CreditCard.new
+    @credit_card = Athena::Payment::CreditCard.new
     @credit_card.should_not be_valid
     @payment.credit_card = @credit_card
     @payment.should_not be_valid
@@ -51,7 +51,7 @@ describe Payment do
   end
 
   it "should be invalid with an invalid customer" do
-    @customer = Payment::Customer.new
+    @customer = Athena::Payment::Customer.new
     @customer.should_not be_valid
     @payment.customer = @customer
     @payment.should_not be_valid

@@ -12,14 +12,14 @@ class OrdersController < ApplicationController
 
   def edit
     @order = Order.find(params[:id])
-    @payment = Payment.new
+    @payment = Athena::Payment.new
   end
 
   def update
     @order = Order.find(params[:id])
 
     if @order.unfinished?
-      @payment = Payment.new(params[:payment])
+      @payment = Athena::Payment.new(params[:payment])
       @payment.amount = @order.total
 
       if @payment.valid?

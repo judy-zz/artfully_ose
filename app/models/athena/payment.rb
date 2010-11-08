@@ -1,4 +1,4 @@
-class Payment < AthenaResource::Base
+class Athena::Payment < AthenaResource::Base
   self.site = Artfully::Application.config.tickets_site
   self.headers["User-agent"] = "artful.ly"
 
@@ -19,17 +19,17 @@ class Payment < AthenaResource::Base
   end
 
   def load(attributes)
-    @attributes['billingAddress'] = Payment::Address.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
-    @attributes['creditCard'] = Payment:: CreditCard.new(attributes.delete('credit_card')) if attributes.has_key? 'credit_card'
+    @attributes['billingAddress'] = Athena::Payment::Address.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
+    @attributes['creditCard'] = Athena::Payment:: CreditCard.new(attributes.delete('credit_card')) if attributes.has_key? 'credit_card'
     super(attributes)
   end
 
   def customer
-    @attributes['customer'] ||= Payment:: Customer.new
+    @attributes['customer'] ||= Athena::Payment:: Customer.new
   end
 
   def billingAddress
-    @attributes['billingAddress'] ||= Payment::Address.new
+    @attributes['billingAddress'] ||= Athena::Payment::Address.new
   end
 
   alias :billing_address :billingAddress
@@ -39,7 +39,7 @@ class Payment < AthenaResource::Base
   end
 
   def creditCard
-    @attributes['creditCard'] ||= Payment:: CreditCard.new
+    @attributes['creditCard'] ||= Athena::Payment:: CreditCard.new
   end
 
   alias :credit_card :creditCard
@@ -71,7 +71,7 @@ class Payment < AthenaResource::Base
   end
 end
 
-class Payment::Address
+class Athena::Payment::Address
   include ActiveModel::Validations
 
   # Note: This is used to provide a more ruby-friendly set of accessors that will still serialize properly.
@@ -108,7 +108,7 @@ class Payment::Address
   end
 end
 
-class Payment:: CreditCard
+class Athena::Payment:: CreditCard
   include ActiveModel::Validations
 
   # Note: This is used to provide a more ruby-friendly set of accessors that will still serialize properly.
@@ -162,7 +162,7 @@ class Payment:: CreditCard
     end
 end
 
-class Payment:: Customer
+class Athena::Payment:: Customer
   include ActiveModel::Validations
 
   # Note: This is used to provide a more ruby-friendly set of accessors that will still serialize properly.

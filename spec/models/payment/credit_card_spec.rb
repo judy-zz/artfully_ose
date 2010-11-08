@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Payment::CreditCard do
+describe Athena::Payment::CreditCard do
   subject { Factory(:credit_card) }
 
   %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|
