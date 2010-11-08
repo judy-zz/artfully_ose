@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Address do
+describe Payment::Address do
   before(:each) do
     @address = Factory(:address)
   end

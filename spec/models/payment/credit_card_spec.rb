@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe CreditCard do
+describe Payment::CreditCard do
   subject { Factory(:credit_card) }
 
   %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|

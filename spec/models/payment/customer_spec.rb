@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Customer do
+describe Payment::Customer do
   before(:each) do
     @customer = Factory(:customer)
   end
