@@ -1,25 +1,18 @@
 require 'spec_helper'
 
 describe Athena::Payment::Customer do
-  before(:each) do
-    @customer = Factory(:customer)
-  end
+  subject { Factory(:customer) }
 
   %w( firstName lastName phone email ).each do |attribute|
-    it "should respond to #{attribute.underscore}" do
-      @customer.respond_to?(attribute.underscore).should be_true
-    end
-
-    it "should respond to #{attribute.underscore}=" do
-      @customer.respond_to?(attribute.underscore + '=').should be_true
-    end
+    it { should respond_to attribute.underscore }
+    it { should respond_to attribute.underscore + '=' }
   end
 
   %w( firstName lastName email ).each do |attribute|
     it "should not be valid if #{attribute.underscore} is blank" do
-      @customer = Factory(:customer, attribute.underscore => nil)
-      @customer.should_not be_valid
-      @customer.errors.size.should == 1
+      subject = Factory(:customer, attribute.underscore => nil)
+      subject.should_not be_valid
+      subject.errors.size.should == 1
     end
   end
 end
