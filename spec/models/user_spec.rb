@@ -4,7 +4,7 @@ describe User do
 
   it "should save when valid" do
     @user = Factory.build(:user)
-    @user.save
+    @user.save.should be_true
   end
 
   it "should be valid with a valid email address" do
@@ -22,29 +22,25 @@ describe User do
       @user = Factory(:user)
     end
 
-    it "should list Producer as valid role" do
-      User.valid_roles.should include(:producer)
+    it { should respond_to(:roles) }
+    it { should respond_to(:has_role?) }
+
+    describe "#has_role?" do
+      it "admin should return true when the user is a admin" do
+        @user = Factory(:admin)
+        @user.should have_role :admin
+      end
+
+      it "producer should return true when the user is a producer" do
+        @user = Factory(:producer)
+        @user.should have_role :producer
+      end
+
+      it "patron should return true when the user is a patron" do
+        @user = Factory(:patron)
+        @user.should have_role :patron
+      end
     end
 
-    it "should allow for assignment of a valid role" do
-      @user.roles = [:producer]
-      @user.roles.should include(:producer)
-    end
-
-    it "should allow for addtional roles to be added" do
-      @user.roles << :producer
-      @user.roles.should include(:producer)
-    end
-
-    it "should assign the Patron role if none is specified" do
-      @user = Factory(:user, :roles => [])
-      @user.roles.should include(:patron)
-    end
-
-    it "should not assign the Patron role if one is specified" do
-      @user = Factory(:user, :roles => [:admin])
-      @user.roles.should include(:admin)
-      @user.roles.should_not include(:patron)
-    end
   end
 end
