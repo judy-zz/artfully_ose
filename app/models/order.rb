@@ -14,7 +14,7 @@ class Order < ActiveRecord::Base
 
 
   state_machine do
-    state :started      # The Order is associated with a Transaction (which may or may not still be valid)
+    state :started      # The Order is associated with a Lock (which may or may not still be valid)
     state :approved     # ATHENA has approved the payment
     state :rejected     # ATHENA has rejected the payment
 

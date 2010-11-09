@@ -4,7 +4,7 @@ class CreateOrders < ActiveRecord::Migration
       t.string :state
 
       t.references :user
-      t.string :transaction_id  # Transaction IDs are GUID
+      t.string :transaction_id
 
       t.timestamps
     end
