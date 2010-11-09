@@ -1,9 +1,5 @@
-Factory.sequence :email do |n|
-  "test#{n}@test.com"
-end
-
 Factory.define :user do |u|
-  u.email { Factory.next :email }
+  u.email { Faker::Internet.email }
   u.password 'password'
 end
 

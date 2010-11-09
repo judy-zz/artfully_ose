@@ -19,4 +19,5 @@ group :test, :development do
   gem 'cucumber-rails'
   gem 'awesome_print'
   gem 'uuid'
+  gem 'faker'
 end
