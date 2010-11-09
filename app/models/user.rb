@@ -5,7 +5,8 @@ class User < ActiveRecord::Base
   has_many :performances
 
   include RoleModel
-  roles :producer, :admin
+  # The order of the roles matter, so only append to the list.
+  roles :admin, :patron, :producer
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -19,6 +20,6 @@ class User < ActiveRecord::Base
 
   private
     def add_default_role
-      roles << :producer if roles.empty?
+      roles << :patron if roles.empty?
     end
 end

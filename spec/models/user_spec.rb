@@ -36,15 +36,15 @@ describe User do
       @user.roles.should include(:producer)
     end
 
-    it "should assign the Producer role if none is specified" do
-      @user = Factory(:user, :roles => []) 
-      @user.roles.should include(:producer)
+    it "should assign the Patron role if none is specified" do
+      @user = Factory(:user, :roles => [])
+      @user.roles.should include(:patron)
     end
 
-    it "should not assign the Producer role if one is specified" do
+    it "should not assign the Patron role if one is specified" do
       @user = Factory(:user, :roles => [:admin])
       @user.roles.should include(:admin)
-      @user.roles.should_not include(:producer)
+      @user.roles.should_not include(:patron)
     end
   end
 end
