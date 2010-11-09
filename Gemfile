@@ -11,7 +11,7 @@ gem 'transitions', :require => ['transitions','active_record/transitions']
 
 
 group :test, :development do
-  gem "rspec-rails", ">= 2.0.0.beta.22"
+  gem "rspec-rails", ">= 2.1"
   gem 'shoulda'
   gem 'fakeweb'
   gem 'factory_girl_rails'

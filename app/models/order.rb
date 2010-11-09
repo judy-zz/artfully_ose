@@ -2,13 +2,13 @@ class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 
   belongs_to :user
-  validates_presence_of :transaction_id
+  validates_presence_of :lock_id
   validates_presence_of :tickets
 
-  before_validation :create_transaction!
-  before_destroy :release_transaction!
+  before_validation :create_lock!
+  before_destroy :release_lock!
 
-  validates_each :transaction do |model, attr, value|
+  validates_each :lock do |model, attr, value|
     model.errors.add(attr, "is invalid") unless (!model.send(attr).nil?) && model.send(attr).valid?
   end
 
@@ -27,18 +27,18 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def transaction
-    @transaction ||= Athena::Transaction.find(transaction_id) unless transaction_id.nil?
+  def lock
+    @lock ||= Athena::Lock.find(lock_id) unless lock_id.nil?
   end
 
-  def transaction=(transaction)
-    raise TypeError, "Expecting a Transaction" unless transaction.kind_of? Athena::Transaction
-    @transaction = transaction
-    self.transaction_id = @transaction.id
+  def lock=(lock)
+    raise TypeError, "Expecting an Athena::Lock" unless lock.kind_of? Athena::Lock
+    @lock = lock
+    self.lock_id = @lock.id
   end
 
   def tickets
-    @tickets ||= proxies_for(transaction.tickets)
+    @tickets ||= proxies_for(lock.tickets)
   end
 
   def tickets=(tickets)
@@ -63,25 +63,25 @@ class Order < ActiveRecord::Base
   end
 
   private
-    def create_transaction!
+    def create_lock!
       begin
-        self.transaction = Athena::Transaction.create(:tickets => self.tickets.map { |ticket| ticket.id })
+        self.lock = Athena::Lock.create(:tickets => self.tickets.map { |ticket| ticket.id })
       rescue ActiveResource::ResourceConflict
         self.errors.add(:tickets, "could not be locked")
-      end if needs_new_transaction?
+      end if needs_new_lock?
     end
 
-    def needs_new_transaction?
-      self.transaction_id.nil? || !same_tickets?
+    def needs_new_lock?
+      self.lock_id.nil? || !same_tickets?
     end
 
     def same_tickets?
-      self.tickets.map{ |ticket| ticket.id.to_i }.sort == self.transaction.tickets.map{ |ticket| ticket.to_i }.sort
+      self.tickets.map{ |ticket| ticket.id.to_i }.sort == self.lock.tickets.map{ |ticket| ticket.to_i }.sort
     end
 
-    def release_transaction!
+    def release_lock!
       begin
-        self.transaction.destroy unless self.transaction.nil?
+        self.lock.destroy unless self.lock.nil?
       rescue ActiveResource::ServerError, ActiveResource::ResourceNotFound
       end
     end

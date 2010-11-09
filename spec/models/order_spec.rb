@@ -6,9 +6,9 @@ describe Order do
   end
 
   it "should store a single Transaction" do
-    @transaction = Factory(:transaction)
-    @order.transaction = @transaction
-    @order.transaction.should == @transaction
+    @lock = Factory(:lock)
+    @order.lock = @lock
+    @order.lock.should == @lock
   end
 
   it "should be marked as unfinished in the started state" do
@@ -22,20 +22,20 @@ describe Order do
   end
 
   it "should raise a TypeError when assigning a non-Transaction" do
-    lambda { @order.transaction = 5 }.should raise_error(TypeError, "Expecting a Transaction")
+    lambda { @order.lock = 5 }.should raise_error(TypeError, "Expecting an Athena::Lock")
   end
 
   it "should lazy load a Transaction from the remote if not set explicitly" do
-    @transaction = Factory(:transaction)
-    FakeWeb.register_uri(:get, "http://localhost/tickets/transactions/#{@transaction.id}.json", :status => 200, :body => @transaction.to_json)
-    @order = Factory.build(:order, :transaction_id => @transaction.id)
-    @order.transaction.should == @transaction
-    FakeWeb.last_request.path.should == "/tickets/transactions/#{@transaction.id}.json"
+    @lock = Factory(:lock)
+    FakeWeb.register_uri(:get, "http://localhost/tickets/locks/#{@lock.id}.json", :status => 200, :body => @lock.to_json)
+    @order = Factory.build(:order, :lock_id => @lock.id)
+    @order.lock.should == @lock
+    FakeWeb.last_request.path.should == "/tickets/locks/#{@lock.id}.json"
   end
 
   describe "a new Order" do
     before(:each) do
-      @order = Factory.build(:order_without_transaction)
+      @order = Factory.build(:order_without_lock)
     end
 
     it "should be a new record" do
@@ -43,18 +43,18 @@ describe Order do
     end
 
     it "should attempt to create a new Transaction before saving" do
-      @order = Factory.build(:order_without_transaction)
-      @transaction = Factory(:transaction, :tickets => [1,2])
-      FakeWeb.register_uri(:post, "http://localhost/tickets/transactions/.json", :status => 200, :body => @transaction.encode)
+      @order = Factory.build(:order_without_lock)
+      @lock = Factory(:lock, :tickets => [1,2])
+      FakeWeb.register_uri(:post, "http://localhost/tickets/locks/.json", :status => 200, :body => @lock.encode)
       @order.tickets = [1,2]
       @order.save
-      FakeWeb.last_request.path.should == "/tickets/transactions/.json"
+      FakeWeb.last_request.path.should == "/tickets/locks/.json"
       FakeWeb.last_request.method.should == "POST"
     end
 
     it "should be invalid if a Transaction could not be created" do
-      FakeWeb.register_uri(:post, 'http://localhost/tickets/transactions/.json', :status => 409)
-      @order = Factory.build(:order_without_transaction)
+      FakeWeb.register_uri(:post, 'http://localhost/tickets/locks/.json', :status => 409)
+      @order = Factory.build(:order_without_lock)
       @order.tickets = [1,2]
       @order.should_not be_valid
       @order.save.should be_false
@@ -72,22 +72,22 @@ describe Order do
 
     describe "with an unexpired Transaction" do
       it "should not attempt to create a new transaction if the tickets have not changed" do
-        @order = Factory(:order, :transaction => Factory(:unexpired_transaction, :tickets => [1,2]))
-        @transaction_id = @order.transaction_id
+        @order = Factory(:order, :lock => Factory(:unexpired_lock, :tickets => [1,2]))
+        @lock_id = @order.lock_id
         @order.tickets = [1,2]
         @order.save
-        @order.transaction_id.should == @transaction_id
+        @order.lock_id.should == @lock_id
       end
 
       it "should attempt to create a new Transaction if the tickets have changed" do
-        FakeWeb.register_uri(:post, 'http://localhost/tickets/transactions/.json', :status => 200, :body => Factory(:transaction, :tickets => [3,4]).encode)
-        @order = Factory(:order, :transaction => Factory(:unexpired_transaction, :tickets => [1,2]))
-        @transaction_id = @order.transaction_id
+        FakeWeb.register_uri(:post, 'http://localhost/tickets/locks/.json', :status => 200, :body => Factory(:lock, :tickets => [3,4]).encode)
+        @order = Factory(:order, :lock => Factory(:unexpired_lock, :tickets => [1,2]))
+        @lock_id = @order.lock_id
         @order.tickets = [3,4]
         @order.save
-        @order.transaction_id.should_not == @transaction_id
+        @order.lock_id.should_not == @lock_id
         FakeWeb.last_request.method.should == 'POST'
-        FakeWeb.last_request.path.should == '/tickets/transactions/.json'
+        FakeWeb.last_request.path.should == '/tickets/locks/.json'
       end
     end
 
@@ -95,17 +95,17 @@ describe Order do
       it "should attempt to create a new Transaction before saving" do
         @order.save
         FakeWeb.last_request.method.should == 'POST'
-        FakeWeb.last_request.path.should == '/tickets/transactions/.json'
+        FakeWeb.last_request.path.should == '/tickets/locks/.json'
       end
     end
   end
 
   it "should destroy the Transaction when it is destroyed" do
-    @transaction_id = @order.transaction_id
-    FakeWeb.register_uri(:delete, "http://localhost/tickets/transactions/#{@transaction_id}.json", :status => 200)
+    @lock_id = @order.lock_id
+    FakeWeb.register_uri(:delete, "http://localhost/tickets/locks/#{@lock_id}.json", :status => 200)
     @order.destroy
     FakeWeb.last_request.method.should == "DELETE"
-    FakeWeb.last_request.path.should == "/tickets/transactions/#{@transaction_id}.json"
+    FakeWeb.last_request.path.should == "/tickets/locks/#{@lock_id}.json"
   end
 end
 
