@@ -1,4 +1,4 @@
-class TicketsController < ApplicationController
+class Athena::TicketsController < ApplicationController
   def index
     @tickets = Athena::Ticket.search(params)
   end

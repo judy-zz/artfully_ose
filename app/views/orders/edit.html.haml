@@ -6,7 +6,7 @@
 %ul.line-items
   - @order.tickets.each do |ticket|
     %li
-      = render :partial => 'tickets/line_item', :object => ticket
+      = render :partial => 'athena/tickets/line_item', :object => ticket
   %li.total
     = "Total: $#{@order.total}"
 
@@ -17,6 +17,6 @@
     = render @payment.credit_card
     = render @payment.billing_address
 
-  = render :partial => 'payments/form', :locals => {:payment => @payment}
+  = render :partial => 'athena/payments/form', :locals => {:payment => @payment}
 
 = link_to "Cancel Order", order_path(@order), :method => :delete, :confirm => 'Are you sure?'

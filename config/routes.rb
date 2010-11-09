@@ -1,9 +1,11 @@
 Artfully::Application.routes.draw do
   devise_for :users
 
-  resources :tickets, :only => [:index, :show]
-  resources :performances
+  scope :module => :athena do
+    resources :tickets, :only => [:index, :show]
+  end
 
+  resources :performances
   resources :orders
 
   root :to => "index#index"
