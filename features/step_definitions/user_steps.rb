@@ -1,5 +1,6 @@
-Given /^I am logged in$/ do
-  @user = Factory(:user)
+Given /^I am logged in(?: as a "([^"]*)")?$/ do |role|
+  role ||= "patron"
+  @user = Factory(role)
   visit new_user_session_path
   fill_in("Email", :with => @user.email)
   fill_in("Password", :with => @user.password)

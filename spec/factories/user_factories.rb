@@ -10,3 +10,7 @@ end
 Factory.define :producer, :parent => :user do |p|
   p.roles [:producer]
 end
+
+Factory.define :patron, :parent => :user do |p|
+  p.roles [:patron]
+end
