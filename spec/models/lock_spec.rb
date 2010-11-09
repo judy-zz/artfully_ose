@@ -29,15 +29,15 @@ describe Athena::Lock do
 
   describe "#tickets" do
     it "should be empty when no ticket ids are specified" do
-      @transaction = Factory(:lock)
-      @transaction.tickets.should be_empty
+      @lock = Factory(:lock)
+      @lock.tickets.should be_empty
     end
 
     it "should only accept numerical Ticket IDs" do
-      @transaction = Factory(:lock)
-      @transaction.tickets << "2"
-      @transaction.tickets.size.should == 1
-      @transaction.tickets.first.should == "2"
+      @lock = Factory(:lock)
+      @lock.tickets << "2"
+      @lock.tickets.size.should == 1
+      @lock.tickets.first.should == "2"
     end
   end
 
@@ -48,13 +48,13 @@ describe Athena::Lock do
 
   it "should not be valid with if lockExpires as passed" do
     pending "validates timeliness"
-    @transaction = Factory(:lock, :lockExpires => DateTime.now - 12.hours)
-    @transaction.should_not be_valid
+    @lock = Factory(:lock, :lockExpires => DateTime.now - 12.hours)
+    @lock.should_not be_valid
   end
 
   it "should include ticket IDs when encoded" do
-    @transaction = Factory(:lock)
-    @transaction.tickets << "2"
-    @transaction.encode.should =~ /\"tickets\":\[\"2\"\]/
+    @lock = Factory(:lock)
+    @lock.tickets << "2"
+    @lock.encode.should =~ /\"tickets\":\[\"2\"\]/
   end
 end
