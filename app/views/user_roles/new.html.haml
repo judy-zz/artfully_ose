@@ -1,1 +1,7 @@
 %h1 Become a Producer
+
+%p Please enter your credit card information.
+%h3 Credit Card Information
+= form_for @user_role do |f|
+  = render :partial => 'athena/credit_cards/form', :locals => { :parent_form => f , :target => @credit_card }
+  = submit_tag "Submit"

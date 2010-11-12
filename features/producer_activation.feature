@@ -15,7 +15,7 @@ Feature: Producer Activation
     And I follow "Dashboard"
     And I follow "Producer Activation"
     When I fill in "Cardholder Name" with "Joe Producer"
-    And I fill in "Credit Card" with "4111111111111111"
+    And I fill in "Number" with "4111111111111111"
     And I fill in "CVV" with "123"
     And I press "Submit"
     Then I should see "Congratulations! You now have access to producer features"
