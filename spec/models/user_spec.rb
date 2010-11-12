@@ -42,5 +42,10 @@ describe User do
       end
     end
 
+    it "#to_producer!" do
+      @user.to_producer!
+      @user.roles.should include(Role.producer)
+    end
+
   end
 end

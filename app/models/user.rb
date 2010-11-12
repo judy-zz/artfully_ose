@@ -15,4 +15,9 @@ class User < ActiveRecord::Base
     !!self.roles.find_by_name(role)
   end
 
+  def to_producer!
+    self.roles << Role.producer
+    save!
+  end
+
 end
