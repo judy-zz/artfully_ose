@@ -43,7 +43,7 @@ describe Athena::Payment do
   end
 
   it "should be invalid with an invalid credit card" do
-    @credit_card = Athena::Payment::CreditCard.new
+    @credit_card = Athena::CreditCard.new
     @credit_card.should_not be_valid
     @payment.credit_card = @credit_card
     @payment.should_not be_valid
@@ -51,7 +51,7 @@ describe Athena::Payment do
   end
 
   it "should be invalid with an invalid customer" do
-    @customer = Athena::Payment::Customer.new
+    @customer = Athena::Customer.new
     @customer.should_not be_valid
     @payment.customer = @customer
     @payment.should_not be_valid

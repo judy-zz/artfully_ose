@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Athena::Payment::Customer do
+describe Athena::Customer do
   subject { Factory(:customer) }
 
   %w( firstName lastName phone email ).each do |attribute|

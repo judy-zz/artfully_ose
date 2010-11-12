@@ -1,9 +1,9 @@
 = form_for :payment, edit_order_url(@order) do |payment_form|
   %h3 Customer Information
-  = render :partial => 'athena/payments/customers/form', :locals => { :parent_form => payment_form, :target => @payment.customer }
+  = render :partial => 'athena/customers/form', :locals => { :parent_form => payment_form, :target => @payment.customer }
 
   %h3 Credit Card Information
-  = render :partial => 'athena/payments/credit_cards/form', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
+  = render :partial => 'athena/credit_cards/form', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
 
   %h3 Billing Address
   = render :partial => 'athena/payments/addresses/form', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
