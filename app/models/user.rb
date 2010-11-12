@@ -1,9 +1,7 @@
 class User < ActiveRecord::Base
-
   has_many :performances
-
-  # For now, we don't need a join model. This might change later.
-  has_and_belongs_to_many :roles
+  has_many :user_roles
+  has_many :roles, :through => :user_roles
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
