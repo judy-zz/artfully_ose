@@ -8,7 +8,7 @@ Feature: Performance creation
     And I can save Tickets to ATHENA
     And I can get Tickets from ATHENA
 
-  Scenario: Creating a new performance
+  Scenario: A producer creates a new performance
     Given I am logged in
       And I am on the new performance page
     When I fill in "Title" with "Some Title"

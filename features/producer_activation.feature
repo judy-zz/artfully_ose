@@ -2,16 +2,15 @@ Feature: Producer Activation
   In order to use producer features
   a user wants wants to be able to activate producer features
 
-
-  Scenario: "Become a producer" page
+  Scenario: A user can get to the producer activation page
     Given I am logged in as a "patron"
     And I follow "Dashboard"
     When I follow "Producer Activation"
     Then I should see "Become a Producer"
     And I should see "Please enter your credit card information"
 
-  Scenario: Becoming a producer
-    Given I am logged in as a "patron"
+  Scenario: A user enters their credit card to become a producer
+    Given I am logged in
     And I follow "Dashboard"
     And I follow "Producer Activation"
     When I fill in "Cardholder Name" with "Joe Producer"
@@ -19,3 +18,10 @@ Feature: Producer Activation
     And I fill in "CVV" with "123"
     And I press "Submit"
     Then I should see "Congratulations! You now have access to producer features"
+
+  Scenario: A producer attempts to activate producer features
+    Given I am logged in as a "producer"
+    And I am on the root page
+    And I follow "Dashboard"
+    When I follow "Producer Activation"
+    Then I should see "You have already activated these features." 
