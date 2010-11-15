@@ -46,7 +46,6 @@ class Athena::CreditCard < AthenaResource::Base
     attributes.each do |key, value|
       fixed[key.camelize(:lower)] = attributes.delete(key) if known_attributes.include?(key.camelize(:lower))
     end
-    p attributes.merge(fixed)
     super(attributes.merge(fixed))
   end
 
@@ -60,14 +59,17 @@ class Athena::CreditCard < AthenaResource::Base
     end
 
     def prepare_attr!(attributes)
-      p "ATTRIBUTES FOR PREP"
-      p attributes
+      #TODO: Debt; need to refector how we juggle the expirationDate as it uses a mm/yyyy format.
       unless attributes.empty?
-        day = attributes.delete('expiration_date(3i)')
-        month = attributes.delete('expiration_date(2i)')
-        year = attributes.delete('expiration_date(1i)')
+        if attributes.has_key?('expiration_date(3i)')
+          day = attributes.delete('expiration_date(3i)')
+          month = attributes.delete('expiration_date(2i)')
+          year = attributes.delete('expiration_date(1i)')
 
-        attributes['expiration_date'] = Date.parse("#{year}-#{month}-#{day}")
+          attributes['expirationDate'] = Date.parse("#{year}-#{month}-#{day}")
+        elsif attributes.has_key? :expirationDate
+          attributes['expirationDate'] = Date.parse(attributes['expirationDate'])
+        end
       end
     end
 
