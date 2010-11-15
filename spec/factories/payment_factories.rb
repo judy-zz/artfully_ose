@@ -11,7 +11,7 @@ Factory.define :address, :class => Athena::Payment::Address, :default_strategy =
   a.city            { Faker::Address.city }
   a.state           { Faker::Address.us_state }
   a.postal_code     { Faker::Address.zip_code }
-  a.country         { Faker::Address.country }
+  a.country         "United States"
 end
 
 Factory.define :payment, :class => Athena::Payment, :default_strategy => :build do |p|

@@ -3,7 +3,7 @@ class Athena::CreditCard < AthenaResource::Base
   self.site = Artfully::Application.config.tickets_site
 
   schema do
-    attribute 'cardholder_name',         :string
+    attribute 'cardholder_name',        :string
     attribute 'card_number',            :string
     attribute 'expiration_date',        :string
     attribute 'cvv',                    :string
