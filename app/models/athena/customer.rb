@@ -12,12 +12,11 @@ class Athena::Customer < AthenaResource::Base
   end
 
   def load(attributes)
-    p 'HELLO'
     fixed = {}
     attributes.each do |key, value|
       fixed[key.camelize(:lower)] = attributes.delete(key) if known_attributes.include?(key.camelize(:lower))
     end
-    super(fixed)
+    super(attributes.merge(fixed))
   end
 
   # Note: This is used to provide a more ruby-friendly set of accessors that will still serialize properly.

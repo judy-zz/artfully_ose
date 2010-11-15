@@ -3,7 +3,6 @@ class Athena::Ticket < AthenaResource::Base
   self.headers["User-agent"] = "artful.ly"
 
   schema do
-    attribute 'name',         :string
     attribute 'event',        :string
     attribute 'venue',        :string
     attribute 'performance',  :string
@@ -13,7 +12,6 @@ class Athena::Ticket < AthenaResource::Base
 
   def initialize(*args)
     super(*args)
-    @attributes[:name] ||= 'ticket'
   end
 
   def self.find_by_performance(performance)

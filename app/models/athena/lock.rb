@@ -4,7 +4,7 @@ class Athena::Lock < ActiveResource::Base
 
   self.site = Artfully::Application.config.tickets_site
   self.format = :json
-  self.prefix = "/tickets/"
+  self.prefix = "/tix/meta/"
 
   schema do
     attribute 'tickets',      :string

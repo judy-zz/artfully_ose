@@ -13,8 +13,13 @@ Feature: Producer Activation
     Given I am logged in
     And I follow "Dashboard"
     And I follow "Producer Activation"
+    And I can save Customers to ATHENA
     When I fill in "Cardholder Name" with "Joe Producer"
     And I fill in "Number" with "4111111111111111"
     And I fill in "CVV" with "123"
+    And I fill in "First Name" with "Joe"
+    And I fill in "Last Name" with "Producer"
+    And I fill in "Email" with "joe.producer@example.com"
+    And I fill in "Phone" with "1231231234"
     And I press "Submit"
     Then I should see "Congratulations! You now have access to producer features"

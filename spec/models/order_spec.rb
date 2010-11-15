@@ -27,10 +27,10 @@ describe Order do
 
   it "should lazy load a Lock from the remote if not set explicitly" do
     @lock = Factory(:lock)
-    FakeWeb.register_uri(:get, "http://localhost/tickets/locks/#{@lock.id}.json", :status => 200, :body => @lock.to_json)
+    FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks/#{@lock.id}.json", :status => 200, :body => @lock.to_json)
     @order = Factory.build(:order, :lock_id => @lock.id)
     @order.lock.should == @lock
-    FakeWeb.last_request.path.should == "/tickets/locks/#{@lock.id}.json"
+    FakeWeb.last_request.path.should == "/tix/meta/locks/#{@lock.id}.json"
   end
 
   describe "a new Order" do
@@ -45,15 +45,15 @@ describe Order do
     it "should attempt to create a new Lock before saving" do
       @order = Factory.build(:order_without_lock)
       @lock = Factory(:lock, :tickets => [1,2])
-      FakeWeb.register_uri(:post, "http://localhost/tickets/locks/.json", :status => 200, :body => @lock.encode)
+      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => @lock.encode)
       @order.tickets = [1,2]
       @order.save
-      FakeWeb.last_request.path.should == "/tickets/locks/.json"
+      FakeWeb.last_request.path.should == "/tix/meta/locks/.json"
       FakeWeb.last_request.method.should == "POST"
     end
 
     it "should be invalid if a Lock could not be created" do
-      FakeWeb.register_uri(:post, 'http://localhost/tickets/locks/.json', :status => 409)
+      FakeWeb.register_uri(:post, 'http://localhost/tix/meta/locks/.json', :status => 409)
       @order = Factory.build(:order_without_lock)
       @order.tickets = [1,2]
       @order.should_not be_valid
@@ -80,14 +80,14 @@ describe Order do
       end
 
       it "should attempt to create a new Lock if the tickets have changed" do
-        FakeWeb.register_uri(:post, 'http://localhost/tickets/locks/.json', :status => 200, :body => Factory(:lock, :tickets => [3,4]).encode)
+        FakeWeb.register_uri(:post, 'http://localhost/tix/meta/locks/.json', :status => 200, :body => Factory(:lock, :tickets => [3,4]).encode)
         @order = Factory(:order, :lock => Factory(:unexpired_lock, :tickets => [1,2]))
         @lock_id = @order.lock_id
         @order.tickets = [3,4]
         @order.save
         @order.lock_id.should_not == @lock_id
         FakeWeb.last_request.method.should == 'POST'
-        FakeWeb.last_request.path.should == '/tickets/locks/.json'
+        FakeWeb.last_request.path.should == '/tix/meta/locks/.json'
       end
     end
 
@@ -95,17 +95,17 @@ describe Order do
       it "should attempt to create a new Lock before saving" do
         @order.save
         FakeWeb.last_request.method.should == 'POST'
-        FakeWeb.last_request.path.should == '/tickets/locks/.json'
+        FakeWeb.last_request.path.should == '/tix/meta/locks/.json'
       end
     end
   end
 
   it "should destroy the Lock when it is destroyed" do
     @lock_id = @order.lock_id
-    FakeWeb.register_uri(:delete, "http://localhost/tickets/locks/#{@lock_id}.json", :status => 200)
+    FakeWeb.register_uri(:delete, "http://localhost/tix/meta/locks/#{@lock_id}.json", :status => 200)
     @order.destroy
     FakeWeb.last_request.method.should == "DELETE"
-    FakeWeb.last_request.path.should == "/tickets/locks/#{@lock_id}.json"
+    FakeWeb.last_request.path.should == "/tix/meta/locks/#{@lock_id}.json"
   end
 end
 
@@ -117,8 +117,8 @@ describe Order, "and Payments" do
   it "should sum up the price of the tickets via total" do
     @ticket1 = Factory(:ticket, :id => 1, :price => "100")
     @ticket2 = Factory(:ticket, :id => 2, :price => "33")
-    FakeWeb.register_uri(:get, "http://localhost/tickets/#{@ticket1.id}.json", :status => 200, :body => @ticket1.encode)
-    FakeWeb.register_uri(:get, "http://localhost/tickets/#{@ticket2.id}.json", :status => 200, :body => @ticket2.encode)
+    FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{@ticket1.id}.json", :status => 200, :body => @ticket1.encode)
+    FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{@ticket2.id}.json", :status => 200, :body => @ticket2.encode)
     @order.tickets = [1,2]
     @order.total.should == @ticket1.price.to_i + @ticket2.price.to_i
   end
