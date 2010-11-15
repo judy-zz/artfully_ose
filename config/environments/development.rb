@@ -25,6 +25,6 @@ Artfully::Application.configure do
 
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 
-  config.tickets_site = 'http://localhost:8080/'
+  config.tickets_site = 'http://localhost:8080/tix/'
 end
 
