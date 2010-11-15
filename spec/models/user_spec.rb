@@ -32,7 +32,12 @@ describe User do
 
     it "should not make a request if the customer_id is not set" do
       @user = Factory(:user, :customer_id => nil)
-      subject.customer.should be_nil
+      @user.customer.should be_nil
+    end
+
+    it "should update the customer id when assigning a new customer record" do
+      subject.customer = Factory(:customer, :id => 2)
+      subject.customer_id.should eq(2)
     end
 
     it "should set the customer id to nil if the remote resource no longer has it" do

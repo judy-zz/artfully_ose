@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
       begin
         @customer ||= Athena::Customer.find(customer_id)
       rescue ActiveResource::ResourceNotFound
-        customer_id = nil
+        update_attribute(:customer_id, nil)
         save
       end
     end
@@ -34,6 +34,10 @@ class User < ActiveRecord::Base
   end
 
   def customer=(customer)
-    @customer = customer
+    unless customer.nil? or customer.id.nil?
+      @customer = customer
+      update_attribute(:customer_id, customer.id)
+      save
+    end
   end
 end
