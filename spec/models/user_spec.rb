@@ -17,6 +17,31 @@ describe User do
     @user.should be_invalid
   end
 
+  describe "#customer" do
+    subject { Factory(:user) }
+
+    it { should respond_to(:customer_id) }
+    it { should respond_to(:customer) }
+
+    it "should fetch the remote customer record" do
+      @customer = Factory(:customer, :id => 1)
+      subject.customer_id = @customer.id
+      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
+      subject.customer.should eq(@customer)
+    end
+
+    it "should not make a request if the customer_id is not set" do
+      @user = Factory(:user, :customer_id => nil)
+      subject.customer.should be_nil
+    end
+
+    it "should set the customer id to nil if the remote resource no longer has it" do
+      subject.customer_id = 1
+      FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :status => 404)
+      subject.customer.should be_nil
+    end
+  end
+
   describe "with roles" do
     before(:each) do
       @user = Factory(:user)

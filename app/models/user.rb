@@ -20,4 +20,20 @@ class User < ActiveRecord::Base
     save!
   end
 
+  def customer
+    if customer_id
+      begin
+        @customer ||= Athena::Customer.find(customer_id)
+      rescue ActiveResource::ResourceNotFound
+        customer_id = nil
+        save
+      end
+    end
+
+    @customer
+  end
+
+  def customer=(customer)
+    @customer = customer
+  end
 end
