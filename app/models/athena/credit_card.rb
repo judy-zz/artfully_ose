@@ -41,16 +41,27 @@ class Athena::CreditCard < AthenaResource::Base
     super
   end
 
+  def load(attributes)
+    fixed = {}
+    attributes.each do |key, value|
+      fixed[key.camelize(:lower)] = attributes.delete(key) if known_attributes.include?(key.camelize(:lower))
+    end
+    p attributes.merge(fixed)
+    super(attributes.merge(fixed))
+  end
+
   def as_json(options = nil)
     prepare_for_encode(@attributes).as_json
   end
 
   private
     def needs_date_parse(attrs)
-      !attrs.empty? && ( attrs.has_key? :expiration_date or attrs.has_key? :expirationDate )
+      !attrs.empty? && !( attrs.has_key? :expiration_date or attrs.has_key? :expirationDate )
     end
 
     def prepare_attr!(attributes)
+      p "ATTRIBUTES FOR PREP"
+      p attributes
       unless attributes.empty?
         day = attributes.delete('expiration_date(3i)')
         month = attributes.delete('expiration_date(2i)')
