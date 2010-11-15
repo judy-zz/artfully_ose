@@ -18,10 +18,3 @@ Feature: Producer Activation
     And I fill in "CVV" with "123"
     And I press "Submit"
     Then I should see "Congratulations! You now have access to producer features"
-
-  Scenario: A producer attempts to activate producer features
-    Given I am logged in as a "producer"
-    And I am on the root page
-    And I follow "Dashboard"
-    When I follow "Producer Activation"
-    Then I should see "You have already activated these features." 

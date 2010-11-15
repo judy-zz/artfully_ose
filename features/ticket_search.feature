@@ -12,6 +12,7 @@ Feature: Ticket search
 
   Scenario: Entering search parameters
     Given I am on the tickets page
+    And I can get Tickets from ATHENA
     When I fill in "Price" with "eq50"
     And I fill in "Performance Date" with "eq2002-05-30T09:00:00"
     And I fill in "Limit" with "10"
@@ -21,9 +22,14 @@ Feature: Ticket search
     And the last request to ATHENA should include "_limit=10"
 
   Scenario: Viewing search results
-    Given the following tickets exist:
-    | id | event       | venue    | performance         |
-    | 1  | Jersey Boys | Broadway | 2002-05-30T09:00:00 |
-    | 2  | Jersey Boys | Broadway | 2002-05-30T09:00:00 |
-    | 3  | Jersey Boys | Broadway | 2002-05-30T09:00:00 |
-    And I have entered a search that will find these tickets
+    Given I am on the tickets page
+    And the following tickets exist in ATHENA:
+      | id | event       | venue    |
+      | 1  | Jersey Boys | Broadway |
+      | 2  | Jersey Boys | Broadway |
+      | 3  | Jersey Boys | Broadway |
+    When I fill in "Price" with "eq50"
+    And I press "Search"
+    #TODO: Need a Then I should see the following tickets
+    Then I should see "Jersey Boys"
+    And I should see "Broadway"

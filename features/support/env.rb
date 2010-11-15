@@ -60,3 +60,7 @@ if defined?(ActiveRecord::Base)
 end
 
 FakeWeb.allow_net_connect = false
+
+Before do
+  FakeWeb.clean_registry
+end

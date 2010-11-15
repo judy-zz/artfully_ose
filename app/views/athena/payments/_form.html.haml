@@ -1,4 +1,4 @@
-= form_for :payment, edit_order_url(@order) do |payment_form|
+= form_for @payment, :url => edit_order_url(@order) do |payment_form|
   %h3 Customer Information
   = render :partial => 'athena/customers/form', :locals => { :parent_form => payment_form, :target => @payment.customer }
 
