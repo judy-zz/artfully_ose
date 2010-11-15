@@ -40,7 +40,7 @@ describe Athena::CreditCard do
       FakeWeb.last_request.path.should == "/payments/cards/#{@card.id}.json"
     end
 
-    it "should issue a POST when creating a new Athena::Ticket" do
+    it "should issue a POST when creating a new Athena::CreditCard" do
       FakeWeb.register_uri(:post, "http://localhost/payments/cards/.json", :status => "200")
       @card = Factory.create(:credit_card)
 
