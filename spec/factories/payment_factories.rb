@@ -3,15 +3,15 @@ Factory.sequence :id do |n|
 end
 
 Factory.define :address, :class => Athena::Payment::Address, :default_strategy => :build do |a|
-  a.first_name  "First"
-  a.last_name "Last"
-  a.company "Company"
-  a.street_address1 "Street Address"
-  a.street_address2 "Apt 1"
-  a.city "City"
-  a.state "State"
-  a.postal_code "12345"
-  a.country "Country"
+  a.first_name      { Faker::Name.first_name }
+  a.last_name       { Faker::Name.last_name }
+  a.company         { Faker::Company.name }
+  a.street_address1 { Faker::Address.street_address }
+  a.street_address2 { Faker::Address.secondary_address }
+  a.city            { Faker::Address.city }
+  a.state           { Faker::Address.us_state }
+  a.postal_code     { Faker::Address.zip_code }
+  a.country         { Faker::Address.country }
 end
 
 Factory.define :payment, :class => Athena::Payment, :default_strategy => :build do |p|
