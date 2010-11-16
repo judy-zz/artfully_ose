@@ -1,8 +1,6 @@
 class Athena::CreditCard < AthenaResource::Base
 
   self.site = Artfully::Application.config.tickets_site
-
-
   self.prefix = '/payments/'
   self.collection_name = 'cards'
   self.element_name = 'cards'
@@ -31,10 +29,24 @@ class Athena::CreditCard < AthenaResource::Base
     end
   end
 
-
   aliased_attr_accessor :card_number, :expiration_date, :cardholder_name, :cvv
-
   validates_presence_of :card_number, :expiration_date, :cardholder_name, :cvv
+  validates_numericality_of :card_number, :cvv
+  validates_length_of :cvv, :in => 3..4
+  validate :valid_luhn
+  
+
+  def valid_luhn
+    errors.add(:card_number, "This doesn't look like a valid credit card.") unless passes_luhn?(card_number)
+  end
+  
+  def passes_luhn?(num)
+    odd = true
+    num.to_s.gsub(/\D/,'').reverse.split('').map(&:to_i).collect { |d|
+      d *= 2 if odd = !odd
+      d > 9 ? d - 9 : d
+    }.sum % 10 == 0
+  end
 
   def initialize(attrs = {})
     prepare_attr!(attrs) if needs_date_parse(attrs)

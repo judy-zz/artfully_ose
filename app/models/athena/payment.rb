@@ -14,7 +14,6 @@ class Athena::Payment < AthenaResource::Base
     attribute 'billingAddress', :string
     attribute 'creditCard', :string
     attribute 'customer', :string
-
     attribute 'success', :string
   end
 
