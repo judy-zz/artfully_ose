@@ -34,12 +34,12 @@ class Athena::CreditCard < AthenaResource::Base
   validates_numericality_of :card_number, :cvv
   validates_length_of :cvv, :in => 3..4
   validate :valid_luhn
-  
+
 
   def valid_luhn
     errors.add(:card_number, "This doesn't look like a valid credit card.") unless passes_luhn?(card_number)
   end
-  
+
   def passes_luhn?(num)
     odd = true
     num.to_s.gsub(/\D/,'').reverse.split('').map(&:to_i).collect { |d|
@@ -67,12 +67,12 @@ class Athena::CreditCard < AthenaResource::Base
 
   private
     def needs_date_parse(attrs)
-      !attrs.empty? && !( attrs.has_key? :expiration_date or attrs.has_key? :expirationDate )
+      !attrs.blank? && !( attrs.has_key? :expiration_date or attrs.has_key? :expirationDate )
     end
 
     def prepare_attr!(attributes)
       #TODO: Debt; need to refector how we juggle the expirationDate as it uses a mm/yyyy format.
-      unless attributes.empty?
+      unless attributes.blank?
         if attributes.has_key?('expiration_date(3i)')
           day = attributes.delete('expiration_date(3i)')
           month = attributes.delete('expiration_date(2i)')

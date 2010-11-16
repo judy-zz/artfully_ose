@@ -19,7 +19,7 @@ class OrdersController < ApplicationController
     @order = Order.find(params[:id])
 
     if @order.unfinished?
-      @payment = Athena::Payment.new(params[:payment])
+      @payment = Athena::Payment.new(params[:athena_payment])
       @payment.amount = @order.total
 
       if @payment.valid?

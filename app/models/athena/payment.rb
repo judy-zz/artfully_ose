@@ -19,7 +19,8 @@ class Athena::Payment < AthenaResource::Base
 
   def load(attributes)
     @attributes['billingAddress'] = Athena::Payment::Address.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
-    @attributes['creditCard'] = Athena::CreditCard.new(attributes.delete('credit_card')) if attributes.has_key? 'credit_card'
+    @attributes['creditCard'] = Athena::CreditCard.new(attributes.delete('athena_credit_card')) if attributes.has_key? 'athena_credit_card'
+    @attributes['customer'] = Athena::Customer.new(attributes.delete('athena_customer')) if attributes.has_key? 'athena_customer'
     super(attributes)
   end
 
