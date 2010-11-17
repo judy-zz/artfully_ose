@@ -17,11 +17,14 @@ Feature: Ordering tickets
 
   Scenario: A user saves their information when confirming their order
     Given I have started an order for 3 tickets to "Jersey Boys" at "Some Theatre" for $50
+    And I can save Customers to ATHENA
+    And I can save Credit Cards to ATHENA
     When I check "Save my information"
     And I fill in "Password" with "password"
     And I fill in "Password confirmation" with "password"
     And I press "Purchase"
-    Then I should see "Successfully saved your information."
+    Then show me the page
+    And I should see "Successfully saved your information."
 
   Scenario: An anonymous user enters invalid information for their order
   Scenario: An anonymous user enters valid personal information to order

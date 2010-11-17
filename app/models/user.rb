@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   has_many :performances
   has_many :user_roles
   has_many :roles, :through => :user_roles
+  has_many :orders
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable

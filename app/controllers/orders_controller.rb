@@ -24,6 +24,14 @@ class OrdersController < ApplicationController
 
       if @payment.valid?
         if payment_confirmed?
+          if create_user
+            @order.user = @user
+            @order.save
+          else
+            request_confirmation and return
+          end
+
+          save_customer if should_save_customer?
           submit_payment and return
         else
           request_confirmation and return
@@ -53,12 +61,33 @@ class OrdersController < ApplicationController
     def submit_payment
       @order.pay_with(@payment)
       @order.save
-      redirect_to @order, :notice => 'Thank you for your order!'
+      flash[:notice] << 'Thank you for your order!'
+      redirect_to @order
     end
 
     def request_confirmation
       @needs_confirmation = true
       flash[:notice] = 'Please confirm your payment details'
       render :edit
+    end
+
+    def create_user
+      @user = User.new(:email => @payment.customer.email,
+                       :password => params[:options][:password],
+                       :passoword_confirmation => params[:options][:password_confirmation])
+      @user.save
+    end
+
+    def save_customer
+      @payment.customer.credit_card = @payment.credit_card
+      if @payment.customer.save
+        flash[:notice] = ["Successfully saved your information."]
+      else
+        flash[:error] = ["Unable to save your information."]
+      end
+    end
+
+    def should_save_customer?
+      params[:options][:save]
     end
 end
