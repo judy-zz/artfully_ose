@@ -3,5 +3,5 @@ Factory.define(:order) do |o|
   o.tickets ["1","2"]
 end
 
-Factory.define(:order_without_lock, :class => :order) do |o|
+Factory.define(:order_without_lock, :class => :order, :default_strategy => :build) do |o|
 end

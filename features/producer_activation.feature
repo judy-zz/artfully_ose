@@ -2,6 +2,9 @@ Feature: Producer Activation
   In order to use producer features
   a user wants wants to be able to activate producer features
 
+  Background:
+    Given I can save Credit Cards to ATHENA
+
   Scenario: A user can get to the producer activation page
     Given I am logged in as a "patron"
     And I follow "Dashboard"

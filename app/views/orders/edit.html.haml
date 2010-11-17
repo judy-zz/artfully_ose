@@ -19,6 +19,7 @@
     = render @payment.customer
     = render @payment.credit_card
     = render :partial => 'athena/payments/addresses/address', :object => @payment.billing_address
+    = render :partial => 'orders/save_customer'
 
   = render :partial => 'athena/payments/form', :locals => {:payment => @payment}
 

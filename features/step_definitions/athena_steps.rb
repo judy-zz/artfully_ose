@@ -6,6 +6,18 @@ Given /^I can save Tickets to ATHENA$/ do
   FakeWeb.register_uri(:post, "http://localhost/tix/tickets/.json", :status => [ 200 ] )
 end
 
+Given /^I can save Credit Cards to ATHENA$/ do
+  FakeWeb.register_uri(:post, "http://localhost/payments/cards/.json", :status => [ 200 ] )
+end
+
+Given /^I can authorize Credit Cards in ATHENA$/ do
+  FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :status => [ 200 ], :body => "{ success : true }" )
+end
+
+Given /^I can settle Credit Cards in ATHENA$/ do
+  FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :status => [ 200 ], :body => "{ success : true }" )
+end
+
 Given /^I can save Customers to ATHENA$/ do
   FakeWeb.register_uri(:post, "http://localhost/payments/customers/.json", :status => [ 200 ], :body => Factory(:customer_with_id).encode)
 end

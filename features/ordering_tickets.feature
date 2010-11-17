@@ -18,22 +18,19 @@ Feature: Ordering tickets
     And I should see "Customer Information"
     And I should see "Credit Card Information"
     And I should see "Billing Address"
-    
+
   Scenario: A user saves their information when confirming their order
     Given I have started an order with the following tickets
       | id | event       | venue    | price |
       | 1  | Jersey Boys | Broadway | 50    |
-    And I've entered the following Credit Card
-      | cardholder_name | card_number      | expiration_date | cvv |
-      | Joe Producer    | 4111111111111111 | 11/2013         | 123 |
-    And I've entered the following Customer
-      | first_name | last_name | phone      | email                    |
-      | Joe        | Producer  | 1231231234 | joe.producer@example.com |
-    And I've entered the following Billing Address
-      | first_name | last_name | street_address1 | city     | state | postal_code |
-      | Joe        | Producer  | 1 Producer Ave. | New York | NY    | 12005       |
-    When I press "Purchase"
-    
+    And I can authorize Credit Cards in ATHENA
+    And I can settle Credit Cards in ATHENA
+    When I check "Save my information"
+    And I fill in "Password" with "password"
+    And I fill in "Password confirmation" with "password"
+    And I press "Purchase"
+    Then I should see "Successfully saved your information."
+
 
   Scenario: An anonymous user enters invalid information for their order
   Scenario: An anonymous user enters valid personal information to order

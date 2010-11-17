@@ -17,6 +17,8 @@ group :test, :development do
   gem 'nokogiri'
   gem 'capybara'
   gem 'cucumber-rails'
+  gem 'database_cleaner'
+  gem 'launchy'
   gem 'awesome_print'
   gem 'uuid'
   gem 'faker'
