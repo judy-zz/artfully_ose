@@ -10,6 +10,6 @@ Factory.define :ticket, :class => Athena::Ticket, :default_strategy => :build do
   t.price "50.00"
 end
 
-Factory.define :ticket_with_id, :class => Athena::Ticket, :default_strategy => :build do |t|
+Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build do |t|
   t.id { Factory.next :id }
 end
