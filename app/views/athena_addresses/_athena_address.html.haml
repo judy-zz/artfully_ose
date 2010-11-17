@@ -1,0 +1,6 @@
+.address
+  .name= "#{athena_address.first_name} #{athena_address.last_name}"
+  .company= athena_address.company unless athena_address.company.blank?
+  .street= "#{athena_address.street_address1} #{athena_address.street_address2}"
+  .city-state-zip= "#{athena_address.city}, #{athena_address.state} #{athena_address.postal_code}"
+  .country= athena_address.country

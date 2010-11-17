@@ -1,4 +1,4 @@
-Factory.define :lock, :class => Athena::Lock, :default_strategy => :build do |t|
+Factory.define :lock, :class => AthenaLock, :default_strategy => :build do |t|
   t.id { UUID.new.generate }
 end
 

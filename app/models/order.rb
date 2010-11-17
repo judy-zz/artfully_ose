@@ -28,11 +28,11 @@ class Order < ActiveRecord::Base
   end
 
   def lock
-    @lock ||= Athena::Lock.find(lock_id) unless lock_id.nil?
+    @lock ||= AthenaLock.find(lock_id) unless lock_id.nil?
   end
 
   def lock=(lock)
-    raise TypeError, "Expecting an Athena::Lock" unless lock.kind_of? Athena::Lock
+    raise TypeError, "Expecting an AthenaLock" unless lock.kind_of? AthenaLock
     @lock = lock
     self.lock_id = @lock.id
   end
@@ -65,7 +65,7 @@ class Order < ActiveRecord::Base
   private
     def create_lock!
       begin
-        self.lock = Athena::Lock.create(:tickets => self.tickets.map { |ticket| ticket.id })
+        self.lock = AthenaLock.create(:tickets => self.tickets.map { |ticket| ticket.id })
       rescue ActiveResource::ResourceConflict
         self.errors.add(:tickets, "could not be locked")
       end if needs_new_lock?
@@ -87,6 +87,6 @@ class Order < ActiveRecord::Base
     end
 
     def proxies_for(ticket_ids)
-      ticket_ids.map { |ticket_id| Athena::Proxy::Ticket.new(ticket_id) } || []
+      ticket_ids.map { |ticket_id| AthenaTicketProxy.new(ticket_id) } || []
     end
 end

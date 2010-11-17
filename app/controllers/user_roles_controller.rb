@@ -1,14 +1,14 @@
 class UserRolesController < ApplicationController
   def new
-    @credit_card = Athena::CreditCard.new
-    @customer = Athena::Customer.new
+    @credit_card = AthenaCreditCard.new
+    @customer = AthenaCustomer.new
     @user_role = UserRole.new
   end
 
   def create
     @user_role = UserRole.new
-    @customer = Athena::Customer.new(params[:user_role][:athena_customer])
-    @credit_card = Athena::CreditCard.new(params[:user_role][:athena_credit_card])
+    @customer = AthenaCustomer.new(params[:user_role][:athena_customer])
+    @credit_card = AthenaCreditCard.new(params[:user_role][:athena_credit_card])
     @credit_card.valid?
     @customer.valid?
 

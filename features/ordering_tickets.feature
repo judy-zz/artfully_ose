@@ -23,7 +23,6 @@ Feature: Ordering tickets
     And I fill in "Password" with "password"
     And I fill in "Password confirmation" with "password"
     And I press "Purchase"
-    Then show me the page
     And I should see "Successfully saved your information."
 
   Scenario: An anonymous user enters invalid information for their order

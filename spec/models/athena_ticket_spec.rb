@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Athena::Ticket do
+describe AthenaTicket do
   before(:each) do
-    Athena::Ticket.site = 'http://localhost/tix'
+    AthenaTicket.site = 'http://localhost/tix'
   end
 
   describe "attributes" do
@@ -22,25 +22,25 @@ describe Athena::Ticket do
     it "fetch a ticket by ID" do
       @fake_ticket = Factory(:ticket)
       FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.encode)
-      @ticket = Athena::Ticket.find(@fake_ticket.id)
+      @ticket = AthenaTicket.find(@fake_ticket.id)
       @ticket.should_not be_nil
       @ticket.should be_valid
     end
 
     it "should raise ForbiddenAccess when attempting to fetch all tickets" do
       FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json", :status => "403")
-      lambda { Athena::Ticket.all }.should raise_error(ActiveResource::ForbiddenAccess)
+      lambda { AthenaTicket.all }.should raise_error(ActiveResource::ForbiddenAccess)
     end
 
     it "should raise ResourceNotFound for invalid IDs" do
       FakeWeb.register_uri(:get, "http://localhost/tix/tickets/0.json", :status => ["404", "Not Found"])
-      lambda { Athena::Ticket.find(0) }.should raise_error(ActiveResource::ResourceNotFound)
+      lambda { AthenaTicket.find(0) }.should raise_error(ActiveResource::ResourceNotFound)
     end
 
     it "should generate a query string for a single parameter search" do
       @ticket = Factory(:ticket, :price => 50)
       FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?price=eq50", :body => "[#{@ticket.encode}]" )
-      @tickets = Athena::Ticket.find(:all, :params => {:price => "eq50"})
+      @tickets = AthenaTicket.find(:all, :params => {:price => "eq50"})
       @tickets.map { |ticket| ticket.price.should == 50 }
     end
   end
@@ -66,7 +66,7 @@ describe Athena::Ticket do
       FakeWeb.last_request.path.should == "/tix/tickets/#{@ticket.id}.json"
     end
 
-    it "should issue a POST when creating a new Athena::Ticket" do
+    it "should issue a POST when creating a new AthenaTicket" do
       FakeWeb.register_uri(:post, "http://localhost/tix/tickets/.json", :status => "200")
       @ticket = Factory.create(:ticket)
 
@@ -78,7 +78,7 @@ describe Athena::Ticket do
   it "should generate tickets given a performance, quantity, and price" do
     FakeWeb.register_uri(:post, "http://localhost/tix/tickets/.json", :status => "200")
     @performance = Factory.build(:performance)
-    @tickets = Athena::Ticket.generate_for_performance(@performance, 5, 100)
+    @tickets = AthenaTicket.generate_for_performance(@performance, 5, 100)
     @tickets.size.should == 5
     @tickets.each do |ticket|
       ticket.price.should == 100
@@ -93,7 +93,7 @@ describe Athena::Ticket do
       FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :status => "200", :body => "[]")
       now = DateTime.now
       params = { :performance => "eq#{now.as_json}" }
-      Athena::Ticket.search(params)
+      AthenaTicket.search(params)
       FakeWeb.last_request.path.should == "/tix/tickets/.json?performance=eq#{CGI::escape now.as_json}"
 
     end
@@ -101,7 +101,7 @@ describe Athena::Ticket do
     it "should add _limit to the query string when included in the arguments" do
       FakeWeb.register_uri(:get, 'http://localhost/tix/tickets/.json?_limit=10', :status => "200", :body => "[]")
       params = { :limit => "10" }
-      Athena::Ticket.search(params)
+      AthenaTicket.search(params)
       FakeWeb.last_request.path.should == "/tix/tickets/.json?_limit=10"
     end
   end

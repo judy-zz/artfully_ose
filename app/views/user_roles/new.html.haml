@@ -6,7 +6,7 @@
   = render "shared/error_messages", :target => @credit_card
 
   %h3 Customer Information
-  = render :partial => 'athena/customers/form', :locals => { :parent_form => f , :target => @customer}
+  = render :partial => 'athena_customers/form', :locals => { :parent_form => f , :target => @customer}
   %h3 Credit Card Information
-  = render :partial => 'athena/credit_cards/form', :locals => { :parent_form => f , :target => @credit_card }
+  = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => f , :target => @credit_card }
   = submit_tag "Submit"

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Athena::Customer do
+describe AthenaCustomer do
   subject { Factory(:customer) }
 
   %w( firstName lastName phone email ).each do |attribute|
@@ -26,7 +26,7 @@ describe Athena::Customer do
   describe "#find" do
     it "should find the customer by id" do
       FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :status => "200", :body => Factory(:customer, :id => 1).encode)
-      @customer = Athena::Customer.find(1)
+      @customer = AthenaCustomer.find(1)
 
       FakeWeb.last_request.method.should == "GET"
       FakeWeb.last_request.path.should == "/payments/customers/1.json"
@@ -43,7 +43,7 @@ describe Athena::Customer do
       FakeWeb.last_request.path.should == "/payments/customers/#{@customer.id}.json"
     end
 
-    it "should issue a POST when creating a new Athena::Customer" do
+    it "should issue a POST when creating a new AthenaCustomer" do
       FakeWeb.register_uri(:post, "http://localhost/payments/customers/.json", :status => "200")
       @customer = Factory.create(:customer)
 

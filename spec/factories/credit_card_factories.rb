@@ -14,7 +14,7 @@ Factory.sequence :number do
       3530111333300000 ).rand
 end
 
-Factory.define :credit_card, :class => Athena::CreditCard, :default_strategy => :build do |cc|
+Factory.define :credit_card, :class => AthenaCreditCard, :default_strategy => :build do |cc|
   cc.card_number { Factory.next(:number) }
   cc.expiration_date { Date.today }
   cc.cardholder_name { Faker::Name.name }

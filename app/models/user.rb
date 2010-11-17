@@ -24,7 +24,7 @@ class User < ActiveRecord::Base
   def customer
     if customer_id
       begin
-        @customer ||= Athena::Customer.find(customer_id)
+        @customer ||= AthenaCustomer.find(customer_id)
       rescue ActiveResource::ResourceNotFound
         update_attribute(:customer_id, nil)
         save

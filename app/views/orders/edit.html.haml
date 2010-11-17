@@ -9,7 +9,7 @@
 %ul.line-items
   - @order.tickets.each do |ticket|
     %li
-      = render :partial => 'athena/tickets/line_item', :object => ticket
+      = render :partial => 'athena_tickets/line_item', :object => ticket
   %li.total
     = "Total: $#{@order.total}"
 
@@ -18,9 +18,9 @@
     = hidden_field_tag :confirmation, 1
     = render @payment.customer
     = render @payment.credit_card
-    = render :partial => 'athena/payments/addresses/address', :object => @payment.billing_address
+    = render @payment.billing_address
     = render :partial => 'orders/save_customer'
 
-  = render :partial => 'athena/payments/form', :locals => {:payment => @payment}
+  = render :partial => 'athena_payments/form', :locals => {:payment => @payment}
 
 = link_to "Cancel Order", order_path(@order), :method => :delete, :confirm => 'Are you sure?'

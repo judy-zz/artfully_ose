@@ -1,4 +1,4 @@
-class Athena::CreditCard < AthenaResource::Base
+class AthenaCreditCard < AthenaResource::Base
 
   self.site = Artfully::Application.config.tickets_site
   self.prefix = '/payments/'

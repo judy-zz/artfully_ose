@@ -6,9 +6,7 @@ Artfully::Application.routes.draw do
     resources :user_roles
   end
 
-  scope :module => :athena do
-    resources :tickets, :only => [:index, :show]
-  end
+  resources :tickets, :only => [:index, :show]
 
   resources :performances
   resources :orders

@@ -22,7 +22,7 @@ describe Order do
   end
 
   it "should raise a TypeError when assigning a non-Lock" do
-    lambda { @order.lock = 5 }.should raise_error(TypeError, "Expecting an Athena::Lock")
+    lambda { @order.lock = 5 }.should raise_error(TypeError, "Expecting an AthenaLock")
   end
 
   it "should lazy load a Lock from the remote if not set explicitly" do

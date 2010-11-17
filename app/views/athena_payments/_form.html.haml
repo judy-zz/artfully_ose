@@ -1,0 +1,14 @@
+= fields_for @payment do |payment_form|
+  #customer
+    %h3 Customer Information
+    = render :partial => 'athena_customers/form', :locals => { :parent_form => payment_form, :target => @payment.customer }
+
+  #credit_card
+    %h3 Credit Card Information
+    = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
+
+  #billing_address
+    %h3 Billing Address
+    = render :partial => 'athena_addresses/form', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
+
+  = payment_form.submit "Purchase"

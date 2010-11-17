@@ -2,7 +2,7 @@ Factory.sequence :id do |n|
   "#{n}"
 end
 
-Factory.define :customer, :class => Athena::Customer, :default_strategy => :build do |c|
+Factory.define :customer, :class => AthenaCustomer, :default_strategy => :build do |c|
   c.first_name  { Faker::Name.first_name }
   c.last_name   { Faker::Name.last_name }
   c.phone       { Faker::PhoneNumber.phone_number }

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Athena::CreditCard do
+describe AthenaCreditCard do
   subject { Factory(:credit_card) }
 
   %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|
@@ -33,7 +33,7 @@ describe Athena::CreditCard do
   describe "#find" do
     it "should find the card by id" do
       FakeWeb.register_uri(:get, "http://localhost/payments/cards/1.json", :status => "200", :body => Factory(:credit_card, :id => 1).encode)
-      @card = Athena::CreditCard.find(1)
+      @card = AthenaCreditCard.find(1)
 
       FakeWeb.last_request.method.should == "GET"
       FakeWeb.last_request.path.should == "/payments/cards/1.json"
@@ -50,7 +50,7 @@ describe Athena::CreditCard do
       FakeWeb.last_request.path.should == "/payments/cards/#{@card.id}.json"
     end
 
-    it "should issue a POST when creating a new Athena::CreditCard" do
+    it "should issue a POST when creating a new AthenaCreditCard" do
       FakeWeb.register_uri(:post, "http://localhost/payments/cards/.json", :status => "200")
       @card = Factory.create(:credit_card)
 

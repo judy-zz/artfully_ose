@@ -1,18 +1,18 @@
 require 'spec_helper'
 
-describe Athena::Lock do
+describe AthenaLock do
   before(:each) do
-    Athena::Lock.site = 'http://localhost/tix/meta/'
+    AthenaLock.site = 'http://localhost/tix/meta/'
   end
 
   describe "as a remote resource" do
     it "use JsonFormat" do
-      Athena::Lock.format.should == ActiveResource::Formats::JsonFormat
+      AthenaLock.format.should == ActiveResource::Formats::JsonFormat
     end
 
     it "should use the prefix /tix/meta/" do
       FakeWeb.register_uri(:any, "http://localhost/tix/meta/locks/.json", :status => 200, :body => "[]")
-      Athena::Lock.all
+      AthenaLock.all
       FakeWeb.last_request.path.should == "/tix/meta/locks/.json"
     end
   end

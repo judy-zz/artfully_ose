@@ -1,10 +1,12 @@
-class Athena::Lock < ActiveResource::Base
+class AthenaLock < ActiveResource::Base
   headers['X-ATHENA-Key'] = 'artful.ly'
   self.headers["User-agent"] = "artful.ly"
 
   self.site = Artfully::Application.config.tickets_site
   self.format = :json
   self.prefix = "/tix/meta/"
+  self.collection_name = 'locks'
+  self.element_name = 'locks'
 
   schema do
     attribute 'tickets',      :string
