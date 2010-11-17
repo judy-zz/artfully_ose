@@ -1,5 +1,4 @@
 Given /^I have found (\d+) tickets to "([^"]*)" at "([^"]*)" for \$(\d+)$/ do |quantity, event, venue, price|
-
   body = []
   ids = []
   quantity.to_i.times do

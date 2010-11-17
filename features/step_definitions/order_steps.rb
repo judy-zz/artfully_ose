@@ -1,20 +1,6 @@
-Given /^I have started an order with the following tickets$/ do |table|
-  body = []
-  ids = []
-  table.hashes.each do |hash|
-    ticket = Factory(:ticket, hash)
-    body << ticket
-    ids << ticket.id
-    FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{ticket.id}.json", :status =>  200 , :body => ticket.encode)
-  end
-
-  lock = Factory(:unexpired_lock, :tickets => ids)
-  FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode )
-  FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200, :body => lock.encode )
-  @order = Factory(:order_without_lock, :tickets => ids)
-  @order.save!
-
-  visit edit_order_path(@order)
+Given /^I have started an order for (\d+) tickets to "([^"]*)" at "([^"]*)" for \$(\d+)$/ do |quantity, event, venue, price|
+  Given %Q{I have found #{quantity} tickets to "#{event}" at "#{venue}" for $#{price}}
+  And %Q{I press "Buy Tickets"}
 
   payment = Factory(:payment)
 
@@ -24,7 +10,6 @@ Given /^I have started an order with the following tickets$/ do |table|
     fill_in("Phone",:with => payment.customer.phone)
     fill_in("Email",:with => payment.customer.email)
   end
-
 
   with_scope('#credit_card') do
     fill_in("Cardholder Name",:with => payment.credit_card.cardholder_name)

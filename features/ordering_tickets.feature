@@ -12,9 +12,7 @@ Feature: Ordering tickets
     And I should see "Billing Address"
 
   Scenario: A user saves their information when confirming their order
-    Given I have started an order with the following tickets
-      | id | event       | venue    | price |
-      | 1  | Jersey Boys | Broadway | 50    |
+    Given I have started an order for 3 tickets to "Jersey Boys" at "Some Theatre" for $50
     And I can authorize Credit Cards in ATHENA
     And I can settle Credit Cards in ATHENA
     When I check "Save my information"
