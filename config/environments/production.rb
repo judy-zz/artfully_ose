@@ -48,4 +48,5 @@ Artfully::Application.configure do
   config.active_support.deprecation = :notify
 
   config.tickets_site = 'http://localhost:8080/tix/'
+  config.stage_site = 'http://localhost:8080/stage/'
 end
