@@ -2,7 +2,7 @@ class AthenaEvent < AthenaResource::Base
   self.site = Artfully::Application.config.stage_site
   self.element_name = 'events'
   self.collection_name = 'events'
-  
+
   schema do
     attribute 'name', :string
     attribute 'venue', :string
@@ -10,7 +10,6 @@ class AthenaEvent < AthenaResource::Base
     attribute 'chartId', :string
   end
 
-  
   # Note: This is used to provide a more ruby-friendly set of accessors that will still serialize properly.
   def self.aliased_attr_accessor(*accessors)
     attr_reader :attributes
@@ -24,16 +23,16 @@ class AthenaEvent < AthenaResource::Base
       RUBY_EVAL
     end
   end
-  
+
   aliased_attr_accessor :chart_id
-  
+  validates_presence_of :name, :venue, :producer
+
   def chart
     @chart ||= AthenaChart.find(chart_id)
   end
-  
+
   def chart=(chart)
-    @chart = chart
-    chart_id = chart.id
+    raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
+    @chart, self.chart_id = chart, chart.id
   end
-  
 end

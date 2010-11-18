@@ -2,7 +2,7 @@ class AthenaPerformance < AthenaResource::Base
   self.site = Artfully::Application.config.stage_site
   self.element_name = 'performances'
   self.collection_name = 'performances'
-  
+
   schema do
     attribute 'eventId', :string
     attribute 'chartId', :string
@@ -21,24 +21,24 @@ class AthenaPerformance < AthenaResource::Base
       RUBY_EVAL
     end
   end
-  
+
   aliased_attr_accessor :event_id, :chart_id
-  
+
   def chart
     @chart ||= AthenaChart.find(chart_id)
   end
-  
+
   def chart=(chart)
-    @chart = chart
-    chart_id = chart.id
+    raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
+    @chart, self.chart_id = chart, chart.id
   end
-  
+
   def event
     @event ||= AthenaEvent.find(event_id)
   end
-  
+
   def event=(event)
-    @event = event
-    self.chart_id = chart.id
+    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
+    @event, self.event_id = event, event.id
   end
 end

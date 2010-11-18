@@ -8,7 +8,6 @@ Artfully::Application.routes.draw do
 
   resources :tickets, :only => [:index, :show]
 
-  resources :performances
   resources :orders
 
   root :to => "index#index"
