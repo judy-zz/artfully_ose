@@ -28,9 +28,12 @@ class AthenaEvent < AthenaResource::Base
   aliased_attr_accessor :chart_id
   
   def chart
+    @chart ||= AthenaChart.find(chart_id)
   end
   
-  def chart=
+  def chart=(chart)
+    @chart = chart
+    chart_id = chart.id
   end
   
 end
