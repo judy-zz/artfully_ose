@@ -23,7 +23,6 @@
         %li= link_to "Home", root_path
         %li= link_to "Dashboard", current_user unless current_user.nil?
         %li= link_to "Tickets", tickets_path
-        %li= link_to "Performances", performances_path if can? :manage, Performance
       #content
         = flash[:notice]
         = flash[:error]
