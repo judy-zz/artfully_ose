@@ -3,4 +3,5 @@
   - @credit_cards.each do |credit_card|
     %li.credit_card
       = render credit_card
+      = link_to "Edit", edit_user_credit_card_path(current_user,credit_card)
       = link_to "Delete", user_credit_card_path(current_user,credit_card), :method => :delete, :confirm => 'Are you sure?'

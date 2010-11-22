@@ -1,0 +1,7 @@
+-require "ap"
+= ap user_credit_card_path(current_user,@credit_card)
+= form_for @credit_card, :url => user_credit_card_path(current_user, @credit_card) do |form|
+  #credit_card
+    %h3 Credit Card Information
+    = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => form, :target => @credit_card }
+    = form.submit "Submit"
