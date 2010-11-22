@@ -75,19 +75,6 @@ describe AthenaTicket do
     end
   end
 
-  it "should generate tickets given a performance, quantity, and price" do
-    FakeWeb.register_uri(:post, "http://localhost/tix/tickets/.json", :status => "200")
-    @performance = Factory.build(:performance)
-    @tickets = AthenaTicket.generate_for_performance(@performance, 5, 100)
-    @tickets.size.should == 5
-    @tickets.each do |ticket|
-      ticket.price.should == 100
-      ticket.venue.should == @performance.venue
-      ticket.performance.should == @performance.performed_on
-      ticket.event.should == @performance.title
-    end
-  end
-
   describe "searching"do
     it "by performance" do
       FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :status => "200", :body => "[]")

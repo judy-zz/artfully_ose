@@ -43,6 +43,7 @@ Factory.sequence :number do
 end
 
 Factory.define :credit_card, :class => AthenaCreditCard, :default_strategy => :build do |cc|
+  cc.id { UUID.new.generate }
   cc.card_number { Factory.next(:number) }
   cc.expiration_date { Date.today }
   cc.cardholder_name { Faker::Name.name }
@@ -62,6 +63,10 @@ end
 
 Factory.define :customer_with_id, :parent => :customer do |c|
   c.id { Factory.next :customer_id }
+end
+
+Factory.define :customer_with_credit_cards, :parent => :customer_with_id do |c|
+  c.credit_cards { [ Factory(:credit_card) ] }
 end
 
 Factory.define :lock, :class => AthenaLock, :default_strategy => :build do |t|

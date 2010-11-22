@@ -48,8 +48,8 @@ class AthenaCreditCard < AthenaResource::Base
     }.sum % 10 == 0
   end
 
-  def initialize(attrs = {})
-    prepare_attr!(attrs) if needs_date_parse(attrs)
+  def initialize(attributes = {})
+    prepare_attr!(attributes) if needs_date_parse(attributes)
     super
   end
 
@@ -67,7 +67,7 @@ class AthenaCreditCard < AthenaResource::Base
 
   private
     def needs_date_parse(attrs)
-      !attrs.blank? && !( attrs.has_key? :expiration_date or attrs.has_key? :expirationDate )
+      !attrs.blank? && ( attrs.has_key? 'expiration_date' or attrs.has_key? 'expirationDate' )
     end
 
     def prepare_attr!(attributes)
@@ -77,9 +77,8 @@ class AthenaCreditCard < AthenaResource::Base
           day = attributes.delete('expiration_date(3i)')
           month = attributes.delete('expiration_date(2i)')
           year = attributes.delete('expiration_date(1i)')
-
           attributes['expirationDate'] = Date.parse("#{year}-#{month}-#{day}")
-        elsif attributes.has_key? :expirationDate
+        else
           attributes['expirationDate'] = Date.parse(attributes['expirationDate'])
         end
       end

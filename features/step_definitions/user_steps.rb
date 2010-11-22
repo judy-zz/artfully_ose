@@ -1,6 +1,7 @@
-Given /^I am logged in(?: as a "([^"]*)")?$/ do |role|
+Given /^I am logged in as a "([^"]*)"(?: with email "([^"]*)")?$/ do |role, email|
   role ||= "patron"
   @user = Factory(role)
+  @user.update_attributes(:email => email)
   visit new_user_session_path
   fill_in("Email", :with => @user.email)
   fill_in("Password", :with => @user.password)

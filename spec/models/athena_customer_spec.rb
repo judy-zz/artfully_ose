@@ -62,4 +62,21 @@ describe AthenaCustomer do
       FakeWeb.last_request.path.should == "/payments/customers/#{@customer.id}.json"
     end
   end
+
+  describe "#credit_cards" do
+    it { should respond_to :credit_cards }
+    it { should respond_to :credit_cards= }
+
+    it "should create AthenaCreditCards when decoding the remote resource" do
+      customer = Factory(:customer_with_id)
+      customer.credit_cards << Factory(:credit_card)
+      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{customer.id}.json", :status => 200, :body => customer.encode)
+
+      remote = AthenaCustomer.find(customer.id)
+      remote.credit_cards.should have(1).things
+      remote.credit_cards.each do |credit_card|
+        credit_card.kind_of?(AthenaCreditCard).should be_true
+      end
+    end
+  end
 end

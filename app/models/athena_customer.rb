@@ -11,10 +11,21 @@ class AthenaCustomer < AthenaResource::Base
     attribute 'company',    :string
     attribute 'phone',      :string
     attribute 'email',      :string
+
+    attribute 'creditCards', :string
   end
 
   def load(attributes)
     fixed = {}
+    credit_cards = attributes.delete("creditCards")
+    unless credit_cards.blank?
+      @attributes['creditCards'] = credit_cards.map do |credit_card|
+        AthenaCreditCard.new(credit_card)
+      end
+    else
+      @attributes['creditCards'] = []
+    end
+
     attributes.each do |key, value|
       fixed[key.camelize(:lower)] = attributes.delete(key) if known_attributes.include?(key.camelize(:lower))
     end
@@ -35,10 +46,11 @@ class AthenaCustomer < AthenaResource::Base
     end
   end
 
-  aliased_attr_accessor :firstName, :lastName, :company, :phone, :email
+  aliased_attr_accessor :firstName, :lastName, :company, :phone, :email, :creditCards
   validates_presence_of :first_name, :last_name, :email
 
   def as_json(options = nil)
     @attributes.as_json
   end
+
 end
