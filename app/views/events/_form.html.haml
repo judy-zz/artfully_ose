@@ -1,0 +1,21 @@
+= parent_form.fields_for target do |event_form|
+	%ul.event-form
+		%li.element
+			= event_form.label :name, "Name"
+			.input-fix
+				= event_form.text_field :name
+		%li.element
+			= event_form.label :venue, "Venue"
+			.input-fix
+				= event_form.text_field :venue
+		%li.element
+			= event_form.label :producer, "Producer"
+			.input-fix
+				= event_form.text_field :producer
+				
+=fields_for @chart do |chart_form|		
+	%ul.chart-form
+		%li.element
+			= chart_form.label :capacity, "Default seating capacity"
+			.input-fix
+				=chart_form.text_field :capacity

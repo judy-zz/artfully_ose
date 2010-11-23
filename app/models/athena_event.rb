@@ -1,5 +1,6 @@
 class AthenaEvent < AthenaResource::Base
   self.site = Artfully::Application.config.stage_site
+  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'events'
   self.collection_name = 'events'
 
