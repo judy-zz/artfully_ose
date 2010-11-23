@@ -43,11 +43,14 @@ Factory.sequence :number do
 end
 
 Factory.define :credit_card, :class => AthenaCreditCard, :default_strategy => :build do |cc|
-  cc.id { UUID.new.generate }
   cc.card_number { Factory.next(:number) }
   cc.expiration_date { Date.today }
   cc.cardholder_name { Faker::Name.name }
   cc.cvv "123"
+end
+
+Factory.define :credit_card_with_id, :parent => :credit_card do |cc|
+  cc.id { UUID.new.generate }
 end
 
 Factory.sequence :customer_id do |n|

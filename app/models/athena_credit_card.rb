@@ -78,7 +78,7 @@ class AthenaCreditCard < AthenaResource::Base
 
   private
     def needs_date_parse(attrs)
-      !attrs.blank? && ( attrs.has_key? 'expiration_date' or attrs.has_key? 'expirationDate' )
+      !attrs.blank? && ( attrs.has_key? 'expiration_date(3i)' or attrs.has_key? 'expirationDate' )
     end
 
     def prepare_attr!(attributes)

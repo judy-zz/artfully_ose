@@ -7,7 +7,7 @@ end
 Given /^there are (\d+) saved credit cards for "([^"]*)"$/ do |quantity, email|
   cards = []
   quantity.to_i.times do
-    card = Factory(:credit_card)
+    card = Factory(:credit_card_with_id)
     cards << card
     FakeWeb.register_uri(:any, "http://localhost/payments/cards/#{card.id}.json", :status => 200, :body => card.encode)
   end
@@ -39,7 +39,7 @@ end
 
 When /^I update (\d+)st credit card details with:$/ do |pos, table|
   Given %{I follow "Edit" for the 1st credit card}
-  card = Factory(:credit_card, table.hashes.first)
+  card = Factory(:credit_card_with_id, table.hashes.first)
   @customer.credit_cards[pos.to_i-1] = card
   FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
 end
