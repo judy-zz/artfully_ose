@@ -49,7 +49,5 @@ Then /^the (\d+)(?:st|nd|rd|th) credit card should be:$/ do |pos, table|
 
   within("#credit_cards li:nth-child(#{pos.to_i})") do
     Then %{I should see "#{card.cardholder_name}"}
-    And  %{I should see "#{card.card_number}"}
-    And  %{I should see "#{card.cvv}"}
   end
 end

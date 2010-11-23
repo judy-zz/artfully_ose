@@ -30,10 +30,16 @@ class AthenaCreditCard < AthenaResource::Base
   end
 
   aliased_attr_accessor :card_number, :expiration_date, :cardholder_name, :cvv
-  validates_presence_of :card_number, :expiration_date, :cardholder_name, :cvv
-  validates_numericality_of :card_number, :cvv
-  validates_length_of :cvv, :in => 3..4
-  validate :valid_luhn
+
+  validates_presence_of :expiration_date, :cardholder_name
+
+  validates_presence_of       :card_number, :if => Proc.new { |card| card.new_record? }
+  validates_numericality_of   :card_number, :if => Proc.new { |card| card.new_record? }
+  validate                    :valid_luhn,  :if => Proc.new { |card| card.new_record? }
+
+  validates_presence_of     :cvv, :if => Proc.new { |card| card.new_record? }
+  validates_numericality_of :cvv, :if => Proc.new { |card| card.new_record? }
+  validates_length_of       :cvv, :in => 3..4, :if => Proc.new { |card| card.new_record? }
 
 
   def valid_luhn
@@ -50,6 +56,11 @@ class AthenaCreditCard < AthenaResource::Base
 
   def initialize(attributes = {})
     prepare_attr!(attributes) if needs_date_parse(attributes)
+    super
+  end
+
+  def update_attributes(attributes)
+    prepare_attr!(attributes)
     super
   end
 
@@ -86,6 +97,7 @@ class AthenaCreditCard < AthenaResource::Base
 
     def prepare_for_encode(attributes)
       hash = attributes.dup
+      attributes['expirationDate'] = Date.parse(self.expiration_date) if self.expiration_date.is_a? String
       hash['expirationDate'] = self.expiration_date.strftime('%m/%Y')
       hash
     end

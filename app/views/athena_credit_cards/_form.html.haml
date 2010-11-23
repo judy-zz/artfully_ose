@@ -7,11 +7,11 @@
     %li.element.left
       = cc_form.label :card_number, "Number"
       .input-fix
-        = cc_form.text_field :card_number
+        = cc_form.text_field :card_number, :disabled => !target.new_record?
     %li.element.right
       = cc_form.label :cvv, "CVV"
       .input-fix
-        = cc_form.text_field :cvv
+        = cc_form.text_field :cvv, :disabled => !target.new_record?
     %li.element
       = cc_form.label :expiration_date, "Expiration Date"
       .input-fix

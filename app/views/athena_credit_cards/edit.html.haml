@@ -1,5 +1,4 @@
--require "ap"
-= ap user_credit_card_path(current_user,@credit_card)
+= render "shared/error_messages", :target => @credit_card
 = form_for @credit_card, :url => user_credit_card_path(current_user, @credit_card) do |form|
   #credit_card
     %h3 Credit Card Information
