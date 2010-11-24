@@ -8,11 +8,12 @@ describe AthenaCreditCard do
     it { should respond_to attribute.underscore + '=' }
   end
 
-  it "should not be valid with a credit card with numbers" do
+  it "should not be valid with a credit card with letters" do
+    p subject.new_record?
     subject.card_number = "A234123412341234"
     subject.should_not be_valid
   end
-  
+
   it "should not be valid with an invalid credit card number" do
     subject.card_number = "1234123412341234"
     subject.should_not be_valid
@@ -23,11 +24,18 @@ describe AthenaCreditCard do
     %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|
       it { should match(attribute) }
     end
-    
+
     it "should use the MM/YY format when encoding the expiration date to JSON" do
       @card = Factory(:credit_card)
       @card.to_json.should match(/\"expirationDate\":\"#{@card.expiration_date.strftime('%m\/%Y')}\"/)
     end
+  end
+
+  it "should parse the date into a Date object when fetching a remote resource" do
+    card = Factory(:credit_card)
+    FakeWeb.register_uri(:get, "http://localhost/payments/cards/#{card.id}.json", :status => 200, :body => card.encode)
+    remote = AthenaCreditCard.find(card.id)
+    remote.expiration_date.kind_of?(Date).should be_true
   end
 
   describe "#find" do
@@ -52,7 +60,7 @@ describe AthenaCreditCard do
 
     it "should issue a POST when creating a new AthenaCreditCard" do
       FakeWeb.register_uri(:post, "http://localhost/payments/cards/.json", :status => "200")
-      @card = Factory.create(:credit_card)
+      @card = Factory.create(:credit_card, :id => nil)
 
       FakeWeb.last_request.method.should == "POST"
       FakeWeb.last_request.path.should == "/payments/cards/.json"

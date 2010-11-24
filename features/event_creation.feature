@@ -8,7 +8,8 @@ Feature: Event creation
     And I can get Tickets from ATHENA
 
   Scenario: A producer creates a new event
-    Given I am logged in as a producer
+    Given pending
+    Given I am logged in as a "producer"
       And I am on the new event page
     When I fill in "Title" with "Some Title"
       And I fill in "Venue" with "Some Venue"

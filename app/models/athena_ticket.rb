@@ -12,32 +12,6 @@ class AthenaTicket < AthenaResource::Base
     attribute 'price',        :integer
   end
 
-  def initialize(*args)
-    super(*args)
-  end
-
-  def self.find_by_performance(performance)
-    params = {  'venue'       => "eq#{performance.venue}",
-                'performance' => "eq#{performance.performed_on.as_json}",
-                'event'       => "eq#{performance.title}"
-             }
-    self.find(:all, :params => params)
-  end
-
-  def self.generate_for_performance(performance, quantity, price)
-    tickets = []
-    params = {  :price        => price,
-                :venue        => performance.venue,
-                :performance  => performance.performed_on,
-                :event        => performance.title
-             }
-
-    quantity.to_i.times do
-      tickets << AthenaTicket.create(params)
-    end
-    tickets
-  end
-
   def self.search(params)
     search_for = {}
 

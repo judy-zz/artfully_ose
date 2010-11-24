@@ -22,16 +22,7 @@ class User < ActiveRecord::Base
   end
 
   def customer
-    if customer_id
-      begin
-        @customer ||= AthenaCustomer.find(customer_id)
-      rescue ActiveResource::ResourceNotFound
-        update_attribute(:customer_id, nil)
-        save
-      end
-    end
-
-    @customer
+    @customer ||= find_customer
   end
 
   def customer=(customer)
@@ -41,4 +32,20 @@ class User < ActiveRecord::Base
       save
     end
   end
+
+  delegate :credit_cards, :credit_cards=, :to => :customer
+  alias delegated_credit_cards credit_cards
+  def credit_cards
+    customer.nil?? [] : delegated_credit_cards
+  end
+
+  private
+    def find_customer
+      begin
+        return AthenaCustomer.find(self.customer_id)
+      rescue ActiveResource::ResourceNotFound
+        update_attribute(:customer_id, nil) && save
+        return nil
+      end unless self.customer_id.nil?
+    end
 end
