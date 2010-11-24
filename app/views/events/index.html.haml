@@ -1,0 +1,24 @@
+.links-bar
+	=link_to "Create new event", new_event_path, :class => "link"
+
+%table	
+	%tr
+		%th
+			Name
+		%th
+			Venue
+		%th
+			Producer
+		%th
+			Default capacity
+	- @events.each do |event|
+		%tr
+			%td
+				=link_to event.name, event_path(event), :class => "link"
+			%td
+				=event.venue
+			%td
+				=event.producer
+			%td
+				=event.chart.capacity
+			

@@ -1,2 +1,3 @@
-= link_to "Producer Activation", new_user_role_path(:role => :producer)
-= link_to "Credit Cards", user_credit_cards_path(current_user)
+.link= link_to "Producer Activation", new_user_role_path(:role => :producer), :class => "link"
+.link= link_to "Credit Cards", user_credit_cards_path(current_user), :class => "link"
+.link= link_to "View my events", events_path, :class => "link"

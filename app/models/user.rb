@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
   has_many :user_roles
   has_many :roles, :through => :user_roles
   has_many :orders
+  
+  after_create :create_record_in_athena_people
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -37,6 +39,15 @@ class User < ActiveRecord::Base
   alias delegated_credit_cards credit_cards
   def credit_cards
     customer.nil?? [] : delegated_credit_cards
+  end
+
+  def create_record_in_athena_people
+    @person = AthenaPerson.new
+    @person.email = self.email
+    if @person.save
+      self.athena_id = @person.id
+      self.save
+    end
   end
 
   private
