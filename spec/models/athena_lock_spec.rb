@@ -21,9 +21,9 @@ describe AthenaLock do
     subject { Factory(:lock) }
 
     it { should respond_to :tickets     }
-    it { should respond_to :lockExpires }
-    it { should respond_to :lockedByApi }
-    it { should respond_to :lockedByIp  }
+    it { should respond_to :lock_expires }
+    it { should respond_to :locked_by_api }
+    it { should respond_to :locked_by_ip  }
     it { should respond_to :status      }
   end
 

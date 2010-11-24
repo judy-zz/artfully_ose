@@ -12,10 +12,6 @@ class AthenaTicket < AthenaResource::Base
     attribute 'price',        :integer
   end
 
-  def initialize(*args)
-    super(*args)
-  end
-
   def self.search(params)
     search_for = {}
 

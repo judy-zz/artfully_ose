@@ -10,9 +10,9 @@ class AthenaLock < ActiveResource::Base
 
   schema do
     attribute 'tickets',      :string
-    attribute 'lockExpires',  :string
-    attribute 'lockedByApi',  :string
-    attribute 'lockedByIp',   :string
+    attribute 'lock_expires',  :string
+    attribute 'locked_by_api',  :string
+    attribute 'locked_by_ip',   :string
     attribute 'status',       :string
   end
 

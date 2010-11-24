@@ -13,15 +13,15 @@ class AthenaPayment < AthenaResource::Base
 
   schema do
     attribute 'amount', :string
-    attribute 'billingAddress', :string
-    attribute 'creditCard', :string
+    attribute 'billing_address', :string
+    attribute 'credit_card', :string
     attribute 'customer', :string
     attribute 'success', :string
   end
 
   def load(attributes)
-    @attributes['billingAddress'] = AthenaAddress.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
-    @attributes['creditCard'] = AthenaCreditCard.new(attributes.delete('athena_credit_card')) if attributes.has_key? 'athena_credit_card'
+    @attributes['billing_address'] = AthenaAddress.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
+    @attributes['credit_card'] = AthenaCreditCard.new(attributes.delete('athena_credit_card')) if attributes.has_key? 'athena_credit_card'
     @attributes['customer'] = AthenaCustomer.new(attributes.delete('athena_customer')) if attributes.has_key? 'athena_customer'
     super(attributes)
   end
@@ -30,24 +30,20 @@ class AthenaPayment < AthenaResource::Base
     @attributes['customer'] ||= AthenaCustomer.new
   end
 
-  def billingAddress
-    @attributes['billingAddress'] ||= AthenaAddress.new
+  def billing_address
+    @attributes['billing_address'] ||= AthenaAddress.new
   end
-
-  alias :billing_address :billingAddress
 
   def billing_address=(address)
-    self.billingAddress = address
+    attributes['billing_address'] = address
   end
 
-  def creditCard
-    @attributes['creditCard'] ||= AthenaCreditCard.new
+  def credit_card
+    @attributes['credit_card'] ||= AthenaCreditCard.new
   end
-
-  alias :credit_card :creditCard
 
   def credit_card=(credit_card)
-    self.creditCard = credit_card
+    @attributes['credit_card'] = credit_card
   end
 
   def approved?
