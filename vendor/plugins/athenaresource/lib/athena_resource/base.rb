@@ -22,8 +22,9 @@ module AthenaResource
         end
     end
 
-    def encode(options = {})
-      return self.class.format.encode(attributes, options) if self.class.format.respond_to? :encode
+    def encode(attrs = nil, options = {})
+      attrs ||= attributes
+      return self.class.format.encode(attrs, options) if self.class.format.respond_to? :encode
       super(options)
     end
   end

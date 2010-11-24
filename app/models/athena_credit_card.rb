@@ -47,13 +47,13 @@ class AthenaCreditCard < AthenaResource::Base
     super
   end
 
-  def as_json(options = nil)
-    prepare_for_encode(@attributes).as_json
+  def encode(options = nil)
+    super(prepare_for_encode(@attributes), options)
   end
 
   private
-    def needs_date_parse(attrs)
-      !attrs.blank? && ( attrs.has_key? 'expiration_date(3i)' or attrs.has_key? 'expirationDate' )
+    def needs_date_parse(attrs = {})
+      attrs.has_key? 'expiration_date(3i)' or attrs['expiration_date'].is_a? String
     end
 
     def prepare_attr!(attributes)

@@ -27,7 +27,7 @@ describe AthenaCreditCard do
 
     it "should use the MM/YY format when encoding the expiration date to JSON" do
       @card = Factory(:credit_card)
-      @card.to_json.should match(/\"expirationDate\":\"#{@card.expiration_date.strftime('%m\/%Y')}\"/)
+      @card.encode.should match(/\"expirationDate\":\"#{@card.expiration_date.strftime('%m\/%Y')}\"/)
     end
   end
 
