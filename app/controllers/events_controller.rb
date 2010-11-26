@@ -30,4 +30,26 @@ class EventsController < ApplicationController
     @event = AthenaEvent.new
     @chart = AthenaChart.new
   end
+
+  def edit
+    @event = AthenaEvent.find(params[:id])
+    @chart = AthenaChart.find(@event.chart_id)
+  end
+
+  def update
+    @event = AthenaEvent.find(params[:id])
+    @chart = AthenaChart.find(@event.chart_id)
+    @chart.update_attributes(params[:athena_chart])
+    
+    if !@chart.save
+      render :edit and return
+    else    
+      @event.update_attributes(params[:athena_event][:athena_event])
+      if @event.save
+        redirect_to event_url(@event)
+      else
+        render :edit and return
+      end
+    end
+  end
 end
