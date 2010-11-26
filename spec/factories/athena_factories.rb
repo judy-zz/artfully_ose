@@ -49,6 +49,10 @@ Factory.define :credit_card, :class => AthenaCreditCard, :default_strategy => :b
   cc.cvv "123"
 end
 
+Factory.define :credit_card_with_id, :parent => :credit_card do |cc|
+  cc.id { UUID.new.generate }
+end
+
 Factory.sequence :customer_id do |n|
   "#{n}"
 end
@@ -62,6 +66,10 @@ end
 
 Factory.define :customer_with_id, :parent => :customer do |c|
   c.id { Factory.next :customer_id }
+end
+
+Factory.define :customer_with_credit_cards, :parent => :customer_with_id do |c|
+  c.credit_cards { [ Factory(:credit_card) ] }
 end
 
 Factory.define :lock, :class => AthenaLock, :default_strategy => :build do |t|

@@ -47,6 +47,31 @@ describe User do
     end
   end
 
+  describe "#credit_cards" do
+    subject { Factory(:user) }
+
+    it { should respond_to :credit_cards }
+    it { should respond_to :credit_cards= }
+
+    it "should return an empty array if customer is not set" do
+      subject.customer = nil
+      subject.credit_cards.should be_empty
+    end
+
+    it "should return any credit cards associated with the customer record" do
+      customer = Factory(:customer_with_credit_cards)
+      subject.customer = customer
+      subject.credit_cards.should eq customer.credit_cards
+    end
+
+    it "should delegate credit card assignemnt to the customer" do
+      subject.customer = Factory(:customer_with_id)
+      credit_card = Factory(:credit_card)
+      subject.credit_cards << credit_card
+      subject.credit_cards.should eq subject.customer.credit_cards
+    end
+  end
+
   describe "with roles" do
     before(:each) do
       @user = Factory(:user)

@@ -1,0 +1,29 @@
+class CreditCardsController < ApplicationController
+  def index
+    @credit_cards = current_user.credit_cards
+  end
+
+  def show
+  end
+
+  def edit
+    @credit_card = AthenaCreditCard.find(params[:id])
+  end
+
+  def update
+    @credit_card = AthenaCreditCard.find(params[:id])
+    # TODO: Fix form_for nested fields issue.
+    @credit_card.update_attributes(params[:athena_credit_card][:athena_credit_card])
+    if @credit_card.save
+      redirect_to user_credit_cards_url(current_user)
+    else
+      render :edit and return
+    end
+  end
+
+  def destroy
+    @credit_card = AthenaCreditCard.find(params[:id])
+    @credit_card.destroy
+    redirect_to user_credit_cards_url(current_user)
+  end
+end

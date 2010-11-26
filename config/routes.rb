@@ -3,6 +3,7 @@ Artfully::Application.routes.draw do
 
   resources :user_roles
   resources :users, :only => [:show] do
+    resources :credit_cards
     resources :user_roles
   end
 
