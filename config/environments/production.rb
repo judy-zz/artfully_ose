@@ -49,4 +49,5 @@ Artfully::Application.configure do
 
   config.tickets_site = 'http://localhost:8080/tix/'
   config.stage_site = 'http://localhost:8080/stage/'
+  config.people_site = 'http://localhost:8080/people/'
 end

@@ -8,6 +8,7 @@ class EventsController < ApplicationController
       render :template => 'events/new'
     else    
       @event.update_attributes(params[:athena_event][:athena_event])
+      @event.producer_id = current_user.athena_id
       @event.chart = @chart   
       if @event.save
         redirect_to event_url(@event)
@@ -15,6 +16,10 @@ class EventsController < ApplicationController
         render :template => 'events/new'
       end
     end
+  end
+  
+  def index
+    @events = AthenaEvent.find(:all, :params => { :producerId => 'eq' + current_user.athena_id })
   end
   
   def show

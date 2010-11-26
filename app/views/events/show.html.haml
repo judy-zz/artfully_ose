@@ -1,4 +1,8 @@
-%h1.event-name=@event.name
+.links-bar
+	=link_to "View my events", events_path, :class => "link"
+	|
+	=link_to "Edit this event", edit_event_path(@event), :class => "link"
+%h3.event-name=@event.name
 .venue-name=@event.venue
 .producer-name=@event.producer
 .chart
