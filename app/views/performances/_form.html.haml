@@ -1,19 +1,6 @@
-= form_for @performance do |f|
-  = render "shared/error_messages", :target => @performance
-
-  = f.label :title
-  = f.text_field :title
-  %br
-  = f.label :venue
-  = f.text_field :venue
-  %br
-  = f.label :performed_on, "Performance Date"
-  = f.datetime_select :performed_on
-  %br
-  = label_tag :seats, "Seats"
-  = text_field_tag :seats
-  %br
-  = label_tag :price, "Price"
-  = text_field_tag :price
-  %br
-  = f.submit "Save"
+= parent_form.fields_for target do |performance_form|
+	%ul.performance-form
+		%li.element
+			= performance_form.label :datetime, "Performace date/time"
+			.input-fix
+				= performance_form.datetime_select :datetime

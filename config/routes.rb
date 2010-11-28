@@ -10,7 +10,9 @@ Artfully::Application.routes.draw do
   resources :tickets, :only => [:index, :show]
 
   resources :orders
-  resources :events
+  resources :events do
+    resources :performances
+  end
 
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
 

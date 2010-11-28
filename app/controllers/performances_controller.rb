@@ -6,6 +6,24 @@ class PerformancesController < ApplicationController
     redirect_to event_url(@performance.event_id)
   end
   
+  def new
+    @performance = AthenaPerformance.new
+    @event = AthenaEvent.find(params[:event_id])
+  end
+  
+  def create
+    @performance = AthenaPerformance.new
+    @event = AthenaEvent.find(params[:event_id])
+    @performance.update_attributes(params[:athena_performance][:athena_performance])
+    @performance.eventId=@event.id
+    @performance.chartId=@event.chart.id
+    if @performance.save
+      redirect_to event_url(@performance.event)
+    else
+      render :template => 'performances/new'
+    end
+  end
+
   private
     def copy_performance(source_performance)
       perf = AthenaPerformance.new

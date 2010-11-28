@@ -30,14 +30,32 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def day_of_week
-    Date.parse(self.datetime).strftime("%a")
+    DateTime.parse(self.datetime).strftime("%a")
   end
 
   def formatted_performance_time
-    Date.parse(self.datetime).strftime("%I:%M %p")
+    DateTime.parse(self.datetime).strftime("%I:%M %p")
   end
   
   def formatted_performance_date
-    Date.parse(self.datetime).strftime("%b, %d %Y")
+    DateTime.parse(self.datetime).strftime("%b, %d %Y")
   end
+  
+  def update_attributes(attributes)
+    prepare_attr!(attributes)
+    super
+  end
+  
+  private
+    def prepare_attr!(attributes)
+      #TODO: We need to set the correct time zone to whatever zone they're in
+      unless attributes.blank?
+        day = attributes.delete('datetime(3i)')
+        month = attributes.delete('datetime(2i)')
+        year = attributes.delete('datetime(1i)')
+        hour = attributes.delete('datetime(4i)')
+        minute = attributes.delete('datetime(5i)')
+        attributes['datetime'] = DateTime.parse("#{year}-#{month}-#{day}T#{hour}:#{minute}:00-04:00")
+      end
+    end
 end

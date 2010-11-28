@@ -22,7 +22,7 @@ form ul li.element label{
   color:#333;
 }
 
-form ul li.element input, form ul li.element select, form ul li.element textarea{
+form ul li.element input, form ul li.element textarea{
   font-family:Arial;
   display:block;
   width:100%;

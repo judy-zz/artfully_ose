@@ -2,6 +2,8 @@
 	=link_to "View my events", events_path, :class => "link"
 	|
 	=link_to "Edit this event", edit_event_path(@event), :class => "link"
+	|
+	=link_to "Add new performance", new_event_performance_path(@event), :class => "link"
 %h3.event-name=@event.name
 .venue-name=@event.venue
 .producer-name=@event.producer
@@ -36,3 +38,4 @@
 					=performance.chart.capacity
 				%td
 					=link_to "dupe", duplicate_performance_path(performance)
+					
