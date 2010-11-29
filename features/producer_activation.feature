@@ -24,5 +24,6 @@ Feature: Producer Activation
     And I fill in "Last Name" with "Producer"
     And I fill in "Email" with "joe.producer@example.com"
     And I fill in "Phone" with "1231231234"
+    And I fill in "Organization" with "Some Organization"
     And I press "Submit"
     Then I should see "Congratulations! You now have access to producer features"
