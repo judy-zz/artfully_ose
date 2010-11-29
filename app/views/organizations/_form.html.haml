@@ -1,0 +1,6 @@
+= parent_form.fields_for target do |organization_form|
+  %ul.organization
+    %li.element
+      = organization_form.label :name, "Organization Name"
+      .input-fix
+        = organization_form.text_field :name

@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
   has_many :orders
 
+  belongs_to :organization
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
@@ -16,9 +18,8 @@ class User < ActiveRecord::Base
     !!self.roles.find_by_name(role)
   end
 
-  def to_producer!
+  def to_producer
     self.roles << Role.producer
-    save!
   end
 
   def customer
