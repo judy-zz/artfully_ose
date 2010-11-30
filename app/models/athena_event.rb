@@ -21,4 +21,22 @@ class AthenaEvent < AthenaResource::Base
     raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
     @chart, self.chart_id = chart, chart.id
   end
+  
+  def chart
+    @chart ||= AthenaChart.find(chart_id)
+  end
+
+  def chart=(chart)
+    raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
+    @chart, self.chart_id = chart, chart.id
+  end
+  
+  def performances
+    @performances ||= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + self.id })
+  end
+
+  def performances=(performances)
+    raise TypeError, "Expecting an Array" unless performances.kind_of? Array
+    @performances = performances
+  end
 end

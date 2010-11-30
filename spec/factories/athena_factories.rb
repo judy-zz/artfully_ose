@@ -21,10 +21,16 @@ Factory.define :athena_event, :default_strategy => :build do |e|
   e.chart { Factory(:athena_chart)}
 end
 
+Factory.sequence :performance_datetime do |n|
+  DateTime.strptime("2011-03-#{n}T10:10:00-04:00")
+end
+
 Factory.define :athena_performance, :default_strategy => :build do |p|
   p.chart { Factory(:athena_chart) }
   p.event { Factory(:athena_event) }
+  p.datetime Factory.next :performance_datetime
 end
+
 
 Factory.sequence :number do
   %w( 4111111111111111
