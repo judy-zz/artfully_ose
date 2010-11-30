@@ -1,24 +1,23 @@
-.links-bar
-	=link_to "Create new event", new_event_path, :class => "link"
-
-%table	
-	%tr
-		%th
-			Name
-		%th
-			Venue
-		%th
-			Producer
-		%th
-			Default capacity
-	- @events.each do |event|
+%div
+	=link_to image_tag("new_event.gif", :border=>0), new_event_path, :class => "link"
+- unless @events.empty?
+	%table	
 		%tr
-			%td
-				=link_to event.name, event_path(event), :class => "link"
-			%td
-				=event.venue
-			%td
-				=event.producer
-			%td
-				=event.chart.capacity
-			
+			%th
+				Name
+			%th
+				Venue
+			%th
+				Producer
+			%th
+				Default capacity
+		- @events.each do |event|
+			%tr
+				%td
+					=link_to event.name, event_path(event), :class => "link"
+				%td
+					=event.venue
+				%td
+					=event.producer
+				%td
+					=event.chart.capacity

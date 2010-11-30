@@ -24,7 +24,7 @@ class EventsController < ApplicationController
   
   def show
     @event = AthenaEvent.find(params[:id])
-    @performances = AthenaPerformance.find(:all, :params => { :eventId => 'eq' + @event.id })
+    @event.performances= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + @event.id })
   end
   
   def new

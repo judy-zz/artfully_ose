@@ -65,6 +65,7 @@ class AthenaPerformance < AthenaResource::Base
         year = attributes.delete('datetime(1i)')
         hour = attributes.delete('datetime(4i)')
         minute = attributes.delete('datetime(5i)')
+        puts "#{year}-#{month}-#{day}T#{hour}:#{minute}:00-04:00"
         attributes['datetime'] = DateTime.parse("#{year}-#{month}-#{day}T#{hour}:#{minute}:00-04:00")
       end
     end
