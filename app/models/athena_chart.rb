@@ -5,6 +5,15 @@ class AthenaChart < AthenaResource::Base
   self.collection_name = 'charts'
   
   schema do
-    attribute 'capacity', :integer
+    attribute 'name', :string
+  end
+  
+  def sections
+    @sections ||= AthenaSection.find(:all, :params => { :chartId => 'eq' + self.id })
+  end
+
+  def sections=(sections)
+    raise TypeError, "Expecting an Array" unless sections.kind_of? Array
+    @sections = sections
   end
 end

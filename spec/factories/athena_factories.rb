@@ -11,7 +11,7 @@ Factory.define :address, :class => AthenaAddress, :default_strategy => :build do
 end
 
 Factory.define :athena_chart, :default_strategy => :build do |c|
-  c.capacity 10
+  c.name 'test chart'
 end
 
 Factory.define :athena_event, :default_strategy => :build do |e|
