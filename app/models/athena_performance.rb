@@ -28,27 +28,17 @@ class AthenaPerformance < AthenaResource::Base
     raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
     @event, self.event_id = event, event.id
   end
-  
-  def datetime=(dt)
-    if dt.kind_of? DateTime
-      attributes['datetime'] = dt
-    elsif dt.kind_of? String
-      attributes['datetime'] = DateTime.parse(dt)
-    else
-      raise TypeError, "Performance datetime needs to be of type DateTime or String"
-    end
-  end
 
   def day_of_week
-    self.datetime.strftime("%a")
+    DateTime.parse(self.datetime).strftime("%a")
   end
 
   def formatted_performance_time
-    self.datetime.strftime("%I:%M %p")
+    DateTime.parse(self.datetime).strftime("%I:%M %p")
   end
   
   def formatted_performance_date
-    self.datetime.strftime("%b, %d %Y")
+    DateTime.parse(self.datetime).strftime("%b, %d %Y")
   end
   
   def update_attributes(attributes)
@@ -65,7 +55,6 @@ class AthenaPerformance < AthenaResource::Base
         year = attributes.delete('datetime(1i)')
         hour = attributes.delete('datetime(4i)')
         minute = attributes.delete('datetime(5i)')
-        puts "#{year}-#{month}-#{day}T#{hour}:#{minute}:00-04:00"
         attributes['datetime'] = DateTime.parse("#{year}-#{month}-#{day}T#{hour}:#{minute}:00-04:00")
       end
     end
