@@ -22,7 +22,7 @@ Factory.define :athena_event, :default_strategy => :build do |e|
 end
 
 Factory.sequence :performance_datetime do |n|
-  DateTime.strptime("2011-03-#{n}T10:10:00-04:00")
+  "2011-03-#{n}T10:10:00-04:00"
 end
 
 Factory.define :athena_performance, :default_strategy => :build do |p|

@@ -119,18 +119,17 @@ h3 {
 
 a.link {
 	text-decoration:none;
-	color:black;
+	color:#006B91;
 }
 
 a.link:hover {
 	text-decoration:underline;
-	color:black;
+	color:#006B91;
 }
 
 .links-bar {
 	padding:5px 10px;
 	margin-bottom:5px;
-	width:500px;
 	background-color:#DACAA8;
 	font-size:12px;
 }
@@ -151,4 +150,34 @@ th {
 
 td {
 	padding:4px 20px 4px 4px;
+}
+
+.col-65 {
+	float:left;
+	width:65%;
+}	
+
+.col-30 {
+	float:left;
+	width:30%;
+}
+
+#seating-chart {
+  border:1px solid #DACAA8;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+}
+
+#seating-chart-header {
+	padding:3px;
+	color:black;
+	background-color:#DACAA8;
+}
+
+#seating-chart-content {
+	padding:5px;
+}
+
+.clear {
+	clear:both;
 }

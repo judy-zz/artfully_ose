@@ -16,7 +16,6 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
     @performance.eventId=@event.id
-    @performance.chartId=@event.chart.id
     if @performance.save
       redirect_to event_url(@performance.event)
     else
@@ -29,7 +28,6 @@ class PerformancesController < ApplicationController
       perf = AthenaPerformance.new
       perf.datetime = source_performance.datetime
       perf.event_id = source_performance.event_id
-      perf.chart_id = source_performance.chart_id
       perf
     end
 end

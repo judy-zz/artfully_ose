@@ -11,8 +11,17 @@ Artfully::Application.routes.draw do
 
   resources :orders
   resources :events do
-    resources :performances
+    resources :charts do
+      resources :sections
+    end
+    resources :performances do
+      resources :charts do
+        resources :sections
+      end
+    end
   end
+  
+
 
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
 

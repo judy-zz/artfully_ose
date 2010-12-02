@@ -6,6 +6,8 @@ class AthenaChart < AthenaResource::Base
   
   schema do
     attribute 'name', :string
+    attribute 'eventId', :string
+    attribute 'performanceId', :string
   end
   
   def sections
@@ -15,5 +17,14 @@ class AthenaChart < AthenaResource::Base
   def sections=(sections)
     raise TypeError, "Expecting an Array" unless sections.kind_of? Array
     @sections = sections
+  end
+  
+  def parent
+    if !eventId.nil?
+      @parent ||= AthenaEvent.find(:all, :params => { :chartId => 'eq' + self.id })
+    elsif !performanceId.nil?
+      @parent ||= AthenaPerformance.find(:all, :params => { :performanceId => 'eq' + self.id })
+    end    
+    @parent
   end
 end

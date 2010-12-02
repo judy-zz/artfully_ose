@@ -1,0 +1,15 @@
+.links-bar
+	=link_to "View this event", event_path(@chart.event), :class => "link"
+	|
+	=link_to "Edit this chart", edit_event_chart_path(@chart.event, @chart), :class => "link"
+%h3.chart-name=@chart.name
+.event-name
+	Event:
+	=@chart.event.name
+	
+=link_to "Add a section to this chart", "foo", :class => "link"
+
+%h2
+	Sections
+- @chart.sections.each do |section|
+	section!

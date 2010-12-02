@@ -1,0 +1,6 @@
+= parent_form.fields_for target do |chart_form|
+	%ul.chart-form
+		%li.element
+			= chart_form.label :name, "Name"
+			.input-fix
+				= chart_form.text_field :name

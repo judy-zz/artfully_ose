@@ -1,0 +1,6 @@
+= render "shared/error_messages", :target => @chart
+= form_for @chart, :url => event_chart_path(@event, @chart) do |form|
+  #event
+    %h3 Edit Chart
+    = render :partial => 'charts/form', :locals => { :parent_form => form, :target => @chart }
+    = form.submit "Submit"

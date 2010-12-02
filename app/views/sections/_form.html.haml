@@ -1,0 +1,14 @@
+= parent_form.fields_for target do |section_form|
+	%ul.section-form
+		%li.element
+			= section_form.label :name, "Name"
+			.input-fix
+				= section_form.text_field :name
+		%li.element
+			= section_form.label :capacity, "Capacity"
+			.input-fix
+				= section_form.text_field :capacity
+		%li.element
+			= section_form.label :price, "Price"
+			.input-fix
+				= section_form.text_field :price

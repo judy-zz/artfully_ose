@@ -8,22 +8,18 @@ class AthenaEvent < AthenaResource::Base
     attribute 'name', :string
     attribute 'venue', :string
     attribute 'producer', :string
+    attribute 'producer_pid', :string
     attribute 'chart_id', :string
   end
 
   validates_presence_of :name, :venue, :producer
 
   def chart
-    @chart ||= AthenaChart.find(chart_id)
-  end
-
-  def chart=(chart)
-    raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
-    @chart, self.chart_id = chart, chart.id
-  end
-  
-  def chart
-    @chart ||= AthenaChart.find(chart_id)
+    if chart_id.nil?
+      nil
+    else
+      @chart ||= AthenaChart.find(chart_id)
+    end
   end
 
   def chart=(chart)

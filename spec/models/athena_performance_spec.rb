@@ -13,9 +13,7 @@ describe AthenaPerformance do
   it { should respond_to :day_of_week }
 
   it "should report the day of the week of the performance" do
-    puts subject.datetime.strftime("%a")
-    puts subject.day_of_week
-    subject.day_of_week.should eql(subject.datetime.strftime("%a"))
+    subject.day_of_week.should eql(DateTime.parse(subject.datetime).strftime("%a"))
   end
 
   it "should update chart_id when assiging a chart" do

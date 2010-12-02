@@ -1,0 +1,24 @@
+- unless event.performances.empty?
+	.sub-container#performance-container
+		%h2
+			Performances
+
+		%table	
+			%tr
+				%th
+				%th
+					Date
+				%th
+					Time
+				%th
+					Actions
+			- event.performances.each do |performance|
+				%tr
+					%td
+						=performance.day_of_week
+					%td
+						=performance.formatted_performance_date
+					%td
+						=performance.formatted_performance_time
+					%td
+						=link_to "dupe", duplicate_performance_path(performance)

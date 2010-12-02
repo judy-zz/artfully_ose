@@ -5,38 +5,15 @@
 	|
 	=link_to "Add new performance", new_event_performance_path(@event), :class => "link"
 %h3.event-name=@event.name
-.venue-name=@event.venue
-.producer-name=@event.producer
-.chart
-	Default seating capacity:
-	=@event.chart.capacity
 
-- unless @event.performances.empty?
-	.sub-container#performance-container
-		%h2
-			Performances
+#event-details.col-65
+	.venue-name=@event.venue
+	.producer-name=@event.producer
 
-		%table	
-			%tr
-				%th
-				%th
-					Date
-				%th
-					Time
-				%th
-					Capacity
-				%th
-					Actions
-			- @event.performances.each do |performance|
-				%tr
-					%td
-						=performance.day_of_week
-					%td
-						=performance.formatted_performance_date
-					%td
-						=performance.formatted_performance_time
-					%td
-						=performance.chart.capacity
-					%td
-						=link_to "dupe", duplicate_performance_path(performance)
-					
+	= render :partial => 'events/performances', :locals => { :event => @event }
+
+#event-details.col-30
+	= render :partial => 'events/chart', :locals => { :event => @event }
+							
+
+.clear					
