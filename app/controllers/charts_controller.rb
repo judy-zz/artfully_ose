@@ -43,7 +43,7 @@ class ChartsController < ApplicationController
     def build_default_chart_name(event)
       default_name = event.name
       if event.chart.nil?
-        default_name += ', Default Chart'
+        default_name += ', default seating chart'
       end
       default_name
     end
