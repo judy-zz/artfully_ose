@@ -9,8 +9,6 @@
 				Venue
 			%th
 				Producer
-			%th
-				Default capacity
 		- @events.each do |event|
 			%tr
 				%td
@@ -19,5 +17,3 @@
 					=event.venue
 				%td
 					=event.producer
-				%td
-					=event.chart.capacity
