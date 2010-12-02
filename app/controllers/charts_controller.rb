@@ -12,7 +12,7 @@ class ChartsController < ApplicationController
     if @chart.save
       @event.chartId=@chart.id
       @event.save
-      redirect_to event_url(@chart.event)
+      redirect_to event_url(@event)
     else
       render :template => 'chart/new'
     end
