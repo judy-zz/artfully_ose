@@ -22,7 +22,7 @@ namespace :deploy do
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
-    run "#{try_sudo} ln -s #{File.join(deploy_to, 'shared', 'db')} #{File.join(current_path,'db')}"
+    run "#{try_sudo} ln -s #{File.join(deploy_to, 'shared', 'db', 'production.sqlite3')} #{File.join(current_path,'db', 'production.sqlite3')}"
     run "#{try_sudo} cp #{File.join(deploy_to, 'shared', 'config', 'environments', '*')} #{File.join(current_path,'config', 'environments')}"
   end
 end

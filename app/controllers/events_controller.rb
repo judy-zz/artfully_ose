@@ -12,7 +12,7 @@ class EventsController < ApplicationController
   end
   
   def index
-    @events = AthenaEvent.find(:all, :params => { :producerId => 'eq' + current_user.athena_id })
+    @events = AthenaEvent.find(:all, :params => { :producerPid => 'eq' + current_user.athena_id })
   end
   
   def show
