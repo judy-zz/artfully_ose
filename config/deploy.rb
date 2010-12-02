@@ -23,5 +23,6 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
     run "#{try_sudo} rm -rf #{File.join(current_path,'db')}"
+    run "#{try_sudo} cp #{File.join(current_path,'..', 'shared', 'config', 'environments', '*')} #{File.join(current_path,'config', 'environments')}"
   end
 end
