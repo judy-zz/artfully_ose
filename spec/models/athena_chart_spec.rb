@@ -6,4 +6,5 @@ describe AthenaChart do
   it { should be_valid }
   
   it { should respond_to :name }
+  it { should respond_to :sections }
 end
