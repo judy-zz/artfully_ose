@@ -19,4 +19,14 @@ class AthenaSection < AthenaResource::Base
     raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
     @chart, self.chart_id = chart, chart.id
   end
+  
+  #See note in athena_chart.rb
+  #Note that this method does not copy any relations (chart_id)
+  def deep_copy
+    @new_section = AthenaSection.new
+    @new_section.name = self.name
+    @new_section.capacity = self.capacity 
+    @new_section.price = self.price
+    @new_section     
+  end
 end

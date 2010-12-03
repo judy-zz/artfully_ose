@@ -3,4 +3,11 @@
   #event
     %h3 New Chart
     = render :partial => 'charts/form', :locals => { :parent_form => form, :target => @chart }
+    - unless @charts.empty?
+      = form.fields_for @chart do |chart_form|
+        %ul.chart-form
+          %li.element
+            = chart_form.label :id, "And duplicate the sections from..."
+            .input-fix
+              = chart_form.select :id, options_from_collection_for_select(@charts, "id", "name"), { :include_blank => true }
     = form.submit "Submit"

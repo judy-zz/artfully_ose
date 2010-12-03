@@ -3,18 +3,29 @@ class ChartsController < ApplicationController
     @chart = AthenaChart.new
     @event = AthenaEvent.find(params[:event_id])
     @chart.name = build_default_chart_name(@event)
+    @charts= AthenaChart.find(:all, :params => { :producerPid => 'eq' + current_user.athena_id })
   end
 
   def create
-    @chart = AthenaChart.new
     @event = AthenaEvent.find(params[:event_id])
-    @chart.update_attributes(params[:athena_chart][:athena_chart])
+    
+    #If an id was sent, they want to duplicate the sections from an existing chart
+    if params[:athena_chart][:athena_chart][:id].blank?   
+      @chart = AthenaChart.new
+    else
+      @source_chart = AthenaChart.find(params[:athena_chart][:athena_chart][:id])
+      @chart = @source_chart.deep_copy
+    end
+    #can't use update_attributes here because it'll pick up the blank :id
+    @chart.name = params[:athena_chart][:athena_chart][:name]
+    @chart.event_id = @event.id
+    @chart.producer_pid = current_user.athena_id
     if @chart.save
       @event.chartId=@chart.id
       @event.save
       redirect_to event_url(@event)
     else
-      render :template => 'chart/new'
+      render :new
     end
   end
   

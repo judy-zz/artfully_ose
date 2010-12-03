@@ -4,7 +4,7 @@
 			= event.chart.name
 	#seating-chart-content
 		- if event.chart.nil?
-			%div=link_to "Create default seating chart", new_event_chart_path(event), :class => "link"
+			%div=link_to "Create or assign a seating chart", new_event_chart_path(event), :class => "link"
 		- else
 			%div=link_to "Edit this chart", edit_event_chart_path(event, event.chart), :class => "link"
 			%div=link_to "Add a section to this chart", new_event_chart_section_path(event, event.chart), :class => "link"

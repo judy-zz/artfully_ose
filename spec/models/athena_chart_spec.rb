@@ -7,4 +7,8 @@ describe AthenaChart do
   
   it { should respond_to :name }
   it { should respond_to :sections }
+  
+  it "copy itself and its sections" do
+    @new_chart = subject.deep_copy
+  end
 end
