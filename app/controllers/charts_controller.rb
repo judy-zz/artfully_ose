@@ -1,8 +1,7 @@
 class ChartsController < ApplicationController
   def new
-    @chart = AthenaChart.new
     @event = AthenaEvent.find(params[:event_id])
-    @chart.name = build_default_chart_name(@event)
+    @chart = AthenaChart.default_chart_for(@event)
     @charts= AthenaChart.find(:all, :params => { :producerPid => 'eq' + current_user.athena_id })
   end
 
@@ -49,13 +48,4 @@ class ChartsController < ApplicationController
       render :edit and return
     end
   end   
-  
-  private 
-    def build_default_chart_name(event)
-      default_name = event.name
-      if event.chart.nil?
-        default_name += ', default seating chart'
-      end
-      default_name
-    end
 end

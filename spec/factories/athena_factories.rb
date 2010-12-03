@@ -10,27 +10,22 @@ Factory.define :address, :class => AthenaAddress, :default_strategy => :build do
   a.country         "United States"
 end
 
-Factory.define :athena_chart, :default_strategy => :build do |c|
+Factory.define :athena_chart, :class => AthenaChart, :default_strategy => :build do |c|
   c.id 300
+  c.producer_pid 3220
   c.name 'test chart'
-  c.sections Array.new
-  #c.sections << { Factory(:athena_section_orchestra) }
-  #c.sections << { Factory(:athena_section_balcony) }
-  #c.sections.each do |section|
-    #section.chart_id = c.id
-  #end
 end
 
-Factory.define :athena_section_orchestra, :default_strategy => :build do |section|
+Factory.define :athena_section_orchestra, :class => AthenaSection, :default_strategy => :build do |section|
   section.id 44
   section.name 'Orchestra'
   section.capacity 40
   section.price 50
 end
 
-Factory.define :athena_section_balcony, :default_strategy => :build do |section|
+Factory.define :athena_section_balcony, :class => AthenaSection, :default_strategy => :build do |section|
   section.id 45
-  section.name 'balcony'
+  section.name 'Balcony'
   section.capacity 404
   section.price 5
 end

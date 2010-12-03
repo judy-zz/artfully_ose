@@ -55,4 +55,16 @@ class AthenaChart < AthenaResource::Base
       section.save
     end
   end
+  
+  def self.get_default_name(prefix)
+    prefix + ',default chart'
+  end
+  
+  def self.default_chart_for(event)
+    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
+    @chart = self.new
+    @chart.name = self.get_default_name(event.name)
+    @chart.event_id = event.id
+    @chart
+  end
 end
