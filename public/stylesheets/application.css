@@ -181,3 +181,16 @@ td {
 .clear {
 	clear:both;
 }
+
+tr.performance-chart-details {
+	font-size:10pt;
+	color:#9A9A9A;
+}
+
+.day-of-week-display {
+	width:20px;
+}
+
+#performance-table {
+	width:90%;
+}

@@ -1,0 +1,16 @@
+%tr.performance-chart-details
+	%td
+	%td{:colspan=>'3'}
+		=chart.name
+- chart.sections.each do |section|
+	%tr.performance-chart-details
+		%td
+		%td
+			=section.name
+			,
+			=section.capacity
+			seats
+		%td
+			$
+			=section.price
+		%td
