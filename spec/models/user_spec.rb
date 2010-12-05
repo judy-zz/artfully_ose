@@ -23,13 +23,13 @@ describe User do
   describe "#customer" do
     subject { Factory(:user) }
 
-    it { 
+    it {
       FakeWeb.register_uri(:post, people_uri, :status => 200)
-      should respond_to(:customer_id) 
+      should respond_to(:customer_id)
     }
-    it { 
+    it {
         FakeWeb.register_uri(:post, people_uri, :status => 200)
-        should respond_to(:customer) 
+        should respond_to(:customer)
     }
 
     it "should fetch the remote customer record" do
@@ -53,7 +53,7 @@ describe User do
     end
 
     it "should set the customer id to nil if the remote resource no longer has it" do
-      
+
       FakeWeb.register_uri(:post, people_uri, :status => 200)
       subject.customer_id = 1
       FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :status => 404)
@@ -64,11 +64,11 @@ describe User do
   describe "#credit_cards" do
     subject { Factory(:user) }
 
-    it { 
+    it {
       FakeWeb.register_uri(:post, people_uri, :status => 200)
-      should respond_to :credit_cards 
+      should respond_to :credit_cards
     }
-    it { 
+    it {
       FakeWeb.register_uri(:post, people_uri, :status => 200)
       should respond_to :credit_cards=
     }
@@ -121,8 +121,9 @@ describe User do
       end
     end
 
-    it "#to_producer!" do
-      @user.to_producer!
+    it "#to_producer" do
+      @user.to_producer
+      @user.save
       @user.roles.should include(Role.producer)
     end
 
