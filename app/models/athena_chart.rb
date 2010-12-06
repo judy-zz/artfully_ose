@@ -33,7 +33,7 @@ class AthenaChart < AthenaResource::Base
 
   def dup!
     copy = AthenaChart.new(self.attributes.reject { |key, value| key == 'id' })
-    copy.sections = self.sections.collect { |section| section.deep_copy }
+    copy.sections = self.sections.collect { |section| section.dup! }
     copy
   end
 
