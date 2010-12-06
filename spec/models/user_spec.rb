@@ -20,6 +20,29 @@ describe User do
     @user.should be_invalid
   end
 
+  it { should respond_to :suspended? }
+  it { should respond_to :unsuspend! }
+  it { should respond_to :suspend! }
+
+  describe "suspension" do
+    it "should not be active when suspended" do
+      subject.suspend!
+      subject.should_not be_active
+    end
+
+    it "should be active when it is unsuspended" do
+      subject.unsuspend!
+      subject.should be_active
+    end
+
+    it "should not remain suspended after unsuspension" do
+      subject.suspend!
+      subject.should be_suspended
+      subject.unsuspend!
+      subject.should_not be_suspended
+    end
+  end
+
   describe "#customer" do
     subject { Factory(:user) }
 
