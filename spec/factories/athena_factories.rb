@@ -37,6 +37,10 @@ Factory.define :athena_event, :default_strategy => :build do |e|
   e.chart { Factory(:athena_chart)}
 end
 
+Factory.define :athena_person, :default_strategy => :build do |p|
+  p.email { Faker::Internet.email }
+end
+
 Factory.sequence :performance_datetime do |n|
   "2011-03-#{n}T10:10:00-04:00"
 end
