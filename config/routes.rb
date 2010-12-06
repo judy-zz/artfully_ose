@@ -21,7 +21,12 @@ Artfully::Application.routes.draw do
       end
     end
   end
-  
+
+
+  namespace :admin do
+    root :to => "index#index"
+  end
+
 
 
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
