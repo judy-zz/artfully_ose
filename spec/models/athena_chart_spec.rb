@@ -2,41 +2,59 @@ require 'spec_helper'
 
 describe AthenaChart do
   subject { Factory(:athena_chart) }
-  
+
   it { should be_valid }
-  
+
   it { should respond_to :name }
   it { should respond_to :sections }
   it { should respond_to :producer_pid }
-  
+
   it "should create a default based on an event" do
     @event = Factory(:athena_event)
     @chart = AthenaChart.default_chart_for(@event)
-    
+
     @chart.name.should eq AthenaChart.get_default_name(@event.name)
     @chart.event_id.should eq @event.id
     @chart.id.should eq nil
   end
-  
-  it "can copy itself and its sections" do    
-    @orchestra_section = Factory(:athena_section_orchestra)
-    @balcony_section = Factory(:athena_section_balcony)
-    
-    subject.sections = [@orchestra_section, @balcony_section]
-    subject.sections.each do |section|
-      section.chart_id = subject.id
+
+  describe "#dup!" do
+    before(:each) do
+      @original = Factory(:athena_chart)
+      @orchestra_section = Factory(:athena_section_orchestra)
+      @balcony_section = Factory(:athena_section_balcony)
+      @original.sections = [@balcony_section, @orchestra_section]
+      @copy = @original.dup!
     end
-    
-    @new_chart = subject.deep_copy
-    
-    @new_chart.sections.size.should eq subject.sections.size
-    @new_chart.sections[0].id.should eq nil
-    @new_chart.sections[0].name.should eq @orchestra_section.name
-    @new_chart.sections[0].capacity.should eq @orchestra_section.capacity
-    @new_chart.sections[0].price.should eq @orchestra_section.price
-    @new_chart.sections[1].id.should eq nil
-    @new_chart.sections[1].name.should eq @balcony_section.name
-    @new_chart.sections[1].capacity.should eq @balcony_section.capacity
-    @new_chart.sections[1].price.should eq @balcony_section.price
+
+    it "should not have the same id as the original" do
+      @copy.id.should_not eq @original.id
+    end
+
+    it "should have the same name as the original" do
+      @copy.name.should eq @original.name
+    end
+
+    it "should have the same producer pid" do
+      @copy.producer_pid.should eq @original.producer_pid
+    end
+
+    describe "and sections" do
+      it "should have the same number of sections as the original" do
+        @copy.sections.size.should eq @original.sections.size
+      end
+
+      it "should copy each sections name" do
+        @copy.sections.collect { |section| section.name }.should eq @original.sections.collect { |section| section.name }
+      end
+
+      it "should copy each sections price" do
+        @copy.sections.collect { |section| section.price }.should eq @original.sections.collect { |section| section.price }
+      end
+
+      it "should copy each sections capacity" do
+        @copy.sections.collect { |section| section.capacity }.should eq @original.sections.collect { |section| section.capacity }
+      end
+    end
   end
 end
