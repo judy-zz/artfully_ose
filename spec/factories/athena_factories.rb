@@ -1,3 +1,7 @@
+Factory.define :person, :class => AthenaPerson, :default_strategy => :build do |p|
+  p.email { Faker::Internet.email}
+end
+
 Factory.define :address, :class => AthenaAddress, :default_strategy => :build do |a|
   a.first_name      { Faker::Name.first_name }
   a.last_name       { Faker::Name.last_name }
@@ -47,8 +51,8 @@ end
 
 Factory.define :athena_performance, :default_strategy => :build do |p|
   p.chart { Factory(:athena_chart) }
-  p.event { Factory(:athena_event) }
   p.datetime Factory.next :performance_datetime
+  p.event { Factory(:athena_event) }
 end
 
 

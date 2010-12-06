@@ -1,0 +1,8 @@
+<script src="http://code.jquery.com/jquery-1.4.4.js"></script>
+<script src="<%= root_url %>javascripts/widgets/event.js"></script>
+<script>
+  jQuery.getJSON("<%= event_url(event, :format => :jsonp)%>?callback=?", function(data){
+    display_event(data)
+    display_performances(data['performances'])
+  })
+</script>

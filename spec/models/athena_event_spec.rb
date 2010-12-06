@@ -26,7 +26,7 @@ describe AthenaEvent do
     subject.producer = nil
     subject.should_not be_valid
   end
-  
+
   it "should store a list of performances" do
     test_performances = Array.new
     (0..5).each do |n|

@@ -10,16 +10,26 @@ class EventsController < ApplicationController
       render :template => 'events/new'
     end
   end
-  
+
   def index
-    @events = AthenaEvent.find(:all, :params => { :producerPid => 'eq' + current_user.athena_id })
+    user = params[:user_id].blank?? current_user : User.find(params[:user_id])
+    @events = AthenaEvent.find(:all, :params => { :producerPid => 'eq' + user.athena_id })
+
+    respond_to do |format|
+      format.html
+      format.jsonp  { render_jsonp (@events.to_json) }
+    end
   end
-  
+
   def show
     @event = AthenaEvent.find(params[:id])
     @event.performances= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + @event.id })
+    respond_to do |format|
+      format.html
+      format.jsonp  { render_jsonp (@event.to_json) }
+    end
   end
-  
+
   def new
     @event = AthenaEvent.new
   end

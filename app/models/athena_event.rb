@@ -15,24 +15,20 @@ class AthenaEvent < AthenaResource::Base
   validates_presence_of :name, :venue, :producer
 
   def chart
-    if chart_id.nil?
-      nil
-    else
-      @chart ||= AthenaChart.find(chart_id)
-    end
+    @chart ||= AthenaChart.find(chart_id)
   end
 
   def chart=(chart)
     raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
     @chart, self.chart_id = chart, chart.id
   end
-  
+
   def performances
-    @performances ||= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + self.id })
+    @attributes['performances'] ||= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + self.id })
   end
 
   def performances=(performances)
     raise TypeError, "Expecting an Array" unless performances.kind_of? Array
-    @performances = performances
+    @attributes['performances'] = performances
   end
 end

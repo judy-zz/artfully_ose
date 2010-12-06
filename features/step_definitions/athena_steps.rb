@@ -44,4 +44,3 @@ Then /^the last request to ATHENA should include "([^"]*)"$/ do |exp|
   FakeWeb.last_request =~ exp
 end
 
-
