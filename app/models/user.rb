@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   has_many :user_roles
   has_many :roles, :through => :user_roles
   has_many :orders
-  
+
   after_create :create_record_in_athena_people
 
   belongs_to :organization
@@ -11,7 +11,8 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :suspendable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
@@ -21,7 +22,11 @@ class User < ActiveRecord::Base
   end
 
   def to_producer
-    self.roles << Role.producer
+    self.roles << Role.producer unless self.roles.include? Role.producer
+  end
+
+  def to_admin
+    self.roles << Role.admin unless self.roles.include? Role.admin
   end
 
   def customer

@@ -1,5 +1,6 @@
 = render "shared/error_messages", :target => @event
-= form_for @event, :url => events_path(current_user, @event) do |form|
+= render "shared/error_messages", :target => @chart
+= form_for @event, :url => events_path do |form|
   #event
     %h3 New Event
     = render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }

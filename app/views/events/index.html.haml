@@ -1,7 +1,7 @@
 %div
 	=link_to image_tag("new_event.gif", :border=>0), new_event_path, :class => "link"
-- unless @events.empty?
-	%table	
+- unless @events.blank?
+	%table
 		%tr
 			%th
 				Name
@@ -15,5 +15,7 @@
 					=link_to event.name, event_path(event), :class => "link"
 				%td
 					=event.venue
+				%td
+					=event.producer
 				%td
 					=event.producer

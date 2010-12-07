@@ -5,6 +5,7 @@ Artfully::Application.routes.draw do
   resources :users, :only => [:show] do
     resources :credit_cards
     resources :user_roles
+    resources :events
   end
 
   resources :tickets, :only => [:index, :show]
@@ -20,7 +21,13 @@ Artfully::Application.routes.draw do
       end
     end
   end
-  
+
+
+  namespace :admin do
+    root :to => "index#index"
+    resources :users
+  end
+
 
 
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance

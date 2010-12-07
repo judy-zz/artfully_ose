@@ -1,0 +1,7 @@
+= @user.email
+
+= form_for @user, :url => admin_user_path(@user) do |f|
+  = f.hidden_field :suspend, :value => true
+  = f.label :suspension_reason, "Reason"
+  = f.text_field :suspension_reason
+  = f.submit "Suspend"
