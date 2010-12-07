@@ -31,6 +31,10 @@ class AthenaChart < AthenaResource::Base
     @parent
   end
   
+  def self.find_by_producer(producer_pid)
+    self.find(:all, :params => { :producerPid => 'eq' + producer_pid })
+  end
+  
   #will copy this object, but not this object's id
   #will call deep_copy on the underlying sections attached ot this chart
   def deep_copy

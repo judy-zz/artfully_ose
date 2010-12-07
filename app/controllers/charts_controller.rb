@@ -2,7 +2,7 @@ class ChartsController < ApplicationController
   def new
     @event = AthenaEvent.find(params[:event_id])
     @chart = AthenaChart.default_chart_for(@event)
-    @charts= AthenaChart.find(:all, :params => { :producerPid => 'eq' + current_user.athena_id })
+    @charts= AthenaChart.find_by_producer(current_user.athena_id)
   end
 
   def create

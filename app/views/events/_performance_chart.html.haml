@@ -6,11 +6,9 @@
 	%tr.performance-chart-details
 		%td
 		%td
-			=section.name
-			,
-			=section.capacity
-			seats
+			:erb
+				<%=section.name%>,<%=section.capacity%> seats
 		%td
-			$
-			=section.price
+			:erb
+				$<%=section.price%>
 		%td

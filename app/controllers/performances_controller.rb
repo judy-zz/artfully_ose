@@ -9,6 +9,7 @@ class PerformancesController < ApplicationController
   def new
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
+    @charts = AthenaChart.find_by_producer(current_user.athena_id)
   end
   
   def create
@@ -22,6 +23,13 @@ class PerformancesController < ApplicationController
     else
       render :template => 'performances/new'
     end
+  end
+  
+  def destroy
+    @performance = AthenaPerformance.find(params[:id])
+    @event = AthenaEvent.find(params[:event_id])
+    @performance.destroy
+    redirect_to event_url(@event)
   end
 
   private

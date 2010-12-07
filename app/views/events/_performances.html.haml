@@ -22,4 +22,5 @@
 						=performance.formatted_performance_time
 					%td
 						=link_to "dupe", duplicate_performance_path(performance)
+						=link_to "delete", event_performance_path(event, performance), :method=>:delete
 				= render :partial => 'events/performance_chart', :locals => { :chart => performance.chart }
