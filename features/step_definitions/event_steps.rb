@@ -5,7 +5,9 @@ Given /^the following event exists with (\d+) performance for producer with id o
 
   performances = "["
   performance_count.to_i.times do
-    performances << Factory(:athena_performance, :event_id => event.id).encode
+    performance = Factory(:athena_performance, :event_id => event.id)
+    FakeWeb.register_uri(:any, "http://localhost/stage/performances/1.json", :status => 200, :body => performance.encode)
+    performances << performance.encode
   end
   performances << "]"
 
@@ -22,4 +24,8 @@ Then /^the response should be JSON with callback "([^"]*)" for the following eve
   content = JSON.parse(body[1])
   event = Factory(:athena_event, content)
   event.should == events.first
+end
+
+When /^I select performance (\d+) for event (\d+) in the event widget$/ do |performance_id, event_id|
+  visit "/events/#{event_id}/performances/#{performance_id}.widget"
 end
