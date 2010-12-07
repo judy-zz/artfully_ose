@@ -14,6 +14,8 @@
 
 #event-details.col-30
 	= render :partial => 'events/chart', :locals => { :event => @event }
-							
 
-.clear					
+
+-@widget = render :partial => 'widgets/events', :locals => { :event => @event }
+%textarea= @widget
+.clear
