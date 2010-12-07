@@ -15,6 +15,7 @@ Feature: User suspension
     Given I am logged in as an "admin"
     And I have found the user "patron@example.com" to suspend
     When I fill in "Reason" with "Testing the suspension feature."
-    When I press "Suspend"
+    And I press "Suspend"
+    Then show me the page
     Then I should see "Suspended patron@example.com"
     And I should see "Reason: Testing the suspension feature."
