@@ -1,0 +1,4 @@
+%h1= "Found #{pluralize(@tickets.size, 'ticket')}"
+-@tickets.each do |ticket|
+  %li
+    = render ticket

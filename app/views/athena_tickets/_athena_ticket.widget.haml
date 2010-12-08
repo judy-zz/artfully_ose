@@ -1,0 +1,5 @@
+.athena_ticket
+  .event= link_to athena_ticket.event, ticket_path(athena_ticket)
+  .venue= athena_ticket.venue
+  .performance= l(DateTime.parse(athena_ticket.performance), :format => :short)
+  .price= "$#{athena_ticket.price}"
