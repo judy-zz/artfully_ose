@@ -33,8 +33,7 @@ end
 Given /^the following tickets exist in ATHENA:$/ do |table|
   body = []
   table.hashes.each do |hash|
-    body << ticket = Factory(:ticket, hash)
-    FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/#{ticket.id}\.json|, :status => [ 200 ], :body => ticket.encode)
+    body << ticket = Factory(:ticket_with_id, hash)
   end
   FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?.*$|, :status => 200, :body => body.to_json)
 end

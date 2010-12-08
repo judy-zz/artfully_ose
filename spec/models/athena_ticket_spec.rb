@@ -1,29 +1,23 @@
 require 'spec_helper'
 
 describe AthenaTicket do
-  before(:each) do
-    AthenaTicket.site = 'http://localhost/tix'
-  end
 
   describe "attributes" do
     subject { Factory(:ticket) }
 
-    #it { should respond_to :name }
     it { should respond_to :event }
     it { should respond_to :venue }
     it { should respond_to :performance }
     it { should respond_to :sold }
     it { should respond_to :price }
-
-    #specify { subject.name.should eql('ticket') }
   end
 
   describe "#find" do
     it "fetch a ticket by ID" do
-      @fake_ticket = Factory(:ticket)
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{@fake_ticket.id}.json", :body => @fake_ticket.encode)
+      @fake_ticket = Factory(:ticket_with_id)
       @ticket = AthenaTicket.find(@fake_ticket.id)
       @ticket.should_not be_nil
+      @ticket.should eq @fake_ticket
       @ticket.should be_valid
     end
 

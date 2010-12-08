@@ -24,10 +24,10 @@ Feature: Ticket search
   Scenario: Viewing search results
     Given I am on the tickets page
     And the following tickets exist in ATHENA:
-      | id | event       | venue    |
-      | 1  | Jersey Boys | Broadway |
-      | 2  | Jersey Boys | Broadway |
-      | 3  | Jersey Boys | Broadway |
+      | event       | venue    | price |
+      | Jersey Boys | Broadway | 50    |
+      | Jersey Boys | Broadway | 50    |
+      | Jersey Boys | Broadway | 50    |
     When I fill in "Price" with "eq50"
     And I press "Search"
     #TODO: Need a Then I should see the following tickets

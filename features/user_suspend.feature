@@ -16,6 +16,5 @@ Feature: User suspension
     And I have found the user "patron@example.com" to suspend
     When I fill in "Reason" with "Testing the suspension feature."
     And I press "Suspend"
-    Then show me the page
     Then I should see "Suspended patron@example.com"
     And I should see "Reason: Testing the suspension feature."
