@@ -1,15 +1,17 @@
 class PerformancesController < ApplicationController
   def duplicate
     @performance = AthenaPerformance.find(params[:id])
-    @new_performance = copy_performance @performance
+    @new_performance = @performance.dup!
     @new_performance.save
-    redirect_to event_url(@performance.event_id)
+    redirect_to event_url(@new_performance.event_id)
   end
   
   def new
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @charts = AthenaChart.find_by_producer(current_user.athena_id)
+    @performance.event_id=@event.id
+    @performance.chart_id=@event.chart_id
   end
   
   def create
@@ -17,7 +19,22 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
     @performance.event_id=@event.id
-    @performance.chart_id=@event.chart_id
+    if @performance.save
+      redirect_to event_url(@performance.event)
+    else
+      render :template => 'performances/new'
+    end
+  end
+  
+  def edit
+    @performance = AthenaPerformance.find(params[:id])
+    @event = AthenaEvent.find(params[:event_id])
+    @charts = AthenaChart.find_by_producer(current_user.athena_id)
+  end
+  
+  def update
+    @performance = AthenaPerformance.find(params[:id])
+    @performance.update_attributes(params[:athena_performance][:athena_performance])
     if @performance.save
       redirect_to event_url(@performance.event)
     else
@@ -31,12 +48,4 @@ class PerformancesController < ApplicationController
     @performance.destroy
     redirect_to event_url(@event)
   end
-
-  private
-    def copy_performance(source_performance)
-      perf = AthenaPerformance.new
-      perf.datetime = source_performance.datetime
-      perf.event_id = source_performance.event_id
-      perf
-    end
 end

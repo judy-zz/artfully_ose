@@ -1,14 +1,16 @@
-%tr.performance-chart-details
-	%td
-	%td{:colspan=>'3'}
-		=chart.name
-- chart.sections.each do |section|
+- unless performance.chart.nil?
 	%tr.performance-chart-details
 		%td
+		%td{:colspan=>'2'}
+			=performance.chart.name
 		%td
-			:erb
-				<%=section.name%>,<%=section.capacity%> seats
-		%td
-			:erb
-				$<%=section.price%>
-		%td
+	- performance.chart.sections.each do |section|
+		%tr.performance-chart-details
+			%td
+			%td
+				:erb
+					<%=section.name%>,<%=section.capacity%> seats
+			%td
+				:erb
+					$<%=section.price%>
+			%td	

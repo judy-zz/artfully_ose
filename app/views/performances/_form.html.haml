@@ -3,4 +3,8 @@
 		%li.element
 			= performance_form.label :datetime, "Performace date/time"
 			.input-fix
-				= performance_form.datetime_select :datetime
+				= performance_form.datetime_select :parsed_datetime, :default=>target.parsed_datetime
+		%li.element
+			= performance_form.label :chart_id, "Seating chart"
+			.input-fix
+				= performance_form.select :chart_id, options_from_collection_for_select(@charts, "id", "name", target.chart.id.to_s ), { :include_blank => true }

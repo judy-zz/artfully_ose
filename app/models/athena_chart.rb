@@ -50,7 +50,7 @@ class AthenaChart < AthenaResource::Base
   end
 
   def self.get_default_name(prefix)
-    prefix + ',default chart'
+    prefix + ', default chart'
   end
 
   def self.default_chart_for(event)
