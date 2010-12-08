@@ -30,6 +30,10 @@ Given /^I can lock Tickets in ATHENA$/ do
   FakeWeb.register_uri(:post, %r|http://localhost/tix/meta/locks/\.json|, :status => [ 200 ], :body => Factory(:unexpired_lock).encode)
 end
 
+Given /^I can save People to ATHENA$/ do
+  FakeWeb.register_uri(:post, 'http://localhost/people/people/.json', :status => 200, :body => Factory(:athena_person).encode )
+end
+
 Given /^the following tickets exist in ATHENA:$/ do |table|
   body = []
   table.hashes.each do |hash|

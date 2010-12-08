@@ -1,10 +1,10 @@
 Feature: Ordering tickets
-
   In order to purchase tickets
   a user wants to be able to select tickets, enter payment information, and confirm the order.
 
   Background:
     Given I can authorize Credit Cards in ATHENA
+    Given I can save People to ATHENA
     And I can settle Credit Cards in ATHENA
 
   Scenario: A user is presented with an order screen when they have found tickets for purchase.
