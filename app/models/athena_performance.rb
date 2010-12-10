@@ -12,9 +12,12 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def chart
+    if chart_id.blank? 
+      return nil 
+    end
     @chart ||= AthenaChart.find(chart_id)
   end
-
+  
   def chart=(chart)
     raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
     @chart, self.chart_id = chart, chart.id

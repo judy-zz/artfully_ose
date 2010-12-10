@@ -27,7 +27,7 @@ class ChartsController < ApplicationController
       render :new
     end
   end
-
+  
   def show
     @chart = AthenaChart.find(params[:id])
     @chart.event = AthenaEvent.find(params[:event_id])

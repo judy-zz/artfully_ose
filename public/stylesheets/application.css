@@ -25,6 +25,10 @@ body{
   text-decoration:none;
 }
 
+h2 {
+	margin: 10px 0px 2px 0px;
+}
+
 h3 {
   font-size:1.5em;
   line-height:2em;
@@ -193,4 +197,9 @@ tr.performance-chart-details {
 
 #performance-table {
 	width:90%;
+}
+
+#widget-display {
+	width:250px;
+	height:300px;
 }

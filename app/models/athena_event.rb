@@ -15,6 +15,9 @@ class AthenaEvent < AthenaResource::Base
   validates_presence_of :name, :venue, :producer
 
   def chart
+    if chart_id.blank? 
+      return nil 
+    end
     @chart ||= AthenaChart.find(chart_id)
   end
 

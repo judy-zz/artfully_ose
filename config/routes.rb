@@ -22,7 +22,6 @@ Artfully::Application.routes.draw do
     end
   end
 
-
   namespace :admin do
     root :to => "index#index"
     resources :users

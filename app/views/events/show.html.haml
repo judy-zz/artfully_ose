@@ -13,9 +13,10 @@
 	= render :partial => 'events/performances', :locals => { :event => @event }
 
 #event-details.col-30
-	=# render :partial => 'events/chart', :locals => { :event => @event }
+	= render :partial => 'events/chart', :locals => { :event => @event }
 
-
-- @widget = render :partial => 'widgets/event', :locals => { :event => @event }
-%textarea= @widget
+	%h2
+		Widget!
+	- @widget = render :partial => 'widgets/event', :locals => { :event => @event }
+	%textarea#widget-display= @widget
 .clear
