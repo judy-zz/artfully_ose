@@ -15,6 +15,31 @@ describe AthenaPerformance do
   it "should report the day of the week of the performance" do
     subject.day_of_week.should eql(DateTime.parse(subject.datetime).strftime("%a"))
   end
+  
+  describe "#dup!" do
+    before(:each) do
+      subject { Factory(:athena_performance) }
+      @new_performance = subject.dup!
+    end
+    
+    it "should not have the same id" do
+      nil.should eq @new_performance.id
+    end
+    
+    it "should have the same event and chart" do
+      @new_performance.event_id.should eq subject.event_id
+      @new_performance.chart_id.should eq subject.chart_id
+    end
+    
+    it "should be set for one day in the future" do
+      DateTime.parse(subject.datetime).should eq DateTime.parse(@new_performance.datetime) - 1.day
+    end
+  end
+
+  it "should return nil if no chart is assigned" do
+    subject.chart_id = nil
+    nil.should eq subject.chart
+  end
 
   it "should update chart_id when assiging a chart" do
     subject.chart = Factory(:athena_chart, :id => 1)

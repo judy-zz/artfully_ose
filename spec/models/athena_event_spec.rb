@@ -17,6 +17,11 @@ describe AthenaEvent do
     subject.should_not be_valid
   end
 
+  it "should return nil if no chart is assigned" do
+    subject.chart_id = nil
+    nil.should eq subject.chart
+  end
+
   it "should be invalid for with an empty venue" do
     subject.venue = nil
     subject.should_not be_valid
