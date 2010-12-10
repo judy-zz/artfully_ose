@@ -13,26 +13,30 @@ describe AthenaPerformance do
   it { should respond_to :day_of_week }
 
   it "should report the day of the week of the performance" do
-    subject.day_of_week.should eql(DateTime.parse(subject.datetime).strftime("%a"))
+    subject.day_of_week.should eql subject.datetime.strftime("%a")
   end
-  
+
+  it "should parse the datetime attribute to a DateTime object" do
+    subject.datetime.kind_of?(DateTime).should be_true
+  end
+
   describe "#dup!" do
     before(:each) do
       subject { Factory(:athena_performance) }
       @new_performance = subject.dup!
     end
-    
+
     it "should not have the same id" do
       nil.should eq @new_performance.id
     end
-    
+
     it "should have the same event and chart" do
       @new_performance.event_id.should eq subject.event_id
       @new_performance.chart_id.should eq subject.chart_id
     end
-    
+
     it "should be set for one day in the future" do
-      DateTime.parse(subject.datetime).should eq DateTime.parse(@new_performance.datetime) - 1.day
+      subject.datetime.should eq @new_performance.datetime - 1.day
     end
   end
 

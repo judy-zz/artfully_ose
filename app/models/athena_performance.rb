@@ -12,12 +12,12 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def chart
-    if chart_id.blank? 
-      return nil 
+    if chart_id.blank?
+      return nil
     end
     @chart ||= AthenaChart.find(chart_id)
   end
-  
+
   def chart=(chart)
     raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
     @chart, self.chart_id = chart, chart.id
@@ -33,36 +33,41 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def day_of_week
-    DateTime.parse(self.datetime).strftime("%a")
+    self.datetime.strftime("%a")
   end
 
   def formatted_performance_time
-    DateTime.parse(self.datetime).strftime("%I:%M %p")
+    self.datetime.strftime("%I:%M %p")
   end
-  
+
   def formatted_performance_date
-    DateTime.parse(self.datetime).strftime("%b, %d %Y")
+    self.datetime.strftime("%b, %d %Y")
   end
-  
+
   def parsed_datetime
-    if self.datetime.nil? 
+    if self.datetime.nil?
       nil
     else
       DateTime.parse(self.datetime)
     end
   end
-  
+
   def update_attributes(attributes)
     prepare_attr!(attributes)
     super
   end
-  
+
   def dup!
     copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' })
-    copy.datetime = (DateTime.parse(copy.datetime) + 1.day).to_s
+    copy.datetime = copy.datetime + 1.day
     copy
   end
-  
+
+  def datetime
+    attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
+    attributes['datetime']
+  end
+
   private
     def prepare_attr!(attributes)
       #TODO: We need to set the correct time zone to whatever zone they're in
