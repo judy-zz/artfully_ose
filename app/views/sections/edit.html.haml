@@ -1,6 +1,6 @@
 = render "shared/error_messages", :target => @section
-= form_for @section, :url => chart_sections_path(@chart, @section) do |form|
+= form_for @section, :url => chart_section_path(@chart, @section) do |form|
   #section
-    %h3 New Section
+    %h3 Edit Section
     = render :partial => 'sections/form', :locals => { :parent_form => form, :target => @section }
     = form.submit "Submit"

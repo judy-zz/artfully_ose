@@ -32,6 +32,7 @@ class AthenaPerformance < AthenaResource::Base
     @event, self.event_id = event, event.id
   end
 
+  #TODO: Move this into localization
   def day_of_week
     DateTime.parse(self.datetime).strftime("%a")
   end

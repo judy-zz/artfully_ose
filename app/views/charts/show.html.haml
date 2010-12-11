@@ -1,15 +1,22 @@
 .links-bar
-	=link_to "View this event", event_path(@chart.event), :class => "link"
+	=link_to "View my templates", charts_path, :class => "link"
 	|
-	=link_to "Edit this chart", edit_event_chart_path(@chart.event, @chart), :class => "link"
+	=link_to "Edit this chart", edit_chart_path(@chart), :class => "link"
 %h3.chart-name=@chart.name
-.event-name
-	Event:
-	=@chart.event.name
 	
-=link_to "Add a section to this chart", "foo", :class => "link"
+=link_to "Add a section to this chart", new_chart_section_path(@chart), :class => "link"
 
 %h2
 	Sections
-- @chart.sections.each do |section|
-	section!
+	%table#chart-list
+		- @chart.sections.each do |section|
+			%tr.chart-details
+				%td
+					:erb
+						<%=section.name%>,<%=section.capacity%> seats
+				%td
+					:erb
+						$<%=section.price%>
+				%td.controls
+					=link_to "edit", edit_chart_section_path(@chart, section), :class => "link"				
+					=link_to "delete", chart_section_path(@chart, section), :method=>:delete, :class => "link"

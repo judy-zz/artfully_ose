@@ -1,13 +1,6 @@
 = render "shared/error_messages", :target => @chart
-= form_for @chart, :url => event_charts_path(@event, @chart) do |form|
+= form_for @chart, :url => charts_path(@chart) do |form|
   #event
     %h3 New Chart
     = render :partial => 'charts/form', :locals => { :parent_form => form, :target => @chart }
-    - unless @charts.empty?
-      = form.fields_for @chart do |chart_form|
-        %ul.chart-form
-          %li.element
-            = chart_form.label :id, "And duplicate the sections from..."
-            .input-fix
-              = chart_form.select :id, options_from_collection_for_select(@charts, "id", "name"), { :include_blank => true }
     = form.submit "Submit"
