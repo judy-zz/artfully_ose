@@ -24,6 +24,8 @@ class EventsController < ApplicationController
   def show
     @event = AthenaEvent.find(params[:id])
     @event.performances= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + @event.id })
+    @charts = AthenaChart.find_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
+    @chart = AthenaChart.new
     respond_to do |format|
       format.html
       format.jsonp  { render_jsonp (@event.to_json) }
