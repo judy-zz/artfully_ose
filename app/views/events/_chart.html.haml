@@ -11,7 +11,8 @@
 				%td
 					Capacity
 				%td
-					Price					
+					Price	
+				%td				
 			- chart.sections.each do |section|
 				%tr
 					%td
@@ -20,3 +21,7 @@
 						=section.capacity
 					%td
 						=section.price
+					%td
+						=link_to "e", edit_chart_section_path(chart, section), :class => "link"				
+						=link_to "d", chart_section_path(chart, section), :method=>:delete, :class => "link"
+						
