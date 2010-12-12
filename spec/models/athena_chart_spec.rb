@@ -8,6 +8,7 @@ describe AthenaChart do
   it { should respond_to :name }
   it { should respond_to :sections }
   it { should respond_to :producer_pid }
+  it { should respond_to :is_template }
 
   it "should create a default based on an event" do
     @event = Factory(:athena_event)
@@ -16,6 +17,23 @@ describe AthenaChart do
     @chart.name.should eq AthenaChart.get_default_name(@event.name)
     @chart.event_id.should eq @event.id
     @chart.id.should eq nil
+  end
+  
+  it "should get charts for an event" do
+    @event = Factory(:athena_event)
+    @event.id = '46'
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :body => "[#{subject.encode}]" )
+    @charts = AthenaChart.find_by_event(@event)
+  end
+  
+  it "should get charts for a producer" do
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq50", :body => "[#{subject.encode}]" )
+    @charts = AthenaChart.find_by_producer('50')
+  end
+  
+  it "should get templates for a producer" do
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq50&isTemplate=eqtrue", :body => "[#{subject.encode}]" )
+    @charts = AthenaChart.find_templates_by_producer('50')
   end
 
   describe "#dup!" do

@@ -14,10 +14,18 @@ Factory.define :address, :class => AthenaAddress, :default_strategy => :build do
   a.country         "United States"
 end
 
+Factory.define :athena_chart_template, :class => AthenaChart, :default_strategy => :build do |c|
+  c.id 300
+  c.producer_pid 3220
+  c.name 'test chart'
+  c.is_template true
+end
+
 Factory.define :athena_chart, :class => AthenaChart, :default_strategy => :build do |c|
   c.id 300
   c.producer_pid 3220
   c.name 'test chart'
+  c.is_template false
 end
 
 Factory.define :athena_section_orchestra, :class => AthenaSection, :default_strategy => :build do |section|
