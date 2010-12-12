@@ -10,6 +10,7 @@ class AthenaChart < AthenaResource::Base
     attribute 'name', :string
     attribute 'eventId', :string
     attribute 'performanceId', :string
+    attribute 'isTemplate', :string
     attribute 'producerPid', :string
   end
 
@@ -21,22 +22,22 @@ class AthenaChart < AthenaResource::Base
     raise TypeError, "Expecting an Array" unless sections.kind_of? Array
     @sections = sections
   end
-
-  def parent
-    if !eventId.nil?
-      @parent ||= AthenaEvent.find(:all, :params => { :chartId => 'eq' + self.id })
-    elsif !performanceId.nil?
-      @parent ||= AthenaPerformance.find(:all, :params => { :performanceId => 'eq' + self.id })
-    end
-    @parent
+  
+  def self.find_by_event(event)
+    self.find(:all, :params => { :eventId => 'eq' + event.id })
   end
   
   def self.find_by_producer(producer_pid)
     self.find(:all, :params => { :producerPid => 'eq' + producer_pid })
   end
+  
+  def self.find_templates_by_producer(producer_pid)
+    self.find(:all, :params => { :producerPid => 'eq' + producer_pid, :isTemplate => 'eqtrue' })
+  end
 
   def dup!
     copy = AthenaChart.new(self.attributes.reject { |key, value| key == 'id' })
+    copy.is_template = false
     copy.sections = self.sections.collect { |section| section.dup! }
     copy
   end

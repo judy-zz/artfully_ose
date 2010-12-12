@@ -1,6 +1,6 @@
 class ChartsController < ApplicationController
   def index
-    @charts = AthenaChart.find_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
+    @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
   end
   
   def new
@@ -11,6 +11,7 @@ class ChartsController < ApplicationController
     @chart = AthenaChart.new
     @chart.update_attributes(params[:athena_chart][:athena_chart])
     @chart.producer_pid = current_user.athena_id
+    @chart.isTemplate = true
      
     if @chart.save
       redirect_to chart_url(@chart)

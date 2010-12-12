@@ -13,7 +13,10 @@
 	= render :partial => 'events/performances', :locals => { :event => @event }
 
 #event-details.col-30
-	= render :partial => 'events/charts', :locals => { :event => @event }
+	= render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
+
+	-@event.charts.each do |c|
+		= render :partial => 'events/chart', :locals => { :chart => c }
 
 	%h2
 		Widget!

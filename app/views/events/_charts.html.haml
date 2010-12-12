@@ -1,7 +1,0 @@
-#chart-selector
-	= form_for @chart, :url => duplicate_chart_path(@event) do |form|
-		%li.element
-			= form.label :id, "Import chart"
-			.input-fix
-				= form.select :id, options_from_collection_for_select(@charts, "id", "name")
-				= form.submit "Submit"

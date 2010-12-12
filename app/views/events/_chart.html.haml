@@ -1,0 +1,22 @@
+#seating-chart
+	#seating-chart-header
+		= chart.name
+	#seating-chart-content
+		%div=link_to "Edit this chart", edit_chart_path(chart), :class => "link"
+		%div=link_to "Add a section to this chart", new_chart_section_path(chart), :class => "link"
+		%table
+			%tr
+				%td
+					Name
+				%td
+					Capacity
+				%td
+					Price					
+			- chart.sections.each do |section|
+				%tr
+					%td
+						=section.name
+					%td
+						=section.capacity
+					%td
+						=section.price
