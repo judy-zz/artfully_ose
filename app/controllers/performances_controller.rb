@@ -29,7 +29,7 @@ class PerformancesController < ApplicationController
   def edit
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(params[:event_id])
-    @charts = AthenaChart.find_by_producer(current_user.athena_id)
+    @charts = AthenaChart.find_by_event(@event)
   end
   
   def update
