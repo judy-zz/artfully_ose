@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  helper_method :current_order
   def current_order
     return @current_order if @current_order
     @current_order ||= Order.find_by_id(session[:order_id])

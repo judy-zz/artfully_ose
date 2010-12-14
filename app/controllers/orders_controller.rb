@@ -1,11 +1,12 @@
 class OrdersController < ApplicationController
   def create
-    @order = Order.new
-    @order.tickets = params[:tickets]
-    if @order.save
-      redirect_to edit_order_url(@order)
+    tickets = params[:tickets].collect { |id| AthenaTicket.find(id) }
+    current_order.add_items tickets
+
+    if current_order.save
+      redirect_to edit_order_url(current_order)
     else
-      flash[:error] = @order.errors
+      flash[:error] = current_order.errors
       redirect_to :back
     end
   end

@@ -1,3 +1,4 @@
 %h2 Your Order
 %ul.ticket-list
-  = render @order.tickets
+  - @order.items.each do |item|
+    = render item.ticket
