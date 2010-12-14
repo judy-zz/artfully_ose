@@ -1,6 +1,7 @@
 Given /^I have started an order for (\d+) tickets to "([^"]*)" at "([^"]*)" for \$(\d+)$/ do |quantity, event, venue, price|
-  Given %Q{I have found #{quantity} tickets to "#{event}" at "#{venue}" for $#{price}}
-  And %Q{I press "Add Tickets"}
+  Given %Q{I have added #{quantity} tickets to "#{event}" at "#{venue}" for $#{price}}
+  Given %{I follow "Shopping Cart"}
+  Given %{I follow "Checkout"}
 
   payment = Factory(:payment)
 

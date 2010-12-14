@@ -7,13 +7,13 @@
 = render "shared/error_messages", :target => @payment.billing_address
 
 %ul.line-items
-  - @order.items.each do |item|
+  - current_order.items.each do |item|
     %li
       = render :partial => 'athena_tickets/line_item', :object => item.ticket
   %li.total
-    = "Total: $#{@order.total}"
+    = "Total: $#{current_order.total}"
 
-= form_for @order do |f|
+= form_tag checkout_path do
   - if @needs_confirmation
     = hidden_field_tag :confirmation, 1
     = render @payment.customer
@@ -23,4 +23,4 @@
 
   = render :partial => 'athena_payments/form', :locals => {:payment => @payment}
 
-= link_to "Cancel Order", order_path(@order), :method => :delete, :confirm => 'Are you sure?'
+= link_to "Cancel Order", order_path(current_order), :method => :delete, :confirm => 'Are you sure?'

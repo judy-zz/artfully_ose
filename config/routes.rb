@@ -6,13 +6,15 @@ Artfully::Application.routes.draw do
     resources :credit_cards
     resources :user_roles
     resources :events
-  
+
 
   end
 
   resources :tickets, :only => [:index, :show]
 
   resources :orders
+  resource :checkout
+
   resources :events do
     resources :performances
   end

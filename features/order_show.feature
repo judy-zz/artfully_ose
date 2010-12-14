@@ -18,4 +18,3 @@ Feature: Ordering tickets
     When I follow "Shopping Cart"
     Then I should see 3 tickets to "Jersey Boys" at "Some Theater" for $50
     And I should see 2 tickets to "Don Giovanni" at "Some Theater" for $100
-    And show me the page
