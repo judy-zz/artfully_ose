@@ -1,6 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
+  def current_order
+    return @current_order if @current_order
+    @current_order ||= Order.find_by_id(session[:order_id])
+    create_current_order if @current_order.nil? or @current_order.completed?
+    @current_order
+  end
+
   protected
     def render_jsonp(json, options={})
       callback, variable = params[:callback], params[:variable]
@@ -16,5 +23,12 @@ class ApplicationController < ActionController::Base
         end
       end
       render({:content_type => :js, :text => response}.merge(options))
+    end
+
+  private
+    def create_current_order
+      @current_order = Order.new
+      @current_order.save!
+      session[:order_id] = @current_order ? @current_order.id : nil
     end
 end

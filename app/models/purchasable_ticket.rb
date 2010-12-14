@@ -1,0 +1,41 @@
+class PurchasableTicket < ActiveRecord::Base
+  belongs_to :order
+  validates_presence_of :ticket_id
+
+  def price
+    ticket.price.to_i
+  end
+
+  def ticket
+    @ticket ||= AthenaTicket.find(self.ticket_id)
+  end
+
+  def ticket=(ticket)
+    @ticket, self.ticket_id = ticket, ticket.id
+  end
+
+  delegate :lockable?, :to => :ticket
+
+  def lock
+    @lock ||= AthenaLock.find(lock_id) unless lock_id.nil?
+  end
+
+  def lock=(lock)
+    raise TypeError, "Expecting an AthenaLock" unless lock.kind_of? AthenaLock
+    @lock, self.lock_id = lock, lock.id
+  end
+
+  def locked?
+    !! self.lock
+  end
+
+  def item_id
+    self.ticket_id
+  end
+
+  #TODO: Tech debt here; ticket_id should probably be private and require that ticket always be assigned.
+  def ticket_id=(id)
+    super(id)
+    @ticket = nil
+  end
+end

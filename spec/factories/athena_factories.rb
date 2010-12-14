@@ -112,6 +112,9 @@ end
 
 Factory.define :lock, :class => AthenaLock, :default_strategy => :build do |t|
   t.id { UUID.new.generate }
+  t.after_build do |lock|
+    FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200, :body => lock.encode)
+  end
 end
 
 Factory.define :unexpired_lock, :parent => :lock, :default_strategy => :build do |t|

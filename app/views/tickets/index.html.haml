@@ -22,4 +22,4 @@
         %li
           = render ticket
           = hidden_field_tag "tickets[]", ticket.id
-    = submit_tag("Buy Tickets") unless @tickets.empty?
+    = submit_tag("Add Tickets") unless @tickets.empty?

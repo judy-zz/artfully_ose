@@ -9,11 +9,8 @@ Feature: Ordering tickets
 
   Scenario: A user is presented with an order screen when they have found tickets for purchase.
     Given I have found 3 tickets to "Jersey Boys" at "Some Theater" for $50
-    When I press "Buy Tickets"
-    Then I should see "Enter Payment Details"
-    And I should see "Customer Information"
-    And I should see "Credit Card Information"
-    And I should see "Billing Address"
+    When I press "Add Tickets"
+    Then I should see "Shopping Cart (3)"
 
   Scenario: A user saves their information when confirming their order
     Given I have started an order for 3 tickets to "Jersey Boys" at "Some Theatre" for $50

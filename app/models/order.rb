@@ -2,19 +2,11 @@ class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 
   belongs_to :user
-  validates_presence_of :lock_id
-  validates_presence_of :tickets
 
-  before_validation :create_lock!
-  before_destroy :release_lock!
-
-  validates_each :lock do |model, attr, value|
-    model.errors.add(attr, "is invalid") unless (!model.send(attr).nil?) && model.send(attr).valid?
-  end
-
+  has_many :purchasable_tickets
 
   state_machine do
-    state :started      # The Order is associated with a Lock (which may or may not still be valid)
+    state :started      # The user has added items to their order
     state :approved     # ATHENA has approved the payment
     state :rejected     # ATHENA has rejected the payment
 
@@ -27,30 +19,42 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def lock
-    @lock ||= AthenaLock.find(lock_id) unless lock_id.nil?
+  def items
+    @items ||= self.purchasable_tickets
   end
 
-  def lock=(lock)
-    raise TypeError, "Expecting an AthenaLock" unless lock.kind_of? AthenaLock
-    @lock = lock
-    self.lock_id = @lock.id
+  def add_item(line_item)
+    line_item = line_item.to_item
+    if line_item.lockable? and not line_item.locked?
+      line_item.lock = create_lock(line_item.item_id)
+    end
+    items << line_item
   end
 
-  def tickets
-    @tickets ||= proxies_for(lock.tickets)
+  def add_items(line_items)
+    line_items.collect! { |i| i.to_item }
+    lock_lockables(line_items.select { |i| i.lockable? })
+    items << line_items
   end
 
-  def tickets=(tickets)
-    @tickets = proxies_for(tickets)
+  def lock_lockables(line_items)
+    lock = create_lock(line_items.collect { |i| i.item_id })
+    line_items.each do |i|
+      i.lock = lock
+      i.save
+    end
   end
 
   def total
-    self.tickets.inject(0) { |sum, ticket| sum + ticket.price.to_i }
+    items.inject(0) { |sum, item| sum + item.price }
   end
 
   def unfinished?
     started? or rejected?
+  end
+
+  def completed?
+    approved?
   end
 
   def pay_with(payment, options = {})
@@ -63,30 +67,13 @@ class Order < ActiveRecord::Base
   end
 
   private
-    def create_lock!
+    #TODO: Debt: Move this out of order into PurchasableCollection
+    def create_lock(ids)
       begin
-        self.lock = AthenaLock.create(:tickets => self.tickets.map { |ticket| ticket.id })
+        lock = AthenaLock.create(:tickets => ids)
       rescue ActiveResource::ResourceConflict
-        self.errors.add(:tickets, "could not be locked")
-      end if needs_new_lock?
-    end
-
-    def needs_new_lock?
-      self.lock_id.nil? || !same_tickets?
-    end
-
-    def same_tickets?
-      self.tickets.map{ |ticket| ticket.id.to_i }.sort == self.lock.tickets.map{ |ticket| ticket.to_i }.sort
-    end
-
-    def release_lock!
-      begin
-        self.lock.destroy unless self.lock.nil?
-      rescue ActiveResource::ServerError, ActiveResource::ResourceNotFound
+        self.errors.add(:items, "could not be locked")
       end
-    end
-
-    def proxies_for(ticket_ids)
-      ticket_ids.map { |ticket_id| AthenaTicketProxy.new(ticket_id) } || []
+      lock
     end
 end
