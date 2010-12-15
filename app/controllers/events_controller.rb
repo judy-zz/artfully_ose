@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   def create
     @event = AthenaEvent.new
-    
+
     @event.update_attributes(params[:athena_event][:athena_event])
     @event.producer_pid = current_user.athena_id
     if @event.save
@@ -23,8 +23,8 @@ class EventsController < ApplicationController
 
   def show
     @event = AthenaEvent.find(params[:id])
-    @event.performances= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + @event.id })
-    @event.charts= AthenaChart.find(:all, :params => { :eventId => 'eq' + @event.id })
+    @event.performances= AthenaPerformance.find(:all, :params => { :eventId => "eq#{@event.id}" })
+    @event.charts= AthenaChart.find(:all, :params => { :eventId => "eq#{@event.id}" })
     @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
     @chart = AthenaChart.new
     respond_to do |format|
@@ -43,7 +43,7 @@ class EventsController < ApplicationController
 
   def update
     @event = AthenaEvent.find(params[:id])
-        
+
     @event.update_attributes(params[:athena_event][:athena_event])
     if @event.save
       redirect_to event_url(@event)

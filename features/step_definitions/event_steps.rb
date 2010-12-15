@@ -29,3 +29,15 @@ end
 When /^I select performance (\d+) for event (\d+) in the event widget$/ do |performance_id, event_id|
   visit "/events/#{event_id}/performances/#{performance_id}.widget"
 end
+
+Given /^the following event exists in ATHENA for "([^"]*)"$/ do |email, table|
+  @event = Factory(:athena_event, table.hashes.first)
+  @event.id = 1
+  @user = User.find_by_email(email)
+  @event.producer_pid = @user.athena_id
+  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{@user.athena_id}", :status => 200, :body => "[#{@event.encode}]")
+  FakeWeb.register_uri(:any, "http://localhost/stage/events/#{@event.id}.json", :status => 200, :body => @event.encode)
+  FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{@event.id}", :status => 200, :body => "[]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :status => 200, :body => "[]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{@user.athena_id}&isTemplate=eqtrue", :status => 200, :body => "[]")
+end
