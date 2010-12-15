@@ -2,6 +2,7 @@ Feature: Display a list of events for a producer
   In order to display a list of events on a producer's own website
   a producer wants to be able insert a javascript widget
 
+  @wip
   Scenario: A producer puts the event list widget on their website
     Given the following producer exists:
     | id | athena_id |
