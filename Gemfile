@@ -22,4 +22,5 @@ group :test, :development do
   gem 'awesome_print'
   gem 'uuid'
   gem 'faker'
+  gem 'jasmine'
 end
