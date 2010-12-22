@@ -51,5 +51,11 @@ describe("Event", function() {
       expect(target).toContain('h2.event-producer');
       expect(target.children('h2.event-producer')).toHaveText(data.producer);
     });
+
+    it("should call to_dom when rendering", function(){
+      spyOn(event,'to_dom');
+      event.render(target);
+      expect(event.to_dom).toHaveBeenCalled();
+    });
   });
 });

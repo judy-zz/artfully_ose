@@ -6,23 +6,36 @@ Event.prototype = {
   performances: [],
 
   render: function(target){
-    target.append(
-      $(document.createElement('h1'))
-      .addClass('event-name')
-      .text(this.name)
-    );
+    return this.to_dom(target) && this.render_performances(target);
+  },
 
-    target.append(
-      $(document.createElement('h2'))
-      .addClass('event-venue')
-      .text(this.venue)
+  to_dom: function(target){
+    return Boolean(
+      target.append(
+        $(document.createElement('h1'))
+        .addClass('event-name')
+        .text(this.name)
+      ).append(
+        $(document.createElement('h2'))
+        .addClass('event-venue')
+        .text(this.venue)
+      ).append(
+        $(document.createElement('h2'))
+        .addClass('event-producer')
+        .text(this.producer)
+      )
     );
+  },
 
-    target.append(
-      $(document.createElement('h2'))
-      .addClass('event-producer')
-      .text(this.producer)
-    );
+  render_performances: function(target){
+    var success = true;
+    if(this.performances.length > 0){
+      target = target.append($(document.createElement('ul')).addClass('performances'));
+      for(var i = 0; i < this.performances.length && success; i++){
+        success &= performances[i].render(target);
+      }
+    }
+    return success;
   },
 
   load: function(data){
@@ -38,5 +51,3 @@ Event.prototype = {
   }
 };
 
-//    target.append($(document.createElement('ul')).addClass('performances'));
-//    for (var i = 0; i < performances.length; i++){
