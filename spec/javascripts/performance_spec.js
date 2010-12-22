@@ -34,31 +34,10 @@ describe("Performance", function() {
       expect(performance.$target.children('a')).toHaveText('Buy Tickets')
     });
 
-
-    describe("search form", function(){
-      var $form;
-
-      beforeEach(function(){
-        performance.$target.children('.ticket-search').click();
-        $form = performance.$target.children('form');
-      });
-
-      it("should add a form to the <li> when 'Buy Tickets' is clicked", function(){
-        expect(performance.$target).toContain('form');
-      });
-
-      it("should have a ticket price input", function(){
-        expect($form).toContain('input.ticket-price');
-      });
-
-      it("should have a ticket quantity input", function(){
-        expect($form).toContain('input.ticket-price');
-      });
-
-      it("should have a ticket search submit", function(){
-        expect($form).toContain('input[type="submit"].ticket-submit');
-      });
-
+    it("should call render_form when 'Buy Tickets' is clicked", function(){
+      spyOn(performance, 'render_form')
+      performance.$target.children('.ticket-search').click();
+      expect(performance.render_form).toHaveBeenCalled();
     });
   });
 });

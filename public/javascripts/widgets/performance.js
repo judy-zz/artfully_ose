@@ -5,8 +5,7 @@ Performance.prototype = {
   $target: null,
 
   render: function(target){
-    this.$target = $(document.createElement('li'))
-                    .appendTo(target);
+    this.$target = $(document.createElement('li')).appendTo(target);
 
     $(document.createElement('span'))
     .addClass('performance-datetime')
@@ -34,47 +33,24 @@ Performance.prototype = {
   },
 
   render_form: function(){
-    var $form = $(document.createElement('form'))
-                .appendTo(this.$target);
+    new TicketSearchForm().render(this.$target);
 
-    this.render_price($form);
-    this.render_quantity($form);
-    this.render_submit($form)
-  },
+    params = {
+      performance: this,
+      price:$('.ticket-price').value(),
+      quantity:$('.ticket-quantity').value()
+    }
 
-  render_price: function($form){
-    return $(document.createElement('input'))
-    .addClass('ticket-price')
-    .attr('type','text')
-    .attr('name','price')
-    .appendTo($form);
-  },
-
-  render_quantity: function($form){
-    return $(document.createElement('input'))
-    .addClass('ticket-quantity')
-    .attr('type','text')
-    .attr('name','quantity')
-    .appendTo($form);
-  },
-
-  render_submit: function($form){
-    return $(document.createElement('input'))
-    .addClass('ticket-submit')
-    .attr('type','submit')
-    .attr('value','Search')
-    .click({performance:this},function(e){
-      $.getJSON(e.data.performance.uri(e.data.performance.id), function(data){
-        e.data.performance.create_tickets(data);
-      });
+    this.$target.children('.ticket.submit').click({params:params},function(e){
+      add_tickets(Ticket.find(e.data.params));
     })
-    .appendTo($form);
   },
 
   uri: function(id){
     return "http://localhost:3000/performances/" + id + ".jsonp?callback=?";
-  }
-  create_tickets: function(data){
+  },
+
+  add_tickets: function(data){
     for(var i = 0; i < data.length; i++){
       this.tickets.push(new Ticket(data[i]));
     }
