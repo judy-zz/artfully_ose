@@ -27,12 +27,15 @@ Event.prototype = {
     );
   },
 
-  render_performances: function(target){
+  render_performances: function($target){
     var success = true;
     if(this.performances.length > 0){
-      target = target.append($(document.createElement('ul')).addClass('performances'));
+      $ul = $(document.createElement('ul'))
+                .addClass('performances')
+                .appendTo($target);
+
       for(var i = 0; i < this.performances.length && success; i++){
-        success &= performances[i].render(target);
+        success &= performances[i].render($ul);
       }
     }
     return success;

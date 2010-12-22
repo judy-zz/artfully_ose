@@ -15,19 +15,50 @@ describe("Performance", function() {
     });
   });
 
-  describe("performance render", function(){
+  describe("render", function(){
     var target;
 
     beforeEach(function(){
       jasmine.getFixtures().set('<ul class="performances">');
       $target = $(".performances");
+      performance.render($target);
     });
 
     it("should render the name in an li .performance-datetime", function(){
-      var real_datetime = new Date(data.datetime)
-      performance.render($target);
-      expect($target).toContain('li');
-      expect($target.children('li')).toHaveText(performance.datestring(new Date(real_datetime)));
+      expect(performance.$target).toContain('.performance-datetime');
+      expect(performance.$target.children('.performance-datetime')).toHaveText(performance.datestring(new Date(data.datetime)));
+    });
+
+    it("should add a 'Buy Tickets' link to the <li>", function(){
+      expect(performance.$target).toContain('a.ticket-search');
+      expect(performance.$target.children('a')).toHaveText('Buy Tickets')
+    });
+
+
+    describe("search form", function(){
+      var $form;
+
+      beforeEach(function(){
+        performance.$target.children('.ticket-search').click();
+        $form = performance.$target.children('form');
+      });
+
+      it("should add a form to the <li> when 'Buy Tickets' is clicked", function(){
+        expect(performance.$target).toContain('form');
+      });
+
+      it("should have a ticket price input", function(){
+        expect($form).toContain('input.ticket-price');
+      });
+
+      it("should have a ticket quantity input", function(){
+        expect($form).toContain('input.ticket-price');
+      });
+
+      it("should have a ticket search submit", function(){
+        expect($form).toContain('input[type="submit"].ticket-submit');
+      });
+
     });
   });
 });
