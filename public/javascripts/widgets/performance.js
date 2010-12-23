@@ -35,14 +35,14 @@ Performance.prototype = {
   render_form: function(){
     new TicketSearchForm().render(this.$target);
 
-    params = {
-      performance: this,
-      price:$('.ticket-price').value(),
-      quantity:$('.ticket-quantity').value()
-    }
+    this.$target.children('.ticket.submit').click({performance:this},function(e){
+      params = {
+        performance: e.data.performance,
+        price:$('input.ticket-price').value(),
+        quantity:$('input.ticket-quantity').value()
+      };
 
-    this.$target.children('.ticket.submit').click({params:params},function(e){
-      add_tickets(Ticket.find(e.data.params));
+      add_tickets(Ticket.find(e.data.params)) && render_tickets();
     })
   },
 
@@ -54,5 +54,13 @@ Performance.prototype = {
     for(var i = 0; i < data.length; i++){
       this.tickets.push(new Ticket(data[i]));
     }
+
+    return (this.tickets.length > 0);
+
+
+  },
+
+  render_tickets: function(){
+    //$(document.createElement('ul'))
   }
 };

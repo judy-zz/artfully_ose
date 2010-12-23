@@ -12,8 +12,6 @@ Ticket.find = function(data){
   });
 };
 
-Ticket.base_uri = "http://localhost:3000/tickets.jsonp?callback=?";
-
 Ticket.search_uri = function(params){
   var uri = Ticket.base_uri;
   for(var param in params){
@@ -23,22 +21,43 @@ Ticket.search_uri = function(params){
 }
 
 Ticket.prototype = {
-  event: "",
-  venue: "",
-  performance: "",
-  price: "",
+  event: null,
+  venue: null,
+  performance: null,
+  price: null,
+
+  base_uri:"http://localhost:3000/tickets.jsonp?callback=?",
 
   load: function(data){
     this.event = data.event;
     this.venue = data.venue;
-    this.performance = new Date(data.performance);
+// TODO: Global date formatter?
+//    this.performance = new Date(data.performance);
+    this.performance = data.performance;
     this.price = data.price;
+  },
+
+  render: function($target){
+    this.$target = $target.addClass('ticket')
+
+    $(document.createElement('span'))
+    .addClass('ticket-event')
+    .text(this.event)
+    .appendTo(this.$target);
+
+    $(document.createElement('span'))
+    .addClass('ticket-date')
+    .text(this.performance)
+    .appendTo(this.$target);
+
+    return $target;
   }
 };
 
 function TicketSearchForm(){}
 
 TicketSearchForm.prototype = {
+
   render: function($target){
     $form = $(document.createElement('form'));
     this.render_price($form);
