@@ -54,13 +54,15 @@ Performance.prototype = {
     for(var i = 0; i < data.length; i++){
       this.tickets.push(new Ticket(data[i]));
     }
-
     return (this.tickets.length > 0);
-
-
   },
 
   render_tickets: function(){
-    //$(document.createElement('ul'))
+    var $ul = $(document.createElement('ul'))
+              .appendTo(this.$target);
+
+    for(var i = 0; i < this.tickets.length; i++){
+      this.tickets[i].render($ul);
+    }
   }
 };
