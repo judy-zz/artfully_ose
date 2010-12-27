@@ -33,7 +33,7 @@ Performance.prototype = {
   },
 
   render_form: function(){
-    new TicketSearchForm().render(this.$target);
+    new PerformanceForm().render(this.$target);
 
     this.$target.children('.ticket.submit').click({performance:this},function(e){
       params = {
@@ -41,28 +41,47 @@ Performance.prototype = {
         price:$('input.ticket-price').value(),
         quantity:$('input.ticket-quantity').value()
       };
-
-      add_tickets(Ticket.find(e.data.params)) && render_tickets();
+      var form = new TicketForm(Ticket.find(e.data.params));
+      form.render(this.$target);
     })
   },
 
   uri: function(id){
     return "http://localhost:3000/performances/" + id + ".jsonp?callback=?";
+  }
+};
+
+function PerformanceForm(){}
+
+PerformanceForm.prototype = {
+
+  render: function($target){
+    $form = $(document.createElement('form'));
+    this.render_price($form);
+    this.render_quantity($form);
+    this.render_submit($form);
+
+    $form.appendTo($target);
   },
 
-  add_tickets: function(data){
-    for(var i = 0; i < data.length; i++){
-      this.tickets.push(new Ticket(data[i]));
-    }
-    return (this.tickets.length > 0);
+  render_price: function($form){
+    $(document.createElement('input'))
+    .addClass('ticket-price')
+    .attr({type:'text',name:'price'})
+    .appendTo($form);
   },
 
-  render_tickets: function(){
-    var $ul = $(document.createElement('ul'))
-              .appendTo(this.$target);
+  render_quantity: function($form){
+    $(document.createElement('input'))
+    .addClass('ticket-quantity')
+    .attr({type:'text', name:'quantity'})
+    .appendTo($form);
+  },
 
-    for(var i = 0; i < this.tickets.length; i++){
-      this.tickets[i].render($ul);
-    }
+  render_submit: function($form){
+    $(document.createElement('input'))
+    .addClass('ticket-submit')
+    .attr({type:'submit', value:'Search'})
+    .appendTo($form);
   }
 };

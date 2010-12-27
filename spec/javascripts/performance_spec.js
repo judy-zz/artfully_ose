@@ -40,19 +40,4 @@ describe("Performance", function() {
       expect(performance.render_form).toHaveBeenCalled();
     });
   });
-
-  describe("render_tickets", function(){
-    var $target, tickets;
-
-    beforeEach(function(){
-      jasmine.getFixtures().set('<div class="performance>"');
-      $target = $("div.performance");
-      performance.render($target);
-
-      tickets = '[{event:"Some Event", performance:"2002-05-30T09:00:00", price:"$50"}, {event:"Some Event", performance:"2002-05-30T09:00:00", price:"$50"}]';
-
-      performance.add_tickets(tickets)
-      performance.render_tickets();
-    });
-  });
 });

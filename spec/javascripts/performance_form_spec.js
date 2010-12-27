@@ -1,8 +1,8 @@
-describe("TicketSearchForm", function(){
+describe("PerformanceForm", function(){
   var form, target;
 
   beforeEach(function(){
-    form = new TicketSearchForm()
+    form = new PerformanceForm()
     jasmine.getFixtures().set('<div id="target">');
     target = $("#target");
   });

@@ -15,10 +15,12 @@ Ticket.find = function(data){
 Ticket.search_uri = function(params){
   var uri = Ticket.base_uri;
   for(var param in params){
-    uri += "&" + param + "=eq" + params[param];
+    if(params.hasOwnProperty(param)){
+      uri += "&" + param + "=eq" + params[param];
+    }
   }
   return uri;
-}
+};
 
 Ticket.prototype = {
   event: null,
@@ -38,7 +40,7 @@ Ticket.prototype = {
   },
 
   render: function($target){
-    this.$target = $target.addClass('ticket')
+    this.$target = $target.addClass('ticket');
 
     $(document.createElement('span'))
     .addClass('ticket-event')
@@ -54,37 +56,30 @@ Ticket.prototype = {
   }
 };
 
-function TicketSearchForm(){}
+function TicketForm(data) { this.load(data); }
 
-TicketSearchForm.prototype = {
+TicketForm.prototype = {
+  load: function(data){
+    this.tickets = [];
+    for(var i = 0; i < data.length; i++){
+      this.tickets.push(new Ticket(data[i]));
+    }
+  },
 
   render: function($target){
-    $form = $(document.createElement('form'));
-    this.render_price($form);
-    this.render_quantity($form);
-    this.render_submit($form);
+    if (this.tickets.length > 0){
+      var $form = $(document.createElement('form')).appendTo($target);
+      var $ul = $(document.createElement('ul')).appendTo($form);
+      var $li = $(document.createElement('li'));
+      $li.append($(document.createElement('input')).attr({'type':'checkbox', 'name':'tickets[]', 'checked':'checked'}));
 
-    $form.appendTo($target);
-  },
+      for(var i = 0; i < this.tickets.length; i++){
+        this.tickets[i].render($li.clone().appendTo($ul));
+      }
 
-  render_price: function($form){
-    $(document.createElement('input'))
-    .addClass('ticket-price')
-    .attr({type:'text',name:'price'})
-    .appendTo($form);
-  },
-
-  render_quantity: function($form){
-    $(document.createElement('input'))
-    .addClass('ticket-quantity')
-    .attr({type:'text', name:'quantity'})
-    .appendTo($form);
-  },
-
-  render_submit: function($form){
-    $(document.createElement('input'))
-    .addClass('ticket-submit')
-    .attr({type:'submit', value:'Search'})
-    .appendTo($form);
+      $(document.createElement('input'))
+      .attr({type:'submit', value:'Add to Cart'})
+      .appendTo($form);
+    }
   }
 };
