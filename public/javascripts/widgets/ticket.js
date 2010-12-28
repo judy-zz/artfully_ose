@@ -23,6 +23,7 @@ Ticket.search_uri = function(params){
 };
 
 Ticket.prototype = {
+  id: null,
   event: null,
   venue: null,
   performance: null,
@@ -31,6 +32,7 @@ Ticket.prototype = {
   base_uri:"http://localhost:3000/tickets.jsonp?callback=?",
 
   load: function(data){
+    this.id = data.id;
     this.event = data.event;
     this.venue = data.venue;
 // TODO: Global date formatter?
@@ -68,13 +70,27 @@ TicketForm.prototype = {
 
   render: function($target){
     if (this.tickets.length > 0){
-      var $form = $(document.createElement('form')).appendTo($target);
+      var $form = $(document.createElement('form'))
+                  .submit(function(){
+                    $('input:checked',this).each(function(){
+                      ShoppingCart.add_ticket($(this).attr('value'));
+                    });
+                    return false;
+                  })
+                  .appendTo($target);
       var $ul = $(document.createElement('ul')).appendTo($form);
       var $li = $(document.createElement('li'));
-      $li.append($(document.createElement('input')).attr({'type':'checkbox', 'name':'tickets[]', 'checked':'checked'}));
+      $li.append($(document.createElement('input'))
+          .attr({
+            'type':'checkbox',
+            'name':'tickets[]',
+            'checked':'checked'
+          }));
 
       for(var i = 0; i < this.tickets.length; i++){
-        this.tickets[i].render($li.clone().appendTo($ul));
+        var tmp = $li.clone();
+        tmp.children('input:checkbox').attr('value',this.tickets[i].id);
+        this.tickets[i].render(tmp.appendTo($ul));
       }
 
       $(document.createElement('input'))

@@ -6,8 +6,8 @@ describe("TicketForm", function(){
     $target = $("div.target");
 
     data = [
-      {event:"Some Event", performance:"2002-05-30T09:00:00", price:"$50"},
-      {event:"Some Event", performance:"2002-05-30T09:00:00", price:"$50"}
+      {id: "1", event:"Some Event", performance:"2002-05-30T09:00:00", price:"$50"},
+      {id: "2", event:"Some Event", performance:"2002-05-30T09:00:00", price:"$50"}
     ];
 
     form = new TicketForm(data);
@@ -45,6 +45,18 @@ describe("TicketForm", function(){
       $ul.find('input:checkbox').each(function(index){
         expect($(this)).toBeChecked();
       });
+    });
+
+    it("should use the ticket id as the value of the checkbox",function(){
+      $ul.find('input:checkbox').each(function(index){
+        expect($(this).val()).toBe(data[index].id);
+      });
+    });
+
+    it("should call ShoppingCart.add_tickets() on submit", function(){
+      spyOn(ShoppingCart,'add_ticket');
+      $('form').submit();
+      expect(ShoppingCart.add_ticket).toHaveBeenCalled();
     });
   });
 });
