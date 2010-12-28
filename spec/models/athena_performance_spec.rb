@@ -15,25 +15,6 @@ describe AthenaPerformance do
   it "should report the day of the week of the performance" do
     subject.day_of_week.should eql subject.datetime.strftime("%a")
   end
-  
-  describe "create tickets" do
-    before(:each) do
-      @chart = Factory(:athena_chart)
-      @orchestra_section = Factory(:athena_section_orchestra)
-      @balcony_section = Factory(:athena_section_balcony)
-      @chart.sections = [@balcony_section, @orchestra_section]
-      subject.chart = @chart
-    end
-    
-    it "should create tickets" do
-      @ticket = Factory(:athena_chart)
-      FakeWeb.register_uri(:post, "http://localhost/tix/tickets/.json", :body => @ticket.encode )
-      subject.create_tickets
-      FakeWeb.last_request.path.should == "/tix/tickets/.json"
-    end
-    
-  
-  end
 
   it "should accept a string as datetime" do
     subject.datetime = '2010-03-03T02:02:02-04:00'
