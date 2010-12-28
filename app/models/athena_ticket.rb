@@ -20,4 +20,13 @@ class AthenaTicket < AthenaResource::Base
     search_for[:_limit] = params[:limit] unless params[:limit].blank?
     AthenaTicket.find(:all, :params => search_for) unless search_for.empty?
   end
+
+
+  def lockable?
+    true
+  end
+
+  def to_item
+    PurchasableTicket.create(:ticket_id => self.id)
+  end
 end

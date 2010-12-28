@@ -6,13 +6,15 @@ Artfully::Application.routes.draw do
     resources :credit_cards
     resources :user_roles
     resources :events
-  
+
 
   end
 
   resources :tickets, :only => [:index, :show]
 
   resources :orders
+  resource :checkout
+
   resources :events do
     resources :performances
   end
@@ -28,6 +30,7 @@ Artfully::Application.routes.draw do
 
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
   match '/events/:event_id/charts/duplicate/' => 'charts#duplicate', :as => :duplicate_chart
+  match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
 
   root :to => "index#index"
 end

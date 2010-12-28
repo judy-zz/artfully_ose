@@ -1,0 +1,13 @@
+= @event.name
+= @performance.datetime
+
+= form_tag('/tickets.widget', :method => :get) do
+  = label_tag(:price, "Price:")
+  %br
+  = text_field_tag(:price)
+  %br
+  = label_tag(:limit, "Number of Tickets")
+  %br
+  = text_field_tag(:limit)
+  %br
+  = submit_tag("Search")

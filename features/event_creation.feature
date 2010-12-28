@@ -7,8 +7,8 @@ Feature: Event creation
     And I can save Tickets to ATHENA
     And I can get Tickets from ATHENA
 
+  @wip
   Scenario: A producer creates a new event
-    Given pending
     Given I am logged in as a "producer"
       And I am on the new event page
     When I fill in "Title" with "Some Title"

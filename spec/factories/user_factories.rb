@@ -3,7 +3,7 @@ Factory.define :user do |u|
   u.password 'password'
   u.after_build { FakeWeb.register_uri(:post, 'http://localhost/people/people/.json',
                                        :status => 200,
-                                       :body => Factory(:person).encode) }
+                                       :body => Factory(:person_with_id).encode) }
 end
 
 Factory.define :admin, :parent => :user do |u|

@@ -18,6 +18,10 @@
             = link_to "Sign up", new_user_registration_path
             or
             = link_to "sign in", new_user_session_path
+        - unless current_order.nil? or current_order.items.empty?
+          #cart
+            = link_to "Shopping Cart", order_path(current_order)
+            = "(#{current_order.items.count})"
         %h1= link_to "Artful.ly", root_path
       %ul#menu
         %li= link_to "Home", root_path

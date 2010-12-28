@@ -5,7 +5,7 @@ class PerformancesController < ApplicationController
     @new_performance.save
     redirect_to event_url(@new_performance.event_id)
   end
-  
+
   def new
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
@@ -13,7 +13,7 @@ class PerformancesController < ApplicationController
     @performance.event_id=@event.id
     @performance.chart_id=@event.chart_id
   end
-  
+
   def create
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
@@ -23,6 +23,15 @@ class PerformancesController < ApplicationController
       redirect_to event_url(@performance.event)
     else
       render :template => 'performances/new'
+    end
+  end
+
+  def show
+    @event = AthenaEvent.find(params[:event_id])
+    @performance = AthenaPerformance.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.widget
     end
   end
   
@@ -47,5 +56,12 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @performance.destroy
     redirect_to event_url(@event)
+  end
+  
+  def createtickets
+    @performance = AthenaPerformance.find(params[:id])
+    AthenaTicketFactory.for_performance(@performance)
+    @tickets = AthenaTicket.find(:all, :params => { :performanceId => "eq#{@performance.id}" })
+    render :template => 'performances/tickets'
   end
 end

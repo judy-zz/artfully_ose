@@ -86,4 +86,15 @@ describe AthenaTicket do
       FakeWeb.last_request.path.should == "/tix/tickets/.json?_limit=10"
     end
   end
+
+  describe "to_item" do
+    subject { Factory(:ticket_with_id) }
+    it "should be a PurchasableTicket" do
+      subject.to_item.should be_a PurchasableTicket
+    end
+
+    it "should be the right PurchasableTicket" do
+      subject.to_item.ticket_id.should eq subject.id.to_i
+    end
+  end
 end

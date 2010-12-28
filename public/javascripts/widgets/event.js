@@ -1,7 +1,7 @@
 function display_event(data){
-  $("#event").append($(document.createElement('h1')).text(data['name']))
-  $("#event").append($(document.createElement('h2')).text(data['venue']))
-  $("#event").append($(document.createElement('h2')).text(data['producer']))
+  $("#event").append($(document.createElement('h1')).text(data['name']));
+  $("#event").append($(document.createElement('h2')).text(data['venue']));
+  $("#event").append($(document.createElement('h2')).text(data['producer']));
 }
 
 function display_performances(performances){

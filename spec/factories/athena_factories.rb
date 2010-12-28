@@ -1,5 +1,13 @@
+Factory.sequence :person_id do |n|
+  n
+end
+
 Factory.define :person, :class => AthenaPerson, :default_strategy => :build do |p|
   p.email { Faker::Internet.email}
+end
+
+Factory.define :person_with_id, :parent => :person do |p|
+  p.id { Factory.next :person_id }
 end
 
 Factory.define :address, :class => AthenaAddress, :default_strategy => :build do |a|
@@ -112,6 +120,9 @@ end
 
 Factory.define :lock, :class => AthenaLock, :default_strategy => :build do |t|
   t.id { UUID.new.generate }
+  t.after_build do |lock|
+    FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200, :body => lock.encode)
+  end
 end
 
 Factory.define :unexpired_lock, :parent => :lock, :default_strategy => :build do |t|

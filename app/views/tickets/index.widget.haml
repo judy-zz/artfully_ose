@@ -1,0 +1,11 @@
+- if @tickets.blank?
+  %p No tickets were found.
+- else
+  = "Found #{pluralize(@tickets.size, 'ticket')}"
+  = form_tag('/orders.widget', :method => :post) do
+    %ul.ticket-list
+      -@tickets.each do |ticket|
+        %li
+          = render ticket
+          = hidden_field_tag "tickets[]", ticket.id
+    = submit_tag("Buy Tickets") unless @tickets.empty?

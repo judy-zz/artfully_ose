@@ -5,3 +5,4 @@
 # Mime::Type.register_alias "text/html", :iphone
 
 Mime::Type.register_alias "application/json", :jsonp
+Mime::Type.register_alias "text/html", :widget

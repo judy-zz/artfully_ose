@@ -9,6 +9,16 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'chartId', :string
     attribute 'producerId', :string
     attribute 'datetime', :string
+    attribute 'ticketsCreated', :string
+  end
+
+  def initialize(attributes={})
+    attributes['tickets_created'] = 'false'
+    super(attributes)
+  end
+
+  def tickets_created?
+    'true'.eql? attributes['tickets_created']
   end
 
   def chart

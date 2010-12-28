@@ -1,3 +1,5 @@
 %h2 Your Order
 %ul.ticket-list
-  = render @order.tickets
+  - current_order.items.each do |item|
+    = render item.ticket
+= link_to "Checkout", new_checkout_path
