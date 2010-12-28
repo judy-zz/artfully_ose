@@ -31,14 +31,14 @@ end
 Factory.define :athena_section_orchestra, :class => AthenaSection, :default_strategy => :build do |section|
   section.id 44
   section.name 'Orchestra'
-  section.capacity 40
+  section.capacity 10
   section.price 50
 end
 
 Factory.define :athena_section_balcony, :class => AthenaSection, :default_strategy => :build do |section|
   section.id 45
   section.name 'Balcony'
-  section.capacity 404
+  section.capacity 5
   section.price 5
 end
 
