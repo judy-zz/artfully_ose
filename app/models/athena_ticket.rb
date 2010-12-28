@@ -9,6 +9,7 @@ class AthenaTicket < AthenaResource::Base
     attribute 'venue',        :string
     attribute 'performance',  :string
     attribute 'sold',         :string
+    attribute 'section',         :string
     attribute 'price',        :integer
   end
 

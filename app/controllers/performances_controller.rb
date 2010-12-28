@@ -19,6 +19,7 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
     @performance.event_id=@event.id
+    @performance.tickets_created = 'false'
     if @performance.save
       redirect_to event_url(@performance.event)
     else
@@ -27,8 +28,9 @@ class PerformancesController < ApplicationController
   end
 
   def show
-    @event = AthenaEvent.find(params[:event_id])
     @performance = AthenaPerformance.find(params[:id])
+    @event = AthenaEvent.find(@performance.event_id)
+    @tickets = AthenaTicket.find(:all, :params => { :performanceId => "eq#{@performance.id}" })
     respond_to do |format|
       format.html
       format.widget
@@ -61,7 +63,8 @@ class PerformancesController < ApplicationController
   def createtickets
     @performance = AthenaPerformance.find(params[:id])
     AthenaTicketFactory.for_performance(@performance)
-    @tickets = AthenaTicket.find(:all, :params => { :performanceId => "eq#{@performance.id}" })
-    render :template => 'performances/tickets'
+    @event = AthenaEvent.find(@performance.event_id)
+    @charts = AthenaChart.find_by_event(@event)
+    redirect_to performance_url(@performance)
   end
 end

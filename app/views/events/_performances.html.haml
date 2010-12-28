@@ -21,6 +21,7 @@
 					%td
 						=performance.formatted_performance_time
 					%td
+						=link_to "view", performance_path(performance), :class=>"link"
 						=link_to "dupe", duplicate_performance_path(performance), :class=>"link"
 						=link_to "delete", event_performance_path(event, performance), :method=>:delete, :class=>"link"
 						=link_to "edit", edit_event_performance_path(event, performance), :class=>"link"

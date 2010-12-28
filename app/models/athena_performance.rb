@@ -12,13 +12,9 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'ticketsCreated', :string
   end
 
-  def initialize(attributes={})
-    attributes['tickets_created'] = 'false'
-    super(attributes)
-  end
-
   def tickets_created?
-    'true'.eql? attributes['tickets_created']
+    #'true'.eql? attributes['tickets_created']
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['tickets_created'])
   end
 
   def chart
@@ -69,7 +65,8 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def dup!
-    copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' })
+    copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' || key == 'tickets_created' })
+    copy.tickets_created = 'false'
     copy.datetime = copy.datetime + 1.day
     copy
   end

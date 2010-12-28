@@ -14,6 +14,7 @@ Artfully::Application.routes.draw do
 
   resources :orders
   resource :checkout
+  resources :performances
 
   resources :events do
     resources :performances
