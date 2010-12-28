@@ -57,4 +57,11 @@ class PerformancesController < ApplicationController
     @performance.destroy
     redirect_to event_url(@event)
   end
+  
+  def createtickets
+    @performance = AthenaPerformance.find(params[:id])
+    AthenaTicketFactory.for_performance(@performance)
+    @tickets = AthenaTicket.find(:all, :params => { :performanceId => "eq#{@performance.id}" })
+    render :template => 'performances/tickets'
+  end
 end
