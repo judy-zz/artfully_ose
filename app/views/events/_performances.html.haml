@@ -24,8 +24,8 @@
 						=link_to "dupe", duplicate_performance_path(performance), :class=>"link"
 						=link_to "delete", event_performance_path(event, performance), :method=>:delete, :class=>"link"
 						=link_to "edit", edit_event_performance_path(event, performance), :class=>"link"
-						- if performance.tickets_created
+						- if performance.tickets_created?
 							=link_to "view tickets", create_tickets_for_performance_path(performance), :class=>"link"
 						- else
-							=link_to "view tickets", create_tickets_for_performance_path(performance), :class=>"link"							
+							=link_to "create tickets", create_tickets_for_performance_path(performance), :class=>"link"							
 				= render :partial => 'events/performance_chart', :locals => { :event => event, :performance => performance }
