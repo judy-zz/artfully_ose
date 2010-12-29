@@ -216,3 +216,19 @@ td.controls {
 	width:250px;
 	height:300px;
 }
+
+.athena-ticket {
+	float:left;
+	text-align:center;
+  -moz-box-shadow: 3px 3px 3px #ccc;
+  -webkit-box-shadow: 3px 3px 3px #ccc;
+  box-shadow: 3px 3px 3px #ccc;
+  border:1px solid #006B91;
+	margin:10px;
+	padding:10px;
+}
+
+.athena-ticket .event {
+	font-size:24px;
+	font-weight:bold;
+}

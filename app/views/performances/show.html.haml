@@ -1,2 +1,23 @@
-= render @performance
-= render @tickets
+.links-bar
+	=link_to "View my events", events_path, :class => "link"
+	|
+	=link_to "View this event", event_path(@event), :class => "link"
+	|
+	=link_to "Add new performance", new_event_performance_path(@event), :class => "link"
+	|
+	=link_to "Duplicate this performance", duplicate_performance_path(@performance), :class=>"link"
+%h3
+	:erb
+		<%=@performance.day_of_week%>, <%=@performance.formatted_performance_date%> <%=@performance.formatted_performance_time%>
+.event-name=@event.name
+.venue-name=@event.venue
+.producer-name=@event.producer
+.tickets
+	- if !@performance.tickets_created?
+		%p
+			You have not created tickets for this event.
+		%p
+			=link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
+	- else
+		=render @tickets
+		.clear
