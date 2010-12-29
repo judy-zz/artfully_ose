@@ -1,0 +1,16 @@
+#menu
+  %ul
+    %li
+      = link_to root_path do
+        = image_tag "icons/small_icons_3/Home.png"
+        %span Home
+
+    - unless current_user.nil?
+      %li
+        = link_to current_user do
+          = image_tag "icons/small_icons_3/dashboard2.png"
+          %span Dashboard
+    %li
+      = link_to tickets_path do
+        = image_tag "icons/small_icons_3/tickets.png"
+        %span Tickets
