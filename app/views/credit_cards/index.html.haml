@@ -1,4 +1,5 @@
-%h2 My Credit Cards
+- content_for :header do
+  %h1 My Credit Cards
 %ul#credit_cards
   - @credit_cards.each do |credit_card|
     %li.credit_card
