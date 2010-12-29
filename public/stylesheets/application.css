@@ -1,6 +1,6 @@
-@import "/stylesheets/jQuery_UI.css";
-@import "/stylesheets/iPhoneCheckboxes.css";
-@import "/stylesheets/visualize.css";
+@import "/stylesheets/jquery/jquery.ui.css";
+@import "/stylesheets/jquery/jquery.iphone-checkboxes.css";
+@import "/stylesheets/jquery/jquery.visualize.css";
 
 /* --- 1. CSS RESET --- */
 
@@ -105,7 +105,7 @@ h1 span {
 #primary_left #logoSmall{
 	position:absolute;
 top:34px;
-left:20px;	
+left:20px;
 
 opacity:0;
 }
@@ -179,7 +179,7 @@ opacity:0;
 }
 
 #menu ul li.current li a {
-	
+
 }
 
 #menu ul ul {
@@ -243,11 +243,11 @@ opacity:0;
 	padding:10px 20px 20px 0;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
+	-webkit-border-radius: 5px;
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
-	
+
 	margin-bottom: 30px;
 }
 
@@ -283,12 +283,12 @@ opacity:0;
 }
 
 .autoWidth{
-	width: auto;	
+	width: auto;
 }
 
 .autoWidth p {
 	width: auto;
-	float: left;	
+	float: left;
 }
 
 /*SUCCESS BOX*/
@@ -518,7 +518,7 @@ opacity:0;
 /* --- 4.x DASHBOARD ICONS MENU --- */
 
 ul.dash {
-	list-style-type:none;	
+	list-style-type:none;
 }
 
 ul.dash li {
@@ -527,20 +527,20 @@ ul.dash li {
 	margin:0 15px 15px 0;
 	width:100px;
 	height:100px;
-	
+
 	position:relative;
 	z-index:80;
-	
+
 	border:1px solid #fff;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	
+	-webkit-border-radius: 5px;
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
-	
+
 	background:#fbfbfb;
 	background: -moz-linear-gradient(top,#fbfbfb,#f5f5f5);
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#f5f5f5));
@@ -593,10 +593,10 @@ ul.dash li .bubble {
 	color:#fff;
 	z-index:90;
 	border:1px solid #b20606;
-	
+
 	border-radius: 7px;
 	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;	
+	-webkit-border-radius: 7px;
 	background:#ff2e2e;
 	background: -moz-linear-gradient(top,#ff2e2e,#c80606);
 	background: -webkit-gradient(linear, left top, left bottom, from(#ff2e2e), to(#c80606));
@@ -634,11 +634,11 @@ table.fancy td {
 
 table.normal {
 	border:1px solid #fff;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	
+	-webkit-border-radius: 5px;
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
@@ -692,20 +692,20 @@ table.normal tbody td {
 
 fieldset {
 	border:1px solid #fff;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	
+	-webkit-border-radius: 5px;
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
 	padding:20px 20px 0 20px;
-	
+
 	background:#fbfbfb;
 	background: -moz-linear-gradient(top,#fbfbfb,#f5f5f5);
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#f5f5f5));
-	
+
 	margin-bottom:15px;
 }
 
@@ -721,19 +721,19 @@ table tfoot td {
 
 fieldset legend {
 	border:1px solid #fff;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	
+	-webkit-border-radius: 5px;
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
-	
+
 	background:#fbfbfb;
 	background: -moz-linear-gradient(top,#fbfbfb,#f5f5f5);
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#f5f5f5));
-	
+
 	padding:5px 20px;
 	text-transform:uppercase;
 	font-size:11px;
@@ -743,22 +743,22 @@ input, select {
 	padding:6px 10px;
 	background:#eee;
 	color:#888;
-	
+
 	border-width:1px;
 	border-style:solid;
 	border-color:#d9d9d9 #eaeaea white;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	
+	-webkit-border-radius: 5px;
+
 	font-size:11px;
 	margin-right:15px;
 }
 
 select option {
 	padding:6px 10px;
-	
+
 }
 
 input.sf {
@@ -821,17 +821,17 @@ a.table_icon {
 	float:left;
 	margin-right:5px;
 	padding:5px 5px 0px 5px;
-	
+
 	border:1px solid #fff;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	
+	-webkit-border-radius: 5px;
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
-	
+
 	background: -moz-linear-gradient(top,#fbfbfb,#f5f5f5);
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#f5f5f5));
 }
@@ -845,20 +845,20 @@ a.button_link, input[type="submit"], input[type="reset"], .ui-dialog .ui-dialog-
 
 	letter-spacing:0px;
 
-	
+
 	padding:6px 10px 6px 10px;
 	margin:0 10px 5px 0;
-	
+
 	background: #fcfcfc;
 	background: -moz-linear-gradient(top, #ffffff, #fcfcfc 2%, #d4d4d4);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(.01, #fcfcfc), to(#d4d4d4)); 
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(.01, #fcfcfc), to(#d4d4d4));
 
 	border:1px solid #b9b9b9;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	
+
 	outline:none;
 }
 
@@ -866,12 +866,12 @@ a.button_link, input[type="submit"], input[type="reset"], .ui-dialog .ui-dialog-
 	-moz-box-shadow: none!important;
 	-webkit-box-shadow: none!important;
 	box-shadow: none!important;
-	
+
 	font-size:12px;
 	font-family:Arial, Helvetica, sans-serif!important;
 	letter-spacing:0;
 	font-weight:bold;
-	
+
 	display:inline-block;
 }
 
@@ -884,8 +884,8 @@ a.button_link:hover, input[type="submit"]:hover, input[type="reset"]:hover, .ui-
 
 	background: #fcfcfc;
 	background: -moz-linear-gradient(top, #ffffff, #fcfcfc 2%, #d4d4d4);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(.01, #fcfcfc), to(#d4d4d4)); 
-	
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(.01, #fcfcfc), to(#d4d4d4));
+
 	cursor:pointer;
 
 }
@@ -907,31 +907,31 @@ ul.paginator li a {
 	text-decoration:none;
 	font-size:11px;
 	color:#666;
-	
+
 	border:1px solid #fff;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
-	
+	-webkit-border-radius: 5px;
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
-	
+
 	background: -moz-linear-gradient(top,#fbfbfb,#f5f5f5);
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#f5f5f5));
 }
 
 ul.paginator li a.current {
 	border:1px solid #1a1a1a;
-		
+
 	color:#ccc;
 	background:url('/assets/blue/button_repeater.png') 0 0 repeat-x;
-	
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
@@ -960,9 +960,9 @@ ul.paginator li a.current {
 #easyTooltip {
 	position:relative;
 	padding:10px 15px 10px 15px;
-	
+
 	color:#4b4b4b;
-	
+
 	font-size:12px;
 	font-family:Arial, Helvetica, sans-serif;
 	font-weight:bold;
@@ -979,8 +979,8 @@ ul.paginator li a.current {
 	border-radius:10px;
 	background: #fcfcfc;
 	background: -moz-linear-gradient(top, #ffffff, #fcfcfc 2%, #d4d4d4);
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(.01, #fcfcfc), to(#d4d4d4)); 
-	
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #ffffff), color-stop(.01, #fcfcfc), to(#d4d4d4));
+
 
 }
 
@@ -1024,7 +1024,7 @@ table {
 	padding:8px 16px 16px 0;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;	
+	-webkit-border-radius: 5px;
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
@@ -1032,7 +1032,7 @@ table {
 }
 
 .minibox span {
-	
+
 	display: block;
 	width: 19px;
 	height: 19px;
@@ -1081,14 +1081,14 @@ table {
 }
 
 .userinfo h2{
-margin-bottom:8px;	
+margin-bottom:8px;
 }
 
 /* optionTable*/
 .optionContainer {
 
-    
-    width: 822px;	
+
+    width: 822px;
 	padding-left:12px;
 	padding-top:30px;
 }
@@ -1098,15 +1098,15 @@ margin-bottom:8px;
 	float:left;
 	display:inline-block;
 	padding:0;
-	
-	
+
+
 	border-top: 1px solid #f3fbff;
 	border-bottom: 1px solid #bedae9;
 	border-right:1px solid #d7d7d7;
 	background: #e0f4ff;
 	background: -moz-linear-gradient(top,#e0f4ff,#d4e6f0);
 	background: -webkit-gradient(linear, left top, left bottom, from(#e0f4ff), to(#d4e6f0));
- 
+
 	-moz-box-shadow: 1px 1px 0px #999;
 	-webkit-box-shadow: 1px 1px 0px #999;
 	box-shadow: 1px 1px 0px #999;
@@ -1146,7 +1146,7 @@ border-top: 0 none;
 #middleOption{
 	 border-radius: 0px;
 	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;	
+	-webkit-border-radius: 0px;
 		-moz-box-shadow: 0px 1px 0px #999;
 	-webkit-box-shadow: 0px 1px 0px #999;
 	box-shadow: 0px 1px 0px #999;
@@ -1161,8 +1161,8 @@ border-top: 0 none;
 }
 /* Seating Price Templates */
 .templateContainer {
-    
-    width: 822px;	
+
+    width: 822px;
 	padding-left:12px;
 	padding-top:30px;
 }
@@ -1176,7 +1176,7 @@ border-top: 0 none;
 	background: #f0f0f0;
 	background: -moz-linear-gradient(top,#f0f0f0,#e1e1e1);
 	background: -webkit-gradient(linear, left top, left bottom, from(#f0f0f0), to(#e1e1e1));
-	
+
 
 }
 
@@ -1190,7 +1190,7 @@ border-top: 0 none;
 }
 table.seating td{
 padding: 8px 3px;
-    width: 85px;	
+    width: 85px;
 	background-color:#E0F4FF;
 }
 
@@ -1202,4 +1202,3 @@ pre code { font-size:14px; background:none;}
 .codeHeading{
 		font-size:14px;
 	}
-	
