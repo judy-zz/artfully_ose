@@ -12,6 +12,7 @@ Feature: Ordering tickets
     When I press "Add Tickets"
     Then I should see "Shopping Cart (3)"
 
+
   Scenario: A user saves their information when confirming their order
     Given I have started an order for 3 tickets to "Jersey Boys" at "Some Theatre" for $50
     And I can save Customers to ATHENA

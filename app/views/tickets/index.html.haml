@@ -1,4 +1,6 @@
-%h2 Search for Tickets
+- content_for :header do
+  %h1 Search for Tickets
+
 = form_tag('/tickets', :method => :get) do
   = label_tag(:price, "Price:")
   %br

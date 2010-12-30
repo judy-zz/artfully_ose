@@ -1,34 +1,44 @@
 !!!
 %html
   %head
-    %title
-      = "#{yield :title} : Artful.ly"
-    = stylesheet_link_tag "reset", "application", "forms"
-    = javascript_include_tag :defaults
+    %title= "#{yield :title} : Artful.ly"
+
+    = stylesheet_link_tag "application"
+
+    = javascript_include_tag "cufon-yui", "cufon.harabara-700"
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"
+    = javascript_include_tag "rails", "jquery/jquery-ui-1.8.5.custom.min.js", "jquery/jquery-ui-1.8.5.custom.min.js","jquery/jquery.hover-intent.min.js","jquery/jquery.tablesorter.min.js","jquery/jquery.easy-tooltip.js","jquery/jquery.iphone-checkboxes.js","jquery/jquery.visualize.js"
+    = javascript_include_tag "application"
+
+    /[if IE 8]
+      = javascript_include_tag "ie/excanvas.js"
+      = stylesheet_link_tag "ie/IEFix"
+    /[if IE 7]
+      = javascript_include_tag "ie/excanvas.js"
+      = stylesheet_link_tag "ie/IEFix"
+
     = csrf_meta_tag
 
   %body
-    #page
-      #header
-        #session_nav
-          - if user_signed_in?
-            = "Signed in as #{current_user.email}. Not you?"
-            = link_to "Sign out", destroy_user_session_path
-          - else
-            = link_to "Sign up", new_user_registration_path
-            or
-            = link_to "sign in", new_user_session_path
-        - unless current_order.nil? or current_order.items.empty?
-          #cart
-            = link_to "Shopping Cart", order_path(current_order)
-            = "(#{current_order.items.count})"
-        %h1= link_to "Artful.ly", root_path
-      %ul#menu
-        %li= link_to "Home", root_path
-        %li= link_to "Dashboard", current_user unless current_user.nil?
-        %li= link_to "Tickets", tickets_path
-      #content
-        = flash[:notice]
-        = flash[:error]
-        = flash[:alert]
-        = yield
+    #container
+      #bgwrap
+        #primary_left
+          #logoSmall
+            = link_to image_tag('logoSmall.png', :alt => 'Logo (Small)', :width => "30px"), root_path
+          #logo
+            = link_to image_tag('logo.png', :alt => 'Logo', :width => "175px"), root_path
+          #menu
+            = render 'layouts/menu'
+          #HelpBtn
+            -# <img src="/images/helpbtn/helpLeft.jpg" width="12" height="93"><a href="http://artfully.brandonstore.com/Help"><img src="/images/helpbtn/helpRight.jpg" width="36" height="84"></a>
+        #primary_right
+          .inner
+            .two_third.column
+              = yield :header
+            .one_third.column.last
+              = render :partial => 'layouts/session_nav'
+            = render :partial => 'layouts/current_order', :locals => { :current_order => current_order }
+            = flash[:notice]
+            = flash[:error]
+            = flash[:alert]
+            = yield
