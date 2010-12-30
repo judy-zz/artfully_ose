@@ -13,7 +13,6 @@
 src_files:
   - spec/javascripts/support/jquery-1.4.4.js
   - spec/javascripts/support/jasmine-jquery-1.1.3.js
-  - public/javascripts/application.js
   - public/javascripts/widgets/shopping_cart.js
   - public/javascripts/widgets/ticket.js
   - public/javascripts/widgets/event.js
