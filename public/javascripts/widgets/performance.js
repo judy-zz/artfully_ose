@@ -1,4 +1,6 @@
 function Performance(data) { this.load(data); }
+function PerformanceForm(){}
+
 Performance.prototype = {
   id: "",
   datetime: "",
@@ -43,15 +45,13 @@ Performance.prototype = {
       };
       var form = new TicketForm(Ticket.find(e.data.params));
       form.render(this.$target);
-    })
+    });
   },
 
   uri: function(id){
     return "http://localhost:3000/performances/" + id + ".jsonp?callback=?";
   }
 };
-
-function PerformanceForm(){}
 
 PerformanceForm.prototype = {
 

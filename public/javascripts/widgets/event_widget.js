@@ -18,7 +18,7 @@ EventWidget.prototype = {
       });
     }
     this.event = new Event(this.data);
-    return this.data
+    return this.data;
   },
 
   render: function(){

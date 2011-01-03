@@ -2,12 +2,9 @@ var ShoppingCart = {
   $iframe: null,
 
   iframe: function(){
-    if(this.$iframe == null){
+    if(this.$iframe === null){
       this.$iframe = $(document.createElement('iframe'))
-        .attr({
-          'name': 'shopping_cart',
-          'id'  : 'shopping-cart'
-        })
+        .attr({'name':'shopping_cart','id':'shopping-cart'})
         .appendTo('body');
     }
     return this.$iframe;
@@ -22,8 +19,7 @@ var ShoppingCart = {
   },
 
   remove_iframe: function(){
-    if(this.$iframe){
-      this.$iframe.remove();
+    if(this.$iframe && this.$iframe.remove()){
       this.$iframe = null;
     }
   },
@@ -32,7 +28,6 @@ var ShoppingCart = {
     return function(form){
       ShoppingCart.show_iframe();
       $(form).attr('target',ShoppingCart.iframe().attr('name'));
-    }
+    };
   }
-
 };
