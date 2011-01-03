@@ -2,29 +2,26 @@ function Ticket(data){ this.load(data); }
 function TicketForm(data) { this.load(data); }
 
 var Config = {
-  base_uri: 'http://localhost:3001/'
+  base_uri: 'http://localhost:3000/'
 };
 
 Ticket.uri = Config.base_uri + 'tickets.jsonp?callback=?';
 TicketForm.order_uri = Config.base_uri + 'orders';
 
-Ticket.find = function(data){
-  params = {
-    performance:data.performance,
-    price: data.price,
-    quantity: data.quantity
-  };
-
+Ticket.find = function(params, callback){
   $.getJSON(Ticket.search_uri(params), function(data){
-    return data;
+    callback(data);
   });
 };
 
 Ticket.search_uri = function(params){
   var uri = this.uri;
   for(var param in params){
-    if(params.hasOwnProperty(param)){
+    if(params.hasOwnProperty(param))
+    if(param != "_limit"){
       uri += "&" + param + "=eq" + params[param];
+    } else {
+      uri += "&" + param + "=" + params[param];
     }
   }
   return uri;
@@ -72,7 +69,7 @@ TicketForm.prototype = {
   render: function($target){
     if (this.tickets.length > 0){
       var $form = $(document.createElement('form'))
-                  .attr({'method': 'post','action': this.order_uri })
+                  .attr({'method': 'post', 'target': 'shopping_cart', 'action': TicketForm.order_uri })
                   .submit(ShoppingCart.submit_tickets(this))
                   .appendTo($target);
 

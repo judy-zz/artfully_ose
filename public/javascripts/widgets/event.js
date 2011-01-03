@@ -10,6 +10,7 @@ Event.prototype = {
     this.venue = data.venue;
     this.producer = data.producer;
     this.performances = [];
+    this.load_performances(data);
   },
 
   render: function(target){
@@ -42,7 +43,7 @@ Event.prototype = {
                 .appendTo($target);
 
       for(var i = 0; i < this.performances.length && success; i++){
-        success &= performances[i].render($ul);
+        success &= this.performances[i].render($ul);
       }
     }
     return success;

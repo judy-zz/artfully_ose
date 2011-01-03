@@ -2,27 +2,17 @@ var Config = {
   base_uri: 'http://localhost:3000/'
 };
 
-function EventWidget(id, options){
-  this.id = id;
+$.ajaxSetup({
+  beforeSend: function(xhr) {xhr.setRequestHeader("Accept","text/javascript")}
+})
+
+EventWidget = function(id, options){
   Config = $.extend(Config, options);
-}
 
-EventWidget.prototype = {
-  run: function(){
-    return this.fetch() && this.render();
-  },
+  var event;
 
-  fetch: function(){
-    if(!this.data){
-      $.getJSON(Event.uri(this.id), function(data){
-        this.data = data;
-      });
-    }
-    this.event = new Event(this.data);
-    return this.data;
-  },
-
-  render: function(){
-    return this.event.render($('#event'));
-  }
+  $.getJSON(Event.uri(id), function(data){
+    event = new Event(data);
+    event.render($('#event'));
+  });
 };

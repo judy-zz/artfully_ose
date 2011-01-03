@@ -27,7 +27,8 @@ var ShoppingCart = {
   submit_tickets: function(){
     return function(form){
       ShoppingCart.show_iframe();
-      $(form).attr('target',ShoppingCart.iframe().attr('name'));
+//      $(form).attr('target',ShoppingCart.iframe().attr('name'))
+//      return false;
     };
   }
 };
