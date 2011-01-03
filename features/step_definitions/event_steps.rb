@@ -27,6 +27,7 @@ Then /^the response should be JSON with callback "([^"]*)" for the following eve
 end
 
 When /^I select performance (\d+) for event (\d+) in the event widget$/ do |performance_id, event_id|
+  FakeWeb.register_uri(:any, "http://localhost/tix/tickets/.json?performanceId=eq", :status => 200, :body => "[]")
   visit "/events/#{event_id}/performances/#{performance_id}.widget"
 end
 
