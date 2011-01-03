@@ -1,4 +1,12 @@
 function Ticket(data){ this.load(data); }
+function TicketForm(data) { this.load(data); }
+
+var Config = {
+  base_uri: 'http://localhost:3001/'
+};
+
+Ticket.uri = Config.base_uri + 'tickets.jsonp?callback=?';
+TicketForm.order_uri = Config.base_uri + 'orders';
 
 Ticket.find = function(data){
   params = {
@@ -13,7 +21,7 @@ Ticket.find = function(data){
 };
 
 Ticket.search_uri = function(params){
-  var uri = Ticket.base_uri;
+  var uri = this.uri;
   for(var param in params){
     if(params.hasOwnProperty(param)){
       uri += "&" + param + "=eq" + params[param];
@@ -23,14 +31,6 @@ Ticket.search_uri = function(params){
 };
 
 Ticket.prototype = {
-  id: null,
-  event: null,
-  venue: null,
-  performance: null,
-  price: null,
-
-  base_uri:"http://localhost:3000/tickets.jsonp?callback=?",
-
   load: function(data){
     this.id = data.id;
     this.event = data.event;
@@ -58,9 +58,10 @@ Ticket.prototype = {
   }
 };
 
-function TicketForm(data) { this.load(data); }
+
 
 TicketForm.prototype = {
+
   load: function(data){
     this.tickets = [];
     for(var i = 0; i < data.length; i++){
@@ -71,7 +72,7 @@ TicketForm.prototype = {
   render: function($target){
     if (this.tickets.length > 0){
       var $form = $(document.createElement('form'))
-                  .attr({'method': 'post','action': 'http://localhost:3000/orders'})
+                  .attr({'method': 'post','action': this.order_uri })
                   .submit(ShoppingCart.submit_tickets(this))
                   .appendTo($target);
 

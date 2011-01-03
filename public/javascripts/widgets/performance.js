@@ -1,11 +1,11 @@
 function Performance(data) { this.load(data); }
 function PerformanceForm(){}
 
-Performance.prototype = {
-  id: "",
-  datetime: "",
-  $target: null,
+Performance.uri = function(id){
+  return Config.base_uri + 'performances/' + id + '.jsonp?callback=?';
+}
 
+Performance.prototype = {
   render: function(target){
     this.$target = $(document.createElement('li')).appendTo(target);
 
@@ -46,15 +46,10 @@ Performance.prototype = {
       var form = new TicketForm(Ticket.find(e.data.params));
       form.render(this.$target);
     });
-  },
-
-  uri: function(id){
-    return "http://localhost:3000/performances/" + id + ".jsonp?callback=?";
   }
 };
 
 PerformanceForm.prototype = {
-
   render: function($target){
     $form = $(document.createElement('form'));
     this.render_price($form);

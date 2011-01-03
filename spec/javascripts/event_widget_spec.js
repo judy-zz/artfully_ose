@@ -2,7 +2,7 @@ describe("EventWidget", function(){
   var widget;
 
   beforeEach(function(){
-    widget = new EventWidget(1);
+    widget = new EventWidget(1, { base_uri:'http://localhost:3000/'});
     widget.data = $.parseJSON('{"name":"Some Venue", "venue":"Some Venue", "producer":"Some Producer", "performances":[]}')
   });
 

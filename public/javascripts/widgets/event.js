@@ -1,9 +1,16 @@
 function Event(data){ this.load(data); }
+
+Event.uri = function(id){
+  return Config.base_uri + 'events/' + id + '.jsonp?callback=?';
+}
+
 Event.prototype = {
-  name: "",
-  venue: "",
-  producer: "",
-  performances: [],
+  load: function(data){
+    this.name = data.name;
+    this.venue = data.venue;
+    this.producer = data.producer;
+    this.performances = [];
+  },
 
   render: function(target){
     return this.to_dom(target) && this.render_performances(target);
@@ -39,12 +46,6 @@ Event.prototype = {
       }
     }
     return success;
-  },
-
-  load: function(data){
-    this.name = data.name;
-    this.venue = data.venue;
-    this.producer = data.producer;
   },
 
   load_performances: function(data){

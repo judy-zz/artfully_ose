@@ -19,7 +19,7 @@ describe("Ticket", function(){
         quantity: 10
       };
 
-      expect(Ticket.search_uri(params)).toEqual(Ticket.base_uri + "&performance=eq2002-05-30T09:00:00&price=eq5&quantity=eq10")
+      expect(Ticket.search_uri(params)).toEqual(Ticket.uri + "&performance=eq2002-05-30T09:00:00&price=eq5&quantity=eq10")
     });
   });
 
