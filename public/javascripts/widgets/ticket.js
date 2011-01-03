@@ -71,21 +71,14 @@ TicketForm.prototype = {
   render: function($target){
     if (this.tickets.length > 0){
       var $form = $(document.createElement('form'))
-                  .submit(function(){
-                    $('input:checked',this).each(function(){
-                      ShoppingCart.add_ticket($(this).attr('value'));
-                    });
-                    return false;
-                  })
+                  .attr({'method': 'post','action': 'http://localhost:3000/orders'})
+                  .submit(ShoppingCart.submit_tickets(this))
                   .appendTo($target);
+
       var $ul = $(document.createElement('ul')).appendTo($form);
       var $li = $(document.createElement('li'));
       $li.append($(document.createElement('input'))
-          .attr({
-            'type':'checkbox',
-            'name':'tickets[]',
-            'checked':'checked'
-          }));
+          .attr({'type':'checkbox','name':'tickets[]','checked':'checked'}));
 
       for(var i = 0; i < this.tickets.length; i++){
         var tmp = $li.clone();

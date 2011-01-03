@@ -53,10 +53,11 @@ describe("TicketForm", function(){
       });
     });
 
-    it("should call ShoppingCart.add_tickets() on submit", function(){
-      spyOn(ShoppingCart,'add_ticket');
+    it("should call ShoppingCart.show_iframe() on submit", function(){
+      spyOn(ShoppingCart,'show_iframe');
       $('form').submit();
-      expect(ShoppingCart.add_ticket).toHaveBeenCalled();
+      expect(ShoppingCart.show_iframe).toHaveBeenCalled();
+      ShoppingCart.remove_iframe();
     });
   });
 });
