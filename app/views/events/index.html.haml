@@ -1,11 +1,12 @@
+- content_for :header do
+  %h1 Events
+
 %ul.dash
   %li
     =link_to new_event_path do
       = image_tag "icons/dashboard/Gray/2.png"
       %span New Event
 
-
-%div
 
 - unless @events.blank?
   %table.normal.tablesorter

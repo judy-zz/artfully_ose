@@ -1,14 +1,10 @@
 = parent_form.fields_for target do |event_form|
-	%ul.event-form
-		%li.element
-			= event_form.label :name, "Name"
-			.input-fix
-				= event_form.text_field :name
-		%li.element
-			= event_form.label :venue, "Venue"
-			.input-fix
-				= event_form.text_field :venue
-		%li.element
-			= event_form.label :producer, "Producer"
-			.input-fix
-				= event_form.text_field :producer
+  %p
+    = event_form.label :name, "Name"
+    = event_form.text_field :name
+  %p
+    = event_form.label :venue, "Venue"
+    = event_form.text_field :venue
+  %p
+    = event_form.label :producer, "Producer"
+    = event_form.text_field :producer
