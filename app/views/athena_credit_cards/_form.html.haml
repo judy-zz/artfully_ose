@@ -1,18 +1,13 @@
 = parent_form.fields_for target do |cc_form|
-  %ul.credit_card
-    %li.element
-      = cc_form.label :cardholder_name, "Cardholder Name"
-      .input-fix
-        = cc_form.text_field :cardholder_name
-    %li.element.left
-      = cc_form.label :card_number, "Number"
-      .input-fix
-        = cc_form.text_field :card_number, :disabled => !target.new_record?
-    %li.element.right
-      = cc_form.label :cvv, "CVV"
-      .input-fix
-        = cc_form.text_field :cvv, :disabled => !target.new_record?
-    %li.element
-      = cc_form.label :expiration_date, "Expiration Date"
-      .input-fix
-        = cc_form.date_select :expiration_date, :order => [:month, :year], :use_month_numbers => true, :start_year => Time.now.year, :end_year => Time.now.year + 10
+  %p
+    = cc_form.label :cardholder_name, "Cardholder Name"
+    = cc_form.text_field :cardholder_name
+  %p
+    = cc_form.label :card_number, "Number"
+    = cc_form.text_field :card_number, :disabled => !target.new_record?
+  %p
+    = cc_form.label :cvv, "CVV"
+    = cc_form.text_field :cvv, :disabled => !target.new_record?
+  %p
+    = cc_form.label :expiration_date, "Expiration Date"
+    = cc_form.date_select :expiration_date, :order => [:month, :year], :use_month_numbers => true, :start_year => Time.now.year, :end_year => Time.now.year + 10

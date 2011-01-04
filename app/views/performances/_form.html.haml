@@ -1,10 +1,7 @@
 = parent_form.fields_for target do |performance_form|
-	%ul.performance-form
-		%li.element
-			= performance_form.label :datetime, "Performace date/time"
-			.input-fix
-				= performance_form.datetime_select :datetime, :default=>target.datetime
-		%li.element
-			= performance_form.label :chart_id, "Seating chart"
-			.input-fix
-				= performance_form.select :chart_id, options_from_collection_for_select(@charts, "id", "name", target.chart_id.to_s )
+  %p
+    = performance_form.label :datetime, "Performace date/time"
+    = performance_form.datetime_select :datetime, :default=>target.datetime
+  %p
+    = performance_form.label :chart_id, "Seating chart"
+    = performance_form.select :chart_id, options_from_collection_for_select(@charts, "id", "name", target.chart_id.to_s )

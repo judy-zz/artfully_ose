@@ -1,46 +1,28 @@
 = parent_form.fields_for address_type, target do |addr_form|
-  %ul.address
-    %li.element.left
-      = addr_form.label :first_name, "First Name"
-      .input-fix
-        = addr_form.text_field :first_name
-
-    %li.element.right
-      = addr_form.label :last_name, "Last Name"
-      .input-fix
-        = addr_form.text_field :last_name
-
-    %li.element
-      = addr_form.label :company, "Company"
-      .input-fix
-        = addr_form.text_field :company
-
-    %li.element
-      = addr_form.label :street_address1, "Street Address"
-      .input-fix
-        = addr_form.text_field :street_address1
-
-    %li.element
-      = addr_form.label :street_address2, "Street Address"
-      .input-fix
-        = addr_form.text_field :street_address2
-
-    %li.element.left
-      = addr_form.label :city, "City"
-      .input-fix
-        = addr_form.text_field :city
-
-    %li.element.right
-      = addr_form.label :state, "State"
-      .input-fix
-        = addr_form.text_field :state
-
-    %li.element.left
-      = addr_form.label :postal_code, "Postal Code"
-      .input-fix
-        = addr_form.text_field :postal_code
-
-    %li.element.right
-      = addr_form.label :country, "Country"
-      .input-fix
-        = addr_form.text_field :country
+  %p
+    = addr_form.label :first_name, "First Name"
+    = addr_form.text_field :first_name
+  %p
+    = addr_form.label :last_name, "Last Name"
+    = addr_form.text_field :last_name
+  %p
+    = addr_form.label :company, "Company"
+    = addr_form.text_field :company
+  %p
+    = addr_form.label :street_address1, "Street Address"
+    = addr_form.text_field :street_address1
+  %p
+    = addr_form.label :street_address2, "Street Address"
+    = addr_form.text_field :street_address2
+  %p
+    = addr_form.label :city, "City"
+    = addr_form.text_field :city
+  %p
+    = addr_form.label :state, "State"
+    = addr_form.text_field :state
+  %p
+    = addr_form.label :postal_code, "Postal Code"
+    = addr_form.text_field :postal_code
+  %p
+    = addr_form.label :country, "Country"
+    = addr_form.text_field :country
