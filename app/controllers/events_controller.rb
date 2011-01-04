@@ -5,9 +5,11 @@ class EventsController < ApplicationController
     @event.update_attributes(params[:athena_event][:athena_event])
     @event.producer_pid = current_user.athena_id
     if @event.save
+      flash[:notice] = "Your event has been created."
       redirect_to event_url(@event)
     else
-      render :template => 'events/new'
+      flash[:error] = "Your event has not been created."
+      render :new
     end
   end
 
@@ -50,9 +52,11 @@ class EventsController < ApplicationController
 
     @event.update_attributes(params[:athena_event][:athena_event])
     if @event.save
+      flash[:notice] = "Your event has been updated."
       redirect_to event_url(@event)
     else
-      render :edit and return
+      flash[:error] = "Your event has not been updated."
+      render :edit
     end
   end
 end

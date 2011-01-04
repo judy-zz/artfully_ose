@@ -1,0 +1,23 @@
+- if flash[:notice]
+  .notification.success
+    %span
+    .text
+      %p
+        %strong Success!
+        = flash[:notice]
+
+- if flash[:error]
+  .notification.error
+    %span
+    .text
+      %p
+        %strong Oops!
+        = flash[:error]
+
+- if flash[:alert]
+  .notification.warning
+    %span
+    .text
+      %p
+        %strong Warning!
+        = flash[:alert]

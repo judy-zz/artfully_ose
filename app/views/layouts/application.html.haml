@@ -37,8 +37,10 @@
               = yield :header
             .one_third.column.last
               = render :partial => 'layouts/session_nav'
+
+            .clearboth
+
             = render :partial => 'layouts/current_order', :locals => { :current_order => current_order }
-            = flash[:notice]
-            = flash[:error]
-            = flash[:alert]
+            = render :partial => 'layouts/flash', :locals => { :flash => flash }
+            - flash.discard
             = yield
