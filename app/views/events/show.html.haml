@@ -2,27 +2,21 @@
   %h1= @event.name
 
 .links-bar
-  =link_to "View my events", events_path, :class => "link"
-  |
   =link_to "Edit this event", edit_event_path(@event), :class => "link"
-  |
   =link_to "Add new performance", new_event_performance_path(@event), :class => "link"
 
+.venue-name= @event.venue
+.producer-name= @event.producer
 
-#event-details.col-65
-  .venue-name=@event.venue
-  .producer-name=@event.producer
+= render :partial => 'events/performances', :locals => { :event => @event }
 
-  = render :partial => 'events/performances', :locals => { :event => @event }
+.clearboth
+%h2 Charts
+= render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
 
-#event-details.col-30
-  = render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
+- @event.charts.each do |c|
+  = render :partial => 'events/chart', :locals => { :chart => c }
 
-  -@event.charts.each do |c|
-    = render :partial => 'events/chart', :locals => { :chart => c }
-
-  %h2
-    Widget!
-  - @widget = render :partial => 'widgets/event', :locals => { :event => @event }
-  %textarea#widget-display= @widget
-.clear
+.clearboth
+%h2 Widget
+%textarea= render :partial => 'widgets/event', :locals => { :event => @event }
