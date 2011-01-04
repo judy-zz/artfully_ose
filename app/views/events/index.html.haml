@@ -1,21 +1,26 @@
+%ul.dash
+  %li
+    =link_to new_event_path do
+      = image_tag "icons/dashboard/Gray/2.png"
+      %span New Event
+
+
 %div
-	=link_to image_tag("new_event.gif", :border=>0), new_event_path, :class => "link"
+
 - unless @events.blank?
-	%table
-		%tr
-			%th
-				Name
-			%th
-				Venue
-			%th
-				Producer
-		- @events.each do |event|
-			%tr
-				%td
-					=link_to event.name, event_path(event), :class => "link"
-				%td
-					=event.venue
-				%td
-					=event.producer
-				%td
-					=event.producer
+  %table.normal.tablesorter
+    %thead
+      %tr
+        %th Name
+        %th Venue
+        %th Producer
+        %th Actions
+    %tbody
+      - @events.each do |event|
+        %tr
+          %td= link_to event.name, event_path(event), :class => "link"
+          %td= event.venue
+          %td= event.producer
+          %td
+            = link_to image_tag("icons/actions_small/Pencil.png"), edit_event_path(event), :class => 'table_icon'
+            = link_to image_tag("icons/actions_small/Trash.png"), "#", :confirm => "Are you sure?", :method => :delete,:class => 'table_icon'

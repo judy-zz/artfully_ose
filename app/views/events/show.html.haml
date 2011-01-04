@@ -1,25 +1,28 @@
+- content_for :header do
+  %h1= @event.name
+
 .links-bar
-	=link_to "View my events", events_path, :class => "link"
-	|
-	=link_to "Edit this event", edit_event_path(@event), :class => "link"
-	|
-	=link_to "Add new performance", new_event_performance_path(@event), :class => "link"
-%h3.event-name=@event.name
+  =link_to "View my events", events_path, :class => "link"
+  |
+  =link_to "Edit this event", edit_event_path(@event), :class => "link"
+  |
+  =link_to "Add new performance", new_event_performance_path(@event), :class => "link"
+
 
 #event-details.col-65
-	.venue-name=@event.venue
-	.producer-name=@event.producer
+  .venue-name=@event.venue
+  .producer-name=@event.producer
 
-	= render :partial => 'events/performances', :locals => { :event => @event }
+  = render :partial => 'events/performances', :locals => { :event => @event }
 
 #event-details.col-30
-	= render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
+  = render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
 
-	-@event.charts.each do |c|
-		= render :partial => 'events/chart', :locals => { :chart => c }
+  -@event.charts.each do |c|
+    = render :partial => 'events/chart', :locals => { :chart => c }
 
-	%h2
-		Widget!
-	- @widget = render :partial => 'widgets/event', :locals => { :event => @event }
-	%textarea#widget-display= @widget
+  %h2
+    Widget!
+  - @widget = render :partial => 'widgets/event', :locals => { :event => @event }
+  %textarea#widget-display= @widget
 .clear

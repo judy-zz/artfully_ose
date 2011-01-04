@@ -1,32 +1,30 @@
 - unless event.performances.empty?
-	.sub-container#performance-container
-		%h2
-			Performances
+  .sub-container#performance-container
+    %h2
+      Performances
 
-		%table#performance-table	
-			%tr
-				%th
-				%th
-					Date
-				%th
-					Time
-				%th
-					Actions
-			- event.performances.each do |performance|
-				%tr
-					%td.day-of-week-display
-						=performance.day_of_week
-					%td
-						=performance.formatted_performance_date
-					%td
-						=performance.formatted_performance_time
-					%td
-						=link_to "view", performance_path(performance), :class=>"link"
-						=link_to "dupe", duplicate_performance_path(performance), :class=>"link"
-						=link_to "delete", event_performance_path(event, performance), :method=>:delete, :class=>"link"
-						=link_to "edit", edit_event_performance_path(event, performance), :class=>"link"
-						- if performance.tickets_created?
-							=link_to "view tickets", create_tickets_for_performance_path(performance), :class=>"link"
-						- else
-							=link_to "create tickets", create_tickets_for_performance_path(performance), :class=>"link"							
-				= render :partial => 'events/performance_chart', :locals => { :event => event, :performance => performance }
+    %table#performance-table.normal.tablesorter
+      %tr
+        %th
+          Week Day
+        %th
+          Date
+        %th
+          Time
+        %th
+          Actions
+      - event.performances.each do |performance|
+        %tr
+          %td.day-of-week-display= performance.day_of_week
+          %td= performance.formatted_performance_date
+          %td= performance.formatted_performance_time
+          %td
+            = link_to image_tag('icons/actions_small/Note.png'), performance_path(performance), :class=>"table_icon"
+            = link_to image_tag('icons/actions_small/Copy.png'), duplicate_performance_path(performance), :class=>"table_icon"
+            = link_to image_tag('icons/actions_small/Pencil.png'), edit_event_performance_path(event, performance), :class=>"table_icon"
+            = link_to image_tag('icons/actions_small/Trash.png'), event_performance_path(event, performance), :method=>:delete, :class=>"table_icon"
+            - if performance.tickets_created?
+              = link_to "View Tickets", create_tickets_for_performance_path(performance), :class=>"table_icon"
+            - else
+              = link_to "Create Tickets", create_tickets_for_performance_path(performance), :class=>"table_icon"
+        = render :partial => 'events/performance_chart', :locals => { :event => event, :performance => performance }
