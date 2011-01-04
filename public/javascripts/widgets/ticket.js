@@ -18,7 +18,7 @@ Ticket.search_uri = function(params){
   var uri = this.uri;
   for(var param in params){
     if(params.hasOwnProperty(param)){
-      if(param != "_limit"){
+      if(param != "limit"){
         uri += "&" + param + "=eq" + params[param];
       } else {
         uri += "&" + param + "=" + params[param];

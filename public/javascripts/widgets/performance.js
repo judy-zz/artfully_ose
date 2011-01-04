@@ -45,7 +45,7 @@ Performance.prototype = {
       params = {
 //        performance: e.data.performance,
         'price' :$('input.ticket-price').val(),
-        '_limit':$('input.ticket-quantity').val()
+        'limit':$('input.ticket-quantity').val()
       };
 
       Ticket.find(params, function(data){
