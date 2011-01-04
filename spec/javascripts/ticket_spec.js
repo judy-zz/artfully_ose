@@ -45,6 +45,4 @@ describe("Ticket", function(){
       expect(target.children('span.ticket-date')).toHaveText(data.performance);
     });
   });
-
-
 });

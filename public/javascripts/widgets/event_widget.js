@@ -8,11 +8,9 @@ $.ajaxSetup({
 
 EventWidget = function(id, options){
   Config = $.extend(Config, options);
-
-  var event;
-
+  var e;
   $.getJSON(Event.uri(id), function(data){
-    event = new Event(data);
-    event.render($('#event'));
+    e = new Event(data);
+    e.render($('#event'));
   });
 };

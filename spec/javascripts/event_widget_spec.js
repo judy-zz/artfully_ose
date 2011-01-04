@@ -1,33 +1,15 @@
 describe("EventWidget", function(){
-  var widget;
-
   beforeEach(function(){
-    widget = new EventWidget(1, { base_uri:'http://localhost:3000/'});
-    widget.data = $.parseJSON('{"name":"Some Venue", "venue":"Some Venue", "producer":"Some Producer", "performances":[]}')
+    spyOn(jQuery,'getJSON');
+    var options =  { base_uri:'http://localhost:3000/'};
+    EventWidget(1,options);
   });
 
-  it("should return true when run succeeds", function(){
-    expect(widget.run()).toBeTruthy();
+  it("define a function", function(){
+    expect(EventWidget).toBeDefined();
   });
 
-  it("should call fetch", function(){
-    spyOn(widget, 'fetch');
-    widget.run();
-    expect(widget.fetch).toHaveBeenCalled();
-  });
-
-  it("should return true when fetch succeeds", function(){
-    expect(widget.fetch()).toBeTruthy();
-  });
-
-  it("should call render", function(){
-    spyOn(widget, 'render');
-    widget.run();
-    expect(widget.render).toHaveBeenCalled();
-  });
-
-  it("should return true when render succeeds", function(){
-    widget.fetch();
-    expect(widget.render()).toBeTruthy();
+  it("should call jQuery.getJSON()", function(){
+    expect(jQuery.getJSON).toHaveBeenCalled();
   });
 });

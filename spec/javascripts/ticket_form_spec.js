@@ -21,6 +21,10 @@ describe("TicketForm", function(){
       $ul = $target.find('ul');
     });
 
+    afterEach(function(){
+      ShoppingCart.remove_iframe();
+    })
+
     it("should add a <ul> to the target", function(){
       expect($target).toContain('ul');
     });
@@ -51,13 +55,6 @@ describe("TicketForm", function(){
       $ul.find('input:checkbox').each(function(index){
         expect($(this).val()).toBe(data[index].id);
       });
-    });
-
-    it("should call ShoppingCart.show_iframe() on submit", function(){
-      spyOn(ShoppingCart,'show_iframe');
-      $('form').submit();
-      expect(ShoppingCart.show_iframe).toHaveBeenCalled();
-      ShoppingCart.remove_iframe();
     });
   });
 });

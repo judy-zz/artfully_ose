@@ -17,11 +17,12 @@ Ticket.find = function(params, callback){
 Ticket.search_uri = function(params){
   var uri = this.uri;
   for(var param in params){
-    if(params.hasOwnProperty(param))
-    if(param != "_limit"){
-      uri += "&" + param + "=eq" + params[param];
-    } else {
-      uri += "&" + param + "=" + params[param];
+    if(params.hasOwnProperty(param)){
+      if(param != "_limit"){
+        uri += "&" + param + "=eq" + params[param];
+      } else {
+        uri += "&" + param + "=" + params[param];
+      }
     }
   }
   return uri;
