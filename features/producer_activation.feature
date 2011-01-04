@@ -8,14 +8,14 @@ Feature: Producer Activation
   Scenario: A user can get to the producer activation page
     Given I am logged in as a "patron"
     And I follow "Dashboard"
-    When I follow "Producer Activation"
+    When I follow "Services"
     Then I should see "Become a Producer"
     And I should see "Please enter your credit card information"
 
   Scenario: A user enters their credit card to become a producer
     Given I am logged in
     And I follow "Dashboard"
-    And I follow "Producer Activation"
+    And I follow "Services"
     And I can save Customers to ATHENA
     When I fill in "Cardholder Name" with "Joe Producer"
     And I fill in "Number" with "4111111111111111"

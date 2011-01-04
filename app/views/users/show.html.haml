@@ -1,4 +1,17 @@
-.link= link_to "Producer Activation", new_user_role_path(:role => :producer), :class => "link"
-.link= link_to "Credit Cards", user_credit_cards_path(current_user), :class => "link"
-.link= link_to "Seat/Price templates", charts_path, :class => "link"
-.link= link_to "View my events", events_path, :class => "link"
+%ul.dash
+  %li
+    = link_to new_user_role_path(:role => :producer) do
+      = image_tag "icons/dashboard/15.png"
+      %span Services
+  %li
+    =link_to user_credit_cards_path(current_user) do
+      = image_tag "icons/dashboard/2.png"
+      %span Credit Cards
+  %li
+    =link_to charts_path do
+      = image_tag "icons/dashboard/1.png"
+      %span Charts
+  %li
+    =link_to events_path do
+      = image_tag "icons/dashboard/1.png"
+      %span Events

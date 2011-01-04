@@ -1,8 +1,18 @@
 - content_for :header do
   %h1 My Credit Cards
-%ul#credit_cards
-  - @credit_cards.each do |credit_card|
-    %li.credit_card
-      = render credit_card
-      = link_to "Edit", edit_user_credit_card_path(current_user,credit_card)
-      = link_to "Delete", user_credit_card_path(current_user,credit_card), :method => :delete, :confirm => 'Are you sure?'
+%table.normal
+  %thead
+    %tr
+      %th Name
+      %th Number
+      %th Expiration Date
+      %th Actions
+  %tbody
+    - @credit_cards.each do |credit_card|
+      %tr
+        %td= credit_card.cardholder_name
+        %td= credit_card.card_number
+        %td= credit_card.expiration_date.strftime "%m/%Y"
+        %td
+          = link_to image_tag("icons/actions_small/Pencil.png", :alt => "Edit"), edit_user_credit_card_path(current_user,credit_card), :class => 'table_icon'
+          = link_to image_tag("icons/actions_small/Trash.png", :alt => "Delete"), user_credit_card_path(current_user,credit_card), :method => :delete, :confirm => 'Are you sure?', :class => 'table_icon'

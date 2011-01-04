@@ -22,17 +22,17 @@ end
 When /^I delete the (\d+)(?:st|nd|rd|th) credit card$/ do |pos|
   @customer.credit_cards.delete_at(pos.to_i-1)
   FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
-  within("#credit_cards li:nth-child(#{pos.to_i})") do
+  within(:xpath, "(//tbody/tr)[#{pos.to_i}]") do
     When %{I follow "Delete"}
   end
 end
 
 Then /^I should see (\d+) credit cards in the credit card list$/ do |quantity|
-  page.has_xpath? "//li[@class='credit_card']", :count => 2
+  page.has_xpath? "//tr", :count => 2
 end
 
 When /^I follow "([^"]*)" for the (\d+)(?:st|nd|rd|th) credit card$/ do |link, pos|
-  within("#credit_cards li:nth-child(#{pos.to_i})") do
+  within(:xpath, "(//tbody/tr)[#{pos.to_i}]") do
     click_link(link)
   end
 end
@@ -47,7 +47,7 @@ end
 Then /^the (\d+)(?:st|nd|rd|th) credit card should be:$/ do |pos, table|
   card = Factory(:credit_card, table.hashes.first)
 
-  within("#credit_cards li:nth-child(#{pos.to_i})") do
+  within(:xpath, "(//tbody/tr)[#{pos.to_i}]") do
     Then %{I should see "#{card.cardholder_name}"}
   end
 end
