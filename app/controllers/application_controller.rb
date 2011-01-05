@@ -1,3 +1,4 @@
+require "ap"
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
@@ -9,7 +10,14 @@ class ApplicationController < ActionController::Base
     @current_order
   end
 
+  layout :specify_layout
+
   protected
+
+    def specify_layout
+      params[:controller].start_with?("devise") ? 'devise' : 'application'
+    end
+
     def render_jsonp(json, options={})
       callback, variable = params[:callback], params[:variable]
       response = begin

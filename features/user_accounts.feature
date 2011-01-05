@@ -16,4 +16,4 @@ Feature: User accounts
     Given I am logged in
     And I am on the root page
     When I follow "Sign out"
-    Then I should see "Signed out successfully."
+    Then I should be on the new user session page
