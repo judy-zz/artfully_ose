@@ -9,7 +9,7 @@ When /^I send a GET request for "([^"]*)"$/ do |path|
   get path
 end
 
-When /^I send a POST request to "([^"]*)" with the following:$/ do |path, body|
+When /^I send a POST request to "([^"]*)" with the following "([^"]*)"$/ do |path,body|
   post path, body
 end
 

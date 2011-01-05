@@ -10,7 +10,7 @@ Artfully::Application.routes.draw do
 
   end
 
-  resources :tickets, :only => [:index, :show]
+  resources :tickets, :only => [:index]
 
   resources :orders
   resource :checkout

@@ -1,8 +1,4 @@
-Given /^I have started an order for (\d+) tickets to "([^"]*)" at "([^"]*)" for \$(\d+)$/ do |quantity, event, venue, price|
-  Given %Q{I have added #{quantity} tickets to "#{event}" at "#{venue}" for $#{price}}
-  Given %{I follow "Shopping Cart"}
-  Given %{I follow "Checkout"}
-
+Given /^I enter my payment details$/ do
   payment = Factory(:payment)
 
   with_scope('#customer') do
@@ -28,4 +24,18 @@ Given /^I have started an order for (\d+) tickets to "([^"]*)" at "([^"]*)" for 
   end
 
   click_button("Purchase")
+end
+
+Given /^I have started an order$/ do
+  ids = []
+  (1..2).each do |id|
+    ticket = Factory(:ticket_with_id, :id => id)
+    ids << id
+  end
+  FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:unexpired_lock, :tickets => ids).encode)
+  post "/orders", "tickets[]=1&tickets[]=2"
+end
+
+Given /^I start the checkout process$/ do
+  visit new_checkout_path
 end
