@@ -13,7 +13,6 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def tickets_created?
-    #'true'.eql? attributes['tickets_created']
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['tickets_created'])
   end
 

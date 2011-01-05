@@ -9,7 +9,8 @@ class AthenaTicket < AthenaResource::Base
     attribute 'venue',        :string
     attribute 'performance',  :string
     attribute 'sold',         :string
-    attribute 'section',         :string
+    attribute 'on_sale',      :string
+    attribute 'section',      :string
     attribute 'price',        :integer
   end
 
@@ -22,6 +23,13 @@ class AthenaTicket < AthenaResource::Base
     AthenaTicket.find(:all, :params => search_for) unless search_for.empty?
   end
 
+  def on_sale?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['on_sale'])
+  end
+  
+  def sold?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['sold'])
+  end
 
   def lockable?
     true

@@ -31,6 +31,7 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(@performance.event_id)
     @tickets = AthenaTicket.find(:all, :params => { :performanceId => "eq#{@performance.id}" })
+    @tickets = @tickets.sort_by { |ticket| ticket.price }
     respond_to do |format|
       format.html
       format.widget

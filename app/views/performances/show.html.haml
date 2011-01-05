@@ -19,5 +19,36 @@
 		%p
 			=link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
 	- else
-		=render @tickets
-		.clear
+		%div
+			:erb
+				Bulk edit: <select><option>Put on Sale</option><option>Take off Sale</option><option>Delete</option></select>
+				<button>GO</button>
+		%table#ticket-table{:style=>"border-spacing:15px;"}
+			%tr
+				%th
+					:erb
+						<input type="checkbox"></input>
+				%th
+					Section
+				%th
+					Price
+				%th
+					On sale?
+				%th
+					Sold?
+			-@tickets.each do |ticket|
+				%tr
+					%td
+						:erb
+							<input type="checkbox"></input>
+					%td
+						=ticket.section
+					%td
+						:erb
+							$<%=ticket.price%>
+					%td
+						-if ticket.on_sale?
+							=image_tag "icons/small_icons/OK.png"
+					%td
+						-if ticket.sold?
+							=image_tag "icons/small_icons/Goodmark.png"
