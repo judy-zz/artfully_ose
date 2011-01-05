@@ -1,8 +1,10 @@
 class ChartsController < ApplicationController
+  before_filter :authenticate_user!
+
   def index
     @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
   end
-  
+
   def new
     @chart = AthenaChart.new
   end
@@ -12,14 +14,14 @@ class ChartsController < ApplicationController
     @chart.update_attributes(params[:athena_chart][:athena_chart])
     @chart.producer_pid = current_user.athena_id
     @chart.isTemplate = true
-     
+
     if @chart.save
       redirect_to chart_url(@chart)
     else
       render :new
     end
   end
-  
+
   def show
     @chart = AthenaChart.find(params[:id])
   end
@@ -37,13 +39,13 @@ class ChartsController < ApplicationController
       render :edit and return
     end
   end
-  
+
   def destroy
     @chart = AthenaChart.find(params[:id])
     @chart.destroy
     redirect_to charts_url
   end
-  
+
   def duplicate
     @chart = AthenaChart.find(params[:athena_chart][:id])
     @event = AthenaEvent.find(params[:event_id])

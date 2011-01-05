@@ -1,4 +1,6 @@
 class UserRolesController < ApplicationController
+  before_filter :authenticate_user!
+
   def new
     @credit_card = AthenaCreditCard.new
     @customer = AthenaCustomer.new

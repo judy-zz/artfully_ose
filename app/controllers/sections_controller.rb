@@ -1,4 +1,5 @@
 class SectionsController < ApplicationController
+  before_filter :authenticate_user!
 
   def new
     @section = AthenaSection.new
@@ -36,12 +37,12 @@ class SectionsController < ApplicationController
       render :template => 'sections/edit'
     end
   end
-  
+
   def destroy
     @section = AthenaSection.find(params[:id])
     @section.destroy
     @chart = AthenaChart.find(params[:chart_id])
     redirect_to chart_url(@chart)
-  end  
+  end
 
 end

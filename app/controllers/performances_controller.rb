@@ -1,4 +1,6 @@
 class PerformancesController < ApplicationController
+  before_filter :authenticate_user!
+
   def duplicate
     @performance = AthenaPerformance.find(params[:id])
     @new_performance = @performance.dup!
@@ -37,13 +39,13 @@ class PerformancesController < ApplicationController
       format.widget
     end
   end
-  
+
   def edit
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(params[:event_id])
     @charts = AthenaChart.find_by_event(@event)
   end
-  
+
   def update
     @performance = AthenaPerformance.find(params[:id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
@@ -53,14 +55,14 @@ class PerformancesController < ApplicationController
       render :template => 'performances/new'
     end
   end
-  
+
   def destroy
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(params[:event_id])
     @performance.destroy
     redirect_to event_url(@event)
   end
-  
+
   def createtickets
     @performance = AthenaPerformance.find(params[:id])
     AthenaTicketFactory.for_performance(@performance)
