@@ -13,7 +13,7 @@ describe AthenaPerformance do
   it { should respond_to :day_of_week }
 
   it "should report the day of the week of the performance" do
-    subject.day_of_week.should eql subject.datetime.strftime("%a")
+    subject.day_of_week.should eql subject.datetime.strftime("%A")
   end
 
   it "should accept a string as datetime" do
