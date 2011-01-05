@@ -39,7 +39,7 @@ class AthenaPerformance < AthenaResource::Base
 
   #TODO: Move this into localization
   def day_of_week
-    self.datetime.strftime("%a")
+    self.datetime.strftime("%A")
   end
 
   def formatted_performance_time

@@ -1202,3 +1202,27 @@ pre code { font-size:14px; background:none;}
 .codeHeading{
 		font-size:14px;
 	}
+	
+.stats {
+	margin:10px 0px 10px 0px;
+	text-align:right;
+}
+	
+.stat {
+	text-align:right;
+	margin-bottom:10px;
+}
+	
+.stats .label {
+	font-size:14px;
+	margin-bottom:2px;
+}
+
+.stats .value {
+	font-size:36px;
+	font-weight:bold;
+}
+
+h1.free {
+	text-transform:none;
+}
