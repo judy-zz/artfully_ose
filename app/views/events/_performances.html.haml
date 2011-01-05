@@ -1,18 +1,13 @@
 - unless event.performances.empty?
   .sub-container#performance-container
-    %h2
-      Performances
+    %h2 Performances
 
     %table#performance-table.normal.tablesorter
       %tr
-        %th
-          Week Day
-        %th
-          Date
-        %th
-          Time
-        %th
-          Actions
+        %th Weekday
+        %th Date
+        %th Time
+        %th Actions
       - event.performances.each do |performance|
         %tr
           %td.day-of-week-display= performance.day_of_week
