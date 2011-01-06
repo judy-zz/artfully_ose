@@ -12,26 +12,10 @@
 	.producer-name=@event.producer
 .one_third.column.last
 	.stats
-		.stat#total-tickets
-			.label
-				TICKETS
-			.value
-				50
-		.stat#tickets-sold
-			.label
-				SOLD
-			.value
-				4
-		.stat#gross-potential
-			.label
-				GROSS POTENTIAL
-			.value
-				$3,400
-		.stat#gross-sales
-			.label
-				GROSS SALES
-			.value
-				$420
+		=render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@tickets.size}
+		=render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@tickets_sold.size}
+		=render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @gross_potential)}
+		=render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @gross_sales)}
 .clearboth
 
 .tickets

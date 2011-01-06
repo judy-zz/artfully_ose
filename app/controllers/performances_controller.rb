@@ -34,6 +34,11 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(@performance.event_id)
     @tickets = AthenaTicket.find(:all, :params => { :performanceId => "eq#{@performance.id}" })
     @tickets = @tickets.sort_by { |ticket| ticket.price }
+    @tickets_sold = @tickets.select { |ticket| ticket.sold? }
+    @gross_potential = 0
+    @gross_sales = 0
+    @tickets.each { |ticket| @gross_potential += ticket.price.to_i}
+    @tickets.each { |ticket| @gross_sales += ticket.price.to_i if ticket.sold?}
     respond_to do |format|
       format.html
       format.widget
