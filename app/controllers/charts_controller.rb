@@ -24,6 +24,10 @@ class ChartsController < ApplicationController
 
   def show
     @chart = AthenaChart.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.jsonp  { render_jsonp (@chart.to_json) }
+    end
   end
 
   def edit

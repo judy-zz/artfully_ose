@@ -14,6 +14,11 @@ class AthenaChart < AthenaResource::Base
     attribute 'producerPid', :string
   end
 
+  def to_json
+    @attributes['sections'] = sections
+    super
+  end
+
   def sections
     @sections ||= AthenaSection.find(:all, :params => { :chartId => "eq#{self.id}" })
   end
@@ -22,15 +27,15 @@ class AthenaChart < AthenaResource::Base
     raise TypeError, "Expecting an Array" unless sections.kind_of? Array
     @sections = sections
   end
-  
+
   def self.find_by_event(event)
     self.find(:all, :params => { :eventId => 'eq' + event.id })
   end
-  
+
   def self.find_by_producer(producer_pid)
     self.find(:all, :params => { :producerPid => 'eq' + producer_pid })
   end
-  
+
   def self.find_templates_by_producer(producer_pid)
     self.find(:all, :params => { :producerPid => 'eq' + producer_pid, :isTemplate => 'eqtrue' })
   end
