@@ -1,14 +1,42 @@
 describe("Event", function() {
-  var event, data;
+  var event, data = {
+    "name": "Some Event",
+    "venue": "Some Venue",
+    "producer": "Some Producer",
+    "performances": [
+      {
+          "chart_id": "10",
+          "datetime": "2011-01-04T19:12:00-05:00",
+          "id": "14"
+      },
+      {
+          "chart_id": "10",
+          "datetime": "2011-01-03T19:12:00-05:00",
+          "id": "13"
+      },
+      {
+          "chart_id": "10",
+          "datetime": "2011-01-05T19:12:00-05:00",
+          "id": "15"
+      }
+    ],
+    "charts": [
+      {
+        "id": "10",
+        "name": "Test Chart",
+        "sections": [
+          {
+            "capacity": "5",
+            "id": "11",
+            "name": "General",
+            "price": "10"
+          }
+        ]
+      }
+    ]
+  };
 
   beforeEach(function() {
-    data = {
-      name: "Some Event",
-      venue: "Some Venue",
-      producer: "Some Producer",
-      performances: []
-    };
-
     event = new Event(data);
   });
 
@@ -23,6 +51,22 @@ describe("Event", function() {
 
     it("should have a venue", function(){
       expect(event.venue).toBeDefined();
+    });
+  });
+
+  describe("performances", function(){
+    it("should store performances by their id", function(){
+      $.each(event.performances, function(index, performance){
+        expect(index).toEqual(performance.id);
+      });
+    });
+  });
+
+  describe("charts", function(){
+    it("should store performances by their id", function(){
+      $.each(event.charts, function(index, chart){
+        expect(index).toEqual(chart.id);
+      });
     });
   });
 

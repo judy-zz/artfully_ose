@@ -9,8 +9,8 @@ Event.prototype = {
     this.name = data.name;
     this.venue = data.venue;
     this.producer = data.producer;
-    this.performances = [];
-    this.load_performances(data);
+    this.load_performances({},data.performances);
+    this.load_charts({},data.charts);
   },
 
   render: function(target){
@@ -37,21 +37,30 @@ Event.prototype = {
 
   render_performances: function($target){
     var success = true;
-    if(this.performances.length > 0){
-      $ul = $(document.createElement('ul'))
-                .addClass('performances')
-                .appendTo($target);
-
-      for(var i = 0; i < this.performances.length && success; i++){
-        success &= this.performances[i].render($ul);
-      }
-    }
+    $ul = $(document.createElement('ul'))
+              .addClass('performances')
+              .appendTo($target);
+    $.each(this.performances, function(index, performance){
+      success &= performance.render($ul);
+    });
     return success;
   },
 
-  load_performances: function(data){
-    for(var i = 0; i < data.performances.length; i++){
-      this.performances.push(new Performance(data.performances[i]));
+  load_performances: function(collection, performances){
+    this.performances = collection;
+    if(performances){
+      for(var i = 0; i < performances.length; i++){
+        this.performances[performances[i].id] = new Performance(performances[i]);
+      }
+    }
+  },
+
+  load_charts: function(collection, charts){
+    this.charts = collection;
+    if(charts){
+      for(var i = 0; i < charts.length; i++){
+        this.charts[charts[i].id] = new Chart(charts[i]);
+      }
     }
   }
 };

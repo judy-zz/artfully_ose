@@ -4,7 +4,7 @@ var ShoppingCart = {
   iframe: function(){
     if(this.$iframe === null){
       this.$iframe = $(document.createElement('iframe'))
-        .attr({'name':'shopping_cart','id':'shopping-cart'})
+        .attr({'name':'shopping-cart','id':'shopping-cart'})
         .appendTo('body');
     }
     return this.$iframe;

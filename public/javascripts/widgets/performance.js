@@ -19,7 +19,7 @@ Performance.prototype = {
     .text('Buy Tickets')
     .attr("href","#")
     .click({performance: this}, function(e){
-      e.data.performance.render_form(e.data.performance.$target);
+      E.charts[e.data.performance.chart_id].render(e.data.performance.$target);
       return false;
     })
     .appendTo(this.$target);
@@ -29,6 +29,7 @@ Performance.prototype = {
 
   load: function(data){
     this.datetime = new Date(data.datetime);
+    this.chart_id = data.chart_id;
     this.id = data.id;
   },
 
@@ -42,15 +43,8 @@ Performance.prototype = {
     $('#performance-form').submit({performance:this},function(e){
       var form;
 
-      params = {
-//        performance: e.data.performance,
-        'price' :$('input.ticket-price').val(),
-        'limit':$('input.ticket-quantity').val()
-      };
-
       Ticket.find(params, function(data){
         form = new TicketForm(data);
-        console.log($target);
         form.render($target);
       });
 
