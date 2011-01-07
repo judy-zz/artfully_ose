@@ -46,7 +46,12 @@ describe("Section", function(){
     });
 
     it("should insert the section name into the list item", function(){
-      expect($('li', $target)).toHaveText(section.name);
+      expect($('li .section-name', $target)).toHaveText(section.name);
     });
+
+    it("should insert the section price into the list item", function(){
+      expect($('li .section-price', $target)).toHaveText("$" + section.price);
+    });
+
   });
 });
