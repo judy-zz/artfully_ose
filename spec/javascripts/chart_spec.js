@@ -38,4 +38,21 @@ describe("Chart", function(){
     }
   });
 
+  describe("render", function(){
+    var $target;
+
+    beforeEach(function(){
+      jasmine.getFixtures().set('<div class="target">');
+      $target = $(".target");
+      chart.render($target);
+    });
+
+    it("should add a ul to the list", function(){
+      expect($target).toContain('ul');
+    });
+
+    it("should add the class sections to the ul", function(){
+      expect($('ul', $target)).toHaveClass('sections');
+    });
+  });
 });

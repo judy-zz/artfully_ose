@@ -31,4 +31,22 @@ describe("Section", function(){
     expect(section.name).toBeDefined();
     expect(section.name).toBe("General");
   });
+
+  describe("render", function(){
+    var $target;
+
+    beforeEach(function(){
+      jasmine.getFixtures().set('<ul class="target">');
+      $target = $(".target");
+      section.render($target);
+    });
+
+    it("should add a list item to the target", function(){
+      expect($target).toContain('li');
+    });
+
+    it("should insert the section name into the list item", function(){
+      expect($('li', $target)).toHaveText(section.name);
+    });
+  });
 });

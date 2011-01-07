@@ -14,11 +14,11 @@ Chart.prototype = {
   load: function(data){
     this.id = data.id;
     this.name = data.name;
-    this.sections = [];
-    this.load_sections(data.sections);
+    this.load_sections([], data.sections);
   },
 
-  load_sections: function(sections){
+  load_sections: function(collection, sections){
+    this.sections = collection;
     if(sections){
       for(var i = 0; i < sections.length; i++){
         this.sections.push(new Section(sections[i]));
@@ -26,7 +26,21 @@ Chart.prototype = {
     }
   },
 
-  render: function(){
-  }
+  render: function($target){
+    if(!this.$view){
+      this.$view = this.view();
+    }
 
+    $target.append(this.$view);
+  },
+
+  view: function(){
+    var $view = $(document.createElement('ul')).addClass('sections')
+
+    for(var i = 0; i < this.sections.length; i++){
+      this.sections[i].render($view);
+    }
+
+    return $view;
+  }
 };
