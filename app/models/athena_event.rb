@@ -31,6 +31,11 @@ class AthenaEvent < AthenaResource::Base
     @attributes['performances'] = performances
   end
 
+  def to_json(options = {})
+    performances and charts and charts.each { |chart| chart.sections }
+    super(options)
+  end
+
   private
     def find_charts
       return [] if new_record?
