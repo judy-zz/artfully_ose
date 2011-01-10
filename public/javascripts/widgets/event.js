@@ -2,7 +2,7 @@ function Event(data){ this.load(data); }
 
 Event.uri = function(id){
   return Config.base_uri + 'events/' + id + '.jsonp?callback=?';
-}
+};
 
 Event.prototype = {
   load: function(data){
@@ -13,58 +13,38 @@ Event.prototype = {
     this.load_charts({},data.charts);
   },
 
-  render: function(target){
-    return this.to_dom(target) && this.render_performances(target);
-  },
-
-  to_dom: function(target){
+  render: function($target){
     // Tech Debt: only really need to store the three properties.
-    target.data('event', this);
+    $target.data('event', this);
 
-    return Boolean(
-      target.append(
-        $(document.createElement('h1'))
-        .addClass('event-name')
-        .text(this.name)
-      ).append(
-        $(document.createElement('h2'))
-        .addClass('event-venue')
-        .text(this.venue)
-      ).append(
-        $(document.createElement('h2'))
-        .addClass('event-producer')
-        .text(this.producer)
-      )
-    );
+    $target.append($(document.createElement('h1')).addClass('event-name').text(this.name))
+          .append($(document.createElement('h2')).addClass('event-venue').text(this.venue))
+          .append($(document.createElement('h3')).addClass('event-producer').text(this.producer));
+
+    this.render_performances($target);
   },
 
   render_performances: function($target){
-    var success = true;
-    $ul = $(document.createElement('ul'))
-              .addClass('performances')
-              .appendTo($target);
+    $ul = $(document.createElement('ul')).addClass('performances').appendTo($target);
     $.each(this.performances, function(index, performance){
-      success &= performance.render($ul);
+      performance.render($ul);
     });
-    return success;
   },
 
   load_performances: function(collection, performances){
+    var e = this;
     this.performances = collection;
-    if(performances){
-      for(var i = 0; i < performances.length; i++){
-        this.performances[performances[i].id] = new Performance(performances[i]);
-      }
-    }
+    $.each(performances, function(i, data){
+      e.performances[data.id] = new Performance(data);
+    });
   },
 
   load_charts: function(collection, charts){
+    var e = this;
     this.charts = collection;
-    if(charts){
-      for(var i = 0; i < charts.length; i++){
-        this.charts[charts[i].id] = new Chart(charts[i]);
-      }
-    }
+    $.each(charts, function(i, data){
+      e.charts[data.id] = new Chart(data);
+    });
   }
 };
 

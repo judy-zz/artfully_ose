@@ -90,16 +90,10 @@ describe("Event", function() {
       expect(target.children('h2.event-venue')).toHaveText(data.venue);
     });
 
-    it("should render the producer in an h2.event-producer", function(){
+    it("should render the producer in an h3.event-producer", function(){
       event.render(target);
-      expect(target).toContain('h2.event-producer');
-      expect(target.children('h2.event-producer')).toHaveText(data.producer);
-    });
-
-    it("should call to_dom when rendering", function(){
-      spyOn(event,'to_dom');
-      event.render(target);
-      expect(event.to_dom).toHaveBeenCalled();
+      expect(target).toContain('h3.event-producer');
+      expect(target.children('h3.event-producer')).toHaveText(data.producer);
     });
   });
 });
