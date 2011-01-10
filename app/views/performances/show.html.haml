@@ -1,63 +1,57 @@
 .two_third.column
-	%ul.dash
-		= render :partial => 'shared/menu_item', :locals => { :title => 'List all events', :href_path => events_path, :icon_path => 'icons/dashboard/34.png', :text => 'List events' }
-		= render :partial => 'shared/menu_item', :locals => { :title => 'View this event', :href_path => event_path(@event), :icon_path => 'icons/dashboard/1.png', :text => 'View this event' }
-		= render :partial => 'shared/menu_item', :locals => { :title => 'Add new performance', :href_path => new_event_performance_path(@event), :icon_path => 'icons/dashboard/112.png', :text => 'New performance' }
-		= render :partial => 'shared/menu_item', :locals => { :title => 'Duplicate this performance', :href_path => duplicate_performance_path(@performance), :icon_path => 'icons/dashboard/48.png', :text => 'Duplicate' }
-	%h1.free
-		:erb
-			<%=@performance.day_of_week%>, <%=@performance.formatted_performance_date%> <%=@performance.formatted_performance_time%>
-	.event-name=@event.name
-	.venue-name=@event.venue
-	.producer-name=@event.producer
+  %ul.dash
+    = render :partial => 'shared/menu_item', :locals => { :title => 'List all events', :href_path => events_path, :icon_path => 'icons/dashboard/34.png', :text => 'List events' }
+    = render :partial => 'shared/menu_item', :locals => { :title => 'View this event', :href_path => event_path(@event), :icon_path => 'icons/dashboard/1.png', :text => 'View this event' }
+    = render :partial => 'shared/menu_item', :locals => { :title => 'Add new performance', :href_path => new_event_performance_path(@event), :icon_path => 'icons/dashboard/112.png', :text => 'New performance' }
+    = render :partial => 'shared/menu_item', :locals => { :title => 'Duplicate this performance', :href_path => duplicate_performance_path(@performance), :icon_path => 'icons/dashboard/48.png', :text => 'Duplicate' }
+  %h1.free
+    :erb
+      <%=@performance.day_of_week%>, <%=@performance.formatted_performance_date%> <%=@performance.formatted_performance_time%>
+  .event-name=@event.name
+  .venue-name=@event.venue
+  .producer-name=@event.producer
 .one_third.column.last
-	.stats
-		=render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@tickets.size}
-		=render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@tickets_sold.size}
-		=render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @gross_potential)}
-		=render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @gross_sales)}
+  .stats
+    =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@tickets.size}
+    =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@tickets_sold.size}
+    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @gross_potential)}
+    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @gross_sales)}
 .clearboth
 
 .tickets
-	- if !@performance.tickets_created?
-		%p
-			You have not created tickets for this event.
-		%p
-			=link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
-	- else
-		%div
-			:erb
-				Bulk edit: <select><option>Put on Sale</option><option>Take off Sale</option><option>Delete</option></select>
-				<button>GO</button>
-		%table#ticket-table.normal.tablesorter.fullwidth
-			%thead
-				%tr
-					%th
-						:erb
-							<input type="checkbox"></input>
-					%th
-						Section
-					%th
-						Price
-					%th
-						On sale?
-					%th
-						Sold?
-			-@tickets.each do |ticket|
-				%tr
-					%td
-						:erb
-							<input type="checkbox"></input>
-					%td
-						=ticket.section
-					%td
-						:erb
-							$<%=ticket.price%>
-					%td
-						-if ticket.on_sale?
-							=image_tag "icons/small_icons/OK.png"
-					%td
-						-if ticket.sold?
-							=image_tag "icons/small_icons/Goodmark.png"
-%pre
-	&nbsp
+  - if !@performance.tickets_created?
+    %p
+      You have not created tickets for this event.
+    %p
+      =link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
+  - else
+    %div
+      :erb
+        Bulk edit: <select><option>Put on Sale</option><option>Take off Sale</option><option>Delete</option></select>
+        <button>GO</button>
+    %table#ticket-table.normal.tablesorter.fullwidth
+      %thead
+        %tr
+          %th
+            :erb
+              <input type="checkbox"></input>
+          %th Section
+          %th Price
+          %th On sale?
+          %th Sold?
+      -@tickets.each do |ticket|
+        %tr
+          %td
+            :erb
+              <input type="checkbox"></input>
+          %td
+            =ticket.section
+          %td
+            :erb
+              $<%=ticket.price%>
+          %td
+            -if ticket.on_sale?
+              =image_tag "icons/small_icons/OK.png"
+          %td
+            -if ticket.sold?
+              =image_tag "icons/small_icons/Goodmark.png"
