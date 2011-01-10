@@ -24,9 +24,17 @@ var ShoppingCart = {
     }
   },
 
-  submit_tickets: function(){
-    return function(form){
-      ShoppingCart.show_iframe();
-    }();
+  buy: function(tickets){
+    this.show_iframe();
+    this.hidden_form_for(tickets)
+  },
+
+  hidden_form_for: function(tickets){
+    var $form = $(document.createElement('form')).attr({'method':'post','target':'shopping-cart', 'action':Config.base_uri + 'orders'});
+    for(var i = 0; i < tickets.length; i++){
+      $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':tickets[i].id}).appendTo($form);
+    }
+    $(document.createElement('input')).attr({'type':'hidden', 'name': 'authenticity_token','value': Config.token}).appendTo($form);
+    $form.appendTo($('body')).submit().remove();
   }
 };

@@ -18,6 +18,9 @@ Event.prototype = {
   },
 
   to_dom: function(target){
+    // Tech Debt: only really need to store the three properties.
+    target.data('event', this);
+
     return Boolean(
       target.append(
         $(document.createElement('h1'))

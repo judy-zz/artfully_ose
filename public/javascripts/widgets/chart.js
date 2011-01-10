@@ -31,7 +31,10 @@ Chart.prototype = {
       this.$view = this.view();
     }
 
-    $target.append(this.$view);
+    this.$view.slideUp('slow',function(){
+      $(this).hide().appendTo($target)
+      $(this).slideDown('slow');
+    });
   },
 
   view: function(){

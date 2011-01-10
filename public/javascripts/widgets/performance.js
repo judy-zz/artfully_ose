@@ -7,7 +7,8 @@ Performance.uri = function(id){
 
 Performance.prototype = {
   render: function(target){
-    this.$target = $(document.createElement('li')).appendTo(target);
+    this.$target = $(document.createElement('li')).addClass('performance').appendTo(target);
+    this.$target.data('performance', this);
 
     $(document.createElement('span'))
     .addClass('performance-datetime')
@@ -28,6 +29,7 @@ Performance.prototype = {
   },
 
   load: function(data){
+    this.raw_datetime = data.datetime;
     this.datetime = new Date(data.datetime);
     this.chart_id = data.chart_id;
     this.id = data.id;

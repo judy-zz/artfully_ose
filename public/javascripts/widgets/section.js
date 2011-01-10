@@ -9,19 +9,46 @@ Section.prototype = {
   },
 
   render: function($target){
-    var $select;
-
     this.$target = $(document.createElement('li'));
 
-    $(document.createElement('span')).addClass('section-name').text(this.name).appendTo(this.$target);
-    $(document.createElement('span')).addClass('section-price').text("$" + this.price).appendTo(this.$target);
+    this.render_info(this.$target);
+    this.render_form(this.$target);
+    this.$target.appendTo($target);
+  },
 
-    $select = $(document.createElement('select')).appendTo(this.$target);
+  render_info: function($target){
+    $(document.createElement('span')).addClass('section-name').text(this.name).appendTo($target);
+    $(document.createElement('span')).addClass('section-price').text("$" + this.price).appendTo($target);
+  },
+
+  render_form: function($target){
+    var $select;
+    $form = $(document.createElement('form')).appendTo($target);
+
+    $select = $(document.createElement('select')).attr({'name':'ticket_count','id':'ticket-count'}).appendTo($form);
     $(document.createElement('option')).text("1 Ticket").attr('value', 1).appendTo($select);
     for(var i = 2; i <= 10; i++){
       $(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
     }
 
-    this.$target.appendTo($target);
+    $(document.createElement('input')).attr('type','submit').val('Buy').appendTo($form);
+
+    var obj = this;
+
+    $form.submit(function(){
+      var params = {
+        'limit': $('#ticket-count').val(),
+        'performance': $(this).parents('.performance').data('performance').raw_datetime,
+        'price': obj.price
+      };
+
+      Ticket.find(params, function(data){
+        ShoppingCart.buy(data);
+      });
+
+      $('.sections').slideUp();
+
+      return false;
+    });
   }
 }
