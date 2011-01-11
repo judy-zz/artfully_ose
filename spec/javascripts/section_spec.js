@@ -53,5 +53,31 @@ describe("Section", function(){
       expect($('li .section-price', $target)).toHaveText("$" + section.price);
     });
 
+    describe("render_form", function(){
+      var $form;
+      beforeEach(function(){
+        $form = $target.find('form');
+      });
+
+      it("should render a select element", function(){
+        expect($form).toContain('select');
+      });
+
+      it("should have the option to buy one ticket", function(){
+        expect($form.children('select').children('option:first').val()).toEqual("1");
+        expect($form.children('select').children('option:first').text()).toEqual("1 Ticket");
+      });
+
+      it("should have the option to buy two to ten tickets", function(){
+        for(var i = 2; i <= 10; i++){
+          expect($form.children('select').children('option:nth-child(' + i + ')').val()).toEqual(String(i));
+          expect($form.children('select').children('option:nth-child(' + i + ')').text()).toEqual(i + " Tickets");
+        }
+      });
+
+      it("should have a Buy button", function(){
+        expect($form).toContain('input:submit');
+      });
+    });
   });
 });

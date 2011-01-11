@@ -22,8 +22,9 @@ Section.prototype = {
   },
 
   render_form: function($target){
-    var $select;
-    $form = $(document.createElement('form')).appendTo($target);
+    var $select,
+        $form = $(document.createElement('form')).appendTo($target),
+        obj = this;
 
     $select = $(document.createElement('select')).attr({'name':'ticket_count','id':'ticket-count'}).appendTo($form);
     $(document.createElement('option')).text("1 Ticket").attr('value', 1).appendTo($select);
@@ -32,8 +33,6 @@ Section.prototype = {
     }
 
     $(document.createElement('input')).attr('type','submit').val('Buy').appendTo($form);
-
-    var obj = this;
 
     $form.submit(function(){
       var params = {

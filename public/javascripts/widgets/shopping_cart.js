@@ -10,14 +10,6 @@ var ShoppingCart = {
     return this.$iframe;
   },
 
-  show_iframe: function(){
-    this.iframe().show();
-  },
-
-  hide_iframe: function(){
-    this.iframe().hide();
-  },
-
   remove_iframe: function(){
     if(this.$iframe && this.$iframe.remove()){
       this.$iframe = null;
@@ -25,17 +17,18 @@ var ShoppingCart = {
   },
 
   buy: function(tickets){
-    this.show_iframe();
-    this.hidden_form_for(tickets)
+    this.iframe().show();
+    this.hidden_form_for(tickets).submit().remove();
   },
 
   hidden_form_for: function(tickets){
-    var $form = $(document.createElement('form')).attr({'method':'post','target':'shopping-cart', 'action':Config.base_uri + 'orders.widget'});
+    var $form = $(document.createElement('form')).attr({'method':'post','target':ShoppingCart.iframe().attr('name'), 'action':Config.base_uri + 'orders.widget'});
 
-    for(var i = 0; i < tickets.length; i++){
-      $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':tickets[i].id}).appendTo($form);
-    }
     $(document.createElement('input')).attr({'type':'hidden', 'name': 'authenticity_token','value': Config.token}).appendTo($form);
-    $form.appendTo($('body')).submit().remove();
+    $.each(tickets, function(i,ticket){
+      $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':ticket.id}).appendTo($form);
+    });
+
+    return $form.appendTo($('body'))
   }
 };
