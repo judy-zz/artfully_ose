@@ -2,6 +2,8 @@ class PurchasableTicket < ActiveRecord::Base
   belongs_to :order
   validates_presence_of :ticket_id
 
+  before_destroy :unlock
+
   def price
     ticket.price.to_i
   end
@@ -23,6 +25,13 @@ class PurchasableTicket < ActiveRecord::Base
   def lock=(lock)
     raise TypeError, "Expecting an AthenaLock" unless lock.kind_of? AthenaLock
     @lock, self.lock_id = lock, lock.id
+  end
+
+  def unlock
+    begin
+      lock and lock.destroy
+    rescue ActiveResource::ResourceNotFound
+    end
   end
 
   def locked?

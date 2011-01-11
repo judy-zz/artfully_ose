@@ -30,7 +30,8 @@ var ShoppingCart = {
   },
 
   hidden_form_for: function(tickets){
-    var $form = $(document.createElement('form')).attr({'method':'post','target':'shopping-cart', 'action':Config.base_uri + 'orders'});
+    var $form = $(document.createElement('form')).attr({'method':'post','target':'shopping-cart', 'action':Config.base_uri + 'orders.widget'});
+
     for(var i = 0; i < tickets.length; i++){
       $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':tickets[i].id}).appendTo($form);
     }
