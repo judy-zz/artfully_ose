@@ -14,7 +14,9 @@ module ActiveResource
       end
 
       def encode(hash, options = {})
-        ActiveSupport::JSON.encode(encode_athena(hash.clone), options)
+        rejections = options.delete :rejections || []
+        hash = hash.reject { | k , v | rejections.include? k } unless rejections.nil?
+        ActiveSupport::JSON.encode(encode_athena(hash), options)
       end
 
       def decode(json)

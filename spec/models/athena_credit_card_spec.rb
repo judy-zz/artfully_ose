@@ -29,6 +29,13 @@ describe AthenaCreditCard do
       @card = Factory(:credit_card)
       @card.encode.should match(/\"expirationDate\":\"#{@card.expiration_date.strftime('%m\/%Y')}\"/)
     end
+    
+    it "should not include the credit card number when updating a card" do
+      @card = Factory(:credit_card_with_id)
+      FakeWeb.register_uri(:put, "http://localhost/payments/cards/#{@card.id}.json", :status => 200, :body => @card.encode)
+      @card.save
+      FakeWeb.last_request.body.should_not match /cardNumber/
+    end
   end
 
   it "should parse the date into a Date object when fetching a remote resource" do
