@@ -18,22 +18,30 @@ describe AthenaChart do
     @chart.event_id.should eq @event.id
     @chart.id.should eq nil
   end
-  
+
   it "should get charts for an event" do
     @event = Factory(:athena_event)
     @event.id = '46'
     FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_event(@event)
   end
-  
+
   it "should get charts for a producer" do
     FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq50", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_producer('50')
   end
-  
+
   it "should get templates for a producer" do
     FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq50&isTemplate=eqtrue", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_templates_by_producer('50')
+  end
+
+  describe "sections" do
+    it "should not include sections in the encoded output" do
+      subject.sections = []
+      subject.sections << Factory(:athena_section_orchestra)
+      subject.encode.should_not match /"sections":/
+    end
   end
 
   describe "#dup!" do

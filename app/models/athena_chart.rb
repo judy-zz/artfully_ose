@@ -23,18 +23,6 @@ class AthenaChart < AthenaResource::Base
     @attributes['sections'] = sections
   end
 
-  def self.find_by_event(event)
-    self.find(:all, :params => { :eventId => 'eq' + event.id })
-  end
-
-  def self.find_by_producer(producer_pid)
-    self.find(:all, :params => { :producerPid => 'eq' + producer_pid })
-  end
-
-  def self.find_templates_by_producer(producer_pid)
-    self.find(:all, :params => { :producerPid => 'eq' + producer_pid, :isTemplate => 'eqtrue' })
-  end
-
   def dup!
     copy = AthenaChart.new(self.attributes.reject { |key, value| key == 'id' })
     copy.is_template = false
@@ -48,6 +36,23 @@ class AthenaChart < AthenaResource::Base
       section.chart_id = self.id
       section.save
     end
+  end
+
+  def encode(options = {})
+    options[:rejections] = %w( sections )
+    super(@attributes, options)
+  end
+
+  def self.find_by_event(event)
+    self.find(:all, :params => { :eventId => 'eq' + event.id })
+  end
+
+  def self.find_by_producer(producer_pid)
+    self.find(:all, :params => { :producerPid => 'eq' + producer_pid })
+  end
+
+  def self.find_templates_by_producer(producer_pid)
+    self.find(:all, :params => { :producerPid => 'eq' + producer_pid, :isTemplate => 'eqtrue' })
   end
 
   def self.get_default_name(prefix)
