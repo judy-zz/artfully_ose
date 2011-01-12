@@ -6,3 +6,4 @@ db/schema.rb
 Gemfile.lock
 *.swp
 .DS_Store
+nbproject
