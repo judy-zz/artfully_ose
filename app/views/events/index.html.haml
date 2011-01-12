@@ -7,7 +7,6 @@
       = image_tag "icons/dashboard/2.png"
       %span New Event
 
-
 - unless @events.blank?
   %table.normal.tablesorter
     %thead
@@ -24,4 +23,6 @@
           %td= event.producer
           %td
             = link_to image_tag("icons/actions_small/Pencil.png"), edit_event_path(event), :class => 'table_icon'
-            = link_to image_tag("icons/actions_small/Trash.png"), "#", :confirm => "Are you sure?", :method => :delete,:class => 'table_icon'
+            = link_to image_tag("icons/actions_small/Trash.png"), event_path(event), :confirm => "Are you sure?", :method => :delete, :class => 'table_icon'
+
+           

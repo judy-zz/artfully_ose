@@ -61,4 +61,11 @@ class EventsController < ApplicationController
       render :edit
     end
   end
+
+  def destroy
+      @event = AthenaEvent.find(params[:id])
+      @event.destroy
+      redirect_to events_url
+  end
+
 end

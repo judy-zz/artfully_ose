@@ -7,6 +7,7 @@ gem 'devise'
 gem 'cancan'
 gem 'escape_utils'
 gem 'transitions', :require => ['transitions','active_record/transitions']
+gem 'jquery-rails', '>= 0.2.6'
 
 
 group :test, :development do
