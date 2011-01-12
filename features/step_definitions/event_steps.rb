@@ -42,3 +42,28 @@ Given /^the following event exists in ATHENA for "([^"]*)"$/ do |email, table|
   FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :status => 200, :body => "[]")
   FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{@user.athena_id}&isTemplate=eqtrue", :status => 200, :body => "[]")
 end
+
+Given /^there is an [Ee]vent with (\d+) [Pp]erformances for "([^"]*)"$/ do |performance_count, email|
+  user = User.find_by_email(email)
+
+  @event = Factory(:athena_event_with_id)
+  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{user.athena_id}", :status => 200, :body => "[#{@event.encode}]")
+
+  chart = Factory(:athena_chart)
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :status => 200, :body => "[#{chart.encode}]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/sections/.json?chartId=eq#{chart.id}", :status => 200, :body => "[#{Factory(:athena_section_orchestra).encode}]")
+
+  @performances = 3.times.collect { Factory(:athena_performance_with_id, :event => @event, :chart => chart) }
+  body = @performances.collect { |p| p.encode }.join(",")
+  FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{@event.id}", :status => 200, :body => "[#{body}]")
+
+  visit events_path
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{user.athena_id}&isTemplate=eqtrue", :status => 200, :body => "[]")
+  Given %{I follow "#{@event.name}"}
+end
+
+Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
+  within(:xpath, "(//tbody/tr)[#{pos.to_i}]") do
+    click_link "event-name"
+  end
+end

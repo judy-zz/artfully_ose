@@ -67,9 +67,14 @@ class PerformancesController < ApplicationController
 
   def destroy
     @performance = AthenaPerformance.find(params[:id])
-    @event = AthenaEvent.find(params[:event_id])
-    @performance.destroy
-    redirect_to event_url(@event)
+
+    if @performance.tickets_created?
+      flash[:notice] = 'Tickets have already been created.'
+    else
+      @performance.destroy
+    end
+
+    redirect_to event_url(@performance.event)
   end
 
   def createtickets

@@ -18,11 +18,10 @@
     %tbody
       - @events.each do |event|
         %tr
-          %td= link_to event.name, event_path(event), :class => "link"
+          %td= link_to event.name, event_path(event), :title => 'event-name'
           %td= event.venue
           %td= event.producer
           %td
             = link_to image_tag("icons/actions_small/Pencil.png"), edit_event_path(event), :class => 'table_icon'
-            = link_to image_tag("icons/actions_small/Trash.png"), event_path(event), :confirm => "Are you sure?", :method => :delete, :class => 'table_icon'
+            = link_to image_tag("icons/actions_small/Trash.png"), event_path(event), :confirm => "Are you sure?", :method => :delete, :class => 'table_icon', :title => "Delete"
 
-           

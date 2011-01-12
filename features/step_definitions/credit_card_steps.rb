@@ -27,8 +27,8 @@ When /^I delete the (\d+)(?:st|nd|rd|th) credit card$/ do |pos|
   end
 end
 
-Then /^I should see (\d+) credit cards in the credit card list$/ do |quantity|
-  page.has_xpath? "//tr", :count => 2
+Then /^I should see (\d+) credit cards in the credit card list$/ do |count|
+  page.has_xpath? "//tr", :count => count
 end
 
 When /^I follow "([^"]*)" for the (\d+)(?:st|nd|rd|th) credit card$/ do |link, pos|

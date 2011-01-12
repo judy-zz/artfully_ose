@@ -8,10 +8,10 @@ class AthenaChart < AthenaResource::Base
 
   schema do
     attribute 'name', :string
-    attribute 'eventId', :string
-    attribute 'performanceId', :string
-    attribute 'isTemplate', :string
-    attribute 'producerPid', :string
+    attribute 'event_id', :string
+    attribute 'performance_id', :string
+    attribute 'is_template', :string
+    attribute 'producer_pid', :string
   end
 
   def sections

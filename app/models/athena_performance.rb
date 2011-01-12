@@ -5,11 +5,11 @@ class AthenaPerformance < AthenaResource::Base
   self.collection_name = 'performances'
 
   schema do
-    attribute 'eventId', :string
-    attribute 'chartId', :string
-    attribute 'producerId', :string
+    attribute 'event_id', :string
+    attribute 'chart_id', :string
+    attribute 'producer_id', :string
     attribute 'datetime', :string
-    attribute 'ticketsCreated', :string
+    attribute 'tickets_created', :string
   end
 
   def tickets_created?

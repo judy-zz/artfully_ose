@@ -20,7 +20,7 @@ describe AthenaPerformance do
     subject.datetime = '2010-03-03T02:02:02-04:00'
     subject.datetime.kind_of?(DateTime).should be_true
   end
-  
+
   it "should accept a DateTime as datetime" do
     subject.datetime = DateTime.parse('2010-03-03T02:02:02-04:00')
     subject.datetime.kind_of?(DateTime).should be_true
@@ -28,6 +28,20 @@ describe AthenaPerformance do
 
   it "should parse the datetime attribute to a DateTime object" do
     subject.datetime.kind_of?(DateTime).should be_true
+  end
+
+  describe "#event" do
+    it "should store the event when one is assigned" do
+      event = Factory(:athena_event_with_id)
+      subject.event = event
+      subject.event.should eq event
+    end
+
+    it "should store the event id when an event is assigned" do
+      event = Factory(:athena_event_with_id)
+      subject.event = event
+      subject.event_id.should eq event.id
+    end
   end
 
   describe "#dup!" do
