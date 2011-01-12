@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
         elsif variable
           "var #{variable} = #{json};"
         elsif callback
-          "#{callback}(#{json});"
+          "#{callback}(#{json}); Config.token = #{form_authenticity_token.inspect};"
         else
           json
         end

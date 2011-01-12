@@ -15,22 +15,22 @@ class AthenaChart < AthenaResource::Base
   end
 
   def sections
-    @sections ||= AthenaSection.find(:all, :params => { :chartId => "eq#{self.id}" })
+    @attributes['sections'] ||= find_sections
   end
 
   def sections=(sections)
     raise TypeError, "Expecting an Array" unless sections.kind_of? Array
-    @sections = sections
+    @attributes['sections'] = sections
   end
-  
+
   def self.find_by_event(event)
     self.find(:all, :params => { :eventId => 'eq' + event.id })
   end
-  
+
   def self.find_by_producer(producer_pid)
     self.find(:all, :params => { :producerPid => 'eq' + producer_pid })
   end
-  
+
   def self.find_templates_by_producer(producer_pid)
     self.find(:all, :params => { :producerPid => 'eq' + producer_pid, :isTemplate => 'eqtrue' })
   end
@@ -61,4 +61,10 @@ class AthenaChart < AthenaResource::Base
     @chart.event_id = event.id
     @chart
   end
+
+  private
+    def find_sections
+      return [] if new_record?
+      AthenaSection.find(:all, :params => { :chartId => "eq#{id}" })
+    end
 end

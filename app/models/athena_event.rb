@@ -9,29 +9,41 @@ class AthenaEvent < AthenaResource::Base
     attribute 'venue', :string
     attribute 'producer', :string
     attribute 'producer_pid', :string
-    attribute 'chart_id', :string
   end
 
   validates_presence_of :name, :venue, :producer
 
-  def chart
-    if chart_id.blank? 
-      return nil 
-    end
-    @chart ||= AthenaChart.find(chart_id)
+  def charts
+    @attributes['charts'] ||= find_charts
   end
 
-  def chart=(chart)
-    raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
-    @chart, self.chart_id = chart, chart.id
+  def charts=(charts)
+    raise TypeError, "Expecting an Array" unless charts.kind_of? Array
+    @attributes['charts'] ||= charts
   end
 
   def performances
-    @attributes['performances'] ||= AthenaPerformance.find(:all, :params => { :eventId => 'eq' + self.id })
+    @attributes['performances'] ||= find_performances
   end
 
   def performances=(performances)
     raise TypeError, "Expecting an Array" unless performances.kind_of? Array
     @attributes['performances'] = performances
   end
+
+  def to_json(options = {})
+    performances and charts and charts.each { |chart| chart.sections }
+    super(options)
+  end
+
+  private
+    def find_charts
+      return [] if new_record?
+      AthenaChart.find(:all, :params => { :eventId => "eq#{self.id}" })
+    end
+
+    def find_performances
+      return [] if new_record?
+      AthenaPerformance.find(:all, :params => { :eventId => "eq#{self.id}" })
+    end
 end

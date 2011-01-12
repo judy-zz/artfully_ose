@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [ :show ]
 
   def create
     @event = AthenaEvent.new
@@ -27,8 +27,6 @@ class EventsController < ApplicationController
 
   def show
     @event = AthenaEvent.find(params[:id])
-    @event.performances= AthenaPerformance.find(:all, :params => { :eventId => "eq#{@event.id}" })
-    @event.charts= AthenaChart.find(:all, :params => { :eventId => "eq#{@event.id}" })
 
     if user_signed_in?
       @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }

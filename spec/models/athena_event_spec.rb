@@ -8,18 +8,12 @@ describe AthenaEvent do
   it { should respond_to :name }
   it { should respond_to :venue }
   it { should respond_to :producer }
-  it { should respond_to :chart_id }
-  it { should respond_to :chart }
   it { should respond_to :performances }
+  it { should respond_to :charts }
 
   it "should be invalid with an empty name" do
     subject.name = nil
     subject.should_not be_valid
-  end
-
-  it "should return nil if no chart is assigned" do
-    subject.chart_id = nil
-    nil.should eq subject.chart
   end
 
   it "should be invalid for with an empty venue" do
@@ -32,21 +26,51 @@ describe AthenaEvent do
     subject.should_not be_valid
   end
 
-  it "should store a list of performances" do
-    test_performances = Array.new
-    (0..5).each do |n|
-      test_performances << Factory(:athena_performance)
+  describe "performances" do
+    it "should store a list of performances" do
+      test_performances = (0..5).collect { Factory(:athena_performance) }
+      subject.performances = test_performances
+      subject.performances.size.should eq test_performances.size
     end
-    subject.performances= test_performances
-    subject.performances.size.should eq(test_performances.size)
+
+    it "should fetch the performances from ATHENA if not yet cached" do
+      test_performances = (0..1).collect { Factory(:athena_performance) }
+      subject.id = 1
+      FakeWeb.register_uri(:get, 'http://localhost/stage/performances/.json?eventId=eq1', :status => 200, :body => test_performances.to_json)
+      subject.performances.should eq test_performances
+    end
+
+    it "should not attempt to fetch performances if the record is not yet saved" do
+      subject.should be_new_record
+      subject.performances.should eq []
+    end
+
+    it "should raise a TypeError for invalid performance assignment" do
+      lambda { subject.performances = "Not an Array" }.should raise_error(TypeError)
+    end
   end
 
-  it "should update chart_id when assiging a chart" do
-    subject.chart = Factory(:athena_chart, :id => 1)
-    subject.chart_id.should eq 1
-  end
+  describe "charts" do
+    it "should store a list of performances" do
+      charts = (0..5).collect { Factory(:athena_chart) }
+      subject.charts = charts
+      subject.charts.size.should eq charts.size
+    end
 
-  it "should raise a TypeError for invalid chart assignment" do
-    lambda { subject.chart = "Not a Chart" }.should raise_error(TypeError)
+    it "should not attempt to fetch charts if the record is not yet saved" do
+      subject.should be_new_record
+      subject.charts.should eq []
+    end
+
+    it "should fetch the charts from ATHENA if not yet cached" do
+      charts = (0..5).collect { Factory(:athena_chart) }
+      subject.id = 1
+      FakeWeb.register_uri(:get, 'http://localhost/stage/charts/.json?eventId=eq1', :status => 200, :body => charts.to_json)
+      subject.charts.size.should eq charts.size
+    end
+
+    it "should raise a TypeError for invalid chart assignment" do
+      lambda { subject.charts = "Not an Array" }.should raise_error(TypeError)
+    end
   end
 end

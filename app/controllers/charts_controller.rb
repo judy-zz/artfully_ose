@@ -1,5 +1,5 @@
 class ChartsController < ApplicationController
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => [ :show ]
 
   def index
     @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
@@ -24,6 +24,10 @@ class ChartsController < ApplicationController
 
   def show
     @chart = AthenaChart.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.jsonp  { render_jsonp (@chart.to_json) }
+    end
   end
 
   def edit

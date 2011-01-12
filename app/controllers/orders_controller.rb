@@ -1,17 +1,19 @@
 class OrdersController < ApplicationController
   def show
+    respond_to do |format|
+      format.widget
+    end
   end
 
   def create
     tickets = params[:tickets].collect { |id| AthenaTicket.find(id) }
     current_order.add_items tickets
 
-    if current_order.save
-      redirect_to current_order
-    else
+    unless current_order.save
       flash[:error] = current_order.errors
-      redirect_to :back
     end
+
+    redirect_to order_url current_order, :format => 'widget'
   end
 
   def edit
@@ -21,12 +23,11 @@ class OrdersController < ApplicationController
     tickets = params[:tickets].collect { |id| AthenaTicket.find(id) }
     current_order.add_items tickets
 
-    if current_order.save
-      redirect_to current_order
-    else
+    unless current_order.save
       flash[:error] = current_order.errors
-      redirect_to :back
     end
+
+    redirect_to order_url current_order, :format => 'widget'
   end
 
   def destroy
