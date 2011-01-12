@@ -6,6 +6,7 @@ gem 'haml'
 gem 'devise'
 gem 'cancan'
 gem 'escape_utils'
+gem 'validates_timeliness'
 gem 'transitions', :require => ['transitions','active_record/transitions']
 gem 'jquery-rails', '>= 0.2.6'
 

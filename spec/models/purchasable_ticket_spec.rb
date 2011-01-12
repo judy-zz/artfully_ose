@@ -44,5 +44,15 @@ describe PurchasableTicket do
       subject = Factory.build(:purchasable_ticket, :lock_id => lock.id)
       subject.lock.should == lock
     end
+
+    it "should be locked with a valid lock" do
+      subject = Factory(:purchasable_ticket, :lock => Factory(:lock))
+      subject.should be_locked
+    end
+
+    it "should not be locked with an invalid lock" do
+      subject = Factory(:purchasable_ticket, :lock => Factory(:expired_lock))
+      subject.should_not be_locked
+    end
   end
 end

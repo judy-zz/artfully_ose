@@ -4,6 +4,7 @@ class Order < ActiveRecord::Base
   belongs_to :user
 
   has_many :purchasable_tickets
+  after_initialize :clean_order
 
   state_machine do
     state :started      # The user has added items to their order
@@ -19,6 +20,11 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def clean_order
+    self.items.each { |item| item.destroy unless item.locked? }
+    self.items.delete_if { |item| !item.locked? }
+  end
+
   def items
     @items ||= self.purchasable_tickets
   end
@@ -32,7 +38,7 @@ class Order < ActiveRecord::Base
   end
 
   def add_items(line_items)
-    line_items.collect! { |i| i.to_item }
+    line_items = line_items.collect { |i| i.to_item }
     lock_lockables(line_items.select { |i| i.lockable? })
     items << line_items
   end

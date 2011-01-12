@@ -23,7 +23,7 @@ Given /^there are (\d+) tickets to "([^"]*)" at "([^"]*)" for (\d+)$/ do |quanti
     ids << ticket.id
   end
   FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?.*$|, :status => 200, :body => body.to_json)
-  FakeWeb.register_uri(:get, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:unexpired_lock, :tickets => ids).encode)
+  FakeWeb.register_uri(:get, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => ids).encode)
 end
 
 
@@ -36,6 +36,6 @@ Given /^I have found the following tickets by searching for$/ do |table|
     ids << ticket.id
   end
   FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?.*$|, :status => 200, :body => body.to_json)
-  FakeWeb.register_uri(:get, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:unexpired_lock, :tickets => ids).encode)
+  FakeWeb.register_uri(:get, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => ids).encode)
 end
 

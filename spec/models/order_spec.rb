@@ -17,35 +17,39 @@ describe Order do
     it { should respond_to :add_item }
     it { should respond_to :items }
 
-    it "should have a PurchasableTicket when a ticket is added to the order" do
-      ticket = Factory(:ticket_with_id)
-      lock = Factory(:unexpired_lock, :tickets => ticket.id)
+    it "should have PurchasableTickets when a tickets are added to the order" do
+      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_item ticket
-      subject.items.first.should be_a PurchasableTicket
+      subject.add_items tickets
+      subject.items.each do |item|
+        item.should be_a PurchasableTicket
+      end
     end
 
-    it "should have the right PurchasableTicket when a ticket is added to the order" do
-      ticket = Factory(:ticket_with_id)
-      lock = Factory(:unexpired_lock, :tickets => ticket.id)
+    it "should have the right PurchasableTickets when tickets are added to the order" do
+      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_item ticket
-      subject.items.first.ticket.should eq ticket
+      subject.add_items tickets
+      subject.items.each do |item|
+        tickets.should include(item.ticket)
+      end
     end
   end
 
   describe "items" do
     it "should lock the first lockable item when it is added" do
-      ticket = Factory(:ticket_with_id)
-      lock = Factory(:unexpired_lock, :tickets => ticket.id)
+      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_item ticket
+      subject.add_items tickets
       subject.items.first.should be_locked
     end
 
     it "should collect and lock the lockable items when they are added" do
-      tickets = [ Factory(:ticket_with_id), Factory(:ticket_with_id) ]
-      lock = Factory(:unexpired_lock, :tickets => tickets.collect {|t| t.id })
+      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
       subject.add_items tickets
       lock = subject.items.first.lock
@@ -54,11 +58,21 @@ describe Order do
         item.lock.should eq lock
       end
     end
+
+    it "should remove items that are no longer locked" do
+      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      lock = Factory(:expired_lock, :tickets => tickets.collect {|t| t.id })
+      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:delete, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200)
+      subject.add_items tickets
+      order = Order.find(subject.id)
+      order.items.should be_empty
+    end
   end
 
   describe "and Payments" do
     it "should sum up the price of the tickets via total" do
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => Factory(:unexpired_lock).encode)
+      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => Factory(:lock).encode)
       subject.add_item Factory(:ticket_with_id, :price => "100")
       subject.add_item Factory(:ticket_with_id, :price => "33")
       subject.total.should eq 133

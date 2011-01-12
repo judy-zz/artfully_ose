@@ -119,17 +119,14 @@ end
 
 Factory.define :lock, :class => AthenaLock, :default_strategy => :build do |t|
   t.id { UUID.new.generate }
+  t.lock_expires { DateTime.now + 1.hour }
   t.after_build do |lock|
     FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200, :body => lock.encode)
   end
 end
 
-Factory.define :unexpired_lock, :parent => :lock, :default_strategy => :build do |t|
-  t.lockExpires { 1.week.from_now }
-end
-
 Factory.define :expired_lock, :parent => :lock, :default_strategy => :build do |t|
-  t.lockExpires { 1.week.ago }
+  t.lock_expires { DateTime.now - 1.hour }
 end
 
 Factory.define :payment, :class => AthenaPayment, :default_strategy => :build do |p|

@@ -35,7 +35,7 @@ class PurchasableTicket < ActiveRecord::Base
   end
 
   def locked?
-    !! self.lock
+    (!!self.lock) and self.lock.valid?
   end
 
   def item_id

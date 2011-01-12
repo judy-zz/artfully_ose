@@ -32,7 +32,7 @@ Given /^I have started an order$/ do
     ticket = Factory(:ticket_with_id, :id => id)
     ids << id
   end
-  FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:unexpired_lock, :tickets => ids).encode)
+  FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => ids).encode)
   post "/orders", "tickets[]=1&tickets[]=2"
 end
 

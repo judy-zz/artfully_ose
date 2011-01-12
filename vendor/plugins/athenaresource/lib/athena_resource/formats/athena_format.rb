@@ -33,17 +33,25 @@ module ActiveResource
         end
 
         def underscore_keys(payload)
-          underscored_payload = {}
-          payload.each do |key, value|
-            if value.kind_of? Hash
-              underscored_payload[key.underscore] = underscore_keys(value)
-            elsif value.kind_of? Array
-              underscored_payload[key.underscore] = value.collect { |v| underscore_keys(v) }
+          if payload.is_a? Hash
+            underscored_payload = {}
+            payload.each do |key, value|
+              if value.kind_of? Hash
+                underscored_payload[key.underscore] = underscore_keys(value)
+              elsif value.kind_of? Array
+                underscored_payload[key.underscore] = value.collect { |v| underscore_keys(v) }
+              else
+                underscored_payload[key.underscore] = value
+              end
+            end
+            underscored_payload
+          else
+            if payload.respond_to? :attributes
+              underscore_keyes(payload.attributes)
             else
-              underscored_payload[key.underscore] = value
+              payload
             end
           end
-          underscored_payload
         end
 
         def encode_athena(hash)
@@ -64,7 +72,11 @@ module ActiveResource
             end
             camelized_hash
           else
-            camelize_keys(hash_or_model.attributes) if hash_or_model.respond_to? :attributes
+            if hash_or_model.respond_to? :attributes
+              camelize_keys(hash_or_model.attributes)
+            else
+              hash_or_model
+            end
           end
         end
     end

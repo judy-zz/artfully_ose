@@ -27,7 +27,7 @@ Given /^I can get Tickets from ATHENA$/ do
 end
 
 Given /^I can lock Tickets in ATHENA$/ do
-  FakeWeb.register_uri(:post, %r|http://localhost/tix/meta/locks/\.json|, :status => [ 200 ], :body => Factory(:unexpired_lock).encode)
+  FakeWeb.register_uri(:post, %r|http://localhost/tix/meta/locks/\.json|, :status => [ 200 ], :body => Factory(:lock).encode)
 end
 
 Given /^I can save People to ATHENA$/ do
