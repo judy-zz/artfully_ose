@@ -17,7 +17,7 @@ class PerformancesController < ApplicationController
        redirect_to event_url(@event)
     end
     @performance.event_id=@event.id
-    @performance.chart_id=nil
+    @performance.chart_id=nil 
   end
 
   def create
