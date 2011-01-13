@@ -35,7 +35,7 @@ Factory.define :athena_chart, :class => AthenaChart, :default_strategy => :build
   end
 end
 
-Factory.define :athena_chart_template, :parent => :athena_chart, do |c|
+Factory.define :athena_chart_template, :parent => :athena_chart do |c|
   c.is_template true
 end
 
