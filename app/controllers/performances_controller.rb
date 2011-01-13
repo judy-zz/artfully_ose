@@ -13,7 +13,7 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @charts = AthenaChart.find_by_event(@event)
     @performance.event_id=@event.id
-    @performance.chart_id=@event.chart_id
+    @performance.chart_id=nil
   end
 
   def create

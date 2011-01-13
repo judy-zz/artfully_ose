@@ -27,7 +27,7 @@ class EventsController < ApplicationController
 
   def show
     @event = AthenaEvent.find(params[:id])
-    @event.performances= @event.performances.sort_by { |performance| performance.datetime }
+    @event.performances = @event.performances.sort_by { |performance| performance.datetime }
 
     if user_signed_in?
       @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
