@@ -10,6 +10,7 @@
           %th Time
           %th Chart
           %th Actions
+          %th Tickets
       %tbody
         - event.performances.each do |performance|
           %tr
@@ -20,11 +21,12 @@
               - unless performance.chart.nil?
                 = link_to performance.chart.name, chart_path(performance.chart)
             %td.actions
-              = link_to image_tag('icons/actions_small/Note.png'), performance_path(performance), :class=>"table_icon"
-              = link_to image_tag('icons/actions_small/Copy.png'), duplicate_performance_path(performance), :class=>"table_icon"
-              = link_to image_tag('icons/actions_small/Pencil.png'), edit_event_performance_path(event, performance), :class=>"table_icon", :title => "Edit" unless performance.tickets_created?
-              = link_to image_tag('icons/actions_small/Trash.png'), event_performance_path(event, performance), :confirm => "Are you sure?", :method=>:delete, :class=>"table_icon", :title => "Delete" unless performance.tickets_created?
+              = table_icon_link_to :view, performance_path(performance)
+              = table_icon_link_to :copy, duplicate_performance_path(performance)
+              = table_icon_link_to :edit, edit_event_performance_path(event, performance) unless performance.tickets_created?
+              = table_icon_link_to :delete, event_performance_path(event, performance), :confirm => "Are you sure?", :method=>:delete unless performance.tickets_created?
+            %td.tickets
               - if performance.tickets_created?
-                = link_to "View Tickets", performance_path(performance), :class=>"table_icon"
+                = table_icon_link_to "View Tickets", performance_path(performance)
               - else
-                = link_to "Create Tickets", create_tickets_for_performance_path(performance), :class=>"table_icon"
+                = table_icon_link_to "Create Tickets", create_tickets_for_performance_path(performance)

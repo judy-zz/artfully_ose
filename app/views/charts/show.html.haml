@@ -28,7 +28,7 @@
         %td= "#{section.capacity} seats"
         %td= "$#{section.price}"
         %td
-          =link_to image_tag('icons/actions_small/Pencil.png'), edit_chart_section_path(@chart, section), :class => "table_icon"
-          =link_to image_tag('icons/actions_small/Trash.png'), chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete, :class => "table_icon"
+          =table_icon_link_to :edit, edit_chart_section_path(@chart, section)
+          =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete
 
 =link_to "Add a section to this chart", new_chart_section_path(@chart), :class => "link"

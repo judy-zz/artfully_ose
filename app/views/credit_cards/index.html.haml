@@ -14,5 +14,5 @@
         %td= credit_card.card_number
         %td= credit_card.expiration_date.strftime "%m/%Y"
         %td
-          = link_to image_tag("icons/actions_small/Pencil.png", :alt => "Edit"), edit_user_credit_card_path(current_user,credit_card), :class => 'table_icon'
-          = link_to image_tag("icons/actions_small/Trash.png", :alt => "Delete"), user_credit_card_path(current_user,credit_card), :method => :delete, :confirm => 'Are you sure?', :class => 'table_icon'
+          = table_icon_link_to :edit, edit_user_credit_card_path(current_user,credit_card)
+          = table_icon_link_to :delete, user_credit_card_path(current_user,credit_card), :method => :delete, :confirm => 'Are you sure?'
