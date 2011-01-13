@@ -22,7 +22,7 @@
             %td.actions
               = link_to image_tag('icons/actions_small/Note.png'), performance_path(performance), :class=>"table_icon"
               = link_to image_tag('icons/actions_small/Copy.png'), duplicate_performance_path(performance), :class=>"table_icon"
-              = link_to image_tag('icons/actions_small/Pencil.png'), edit_event_performance_path(event, performance), :class=>"table_icon"
+              = link_to image_tag('icons/actions_small/Pencil.png'), edit_event_performance_path(event, performance), :class=>"table_icon", :title => "Edit" unless performance.tickets_created?
               = link_to image_tag('icons/actions_small/Trash.png'), event_performance_path(event, performance), :confirm => "Are you sure?", :method=>:delete, :class=>"table_icon", :title => "Delete" unless performance.tickets_created?
               - if performance.tickets_created?
                 = link_to "View Tickets", performance_path(performance), :class=>"table_icon"

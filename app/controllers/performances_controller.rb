@@ -17,7 +17,7 @@ class PerformancesController < ApplicationController
        redirect_to event_url(@event)
     end
     @performance.event_id=@event.id
-    @performance.chart_id=nil 
+    @performance.chart_id=nil
   end
 
   def create
@@ -51,30 +51,33 @@ class PerformancesController < ApplicationController
 
   def edit
     @performance = AthenaPerformance.find(params[:id])
-    @event = AthenaEvent.find(params[:event_id])
-    @charts = AthenaChart.find_by_event(@event)
+
+    without_tickets do
+      @event = AthenaEvent.find(params[:event_id])
+      @charts = AthenaChart.find_by_event(@event)
+    end
   end
 
   def update
     @performance = AthenaPerformance.find(params[:id])
-    @performance.update_attributes(params[:athena_performance][:athena_performance])
-    if @performance.save
-      redirect_to event_url(@performance.event)
-    else
-      render :template => 'performances/new'
+
+    without_tickets do
+      @performance.update_attributes(params[:athena_performance][:athena_performance])
+      if @performance.save
+        redirect_to event_url(@performance.event)
+      else
+        render :template => 'performances/new'
+      end
     end
   end
 
   def destroy
     @performance = AthenaPerformance.find(params[:id])
 
-    if @performance.tickets_created?
-      flash[:notice] = 'Tickets have already been created.'
-    else
+    without_tickets do
       @performance.destroy
+      redirect_to event_url(@performance.event)
     end
-
-    redirect_to event_url(@performance.event)
   end
 
   def createtickets
@@ -84,4 +87,14 @@ class PerformancesController < ApplicationController
     @charts = AthenaChart.find_by_event(@event)
     redirect_to performance_url(@performance)
   end
+
+  private
+    def without_tickets
+      if @performance.tickets_created?
+        flash[:alert] = 'Tickets have already been created.'
+        redirect_to event_url(@performance.event) and return
+      else
+        yield
+      end
+    end
 end
