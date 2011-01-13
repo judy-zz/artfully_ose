@@ -12,6 +12,10 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @charts = AthenaChart.find_by_event(@event)
+    if @charts.empty?
+       flash[:error] = "Please import a chart to this event before creating a new performance."
+       redirect_to event_url(@event)
+    end
     @performance.event_id=@event.id
     @performance.chart_id=nil
   end
