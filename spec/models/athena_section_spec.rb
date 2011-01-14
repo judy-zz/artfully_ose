@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AthenaChart do
-  subject { Factory(:athena_section_orchestra) }
+  subject { Factory(:athena_section) }
 
   it { should be_valid }
 
@@ -16,6 +16,7 @@ describe AthenaChart do
     end
 
     it "should not have the same id" do
+      subject.id = 1
       @copy.id.should_not eq subject.id
     end
 

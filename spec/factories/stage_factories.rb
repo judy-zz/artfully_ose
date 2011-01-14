@@ -1,4 +1,3 @@
-
 Factory.define :athena_chart, :class => AthenaChart, :default_strategy => :build do |c|
   c.id 300
   c.producer_pid 3220
@@ -16,22 +15,18 @@ Factory.define :athena_chart_template, :parent => :athena_chart do |c|
   c.is_template true
 end
 
-Factory.define :athena_section_orchestra, :class => AthenaSection, :default_strategy => :build do |section|
-  section.id 44
-  section.name 'Orchestra'
-  section.capacity 10
-  section.price 50
-  section.after_build do |section|
-    FakeWeb.register_uri(:get, "http://localhost/stage/sections/#{section.id}.json", :status => 200, :body => section.encode)
-    FakeWeb.register_uri(:put, "http://localhost/stage/sections/#{section.id}.json", :status => 200, :body => section.encode)
-  end
+Factory.sequence :section_id do |n|
+  n
 end
 
-Factory.define :athena_section_balcony, :class => AthenaSection, :default_strategy => :build do |section|
-  section.id 45
+Factory.define :athena_section, :class => AthenaSection, :default_strategy => :build do |section|
   section.name 'Balcony'
   section.capacity 5
   section.price 5
+end
+
+Factory.define :athena_section_with_id, :parent => :athena_section do |section|
+  section.id { Factory.next(:section_id) }
   section.after_build do |section|
     FakeWeb.register_uri(:get, "http://localhost/stage/sections/#{section.id}.json", :status => 200, :body => section.encode)
     FakeWeb.register_uri(:put, "http://localhost/stage/sections/#{section.id}.json", :status => 200, :body => section.encode)

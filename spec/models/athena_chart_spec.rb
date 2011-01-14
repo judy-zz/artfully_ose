@@ -39,47 +39,44 @@ describe AthenaChart do
   describe "sections" do
     it "should not include sections in the encoded output" do
       subject.sections = []
-      subject.sections << Factory(:athena_section_orchestra)
+      subject.sections << Factory(:athena_section)
       subject.encode.should_not match /"sections":/
     end
   end
 
   describe "#dup!" do
     before(:each) do
-      @original = Factory(:athena_chart)
-      @orchestra_section = Factory(:athena_section_orchestra)
-      @balcony_section = Factory(:athena_section_balcony)
-      @original.sections = [@balcony_section, @orchestra_section]
-      @copy = @original.dup!
+      subject.sections = 2.times.collect { Factory(:athena_section) }
+      @copy = subject.dup!
     end
 
     it "should not have the same id as the original" do
-      @copy.id.should_not eq @original.id
+      @copy.id.should_not eq subject.id
     end
 
     it "should have the same name as the original" do
-      @copy.name.should eq @original.name
+      @copy.name.should eq subject.name
     end
 
     it "should have the same producer pid" do
-      @copy.producer_pid.should eq @original.producer_pid
+      @copy.producer_pid.should eq subject.producer_pid
     end
 
     describe "and sections" do
       it "should have the same number of sections as the original" do
-        @copy.sections.size.should eq @original.sections.size
+        @copy.sections.size.should eq subject.sections.size
       end
 
       it "should copy each sections name" do
-        @copy.sections.collect { |section| section.name }.should eq @original.sections.collect { |section| section.name }
+        @copy.sections.collect { |section| section.name }.should eq subject.sections.collect { |section| section.name }
       end
 
       it "should copy each sections price" do
-        @copy.sections.collect { |section| section.price }.should eq @original.sections.collect { |section| section.price }
+        @copy.sections.collect { |section| section.price }.should eq subject.sections.collect { |section| section.price }
       end
 
       it "should copy each sections capacity" do
-        @copy.sections.collect { |section| section.capacity }.should eq @original.sections.collect { |section| section.capacity }
+        @copy.sections.collect { |section| section.capacity }.should eq subject.sections.collect { |section| section.capacity }
       end
     end
   end
