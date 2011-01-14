@@ -41,6 +41,7 @@ Factory.define :athena_event, :default_strategy => :build do |e|
   e.name "Some Event"
   e.venue "Some Venue"
   e.producer "Some Producer"
+  e.producer_pid { Factory.next(:person_id) }
 end
 
 Factory.define :athena_event_with_id, :parent => :athena_event do |e|
@@ -50,8 +51,6 @@ Factory.define :athena_event_with_id, :parent => :athena_event do |e|
     FakeWeb.register_uri(:any, "http://localhost/stage/events/#{event.id}.json", :status => 200, :body => event.encode)
   end
 end
-
-
 
 Factory.sequence :performance_datetime do |n|
   "2011-03-#{n}T10:10:00-04:00"
