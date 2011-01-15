@@ -12,8 +12,24 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'tickets_created', :string
   end
 
+  def gross_potential
+    @gross_potential ||= tickets.inject(0) { |sum, ticket| sum += ticket.price.to_i }
+  end
+
+  def gross_sales
+    @gross_sales ||= tickets_sold.inject(0) { |sum, ticket| sum += ticket.price.to_i }
+  end
+
   def tickets_created?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['tickets_created'])
+  end
+
+  def tickets
+    @tickets ||= AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
+  end
+  
+  def tickets_sold
+    @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
   end
 
   def chart

@@ -36,13 +36,7 @@ class PerformancesController < ApplicationController
   def show
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(@performance.event_id)
-    @tickets = AthenaTicket.find(:all, :params => { :performanceId => "eq#{@performance.id}" })
-    @tickets = @tickets.sort_by { |ticket| ticket.price }
-    @tickets_sold = @tickets.select { |ticket| ticket.sold? }
-    @gross_potential = 0
-    @gross_sales = 0
-    @tickets.each { |ticket| @gross_potential += ticket.price.to_i}
-    @tickets.each { |ticket| @gross_sales += ticket.price.to_i if ticket.sold?}
+    @performance.tickets = @performance.tickets.sort_by { |ticket| ticket.price }
     respond_to do |format|
       format.html
       format.widget
@@ -60,13 +54,44 @@ class PerformancesController < ApplicationController
 
   def update
     @performance = AthenaPerformance.find(params[:id])
-
-    without_tickets do
-      @performance.update_attributes(params[:athena_performance][:athena_performance])
-      if @performance.save
-        redirect_to event_url(@performance.event)
+    @bulk_action = params[:bulk_action]
+    #if this is a bulk edit tickets action...
+    if(!@bulk_action.nil?)
+      @selected_tickets = params[:selected_tickets]
+      
+      if @selected_tickets.nil?
+        flash[:error] = "You didn't select any tickets"
       else
-        render :template => 'performances/new'
+      
+        @msg = ''
+        @selected_tickets.each do |ticket_id|
+          @ticket = AthenaTicket.find(ticket_id)
+          case @bulk_action
+            when "PUT_ON_SALE"
+              @ticket.on_sale=true
+              @ticket.save
+            when 'TAKE_OFF_SALE'
+              @ticket.on_sale=false
+              @ticket.save
+            when 'DELETE'
+              @ticket.destroy
+            else
+              @msg += ' bonk? '
+          end
+          @msg += ticket_id + ' '
+        end
+  
+        flash[:notice] = "[" + params[:bulk_action] + "]"  + ' ' + @msg
+      end
+      redirect_to performance_url(@performance) and return
+    else
+      without_tickets do
+        @performance.update_attributes(params[:athena_performance][:athena_performance])
+        if @performance.save
+          redirect_to event_url(@performance.event)
+        else
+          render :template => 'performances/new'
+        end
       end
     end
   end

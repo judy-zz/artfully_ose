@@ -12,10 +12,10 @@
   .producer-name=@event.producer
 .one_third.column.last
   .stats
-    =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@tickets.size}
-    =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@tickets_sold.size}
-    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @gross_potential)}
-    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @gross_sales)}
+    =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
+    =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@performance.tickets_sold.size}
+    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @performance.gross_potential)}
+    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
 .clearboth
 
 .tickets
@@ -25,33 +25,29 @@
     %p
       =link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
   - else
-    %div
-      :erb
-        Bulk edit: <select><option>Put on Sale</option><option>Take off Sale</option><option>Delete</option></select>
-        <button>GO</button>
-    %table#ticket-table.normal.tablesorter.fullwidth
-      %thead
-        %tr
-          %th
-            :erb
-              <input type="checkbox"></input>
-          %th Section
-          %th Price
-          %th On sale?
-          %th Sold?
-      -@tickets.each do |ticket|
-        %tr
-          %td
-            :erb
-              <input type="checkbox"></input>
-          %td
-            =ticket.section
-          %td
-            :erb
-              $<%=ticket.price%>
-          %td
-            -if ticket.on_sale?
-              =image_tag "icons/small_icons/OK.png"
-          %td
-            -if ticket.sold?
-              =image_tag "icons/small_icons/Goodmark.png"
+    = form_for @performance, :url => performance_path(@performance) do |form|
+      %div
+        Bulk actions: 
+        =select_tag "bulk_action", "<option value='PUT_ON_SALE'>Put on Sale</option><option value='TAKE_OFF_SALE'>Take off Sale</option><option value='DELETE'>Delete</option>".html_safe
+        =submit_tag "GO"
+      %table#ticket-table.normal.tablesorter.fullwidth
+        %thead
+          %tr
+            %th
+              =check_box_tag :all
+            %th Section
+            %th Price
+            %th On sale?
+            %th Sold?
+        -@performance.tickets.each do |ticket|
+          %tr
+            %td
+              =check_box_tag "selected_tickets[]", ticket.id
+            %td=ticket.section
+            %td=number_to_currency ticket.price
+            %td
+              -if ticket.on_sale?
+                =image_tag "icons/small_icons/OK.png"
+            %td
+              -if ticket.sold?
+                =image_tag "icons/small_icons/Goodmark.png"
