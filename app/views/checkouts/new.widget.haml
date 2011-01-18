@@ -1,0 +1,25 @@
+%h3 Ticket Order
+%h4 Enter Payment Details
+
+= render "shared/error_messages.html", :target => @payment
+= render "shared/error_messages.html", :target => @payment.customer
+= render "shared/error_messages.html", :target => @payment.credit_card
+= render "shared/error_messages.html", :target => @payment.billing_address
+
+%ul.line-items
+  - current_order.items.each do |item|
+    %li= render :partial => 'athena_tickets/purchasable', :object => item.ticket
+  %li.total
+    = "Total: $#{current_order.total}"
+
+= form_tag checkout_path(:format => :widget) do
+  - if @needs_confirmation
+    = hidden_field_tag :confirmation, 1
+    = render @payment.customer
+    = render @payment.credit_card
+    = render @payment.billing_address
+    = render :partial => 'checkouts/save_customer'
+
+  = render :partial => 'athena_payments/form.html', :locals => {:payment => @payment}
+
+= link_to "Cancel Order", order_path(current_order, :format => :widget), :method => :delete, :confirm => 'Are you sure?'

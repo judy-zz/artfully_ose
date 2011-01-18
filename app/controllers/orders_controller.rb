@@ -32,6 +32,5 @@ class OrdersController < ApplicationController
 
   def destroy
     current_order.destroy
-    redirect_to root_url
   end
 end

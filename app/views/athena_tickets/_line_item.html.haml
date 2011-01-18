@@ -1,5 +1,0 @@
-.line-item
-  .price= "$#{line_item.price}"
-  .name
-    = link_to line_item.event, ticket_path(line_item)
-    = "at #{l(DateTime.parse(line_item.performance), :format => :short)}"

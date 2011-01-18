@@ -2,3 +2,5 @@
 %ul.ticket-list
 - current_order.items.each do |item|
   = render item.ticket
+
+= link_to "Checkout", new_checkout_path(:format => :widget)
