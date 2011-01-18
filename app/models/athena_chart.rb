@@ -43,6 +43,22 @@ class AthenaChart < AthenaResource::Base
     super(@attributes, options)
   end
 
+  def event
+    @event ||= AthenaEvent.find(event_id)
+  end
+
+  def event=(event)
+    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
+    @event, self.event_id = event, event.id
+  end
+
+  def assign_to(event)
+    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
+    assigned = self.dup!
+    assigned.event = event
+    assigned.save
+  end
+
   def self.find_by_event(event)
     self.find(:all, :params => { :eventId => 'eq' + event.id })
   end

@@ -50,17 +50,16 @@ class ChartsController < ApplicationController
     redirect_to charts_url
   end
 
-  def duplicate
-
+  def assign
     @event = AthenaEvent.find(params[:event_id])
-    if params[:athena_chart].nil? 
+
+    if params[:athena_chart].nil?
       flash[:error] = "Please create a chart to import to this event."
     else
       @chart = AthenaChart.find(params[:athena_chart][:id])
+      @chart.assign_to(@event)
 
-      @new_chart = @chart.dup!
-      @new_chart.event_id = @event.id
-      @new_chart.save
+
     end
     redirect_to event_url(@event)
   end

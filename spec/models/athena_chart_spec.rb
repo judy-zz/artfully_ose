@@ -80,4 +80,19 @@ describe AthenaChart do
       end
     end
   end
+  describe "#assign_to" do
+    before :each do
+      @event = Factory(:athena_event)
+    end
+
+    it "should assign a duplicate chart to the event" do
+      FakeWeb.register_uri(:post, "http://localhost/stage/sections/.json", :status => 200, :body => Factory(:athena_section_with_id).encode)
+      FakeWeb.register_uri(:post, "http://localhost/stage/charts/.json", :status => 200, :body => Factory(:athena_chart).encode)
+      subject.assign_to(@event)
+    end
+
+    it "should raise a TypeError if not being assigned to an AthenaEvent" do
+      lambda { subject.assign_to("event") }.should raise_error(TypeError)
+    end
+  end
 end

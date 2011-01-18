@@ -11,7 +11,7 @@ class AthenaEvent < AthenaResource::Base
     attribute 'producer_pid', :string
   end
 
-  validates_presence_of :name, :venue, :producer
+  validates_presence_of :name, :venue, :producer, :producer_pid
 
   def charts
     @attributes['charts'] ||= find_charts

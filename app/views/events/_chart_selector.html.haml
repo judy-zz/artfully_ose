@@ -1,4 +1,4 @@
-= form_for chart, :url => duplicate_chart_path(event) do |form|
+= form_for chart, :url => assign_chart_path(event) do |form|
   %p
     = form.label :id, "Import chart"
     = form.select :id, options_from_collection_for_select(charts, "id", "name")
