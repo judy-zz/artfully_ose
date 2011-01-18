@@ -13,7 +13,7 @@ Feature: Delete a performance
   Scenario: A producer attempts to delete a performance with tickets
     Given I am logged in as a "producer" with email "joe.producer@producer.com"
     And there is an Event with 3 Performances for "joe.producer@producer.com"
-    And the 1st performance has tickets on sale
+    And the 1st performance has had tickets created
     And I follow "Events"
     When I view the 1st event
     Then I should see not be able to delete the 1st performance

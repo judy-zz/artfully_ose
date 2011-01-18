@@ -118,9 +118,9 @@ describe User do
     end
   end
 
-  describe "with roles" do
+  describe "roles" do
     before(:each) do
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
+      FakeWeb.register_uri(:post, people_uri, :status => 200, :body => Factory(:person))
       @user = Factory(:user)
     end
 
@@ -149,6 +149,5 @@ describe User do
       @user.save
       @user.roles.should include(Role.producer)
     end
-
   end
 end

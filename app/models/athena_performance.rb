@@ -10,6 +10,7 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'producer_id', :string
     attribute 'datetime', :string
     attribute 'tickets_created', :string
+    attribute 'on_sale', :string
   end
 
   def gross_potential
@@ -20,14 +21,21 @@ class AthenaPerformance < AthenaResource::Base
     @gross_sales ||= tickets_sold.inject(0) { |sum, ticket| sum += ticket.price.to_i }
   end
 
-  def tickets_created?
+
+  def tickets_created
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['tickets_created'])
   end
+  alias :tickets_created? :tickets_created
+
+  def on_sale
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['on_sale'])
+  end
+  alias :on_sale? :on_sale
 
   def tickets
     @tickets ||= AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
   end
-  
+
   def tickets_sold
     @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
   end

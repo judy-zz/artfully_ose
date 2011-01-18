@@ -1,5 +1,11 @@
 class PerformancesController < ApplicationController
   before_filter :authenticate_user!
+  load_and_authorize_resource(:class => "AthenaPerformance")
+
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to event_url(@performance.event)
+  end
 
   def duplicate
     @performance = AthenaPerformance.find(params[:id])
@@ -37,6 +43,7 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(@performance.event_id)
     @performance.tickets = @performance.tickets.sort_by { |ticket| ticket.price }
+
     respond_to do |format|
       format.html
       format.widget
@@ -44,20 +51,15 @@ class PerformancesController < ApplicationController
   end
 
   def edit
-    @performance = AthenaPerformance.find(params[:id])
-
-    without_tickets do
-      @event = AthenaEvent.find(params[:event_id])
-      @charts = AthenaChart.find_by_event(@event)
-    end
+    # Loaded and authorized by CanCan
   end
 
   def update
     @performance = AthenaPerformance.find(params[:id])
     @bulk_action = params[:bulk_action]
-    
+
     if(!@bulk_action.nil?)
-      bulk_edit_tickets params[:selected_tickets], @bulk_action 
+      bulk_edit_tickets params[:selected_tickets], @bulk_action
       redirect_to performance_url(@performance) and return
     else
       without_tickets do
@@ -72,12 +74,8 @@ class PerformancesController < ApplicationController
   end
 
   def destroy
-    @performance = AthenaPerformance.find(params[:id])
-
-    without_tickets do
-      @performance.destroy
-      redirect_to event_url(@performance.event)
-    end
+    @performance.destroy
+    redirect_to event_url(@performance.event)
   end
 
   def createtickets
@@ -97,15 +95,15 @@ class PerformancesController < ApplicationController
         yield
       end
     end
-    
-    def bulk_edit_tickets ticket_ids, action  
+
+    def bulk_edit_tickets ticket_ids, action
       if ticket_ids.nil?
         flash[:error] = "You didn't select any tickets"
         return
       else
         ticket_ids.each do |ticket_id|
           @ticket = AthenaTicket.find(ticket_id)
-          
+
           #TODO: Put this logic into @performance model?
           case action
             when "PUT_ON_SALE"
@@ -116,8 +114,8 @@ class PerformancesController < ApplicationController
               @ticket.save
             when 'DELETE'
               @ticket.destroy
-          end        
-        
+          end
+
           case action
             when "PUT_ON_SALE"
               @msg = "Put " + ticket_ids.size.to_s + " tickets on sale"

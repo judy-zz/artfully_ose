@@ -17,14 +17,12 @@
             %td.day-of-week-display= performance.day_of_week
             %td= performance.formatted_performance_date
             %td= performance.formatted_performance_time
-            %td
-              - unless performance.chart.nil?
-                = link_to performance.chart.name, chart_path(performance.chart)
+            %td= link_to performance.chart.name, chart_path(performance.chart) unless performance.chart.nil?
             %td.actions
               = table_icon_link_to :view, performance_path(performance)
               = table_icon_link_to :copy, duplicate_performance_path(performance)
-              = table_icon_link_to :edit, edit_event_performance_path(event, performance) unless performance.tickets_created?
-              = table_icon_link_to :delete, event_performance_path(event, performance), :confirm => "Are you sure?", :method=>:delete unless performance.tickets_created?
+              = table_icon_link_to :edit, edit_event_performance_path(event, performance) if can?(:edit, performance)
+              = table_icon_link_to :delete, event_performance_path(event, performance), :confirm => "Are you sure?", :method => :delete if can?(:destroy, performance)
             %td.tickets
               - if performance.tickets_created?
                 = table_icon_link_to "View Tickets", performance_path(performance)

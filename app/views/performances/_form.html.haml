@@ -4,4 +4,4 @@
     = performance_form.datetime_select :datetime, :default=>target.datetime
   %p
     = performance_form.label :chart_id, "Seating chart"
-    = performance_form.select :chart_id, options_from_collection_for_select(@charts, "id", "name", target.chart_id.to_s )
+    = performance_form.select :chart_id, options_from_collection_for_select(target.event.charts, "id", "name", target.chart_id.to_s )
