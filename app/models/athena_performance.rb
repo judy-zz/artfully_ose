@@ -94,6 +94,7 @@ class AthenaPerformance < AthenaResource::Base
   def dup!
     copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' || key == 'tickets_created' })
     copy.tickets_created = 'false'
+    copy.on_sale = 'false'
     copy.datetime = copy.datetime + 1.day
     copy
   end
