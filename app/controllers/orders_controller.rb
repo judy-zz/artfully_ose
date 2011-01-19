@@ -32,5 +32,6 @@ class OrdersController < ApplicationController
 
   def destroy
     current_order.destroy
+    redirect_to order_path(current_order, :format => :widget)
   end
 end

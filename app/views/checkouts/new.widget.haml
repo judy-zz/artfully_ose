@@ -1,5 +1,6 @@
-%h3 Ticket Order
-%h4 Enter Payment Details
+-content_for :header do
+  %h1 Ticket Order
+  %h2 Enter Payment Details
 
 = render "shared/error_messages.html", :target => @payment
 = render "shared/error_messages.html", :target => @payment.customer

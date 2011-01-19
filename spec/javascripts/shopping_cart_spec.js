@@ -32,11 +32,11 @@ describe("Shopping Cart", function(){
       ShoppingCart.$controls.click();
       expect(ShoppingCart.toggle).toHaveBeenCalled();
     });
-  });
 
-  describe("iframe", function(){
-    it("should store a reference to the injected iframe",function(){
-      expect(ShoppingCart.$iframe).toBeDefined();
+    it("should call show when adding tickets to the cart", function(){
+      spyOn(ShoppingCart,'show');
+      ShoppingCart.add([ { id: "1" }, { id: "2" }, { id: "3" } ]);
+      expect(ShoppingCart.show).toHaveBeenCalled();
     });
   });
 

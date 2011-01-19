@@ -41,7 +41,6 @@
 
             .clearboth
 
-            = render :partial => 'layouts/current_order', :locals => { :current_order => current_order }
             = render :partial => 'layouts/flash', :locals => { :flash => flash }
             - flash.discard
             = yield

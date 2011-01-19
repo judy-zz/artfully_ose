@@ -1,0 +1,130 @@
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,
+blockquote,pre,address,code,del,dfn,em,img,q,
+dl,dt,dd,ol,ul,li,
+table,caption,tbody,tfoot,thead,tr,th,td,br,fieldset,textarea{font-family:"Lucida Sans Unicode","Lucida Grande","Trebuchet MS", Helvetica, Arial, sans-serif;line-height:20px;letter-spacing:.1px;word-spacing:1px;margin:0;padding:0;border:0;vertical-align:baseline;}
+h1,h2,h3,h4,h5,h6,hr,p,ul,ol,dl,pre,address,table,form{margin:0 0 20px}
+p,h1, h2, h3, h4, h5, h6, ul.check_list, ul.arrowlist{padding-left:2px;}
+strong, b{font-weight:bold;}
+em, dfn, i{font-style:italic;}
+
+a, input { outline:none; }
+
+a {
+  color:#aaa;
+}
+
+body {
+  color:#ddd;
+  background:#3a3a3a;
+  font-size:10pt;
+}
+
+fieldset legend {
+  border:1px solid #fff;
+
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+
+  -moz-box-shadow: 1px 1px 0px #999;
+  -webkit-box-shadow: 1px 1px 0px #999;
+  box-shadow: 1px 1px 0px #999;
+
+  background:#fbfbfb;
+  background: -moz-linear-gradient(top,#fbfbfb,#f5f5f5);
+  background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#f5f5f5));
+
+  padding:5px 20px;
+  text-transform:uppercase;
+  font-size:11px;
+}
+
+input, select {
+  padding:6px 10px;
+  background:#eee;
+  color:#888;
+
+  border-width:1px;
+  border-style:solid;
+  border-color:#d9d9d9 #eaeaea white;
+
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+
+  font-size:11px;
+  margin-right:15px;
+}
+
+select option {
+  padding:6px 10px;
+
+}
+
+input.sf {
+  width:180px;
+}
+
+input.sfEvent {
+  width:110px;
+  padding:6px 0px;
+  margin-right:0px;
+}
+input.sfTemplate {
+  width:75px;
+  padding:2px 0px;
+  margin-right:0px;
+}
+input.mf {
+  width:270px;
+}
+
+input.lf {
+  width:360px;
+}
+
+input[type="radio"], input[type="checkbox"] {
+  margin-right:5px;
+  font-size:10px;
+}
+
+.validate_success { color:#739F1D; }
+.validate_error { color:red; }
+
+fieldset p {
+
+}
+
+input[type="checkbox"] + label {
+  display: block;
+  height: 16px;
+}
+
+p label {
+  display:inline-block;
+  width:150px;
+  font-size:11px;
+  vertical-align:middle;
+}
+
+label.fix {
+  position:relative;
+  top:-7px;
+}
+
+#content{
+  margin:0 10px;
+}
+#current_order {
+  background:#363636;
+  color:#fff;
+  padding:5px 5px 5px 27px;
+  font-size:.9em;
+  color:#ddd;
+  border-top:1px solid #3f3f3f;
+}
+
+#checkout-link {
+  float:right;
+  padding:0 5px;
+}

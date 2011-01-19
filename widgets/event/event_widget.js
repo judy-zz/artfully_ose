@@ -1,6 +1,6 @@
 var Config = {
   base_uri: 'http://localhost:3000/',
-  maxHeight: '400'
+  maxHeight: '200'
 };
 
 var E;
@@ -10,4 +10,5 @@ EventWidget = function(id, options){
     E = new Event(data);
     E.render($('#event'));
   });
+  ShoppingCart.$cart.appendTo('body')
 };

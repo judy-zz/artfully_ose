@@ -17,26 +17,28 @@ var ShoppingCart = (function(){
   // This is our ShoppingCart object.
   var cart = {
     init: function(){
-      this.$cart =      $("<div id='shopping-cart' class='shown' />");
+      this.$cart =      $("<div id='shopping-cart' class='hidden' />");
       this.$controls =  $("<div id='shopping-cart-controls' />").appendTo(this.$cart);
-      this.$iframe =    $("<iframe name='shopping-cart-iframe' />").height(Config.maxHeight).appendTo(this.$cart);
+      $("<span class='timer' />").text("(Countdown)").appendTo(this.$controls);
+      $("<span class='cart-name' />").text("Shopping Cart").appendTo(this.$controls);
+      this.$iframe =    $("<iframe name='shopping-cart-iframe' />").height(Config.maxHeight).hide().appendTo(this.$cart);
 
       return this.$cart;
     },
 
     add: function(tickets){
-      this.$iframe.show();
       _.hiddenFormFor(tickets).submit().remove();
+      this.show();
     },
 
     show: function(){
       this.$cart.addClass('shown').removeClass('hidden');
-      this.$iframe.slideUp();
+      this.$iframe.slideDown();
     },
 
     hide: function(){
       this.$cart.addClass('hidden').removeClass('shown');
-      this.$iframe.slideDown();
+      this.$iframe.slideUp();
     },
 
     toggle: function(){
