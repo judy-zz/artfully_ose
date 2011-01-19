@@ -98,6 +98,23 @@ class AthenaPerformance < AthenaResource::Base
     attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
   end
+  
+  def bulk_edit_tickets(ticket_ids, action)
+    ticket_ids.each do |ticket_id|
+      @ticket = AthenaTicket.find(ticket_id)
+
+      case action
+        when "PUT_ON_SALE"
+          @ticket.on_sale=true
+          @ticket.save
+        when 'TAKE_OFF_SALE'
+          @ticket.on_sale=false
+          @ticket.save
+        when 'DELETE'
+          @ticket.destroy
+      end
+    end    
+  end
 
   private
     def prepare_attr!(attributes)
