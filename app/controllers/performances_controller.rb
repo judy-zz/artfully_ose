@@ -1,6 +1,6 @@
 class PerformancesController < ApplicationController
   before_filter :authenticate_user!
-  load_and_authorize_resource(:class => "AthenaPerformance")
+  load_and_authorize_resource :class => "AthenaPerformance", :only => [ :edit, :destroy ]
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -17,20 +17,18 @@ class PerformancesController < ApplicationController
   def new
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
-    @charts = AthenaChart.find_by_event(@event)
-    if @charts.empty?
+    @performance.event = @event
+    if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
        redirect_to event_url(@event)
     end
-    @performance.event_id=@event.id
-    @performance.chart_id=nil
   end
 
   def create
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
-    @performance.event_id=@event.id
+    @performance.event = @event
     @performance.tickets_created = 'false'
     if @performance.save
       redirect_to event_url(@performance.event)
@@ -42,7 +40,7 @@ class PerformancesController < ApplicationController
   def show
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(@performance.event_id)
-    @performance.tickets = @performance.tickets.sort_by { |ticket| ticket.price }
+    @performance.tickets = @performance.tickets
 
     respond_to do |format|
       format.html
@@ -56,19 +54,12 @@ class PerformancesController < ApplicationController
 
   def update
     @performance = AthenaPerformance.find(params[:id])
-    @bulk_action = params[:bulk_action]
-
-    if(!@bulk_action.nil?)
-      bulk_edit_tickets params[:selected_tickets], @bulk_action
-      redirect_to performance_url(@performance) and return
-    else
-      without_tickets do
-        @performance.update_attributes(params[:athena_performance][:athena_performance])
-        if @performance.save
-          redirect_to event_url(@performance.event)
-        else
-          render :template => 'performances/new'
-        end
+    without_tickets do
+      @performance.update_attributes(params[:athena_performance][:athena_performance])
+      if @performance.save
+        redirect_to event_url(@performance.event)
+      else
+        render :template => 'performances/new'
       end
     end
   end
@@ -94,40 +85,5 @@ class PerformancesController < ApplicationController
       else
         yield
       end
-    end
-
-    def bulk_edit_tickets ticket_ids, action
-      if ticket_ids.nil?
-        flash[:error] = "You didn't select any tickets"
-        return
-      else
-        ticket_ids.each do |ticket_id|
-          @ticket = AthenaTicket.find(ticket_id)
-
-          #TODO: Put this logic into @performance model?
-          case action
-            when "PUT_ON_SALE"
-              @ticket.on_sale=true
-              @ticket.save
-            when 'TAKE_OFF_SALE'
-              @ticket.on_sale=false
-              @ticket.save
-            when 'DELETE'
-              @ticket.destroy
-          end
-
-          case action
-            when "PUT_ON_SALE"
-              @msg = "Put " + ticket_ids.size.to_s + " tickets on sale"
-            when 'TAKE_OFF_SALE'
-              @msg = "Took " + ticket_ids.size.to_s + " tickets off sale"
-            when 'DELETE'
-              @msg = "Deleted " + ticket_ids.size.to_s + " tickets "
-            else
-              @msg = "Please select some tickets"
-          end
-        end
-      end
-      flash[:notice] = @msg
     end
 end

@@ -32,6 +32,7 @@ Artfully::Application.routes.draw do
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
   match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
+  match '/performances/:performance_id/tickets/bulk_edit' => 'tickets#bulk_edit', :as => :bulk_edit_performance_tickets
 
   root :to => "index#index"
 end

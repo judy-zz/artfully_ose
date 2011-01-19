@@ -1,0 +1,29 @@
+.notification.info
+  %span
+  .text
+    %p
+      %strong Info!
+      Please confirm your changes before we save them.
+%p
+  You are
+  =verbalize_action (@bulk_action)
+%p	
+  =pluralize(@selected_tickets.size, 'ticket')
+	
+%p
+  for the #{@performance.formatted_performance_date}, #{@performance.formatted_performance_time} performance of
+%p
+  =@performance.event.name
+
+= form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
+  -@selected_tickets.each do |st|
+    =hidden_field_tag "selected_tickets[]", st
+  =hidden_field_tag :bulk_action, @bulk_action
+  =hidden_field_tag :confirm, :true
+  %p
+    If this is correct, please click CONFIRM
+  =submit_tag "CONFIRM"
+
+%p
+  If this is not correct, 
+  = link_to "cancel this action and return to the performance page", performance_url(@performance)

@@ -23,7 +23,7 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def performances
-    @attributes['performances'] ||= find_performances
+    @attributes['performances'] ||= find_performances.sort_by { |performance| performance.datetime }
   end
 
   def performances=(performances)
