@@ -25,6 +25,6 @@
               = table_icon_link_to :delete, event_performance_path(event, performance), :confirm => "Are you sure?", :method => :delete if can?(:destroy, performance)
             %td.tickets
               - if performance.tickets_created?
-                = table_icon_link_to "View Tickets", performance_path(performance)
+                = link_to "View Tickets", performance_path(performance)
               - else
-                = table_icon_link_to "Create Tickets", create_tickets_for_performance_path(performance)
+                = link_to "Create Tickets", create_tickets_for_performance_path(performance)

@@ -9,7 +9,7 @@ class ApplicationController < ActionController::Base
     create_current_order if @current_order.nil? or @current_order.completed?
     @current_order
   end
-
+  
   layout :specify_layout
 
   protected

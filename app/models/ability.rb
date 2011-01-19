@@ -3,6 +3,7 @@ class Ability
 
   def initialize(user)
     user ||= User.new
+      can :bulk_edit, :tickets
 
     if user.has_role? :admin
       can :manage, :all
