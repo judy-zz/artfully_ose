@@ -17,20 +17,18 @@ class PerformancesController < ApplicationController
   def new
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
-    @charts = AthenaChart.find_by_event(@event)
-    if @charts.empty?
+    @performance.event = @event
+    if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
        redirect_to event_url(@event)
     end
-    @performance.event_id=@event.id
-    @performance.chart_id=nil
   end
 
   def create
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
-    @performance.event_id=@event.id
+    @performance.event = @event
     @performance.tickets_created = 'false'
     if @performance.save
       redirect_to event_url(@performance.event)
@@ -42,7 +40,7 @@ class PerformancesController < ApplicationController
   def show
     @performance = AthenaPerformance.find(params[:id])
     @event = AthenaEvent.find(@performance.event_id)
-    @performance.tickets = @performance.tickets.sort_by { |ticket| ticket.price }
+    @performance.tickets = @performance.tickets
 
     respond_to do |format|
       format.html

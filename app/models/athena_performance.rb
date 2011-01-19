@@ -37,7 +37,7 @@ class AthenaPerformance < AthenaResource::Base
   alias :on_sale? :on_sale
 
   def tickets
-    @tickets ||= AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
+    @tickets ||= AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" }).sort_by { |ticket| ticket.price }
   end
 
   def tickets_sold
