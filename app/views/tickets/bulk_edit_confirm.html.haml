@@ -6,18 +6,9 @@
       Please confirm your changes before we save them.
 %p
   You are
-  - if @bulk_action=='PUT_ON_SALE'
-    putting on sale
-  - elsif @bulk_action=='TAKE_OFF_SALE'
-    taking off sale
-  - elsif @bulk_action=='DELETE'
-    deleting
+  =verbalize_action (@bulk_action)
 %p	
-  =@selected_tickets.size
-  - if @selected_tickets.size > 1
-    tickets
-  - else
-    ticket
+  =pluralize(@selected_tickets.size, 'ticket')
 	
 %p
   for the #{@performance.formatted_performance_date}, #{@performance.formatted_performance_time} performance of

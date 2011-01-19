@@ -30,24 +30,4 @@
         Bulk actions: 
         =select_tag "bulk_action", "<option value='PUT_ON_SALE'>Put on Sale</option><option value='TAKE_OFF_SALE'>Take off Sale</option><option value='DELETE'>Delete</option>".html_safe
         =submit_tag "GO"
-      %table#ticket-table.normal.tablesorter.fullwidth
-        %thead
-          %tr
-            %th
-              =check_box_tag :all
-            %th Section
-            %th Price
-            %th On sale?
-            %th Sold?
-        -@performance.tickets.each do |ticket|
-          %tr
-            %td
-              =check_box_tag "selected_tickets[]", ticket.id
-            %td=ticket.section
-            %td=number_to_currency ticket.price
-            %td
-              -if ticket.on_sale?
-                =image_tag "icons/small_icons/OK.png"
-            %td
-              -if ticket.sold?
-                =image_tag "icons/small_icons/Goodmark.png"
+      =render :partial => 'ticket_table', :locals => { :performance => @performance }
