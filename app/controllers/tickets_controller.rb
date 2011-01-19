@@ -36,19 +36,25 @@ class TicketsController < ApplicationController
         flash[:error] = "You didn't select an action"
         return     
       else
-        performance.bulk_edit_tickets(ticket_ids, action)
-
+        rejected_ids = performance.bulk_edit_tickets(ticket_ids, action)
+        edited_tickets = ticket_ids.size - rejected_ids.size
         case action
           when "PUT_ON_SALE"
-            @msg = "Put " + ticket_ids.size.to_s + " ticket(s) on sale"
+            @msg = "Put " + edited_tickets.to_s + " ticket(s) on sale. "
           when 'TAKE_OFF_SALE'
-            @msg = "Took " + ticket_ids.size.to_s + " ticket(s) off sale"
+            @msg = "Took " + edited_tickets.to_s + " ticket(s) off sale. "
           when 'DELETE'
-            @msg = "Deleted " + ticket_ids.size.to_s + " ticket(s) "
+            @msg = "Deleted " + edited_tickets.to_s + " ticket(s). "
           else
-            @msg = "Please select an action"
+            @msg = "Please select an action. "
+        end
+        
+        if rejected_ids.size > 0
+          @msg += rejected_ids.size.to_s + " ticket(s) could not be edited because they have already been sold"
+          flash[:alert] = @msg
+        else          
+          flash[:notice] = @msg
         end
       end
-      flash[:notice] = @msg
     end
 end

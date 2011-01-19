@@ -71,6 +71,7 @@ end
 
 Factory.define :athena_performance_with_id, :parent => :athena_performance do |p|
   p.id { Factory.next :performance_id }
+  p.datetime Factory.next :performance_datetime
   p.after_build do |performance|
     FakeWeb.register_uri(:get, "http://localhost/stage/performances/#{performance.id}.json", :status => 200, :body => performance.encode)
     FakeWeb.register_uri(:delete, "http://localhost/stage/performances/#{performance.id}.json", :status => 200, :body => "")
