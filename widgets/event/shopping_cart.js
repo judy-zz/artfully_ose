@@ -1,34 +1,60 @@
-var ShoppingCart = {
-  $iframe: null,
+var ShoppingCart = (function(){
 
-  iframe: function(){
-    if(this.$iframe === null){
-      this.$iframe = $(document.createElement('iframe'))
-        .attr({'name':'shopping-cart','id':'shopping-cart'})
-        .appendTo('body');
+  var _ = {
+    hiddenFormFor: function(tickets){
+      var $form = $(document.createElement('form')).attr({'method':'post','target':ShoppingCart.$iframe.attr('name'), 'action':Config.base_uri + 'orders.widget'});
+
+      // Hidden field with authenticity token
+      $(document.createElement('input')).attr({'type':'hidden', 'name': 'authenticity_token','value': Config.token}).appendTo($form);
+      $.each(tickets, function(i,ticket){
+        $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':ticket.id}).appendTo($form);
+      });
+
+      return $form.appendTo($('body'));
     }
-    return this.$iframe;
-  },
+  };
 
-  remove_iframe: function(){
-    if(this.$iframe && this.$iframe.remove()){
-      this.$iframe = null;
+  // This is our ShoppingCart object.
+  var cart = {
+    init: function(){
+      this.$cart =      $("<div id='shopping-cart' class='shown' />");
+      this.$controls =  $("<div id='shopping-cart-controls' />").appendTo(this.$cart);
+      this.$iframe =    $("<iframe name='shopping-cart-iframe' />").height(Config.maxHeight).appendTo(this.$cart);
+
+      return this.$cart;
+    },
+
+    add: function(tickets){
+      this.$iframe.show();
+      _.hiddenFormFor(tickets).submit().remove();
+    },
+
+    show: function(){
+      this.$cart.addClass('shown').removeClass('hidden');
+      this.$iframe.slideUp();
+    },
+
+    hide: function(){
+      this.$cart.addClass('hidden').removeClass('shown');
+      this.$iframe.slideDown();
+    },
+
+    toggle: function(){
+      if(this.$cart.hasClass('shown')){
+        this.hide();
+      } else {
+        this.show();
+      }
     }
-  },
+  };
 
-  buy: function(tickets){
-    this.iframe().show();
-    this.hidden_form_for(tickets).submit().remove();
-  },
+  cart.init();
+  cart.$controls.click(function(){ cart.toggle(); });
 
-  hidden_form_for: function(tickets){
-    var $form = $(document.createElement('form')).attr({'method':'post','target':ShoppingCart.iframe().attr('name'), 'action':Config.base_uri + 'orders.widget'});
+  // Reveal private methods for unit testing.
+  cart._ = _;
 
-    $(document.createElement('input')).attr({'type':'hidden', 'name': 'authenticity_token','value': Config.token}).appendTo($form);
-    $.each(tickets, function(i,ticket){
-      $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':ticket.id}).appendTo($form);
-    });
+  // Return the cart object
+  return cart;
+}());
 
-    return $form.appendTo($('body'))
-  }
-};
