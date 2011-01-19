@@ -70,6 +70,21 @@ class PerformancesController < ApplicationController
     @performance.destroy
     redirect_to event_url(@performance.event)
   end
+  
+  def put_on_sale
+    @performance = AthenaPerformance.find(params[:id])
+    with_confirmation do
+      @performance.put_on_sale
+      flash[:notice] = 'Your performance is on sale!'
+      redirect_to performance_url(@performance) and return
+    end
+  end
+  
+  def take_off_sale
+    @performance = AthenaPerformance.find(params[:id])
+    @performance.take_off_sale
+    redirect_to performance_url(@performance) and return
+  end
 
   def createtickets
     @performance = AthenaPerformance.find(params[:id])
@@ -80,9 +95,17 @@ class PerformancesController < ApplicationController
   end
 
   private
+    def with_confirmation
+      if params[:confirm].nil?
+        render params[:action] + '_confirm' and return
+      else
+        yield
+      end
+    end
+    
     def without_tickets
       if @performance.tickets_created?
-        flash[:alert] = 'Tickets have already been created.'
+        flash[:alert] = 'Tickets have already been created for this performance'
         redirect_to event_url(@performance.event) and return
       else
         yield

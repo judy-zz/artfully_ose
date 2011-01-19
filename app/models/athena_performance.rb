@@ -102,6 +102,20 @@ class AthenaPerformance < AthenaResource::Base
     attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
   end
+
+  def take_off_sale
+    attributes['on_sale'] = false
+    self.save
+  end
+  
+  def put_on_sale
+    tickets.each do |ticket|
+      ticket.on_sale=true
+      ticket.save
+    end
+    attributes['on_sale'] = true
+    self.save
+  end
     
   def bulk_edit_tickets(ticket_ids, action)    
     rejected_ids = [];

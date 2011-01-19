@@ -1,0 +1,25 @@
+.notification.info
+  %span
+  .text
+    %p
+      %strong Info!
+      Please confirm your changes before we save them.
+%p
+  You are putting all tickets on sale for the
+	
+%p
+  #{@performance.formatted_performance_date}, #{@performance.formatted_performance_time} 
+%p
+  performance of
+%p
+  =@performance.event.name
+
+= form_for @performance, :url => put_performance_on_sale_path(@performance) do |form|  
+  =hidden_field_tag :confirm, :true
+  %p
+    If this is correct, please click CONFIRM
+  =submit_tag "CONFIRM"
+
+%p
+  If this is not correct, 
+  = link_to "cancel this action and return to the performance page", performance_url(@performance)
