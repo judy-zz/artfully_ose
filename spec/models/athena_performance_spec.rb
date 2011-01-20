@@ -52,8 +52,7 @@ describe AthenaPerformance do
       @num_tickets_to_test = 3
 
       #grab three ids at random
-      @sold_ticket_ids = []
-      @test_tickets.sort_by{ rand }.slice(0...@num_tickets_to_test).each { |t| @sold_ticket_ids << t.id.to_i }
+      @sold_ticket_ids = @test_tickets.sample(@num_tickets_to_test).collect { |t| t.id.to_i }
 
       #now hash the tickets by id so we can compare them later
       @tickets_hash = {}
@@ -63,7 +62,7 @@ describe AthenaPerformance do
       end
 
       # Sell 3 tickets
-      
+
       #let's flip all the tickets to on_sale=true
       @performance.tickets.each { |ticket| ticket.on_sale = true }
 
@@ -73,7 +72,7 @@ describe AthenaPerformance do
           ticket.sold = true
         end
       end
-      
+
       # Take Performance Off Sale
       @test_tickets.each do |ticket|
         FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.to_json)
@@ -92,51 +91,51 @@ describe AthenaPerformance do
     end
   end
 
-  
+
   describe "bulk edit tickets" do
     before(:each) do
       @num_tickets_to_test = 3
       @test_tickets = (0..10).collect { Factory(:ticket_with_id) }
-      
+
       #grab three ids at random
       @ticket_ids = []
       @test_tickets.sort_by{ rand }.slice(0...@num_tickets_to_test).each { |t| @ticket_ids << t.id.to_i }
-      
+
       #now hash the tickets by id so we can compare them later
       @tickets_hash = {}
       @test_tickets.each { |ticket| @tickets_hash[ticket.id.to_i] = ticket }
-      
+
       #create a performance
       @performance = Factory(:athena_performance_with_id)
-      
+
       #now hydrate the fake tickets into our performance
       FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{@performance.id}", :status => 200, :body => @test_tickets.to_json)
       @performance.tickets
     end
-    
+
     it "should put tickets on sale" do
       @ticket_ids.each do |id|
         FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body => @tickets_hash[id].to_json)
       end
-      
-      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::PUT_ON_SALE)      
+
+      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::PUT_ON_SALE)
       @performance.tickets.each { |ticket| ticket.on_sale.should eq(@ticket_ids.include? ticket.id) }
     end
 
     it "should take tickets off sale" do
       #let's flip all the tickets to on_sale=true
       @performance.tickets.each { |ticket| ticket.on_sale = true }
-      
+
       #we need to make sure we return the tickets with the right on_sale bit
       @ticket_ids.each do |id|
         @tickets_hash[id].on_sale = false
       end
-      
+
       @ticket_ids.each do |id|
         FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body => @tickets_hash[id].to_json)
       end
 
-      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::TAKE_OFF_SALE)      
+      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::TAKE_OFF_SALE)
       @performance.tickets.each { |ticket| ticket.on_sale.should eq(!@ticket_ids.include?(ticket.id.to_i)) }
     end
 
@@ -144,7 +143,7 @@ describe AthenaPerformance do
       @ticket_ids.each do |id|
         FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{id}.json", :status => 204)
       end
-      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::DELETE)          
+      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::DELETE)
       @performance.tickets.size.should eq(@test_tickets.size - @num_tickets_to_test)
       @performance.tickets.each do |ticket|
         (@ticket_ids.include? ticket.id).should eq false
@@ -154,8 +153,8 @@ describe AthenaPerformance do
     it "should not take ticket off sale if it has already been sold" do
       #let's flip all the tickets to on_sale=true
       @performance.tickets.each { |ticket| ticket.on_sale = true }
-      
-      sold_ticket_id = @ticket_ids[0]      
+
+      sold_ticket_id = @ticket_ids[0]
 
       #sell one of the tickets
       @performance.tickets.each do |ticket|
@@ -170,7 +169,7 @@ describe AthenaPerformance do
         end
       end
 
-      rejected_ids = @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::TAKE_OFF_SALE)  
+      rejected_ids = @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::TAKE_OFF_SALE)
       rejected_ids.size.should eq 1
       rejected_ids[0].should eq sold_ticket_id
       @ticket_ids.delete_at(0)
@@ -181,7 +180,7 @@ describe AthenaPerformance do
       #let's flip all the tickets to on_sale=true
       @performance.tickets.each { |ticket| ticket.on_sale = true }
 
-      sold_ticket_id = @ticket_ids[0]      
+      sold_ticket_id = @ticket_ids[0]
 
       #sell one of the tickets
       @performance.tickets.each do |ticket|
@@ -196,7 +195,7 @@ describe AthenaPerformance do
         end
       end
 
-      rejected_ids = @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::DELETE)  
+      rejected_ids = @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::DELETE)
       rejected_ids.size.should eq 1
       rejected_ids[0].should eq sold_ticket_id
       @ticket_ids.delete_at(0)
@@ -204,7 +203,7 @@ describe AthenaPerformance do
         (@ticket_ids.include? ticket.id).should eq false
       end
     end
-    
+
   end
 
   describe "#event" do
