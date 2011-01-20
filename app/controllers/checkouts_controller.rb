@@ -1,5 +1,6 @@
 class CheckoutsController < ApplicationController
   def new
+    redirect_to(order_url, :alert => "This order is empty!") if current_order.empty?
     @payment = AthenaPayment.new
   end
 
