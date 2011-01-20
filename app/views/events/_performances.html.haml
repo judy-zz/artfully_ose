@@ -2,7 +2,7 @@
   .sub-container#performance-container
     %h2 Performances
 
-    %table#performance-table.normal.tablesorter
+    %table#performance-table.normal.tablesorter.fullwidth
       %thead
         %tr
           %th Weekday
@@ -13,7 +13,7 @@
           %th Tickets
       %tbody
         - event.performances.each do |performance|
-          %tr
+          %tr{:class => (performance.on_sale? ? "selected" : "")}
             %td.day-of-week-display= performance.day_of_week
             %td= performance.formatted_performance_date
             %td= performance.formatted_performance_time

@@ -71,6 +71,12 @@ class PerformancesController < ApplicationController
   
   def put_on_sale
     @performance = AthenaPerformance.find(params[:id])
+    
+    if @performance.tickets.empty?
+      flash[:error] = 'Please create tickets for this performance before putting it on sale'
+      redirect_to performance_url(@performance) and return
+    end
+    
     with_confirmation do
       @performance.put_on_sale
       flash[:notice] = 'Your performance is on sale!'

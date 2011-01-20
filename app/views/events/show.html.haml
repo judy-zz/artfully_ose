@@ -17,14 +17,14 @@
 %h2 Charts
 .templateContainer
   .one_half.column{:style=>'margin-right:2%'}
-    - @event.charts.each do |c|
-      = render :partial => 'events/chart', :locals => { :chart => c }
-  .one_half.column{:style=>'margin-right:2%'}
     .portlet2
       .portlet-header
         Import chart
       .portlet-content
         = render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
+  .one_half.column{:style=>'margin-right:2%'}
+    - @event.charts.each do |c|
+      = render :partial => 'events/chart', :locals => { :chart => c }
   .clearboth
 %h2 Widget
 %textarea= render :partial => 'widgets/event', :locals => { :event => @event }
