@@ -15,18 +15,16 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def self.search(params)
-    search_for = {}
-
-    search_for[:price] =        params[:price] unless params[:price].blank?
-    search_for[:performance] =  params[:performance] unless params[:performance].blank?
-    search_for[:_limit] = params[:limit] unless params[:limit].blank?
+    search_for = params.dup.reject { |key, value| !known_attributes.include? key }
+    search_for[:sold] ||= "eqfalse"
+    search_for[:_limit] = params[:limit] || 10
     AthenaTicket.find(:all, :params => search_for) unless search_for.empty?
   end
 
   def on_sale?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['on_sale'])
   end
-  
+
   def sold?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['sold'])
   end
