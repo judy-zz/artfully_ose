@@ -29,6 +29,28 @@ describe AthenaPerformance do
   it "should parse the datetime attribute to a DateTime object" do
     subject.datetime.kind_of?(DateTime).should be_true
   end
+
+  describe "take off sale" do
+    before(:each) do
+      @performance = Factory(:athena_performance_with_id)
+      @test_tickets = (0..10).collect { Factory(:ticket_with_id) }
+      FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{@performance.id}", :status => 200, :body => @test_tickets.to_json)
+      FakeWeb.register_uri(:put, "http://localhost/stage/performances/#{@performance.id}.json", :status => 200, :body => @performance.to_json)
+
+      @tickets_hash = {}
+      @test_tickets.each { |ticket| @tickets_hash[ticket.id.to_i] = ticket }
+
+      @performance.tickets
+    end
+    it "should mark the performance as off sale" do
+      @test_tickets.each do |t|
+        id = t.id.to_i
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body => @tickets_hash[id].to_json)
+      end
+      @performance.take_off_sale
+      @performance.on_sale?.should be_false
+    end
+  end
   
   describe "bulk edit tickets" do
     before(:each) do
@@ -82,7 +104,7 @@ describe AthenaPerformance do
         FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{id}.json", :status => 204)
       end
       @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::DELETE)          
-      @performance.tickets.size.should eq (@test_tickets.size - @num_tickets_to_test)
+      @performance.tickets.size.should eq(@test_tickets.size - @num_tickets_to_test)
       @performance.tickets.each do |ticket|
         (@ticket_ids.include? ticket.id).should eq false
       end
