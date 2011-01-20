@@ -36,9 +36,9 @@ describe AthenaPerformance do
       @test_tickets = (0..10).collect { Factory(:ticket_with_id) }
       FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{@performance.id}", :status => 200, :body => @test_tickets.to_json)
       FakeWeb.register_uri(:put, "http://localhost/stage/performances/#{@performance.id}.json", :status => 200, :body => @performance.to_json)
-
       @performance.tickets
     end
+
     it "should mark the performance as off sale" do
       #register tickets with Fakeweb
       @test_tickets.each do |ticket|
@@ -47,7 +47,51 @@ describe AthenaPerformance do
       @performance.take_off_sale
       @performance.on_sale?.should be_false
     end
+
+    it "should mark performance as off sale but leave 3 sold tickets as on sale" do
+      @num_tickets_to_test = 3
+
+      #grab three ids at random
+      @sold_ticket_ids = []
+      @test_tickets.sort_by{ rand }.slice(0...@num_tickets_to_test).each { |t| @sold_ticket_ids << t.id.to_i }
+
+      #now hash the tickets by id so we can compare them later
+      @tickets_hash = {}
+      @test_tickets.each { |ticket| @tickets_hash[ticket.id.to_i] = ticket }
+      @sold_ticket_ids.each do |id|
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body =>@tickets_hash[id].to_json)
+      end
+
+      # Sell 3 tickets
+      
+      #let's flip all the tickets to on_sale=true
+      @performance.tickets.each { |ticket| ticket.on_sale = true }
+
+      #sell all three tickets
+      @performance.tickets.each do |ticket|
+        if @sold_ticket_ids.include? ticket.id.to_i
+          ticket.sold = true
+        end
+      end
+      
+      # Take Performance Off Sale
+      @test_tickets.each do |ticket|
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.to_json)
+      end
+      @performance.take_off_sale
+
+      #verify that the sold tickets are still on sale and that the unsold tickets are not on sale
+      @performance.tickets.each do |ticket|
+        if @sold_ticket_ids.include? ticket.id.to_i
+          ticket.on_sale?.should be_true
+        else
+          ticket.on_sale?.should be_false
+        end
+      end
+
+    end
   end
+
   
   describe "bulk edit tickets" do
     before(:each) do
