@@ -21,7 +21,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.jsonp  { render_jsonp (@events.to_json) }
+      format.jsonp  { render_jsonp @events.to_json }
     end
   end
 
@@ -35,7 +35,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.jsonp  { render_jsonp (@event.to_json) }
+      format.jsonp  { render_jsonp @event.to_json }
     end
   end
 
