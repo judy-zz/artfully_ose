@@ -37,15 +37,12 @@ describe AthenaPerformance do
       FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{@performance.id}", :status => 200, :body => @test_tickets.to_json)
       FakeWeb.register_uri(:put, "http://localhost/stage/performances/#{@performance.id}.json", :status => 200, :body => @performance.to_json)
 
-      @tickets_hash = {}
-      @test_tickets.each { |ticket| @tickets_hash[ticket.id.to_i] = ticket }
-
       @performance.tickets
     end
     it "should mark the performance as off sale" do
-      @test_tickets.each do |t|
-        id = t.id.to_i
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body => @tickets_hash[id].to_json)
+      #register tickets with Fakeweb
+      @test_tickets.each do |ticket|
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.to_json)
       end
       @performance.take_off_sale
       @performance.on_sale?.should be_false
