@@ -24,6 +24,7 @@ end
 
 Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build do |t|
   t.id { Factory.next :ticket_id }
+  t.on_sale false
   t.after_build do |ticket|
     FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
   end

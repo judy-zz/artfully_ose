@@ -36,4 +36,12 @@ class AthenaTicket < AthenaResource::Base
   def to_item
     PurchasableTicket.create(:ticket_id => self.id)
   end
+  
+  def can_be_deleted?
+    !sold?
+  end
+
+  def can_be_taken_off_sale?
+    !sold?
+  end
 end

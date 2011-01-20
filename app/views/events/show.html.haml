@@ -1,9 +1,11 @@
 - content_for :header do
   %h1= @event.name
 
-.links-bar
-  =link_to "Edit this event", edit_event_path(@event), :class => "link"
-  =link_to "Add new performance", new_event_performance_path(@event), :class => "link"
+%ul.dash
+  = render :partial => 'shared/menu_item', :locals => { :title => 'Edit this event', :href_path => edit_event_path(@event), :icon_path => 'icons/dashboard/2.png', :text => 'Edit' }
+  = render :partial => 'shared/menu_item', :locals => { :title => 'Add new performance', :href_path => new_event_performance_path(@event), :icon_path => 'icons/dashboard/112.png', :text => 'New performance' }
+  
+.clearboth
 
 .venue-name= @event.venue
 .producer-name= @event.producer
@@ -11,12 +13,18 @@
 = render :partial => 'events/performances', :locals => { :event => @event }
 
 .clearboth
+
 %h2 Charts
-= render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
-
-- @event.charts.each do |c|
-  = render :partial => 'events/chart', :locals => { :chart => c }
-
-.clearboth
+.templateContainer
+  .one_half.column{:style=>'margin-right:2%'}
+    .portlet2
+      .portlet-header
+        Import chart
+      .portlet-content
+        = render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
+  .one_half.column{:style=>'margin-right:2%'}
+    - @event.charts.each do |c|
+      = render :partial => 'events/chart', :locals => { :chart => c }
+  .clearboth
 %h2 Widget
 %textarea= render :partial => 'widgets/event', :locals => { :event => @event }

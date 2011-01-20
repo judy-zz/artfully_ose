@@ -4,6 +4,10 @@ class AthenaPerformance < AthenaResource::Base
   self.element_name = 'performances'
   self.collection_name = 'performances'
 
+  PUT_ON_SALE = 'PUT_ON_SALE'
+  TAKE_OFF_SALE = 'TAKE_OFF_SALE'
+  DELETE = 'DELETE'
+
   schema do
     attribute 'event_id', :string
     attribute 'chart_id', :string
@@ -90,6 +94,7 @@ class AthenaPerformance < AthenaResource::Base
   def dup!
     copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' || key == 'tickets_created' })
     copy.tickets_created = 'false'
+    copy.on_sale = 'false'
     copy.datetime = copy.datetime + 1.day
     copy
   end
@@ -97,6 +102,57 @@ class AthenaPerformance < AthenaResource::Base
   def datetime
     attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
+  end
+
+  def take_off_sale
+    rejected_ids = [];
+    tickets.each do |ticket|
+      if ticket.can_be_taken_off_sale?
+        ticket.on_sale=false
+        ticket.save
+      else
+        rejected_ids << ticket_id
+      end
+    end
+    attributes['on_sale'] = false
+    self.save
+  end
+  
+  def put_on_sale
+    tickets.each do |ticket|
+      ticket.on_sale=true
+      ticket.save
+    end
+    attributes['on_sale'] = true
+    self.save
+  end
+    
+  def bulk_edit_tickets(ticket_ids, action)    
+    rejected_ids = [];
+    ticket_hash = tickets.index_by(&:id)
+    ticket_ids.each do |ticket_id|
+      @ticket = ticket_hash[ticket_id.to_s]
+      case action
+        when PUT_ON_SALE
+          @ticket.on_sale=true
+          @ticket.save
+        when TAKE_OFF_SALE
+          if @ticket.can_be_taken_off_sale?
+            @ticket.on_sale=false
+            @ticket.save
+          else
+            rejected_ids << ticket_id
+          end
+        when DELETE
+          if @ticket.can_be_deleted?
+            @ticket.destroy
+            self.tickets.delete @ticket
+          else
+            rejected_ids << ticket_id
+          end
+      end
+    end   
+    rejected_ids
   end
 
   private
