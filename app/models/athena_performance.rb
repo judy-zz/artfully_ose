@@ -105,13 +105,10 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def take_off_sale
-    rejected_ids = [];
     tickets.each do |ticket|
       if ticket.can_be_taken_off_sale?
         ticket.on_sale=false
         ticket.save
-      else
-        rejected_ids << ticket_id
       end
     end
     attributes['on_sale'] = false
