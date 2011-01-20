@@ -2,7 +2,7 @@ var ShoppingCart = (function(){
 
   var _ = {
     hiddenFormFor: function(tickets){
-      var $form = $(document.createElement('form')).attr({'method':'post','target':ShoppingCart.$iframe.attr('name'), 'action':Config.base_uri + 'orders.widget'});
+      var $form = $(document.createElement('form')).attr({'method':'post','target':ShoppingCart.$iframe.attr('name'), 'action':Config.base_uri + 'order.widget'});
 
       // Hidden field with authenticity token
       $(document.createElement('input')).attr({'type':'hidden', 'name': 'authenticity_token','value': Config.token}).appendTo($form);
@@ -17,11 +17,17 @@ var ShoppingCart = (function(){
   // This is our ShoppingCart object.
   var cart = {
     init: function(){
-      this.$cart =      $("<div id='shopping-cart' class='hidden' />");
-      this.$controls =  $("<div id='shopping-cart-controls' />").appendTo(this.$cart);
+      this.$cart = $("<div id='shopping-cart' class='hidden' />");
+
+      this.$controls = $("<div id='shopping-cart-controls' />").appendTo(this.$cart);
       $("<span class='timer' />").text("(Countdown)").appendTo(this.$controls);
       $("<span class='cart-name' />").text("Shopping Cart").appendTo(this.$controls);
-      this.$iframe =    $("<iframe name='shopping-cart-iframe' />").height(Config.maxHeight).hide().appendTo(this.$cart);
+
+      this.$iframe = $("<iframe name='shopping-cart-iframe' />")
+                      .attr('src',Config.base_uri + 'order.widget')
+                      .height(Config.maxHeight)
+                      .hide()
+                      .appendTo(this.$cart);
 
       return this.$cart;
     },
