@@ -13,7 +13,7 @@
           %th Tickets
       %tbody
         - event.performances.each do |performance|
-          %tr{:class => (performance.on_sale? ? "selected" : "")}
+          %tr{:class => (performance.on_sale? ? "selected" : nil)}
             %td.day-of-week-display= performance.day_of_week
             %td= performance.formatted_performance_date
             %td= performance.formatted_performance_time
