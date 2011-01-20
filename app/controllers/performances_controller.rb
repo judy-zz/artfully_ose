@@ -80,8 +80,11 @@ class PerformancesController < ApplicationController
   
   def take_off_sale
     @performance = AthenaPerformance.find(params[:id])
-    @performance.take_off_sale
-    redirect_to performance_url(@performance) and return
+    with_confirmation do
+      @performance.take_off_sale
+      flash[:notice] = 'Your performance has been taken off sale!'
+      redirect_to performance_url(@performance) and return
+    end
   end
 
   def createtickets
