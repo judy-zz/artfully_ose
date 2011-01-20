@@ -1,0 +1,2 @@
+#checkout-link= link_to "Checkout Now!", new_checkout_path(:format => :widget) unless current_order.items.empty?
+#item-count= "You have #{pluralize current_order.items.count, 'item'} in your cart. (Your total so far is #{number_to_currency current_order.total}.)"

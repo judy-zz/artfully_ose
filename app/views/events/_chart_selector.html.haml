@@ -1,5 +1,5 @@
 = form_for chart, :url => assign_chart_path(event) do |form|
   %p
-    = form.label :id, "Import chart"
+    = form.label :id, "Choose chart:"
     = form.select :id, options_from_collection_for_select(charts, "id", "name")
   = form.submit "Submit"

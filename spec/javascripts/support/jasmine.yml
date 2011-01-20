@@ -13,8 +13,8 @@
 src_files:
   - spec/javascripts/support/jquery-1.4.4.js
   - spec/javascripts/support/jasmine-jquery-1.1.3.js
-  - widgets/event/shopping_cart.js
   - widgets/event/event_widget.js
+  - widgets/event/shopping_cart.js
   - widgets/event/ticket.js
   - widgets/event/section.js
   - widgets/event/chart.js

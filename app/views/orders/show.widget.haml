@@ -1,4 +1,3 @@
-%h1 Your Order
 %ul.ticket-list
-- current_order.items.each do |item|
-  = render item.ticket
+  - current_order.items.each do |item|
+    %li= render item.ticket

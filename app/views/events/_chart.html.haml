@@ -1,20 +1,23 @@
-%h3= chart.name
-=link_to "Edit this chart", edit_chart_path(chart), :class => "link"
-=link_to "Add a section to this chart", new_chart_section_path(chart), :class => "link"
+-#=link_to "Edit this chart", edit_chart_path(chart), :class => "link"
+-#=link_to "Add a section to this chart", new_chart_section_path(chart), :class => "link"
 
-%table.normal.tablesorter
-  %thead
-    %tr
-      %td Name
-      %td Capacity
-      %td Price
-      %td Actions
-  %tbody
-    - chart.sections.each do |section|
-      %tr
-        %td= section.name
-        %td= section.capacity
-        %td= section.price
-        %td
-          =link_to image_tag('icons/actions_small/Pencil.png'), edit_chart_section_path(chart, section)
-          =link_to image_tag('icons/actions_small/Trash.png'), chart_section_path(chart, section), :confirm => "Are you sure?", :method=>:delete
+.portlet2
+  .portlet-header
+    =chart.name
+  .portlet-content.minimized  
+    %table.fancy
+      %thead
+        %tr
+          %th Name
+          %th Capacity
+          %th Price
+          %th Actions
+      %tbody
+        - chart.sections.each do |section|
+          %tr
+            %td= section.name
+            %td= section.capacity
+            %td= section.price
+            %td
+              =link_to image_tag('icons/actions_small/Pencil.png'), edit_chart_section_path(chart, section)
+              =link_to image_tag('icons/actions_small/Trash.png'), chart_section_path(chart, section), :confirm => "Are you sure?", :method=>:delete

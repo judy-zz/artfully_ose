@@ -42,7 +42,7 @@ Section.prototype = {
       };
 
       Ticket.find(params, function(data){
-        ShoppingCart.buy(data);
+        ShoppingCart.add(data);
       });
 
       $('.sections').slideUp();

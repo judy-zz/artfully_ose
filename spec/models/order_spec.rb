@@ -17,6 +17,10 @@ describe Order do
     it { should respond_to :add_item }
     it { should respond_to :items }
 
+    it "should be empty without any items" do
+      subject.should be_empty
+    end
+
     it "should have PurchasableTickets when a tickets are added to the order" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })

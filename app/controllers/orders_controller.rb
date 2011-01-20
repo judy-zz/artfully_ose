@@ -13,7 +13,7 @@ class OrdersController < ApplicationController
       flash[:error] = current_order.errors
     end
 
-    redirect_to order_url current_order, :format => 'widget'
+    redirect_to order_url
   end
 
   def edit
@@ -27,11 +27,11 @@ class OrdersController < ApplicationController
       flash[:error] = current_order.errors
     end
 
-    redirect_to order_url current_order, :format => 'widget'
+    redirect_to order_url
   end
 
   def destroy
     current_order.destroy
-    redirect_to root_url
+    redirect_to order_url
   end
 end

@@ -25,6 +25,7 @@ class Order < ActiveRecord::Base
     self.items.delete_if { |item| !item.locked? }
   end
 
+  delegate :empty?, :to => :items
   def items
     @items ||= self.purchasable_tickets
   end

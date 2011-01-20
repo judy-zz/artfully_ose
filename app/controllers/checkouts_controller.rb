@@ -1,5 +1,6 @@
 class CheckoutsController < ApplicationController
   def new
+    redirect_to(order_url, :alert => "This order is empty!") if current_order.empty?
     @payment = AthenaPayment.new
   end
 
@@ -39,7 +40,7 @@ class CheckoutsController < ApplicationController
       current_order.pay_with(@payment)
       current_order.save
       flash[:notice] << 'Thank you for your order!'
-      redirect_to current_order
+      redirect_to order_url(current_order, :format => :widget)
     end
 
     def request_confirmation

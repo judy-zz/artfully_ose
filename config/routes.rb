@@ -12,7 +12,7 @@ Artfully::Application.routes.draw do
 
   resources :tickets, :only => [:index]
 
-  resources :orders
+  resource :order, :defaults => { :format => :widget }
   resource :checkout
   resources :performances
 
