@@ -1,6 +1,6 @@
 var Config = {
   base_uri: 'http://localhost:3000/',
-  maxHeight: '200'
+  maxHeight: '400'
 };
 
 var E;

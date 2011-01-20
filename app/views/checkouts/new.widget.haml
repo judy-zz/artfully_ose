@@ -1,11 +1,7 @@
 -content_for :header do
   %h1 Ticket Order
-  %h2 Enter Payment Details
 
 = render "shared/error_messages.html", :target => @payment
-= render "shared/error_messages.html", :target => @payment.customer
-= render "shared/error_messages.html", :target => @payment.credit_card
-= render "shared/error_messages.html", :target => @payment.billing_address
 
 %ul.line-items
   - current_order.items.each do |item|
@@ -16,10 +12,10 @@
 = form_tag checkout_path(:format => :widget) do
   - if @needs_confirmation
     = hidden_field_tag :confirmation, 1
-    = render @payment.customer
-    = render @payment.credit_card
-    = render @payment.billing_address
-    = render :partial => 'checkouts/save_customer'
+    = render :partial => 'athena_customers/athena_customer.html', :object => @payment.customer
+    = render :partial => 'athena_credit_cards/athena_credit_card.html', :object => @payment.credit_card
+    = render :partial => 'athena_addresses/athena_address.html', :object => @payment.billing_address
+    = render :partial => 'checkouts/save_customer.html'
 
   = render :partial => 'athena_payments/form.html', :locals => {:payment => @payment}
 
