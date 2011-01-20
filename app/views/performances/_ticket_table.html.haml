@@ -16,6 +16,8 @@
       %td
         -if ticket.on_sale?
           =image_tag "icons/small_icons/OK.png"
+        -else
+          =image_tag "icons/small_icons/No.png"
       %td
         -if ticket.sold?
           =image_tag "icons/small_icons/Goodmark.png"
