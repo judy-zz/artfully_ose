@@ -19,7 +19,10 @@ class PurchasableTicket < ActiveRecord::Base
   delegate :lockable?, :to => :ticket
 
   def lock
-    @lock ||= AthenaLock.find(lock_id) unless lock_id.nil?
+    begin
+      @lock ||= AthenaLock.find(lock_id) unless lock_id.nil?
+    rescue ActiveResource::ResourceNotFound
+    end
   end
 
   def lock=(lock)

@@ -73,17 +73,17 @@ describe AthenaTicket do
     it "by performance" do
       FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :status => "200", :body => "[]")
       now = DateTime.now
-      params = { :performance => "eq#{now.as_json}" }
+      params = { "performance" => "eq#{now.as_json}" }
       AthenaTicket.search(params)
-      FakeWeb.last_request.path.should == "/tix/tickets/.json?performance=eq#{CGI::escape now.as_json}"
+      FakeWeb.last_request.path.should match %r|performance=eq#{CGI::escape now.as_json}|
 
     end
 
     it "should add _limit to the query string when included in the arguments" do
-      FakeWeb.register_uri(:get, 'http://localhost/tix/tickets/.json?_limit=10', :status => "200", :body => "[]")
-      params = { :limit => "10" }
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?_limit=10|, :status => "200", :body => "[]")
+      params = { "limit" => "10" }
       AthenaTicket.search(params)
-      FakeWeb.last_request.path.should == "/tix/tickets/.json?_limit=10"
+      FakeWeb.last_request.path.should match "_limit=10"
     end
   end
 
