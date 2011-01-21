@@ -25,6 +25,17 @@ class AthenaTicket < AthenaResource::Base
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['on_sale'])
   end
 
+  def on_sale!
+    self.on_sale = true
+    save!
+  end
+
+  def off_sale!
+    return false if sold?
+    self.on_sale = false
+    save!
+  end
+
   def sold?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['sold'])
   end
@@ -36,7 +47,11 @@ class AthenaTicket < AthenaResource::Base
   def to_item
     PurchasableTicket.create(:ticket_id => self.id)
   end
-  
+
+  def destroy
+    super unless sold?
+  end
+
   def can_be_deleted?
     !sold?
   end

@@ -30,180 +30,104 @@ describe AthenaPerformance do
     subject.datetime.kind_of?(DateTime).should be_true
   end
 
-  describe "take off sale" do
+  describe "put on sale" do
+    subject { Factory(:athena_performance_with_id) }
+
     before(:each) do
-      @performance = Factory(:athena_performance_with_id)
-      @test_tickets = (0..10).collect { Factory(:ticket_with_id) }
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{@performance.id}", :status => 200, :body => @test_tickets.to_json)
-      FakeWeb.register_uri(:put, "http://localhost/stage/performances/#{@performance.id}.json", :status => 200, :body => @performance.to_json)
-      @performance.tickets
+      tickets = 3.times.collect { Factory(:ticket_with_id) }
+      tickets.each { |ticket| ticket.stub!(:on_sale!).and_return(true) }
+      subject.stub!(:tickets).and_return(tickets)
+      subject.stub!(:save!)
+    end
+
+    it "should mark the performance as on sale" do
+      subject.put_on_sale
+      subject.should be_on_sale
+    end
+
+    it "should mark each of its tickets as on sale" do
+      subject.tickets.each { |ticket| ticket.should_receive(:on_sale!) }
+      subject.put_on_sale
+    end
+
+    it "should save the updated performance" do
+      subject.should_receive(:save!)
+      subject.put_on_sale
+    end
+  end
+
+  describe "take off sale" do
+    subject { Factory(:athena_performance_with_id, :on_sale => true) }
+
+    before(:each) do
+      tickets = 3.times.collect { Factory(:ticket_with_id) }
+      tickets.each { |ticket| ticket.stub!(:off_sale!).and_return(true) }
+      subject.stub!(:tickets).and_return(tickets)
+      subject.stub!(:save!)
     end
 
     it "should mark the performance as off sale" do
-      #register tickets with Fakeweb
-      @test_tickets.each do |ticket|
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.to_json)
-      end
-      @performance.take_off_sale
-      @performance.on_sale?.should be_false
+      subject.take_off_sale
+      subject.should_not be_on_sale
     end
 
-    it "should mark performance as off sale but leave 3 sold tickets as on sale" do
-      @num_tickets_to_test = 3
+    it "should mark each of its tickets as off sale" do
+      subject.tickets.each { |ticket| ticket.should_receive(:off_sale!) }
+      subject.take_off_sale
+    end
 
-      #grab three ids at random
-      @sold_ticket_ids = @test_tickets.sample(@num_tickets_to_test).collect { |t| t.id.to_i }
-
-      #now hash the tickets by id so we can compare them later
-      @tickets_hash = {}
-      @test_tickets.each { |ticket| @tickets_hash[ticket.id.to_i] = ticket }
-      @sold_ticket_ids.each do |id|
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body =>@tickets_hash[id].to_json)
-      end
-
-      # Sell 3 tickets
-
-      #let's flip all the tickets to on_sale=true
-      @performance.tickets.each { |ticket| ticket.on_sale = true }
-
-      #sell all three tickets
-      @performance.tickets.each do |ticket|
-        if @sold_ticket_ids.include? ticket.id.to_i
-          ticket.sold = true
-        end
-      end
-
-      # Take Performance Off Sale
-      @test_tickets.each do |ticket|
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.to_json)
-      end
-      @performance.take_off_sale
-
-      #verify that the sold tickets are still on sale and that the unsold tickets are not on sale
-      @performance.tickets.each do |ticket|
-        if @sold_ticket_ids.include? ticket.id.to_i
-          ticket.on_sale?.should be_true
-        else
-          ticket.on_sale?.should be_false
-        end
-      end
-
+    it "should save the updated performance" do
+      subject.should_receive(:save!)
+      subject.take_off_sale
     end
   end
 
 
   describe "bulk edit tickets" do
+    subject { Factory(:athena_performance_with_id) }
+
     before(:each) do
-      @num_tickets_to_test = 3
-      @test_tickets = (0..10).collect { Factory(:ticket_with_id) }
-
-      #grab three ids at random
-      @ticket_ids = []
-      @test_tickets.sort_by{ rand }.slice(0...@num_tickets_to_test).each { |t| @ticket_ids << t.id.to_i }
-
-      #now hash the tickets by id so we can compare them later
-      @tickets_hash = {}
-      @test_tickets.each { |ticket| @tickets_hash[ticket.id.to_i] = ticket }
-
-      #create a performance
-      @performance = Factory(:athena_performance_with_id)
-
-      #now hydrate the fake tickets into our performance
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{@performance.id}", :status => 200, :body => @test_tickets.to_json)
-      @performance.tickets
+      tickets = 3.times.collect { Factory(:ticket_with_id) }
+      subject.stub!(:tickets).and_return(tickets)
     end
 
     it "should put tickets on sale" do
-      @ticket_ids.each do |id|
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body => @tickets_hash[id].to_json)
-      end
+      subject.tickets.each { |ticket| ticket.stub!(:on_sale!) }
+      subject.tickets.each { |ticket| ticket.should_receive(:on_sale!) }
 
-      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::PUT_ON_SALE)
-      @performance.tickets.each { |ticket| ticket.on_sale.should eq(@ticket_ids.include? ticket.id) }
+      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
     end
 
     it "should take tickets off sale" do
-      #let's flip all the tickets to on_sale=true
-      @performance.tickets.each { |ticket| ticket.on_sale = true }
+      subject.tickets.each { |ticket| ticket.stub!(:off_sale!) }
+      subject.tickets.each { |ticket| ticket.should_receive(:off_sale!) }
 
-      #we need to make sure we return the tickets with the right on_sale bit
-      @ticket_ids.each do |id|
-        @tickets_hash[id].on_sale = false
-      end
+      subject.tickets.each { |ticket| ticket.on_sale = true }
+      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
+    end
 
-      @ticket_ids.each do |id|
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body => @tickets_hash[id].to_json)
-      end
+    it "should return the ids of ticket that were sold and therefore not taken off sale" do
+      subject.tickets.first.sold = true
+      subject.tickets.each { |ticket| ticket.stub!(:off_sale!).and_return(!ticket.sold?) }
 
-      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::TAKE_OFF_SALE)
-      @performance.tickets.each { |ticket| ticket.on_sale.should eq(!@ticket_ids.include?(ticket.id.to_i)) }
+      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
+      rejected_ids.first.should eq subject.tickets.first.id
     end
 
     it "should delete tickets" do
-      @ticket_ids.each do |id|
-        FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{id}.json", :status => 204)
-      end
-      @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::DELETE)
-      @performance.tickets.size.should eq(@test_tickets.size - @num_tickets_to_test)
-      @performance.tickets.each do |ticket|
-        (@ticket_ids.include? ticket.id).should eq false
-      end
+      subject.tickets.each { |ticket| ticket.stub!(:destroy) }
+      subject.tickets.each { |ticket| ticket.should_receive(:destroy) }
+
+      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
     end
 
-    it "should not take ticket off sale if it has already been sold" do
-      #let's flip all the tickets to on_sale=true
-      @performance.tickets.each { |ticket| ticket.on_sale = true }
+    it "should return the ids of tickets that were sold and therefore not destroyed" do
+      subject.tickets.first.sold = true
+      subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
 
-      sold_ticket_id = @ticket_ids[0]
-
-      #sell one of the tickets
-      @performance.tickets.each do |ticket|
-        if ticket.id==sold_ticket_id.to_s
-          ticket.sold = true
-        end
-      end
-
-      @ticket_ids.each_with_index do |id, i|
-        if id != sold_ticket_id
-          FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{id}.json", :status => 200, :body => @tickets_hash[id].to_json)
-        end
-      end
-
-      rejected_ids = @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::TAKE_OFF_SALE)
-      rejected_ids.size.should eq 1
-      rejected_ids[0].should eq sold_ticket_id
-      @ticket_ids.delete_at(0)
-      @performance.tickets.each { |ticket| ticket.on_sale.should eq(!@ticket_ids.include?(ticket.id.to_i)) }
+      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
+      rejected_ids.first.should eq subject.tickets.first.id
     end
-
-    it "should not take delete ticket if it has already been sold" do
-      #let's flip all the tickets to on_sale=true
-      @performance.tickets.each { |ticket| ticket.on_sale = true }
-
-      sold_ticket_id = @ticket_ids[0]
-
-      #sell one of the tickets
-      @performance.tickets.each do |ticket|
-        if ticket.id==sold_ticket_id.to_s
-          ticket.sold = true
-        end
-      end
-
-      @ticket_ids.each_with_index do |id, i|
-        if id != sold_ticket_id
-          FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{id}.json", :status => 204)
-        end
-      end
-
-      rejected_ids = @performance.bulk_edit_tickets(@ticket_ids, AthenaPerformance::DELETE)
-      rejected_ids.size.should eq 1
-      rejected_ids[0].should eq sold_ticket_id
-      @ticket_ids.delete_at(0)
-      @performance.tickets.each do |ticket|
-        (@ticket_ids.include? ticket.id).should eq false
-      end
-    end
-
   end
 
   describe "#event" do
@@ -227,7 +151,7 @@ describe AthenaPerformance do
     end
 
     it "should not have the same id" do
-      nil.should eq @new_performance.id
+      @new_performance.id.should be_nil
     end
 
     it "should have the same event and chart" do

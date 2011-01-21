@@ -40,13 +40,20 @@ describe AthenaTicket do
   end
 
   describe "#destroy" do
+    subject { Factory(:ticket_with_id) }
+
     it "should issue a DELETE when destroying a ticket" do
-      @ticket = Factory(:ticket_with_id)
-      FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{@ticket.id}.json", :status => "204")
-      @ticket.destroy
+      FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{subject.id}.json", :status => "204")
+      subject.destroy
 
       FakeWeb.last_request.method.should == "DELETE"
-      FakeWeb.last_request.path.should == "/tix/tickets/#{@ticket.id}.json"
+      FakeWeb.last_request.path.should == "/tix/tickets/#{subject.id}.json"
+    end
+
+    it "should not delete a ticket that has been marked as sold" do
+      subject.sold = true
+      subject.destroy
+      FakeWeb.last_request.should be_nil
     end
   end
 
@@ -87,7 +94,7 @@ describe AthenaTicket do
     end
   end
 
-  describe "to_item" do
+  describe ".to_item" do
     subject { Factory(:ticket_with_id) }
     it "should be a PurchasableTicket" do
       subject.to_item.should be_a PurchasableTicket
@@ -95,6 +102,55 @@ describe AthenaTicket do
 
     it "should be the right PurchasableTicket" do
       subject.to_item.ticket_id.should eq subject.id.to_i
+    end
+  end
+
+  describe ".on_sale!" do
+    subject { Factory(:ticket_with_id) }
+
+    it { should respond_to :on_sale! }
+
+    it "should mark the ticket as on sale and save it" do
+      subject.stub(:save!)
+      subject.on_sale!
+      subject.should be_on_sale
+    end
+
+    it "should save the updated ticket" do
+      subject.stub!(:save!)
+      subject.should_receive(:save!)
+      subject.on_sale!
+    end
+  end
+
+  describe ".off_sale!" do
+    subject { Factory(:ticket_with_id, :on_sale => true) }
+
+    it { should respond_to :on_sale! }
+
+    it "should mark the ticket as on sale and save it" do
+      subject.stub(:save!)
+      subject.off_sale!
+      subject.should_not be_on_sale
+    end
+
+    it "should save the updated ticket" do
+      subject.stub!(:save!)
+      subject.should_receive(:save!)
+      subject.off_sale!
+    end
+
+    it "should not be marked as off sale if it is already sold" do
+      subject.sold = true
+      subject.should_not_receive(:save!)
+      subject.off_sale!
+      subject.should be_on_sale
+    end
+
+    it "should return false if it is already sold" do
+      subject.sold = true
+      subject.stub(:save!)
+      subject.off_sale!.should be_false
     end
   end
 end
