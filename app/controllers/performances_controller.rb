@@ -31,6 +31,7 @@ class PerformancesController < ApplicationController
     @performance.event = @event
     @performance.tickets_created = 'false'
     if @performance.save
+      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time
       redirect_to event_url(@performance.event)
     else
       render :template => 'performances/new'

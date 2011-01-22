@@ -10,7 +10,7 @@
 .venue-name= @event.venue
 .producer-name= @event.producer
 
-= render :partial => 'events/performances', :locals => { :event => @event }
+= render :partial => 'events/performances', :locals => { :event => @event, :performance=>@performance }
 
 .clearboth
 

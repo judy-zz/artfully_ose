@@ -1,7 +1,8 @@
 - unless event.performances.empty?
   .sub-container#performance-container
     %h2 Performances
-
+    %div{:style=>'text-align:right'} 
+      =link_to image_tag("icons/small_icons/Add.png") + " Add New Performance", event_performances_path(event, performance), {:id=>'new-performance-button', :class => 'table_icon add-new-performance', :style=>'float:none;text-decoration:none;'}
     %table#performance-table.normal.tablesorter.fullwidth
       %thead
         %tr
@@ -12,6 +13,19 @@
           %th Actions
           %th Tickets
       %tbody
+        = form_for @performance, :url => event_performances_path(event, performance) do |top_form|
+          = top_form.fields_for performance do |form|
+            %tr#new-performance-row{:style=>'display:none'}
+              %td
+              %td
+                =form.text_field :datetime, {:class=>'datepicker hasDatePicker'}
+              %td
+                =form.time_select :datetime
+              %td
+                =form.select :chart_id, options_from_collection_for_select(event.charts, "id", "name")
+              %td
+                = form.submit "Submit"
+              %td
         - event.performances.each do |performance|
           %tr{:class => (performance.on_sale? ? "selected" : nil)}
             %td.day-of-week-display= performance.day_of_week

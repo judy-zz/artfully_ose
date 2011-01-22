@@ -145,12 +145,15 @@ class AthenaPerformance < AthenaResource::Base
     def prepare_attr!(attributes)
       #TODO: We need to set the correct time zone to whatever zone they're in
       unless attributes.blank?
-        day = attributes.delete('datetime(3i)')
-        month = attributes.delete('datetime(2i)')
-        year = attributes.delete('datetime(1i)')
+        #we can erase the datetime fields that came with the time select
+        attributes.delete('datetime(1i)')
+        attributes.delete('datetime(2i)')
+        attributes.delete('datetime(3i)')
+        
+        temp_date_only = Date.parse(attributes.delete('datetime'))
         hour = attributes.delete('datetime(4i)')
         minute = attributes.delete('datetime(5i)')
-        attributes['datetime'] = DateTime.parse("#{year}-#{month}-#{day}T#{hour}:#{minute}:00-04:00")
+        attributes['datetime'] = DateTime.parse("#{temp_date_only.year}-#{temp_date_only.month}-#{temp_date_only.day}T#{hour}:#{minute}:00-04:00")
       end
     end
 end
