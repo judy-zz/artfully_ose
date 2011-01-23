@@ -30,11 +30,14 @@ class PerformancesController < ApplicationController
     @performance.update_attributes(params[:athena_performance][:athena_performance])
     @performance.event = @event
     @performance.tickets_created = 'false'
-    if @performance.save
+    if @performance.valid? && @performance.save
+      session[:performance] = nil
       flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time
       redirect_to event_url(@performance.event)
     else
-      render :template => 'performances/new'
+      #render :action=>'new'
+      session[:performance] = @performance
+      redirect_to event_url(@performance.event)
     end
   end
 

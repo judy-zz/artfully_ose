@@ -1,3 +1,4 @@
+= render "shared/error_messages", :target => @performance
 - unless event.performances.empty?
   .sub-container#performance-container
     %h2 Performances
@@ -13,19 +14,7 @@
           %th Actions
           %th Tickets
       %tbody
-        = form_for @performance, :url => event_performances_path(event, performance) do |top_form|
-          = top_form.fields_for performance do |form|
-            %tr#new-performance-row{:style=>'display:none'}
-              %td
-              %td
-                =form.text_field :datetime, {:class=>'datepicker hasDatePicker'}
-              %td
-                =form.time_select :datetime
-              %td
-                =form.select :chart_id, options_from_collection_for_select(event.charts, "id", "name")
-              %td
-                = form.submit "Submit"
-              %td
+        = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance=>@performance }
         - event.performances.each do |performance|
           %tr{:class => (performance.on_sale? ? "selected" : nil)}
             %td.day-of-week-display= performance.day_of_week

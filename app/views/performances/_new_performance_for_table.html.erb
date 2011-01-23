@@ -1,0 +1,29 @@
+<% form_for performance, :url => event_performances_path(event, performance) do |top_form|%>
+  <% top_form.fields_for performance do |form| %>
+    <tr id="new-performance-row" <%=@performance.chart_id.blank? ? "style='display:none'" : ''%>>
+      <td>
+        <%
+          clazz = 'datepicker hasDatePicker'
+          if !session[:performance].nil?
+            clazz += ' error'
+          end
+        %>
+        <%=form.text_field :datetime, {:class=>clazz}%>
+      </td>
+      <td>
+        <%=form.time_select :datetime %>
+      </td>
+      <td>
+        <%
+          default_chart_id_as_s = performance.chart_id.nil? ? nil : performance.chart_id.to_s
+        %>
+        <%=form.select :chart_id, options_from_collection_for_select(event.charts, "id", "name", default_chart_id_as_s) %>
+      </td>
+      <td>
+        <%= form.submit "Submit" %>
+      </td>
+      <td>
+      </td>
+    </tr>
+  <%end%>
+<%end%>

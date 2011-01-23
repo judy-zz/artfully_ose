@@ -3,6 +3,8 @@ class AthenaPerformance < AthenaResource::Base
   self.headers["User-agent"] = "artful.ly"
   self.element_name = 'performances'
   self.collection_name = 'performances'
+  
+  validates :datetime, :presence => { :message => " Please enter a performance time" }
 
   PUT_ON_SALE = 'PUT_ON_SALE'
   TAKE_OFF_SALE = 'TAKE_OFF_SALE'
@@ -144,16 +146,23 @@ class AthenaPerformance < AthenaResource::Base
 
     def prepare_attr!(attributes)
       #TODO: We need to set the correct time zone to whatever zone they're in
-      unless attributes.blank?
-        #we can erase the datetime fields that came with the time select
-        attributes.delete('datetime(1i)')
-        attributes.delete('datetime(2i)')
-        attributes.delete('datetime(3i)')
-        
+      unless attributes.blank? || attributes['datetime'].blank?
         temp_date_only = Date.parse(attributes.delete('datetime'))
-        hour = attributes.delete('datetime(4i)')
-        minute = attributes.delete('datetime(5i)')
+        hour = attributes['datetime(4i)']
+        minute = attributes['datetime(5i)']
         attributes['datetime'] = DateTime.parse("#{temp_date_only.year}-#{temp_date_only.month}-#{temp_date_only.day}T#{hour}:#{minute}:00-04:00")
+      else
+        attributes['datetime'] = nil
       end
+      #we can erase the datetime fields that came with the time select
+      clean_datetime_attributes attributes
+    end
+    
+    def clean_datetime_attributes(attributes)
+      attributes.delete('datetime(1i)')
+      attributes.delete('datetime(2i)')
+      attributes.delete('datetime(3i)')
+      attributes.delete('datetime(4i)')
+      attributes.delete('datetime(5i)')
     end
 end
