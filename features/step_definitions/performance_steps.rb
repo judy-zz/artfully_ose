@@ -3,7 +3,7 @@ When /^I delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
   body = @performances.collect { |p| p.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{@event.id}", :status => 200, :body => "[#{body}]")
 
-  within(:xpath, "(//table[@id='performance-table']/tbody/tr)[#{pos.to_i}]") do
+  within(:xpath, "(//table[@id='performance-table']/tbody/tr)[#{pos.to_i+1}]") do
     click_link "Delete"
   end
 end

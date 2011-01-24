@@ -13,7 +13,7 @@
         %th Chart
         %th Actions
         %th Tickets
-    %Toby
+    %tbody
       = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance=>@performance }
       - if event.performances.empty?
         %tr
