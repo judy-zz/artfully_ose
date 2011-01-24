@@ -54,5 +54,34 @@ describe PurchasableTicket do
       subject = Factory(:purchasable_ticket, :lock => Factory(:expired_lock))
       subject.should_not be_locked
     end
+
+    it "should unlock on destroy if it is not sold" do
+      subject.stub!(:unlock)
+      subject.should_receive(:unlock)
+      subject.destroy
+    end
+
+    it "should not unlock on destroy is it is already sold" do
+      subject.stub!(:unlock)
+      subject.stub(:sold?).and_return(true)
+      subject.should_not_receive(:unlock)
+      subject.destroy
+    end
+  end
+
+  describe ".sold!" do
+    it "should delegate sold! to the ticket" do
+      subject.ticket.stub!(:sold!)
+      subject.ticket.should_receive :sold!
+      subject.sold!
+    end
+  end
+
+  describe ".sold?" do
+    it "should delegate sold? to the ticket" do
+      subject.ticket.stub!(:sold?)
+      subject.ticket.should_receive :sold?
+      subject.sold?
+    end
   end
 end

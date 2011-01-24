@@ -39,7 +39,7 @@ describe AthenaTicket do
     end
   end
 
-  describe "#destroy" do
+  describe ".destroy" do
     subject { Factory(:ticket_with_id) }
 
     it "should issue a DELETE when destroying a ticket" do
@@ -57,7 +57,7 @@ describe AthenaTicket do
     end
   end
 
-  describe "#save" do
+  describe ".save" do
     it "should issue a PUT when updating a ticket" do
       @ticket = Factory(:ticket_with_id)
       FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{@ticket.id}.json", :status => "200")
@@ -111,12 +111,18 @@ describe AthenaTicket do
     end
   end
 
+  describe ".on_sale?" do
+    subject { Factory(:ticket_with_id, :on_sale => true) }
+    it { should be_on_sale }
+    it { should_not be_off_sale }
+  end
+
   describe ".on_sale!" do
     subject { Factory(:ticket_with_id) }
 
     it { should respond_to :on_sale! }
 
-    it "should mark the ticket as on sale and save it" do
+    it "should mark the ticket as on sale" do
       subject.stub(:save!)
       subject.on_sale!
       subject.should be_on_sale
@@ -129,12 +135,18 @@ describe AthenaTicket do
     end
   end
 
+  describe ".off_sale?" do
+    subject { Factory(:ticket_with_id, :on_sale => false) }
+    it { should be_off_sale }
+    it { should_not be_on_sale }
+  end
+
   describe ".off_sale!" do
     subject { Factory(:ticket_with_id, :on_sale => true) }
 
     it { should respond_to :on_sale! }
 
-    it "should mark the ticket as on sale and save it" do
+    it "should mark the ticket as on sale" do
       subject.stub(:save!)
       subject.off_sale!
       subject.should_not be_on_sale
@@ -157,6 +169,22 @@ describe AthenaTicket do
       subject.sold = true
       subject.stub(:save!)
       subject.off_sale!.should be_false
+    end
+  end
+
+  describe ".sold!" do
+    subject { Factory(:ticket_with_id) }
+
+    it "should mark the ticket as sold" do
+      subject.stub!(:save!)
+      subject.sold!
+      subject.should be_sold
+    end
+
+    it "should save the updated ticket" do
+      subject.stub!(:save!)
+      subject.should_receive(:save!)
+      subject.sold!
     end
   end
 end

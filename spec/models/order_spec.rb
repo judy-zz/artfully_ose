@@ -115,4 +115,25 @@ describe Order do
       end
     end
   end
+
+  describe ".finish" do
+    before :each do
+      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
+      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
+      subject.add_items tickets
+      subject.items.each { |item| item.stub!(:sold!) }
+      subject.items.each { |item| item.stub!(:sold?).and_return(true) }
+    end
+
+    it "should mark each item as sold" do
+      subject.items.each { |item| item.should_receive(:sold!) }
+      subject.finish
+    end
+
+    it "clean up left over line items" do
+      subject.finish
+      subject.items.should be_empty
+    end
+  end
 end

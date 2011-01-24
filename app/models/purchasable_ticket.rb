@@ -2,7 +2,11 @@ class PurchasableTicket < ActiveRecord::Base
   belongs_to :order
   validates_presence_of :ticket_id
 
-  before_destroy :unlock
+  before_destroy :unlock, :unless => lambda { |p| p.sold? }
+
+  delegate :lockable?, :to => :ticket
+  delegate :sold!, :to => :ticket
+  delegate :sold?, :to => :ticket
 
   def price
     ticket.price.to_i
@@ -15,8 +19,6 @@ class PurchasableTicket < ActiveRecord::Base
   def ticket=(ticket)
     @ticket, self.ticket_id = ticket, ticket.id
   end
-
-  delegate :lockable?, :to => :ticket
 
   def lock
     begin

@@ -37,6 +37,15 @@ class AthenaTicket < AthenaResource::Base
     save!
   end
 
+  def off_sale?
+    not on_sale?
+  end
+
+  def sold!
+    self.sold = true
+    save!
+  end
+
   def sold?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['sold'])
   end
@@ -53,11 +62,4 @@ class AthenaTicket < AthenaResource::Base
     super unless sold?
   end
 
-  def can_be_deleted?
-    !sold?
-  end
-
-  def can_be_taken_off_sale?
-    !sold?
-  end
 end
