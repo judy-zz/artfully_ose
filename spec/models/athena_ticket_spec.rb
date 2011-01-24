@@ -92,6 +92,12 @@ describe AthenaTicket do
       AthenaTicket.search(params)
       FakeWeb.last_request.path.should match "_limit=10"
     end
+
+    it "should default to searching for tickets marked as on sale" do
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :status => "200", :body => "[]")
+      AthenaTicket.search({})
+      FakeWeb.last_request.path.should match "onSale=eqtrue"
+    end
   end
 
   describe ".to_item" do
