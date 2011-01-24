@@ -1,5 +1,5 @@
-<% form_for performance, :url => event_performances_path(event, performance) do |top_form|%>
-  <% top_form.fields_for performance do |form| %>
+<%= form_for performance, :url => event_performances_path(event, performance) do |top_form|%>
+  <%= top_form.fields_for performance do |form| %>
     <tr id="new-performance-row" <%=@performance.chart_id.blank? ? "style='display:none'" : ''%>>
       <td style="padding:2px 0px"></td>
       <td style="padding:2px 0px">
