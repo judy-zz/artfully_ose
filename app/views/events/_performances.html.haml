@@ -1,20 +1,26 @@
 = render "shared/error_messages", :target => @performance
-- unless event.performances.empty?
-  .sub-container#performance-container
-    %h2 Performances
-    %div{:style=>'text-align:right'} 
-      =link_to image_tag("icons/small_icons/Add.png") + " Add New Performance", event_performances_path(event, performance), {:id=>'new-performance-button', :class => 'table_icon add-new-performance', :style=>'float:none;text-decoration:none;'}
-    %table#performance-table.normal.tablesorter.fullwidth
-      %thead
+
+.sub-container#performance-container
+  %h2 Performances
+  %div{:style=>'text-align:right'} 
+    =link_to image_tag("icons/small_icons/Add.png") + " Add New Performance", event_performances_path(event, performance), {:id=>'new-performance-button', :class => 'table_icon new-performance-link', :style=>'float:none;text-decoration:none;'}
+  %table#performance-table.normal.tablesorter.fullwidth
+    %thead
+      %tr
+        %th Weekday
+        %th Date
+        %th Time
+        %th Chart
+        %th Actions
+        %th Tickets
+    %Toby
+      = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance=>@performance }
+      - if event.performances.empty?
         %tr
-          %th Weekday
-          %th Date
-          %th Time
-          %th Chart
-          %th Actions
-          %th Tickets
-      %tbody
-        = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance=>@performance }
+          %td{:colspan=>'6'}
+            You haven't created any performances yet!
+            =link_to "Create a performance now", new_event_performance_path(event), {:class=>'new-performance-link'}
+      - else
         - event.performances.each do |performance|
           %tr{:class => (performance.on_sale? ? "selected" : nil)}
             %td.day-of-week-display= performance.day_of_week

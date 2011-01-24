@@ -80,6 +80,10 @@ class AthenaPerformance < AthenaResource::Base
     self.datetime.strftime("%b, %d %Y")
   end
 
+  def formatted_performance_date_for_input
+    self.datetime.strftime("%m/%d/%Y")
+  end
+
   def parsed_datetime
     if self.datetime.nil?
       nil
