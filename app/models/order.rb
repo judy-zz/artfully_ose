@@ -3,7 +3,7 @@ class Order < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :purchasable_tickets
+  has_many :purchasable_tickets, :dependent => :destroy
   after_initialize :clean_order
 
   state_machine do
