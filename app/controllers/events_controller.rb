@@ -36,7 +36,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.jsonp  { render_jsonp @event.to_json }
+      format.jsonp  { render_jsonp @event.to_widget_json }
     end
   end
 

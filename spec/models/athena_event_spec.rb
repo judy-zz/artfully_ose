@@ -73,4 +73,17 @@ describe AthenaEvent do
       lambda { subject.charts = "Not an Array" }.should raise_error(TypeError)
     end
   end
+
+  describe ".to_widget_json" do
+    subject { Factory(:athena_event_with_id) }
+
+    it "should not include performances that are on sale" do
+      subject.performances = 2.times.collect { Factory(:athena_performance_with_id) }
+      subject.performances.first.on_sale = true
+      subject.stub(:charts).and_return([])
+
+      json = JSON.parse(subject.to_widget_json)
+      json["performances"].length.should eq 1
+    end
+  end
 end
