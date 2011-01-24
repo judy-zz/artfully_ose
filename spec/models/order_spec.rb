@@ -126,6 +126,12 @@ describe Order do
       subject.items.each { |item| item.stub!(:sold?).and_return(true) }
     end
 
+    it "should be called when the order is approved" do
+      subject.stub!(:finish)
+      subject.should_receive(:finish)
+      subject.approve!
+    end
+
     it "should mark each item as sold" do
       subject.items.each { |item| item.should_receive(:sold!) }
       subject.finish
