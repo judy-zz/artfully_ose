@@ -7,15 +7,15 @@ class TicketingKit < ActiveRecord::Base
 
   state_machine do
     state :new
-    state :active
+    state :activated, :enter => :on_activate
     state :cancelled
 
     event :activate do
-      transitions :from => :new, :to => :active, :guard => :activatable?
+      transitions :from => :new, :to => :activated, :guard => :activatable?
     end
 
     event :cancel do
-      transitions :from => [:active, :rejected ], :to => :cancelled
+      transitions :from => [:activated, :rejected ], :to => :cancelled
     end
   end
 
@@ -23,4 +23,8 @@ class TicketingKit < ActiveRecord::Base
     new? and (!!user) and (!user.credit_cards.empty?)
   end
 
+  protected
+    def on_activate
+      user.add_role :producer
+    end
 end

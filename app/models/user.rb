@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   # Kits
   has_one :ticketing_kit
-  before_save :activate_ticketing_kit, :unless => lambda { |user| user.ticketing_kit.nil? or user.ticketing_kit.active? }
+  before_save :activate_ticketing_kit, :unless => lambda { |user| user.ticketing_kit.nil? or user.ticketing_kit.activated? }
 
   def activate_ticketing_kit
     ticketing_kit.activate!
@@ -29,6 +29,10 @@ class User < ActiveRecord::Base
 
   def has_role?(role)
     !!self.roles.find_by_name(role)
+  end
+
+  def add_role(role)
+    self.roles << Role.find_by_name(role) unless has_role?(role)
   end
 
   def to_producer

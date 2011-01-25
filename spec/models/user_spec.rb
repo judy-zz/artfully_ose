@@ -125,6 +125,18 @@ describe User do
       end
     end
 
+    describe ".add_role" do
+      it "should add the role if the user does not already have it" do
+        subject.add_role(:producer)
+        subject.should have_role(:producer)
+      end
+
+      it "should not add the role if the user already has it" do
+        2.times { subject.add_role :producer }
+        subject.roles.length.should eq 1
+      end
+    end
+
     it "#to_producer" do
       subject.to_producer
       subject.save
@@ -144,7 +156,7 @@ describe User do
     end
 
     it "should not attempt to activate the kit if is new before saving" do
-      subject.ticketing_kit.state = :active
+      subject.ticketing_kit.state = :activated
       subject.ticketing_kit.should_not_receive(:activate!)
       subject.save
     end
