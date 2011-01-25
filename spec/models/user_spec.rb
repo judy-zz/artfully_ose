@@ -131,4 +131,22 @@ describe User do
       subject.roles.should include(Role.producer)
     end
   end
+
+  describe "kits" do
+    before(:each) do
+      subject.ticketing_kit = Factory(:ticketing_kit)
+      subject.ticketing_kit.stub!(:activate!).and_return(true)
+    end
+
+    it "should attempt to activate the kit before saving" do
+      subject.ticketing_kit.should_receive(:activate!)
+      subject.save
+    end
+
+    it "should not attempt to activate the kit if is new before saving" do
+      subject.ticketing_kit.state = :active
+      subject.ticketing_kit.should_not_receive(:activate!)
+      subject.save
+    end
+  end
 end

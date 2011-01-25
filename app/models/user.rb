@@ -4,6 +4,15 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
   has_many :orders
 
+
+  # Kits
+  has_one :ticketing_kit
+  before_save :activate_ticketing_kit, :unless => lambda { |user| user.ticketing_kit.nil? or user.ticketing_kit.active? }
+
+  def activate_ticketing_kit
+    ticketing_kit.activate!
+  end
+
   before_validation :create_people_record, :if => lambda { |user| user.person.nil? }
   validates_presence_of :person
 
