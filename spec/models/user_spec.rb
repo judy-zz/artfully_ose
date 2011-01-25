@@ -1,30 +1,23 @@
 require 'spec_helper'
 
-people_uri = Artfully::Application.config.people_site + 'people/.json'
-
 describe User do
-
-  it "should save when valid" do
-    @user = Factory.build(:user)
-    FakeWeb.register_uri(:post, people_uri, :status => 200)
-    @user.save.should be_true
-  end
+  subject { Factory(:user) }
 
   it "should be valid with a valid email address" do
-    @user = Factory.build(:user, :email => "example@example.com")
-    @user.should be_valid
+    subject.email = "example@example.com"
+    subject.should be_valid
   end
 
   it "should validate the format of the email address" do
-    @user = Factory.build(:user, :email => "example")
-    @user.should be_invalid
+    subject.email = "example"
+    subject.should be_invalid
   end
 
-  it { should respond_to :suspended? }
-  it { should respond_to :unsuspend! }
-  it { should respond_to :suspend! }
-
   describe "suspension" do
+    it { should respond_to :suspended? }
+    it { should respond_to :unsuspend! }
+    it { should respond_to :suspend! }
+
     it "should not be active when suspended" do
       subject.suspend!
       subject.should_not be_active
@@ -43,20 +36,11 @@ describe User do
     end
   end
 
-  describe "#customer" do
-    subject { Factory(:user) }
-
-    it {
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
-      should respond_to(:customer_id)
-    }
-    it {
-        FakeWeb.register_uri(:post, people_uri, :status => 200)
-        should respond_to(:customer)
-    }
+  describe ".customer" do
+    it { should respond_to(:customer_id) }
+    it { should respond_to(:customer) }
 
     it "should fetch the remote customer record" do
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
       @customer = Factory(:customer, :id => 1)
       subject.customer_id = @customer.id
       FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
@@ -64,53 +48,55 @@ describe User do
     end
 
     it "should not make a request if the customer_id is not set" do
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
-      @user = Factory(:user, :customer_id => nil)
-      @user.customer.should be_nil
+      subject.customer_id = nil
+      subject.customer.should be_nil
     end
 
     it "should update the customer id when assigning a new customer record" do
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
       subject.customer = Factory(:customer, :id => 2)
       subject.customer_id.should eq(2)
     end
 
     it "should set the customer id to nil if the remote resource no longer has it" do
-
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
       subject.customer_id = 1
       FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :status => 404)
       subject.customer.should be_nil
     end
   end
 
-  describe "#credit_cards" do
-    subject { Factory(:user) }
+  describe ".person" do
+    it { should respond_to :person }
+    it { should respond_to :person= }
 
-    it {
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
-      should respond_to :credit_cards
-    }
-    it {
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
-      should respond_to :credit_cards=
-    }
+    it "should not be valid without a People record" do
+      subject.stub!(:person).and_return(nil)
+      subject.should_not be_valid
+    end
+
+    it "should create a new People record before saving if one is not set" do
+      subject.stub!(:person).and_return(nil)
+      AthenaPerson.stub!(:create).and_return(Factory(:person_with_id))
+      AthenaPerson.should_receive(:create)
+      subject.save
+    end
+  end
+
+  describe ".credit_cards" do
+    it { should respond_to :credit_cards }
+    it { should respond_to :credit_cards= }
 
     it "should return an empty array if customer is not set" do
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
       subject.customer = nil
       subject.credit_cards.should be_empty
     end
 
     it "should return any credit cards associated with the customer record" do
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
       customer = Factory(:customer_with_credit_cards)
       subject.customer = customer
       subject.credit_cards.should eq customer.credit_cards
     end
 
     it "should delegate credit card assignemnt to the customer" do
-      FakeWeb.register_uri(:post, people_uri, :status => 200)
       subject.customer = Factory(:customer_with_id)
       credit_card = Factory(:credit_card)
       subject.credit_cards << credit_card
@@ -119,35 +105,30 @@ describe User do
   end
 
   describe "roles" do
-    before(:each) do
-      FakeWeb.register_uri(:post, people_uri, :status => 200, :body => Factory(:person))
-      @user = Factory(:user)
-    end
-
     it { should respond_to(:roles) }
     it { should respond_to(:has_role?) }
 
     describe "#has_role?" do
       it "admin should return true when the user is a admin" do
-        @user = Factory(:admin)
-        @user.should have_role :admin
+        subject = Factory(:admin)
+        subject.should have_role :admin
       end
 
       it "producer should return true when the user is a producer" do
-        @user = Factory(:producer)
-        @user.should have_role :producer
+        subject = Factory(:producer)
+        subject.should have_role :producer
       end
 
       it "patron should return true when the user is a patron" do
-        @user = Factory(:patron)
-        @user.should have_role :patron
+        subject = Factory(:patron)
+        subject.should have_role :patron
       end
     end
 
     it "#to_producer" do
-      @user.to_producer
-      @user.save
-      @user.roles.should include(Role.producer)
+      subject.to_producer
+      subject.save
+      subject.roles.should include(Role.producer)
     end
   end
 end

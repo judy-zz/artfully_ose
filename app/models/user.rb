@@ -4,7 +4,8 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
   has_many :orders
 
-  after_create :create_record_in_athena_people
+  before_validation :create_people_record, :if => lambda { |user| user.person.nil? }
+  validates_presence_of :person
 
   belongs_to :organization
 
@@ -29,6 +30,15 @@ class User < ActiveRecord::Base
     self.roles << Role.admin unless self.roles.include? Role.admin
   end
 
+  def person
+    @person ||= AthenaPerson.find(self.athena_id)
+  end
+
+  def person=(person)
+    raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
+    @person, self.athena_id = person, person.id
+  end
+
   def customer
     @customer ||= find_customer
   end
@@ -47,16 +57,11 @@ class User < ActiveRecord::Base
     customer.nil?? [] : delegated_credit_cards
   end
 
-  def create_record_in_athena_people
-    @person = AthenaPerson.new
-    @person.email = self.email
-    if @person.save
-      self.athena_id = @person.id
-      self.save
-    end
-  end
-
   private
+    def create_people_record
+      person = AthenaPerson.create(:email => self.email)
+    end
+
     def find_customer
       begin
         return AthenaCustomer.find(self.customer_id)
