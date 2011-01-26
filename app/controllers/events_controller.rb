@@ -1,6 +1,11 @@
 class EventsController < ApplicationController
   before_filter :authenticate_user!, :except => [ :show ]
 
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to events_path
+  end
+
   def create
     @event = AthenaEvent.new
 
@@ -18,7 +23,7 @@ class EventsController < ApplicationController
   def index
     user = params[:user_id].blank?? current_user : User.find(params[:user_id])
     @events = AthenaEvent.find(:all, :params => { :producerPid => 'eq' + user.athena_id })
-
+    
     respond_to do |format|
       format.html
       format.jsonp  { render_jsonp @events.to_json }
@@ -27,6 +32,7 @@ class EventsController < ApplicationController
 
   def show
     @event = AthenaEvent.find(params[:id])
+    authorize! :view, @event
     @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
 
     if user_signed_in?

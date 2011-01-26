@@ -11,7 +11,7 @@
         %span New Chart
 
 
-=link_to "Edit this chart", edit_chart_path(@chart), :class => "link"
+=link_to "Edit this chart", edit_chart_path(@chart), :class => "link" if can?(:edit, @chart)
 
 %h2 Sections
 %table.normal
@@ -28,7 +28,7 @@
         %td= "#{section.capacity} seats"
         %td= "$#{section.price}"
         %td
-          =table_icon_link_to :edit, edit_chart_section_path(@chart, section)
-          =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete
+          =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
+          =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)
 
 =link_to "Add a section to this chart", new_chart_section_path(@chart), :class => "link"
