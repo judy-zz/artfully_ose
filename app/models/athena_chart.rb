@@ -60,15 +60,15 @@ class AthenaChart < AthenaResource::Base
   end
 
   def self.find_by_event(event)
-    self.find(:all, :params => { :eventId => 'eq' + event.id })
+    self.find(:all, :params => { :eventId => "eq#{event.id}" })
   end
 
   def self.find_by_producer(producer_pid)
-    self.find(:all, :params => { :producerPid => 'eq' + producer_pid })
+    self.find(:all, :params => { :producerPid => "eq#{producer_pid}" })
   end
 
   def self.find_templates_by_producer(producer_pid)
-    self.find(:all, :params => { :producerPid => 'eq' + producer_pid, :isTemplate => 'eqtrue' })
+    self.find(:all, :params => { :producerPid => "eq#{producer_pid}", :isTemplate => 'eqtrue' })
   end
 
   def self.get_default_name(prefix)

@@ -31,7 +31,7 @@ Given /^I can lock Tickets in ATHENA$/ do
 end
 
 Given /^I can save People to ATHENA$/ do
-  FakeWeb.register_uri(:post, 'http://localhost/people/people/.json', :status => 200, :body => Factory(:athena_person).encode )
+  FakeWeb.register_uri(:post, 'http://localhost/people/people/.json', :status => 200, :body => Factory(:athena_person_with_id).encode )
 end
 
 Given /^the following tickets exist in ATHENA:$/ do |table|

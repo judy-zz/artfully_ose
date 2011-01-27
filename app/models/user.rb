@@ -4,17 +4,9 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
   has_many :orders
 
-
-  # Kits
   has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
-  #before_save :activate_ticketing_kit, :unless => lambda { |user| user.ticketing_kit.nil? or user.ticketing_kit.activated? }
-
-  def activate_ticketing_kit
-    ticketing_kit.activate!
-  end
 
   before_validation :create_people_record, :if => lambda { |user| user.person.nil? }
-  validates_presence_of :person
 
   belongs_to :organization
 
@@ -44,12 +36,13 @@ class User < ActiveRecord::Base
   end
 
   def person
-    @person ||= AthenaPerson.find(self.athena_id)
+    @person ||= find_person
   end
 
   def person=(person)
     raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
     @person, self.athena_id = person, person.id
+    save
   end
 
   def customer
@@ -72,7 +65,12 @@ class User < ActiveRecord::Base
 
   private
     def create_people_record
-      person = AthenaPerson.create(:email => self.email)
+      self.person = AthenaPerson.create(:email => self.email)
+    end
+
+    def find_person
+      return nil if athena_id.blank?
+      AthenaPerson.find(self.athena_id)
     end
 
     def find_customer

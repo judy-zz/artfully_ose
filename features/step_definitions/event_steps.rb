@@ -35,19 +35,19 @@ Given /^the following event exists in ATHENA for "([^"]*)"$/ do |email, table|
   @event = Factory(:athena_event, table.hashes.first)
   @event.id = 1
   @user = User.find_by_email(email)
-  @event.producer_pid = @user.athena_id
-  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{@user.athena_id}", :status => 200, :body => "[#{@event.encode}]")
+  @event.producer_pid = @user.person.id
+  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{@user.person.id}", :status => 200, :body => "[#{@event.encode}]")
   FakeWeb.register_uri(:any, "http://localhost/stage/events/#{@event.id}.json", :status => 200, :body => @event.encode)
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{@event.id}", :status => 200, :body => "[]")
   FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :status => 200, :body => "[]")
-  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{@user.athena_id}&isTemplate=eqtrue", :status => 200, :body => "[]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{@user.person.id}&isTemplate=eqtrue", :status => 200, :body => "[]")
 end
 
 Given /^there is an [Ee]vent with (\d+) [Pp]erformances for "([^"]*)"$/ do |performance_count, email|
   user = User.find_by_email(email)
 
   @event = Factory(:athena_event_with_id)
-  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{user.athena_id}", :status => 200, :body => "[#{@event.encode}]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{user.person.id}", :status => 200, :body => "[#{@event.encode}]")
 
   chart = Factory(:athena_chart)
   FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :status => 200, :body => "[#{chart.encode}]")
@@ -58,7 +58,7 @@ Given /^there is an [Ee]vent with (\d+) [Pp]erformances for "([^"]*)"$/ do |perf
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{@event.id}", :status => 200, :body => "[#{body}]")
 
   visit events_path
-  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{user.athena_id}&isTemplate=eqtrue", :status => 200, :body => "[]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{user.person.id}&isTemplate=eqtrue", :status => 200, :body => "[]")
   Given %{I follow "#{@event.name}"}
 end
 

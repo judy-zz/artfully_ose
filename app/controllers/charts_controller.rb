@@ -2,7 +2,7 @@ class ChartsController < ApplicationController
   before_filter :authenticate_user!, :except => [ :show ]
 
   def index
-    @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
+    @charts = AthenaChart.find_templates_by_producer(current_user.person.id).sort_by { |chart| chart.name }
   end
 
   def new
@@ -12,7 +12,7 @@ class ChartsController < ApplicationController
   def create
     @chart = AthenaChart.new
     @chart.update_attributes(params[:athena_chart][:athena_chart])
-    @chart.producer_pid = current_user.athena_id
+    @chart.producer_pid = current_user.person.id
     @chart.isTemplate = true
 
     if @chart.save

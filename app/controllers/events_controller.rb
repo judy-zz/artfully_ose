@@ -5,7 +5,7 @@ class EventsController < ApplicationController
     @event = AthenaEvent.new
 
     @event.update_attributes(params[:athena_event][:athena_event])
-    @event.producer_pid = current_user.athena_id
+    @event.producer_pid = current_user.person.id
     if @event.save
       flash[:notice] = "Your event has been created."
       redirect_to event_url(@event)
@@ -17,7 +17,7 @@ class EventsController < ApplicationController
 
   def index
     user = params[:user_id].blank?? current_user : User.find(params[:user_id])
-    @events = AthenaEvent.find(:all, :params => { :producerPid => 'eq' + user.athena_id })
+    @events = AthenaEvent.find(:all, :params => { :producerPid => "eq#{user.person.id}" })
 
     respond_to do |format|
       format.html
@@ -30,7 +30,7 @@ class EventsController < ApplicationController
     @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
 
     if user_signed_in?
-      @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
+      @charts = AthenaChart.find_templates_by_producer(current_user.person.id).sort_by { |chart| chart.name }
       @chart = AthenaChart.new
     end
 

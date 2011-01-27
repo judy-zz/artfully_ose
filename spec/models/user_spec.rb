@@ -68,15 +68,9 @@ describe User do
     it { should respond_to :person }
     it { should respond_to :person= }
 
-    it "should not be valid without a People record" do
-      subject.stub!(:person).and_return(nil)
-      subject.should_not be_valid
-    end
-
     it "should create a new People record before saving if one is not set" do
-      subject.stub!(:person).and_return(nil)
-      AthenaPerson.stub!(:create).and_return(Factory(:person_with_id))
-      AthenaPerson.should_receive(:create)
+      subject.stub(:person).and_return(nil)
+      subject.should_receive(:create_people_record)
       subject.save
     end
   end
