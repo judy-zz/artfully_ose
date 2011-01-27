@@ -1,15 +1,5 @@
 function Chart(data) { this.load(data); }
 
-Chart.fetch = function(id){
-  var c;
-
-  $.getJSON(Chart.uri(id), function(data){
-    c = new Chart(data);
-  });
-
-  return c;
-}
-
 Chart.prototype = {
   load: function(data){
     this.id = data.id;

@@ -1,5 +1,6 @@
 describe("Event", function() {
-  var event, data = {
+  var event = {},
+  data = {
     "name": "Some Event",
     "venue": "Some Venue",
     "producer": "Some Producer",
@@ -37,36 +38,27 @@ describe("Event", function() {
   };
 
   beforeEach(function() {
-    event = new Event(data);
+    $.extend(event,data,artfully.models.event);
+    $.each(event.performances, function(index, performance){
+      $.extend(performance,artfully.models.performance);
+    });
   });
 
   describe("event attributes", function(){
-    it("should be have a name", function(){
-      expect(event.name).toBeDefined();
+    it("should be have the same name as the data", function(){
+      expect(event.name).toEqual(data.name);
     });
 
-    it("should have a producer", function(){
-      expect(event.producer).toBeDefined();
+    it("should have the same producer as the data", function(){
+      expect(event.producer).toEqual(data.producer);
     });
 
-    it("should have a venue", function(){
-      expect(event.venue).toBeDefined();
+    it("should have the same venue as the data", function(){
+      expect(event.venue).toEqual(data.venue);
     });
-  });
 
-  describe("performances", function(){
-    it("should store performances by their id", function(){
-      $.each(event.performances, function(index, performance){
-        expect(index).toEqual(performance.id);
-      });
-    });
-  });
-
-  describe("charts", function(){
-    it("should store performances by their id", function(){
-      $.each(event.charts, function(index, chart){
-        expect(index).toEqual(chart.id);
-      });
+    it("should have the same number performances as the data", function(){
+      expect(event.performances).toEqual(data.performances)
     });
   });
 

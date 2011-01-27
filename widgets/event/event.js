@@ -1,9 +1,5 @@
 function Event(data){ this.load(data); }
 
-Event.uri = function(id){
-  return Config.base_uri + 'events/' + id + '.jsonp?callback=?';
-};
-
 Event.prototype = {
   load: function(data){
     this.name = data.name;

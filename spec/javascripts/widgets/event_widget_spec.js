@@ -1,12 +1,9 @@
 describe("EventWidget", function(){
+  var options =  { base_uri:'http://localhost:3000/'};
+
   beforeEach(function(){
     spyOn(jQuery,'getJSON');
-    var options =  { base_uri:'http://localhost:3000/'};
-    EventWidget(1,options);
-  });
-
-  it("define a function", function(){
-    expect(EventWidget).toBeDefined();
+    artfully.widgets.event.display(3);
   });
 
   it("should call jQuery.getJSON()", function(){

@@ -6,7 +6,7 @@ var Config = {
 var E;
 EventWidget = function(id, options){
   Config = $.extend(Config, options);
-  $.getJSON(Event.uri(id), function(data){
+  $.getJSON(artfully.utils.uri.event(id), function(data){
     E = new Event(data);
     E.render($('#event'));
   });
