@@ -1,0 +1,12 @@
+= link_to "Add Ticketing Kit", kits_path(:kit => :ticketing ), :method => :post
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Active?
+  %tbody
+    - @kits.each do |kit|
+      %tr
+        %td= kit.class
+        %td= kit.activated?

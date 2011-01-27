@@ -1,13 +1,10 @@
 Artfully::Application.routes.draw do
   devise_for :users
 
-  resources :user_roles
+  resources :kits
   resources :users, :only => [:show] do
     resources :credit_cards
-    resources :user_roles
     resources :events
-
-
   end
 
   resources :tickets, :only => [:index]
