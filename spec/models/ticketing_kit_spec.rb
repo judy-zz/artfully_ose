@@ -25,6 +25,14 @@ describe TicketingKit do
       subject.should be_cancelled
     end
 
+    it "should be activatable with credit cards and an organization" do
+      subject.user.stub(:credit_cards).and_return(1.times.collect { Factory(:credit_card) } )
+      subject.user.stub(:organization).and_return(Factory(:organization))
+      subject.should be_activatable
+      subject.activate!
+      subject.should be_activated
+    end
+
     it "should call on_activate when transitioning" do
       subject.stub(:on_activate)
       subject.stub(:activatable?).and_return(true)

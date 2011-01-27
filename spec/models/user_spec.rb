@@ -145,20 +145,16 @@ describe User do
   end
 
   describe "kits" do
-    before(:each) do
-      subject.ticketing_kit = Factory(:ticketing_kit)
-      subject.ticketing_kit.stub!(:activate!).and_return(true)
-    end
-
     it "should attempt to activate the kit before saving" do
-      subject.ticketing_kit.should_receive(:activate!)
-      subject.save
+      kit = Factory(:ticketing_kit)
+      kit.should_receive(:activate!)
+      subject.kits << kit
     end
 
     it "should not attempt to activate the kit if is new before saving" do
-      subject.ticketing_kit.state = :activated
-      subject.ticketing_kit.should_not_receive(:activate!)
-      subject.save
+      kit = Factory(:ticketing_kit, :state => :activated)
+      kit.should_not_receive(:activate!)
+      subject.kits << kit
     end
   end
 end

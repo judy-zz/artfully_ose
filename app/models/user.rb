@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
 
 
   # Kits
-  has_one :ticketing_kit
-  before_save :activate_ticketing_kit, :unless => lambda { |user| user.ticketing_kit.nil? or user.ticketing_kit.activated? }
+  has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
+  #before_save :activate_ticketing_kit, :unless => lambda { |user| user.ticketing_kit.nil? or user.ticketing_kit.activated? }
 
   def activate_ticketing_kit
     ticketing_kit.activate!
