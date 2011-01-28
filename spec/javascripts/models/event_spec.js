@@ -38,10 +38,19 @@ describe("Event", function() {
   };
 
   beforeEach(function() {
-    $.extend(event,data,artfully.models.event);
-    $.each(event.performances, function(index, performance){
-      $.extend(performance,artfully.models.performance);
+    var charts = artfully.utils.keyOnId(data.charts);
+
+    // Modelize charts and their sections.
+    artfully.utils.modelize(charts, artfully.models.chart, function(chart){
+      artfully.utils.modelize(chart.sections, artfully.models.section);
     });
+
+    // Modelize performance and assign charts.
+    artfully.utils.modelize(data.performances, artfully.models.performance, function(performance){
+      performance.chart = charts[performance.chart_id];
+    });
+
+    $.extend(event, data, artfully.models.event);
   });
 
   describe("event attributes", function(){
@@ -68,22 +77,20 @@ describe("Event", function() {
     beforeEach(function(){
       jasmine.getFixtures().set('<div id="event">');
       target = $("#event");
+      event.render(target);
     });
 
     it("should render the name in an h1.event-name", function(){
-      event.render(target);
       expect(target).toContain('h1.event-name');
       expect(target.children('h1.event-name')).toHaveText(data.name);
     });
 
     it("should render the venue in an h2.event-venue", function(){
-      event.render(target);
       expect(target).toContain('h2.event-venue');
       expect(target.children('h2.event-venue')).toHaveText(data.venue);
     });
 
     it("should render the producer in an h3.event-producer", function(){
-      event.render(target);
       expect(target).toContain('h3.event-producer');
       expect(target.children('h3.event-producer')).toHaveText(data.producer);
     });

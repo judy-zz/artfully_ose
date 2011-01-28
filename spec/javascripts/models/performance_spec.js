@@ -4,10 +4,27 @@ describe("Performance", function() {
     "chart_id": "10",
     "datetime": "2011-01-04T19:12:00-05:00",
     "id": "14"
-  };
+  },
+
+  chart = {
+    "id": "10",
+    "name": "Test Chart",
+    "sections": [
+      {
+        "capacity": "5",
+        "id": "11",
+        "name": "General",
+        "price": "10"
+      }
+    ]
+  }
 
   beforeEach(function() {
     $.extend(performance, data, artfully.models.performance);
+    performance.chart = $.extend(chart, artfully.models.chart);
+    $.each(chart.sections, function(index, section){
+      $.extend(section, artfully.models.section);
+    });
   });
 
   describe("attributes", function(){

@@ -40,7 +40,7 @@ artfully.widgets = (function(){
           render(data);
         });
       }
-    }
+    };
   }());
 
   cart = (function(){
@@ -120,33 +120,29 @@ artfully.models = (function(){
 
   chart = {
     render: function($target){
-      if(!this.$view){
-        this.$view = this.view();
-      }
-
-      this.$view.slideUp('slow',function(){
-        $(this).hide().appendTo($target);
-        $(this).slideDown('slow');
-      });
+      this.container().hide().appendTo($target);
     },
-    view: function(){
-      var $view = $(document.createElement('ul')).addClass('sections');
 
-      $.each(this.sections, function(index, section){
-        section.render($view);
+    container: function(){
+      var $c = $(document.createElement('ul')).addClass('sections');
+
+     $.each(this.sections, function(index, section){
+       section.render($c);
       });
 
-      return $view;
+      return $c;
     }
   };
 
   section = {
-    render: function($target){
-      this.$target = $(document.createElement('li'));
-
+    render: function($t){
+      this.$target = this.container();
       this.render_info(this.$target);
       this.render_form(this.$target);
-      this.$target.appendTo($target);
+      this.$target.appendTo($t);
+    },
+    container: function(){
+      return $(document.createElement('li'));
     },
     render_info: function($target){
       $(document.createElement('span')).addClass('section-name').text(this.name).appendTo($target);
@@ -169,12 +165,12 @@ artfully.models = (function(){
       $form.submit(function(){
         var params = {
           'limit': $('#ticket-count').val(),
-          'performance': $(this).parents('.performance').data('performance').raw_datetime,
+          'performance': $(this).closest('.performance').data('performance').datetime,
           'price': obj.price
         };
 
         $.getJSON(artfully.utils.ticket_uri(params), function(data){
-          ShoppingCart.add(data);
+          artfully.widgets.cart.add(data);
         });
 
         $('.sections').slideUp();
@@ -199,11 +195,11 @@ artfully.models = (function(){
       .addClass('ticket-search')
       .text('Buy Tickets')
       .attr("href","#")
-      .appendTo(this.$target);
-//      .click({performance: this}, function(e){
-//        E.charts[e.data.performance.chart_id].render(e.data.performance.$target);
-//        return false;
-//      })
+      .click(function(){
+        $(this).closest(".performance").children(".sections").slideToggle();
+        return false;
+      })
+      .appendTo($t);
 
       this.chart.render($t);
       this.$target = $t;
@@ -260,7 +256,7 @@ artfully.utils = (function(){
   }
 
   function keyOnId(list){
-    var result = new Array();
+    var result = [];
     $.each(list, function(index, item){
       result[item.id] = item;
     });
@@ -275,7 +271,7 @@ artfully.utils = (function(){
         });
       } else {
         $.extend(data,model);
-        if(callback != undefined){
+        if(callback !== undefined){
           callback(data);
         }
       }
