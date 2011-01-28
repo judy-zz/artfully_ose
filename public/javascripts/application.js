@@ -89,6 +89,20 @@ jQuery(document).ready(function() {
 		//END nav collapse
 	jQuery(".tablesorter").tablesorter(); // Tablesorter plugin
 
+	jQuery(".new-performance-link").click(
+		function() {
+			jQuery("#new-performance-row").show();
+			return false;
+		}
+	);
+
+	jQuery(".cancel-new-performance-link").click(
+		function() {
+			jQuery("#new-performance-row").hide();
+			return false;
+		}
+	);
+
 	jQuery('#dialog').dialog({
 		autoOpen: false,
 		width: 650,

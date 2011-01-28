@@ -3,6 +3,8 @@ class AthenaPerformance < AthenaResource::Base
   self.headers["User-agent"] = "artful.ly"
   self.element_name = 'performances'
   self.collection_name = 'performances'
+  
+  validates :datetime, :presence => { :message => " Please enter a performance time" }
 
   PUT_ON_SALE = 'PUT_ON_SALE'
   TAKE_OFF_SALE = 'TAKE_OFF_SALE'
@@ -78,6 +80,10 @@ class AthenaPerformance < AthenaResource::Base
     self.datetime.strftime("%b, %d %Y")
   end
 
+  def formatted_performance_date_for_input
+    self.datetime.strftime("%m/%d/%Y")
+  end
+
   def parsed_datetime
     if self.datetime.nil?
       nil
@@ -105,66 +111,62 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def take_off_sale
-    rejected_ids = [];
-    tickets.each do |ticket|
-      if ticket.can_be_taken_off_sale?
-        ticket.on_sale=false
-        ticket.save
-      else
-        rejected_ids << ticket_id
-      end
-    end
+    tickets.map(&:off_sale!)
     attributes['on_sale'] = false
-    self.save
+    save!
   end
-  
+
   def put_on_sale
-    tickets.each do |ticket|
-      ticket.on_sale=true
-      ticket.save
-    end
+    tickets.map(&:on_sale!)
     attributes['on_sale'] = true
-    self.save
+    save!
   end
-    
-  def bulk_edit_tickets(ticket_ids, action)    
-    rejected_ids = [];
-    ticket_hash = tickets.index_by(&:id)
-    ticket_ids.each do |ticket_id|
-      @ticket = ticket_hash[ticket_id.to_s]
-      case action
-        when PUT_ON_SALE
-          @ticket.on_sale=true
-          @ticket.save
-        when TAKE_OFF_SALE
-          if @ticket.can_be_taken_off_sale?
-            @ticket.on_sale=false
-            @ticket.save
-          else
-            rejected_ids << ticket_id
-          end
-        when DELETE
-          if @ticket.can_be_deleted?
-            @ticket.destroy
-            self.tickets.delete @ticket
-          else
-            rejected_ids << ticket_id
-          end
-      end
-    end   
-    rejected_ids
+
+  def bulk_edit_tickets(ticket_ids, action)
+    case action
+      when PUT_ON_SALE
+        bulk_on_sale(ticket_ids)
+      when TAKE_OFF_SALE
+        bulk_off_sale(ticket_ids)
+      when DELETE
+        bulk_delete(ticket_ids)
+    end
   end
 
   private
+
+    def bulk_on_sale(ids)
+      tickets.select { |ticket| ids.include? ticket.id }.collect(&:on_sale!)
+    end
+
+    def bulk_off_sale(ids)
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.off_sale! }.compact!
+    end
+
+    def bulk_delete(ids)
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact!
+    end
+
+
     def prepare_attr!(attributes)
       #TODO: We need to set the correct time zone to whatever zone they're in
-      unless attributes.blank?
-        day = attributes.delete('datetime(3i)')
-        month = attributes.delete('datetime(2i)')
-        year = attributes.delete('datetime(1i)')
-        hour = attributes.delete('datetime(4i)')
-        minute = attributes.delete('datetime(5i)')
-        attributes['datetime'] = DateTime.parse("#{year}-#{month}-#{day}T#{hour}:#{minute}:00-04:00")
+      unless attributes.blank? || attributes['datetime'].blank?
+        temp_date_only = Date.parse(attributes.delete('datetime'))
+        hour = attributes['datetime(4i)']
+        minute = attributes['datetime(5i)']
+        attributes['datetime'] = DateTime.parse("#{temp_date_only.year}-#{temp_date_only.month}-#{temp_date_only.day}T#{hour}:#{minute}:00-04:00")
+      else
+        attributes['datetime'] = nil
       end
+      #we can erase the datetime fields that came with the time select
+      clean_datetime_attributes attributes
+    end
+    
+    def clean_datetime_attributes(attributes)
+      attributes.delete('datetime(1i)')
+      attributes.delete('datetime(2i)')
+      attributes.delete('datetime(3i)')
+      attributes.delete('datetime(4i)')
+      attributes.delete('datetime(5i)')
     end
 end

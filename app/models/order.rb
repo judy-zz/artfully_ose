@@ -3,12 +3,12 @@ class Order < ActiveRecord::Base
 
   belongs_to :user
 
-  has_many :purchasable_tickets
+  has_many :purchasable_tickets, :dependent => :destroy
   after_initialize :clean_order
 
   state_machine do
     state :started      # The user has added items to their order
-    state :approved     # ATHENA has approved the payment
+    state :approved, :enter => :finish
     state :rejected     # ATHENA has rejected the payment
 
     event :approve do
@@ -71,6 +71,11 @@ class Order < ActiveRecord::Base
     if options[:settle] and approved?
       payment.settle!
     end
+  end
+
+  def finish
+    items.map(&:sold!)
+    items.delete_if { |item| item.destroy }
   end
 
   private

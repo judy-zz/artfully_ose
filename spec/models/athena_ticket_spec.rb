@@ -39,18 +39,25 @@ describe AthenaTicket do
     end
   end
 
-  describe "#destroy" do
+  describe ".destroy" do
+    subject { Factory(:ticket_with_id) }
+
     it "should issue a DELETE when destroying a ticket" do
-      @ticket = Factory(:ticket_with_id)
-      FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{@ticket.id}.json", :status => "204")
-      @ticket.destroy
+      FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{subject.id}.json", :status => "204")
+      subject.destroy
 
       FakeWeb.last_request.method.should == "DELETE"
-      FakeWeb.last_request.path.should == "/tix/tickets/#{@ticket.id}.json"
+      FakeWeb.last_request.path.should == "/tix/tickets/#{subject.id}.json"
+    end
+
+    it "should not delete a ticket that has been marked as sold" do
+      subject.sold = true
+      subject.destroy
+      FakeWeb.last_request.should be_nil
     end
   end
 
-  describe "#save" do
+  describe ".save" do
     it "should issue a PUT when updating a ticket" do
       @ticket = Factory(:ticket_with_id)
       FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{@ticket.id}.json", :status => "200")
@@ -85,9 +92,15 @@ describe AthenaTicket do
       AthenaTicket.search(params)
       FakeWeb.last_request.path.should match "_limit=10"
     end
+
+    it "should default to searching for tickets marked as on sale" do
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :status => "200", :body => "[]")
+      AthenaTicket.search({})
+      FakeWeb.last_request.path.should match "onSale=eqtrue"
+    end
   end
 
-  describe "to_item" do
+  describe ".to_item" do
     subject { Factory(:ticket_with_id) }
     it "should be a PurchasableTicket" do
       subject.to_item.should be_a PurchasableTicket
@@ -95,6 +108,83 @@ describe AthenaTicket do
 
     it "should be the right PurchasableTicket" do
       subject.to_item.ticket_id.should eq subject.id.to_i
+    end
+  end
+
+  describe ".on_sale?" do
+    subject { Factory(:ticket_with_id, :on_sale => true) }
+    it { should be_on_sale }
+    it { should_not be_off_sale }
+  end
+
+  describe ".on_sale!" do
+    subject { Factory(:ticket_with_id) }
+
+    it { should respond_to :on_sale! }
+
+    it "should mark the ticket as on sale" do
+      subject.stub(:save!)
+      subject.on_sale!
+      subject.should be_on_sale
+    end
+
+    it "should save the updated ticket" do
+      subject.stub!(:save!)
+      subject.should_receive(:save!)
+      subject.on_sale!
+    end
+  end
+
+  describe ".off_sale?" do
+    subject { Factory(:ticket_with_id, :on_sale => false) }
+    it { should be_off_sale }
+    it { should_not be_on_sale }
+  end
+
+  describe ".off_sale!" do
+    subject { Factory(:ticket_with_id, :on_sale => true) }
+
+    it { should respond_to :on_sale! }
+
+    it "should mark the ticket as on sale" do
+      subject.stub(:save!)
+      subject.off_sale!
+      subject.should_not be_on_sale
+    end
+
+    it "should save the updated ticket" do
+      subject.stub!(:save!)
+      subject.should_receive(:save!)
+      subject.off_sale!
+    end
+
+    it "should not be marked as off sale if it is already sold" do
+      subject.sold = true
+      subject.should_not_receive(:save!)
+      subject.off_sale!
+      subject.should be_on_sale
+    end
+
+    it "should return false if it is already sold" do
+      subject.sold = true
+      subject.stub(:save!)
+      subject.off_sale!.should be_false
+    end
+  end
+
+  describe ".sold!" do
+    subject { Factory(:ticket_with_id) }
+
+    it "should mark the ticket as sold" do
+      subject.stub!(:save!)
+      subject.sold!
+      subject.should be_sold
+    end
+
+    it "should save the updated ticket" do
+      subject.stub!(:save!)
+      subject.should_receive(:save!)
+      subject.sold!
     end
   end
 end

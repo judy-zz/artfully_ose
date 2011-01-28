@@ -31,9 +31,10 @@ class AthenaEvent < AthenaResource::Base
     @attributes['performances'] = performances
   end
 
-  def to_json(options = {})
+  def to_widget_json(options = {})
     performances and charts and charts.each { |chart| chart.sections }
-    super(options)
+    performances.reject! { |performance| !performance.on_sale? }
+    to_json(options)
   end
 
   private

@@ -21,12 +21,13 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.jsonp  { render_jsonp (@events.to_json) }
+      format.jsonp  { render_jsonp @events.to_json }
     end
   end
 
   def show
     @event = AthenaEvent.find(params[:id])
+    @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
 
     if user_signed_in?
       @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
@@ -35,7 +36,7 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.jsonp  { render_jsonp (@event.to_json) }
+      format.jsonp  { render_jsonp @event.to_widget_json }
     end
   end
 

@@ -1,7 +1,8 @@
 = parent_form.fields_for target do |performance_form|
   %p
     = performance_form.label :datetime, "Performace date/time"
-    = performance_form.datetime_select :datetime, :default=>target.datetime
+    = performance_form.text_field :datetime, {:value=>"#{target.formatted_performance_date_for_input}", :class=>'datepicker hasDatePicker'}
+    = performance_form.time_select :datetime, :default=>target.datetime
   %p
     = performance_form.label :chart_id, "Seating chart"
     = performance_form.select :chart_id, options_from_collection_for_select(target.event.charts, "id", "name", target.chart_id.to_s )
