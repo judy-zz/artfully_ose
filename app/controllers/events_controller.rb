@@ -1,5 +1,6 @@
 class EventsController < ApplicationController
   before_filter :authenticate_user!, :except => [ :show ]
+  load_and_authorize_resource AthenaEvent
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -8,7 +9,6 @@ class EventsController < ApplicationController
 
   def create
     @event = AthenaEvent.new
-
     @event.update_attributes(params[:athena_event][:athena_event])
     @event.producer_pid = current_user.athena_id
     if @event.save
@@ -69,6 +69,7 @@ class EventsController < ApplicationController
 
   def destroy
       @event = AthenaEvent.find(params[:id])
+      authorize! :destroy, @event
       @event.destroy
       redirect_to events_url
   end

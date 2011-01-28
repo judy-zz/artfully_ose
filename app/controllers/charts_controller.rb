@@ -1,6 +1,6 @@
 class ChartsController < ApplicationController
   before_filter :authenticate_user!, :except => [ :show ]
-  load_and_authorize_resource AthenaChart #, :except => [ :index ]
+  load_and_authorize_resource AthenaChart, :except => [ :index ]
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -65,8 +65,6 @@ class ChartsController < ApplicationController
     else
       @chart = AthenaChart.find(params[:athena_chart][:id])
       @chart.assign_to(@event)
-
-
     end
     redirect_to event_url(@event)
   end

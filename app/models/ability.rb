@@ -2,7 +2,6 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-
     user ||= User.new
       
     if user.has_role? :admin
@@ -18,6 +17,7 @@ class Ability
       can [ :manage ], AthenaPerformance do |athenaPerformance|
         AthenaEvent.find( athenaPerformance.event_id ).producer_pid == user.id.to_s
       end
+      can [ :create ], AthenaPerformance
 
       can [ :manage ], AthenaChart do |athenaChart|
         athenaChart.producer_pid == user.id.to_s
@@ -26,7 +26,15 @@ class Ability
       cannot [ :destroy ], AthenaPerformance, :tickets_created => true
       cannot [ :edit, :destroy ], AthenaPerformance, :on_sale  => true
 
-    else #has no role
+      cannot [ :destroy ], AthenaEvent do |athenaEvent|
+        cannot_delete = false
+        athenaEvent.performances.each { |performance|
+          cannot_delete = true if cannot?(:destroy, performance)
+        }
+        cannot_delete
+      end
+
+    else # user.roles == [],  user has no role
       can :bulk_edit, :tickets
 
       can [ :manage ], AthenaEvent do |athenaEvent|
@@ -36,6 +44,7 @@ class Ability
       can [ :manage ], AthenaPerformance do |athenaPerformance|
         AthenaEvent.find( athenaPerformance.event_id ).producer_pid == user.id.to_s
       end
+      can [ :create ], AthenaPerformance
 
       can [ :manage ], AthenaChart do |athenaChart|
         athenaChart.producer_pid == user.id.to_s
@@ -43,6 +52,15 @@ class Ability
 
       cannot [ :destroy ], AthenaPerformance, :tickets_created => true
       cannot [ :edit, :destroy ], AthenaPerformance, :on_sale  => true
+
+      cannot [ :destroy ], AthenaEvent do |athenaEvent|
+        cannot_delete = false
+        athenaEvent.performances.each { |performance|
+          cannot_delete = true if cannot?(:destroy, performance)
+        }
+        cannot_delete
+      end
     end
+
   end
 end
