@@ -3,7 +3,7 @@ class AthenaPerformance < AthenaResource::Base
   self.headers["User-agent"] = "artful.ly"
   self.element_name = 'performances'
   self.collection_name = 'performances'
-  
+
   validates :datetime, :presence => { :message => " Please enter a performance time" }
 
   PUT_ON_SALE = 'PUT_ON_SALE'
@@ -13,7 +13,7 @@ class AthenaPerformance < AthenaResource::Base
   schema do
     attribute 'event_id', :string
     attribute 'chart_id', :string
-    attribute 'producer_id', :string
+    attribute 'producer_pid', :string
     attribute 'datetime', :string
     attribute 'tickets_created', :string
     attribute 'on_sale', :string
@@ -161,7 +161,7 @@ class AthenaPerformance < AthenaResource::Base
       #we can erase the datetime fields that came with the time select
       clean_datetime_attributes attributes
     end
-    
+
     def clean_datetime_attributes(attributes)
       attributes.delete('datetime(1i)')
       attributes.delete('datetime(2i)')

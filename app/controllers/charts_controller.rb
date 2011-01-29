@@ -1,5 +1,11 @@
 class ChartsController < ApplicationController
   before_filter :authenticate_user!, :except => [ :show ]
+  load_and_authorize_resource AthenaChart, :except => [ :index ]
+
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to charts_path
+  end
 
   def index
     @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
@@ -24,6 +30,7 @@ class ChartsController < ApplicationController
 
   def show
     @chart = AthenaChart.find(params[:id])
+    authorize! :view, @chart
     respond_to do |format|
       format.html
       format.jsonp  { render_jsonp @chart.to_json }
@@ -58,8 +65,6 @@ class ChartsController < ApplicationController
     else
       @chart = AthenaChart.find(params[:athena_chart][:id])
       @chart.assign_to(@event)
-
-
     end
     redirect_to event_url(@event)
   end
