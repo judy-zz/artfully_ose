@@ -3,63 +3,31 @@ class Ability
 
   def initialize(user)
     user ||= User.new
-      
+
     if user.has_role? :admin
       can :manage, :all
 
     elsif user.has_role? :producer
+
+      # Tickets
       can :bulk_edit, :tickets
 
-      can [ :manage ], AthenaEvent do |athenaEvent|
-        athenaEvent.producer_pid == user.id.to_s
+      # Events
+      can :manage, AthenaEvent, :producer_pid => user.athena_id
+      cannot :destroy, AthenaEvent do |event|
+        event.performances.collect{ |performance| cannot? :destroy, performance }.reduce(&:&)
       end
 
-      can [ :manage ], AthenaPerformance do |athenaPerformance|
-        AthenaEvent.find( athenaPerformance.event_id ).producer_pid == user.id.to_s
-      end
-      can [ :create ], AthenaPerformance
-
-      can [ :manage ], AthenaChart do |athenaChart|
-        athenaChart.producer_pid == user.id.to_s
-      end
-
-      cannot [ :destroy ], AthenaPerformance, :tickets_created => true
+      # Performances
+      can :manage, AthenaPerformance, :producer_pid => user.athena_id
       cannot [ :edit, :destroy ], AthenaPerformance, :on_sale  => true
+      cannot :destroy, AthenaPerformance, :tickets_created => true
 
-      cannot [ :destroy ], AthenaEvent do |athenaEvent|
-        cannot_delete = false
-        athenaEvent.performances.each { |performance|
-          cannot_delete = true if cannot?(:destroy, performance)
-        }
-        cannot_delete
-      end
+      # Charts
+      can :manage, AthenaChart, :producer_pid => user.athena_id
 
-    else # user.roles == [],  user has no role
-      can :bulk_edit, :tickets
-
-      can [ :manage ], AthenaEvent do |athenaEvent|
-        athenaEvent.producer_pid == user.id.to_s
-      end
-
-      can [ :manage ], AthenaPerformance do |athenaPerformance|
-        AthenaEvent.find( athenaPerformance.event_id ).producer_pid == user.id.to_s
-      end
-      can [ :create ], AthenaPerformance
-
-      can [ :manage ], AthenaChart do |athenaChart|
-        athenaChart.producer_pid == user.id.to_s
-      end
-
-      cannot [ :destroy ], AthenaPerformance, :tickets_created => true
-      cannot [ :edit, :destroy ], AthenaPerformance, :on_sale  => true
-
-      cannot [ :destroy ], AthenaEvent do |athenaEvent|
-        cannot_delete = false
-        athenaEvent.performances.each { |performance|
-          cannot_delete = true if cannot?(:destroy, performance)
-        }
-        cannot_delete
-      end
+    elsif user.roles.empty?
+      cannot :manage, :all
     end
 
   end
