@@ -27,7 +27,6 @@ class AthenaPerformance < AthenaResource::Base
     @gross_sales ||= tickets_sold.inject(0) { |sum, ticket| sum += ticket.price.to_i }
   end
 
-
   def tickets_created
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['tickets_created'])
   end

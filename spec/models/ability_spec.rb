@@ -23,10 +23,16 @@ describe Ability do
 
     describe "and performances" do
 
-      #it { should be_able_to(:manage, Factory(:athena_performance, :producer_pid => user.athena_id)) }
       it {
         FakeWeb.register_uri(:get, 'http://localhost/stage/events/.json', :status => 200, :body => '{ "success": true }')
         should be_able_to(:manage, Factory(:athena_performance, :producer_pid => user.athena_id)) }
+
+      #only needed because performances currently do not have a producer_id set
+      it {
+        FakeWeb.register_uri(:get, 'http://localhost/stage/events/.json', :status => 200, :body => '{ "success": true }')
+        @event = Factory(:athena_event,  :producer_pid => user.athena_id)
+        @performance = Factory(:athena_performance,  :event => @event)
+        should be_able_to(:manage, @event ) }
 
       it { should be_able_to(:create, AthenaPerformance) }
 
@@ -37,6 +43,16 @@ describe Ability do
       it { should_not be_able_to(:edit, Factory(:athena_performance, :on_sale => true)) }
       it { should_not be_able_to(:destroy, Factory(:athena_performance, :on_sale => true)) }
       it { should_not be_able_to(:destroy, Factory(:athena_performance, :tickets_created => true)) }
+    end
+
+    describe "and charts" do
+      let(:chart) { Factory(:athena_chart, :producer_pid => user.athena_id) }
+      #subject Ability.new(chart)
+      it { should be_able_to :view, chart }
+      it { should be_able_to :manage, chart }
+      it { should_not be_able_to(:manage, Factory(:athena_chart, :producer_pid => user.athena_id + 1)) }
+      it { should_not be_able_to(:view, Factory(:athena_chart, :producer_pid => user.athena_id + 1)) }
+
     end
 
     describe "and tickets" do

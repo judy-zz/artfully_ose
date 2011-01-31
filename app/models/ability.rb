@@ -31,7 +31,7 @@ class Ability
 
       # Charts
       can :manage, AthenaChart, :producer_pid => user.athena_id
-
+      
     elsif user.roles.empty?
       cannot :manage, :all
     end
