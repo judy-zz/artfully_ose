@@ -24,9 +24,9 @@
           %h2= chart.name
         .portlet-content
           %ul
-            %li= link_to "view", chart_path(chart)
-            %li= link_to "edit", edit_chart_path(chart)
-            %li= link_to "delete", chart_path(chart), :method=>:delete
+            %li= link_to "view", chart_path(chart) if can?(:view, chart)
+            %li= link_to "edit", edit_chart_path(chart) if can?(:edit, chart)
+            %li= link_to "delete", chart_path(chart), :method=>:delete if can?(:delete, chart)
           %table.normal
             %thead
               %tr

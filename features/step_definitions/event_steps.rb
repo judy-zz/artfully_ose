@@ -1,7 +1,7 @@
 Given /^the following event exists with (\d+) performance for producer with id of (\d+):$/ do |performance_count, producer_id, table|
   event = Factory(:athena_event, table.hashes.first)
   FakeWeb.register_uri(:any, "http://localhost/stage/events/#{event.id}.json", :status => 200, :body => event.encode)
-  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerId=eq#{producer_id}", :status => 200, :body => "[#{event.encode}]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerId=eq#{producer_pid}", :status => 200, :body => "[#{event.encode}]")
 
   performances = "["
   performance_count.to_i.times do
@@ -46,14 +46,14 @@ end
 Given /^there is an [Ee]vent with (\d+) [Pp]erformances for "([^"]*)"$/ do |performance_count, email|
   user = User.find_by_email(email)
 
-  @event = Factory(:athena_event_with_id)
-  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{user.person.id}", :status => 200, :body => "[#{@event.encode}]")
+  @event = Factory(:athena_event_with_id, :producer_pid => user.person.id)
 
-  chart = Factory(:athena_chart)
+  FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{user.person.id}", :status => 200, :body => "[#{@event.encode}]")
+  chart = Factory(:athena_chart, :producer_pid => user.person.id)
   FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :status => 200, :body => "[#{chart.encode}]")
   FakeWeb.register_uri(:get, "http://localhost/stage/sections/.json?chartId=eq#{chart.id}", :status => 200, :body => "[#{Factory(:athena_section_with_id).encode}]")
 
-  @performances = 3.times.collect { Factory(:athena_performance_with_id, :event => @event, :chart => chart) }
+  @performances = 3.times.collect { Factory(:athena_performance_with_id, :event => @event, :chart => chart, :producer_pid => user.person.id) }
   body = @performances.collect { |p| p.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{@event.id}", :status => 200, :body => "[#{body}]")
 

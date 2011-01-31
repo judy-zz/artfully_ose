@@ -1,6 +1,6 @@
 class PerformancesController < ApplicationController
   before_filter :authenticate_user!
-  load_and_authorize_resource :class => "AthenaPerformance", :only => [ :edit, :destroy ]
+  load_and_authorize_resource :class => "AthenaPerformance"
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
