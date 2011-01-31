@@ -1,5 +1,4 @@
 class PerformancesController < ApplicationController
-  before_filter :authenticate_user!
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -69,6 +68,8 @@ class PerformancesController < ApplicationController
   end
 
   def destroy
+    @performance = AthenaPerformance.find(params[:id])
+    authorize! :destroy, @performance
     @performance.destroy
     redirect_to event_url(@performance.event)
   end

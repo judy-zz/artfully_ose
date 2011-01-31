@@ -22,10 +22,17 @@ describe Ability do
     end
 
     describe "and performances" do
-      it { should be_able_to(:manage, Factory(:athena_performance, :producer_pid => user.athena_id)) }
+
+      #it { should be_able_to(:manage, Factory(:athena_performance, :producer_pid => user.athena_id)) }
+      it {
+        FakeWeb.register_uri(:get, 'http://localhost/stage/events/.json', :status => 200, :body => '{ "success": true }')
+        should be_able_to(:manage, Factory(:athena_performance, :producer_pid => user.athena_id)) }
+
       it { should be_able_to(:create, AthenaPerformance) }
 
-      it { should_not be_able_to(:manage, Factory(:athena_performance, :producer_pid => user.athena_id + 1)) }
+      it {
+        FakeWeb.register_uri(:get, 'http://localhost/stage/events/.json', :status => 200, :body => '{ "success": true }')
+        should_not be_able_to(:manage, Factory(:athena_performance, :producer_pid => user.athena_id + 1)) }
 
       it { should_not be_able_to(:edit, Factory(:athena_performance, :on_sale => true)) }
       it { should_not be_able_to(:destroy, Factory(:athena_performance, :on_sale => true)) }
