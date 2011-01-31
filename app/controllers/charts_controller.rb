@@ -1,14 +1,14 @@
 class ChartsController < ApplicationController
   before_filter :authenticate_user!, :except => [ :show ]
-  load_and_authorize_resource AthenaChart, :except => [ :index ]
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
-    redirect_to charts_path
+    redirect_to root_path
   end
 
   def index
     @charts = AthenaChart.find_templates_by_producer(current_user.athena_id).sort_by { |chart| chart.name }
+    authorize! :view, AthenaChart
   end
 
   def new

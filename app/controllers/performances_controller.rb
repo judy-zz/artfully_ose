@@ -1,6 +1,5 @@
 class PerformancesController < ApplicationController
   before_filter :authenticate_user!
-  load_and_authorize_resource :class => "AthenaPerformance"
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -43,6 +42,7 @@ class PerformancesController < ApplicationController
 
   def show
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :view, @performance
     @event = AthenaEvent.find(@performance.event_id)
     @performance.tickets = @performance.tickets
 
@@ -53,7 +53,7 @@ class PerformancesController < ApplicationController
   end
 
   def edit
-    # Loaded and authorized by CanCan
+    @performance = AthenaPerformance.find(params[:id])
   end
 
   def update
