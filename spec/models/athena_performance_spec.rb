@@ -98,6 +98,14 @@ describe AthenaPerformance do
       subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
     end
 
+    it "should return the ids of the tickets that were not put on sale" do
+      subject.tickets.each { |ticket| ticket.stub!(:on_sale!).and_return(true) }
+      subject.tickets.first.stub(:on_sale!).and_return(false)
+
+      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+      rejected_ids.first.should eq subject.tickets.first.id
+    end
+
     it "should take tickets off sale" do
       subject.tickets.each { |ticket| ticket.stub!(:off_sale!) }
       subject.tickets.each { |ticket| ticket.should_receive(:off_sale!) }
