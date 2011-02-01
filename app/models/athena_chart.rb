@@ -4,7 +4,8 @@ class AthenaChart < AthenaResource::Base
   self.element_name = 'charts'
   self.collection_name = 'charts'
 
-  validates_length_of :name, :maximum=>255
+  validates_presence_of :name, :message => "Please enter a name for this chart."
+  validates_length_of :name, :maximum => 255, :message => "This chart name is too long."
 
   schema do
     attribute 'name', :string
@@ -31,11 +32,12 @@ class AthenaChart < AthenaResource::Base
   end
 
   def save
-    super
+    success = super
     sections.each do |section|
       section.chart_id = self.id
       section.save
     end
+    success
   end
 
   def encode(options = {})
