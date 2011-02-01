@@ -7,7 +7,7 @@ class PerformancesController < ApplicationController
 
   def duplicate
     @performance = AthenaPerformance.find(params[:id])
-    authorize! :edit, @performance
+    authorize! :duplicate, @performance
 
     @new_performance = @performance.dup!
     @new_performance.save
@@ -82,7 +82,7 @@ class PerformancesController < ApplicationController
   
   def put_on_sale
     @performance = AthenaPerformance.find(params[:id])
-    authorize! :edit, @performance
+    authorize! :put_on_sale, @performance
     
     if @performance.tickets.empty?
       flash[:error] = 'Please create tickets for this performance before putting it on sale'

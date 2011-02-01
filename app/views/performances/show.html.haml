@@ -1,7 +1,7 @@
 .two_third.column
   %ul.dash
     = render :partial => 'shared/menu_item', :locals => { :title => 'View this event', :href_path => event_path(@event), :icon_path => 'icons/dashboard/1.png', :text => 'View this event' }
-    = render :partial => 'shared/menu_item', :locals => { :title => 'Edit this performance', :href_path => edit_performance_path(@performance), :icon_path => 'icons/dashboard/2.png', :text => 'Edit' }
+    = render :partial => 'shared/menu_item', :locals => { :title => 'Edit this performance', :href_path => edit_performance_path(@performance), :icon_path => 'icons/dashboard/2.png', :text => 'Edit' } if can?(:edit, @performance)
     = render :partial => 'shared/menu_item', :locals => { :title => 'Duplicate this performance', :href_path => duplicate_performance_path(@performance), :icon_path => 'icons/dashboard/48.png', :text => 'Duplicate' }
     - if @performance.on_sale?
       = render :partial => 'shared/menu_item', :locals => { :title => 'Take off sale', :href_path => take_performance_off_sale_path(@performance), :icon_path => 'icons/dashboard/Gray/87.png', :text => 'Take off sale' }
