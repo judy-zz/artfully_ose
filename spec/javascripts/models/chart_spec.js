@@ -1,5 +1,6 @@
-describe("Chart", function(){
-  var chart, data = {
+describe("the chart model", function(){
+  var chart = {},
+  data = {
       "id": "10",
       "name": "Test Chart",
       "sections": [{
@@ -17,7 +18,10 @@ describe("Chart", function(){
   };
 
   beforeEach(function(){
-    chart = new Chart(data);
+    $.extend(chart,data,artfully.models.chart);
+    $.each(chart.sections, function(index, section){
+      $.extend(section,artfully.models.section);
+    });
   });
 
   it("should save the id", function(){
@@ -30,12 +34,6 @@ describe("Chart", function(){
 
   it("should have the same number of sections as the data", function(){
     expect(chart.sections.length).toBe(data.sections.length);
-  });
-
-  it("should have the same sections as the data", function(){
-    for(var i = 0; i < chart.sections.length; i++){
-      expect(chart.sections[i]).toEqual(new Section(data.sections[i]));
-    }
   });
 
   describe("render", function(){

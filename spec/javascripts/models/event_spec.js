@@ -1,5 +1,6 @@
 describe("Event", function() {
-  var event, data = {
+  var event = {},
+  data = {
     "name": "Some Event",
     "venue": "Some Venue",
     "producer": "Some Producer",
@@ -37,36 +38,36 @@ describe("Event", function() {
   };
 
   beforeEach(function() {
-    event = new Event(data);
+    var charts = artfully.utils.keyOnId(data.charts);
+
+    // Modelize charts and their sections.
+    artfully.utils.modelize(charts, artfully.models.chart, function(chart){
+      artfully.utils.modelize(chart.sections, artfully.models.section);
+    });
+
+    // Modelize performance and assign charts.
+    artfully.utils.modelize(data.performances, artfully.models.performance, function(performance){
+      performance.chart = charts[performance.chart_id];
+    });
+
+    $.extend(event, data, artfully.models.event);
   });
 
   describe("event attributes", function(){
-    it("should be have a name", function(){
-      expect(event.name).toBeDefined();
+    it("should be have the same name as the data", function(){
+      expect(event.name).toEqual(data.name);
     });
 
-    it("should have a producer", function(){
-      expect(event.producer).toBeDefined();
+    it("should have the same producer as the data", function(){
+      expect(event.producer).toEqual(data.producer);
     });
 
-    it("should have a venue", function(){
-      expect(event.venue).toBeDefined();
+    it("should have the same venue as the data", function(){
+      expect(event.venue).toEqual(data.venue);
     });
-  });
 
-  describe("performances", function(){
-    it("should store performances by their id", function(){
-      $.each(event.performances, function(index, performance){
-        expect(index).toEqual(performance.id);
-      });
-    });
-  });
-
-  describe("charts", function(){
-    it("should store performances by their id", function(){
-      $.each(event.charts, function(index, chart){
-        expect(index).toEqual(chart.id);
-      });
+    it("should have the same number performances as the data", function(){
+      expect(event.performances).toEqual(data.performances)
     });
   });
 
@@ -76,22 +77,20 @@ describe("Event", function() {
     beforeEach(function(){
       jasmine.getFixtures().set('<div id="event">');
       target = $("#event");
+      event.render(target);
     });
 
     it("should render the name in an h1.event-name", function(){
-      event.render(target);
       expect(target).toContain('h1.event-name');
       expect(target.children('h1.event-name')).toHaveText(data.name);
     });
 
     it("should render the venue in an h2.event-venue", function(){
-      event.render(target);
       expect(target).toContain('h2.event-venue');
       expect(target.children('h2.event-venue')).toHaveText(data.venue);
     });
 
     it("should render the producer in an h3.event-producer", function(){
-      event.render(target);
       expect(target).toContain('h3.event-producer');
       expect(target.children('h3.event-producer')).toHaveText(data.producer);
     });
