@@ -1,5 +1,10 @@
 class TicketsController < ApplicationController
 
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to root_path
+  end
+
   def index
     @tickets = AthenaTicket.search(params)
     respond_to do |format|
