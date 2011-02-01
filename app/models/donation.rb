@@ -8,6 +8,10 @@ class Donation < ActiveRecord::Base
     @recipient ||= AthenaPerson.find(self.athena_id)
   end
 
+  def price
+    amount
+  end
+
   def recipient=(recipient)
     raise TypeError, "Expecting an AthenaPerson" unless recipient.kind_of? AthenaPerson
     @recipient, self.producer_pid = recipient, recipient.id

@@ -4,8 +4,10 @@
 = render "shared/error_messages.html", :target => @payment
 
 %ul.line-items
-  - current_order.items.each do |item|
+  - current_order.purchasable_tickets.each do |item|
     %li= render :partial => 'athena_tickets/purchasable', :object => item.ticket
+  - current_order.donations.each do |donation|
+    %li= "Donation for #{donation.amount}"
   %li.total
     = "Total: $#{current_order.total}"
 

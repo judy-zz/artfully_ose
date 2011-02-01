@@ -1,4 +1,3 @@
-require "ap"
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
@@ -9,7 +8,7 @@ class ApplicationController < ActionController::Base
     create_current_order if @current_order.nil? or @current_order.completed?
     @current_order
   end
-  
+
   layout :specify_layout
 
   protected
@@ -26,7 +25,7 @@ class ApplicationController < ActionController::Base
         elsif variable
           "var #{variable} = #{json};"
         elsif callback
-          "#{callback}(#{json}); Config.token = #{form_authenticity_token.inspect};"
+          "#{callback}(#{json});"
         else
           json
         end

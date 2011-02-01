@@ -1,3 +1,8 @@
 %ul.ticket-list
-  - current_order.items.each do |item|
+  - current_order.purchasable_tickets.each do |item|
     %li= render item.ticket
+
+%ul.donation-list
+  - current_order.donations.each do |donation|
+    %li= "Donation for #{donation.amount}"
+

@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+
   def show
     respond_to do |format|
       format.widget
@@ -35,8 +37,14 @@ class OrdersController < ApplicationController
       current_order.add_tickets tickets
     end
 
-    def handle_donation(donation)
-      donation = Donation.new(donation)
+    def handle_donation(data)
+      donation = Donation.new
+
+      producer = User.find(data.delete(:producer_id))
+      donation.amount = data[:amount]
+      # DEBT: Change athena_id to person.id when person changes are merged in.
+      donation.producer_pid = producer.athena_id
+
       current_order.donations << donation
     end
 end

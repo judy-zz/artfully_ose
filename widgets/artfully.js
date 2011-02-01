@@ -47,8 +47,6 @@ artfully.widgets = (function(){
     function hiddenFormFor(tickets){
       var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart.$iframe.attr('name'), 'action':Config.base_uri + 'order.widget'});
 
-      // Hidden field with authenticity token
-      $(document.createElement('input')).attr({'type':'hidden', 'name': 'authenticity_token','value': Config.token}).appendTo($form);
       $.each(tickets, function(i,ticket){
         $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':ticket.id}).appendTo($form);
       });
@@ -108,9 +106,28 @@ artfully.widgets = (function(){
     return internal_cart;
   }());
 
+  donation = (function(){
+    function prep(donation){
+      return artfully.utils.modelize(donation, artfully.models.donation);
+    }
+
+    function render(data){
+      var donation = prep(data);
+      donation.render($('#donation'));
+    }
+
+    return {
+      display: function(id){
+        var data = { id:id }
+        render(data);
+      }
+    }
+  }());
+
   return {
     event: event,
-    cart: cart
+    cart: cart,
+    donation: donation
   };
 }());
 
@@ -225,11 +242,26 @@ artfully.models = (function(){
     }
   };
 
+  donation = {
+    render: function($t){
+      var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart.$iframe.attr('name'), 'action':Config.base_uri + 'order.widget'});
+          $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[producer_id]','value':this.id }),
+          $amount = $(document.createElement('input')).attr({'name':'donation[amount]'}),
+          $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Add Donation'});
+
+      $form.append($amount)
+           .append($producer)
+           .append($submit)
+           .appendTo($t);
+    }
+  };
+
   return {
     chart: chart,
     section: section,
     performance: performance,
-    event: event
+    event: event,
+    donation: donation
   };
 }());
 
