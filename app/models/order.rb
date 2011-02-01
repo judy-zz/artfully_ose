@@ -4,6 +4,8 @@ class Order < ActiveRecord::Base
   belongs_to :user
 
   has_many :purchasable_tickets, :dependent => :destroy
+  has_many :donations, :dependent => :destroy
+
   after_initialize :clean_order
 
   state_machine do
@@ -21,27 +23,18 @@ class Order < ActiveRecord::Base
   end
 
   def clean_order
-    self.items.each { |item| item.destroy unless item.locked? }
-    self.items.delete_if { |item| !item.locked? }
+    purchasable_tickets.delete(purchasable_tickets.select{ |item| !item.locked? })
   end
 
   delegate :empty?, :to => :items
   def items
-    @items ||= self.purchasable_tickets
+    self.purchasable_tickets + self.donations
   end
 
-  def add_item(line_item)
-    line_item = line_item.to_item
-    if line_item.lockable? and not line_item.locked?
-      line_item.lock = create_lock(line_item.item_id)
-    end
-    items << line_item
-  end
-
-  def add_items(line_items)
+  def add_tickets(line_items)
     line_items = line_items.collect { |i| i.to_item }
     lock_lockables(line_items.select { |i| i.lockable? })
-    items << line_items
+    purchasable_tickets << line_items
   end
 
   def lock_lockables(line_items)
@@ -74,8 +67,8 @@ class Order < ActiveRecord::Base
   end
 
   def finish
-    items.map(&:sold!)
-    items.delete_if { |item| item.destroy }
+    purchasable_tickets.map(&:sold!)
+    purchasable_tickets.delete_if { |item| item.destroy }
   end
 
   private

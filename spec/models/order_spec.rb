@@ -14,7 +14,6 @@ describe Order do
   end
 
   describe "with items" do
-    it { should respond_to :add_item }
     it { should respond_to :items }
 
     it "should be empty without any items" do
@@ -25,7 +24,7 @@ describe Order do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_items tickets
+      subject.add_tickets tickets
       subject.items.each do |item|
         item.should be_a PurchasableTicket
       end
@@ -35,10 +34,16 @@ describe Order do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_items tickets
+      subject.add_tickets tickets
       subject.items.each do |item|
         tickets.should include(item.ticket)
       end
+    end
+
+    it "should have a Donation when one is added to the order" do
+      donation = Factory(:donation)
+      subject.donations << donation
+      subject.items.should include(donation)
     end
   end
 
@@ -47,7 +52,7 @@ describe Order do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_items tickets
+      subject.add_tickets tickets
       subject.items.first.should be_locked
     end
 
@@ -55,7 +60,7 @@ describe Order do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_items tickets
+      subject.add_tickets tickets
       lock = subject.items.first.lock
       subject.items.each do | item |
         item.should be_locked
@@ -68,7 +73,7 @@ describe Order do
       lock = Factory(:expired_lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
       FakeWeb.register_uri(:delete, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200)
-      subject.add_items tickets
+      subject.add_tickets tickets
       order = Order.find(subject.id)
       order.items.should be_empty
     end
@@ -77,9 +82,8 @@ describe Order do
   describe "and Payments" do
     it "should sum up the price of the tickets via total" do
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => Factory(:lock).encode)
-      subject.add_item Factory(:ticket_with_id, :price => "100")
-      subject.add_item Factory(:ticket_with_id, :price => "33")
-      subject.total.should eq 133
+      subject.add_tickets 2.times.collect { Factory(:ticket_with_id, :price => "100") }
+      subject.total.should eq 200
     end
 
     describe "when transitioning state based on the response from ATHENA" do
@@ -121,7 +125,7 @@ describe Order do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
-      subject.add_items tickets
+      subject.add_tickets tickets
       subject.items.each { |item| item.stub!(:sold!) }
       subject.items.each { |item| item.stub!(:sold?).and_return(true) }
     end
