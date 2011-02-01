@@ -7,6 +7,8 @@ class PerformancesController < ApplicationController
 
   def duplicate
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :edit, @performance
+
     @new_performance = @performance.dup!
     @new_performance.save
     redirect_to event_url(@new_performance.event_id)
@@ -42,9 +44,9 @@ class PerformancesController < ApplicationController
   def show
     @performance = AthenaPerformance.find(params[:id])
     authorize! :view, @performance
+
     @event = AthenaEvent.find(@performance.event_id)
     @performance.tickets = @performance.tickets
-
     respond_to do |format|
       format.html
       format.widget
@@ -53,10 +55,13 @@ class PerformancesController < ApplicationController
 
   def edit
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :edit, @performance
   end
 
   def update
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :edit, @performance
+
     without_tickets do
       @performance.update_attributes(params[:athena_performance][:athena_performance])
       if @performance.save
@@ -70,13 +75,13 @@ class PerformancesController < ApplicationController
   def destroy
     @performance = AthenaPerformance.find(params[:id])
     authorize! :destroy, @performance
+    
     @performance.destroy
     redirect_to event_url(@performance.event)
   end
   
   def put_on_sale
     @performance = AthenaPerformance.find(params[:id])
-    
     authorize! :edit, @performance
     
     if @performance.tickets.empty?
@@ -103,6 +108,8 @@ class PerformancesController < ApplicationController
 
   def createtickets
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :edit, @performance
+
     AthenaTicketFactory.for_performance(@performance)
     @event = AthenaEvent.find(@performance.event_id)
     @charts = AthenaChart.find_by_event(@event)
