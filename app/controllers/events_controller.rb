@@ -51,10 +51,12 @@ class EventsController < ApplicationController
 
   def edit
     @event = AthenaEvent.find(params[:id])
+    authorize! :edit, @event
   end
 
   def update
     @event = AthenaEvent.find(params[:id])
+    authorize! :edit, @event
 
     @event.update_attributes(params[:athena_event][:athena_event])
     if @event.save
