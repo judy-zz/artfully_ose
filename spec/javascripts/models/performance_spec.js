@@ -1,17 +1,35 @@
 describe("Performance", function() {
-  var performance, data = {
+  var performance = {},
+  data = {
     "chart_id": "10",
     "datetime": "2011-01-04T19:12:00-05:00",
     "id": "14"
-  };
+  },
+
+  chart = {
+    "id": "10",
+    "name": "Test Chart",
+    "sections": [
+      {
+        "capacity": "5",
+        "id": "11",
+        "name": "General",
+        "price": "10"
+      }
+    ]
+  }
 
   beforeEach(function() {
-    performance = new Performance(data);
+    $.extend(performance, data, artfully.models.performance);
+    performance.chart = $.extend(chart, artfully.models.chart);
+    $.each(chart.sections, function(index, section){
+      $.extend(section, artfully.models.section);
+    });
   });
 
-  describe("performance attributes", function(){
+  describe("attributes", function(){
     it("should be have a datetime", function(){
-      expect(performance.datetime).toEqual(new Date(data.datetime));
+      expect(performance.datetime).toEqual(data.datetime);
     });
 
     it("should have an id", function(){
@@ -34,7 +52,7 @@ describe("Performance", function() {
 
     it("should render the name in an li .performance-datetime", function(){
       expect(performance.$target).toContain('.performance-datetime');
-      expect(performance.$target.children('.performance-datetime')).toHaveText(performance.datestring(new Date(data.datetime)));
+      expect(performance.$target.children('.performance-datetime')).toHaveText(artfully.utils.datestring(new Date(data.datetime)));
     });
 
     it("should add a 'Buy Tickets' link to the <li>", function(){

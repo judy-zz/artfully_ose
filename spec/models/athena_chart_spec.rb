@@ -10,6 +10,15 @@ describe AthenaChart do
   it { should respond_to :producer_pid }
   it { should respond_to :is_template }
 
+  it "should not be valid without a name" do
+    subject.name = nil
+    subject.should_not be_valid
+
+    subject.name = ""
+    subject.should_not be_valid
+  end
+
+
   it "should create a default based on an event" do
     @event = Factory(:athena_event)
     @chart = AthenaChart.default_chart_for(@event)

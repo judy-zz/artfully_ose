@@ -4,7 +4,7 @@ class AthenaPerformance < AthenaResource::Base
   self.element_name = 'performances'
   self.collection_name = 'performances'
 
-  validates :datetime, :presence => { :message => " Please enter a performance time" }
+  validates_presence_of :datetime, :message => "Please enter a performance time"
 
   PUT_ON_SALE = 'PUT_ON_SALE'
   TAKE_OFF_SALE = 'TAKE_OFF_SALE'
@@ -136,7 +136,7 @@ class AthenaPerformance < AthenaResource::Base
   private
 
     def bulk_on_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect(&:on_sale!)
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.on_sale! }.compact!
     end
 
     def bulk_off_sale(ids)

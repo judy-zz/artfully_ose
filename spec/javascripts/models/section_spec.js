@@ -1,7 +1,5 @@
 describe("Section", function(){
-  var section;
-
-  beforeEach(function(){
+  var section = {},
     data = {
       "capacity": "5",
       "id": "11",
@@ -9,27 +7,24 @@ describe("Section", function(){
       "price": "10"
     };
 
-    section = new Section(data);
+  beforeEach(function(){
+    $.extend(section,data,artfully.models.section);
   });
 
   it("should save the capacity", function(){
-    expect(section.capacity).toBeDefined();
-    expect(section.capacity).toBe("5");
+    expect(section.capacity).toEqual(data.capacity);
   });
 
   it("should save the price", function(){
-    expect(section.price).toBeDefined();
-    expect(section.price).toBe("10");
+    expect(section.price).toEqual(section.price);
   });
 
   it("should save the id", function(){
-    expect(section.id).toBeDefined();
-    expect(section.id).toBe("11");
+    expect(section.id).toEqual(data.id);
   });
 
   it("should save the name", function(){
-    expect(section.name).toBeDefined();
-    expect(section.name).toBe("General");
+    expect(section.name).toEqual(data.name)
   });
 
   describe("render", function(){
