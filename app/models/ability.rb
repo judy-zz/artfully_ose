@@ -27,6 +27,12 @@ class Ability
       end
 
       cannot [ :edit, :destroy ], AthenaPerformance, :on_sale  => true
+      
+      #:take_off_sale cannot be included in :edit because :edit demands that the performance be off_sale already
+      can [ :take_off_sale ], AthenaPerformance do |athena_performance|
+        AthenaEvent.find( athena_performance.event_id ).producer_pid == user.athena_id
+      end
+      
       cannot :destroy, AthenaPerformance, :tickets_created => true
 
       # Charts
