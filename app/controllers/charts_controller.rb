@@ -39,10 +39,12 @@ class ChartsController < ApplicationController
 
   def edit
     @chart = AthenaChart.find(params[:id])
+    authorize! :edit, AthenaChart
   end
 
   def update
     @chart = AthenaChart.find(params[:id])
+    authorize! :edit, AthenaChart
     @chart.update_attributes(params[:athena_chart][:athena_chart])
     if @chart.save
       redirect_to chart_url(@chart)
@@ -53,6 +55,7 @@ class ChartsController < ApplicationController
 
   def destroy
     @chart = AthenaChart.find(params[:id])
+    authorize! :destroy, AthenaChart
     @chart.destroy
     redirect_to charts_url
   end
