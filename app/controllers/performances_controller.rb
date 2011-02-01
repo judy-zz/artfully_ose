@@ -28,6 +28,9 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
+
+    @performance.producer_pid = current_user.athena_id
+    
     @performance.event = @event
     @performance.tickets_created = 'false'
     if @performance.valid? && @performance.save
