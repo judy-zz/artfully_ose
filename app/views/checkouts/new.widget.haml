@@ -1,13 +1,13 @@
 -content_for :header do
-  %h1 Ticket Order
+  %h1 Checkout
 
 = render "shared/error_messages.html", :target => @payment
 
 %ul.line-items
   - current_order.purchasable_tickets.each do |item|
-    %li= render :partial => 'athena_tickets/purchasable', :object => item.ticket
+    %li= render item
   - current_order.donations.each do |donation|
-    %li= "Donation for #{donation.amount}"
+    %li= render donation
   %li.total
     = "Total: $#{current_order.total}"
 

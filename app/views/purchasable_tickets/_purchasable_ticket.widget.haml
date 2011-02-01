@@ -1,0 +1,2 @@
+%span.price= "$#{purchasable_ticket.price}"
+%span.name= "#{purchasable_ticket.ticket.event} at #{l(DateTime.parse(purchasable_ticket.ticket.performance), :format => :short)}"
