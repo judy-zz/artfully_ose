@@ -26,16 +26,25 @@ Given /^I enter my payment details$/ do
   click_button("Purchase")
 end
 
-Given /^I have started an order$/ do
-  ids = []
-  (1..2).each do |id|
-    ticket = Factory(:ticket_with_id, :id => id)
-    ids << id
+Given /^I have added (\d+) tickets to my order$/ do |a_few|
+  tickets = a_few.to_i.times.collect { Factory(:ticket_with_id) }
+  FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => tickets.collect(&:id)).encode)
+  body = tickets.collect { |ticket| "tickets[]=#{ticket.id}" }.join("&")
+  page.driver.post "/order", body
+end
+
+Given /^I have added (\d+) donations to my order$/ do |a_few|
+  recipient = Factory(:user)
+  donations = a_few.to_i.times.collect { Factory.build(:donation, :producer_pid => recipient.athena_id) }
+  donations.each do |donation|
+    page.driver.post "/order", "donation[amount]=#{donation.amount}&donation[producer_id]=#{recipient.id}"
   end
-  FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => ids).encode)
-  post "/orders", "tickets[]=1&tickets[]=2"
 end
 
 Given /^I start the checkout process$/ do
   visit new_checkout_path
+end
+
+When /^I visit the order page$/ do
+  pending # express the regexp above with the code you wish you had
 end
