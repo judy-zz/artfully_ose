@@ -3,7 +3,7 @@ class EventsController < ApplicationController
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
-    redirect_to root_path
+    redirect_to events_path
   end
 
   def create
@@ -22,7 +22,7 @@ class EventsController < ApplicationController
   def index
     user = params[:user_id].blank?? current_user : User.find(params[:user_id])
     @events = AthenaEvent.find(:all, :params => { :producerPid => 'eq' + user.athena_id })
-    authorize! :view, AthenaEvent
+
     respond_to do |format|
       format.html
       format.jsonp  { render_jsonp @events.to_json }
@@ -31,7 +31,7 @@ class EventsController < ApplicationController
 
   def show
     @event = AthenaEvent.find(params[:id])
-    authorize! :view, @event
+    authorize! :view, @event unless request.format == "jsonp"
     @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
 
     if user_signed_in?
@@ -51,12 +51,10 @@ class EventsController < ApplicationController
 
   def edit
     @event = AthenaEvent.find(params[:id])
-    authorize! :edit, @event
   end
 
   def update
     @event = AthenaEvent.find(params[:id])
-    authorize! :edit, @event
 
     @event.update_attributes(params[:athena_event][:athena_event])
     if @event.save
@@ -69,10 +67,10 @@ class EventsController < ApplicationController
   end
 
   def destroy
-      @event = AthenaEvent.find(params[:id])
-      authorize! :destroy, @event
-      @event.destroy
-      redirect_to events_url
+    @event = AthenaEvent.find(params[:id])
+    authorize! :destroy, @event
+    @event.destroy
+    redirect_to events_url
   end
 
 end
