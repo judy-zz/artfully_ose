@@ -3,7 +3,7 @@ class EventsController < ApplicationController
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
-    redirect_to events_path
+    redirect_to root_path
   end
 
   def create
@@ -22,6 +22,7 @@ class EventsController < ApplicationController
   def index
     user = params[:user_id].blank?? current_user : User.find(params[:user_id])
     @events = AthenaEvent.find(:all, :params => { :producerPid => 'eq' + user.athena_id })
+    authorize! :view, AthenaEvent
 
     respond_to do |format|
       format.html
@@ -51,10 +52,12 @@ class EventsController < ApplicationController
 
   def edit
     @event = AthenaEvent.find(params[:id])
+    authorize! :edit, @event
   end
 
   def update
     @event = AthenaEvent.find(params[:id])
+    authorize! :edit, @event
 
     @event.update_attributes(params[:athena_event][:athena_event])
     if @event.save
