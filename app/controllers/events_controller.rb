@@ -7,6 +7,7 @@ class EventsController < ApplicationController
   end
 
   def create
+    authorize! :create, AthenaEvent
     @event = AthenaEvent.new
     @event.update_attributes(params[:athena_event][:athena_event])
     @event.producer_pid = current_user.athena_id
@@ -47,6 +48,7 @@ class EventsController < ApplicationController
   end
 
   def new
+    authorize! :create, AthenaEvent
     @event = AthenaEvent.new
   end
 
