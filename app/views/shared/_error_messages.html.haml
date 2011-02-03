@@ -1,6 +1,10 @@
-- if target.errors.any?
-  #error_explanation
-    %strong= pluralize(target.errors.count, "error") + " prohibited this record from being saved:"
-    %ul
+- if !target.nil? && target.errors.any?
+  #error_explanation.notification.error
+    %span
+    .text
       - target.errors.full_messages.each do |msg|
-        %li= msg
+        %p
+          %strong Oops
+          =msg
+
+
