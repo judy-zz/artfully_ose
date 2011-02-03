@@ -42,7 +42,7 @@ class AthenaChart < AthenaResource::Base
 
   def encode(options = {})
     options[:rejections] = %w( sections )
-    super(@attributes, options)
+    super(options)
   end
 
   def event

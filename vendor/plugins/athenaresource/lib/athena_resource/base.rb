@@ -22,8 +22,8 @@ module AthenaResource
         end
     end
 
-    def encode(attrs = nil, options = {})
-      attrs ||= attributes
+    def encode(options = {})
+      attrs = options.delete(:attributes) || attributes
       return self.class.format.encode(attrs, options) if self.class.format.respond_to? :encode
       super(options)
     end

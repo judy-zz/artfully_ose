@@ -63,6 +63,26 @@ describe AthenaPayment do
     end
   end
 
+  describe "encoding" do
+    it "should encode the billing address" do
+      subject.billing_address.stub!(:encode)
+      subject.billing_address.should_receive(:encode)
+      subject.encode
+    end
+
+    it "should encode the customer" do
+      subject.customer.stub!(:encode)
+      subject.customer.should_receive(:encode)
+      subject.encode
+    end
+
+    it "should encode the credit card" do
+      subject.customer.stub!(:encode)
+      subject.customer.should_receive(:encode)
+      subject.encode
+    end
+  end
+
   describe "authorization" do
     it { should_not be_approved }
     it { should_not be_rejected }
