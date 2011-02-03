@@ -23,3 +23,7 @@
 #shopping-cart-controls .timer{
   float:right;
 }
+
+iframe {
+  width:100%;
+}
