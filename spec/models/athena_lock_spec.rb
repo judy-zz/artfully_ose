@@ -50,7 +50,6 @@ describe AthenaLock do
   end
 
   it "should include ticket IDs when encoded" do
-    pending
     lock = Factory(:lock)
     lock.tickets << "2"
     lock.encode.should =~ /\"tickets\":\[\"2\"\]/

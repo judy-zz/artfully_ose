@@ -71,11 +71,14 @@ module ActiveResource
             camelized_hash = {}
 
             hash_or_model.each do |key, value|
-              camelized_hash[key.camelize(:lower)] = camelize_keys(value) if value.kind_of? Hash
-              camelized_hash[key.camelize(:lower)] = value.collect{ |value| camelize_keys(value) } if value.kind_of? Array
-              camelized_hash[key.camelize(:lower)] = camelize_keys(value)
+              if value.kind_of? Hash
+                camelized_hash[key.camelize(:lower)] = camelize_keys(value)
+              elsif value.kind_of? Array
+                camelized_hash[key.camelize(:lower)] = value.collect{ |v| camelize_keys(v) }
+              else
+                camelized_hash[key.camelize(:lower)] = camelize_keys(value)
+              end
             end
-
             camelized_hash
           else
             hash_or_model
