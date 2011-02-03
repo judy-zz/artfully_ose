@@ -69,6 +69,7 @@ describe AthenaCustomer do
     it { should respond_to :credit_cards= }
 
     it "should create AthenaCreditCards when decoding the remote resource" do
+      pending
       customer = Factory(:customer_with_id)
       customer.credit_cards << Factory(:credit_card)
       FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{customer.id}.json", :status => 200, :body => customer.encode)

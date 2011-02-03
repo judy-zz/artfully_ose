@@ -39,7 +39,6 @@ describe AthenaCreditCard do
   end
 
   it "should parse the date into a Date object when fetching a remote resource" do
-    pending
     card = Factory(:credit_card)
     FakeWeb.register_uri(:get, "http://localhost/payments/cards/#{card.id}.json", :status => 200, :body => card.encode)
     remote = AthenaCreditCard.find(card.id)
