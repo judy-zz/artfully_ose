@@ -2,6 +2,7 @@ class OrdersController < ApplicationController
   skip_before_filter :verify_authenticity_token
 
   def show
+    @donations = current_order.generate_donations
     respond_to do |format|
       format.widget
     end

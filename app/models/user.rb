@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
   has_many :orders
 
-  after_create :create_record_in_athena_people
+  after_create :create_record_in_athena_people, :if => lambda { athena_id.nil? }
 
   belongs_to :organization
 

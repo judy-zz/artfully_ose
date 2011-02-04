@@ -31,6 +31,10 @@ class Order < ActiveRecord::Base
     self.purchasable_tickets + self.donations
   end
 
+  def tickets
+    purchasable_tickets.collect(&:ticket)
+  end
+
   def add_tickets(line_items)
     line_items = line_items.collect { |i| i.to_item }
     lock_lockables(line_items.select { |i| i.lockable? })
@@ -71,6 +75,14 @@ class Order < ActiveRecord::Base
     purchasable_tickets.delete_if { |item| item.destroy }
   end
 
+  def generate_donations
+    producers_from_tickets.collect do |producer|
+      donation = Donation.new
+      donation.recipient = producer
+      donation
+    end
+  end
+
   private
     #TODO: Debt: Move this out of order into PurchasableCollection
     def create_lock(ids)
@@ -80,5 +92,10 @@ class Order < ActiveRecord::Base
         self.errors.add(:items, "could not be locked")
       end
       lock
+    end
+
+    def producers_from_tickets
+      events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
+      producers = events.collect(&:producer_pid).uniq.collect! { |id| AthenaPerson.find(id) }
     end
 end

@@ -4,6 +4,8 @@ class Donation < ActiveRecord::Base
   validates_numericality_of :amount, :greater_than => 0
   validates_presence_of :producer_pid
 
+  delegate :user, :to => :recipient
+
   def recipient
     @recipient ||= AthenaPerson.find(self.athena_id)
   end

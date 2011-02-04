@@ -46,7 +46,7 @@ Factory.define :athena_event, :default_strategy => :build do |e|
   e.name "Some Event"
   e.venue "Some Venue"
   e.producer "Some Producer"
-  e.producer_pid { Factory.next(:person_id) }
+  e.producer_pid { Factory(:person_with_id).id }
 end
 
 Factory.define :athena_event_with_id, :parent => :athena_event do |e|

@@ -27,7 +27,10 @@ Given /^I enter my payment details$/ do
 end
 
 Given /^I have added (\d+) tickets to my order$/ do |a_few|
-  tickets = a_few.to_i.times.collect { Factory(:ticket_with_id) }
+  producer = Factory(:user)
+  event = Factory(:athena_event_with_id, :producer_pid => producer.athena_id )
+  tickets = a_few.to_i.times.collect { Factory(:ticket_with_id, :event_id => event.id) }
+
   FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => tickets.collect(&:id)).encode)
   body = tickets.collect { |ticket| "tickets[]=#{ticket.id}" }.join("&")
   page.driver.post "/order", body
