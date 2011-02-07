@@ -5,6 +5,7 @@ class Ability
     user ||= User.new
 
     if user.has_role? :admin
+      can :administer, :all
       can :manage, :all
 
     elsif user.has_role? :producer

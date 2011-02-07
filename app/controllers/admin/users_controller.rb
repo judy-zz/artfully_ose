@@ -1,4 +1,4 @@
-class Admin::UsersController < ApplicationController
+class Admin::UsersController < Admin::AdminController
   def index
     unless params[:email].blank?
       @user = User.find_by_email(params[:email])

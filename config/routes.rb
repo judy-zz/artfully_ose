@@ -2,15 +2,11 @@ Artfully::Application.routes.draw do
   devise_for :users
 
   resources :kits
-  resources :users, :only => [:show] do
-    resources :credit_cards
-    resources :events
-  end
+  resources :credit_cards, :except => :show
 
-  resources :tickets, :only => [:index]
+  resources :people, :only => [:index, :show, :edit, :update]
 
-  resource :order, :defaults => { :format => :widget }, :only => [:show, :create, :update, :destroy ]
-  resource :checkout
+  resources :tickets, :only => :index
   resources :performances
 
   resources :events do
@@ -20,6 +16,9 @@ Artfully::Application.routes.draw do
   resources :charts do
     resources :sections
   end
+
+  resource :order, :defaults => { :format => :widget }, :only => [:show, :create, :update, :destroy ]
+  resource :checkout
 
   namespace :admin do
     root :to => "index#index"
