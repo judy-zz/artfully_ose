@@ -45,6 +45,8 @@ end
 Factory.define :athena_event, :default_strategy => :build do |e|
   e.name "Some Event"
   e.venue "Some Venue"
+  e.city "Some City"
+  e.state "Some State"
   e.producer "Some Producer"
   e.producer_pid { Factory(:person_with_id).id }
 end
