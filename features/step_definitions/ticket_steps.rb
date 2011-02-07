@@ -6,7 +6,7 @@ Then /^I should see (\d+) tickets to "([^"]*)" at "([^"]*)" for \$(\d+)$/ do |qu
 end
 
 Then /^I should see (\d+) tickets$/ do |quantity|
-  page.has_xpath? "//li[@class='ticket']", :count => 2
+  page.has_xpath? "//li[@class='ticket']", :count => quantity
 end
 
 Given /^I search for (\d+) tickets for \$(\d+)$/ do |quantity, price|

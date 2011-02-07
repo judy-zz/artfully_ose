@@ -16,7 +16,11 @@ module ActiveResource
       def encode(hash, options = {})
         rejections = options.delete :rejections || []
         hash = hash.reject { | k , v | rejections.include? k } unless rejections.nil?
-        ActiveSupport::JSON.encode(encode_athena(hash), options)
+
+        results = encode_athena(hash)
+        results = ActiveSupport::JSON.encode(results, options) unless options.delete(:skip_serialization)
+
+        results
       end
 
       def decode(json)
@@ -59,24 +63,25 @@ module ActiveResource
         end
 
         def camelize_keys(hash_or_model)
+          if hash_or_model.respond_to? :encode and hash_or_model.respond_to? :attributes
+            return hash_or_model.encode(:skip_serialization => true)
+          end
+
           if hash_or_model.is_a? Hash
             camelized_hash = {}
+
             hash_or_model.each do |key, value|
               if value.kind_of? Hash
                 camelized_hash[key.camelize(:lower)] = camelize_keys(value)
               elsif value.kind_of? Array
-                camelized_hash[key.camelize(:lower)] = value.collect { |v| camelize_keys(v) }
+                camelized_hash[key.camelize(:lower)] = value.collect{ |v| camelize_keys(v) }
               else
-                camelized_hash[key.camelize(:lower)] = value
+                camelized_hash[key.camelize(:lower)] = camelize_keys(value)
               end
             end
             camelized_hash
           else
-            if hash_or_model.respond_to? :attributes
-              camelize_keys(hash_or_model.attributes)
-            else
-              hash_or_model
-            end
+            hash_or_model
           end
         end
     end

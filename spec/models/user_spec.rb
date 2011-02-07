@@ -70,7 +70,7 @@ describe User do
 
     it "should create a new People record before saving if one is not set" do
       subject.stub(:person).and_return(nil)
-      subject.should_receive(:create_people_record)
+      subject.should_receive(:create_record_in_athena_people)
       subject.save
     end
   end

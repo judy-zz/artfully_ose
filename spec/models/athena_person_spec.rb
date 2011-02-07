@@ -11,4 +11,10 @@ describe AthenaPerson do
     subject.should_not be_valid
   end
 
+  it "should return the user with a matching athena_id" do
+    subject = Factory(:athena_person_with_id)
+    user = Factory(:user, :athena_id => subject.id)
+    subject.user.should eq user
+  end
+
 end

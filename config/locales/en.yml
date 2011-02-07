@@ -2,7 +2,7 @@
 #
 # Use this as the base for the locale file of your language.
 
-"en-US":
+"en":
   date:
     formats:
       default: "%Y-%m-%d"
@@ -180,3 +180,9 @@
 
       full_messages:
         format: "%{attribute}%{message}"
+
+  activemodel:
+    attributes:
+      athena_performance:
+        datetime: "Date and time"
+

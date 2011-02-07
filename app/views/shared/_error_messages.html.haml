@@ -2,8 +2,9 @@
   #error_explanation.notification.error
     %span
     .text
-      - target.errors.each do |field|
+      - target.errors.full_messages.each do |msg|
         %p
-          %strong Oops!
-          - target.errors[field].each do |message|
-            = message
+          %strong Oops
+          =msg
+
+

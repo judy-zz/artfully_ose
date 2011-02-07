@@ -1,6 +1,4 @@
 class PerformancesController < ApplicationController
-  before_filter :authenticate_user!
-  load_and_authorize_resource :class => "AthenaPerformance"
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -9,6 +7,8 @@ class PerformancesController < ApplicationController
 
   def duplicate
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :duplicate, @performance
+
     @new_performance = @performance.dup!
     @new_performance.save
     redirect_to event_url(@new_performance.event_id)
@@ -28,6 +28,9 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @performance.update_attributes(params[:athena_performance][:athena_performance])
+
+    @performance.producer_pid = current_user.athena_id
+    
     @performance.event = @event
     @performance.tickets_created = 'false'
     if @performance.valid? && @performance.save
@@ -43,9 +46,10 @@ class PerformancesController < ApplicationController
 
   def show
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :view, @performance
+
     @event = AthenaEvent.find(@performance.event_id)
     @performance.tickets = @performance.tickets
-
     respond_to do |format|
       format.html
       format.widget
@@ -53,11 +57,14 @@ class PerformancesController < ApplicationController
   end
 
   def edit
-    # Loaded and authorized by CanCan
+    @performance = AthenaPerformance.find(params[:id])
+    authorize! :edit, @performance
   end
 
   def update
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :edit, @performance
+
     without_tickets do
       @performance.update_attributes(params[:athena_performance][:athena_performance])
       if @performance.save
@@ -69,12 +76,16 @@ class PerformancesController < ApplicationController
   end
 
   def destroy
+    @performance = AthenaPerformance.find(params[:id])
+    authorize! :destroy, @performance
+    
     @performance.destroy
     redirect_to event_url(@performance.event)
   end
   
   def put_on_sale
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :put_on_sale, @performance
     
     if @performance.tickets.empty?
       flash[:error] = 'Please create tickets for this performance before putting it on sale'
@@ -90,6 +101,7 @@ class PerformancesController < ApplicationController
   
   def take_off_sale
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :take_off_sale, @performance
     with_confirmation do
       @performance.take_off_sale
       flash[:notice] = 'Your performance has been taken off sale!'
@@ -99,6 +111,8 @@ class PerformancesController < ApplicationController
 
   def createtickets
     @performance = AthenaPerformance.find(params[:id])
+    authorize! :edit, @performance
+
     AthenaTicketFactory.for_performance(@performance)
     @event = AthenaEvent.find(@performance.event_id)
     @charts = AthenaChart.find_by_event(@event)

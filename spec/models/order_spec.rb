@@ -20,6 +20,14 @@ describe Order do
       subject.should be_empty
     end
 
+    it "should return the tickets added via add_tickets" do
+      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
+      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
+      subject.add_tickets tickets
+      subject.tickets.should eq tickets
+    end
+
     it "should have PurchasableTickets when a tickets are added to the order" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
@@ -144,6 +152,41 @@ describe Order do
     it "clean up left over line items" do
       subject.finish
       subject.items.should be_empty
+    end
+  end
+
+  describe ".generate_donations" do
+    let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }
+
+    before(:each) do
+      # Debt: There is no way to go from a ticket to the producer that made them (or even to their Event or Performance)
+      @events = tickets.collect do |ticket|
+        AthenaEvent.find(ticket.event_id)
+      end
+
+      @producers = @events.collect do |event|
+        AthenaPerson.find(event.producer_pid)
+      end
+
+      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => Factory(:lock).encode)
+    end
+
+    it "should return a donation for the producer of a single ticket in the order" do
+      subject.add_tickets tickets
+      donations = subject.generate_donations
+      donations.each do |donation|
+        @producers.should include donation.recipient
+      end
+    end
+
+    it "should not return any donations if there are no tickets" do
+      subject.generate_donations.should be_empty
+    end
+
+    it "should return one donation if the tickets are for the same producer" do
+      tickets.each { |ticket| ticket.event_id = @events.first.id }
+      subject.stub(:tickets).and_return(tickets)
+      subject.generate_donations.should have(1).donation
     end
   end
 end

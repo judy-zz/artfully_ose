@@ -32,8 +32,9 @@ Artfully::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
-  
+
   config.tickets_site = 'http://localhost/tix/'
+  config.payments_component = 'http://localhost/payments/'
   config.stage_site = 'http://localhost/stage/'
   config.people_site = 'http://localhost/people/'
 end

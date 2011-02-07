@@ -26,14 +26,22 @@ Given /^I enter my payment details$/ do
   click_button("Purchase")
 end
 
-Given /^I have started an order$/ do
-  ids = []
-  (1..2).each do |id|
-    ticket = Factory(:ticket_with_id, :id => id)
-    ids << id
+Given /^I have added (\d+) tickets to my order$/ do |a_few|
+  producer = Factory(:user)
+  event = Factory(:athena_event_with_id, :producer_pid => producer.person.id )
+  tickets = a_few.to_i.times.collect { Factory(:ticket_with_id, :event_id => event.id) }
+
+  FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => tickets.collect(&:id)).encode)
+  body = tickets.collect { |ticket| "tickets[]=#{ticket.id}" }.join("&")
+  page.driver.post "/order", body
+end
+
+Given /^I have added (\d+) donations to my order$/ do |a_few|
+  recipient = Factory(:user)
+  donations = a_few.to_i.times.collect { Factory.build(:donation, :producer_pid => recipient.person.id) }
+  donations.each do |donation|
+    page.driver.post "/order", "donation[amount]=#{donation.amount}&donation[producer_id]=#{recipient.id}"
   end
-  FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :status => [ 200 ], :body => Factory(:lock, :tickets => ids).encode)
-  post "/orders", "tickets[]=1&tickets[]=2"
 end
 
 Given /^I start the checkout process$/ do

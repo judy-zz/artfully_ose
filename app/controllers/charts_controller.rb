@@ -1,14 +1,14 @@
 class ChartsController < ApplicationController
   before_filter :authenticate_user!, :except => [ :show ]
-  load_and_authorize_resource AthenaChart, :except => [ :index ]
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
-    redirect_to charts_path
+    redirect_to root_path
   end
 
   def index
     @charts = AthenaChart.find_templates_by_producer(current_user.person.id).sort_by { |chart| chart.name }
+    authorize! :view, AthenaChart
   end
 
   def new
@@ -39,10 +39,12 @@ class ChartsController < ApplicationController
 
   def edit
     @chart = AthenaChart.find(params[:id])
+    authorize! :edit, AthenaChart
   end
 
   def update
     @chart = AthenaChart.find(params[:id])
+    authorize! :edit, AthenaChart
     @chart.update_attributes(params[:athena_chart][:athena_chart])
     if @chart.save
       redirect_to chart_url(@chart)
@@ -53,6 +55,7 @@ class ChartsController < ApplicationController
 
   def destroy
     @chart = AthenaChart.find(params[:id])
+    authorize! :destroy, AthenaChart
     @chart.destroy
     redirect_to charts_url
   end

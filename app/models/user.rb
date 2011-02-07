@@ -5,8 +5,7 @@ class User < ActiveRecord::Base
   has_many :orders
 
   has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
-
-  before_validation :create_people_record, :if => lambda { |user| user.person.nil? }
+  before_save :create_record_in_athena_people, :if => lambda { self.person.nil? }
 
   belongs_to :organization
 
@@ -64,7 +63,7 @@ class User < ActiveRecord::Base
   end
 
   private
-    def create_people_record
+    def create_record_in_athena_people
       self.person = AthenaPerson.create(:email => self.email)
     end
 

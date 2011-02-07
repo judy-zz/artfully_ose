@@ -48,13 +48,12 @@ class AthenaCreditCard < AthenaResource::Base
   end
 
   def encode(options = {})
-    if !new_record?
-      if options[:rejections].nil? 
-        options[:rejections] = []
-      end
+    unless new_record?
+      options[:rejections] = [] if options[:rejections].nil?
       options[:rejections] << 'card_number'
     end
-    super(prepare_for_encode(@attributes), options)
+    options[:attributes] = prepare_for_encode(attributes)
+    super(options)
   end
 
   private

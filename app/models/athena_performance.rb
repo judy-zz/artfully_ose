@@ -4,7 +4,7 @@ class AthenaPerformance < AthenaResource::Base
   self.element_name = 'performances'
   self.collection_name = 'performances'
 
-  validates_presence_of :datetime, :message => "Please enter a performance time"
+  validates_presence_of :datetime
 
   PUT_ON_SALE = 'PUT_ON_SALE'
   TAKE_OFF_SALE = 'TAKE_OFF_SALE'
@@ -26,7 +26,6 @@ class AthenaPerformance < AthenaResource::Base
   def gross_sales
     @gross_sales ||= tickets_sold.inject(0) { |sum, ticket| sum += ticket.price.to_i }
   end
-
 
   def tickets_created
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['tickets_created'])
@@ -136,15 +135,15 @@ class AthenaPerformance < AthenaResource::Base
   private
 
     def bulk_on_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.on_sale! }.compact!
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.on_sale! }.compact
     end
 
     def bulk_off_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.off_sale! }.compact!
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.off_sale! }.compact
     end
 
     def bulk_delete(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact!
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact
     end
 
 

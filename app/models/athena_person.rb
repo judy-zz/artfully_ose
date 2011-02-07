@@ -8,5 +8,9 @@ class AthenaPerson < AthenaResource::Base
     attribute 'email', :string
   end
 
+  def user
+    @user ||= User.find_by_athena_id(id)
+  end
+
   validates_presence_of :email
 end

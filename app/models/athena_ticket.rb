@@ -5,13 +5,15 @@ class AthenaTicket < AthenaResource::Base
   self.element_name = 'tickets'
 
   schema do
-    attribute 'event',        :string
-    attribute 'venue',        :string
-    attribute 'performance',  :string
-    attribute 'sold',         :string
-    attribute 'on_sale',      :string
-    attribute 'section',      :string
-    attribute 'price',        :integer
+    attribute 'event',          :string
+    attribute 'event_id',       :integer
+    attribute 'venue',          :string
+    attribute 'performance',    :string
+    attribute 'performance_id', :integer
+    attribute 'sold',           :string
+    attribute 'on_sale',        :string
+    attribute 'section',        :string
+    attribute 'price',          :integer
   end
 
   def self.search(params)
@@ -55,7 +57,9 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def to_item
-    PurchasableTicket.create(:ticket_id => self.id)
+    pt = PurchasableTicket.new
+    pt.ticket = self
+    pt
   end
 
   def destroy
