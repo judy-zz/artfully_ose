@@ -7,6 +7,8 @@ describe AthenaEvent do
 
   it { should respond_to :name }
   it { should respond_to :venue }
+  it { should respond_to :city }
+  it { should respond_to :state }
   it { should respond_to :producer }
   it { should respond_to :performances }
   it { should respond_to :charts }

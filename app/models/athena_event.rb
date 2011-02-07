@@ -114,6 +114,4 @@ class AthenaEvent < AthenaResource::Base
       AthenaPerformance.find(:all, :params => { :eventId => "eq#{self.id}" })
     end
 
- 
-
 end

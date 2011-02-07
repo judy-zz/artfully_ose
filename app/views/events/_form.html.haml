@@ -10,7 +10,7 @@
     = event_form.text_field :city
   %p
     = event_form.label :state, "State"
-    = event_form.select :state, options_for_select( target.valid_locales, target.state )
+    = event_form.select :state, options_for_select( target.valid_locales.invert, target.state )
   %p
     = event_form.label :producer, "Producer"
     = event_form.text_field :producer
