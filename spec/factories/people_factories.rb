@@ -10,6 +10,7 @@ Factory.define :person_with_id, :parent => :person do |p|
   p.id { Factory.next :person_id }
   p.after_build do |person|
     FakeWeb.register_uri(:get, "http://localhost/people/people/#{person.id}.json", :body => person.encode)
+    FakeWeb.register_uri(:get, "http://localhost/people/people/.json?email=eq#{CGI::escape(person.email)}", :body => "[#{person.encode}]")
   end
 end
 

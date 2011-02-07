@@ -6,8 +6,6 @@ Artfully::Application.routes.draw do
     resources :credit_cards
     resources :user_roles
     resources :events
-
-
   end
 
   resources :tickets, :only => [:index]
@@ -23,6 +21,8 @@ Artfully::Application.routes.draw do
   resources :charts do
     resources :sections
   end
+
+  resources :people, :only => [ :index, :show, :edit, :update ]
 
   namespace :admin do
     root :to => "index#index"

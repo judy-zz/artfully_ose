@@ -17,4 +17,12 @@ describe AthenaPerson do
     subject.user.should eq user
   end
 
+  describe "#find_by_email" do
+    it "should search for the Person by email address" do
+      AthenaPerson.stub(:find).and_return([])
+      AthenaPerson.should_receive(:find).with(:all, :params => {:email => "eqperson@example.com"})
+      AthenaPerson.find_by_email("person@example.com")
+    end
+  end
+
 end
