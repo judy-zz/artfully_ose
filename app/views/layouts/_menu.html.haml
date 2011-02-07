@@ -1,7 +1,7 @@
 #menu
   %ul
     %li
-      = link_to current_user do
+      = link_to root_path do
         = image_tag "icons/small_icons_3/dashboard2.png"
         %span Dashboard
     %li
@@ -12,3 +12,7 @@
       = link_to charts_path do
         = image_tag "icons/small_icons_3/Designs.png"
         %span Charts
+    %li
+      = link_to people_path do
+        = image_tag "icons/small_icons_3/users.png"
+        %span People
