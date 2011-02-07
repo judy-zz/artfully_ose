@@ -7,11 +7,13 @@ class AthenaEvent < AthenaResource::Base
   schema do
     attribute 'name', :string
     attribute 'venue', :string
+    attribute 'state', :string
+    attribute 'city', :string
     attribute 'producer', :string
     attribute 'producer_pid', :string
   end
 
-  validates_presence_of :name, :venue, :producer, :producer_pid
+  validates_presence_of :name, :venue, :city, :state, :producer, :producer_pid
 
   def charts
     @attributes['charts'] ||= find_charts
