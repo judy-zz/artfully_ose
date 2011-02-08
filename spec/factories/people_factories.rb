@@ -13,3 +13,10 @@ Factory.define :athena_person_with_id, :parent => :athena_person do |p|
     FakeWeb.register_uri(:get, "http://localhost/people/people/.json?email=eq#{CGI::escape(person.email)}", :body => "[#{person.encode}]")
   end
 end
+
+Factory.define :athena_relationship, :default_strategy => :build do |r|
+  r.relationship_type "Father"
+  r.inverse_type "Son"
+  r.left_side_id { Factory(:athena_person_with_id).id }
+  r.right_side_id { Factory(:athena_person_with_id).id }
+end

@@ -4,7 +4,7 @@ Feature: Delete a performance
 
   Scenario: A producer deletes a performance without tickets
     Given I am logged in as a "producer" with email "joe.producer@producer.com"
-    And there is an Event with 3 Performances for "joe.producer@producer.com"
+    And there is an Event with 3 Performances
     And I follow "Events"
     And I view the 1st Event
     When I delete the 1st Performance
@@ -12,7 +12,7 @@ Feature: Delete a performance
 
   Scenario: A producer attempts to delete a performance with tickets
     Given I am logged in as a "producer" with email "joe.producer@producer.com"
-    And there is an Event with 3 Performances for "joe.producer@producer.com"
+    And there is an Event with 3 Performances
     And the 1st performance has had tickets created
     And I follow "Events"
     When I view the 1st event

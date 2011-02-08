@@ -7,11 +7,13 @@ class AthenaEvent < AthenaResource::Base
   schema do
     attribute 'name', :string
     attribute 'venue', :string
+    attribute 'state', :string
+    attribute 'city', :string
     attribute 'producer', :string
     attribute 'producer_pid', :string
   end
 
-  validates_presence_of :name, :venue, :producer, :producer_pid
+  validates_presence_of :name, :venue, :city, :state, :producer, :producer_pid
 
   def charts
     @attributes['charts'] ||= find_charts
@@ -36,6 +38,70 @@ class AthenaEvent < AthenaResource::Base
     performances.reject! { |performance| !performance.on_sale? }
     to_json(options)
   end
+  
+  #return valid US states for an event
+  #would be be valid states, but states also refer to state machine
+  #codes defined here: http://www.itl.nist.gov/fipspubs/fip5-2.htm
+  def valid_locales
+    {"Alabama"=>"AL", 
+      "Alaska"=>"AK", 
+      "American Samoa"=>"AS", 
+      "Arizona"=>"AZ",
+      "Arkansas"=>"AR", 
+      "California"=>"CA", 
+      "Colorado"=>"CO", 
+      "Connecticut"=>"CT",
+      "Delaware"=>"DE", 
+      "District of Columbia"=>"DC", 
+      "Florida"=>"FL",
+      "Georgia"=>"GA", 
+      "Guam"=>"GU", 
+      "Hawaii"=>"HI", 
+      "Idaho"=>"ID",
+      "Illinois"=>"IL", 
+      "Indiana"=>"IN", 
+      "Iowa"=>"IA", 
+      "Kansas"=>"KS",
+      "Kentucky"=>"KY", 
+      "Louisiana"=>"LA", 
+      "Maine"=>"ME", 
+      "Marshall Islands"=>"MH",
+      "Maryland"=>"MD", 
+      "Massachusetts"=>"MA", 
+      "Michigan"=>"MI",
+      "Micronesia"=>"FM",
+      "Minnesota"=>"MN", 
+      "Mississippi"=>"MS", 
+      "Missouri"=>"MO", 
+      "Montana"=>"MT",
+      "Nebraska"=>"NE", 
+      "Nevada"=>"NV", 
+      "New Hampshire"=>"NH", 
+      "New Jersey"=>"NJ",
+      "New Mexico"=>"NM",
+      "New York"=>"NY",
+      "North Carolina"=>"NC",
+      "North Dakota"=>"ND",
+      "Ohio"=>"OH",
+      "Oklahoma"=>"OK",
+      "Oregon"=>"OR",
+      "Palau"=>"PW", 
+      "Pennsylvania"=>"PA", 
+      "Rhode Island"=>"RI", 
+      "Puerto Rico"=>"PR",
+      "South Carolina"=>"SC", 
+      "South Dakota"=>"SD", 
+      "Tennessee"=>"TN", 
+      "Texas"=>"TX",
+      "Utah"=>"UT", 
+      "Vermont"=>"VT", 
+      "Virgin Islands"=>"VI", 
+      "Virginia"=>"VA",
+      "Washington"=>"WA",       
+      "Wisconsin"=>"WI",
+      "West Virginia"=>"WV", 
+      "Wyoming"=>"WY"}
+  end
 
   private
     def find_charts
@@ -47,4 +113,5 @@ class AthenaEvent < AthenaResource::Base
       return [] if new_record?
       AthenaPerformance.find(:all, :params => { :eventId => "eq#{self.id}" })
     end
+
 end
