@@ -34,9 +34,9 @@ class AthenaRelationship < AthenaResource::Base
   end
 
   def self.find_by_person(person_or_id)
-    id = person_or_id.respond_to?(:id)? person_or_id.id : person_or_id
+    id = person_or_id.kind_of?(AthenaPerson)? person_or_id.id : person_or_id
     return if id.nil?
-    find(:all, :from => :"people/#{id}")
+    find(:all, :from => "people/#{id}".to_sym)
   end
 
   private
