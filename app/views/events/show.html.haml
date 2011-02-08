@@ -13,8 +13,7 @@
 
 .venue-name= @event.venue
 .producer-name= @event.producer
-.venue-city= @event.city
-.venue-state= @event.state
+.venue-location= [@event.city + ',', @event.state].join " "
 
 = render :partial => 'events/performances', :locals => { :event => @event, :performance=>@performance }
 
