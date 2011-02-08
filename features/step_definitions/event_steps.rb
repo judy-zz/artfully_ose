@@ -8,7 +8,7 @@ When /^(?:|I )fill in the following event details:$/ do |table|
   When %{I fill in "Venue" with "#{event.venue}"}
   When %{I fill in "Producer" with "#{event.producer}"}
   When %{I fill in "City" with "#{event.city}"}
-  When %{I select "#{event.valid_locales.key(event.state)}" from "State"}
+  When %{I select "#{event.valid_locales.invert[event.state]}" from "State"}
 end
 
 Given /^there is an [Ee]vent with (\d+) [Pp]erformances$/ do |performance_count|
