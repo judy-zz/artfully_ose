@@ -26,7 +26,7 @@ describe AthenaCustomer do
 
   describe "#find" do
     it "should find the customer by id" do
-      FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :status => "200", :body => Factory(:customer, :id => 1).encode)
+      FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :body => Factory(:customer, :id => 1).encode)
       @customer = AthenaCustomer.find(1)
 
       FakeWeb.last_request.method.should == "GET"
@@ -37,7 +37,7 @@ describe AthenaCustomer do
   describe "#save" do
     it "should issue a PUT when updating a customer" do
       @customer = Factory(:customer, :id => "1")
-      FakeWeb.register_uri(:put, "http://localhost/payments/customers/#{@customer.id}.json", :status => "200")
+      FakeWeb.register_uri(:put, "http://localhost/payments/customers/#{@customer.id}.json", :body => @customer.encode)
       @customer.save
 
       FakeWeb.last_request.method.should == "PUT"
@@ -45,7 +45,7 @@ describe AthenaCustomer do
     end
 
     it "should issue a POST when creating a new AthenaCustomer" do
-      FakeWeb.register_uri(:post, "http://localhost/payments/customers/.json", :status => "200")
+      FakeWeb.register_uri(:post, "http://localhost/payments/customers/.json", :body => "{}")
       @customer = Factory.create(:customer)
 
       FakeWeb.last_request.method.should == "POST"
@@ -71,7 +71,7 @@ describe AthenaCustomer do
     it "should create AthenaCreditCards when decoding the remote resource" do
       customer = Factory(:customer_with_id)
       customer.credit_cards << Factory(:credit_card)
-      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{customer.id}.json", :status => 200, :body => customer.encode)
+      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{customer.id}.json", :body => customer.encode)
 
       remote = AthenaCustomer.find(customer.id)
       remote.credit_cards.should have(1).things

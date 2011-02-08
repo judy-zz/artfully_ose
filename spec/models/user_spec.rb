@@ -43,7 +43,7 @@ describe User do
     it "should fetch the remote customer record" do
       @customer = Factory(:customer, :id => 1)
       subject.customer_id = @customer.id
-      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
+      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :body => @customer.encode)
       subject.customer.should eq(@customer)
     end
 
