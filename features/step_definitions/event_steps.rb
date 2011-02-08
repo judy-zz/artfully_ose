@@ -1,3 +1,22 @@
+When /^(?:|I )fill in the following event details:$/ do |table|
+  event = Factory(:athena_event_with_id, table.hashes.first.merge(:producer_pid => @user.athena_id.to_s))
+  FakeWeb.register_uri(:post, "http://localhost/stage/events/.json", :body => event.encode)
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{@user.athena_id}&isTemplate=eqtrue", :status => 200, :body => "[]")
+
+  chart = Factory(:athena_chart, :producer_pid => @user.athena_id)
+  FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{event.id}", :status => 200, :body => "[#{chart.encode}]")
+  FakeWeb.register_uri(:get, "http://localhost/stage/sections/.json?chartId=eq#{chart.id}", :status => 200, :body => "[#{Factory(:athena_section_with_id).encode}]")
+
+  FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{event.id}", :status => 200, :body => "[]")
+
+  When %{I fill in "Name" with "#{event.name}"}
+  When %{I fill in "Venue" with "#{event.venue}"}
+  When %{I fill in "Producer" with "#{event.producer}"}
+  When %{I fill in "City" with "#{event.city}"}
+  When %{I select "#{event.valid_locales.key(event.state)}" from "State"}
+end
+
+
 Given /^the following event exists with (\d+) performance for producer with id of (\d+):$/ do |performance_count, producer_id, table|
   event = Factory(:athena_event, table.hashes.first)
   FakeWeb.register_uri(:any, "http://localhost/stage/events/#{event.id}.json", :status => 200, :body => event.encode)

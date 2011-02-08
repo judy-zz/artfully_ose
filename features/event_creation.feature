@@ -7,13 +7,14 @@ Feature: Event creation
     And I can save Tickets to ATHENA
     And I can get Tickets from ATHENA
 
-  @wip
   Scenario: A producer creates a new event
     Given I am logged in as a "producer"
-      And I am on the new event page
-    When I fill in "Title" with "Some Title"
-      And I fill in "Venue" with "Some Venue"
-      And I fill in "Seats" with "10"
-      And I press "Save"
-    Then I should see "Created a new event."
-      And I should see "Some Title at Some Venue"
+    And I am on the new event page
+    When I fill in the following event details:
+    | name      | venue      | city     | state | producer      |
+    | Some Name | Some Venue | New York | NY    | Some Producer |
+    And I press "Submit"
+    Then I should see "Your event has been created."
+    And I should see "Some Name"
+    And I should see "Some Venue"
+    And I should see "New York, NY"
