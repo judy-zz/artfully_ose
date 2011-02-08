@@ -2,6 +2,10 @@ require 'spec_helper'
 
 describe Ability do
   describe "Admins" do
+    let(:user) { Factory(:admin) }
+    subject { Ability.new(user) }
+
+    it { should be_able_to(:administer, :all) }
   end
 
   describe "Producers" do

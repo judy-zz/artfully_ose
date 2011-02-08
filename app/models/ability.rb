@@ -5,6 +5,7 @@ class Ability
     user ||= User.new
 
     if user.has_role? :admin
+      can :administer, :all
       can :manage, :all
 
     elsif user.has_role? :producer
@@ -33,7 +34,7 @@ class Ability
 
       # Charts
       can :manage, AthenaChart, :producer_pid => user.athena_id
-      
+
     elsif user.roles.empty?
       cannot :manage, :all
     end

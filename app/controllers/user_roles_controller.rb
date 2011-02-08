@@ -24,7 +24,7 @@ class UserRolesController < ApplicationController
       current_user.customer = @customer
       current_user.organization = @organization
       current_user.to_producer and current_user.save!
-      redirect_to current_user, :notice => "Congratulations! You now have access to producer features"
+      redirect_to root_url, :notice => "Congratulations! You now have access to producer features"
     else
       render :new
     end

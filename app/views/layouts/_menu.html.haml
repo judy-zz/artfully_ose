@@ -1,14 +1,23 @@
 #menu
   %ul
     %li
-      = link_to current_user do
-        = image_tag "icons/small_icons_3/dashboard2.png"
+      = link_to root_path do
+        = image_tag "icons/small_icons_3/dashboard2.png", :alt => "Dashboard"
         %span Dashboard
     %li
       = link_to events_path do
-        = image_tag "icons/small_icons_3/MyEvents.png"
+        = image_tag "icons/small_icons_3/MyEvents.png", :alt => "Events"
         %span Events
     %li
       = link_to charts_path do
-        = image_tag "icons/small_icons_3/Designs.png"
+        = image_tag "icons/small_icons_3/Designs.png", :alt => "Charts"
         %span Charts
+    %li
+      = link_to people_path do
+        = image_tag "icons/small_icons_3/users.png", :alt => "People"
+        %span People
+    - if can? :administrate, :all
+      %li
+        = link_to admin_root_path do
+          = image_tag "icons/small_icons_3/settings.png", :alt => "Administration"
+          %span Administration

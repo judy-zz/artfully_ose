@@ -4,6 +4,8 @@ class AthenaPerson < AthenaResource::Base
   self.element_name = 'people'
   self.collection_name = 'people'
 
+  validates_presence_of :email
+
   schema do
     attribute 'email', :string
   end
@@ -12,5 +14,7 @@ class AthenaPerson < AthenaResource::Base
     @user ||= User.find_by_athena_id(id)
   end
 
-  validates_presence_of :email
+  def self.find_by_email(email)
+    find(:all, :params => { :email => "eq#{email}"})
+  end
 end
