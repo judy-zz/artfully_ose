@@ -3,8 +3,7 @@ Feature: Event creation
   a producer wants to be able to create a new event and have tickets generated from its details
 
   Background:
-    Given ATHENA is up and running
-    And I can save Tickets to ATHENA
+    Given I can save Tickets to ATHENA
     And I can get Tickets from ATHENA
 
   Scenario: A producer creates a new event

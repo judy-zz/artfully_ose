@@ -6,6 +6,7 @@ Given /^I am logged in(?: as an? "([^"]*)"(?: with email "([^"]*)")?)?$/ do |rol
   fill_in("Email", :with => @user.email)
   fill_in("Password", :with => @user.password)
   click_button("Sign in")
+  @current_user = @user
 end
 
 When /^I delete the (\d+)(?:st|nd|rd|th) user$/ do |pos|
