@@ -3,6 +3,12 @@ class Kit < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :user
 
+  after_initialize :set_state
+
+  def set_state
+    self.state = "new"
+  end
+
   def self.acts_as_kit(options, &block)
     @kit_for = options.delete(:for) || User
     @with_approval = options.delete(:with_approval) || false
@@ -49,8 +55,8 @@ class Kit < ActiveRecord::Base
   def activatable?
     return false unless (new? or user.nil?)
 
-    unlesses =  self.class.requirements[:unless].map{ |req| !req.call(self) }.reduce(&:&)
-    ifs      =  self.class.requirements[:if]    .map{ |req| req.call(self) } .reduce(&:&)
+    unlesses =  self.class.requirements[:unless].all? { |req| !self.send(req) }
+    ifs      =  self.class.requirements[:if]    .all? { |req| self.send(req) }
 
     (unlesses.nil? or unlesses) and (ifs.nil? or ifs)
   end

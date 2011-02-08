@@ -6,4 +6,5 @@ Feature: Ticketing Kit
     Given I am logged in
     And I follow "Dashboard"
     When I follow "Kits"
-    Then I should see "Add Ticketing Kit"
+    Then I should see "Ticketing Kit"
+    And I should see "Activate"
