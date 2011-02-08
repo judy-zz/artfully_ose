@@ -17,3 +17,10 @@ end
 Factory.define :athena_person, :default_strategy => :build do |p|
   p.email { Faker::Internet.email }
 end
+
+Factory.define :athena_relationship, :default_strategy => :build do |r|
+  r.relationship_type "Father"
+  r.inverse_type "Son"
+  r.left_side_id { Factory(:person_with_id).id }
+  r.right_side_id { Factory(:person_with_id).id }
+end
