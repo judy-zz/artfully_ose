@@ -4,16 +4,17 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :user_roles
   has_many :orders
 
-  has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
-  before_save :create_record_in_athena_people, :if => lambda { self.person.nil? }
+  has_many :memberships
+  has_many :organizations, :through => :memberships
 
-  belongs_to :organization
+  has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
+
+  before_save :create_record_in_athena_people, :if => lambda { self.person.nil? }
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :suspendable
+         :recoverable, :rememberable, :trackable, :validatable, :suspendable
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me

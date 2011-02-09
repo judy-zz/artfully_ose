@@ -27,13 +27,11 @@ describe TicketingKit do
       end
 
       it "should not transition to activated if the user does not belong to an organization" do
-        subject.user.stub!(:organization)
         subject.activate!
         subject.should_not be_activated
       end
 
       it "should add an errror message to requirements if the user does not belong to an organization" do
-        subject.user.stub!(:organization)
         subject.activate!
         subject.errors.should have(1).error
       end
@@ -47,7 +45,7 @@ describe TicketingKit do
 
     it "should be activatable with credit cards and an organization" do
       subject.user.stub(:credit_cards).and_return(1.times.collect { Factory(:credit_card) } )
-      subject.user.stub(:organization).and_return(Factory(:organization))
+      subject.user.stub(:organizations).and_return(1.times.collect { Factory(:organization) } )
       subject.should be_activatable
       subject.activate!
       subject.should be_activated

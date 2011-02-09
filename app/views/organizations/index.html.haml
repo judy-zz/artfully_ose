@@ -1,4 +1,15 @@
 - content_for :header do
-  %h1= @organization.name
+  %h1 Organizations
+
+%table.normal.fullwidth
+  %thead
+    %tr
+      %th Name
+      %th Created Date
+  %tbody
+    - @organizations.each do |organization|
+      %tr
+        %td= organization.name
+        %td= l organization.created_at
 
 = link_to "Create an Organization", new_organization_path

@@ -1,9 +1,7 @@
 class OrganizationsController < ApplicationController
 
-  before_filter :already_in?, :only => [ :new, :create ]
-
   def index
-    @organization = current_user.organization || Organization.new
+    @organizations = current_user.organizations || []
   end
 
   def show
@@ -31,12 +29,4 @@ class OrganizationsController < ApplicationController
 
   def destroy
   end
-
-  private
-    def already_in?
-      unless current_user.organization.nil?
-        flash[:error] = "You are already part of an organization"
-        redirect_to organizations_url
-      end
-    end
 end

@@ -13,7 +13,7 @@ class TicketingKit < Kit
   end
 
   def no_organization?
-    errors.add(:requirements, "You need to be part of an organization to activate this kit") if user.organization.nil?
-    user.organization.nil?
+    errors.add(:requirements, "You need to be part of an organization to activate this kit") if user.organizations.empty?
+    user.organizations.empty?
   end
 end

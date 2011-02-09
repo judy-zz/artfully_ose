@@ -151,4 +151,9 @@ describe User do
       subject.kits << kit
     end
   end
+
+  describe "organizations" do
+    it { should respond_to :organizations }
+    it { should respond_to :memberships }
+  end
 end
