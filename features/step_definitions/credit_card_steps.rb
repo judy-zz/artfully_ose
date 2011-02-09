@@ -4,6 +4,13 @@ Given /^I navigate to my credit cards page$/ do
   And %{I follow "Credit Cards"}
 end
 
+When /^I fill in valid credit card details$/ do
+  card = Factory(:credit_card_with_id)
+  When %{I fill in "Cardholder Name" with "#{card.cardholder_name}"}
+  When %{I fill in "Number" with "#{card.card_number}"}
+  When %{I fill in "CVV" with "#{card.cvv}"}
+end
+
 Given /^there are (\d+) saved credit cards for "([^"]*)"$/ do |quantity, email|
   cards = []
   quantity.to_i.times do

@@ -35,6 +35,9 @@ end
 
 Factory.define :credit_card_with_id, :parent => :credit_card do |cc|
   cc.id { UUID.new.generate }
+  cc.after_build do |card|
+    FakeWeb.register_uri(:post, "http://localhost/payments/cards/.json", :body => card.encode)
+  end
 end
 
 Factory.sequence :customer_id do |n|

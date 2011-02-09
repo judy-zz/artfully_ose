@@ -5,6 +5,19 @@ class CreditCardsController < ApplicationController
     @credit_cards = current_user.credit_cards
   end
 
+  def new
+    @credit_card = AthenaCreditCard.new
+  end
+
+  def create
+    @credit_card = AthenaCreditCard.new(params[:athena_credit_card][:athena_credit_card])
+    if @credit_card.save
+      redirect_to credit_cards_url, :notice => "Your card was saved."
+    else
+      render :new and return
+    end
+  end
+
   def edit
     @credit_card = AthenaCreditCard.find(params[:id])
   end

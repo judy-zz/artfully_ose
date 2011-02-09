@@ -16,3 +16,5 @@
         %td
           = table_icon_link_to :edit, edit_credit_card_path(credit_card)
           = table_icon_link_to :delete, credit_card_path(credit_card), :method => :delete, :confirm => 'Are you sure?'
+
+= link_to "New Credit Card", new_credit_card_path
