@@ -1,6 +1,7 @@
 Artfully::Application.routes.draw do
   devise_for :users
 
+  resources :organizations
   resources :kits
   resources :credit_cards, :except => :show
 
