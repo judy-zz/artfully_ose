@@ -1,13 +1,15 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.0'
+gem 'rails'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'haml'
 gem 'devise'
 gem 'cancan'
 gem 'escape_utils'
 gem 'validates_timeliness'
-gem 'transitions', :require => ['transitions','active_record/transitions']
+gem 'transitions',
+    :require => ['transitions','active_record/transitions','active_resource/transitions'],
+    :path => "#{File.expand_path(__FILE__)}/../vendor/gems/transitions-0.0.9"
 gem 'jquery-rails', '>= 0.2.6'
 
 
