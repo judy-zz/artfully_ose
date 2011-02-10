@@ -2,7 +2,7 @@
 
 .sub-container#performance-container
   %h2 Performances
-  %div{:style=>'text-align:right'} 
+  %div{:style=>'text-align:right'}
     =link_to image_tag("icons/small_icons/Add.png") + " Add New Performance", event_performances_path(event, performance), {:id=>'new-performance-button', :class => 'table_icon new-performance-link', :style=>'float:none;text-decoration:none;'}
   %table#performance-table.normal.tablesorter.fullwidth
     %thead
@@ -33,7 +33,7 @@
               = table_icon_link_to :edit, edit_event_performance_path(event, performance) if can?(:edit, performance)
               = table_icon_link_to :delete, event_performance_path(event, performance), :confirm => "Are you sure?", :method => :delete if can?(:destroy, performance)
             %td.tickets
-              - if performance.tickets_created?
+              - if performance.built?
                 = link_to "View Tickets", performance_path(performance)
               - else
                 = link_to "Create Tickets", create_tickets_for_performance_path(performance)

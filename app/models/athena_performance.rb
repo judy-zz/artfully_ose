@@ -1,4 +1,6 @@
 class AthenaPerformance < AthenaResource::Base
+  include ActiveResource::Transitions
+
   self.site = Artfully::Application.config.stage_site
   self.headers["User-agent"] = "artful.ly"
   self.element_name = 'performances'
@@ -11,12 +13,31 @@ class AthenaPerformance < AthenaResource::Base
   DELETE = 'DELETE'
 
   schema do
-    attribute 'event_id', :string
-    attribute 'chart_id', :string
-    attribute 'producer_pid', :string
-    attribute 'datetime', :string
-    attribute 'tickets_created', :string
-    attribute 'on_sale', :string
+    attribute 'event_id',         :string
+    attribute 'chart_id',         :string
+    attribute 'producer_pid',     :string
+    attribute 'datetime',         :string
+    attribute 'state',            :string
+  end
+
+  state_machine do
+    state :pending
+    state :built
+    state :on_sale, :enter => :put_tickets_on_sale
+    state :off_sale, :enter => :take_tickets_off_sale
+
+    event :build do
+      transitions :from => :pending, :to => :built
+    end
+
+    event :put_on_sale do
+      transitions :from => [:built, :off_sale ], :to => :on_sale
+    end
+
+    event :take_off_sale do
+      transitions :from => :on_sale, :to => :off_sale
+    end
+
   end
 
   def gross_potential
@@ -26,16 +47,6 @@ class AthenaPerformance < AthenaResource::Base
   def gross_sales
     @gross_sales ||= tickets_sold.inject(0) { |sum, ticket| sum += ticket.price.to_i }
   end
-
-  def tickets_created
-    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['tickets_created'])
-  end
-  alias :tickets_created? :tickets_created
-
-  def on_sale
-    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['on_sale'])
-  end
-  alias :on_sale? :on_sale
 
   def tickets
     @tickets ||= AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" }).sort_by { |ticket| ticket.price }
@@ -97,9 +108,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def dup!
-    copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' || key == 'tickets_created' })
-    copy.tickets_created = 'false'
-    copy.on_sale = 'false'
+    copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' || key == 'state' })
     copy.datetime = copy.datetime + 1.day
     copy
   end
@@ -107,18 +116,6 @@ class AthenaPerformance < AthenaResource::Base
   def datetime
     attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
-  end
-
-  def take_off_sale
-    tickets.map(&:off_sale!)
-    attributes['on_sale'] = false
-    save!
-  end
-
-  def put_on_sale
-    tickets.map(&:on_sale!)
-    attributes['on_sale'] = true
-    save!
   end
 
   def bulk_edit_tickets(ticket_ids, action)
@@ -133,6 +130,14 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   private
+
+    def take_tickets_off_sale
+      tickets.map(&:off_sale!)
+    end
+
+    def put_tickets_on_sale
+      tickets.map(&:on_sale!)
+    end
 
     def bulk_on_sale(ids)
       tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.on_sale! }.compact

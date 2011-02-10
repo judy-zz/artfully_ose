@@ -31,7 +31,7 @@ describe AthenaPerformance do
   end
 
   describe "put on sale" do
-    subject { Factory(:athena_performance_with_id) }
+    subject { Factory(:athena_performance_with_id, :state => "built" ) }
 
     before(:each) do
       tickets = 3.times.collect { Factory(:ticket_with_id) }
@@ -41,23 +41,23 @@ describe AthenaPerformance do
     end
 
     it "should mark the performance as on sale" do
-      subject.put_on_sale
+      subject.put_on_sale!
       subject.should be_on_sale
     end
 
     it "should mark each of its tickets as on sale" do
       subject.tickets.each { |ticket| ticket.should_receive(:on_sale!) }
-      subject.put_on_sale
+      subject.put_on_sale!
     end
 
     it "should save the updated performance" do
       subject.should_receive(:save!)
-      subject.put_on_sale
+      subject.put_on_sale!
     end
   end
 
   describe "take off sale" do
-    subject { Factory(:athena_performance_with_id, :on_sale => true) }
+    subject { Factory(:athena_performance_with_id, :state => "on_sale" ) }
 
     before(:each) do
       tickets = 3.times.collect { Factory(:ticket_with_id) }
@@ -68,17 +68,17 @@ describe AthenaPerformance do
 
     it "should mark the performance as off sale" do
       subject.take_off_sale
-      subject.should_not be_on_sale
+      subject.should_not be_on_sale!
     end
 
     it "should mark each of its tickets as off sale" do
       subject.tickets.each { |ticket| ticket.should_receive(:off_sale!) }
-      subject.take_off_sale
+      subject.take_off_sale!
     end
 
     it "should save the updated performance" do
       subject.should_receive(:save!)
-      subject.take_off_sale
+      subject.take_off_sale!
     end
   end
 

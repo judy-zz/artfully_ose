@@ -29,8 +29,8 @@ class Ability
 
       can [ :manage, :put_on_sale, :take_off_sale, :duplicate ], AthenaPerformance,  :producer_pid => user.person.id
 
-      cannot [ :edit, :destroy ], AthenaPerformance, :on_sale  => true
-      cannot [ :edit, :destroy ], AthenaPerformance, :tickets_created => true
+      cannot [ :edit, :destroy ], AthenaPerformance, :on_sale? => true
+      cannot [ :edit, :destroy ], AthenaPerformance, :built? => true
 
       # Charts
       can :manage, AthenaChart, :producer_pid => user.person.id

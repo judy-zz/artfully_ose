@@ -30,9 +30,8 @@ class PerformancesController < ApplicationController
     @performance.update_attributes(params[:athena_performance][:athena_performance])
 
     @performance.producer_pid = current_user.athena_id
-    
     @performance.event = @event
-    @performance.tickets_created = 'false'
+
     if @performance.valid? && @performance.save
       session[:performance] = nil
       flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time
@@ -78,27 +77,27 @@ class PerformancesController < ApplicationController
   def destroy
     @performance = AthenaPerformance.find(params[:id])
     authorize! :destroy, @performance
-    
+
     @performance.destroy
     redirect_to event_url(@performance.event)
   end
-  
+
   def put_on_sale
     @performance = AthenaPerformance.find(params[:id])
     authorize! :put_on_sale, @performance
-    
+
     if @performance.tickets.empty?
       flash[:error] = 'Please create tickets for this performance before putting it on sale'
       redirect_to performance_url(@performance) and return
     end
-    
+
     with_confirmation do
       @performance.put_on_sale
       flash[:notice] = 'Your performance is on sale!'
       redirect_to performance_url(@performance) and return
     end
   end
-  
+
   def take_off_sale
     @performance = AthenaPerformance.find(params[:id])
     authorize! :take_off_sale, @performance
@@ -127,9 +126,9 @@ class PerformancesController < ApplicationController
         yield
       end
     end
-    
+
     def without_tickets
-      if @performance.tickets_created?
+      if @performance.built?
         flash[:alert] = 'Tickets have already been created for this performance'
         redirect_to event_url(@performance.event) and return
       else

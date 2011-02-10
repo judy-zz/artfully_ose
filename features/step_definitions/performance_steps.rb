@@ -13,13 +13,13 @@ Then /^I should see (\d+) [Pp]erformances$/ do |count|
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance has had tickets created$/ do |pos|
-  current_performances[pos.to_i - 1].tickets_created = true
+  current_performances[pos.to_i - 1].state = "built"
   body = current_performances.collect { |p| p.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance is on sale$/ do |pos|
-  current_performances[pos.to_i - 1].on_sale = true
+  current_performances[pos.to_i - 1].state = "on_sale"
   body = current_performances.collect { |p| p.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
 end
