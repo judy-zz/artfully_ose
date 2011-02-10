@@ -11,10 +11,10 @@ class AthenaTicketFactory < AthenaResource::Base
     attribute 'producerId', :string
     attribute 'datetime', :string
   end
-  
+
   def self.for_performance(performance)
     @factory = AthenaTicketFactory.new(performance.attributes)
-    @factory.save
+    performance.build! if @factory.save
   end
-  
+
 end

@@ -11,6 +11,7 @@
         %th Date
         %th Time
         %th Chart
+        %th Status
         %th Actions
         %th Tickets
     %tbody
@@ -27,6 +28,7 @@
             %td= performance.formatted_performance_date
             %td= performance.formatted_performance_time
             %td= link_to performance.chart.name, chart_path(performance.chart) unless performance.chart.nil?
+            %td= performance.state.titleize
             %td.actions
               = table_icon_link_to :view, performance_path(performance)
               = table_icon_link_to :copy, duplicate_performance_path(performance)

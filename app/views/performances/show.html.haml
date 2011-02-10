@@ -22,11 +22,9 @@
 .clearboth
 
 .tickets
-  - if !@performance.built?
-    %p
-      You have not created tickets for this event.
-    %p
-      =link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
+  - if @performance.pending?
+    %p You have not created tickets for this event.
+    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
   - else
     = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
       %div
