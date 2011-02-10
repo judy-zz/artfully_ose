@@ -182,7 +182,7 @@ artfully.models = (function(){
       $form.submit(function(){
         var params = {
           'limit': $('#ticket-count').val(),
-          'performance': $(this).closest('.performance').data('performance').datetime,
+          'performanceId': $(this).closest('.performance').data('performance').id,
           'price': obj.price
         };
 
