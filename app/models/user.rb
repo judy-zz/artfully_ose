@@ -51,8 +51,7 @@ class User < ActiveRecord::Base
 
   def customer=(customer)
     unless customer.nil? or customer.id.nil?
-      @customer = customer
-      update_attribute(:customer_id, customer.id)
+      @customer, self.customer_id = customer, customer.id
       save
     end
   end

@@ -1,8 +1,14 @@
 - content_for :header do
   %h1 New Credit Card
 
+= render "shared/error_messages", :target => @customer
 = render "shared/error_messages", :target => @credit_card
+
 = form_for @credit_card, :url => credit_cards_path do |form|
+  #customer
+    - if current_user.customer.nil?
+      %h3 Customer Information
+      = render :partial => 'athena_customers/form', :locals => { :parent_form => form, :target => @customer }
   #credit_card
     %h3 Credit Card Information
     = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => form, :target => @credit_card }

@@ -7,15 +7,21 @@ class CreditCardsController < ApplicationController
 
   def new
     @credit_card = AthenaCreditCard.new
+    @customer = AthenaCustomer.new if current_user.customer.nil?
   end
 
   def create
+    @customer = build_customer
+
     @credit_card = AthenaCreditCard.new(params[:athena_credit_card][:athena_credit_card])
+    @credit_card.customer = @customer
+
     if @credit_card.save
       redirect_to credit_cards_url, :notice => "Your card was saved."
     else
       render :new and return
     end
+
   end
 
   def edit
@@ -38,4 +44,13 @@ class CreditCardsController < ApplicationController
     @credit_card.destroy
     redirect_to credit_cards_url
   end
+
+  private
+    def build_customer
+      if current_user.customer.nil?
+        current_user.customer = AthenaCustomer.create(params[:athena_credit_card][:athena_customer])
+      end
+
+      current_user.customer
+    end
 end
