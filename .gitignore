@@ -3,7 +3,6 @@ db/*.sqlite3
 log/*.log
 tmp/**/*
 db/schema.rb
-Gemfile.lock
 *.swp
 .DS_Store
 nbproject
