@@ -249,6 +249,10 @@ artfully.models = (function(){
           $amount = $(document.createElement('input')).attr({'name':'donation[amount]'}),
           $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Add Donation'});
 
+      $form.submit(function(){
+        artfully.widgets.cart.show();
+      });
+
       $form.append($amount)
            .append($producer)
            .append($submit)
