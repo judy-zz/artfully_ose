@@ -159,7 +159,7 @@ jQuery(document).ready(function() {
   ); // The fade function
 
   //sortable, portlets
-  jQuery(".column").sortable({
+  jQuery(".ui-sortable").sortable({
     connectWith: '.column',
     placeholder: 'ui-sortable-placeholder',
     forcePlaceholderSize: true,
@@ -175,7 +175,7 @@ jQuery(".minimized").hide();
     jQuery(this).parents(".portlet:first, .portlet2:first ").find(".portlet-content").toggle();
   });
 
-  jQuery(".column").disableSelection();
+  //jQuery(".column").disableSelection();
 
   jQuery("table.stats").each(function() {
     if(jQuery(this).attr('rel')) { var statsType = jQuery(this).attr('rel'); }
