@@ -1,4 +1,16 @@
 Artfully::Application.routes.draw do
+
+  scope :module => :api do
+    constraints :subdomain => "api" do
+      resources :events, :only => :show
+    end
+  end
+
+  namespace :admin do
+    root :to => "index#index"
+    resources :users
+  end
+
   devise_for :users
 
   resources :organizations
@@ -20,11 +32,6 @@ Artfully::Application.routes.draw do
 
   resource :order, :defaults => { :format => :widget }, :only => [:show, :create, :update, :destroy ]
   resource :checkout
-
-  namespace :admin do
-    root :to => "index#index"
-    resources :users
-  end
 
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart

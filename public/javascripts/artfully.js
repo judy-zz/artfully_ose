@@ -1,6 +1,6 @@
 (function(window, document, undefined){
   Config = {
-    base_uri: 'http://localhost:3000/',
+    base_uri: 'http://api.lvh.me:3000/',
     maxHeight: '400'
   };
 

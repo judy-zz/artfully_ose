@@ -23,7 +23,7 @@ group :test, :development do
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'launchy'
-  gem 'awesome_print'
+  gem 'awesome_print', :require => 'ap'
   gem 'uuid'
   gem 'faker'
   gem 'jasmine'

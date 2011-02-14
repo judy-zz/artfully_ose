@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-  before_filter :authenticate_user!, :except => [ :show ]
+  before_filter :authenticate_user!
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -33,18 +33,9 @@ class EventsController < ApplicationController
 
   def show
     @event = AthenaEvent.find(params[:id])
-    authorize! :view, @event unless request.format == "jsonp"
     @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
-
-    if user_signed_in?
-      @charts = AthenaChart.find_templates_by_producer(current_user.person.id).sort_by { |chart| chart.name }
-      @chart = AthenaChart.new
-    end
-
-    respond_to do |format|
-      format.html
-      format.jsonp  { render_jsonp @event.to_widget_json }
-    end
+    @charts = AthenaChart.find_templates_by_producer(current_user.person.id).sort_by { |chart| chart.name }
+    @chart = AthenaChart.new
   end
 
   def new
