@@ -1,5 +1,5 @@
 class ChartsController < ApplicationController
-  before_filter :authenticate_user!, :except => [ :show ]
+  before_filter :authenticate_user!
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -31,10 +31,6 @@ class ChartsController < ApplicationController
   def show
     @chart = AthenaChart.find(params[:id])
     authorize! :view, @chart
-    respond_to do |format|
-      format.html
-      format.jsonp  { render_jsonp @chart.to_json }
-    end
   end
 
   def edit

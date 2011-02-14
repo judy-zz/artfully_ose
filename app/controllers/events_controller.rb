@@ -21,18 +21,14 @@ class EventsController < ApplicationController
   end
 
   def index
+    authorize! :view, AthenaEvent
     user = params[:user_id].blank?? current_user : User.find(params[:user_id])
     @events = AthenaEvent.find(:all, :params => { :producerPid => "eq#{user.person.id}" })
-    authorize! :view, AthenaEvent
-
-    respond_to do |format|
-      format.html
-      format.jsonp  { render_jsonp @events.to_json }
-    end
   end
 
   def show
     @event = AthenaEvent.find(params[:id])
+    authorize! :view, @event
     @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
     @charts = AthenaChart.find_templates_by_producer(current_user.person.id).sort_by { |chart| chart.name }
     @chart = AthenaChart.new
