@@ -92,7 +92,7 @@ class PerformancesController < ApplicationController
     end
 
     with_confirmation do
-      @performance.put_on_sale
+      @performance.put_on_sale!
       flash[:notice] = 'Your performance is on sale!'
       redirect_to performance_url(@performance) and return
     end
