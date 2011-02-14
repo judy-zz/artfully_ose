@@ -24,6 +24,7 @@
       default: "%B %d, %Y %I:%M %p"
       short: "%m/%d/%Y %I:%M %p"
       long: "%B %d, %Y %I:%M %p"
+      long_with_day: "%A, %b, %d %Y %I:%M %p"
     am: "am"
     pm: "pm"
 

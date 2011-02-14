@@ -1,18 +1,19 @@
-.two_third.column
-  %ul.dash
-    = render :partial => 'shared/menu_item', :locals => { :title => 'View this event', :href_path => event_path(@event), :icon_path => 'icons/dashboard/1.png', :text => 'View this event' }
-    = render :partial => 'shared/menu_item', :locals => { :title => 'Edit this performance', :href_path => edit_performance_path(@performance), :icon_path => 'icons/dashboard/2.png', :text => 'Edit' } if can?(:edit, @performance)
-    = render :partial => 'shared/menu_item', :locals => { :title => 'Duplicate this performance', :href_path => duplicate_performance_path(@performance), :icon_path => 'icons/dashboard/48.png', :text => 'Duplicate' }
-    - if @performance.on_sale?
-      = render :partial => 'shared/menu_item', :locals => { :title => 'Take off sale', :href_path => take_performance_off_sale_path(@performance), :icon_path => 'icons/dashboard/Gray/87.png', :text => 'Take off sale' }
-    -else
-      = render :partial => 'shared/menu_item', :locals => { :title => 'Put on sale', :href_path => put_performance_on_sale_path(@performance), :icon_path => 'icons/dashboard/87.png', :text => 'Put on sale' }
-  %h1.free
-    :erb
-      <%=@performance.day_of_week%>, <%=@performance.formatted_performance_date%> <%=@performance.formatted_performance_time%>
+- content_for :header do
+  %h1= l @performance.datetime, :format => :long_with_day
   .event-name=@event.name
   .venue-name=@event.venue
   .producer-name=@event.producer
+
+= contextual_menu do |m|
+  - m.item_to "Event", event_path(@event), :title => "New Event", :icon => "icons/light/Gear.png"
+  - m.item_to "Edit", edit_performance_path(@performance), :icon => "icons/light/Writing.png"
+  - m.item_to "Duplicate", duplicate_performance_path(@performance), :icon => "icons/light/Scanner.png"
+  - m.item_to "Put on Sale", put_performance_on_sale_path(@performance) unless @performance.on_sale?
+  - m.item_to "Take off Sale", put_performance_on_sale_path(@performance) if @performance.on_sale?
+
+.clearboth
+
+.two_third.column
 .one_third.column.last
   .stats
     =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
@@ -21,14 +22,13 @@
     =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
 .clearboth
 
-.tickets
-  - if @performance.pending?
-    %p You have not created tickets for this event.
-    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
-  - else
-    = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
-      %div
-        Bulk actions:
-        =select_tag "bulk_action", "<option value='PUT_ON_SALE'>Put on Sale</option><option value='TAKE_OFF_SALE'>Take off Sale</option><option value='DELETE'>Delete</option>".html_safe
-        =submit_tag "GO"
-      =render :partial => 'ticket_table', :locals => { :performance => @performance }
+- if @performance.pending?
+  %p You have not created tickets for this event.
+  %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
+- else
+  = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
+    %div
+      Bulk actions:
+      =select_tag "bulk_action", "<option value='PUT_ON_SALE'>Put on Sale</option><option value='TAKE_OFF_SALE'>Take off Sale</option><option value='DELETE'>Delete</option>".html_safe
+      =submit_tag "GO"
+    =render :partial => 'ticket_table', :locals => { :performance => @performance }

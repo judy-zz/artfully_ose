@@ -1,14 +1,12 @@
 - content_for :header do
   %h1= @event.name
 
-%ul.dash
-  = render :partial => 'shared/menu_item', :locals => { :title => 'Edit this event', :href_path => edit_event_path(@event), :icon_path => 'icons/dashboard/2.png', :text => 'Edit' }
-  %li{:title=>'Add new performance'}
-    %a{:href=>new_event_performance_path(@event), :class=>'new-performance-link'}
-      =image_tag ('icons/dashboard/112.png')
-      %span
-        New performance
-  
+= contextual_menu do |m|
+  - m.item_to "Events", events_path, :title => "Events", :icon => "icons/light/Gear.png"
+  - m.item_to "New Event", new_event_path, :title => "New Event", :icon => "icons/light/Writing.png"
+  - m.item_to "Edit Event", edit_event_path(@event), :icon => "icons/light/Wrench.png"
+  - m.item_to "New Performance", new_event_performance_path(@event), :icon => "icons/light/Media-Player.png"
+
 .clearboth
 
 .venue-name= @event.venue

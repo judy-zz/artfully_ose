@@ -1,10 +1,4 @@
-.userinfo.minibox
-  %span
-  - if user_signed_in?
-    .text
-      %h2= current_user.email
+.userTab
+  .text
+    %strong= current_user.email
     = link_to "Sign out", destroy_user_session_path
-  - else
-    = link_to "Sign up", new_user_registration_path
-    or
-    = link_to "sign in", new_user_session_path

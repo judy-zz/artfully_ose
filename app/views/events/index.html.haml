@@ -1,14 +1,12 @@
 - content_for :header do
   %h1 Events
 
-%ul.dash
-  %li
-    =link_to new_event_path do
-      = image_tag "icons/dashboard/2.png"
-      %span New Event
-.clearboth
+= contextual_menu do |m|
+  - m.item_to "Events", events_path, :title => "Events", :icon => "icons/light/Gear.png"
+  - m.item_to "New Event", new_event_path, :title => "New Event", :icon => "icons/light/Writing.png"
+
 - unless @events.blank?
-  %table.normal.tablesorter
+  %table.normal.tablesorter.fullwidth
     %thead
       %tr
         %th Name

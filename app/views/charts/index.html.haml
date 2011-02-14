@@ -1,15 +1,10 @@
 - content_for :header do
   %h1 Seat &amp; Price Templates
 
-  %ul.dash
-    %li
-      =link_to charts_path do
-        = image_tag "icons/dashboard/1.png"
-        %span Charts
-    %li
-      =link_to new_chart_path do
-        = image_tag "icons/dashboard/2.png"
-        %span New Chart
+
+= contextual_menu do |m|
+  - m.item_to "Charts", charts_path, :title => "Charts", :icon => "icons/light/Gear.png"
+  - m.item_to "New Chart", new_chart_path, :title => "New Chart", :icon => "icons/light/Writing.png"
 
 .clearboth
 

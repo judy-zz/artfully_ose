@@ -34,10 +34,11 @@
             -# <img src="/images/helpbtn/helpLeft.jpg" width="12" height="93"><a href="http://artfully.brandonstore.com/Help"><img src="/images/helpbtn/helpRight.jpg" width="36" height="84"></a>
         #primary_right
           .inner
-            .two_third.column
-              = yield :header
-            .one_third.column.last
-              = render :partial => 'layouts/session_nav'
+            .headerStrip
+              .two_third.column
+                = yield :header
+              .one_third.column.last
+                = render :partial => 'layouts/session_nav'
 
             .clearboth
 

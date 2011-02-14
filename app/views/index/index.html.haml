@@ -1,17 +1,8 @@
-%ul.dash
-  %li
-    = link_to kits_path do
-      = image_tag "icons/dashboard/15.png"
-      %span Kits
-  %li
-    =link_to credit_cards_path do
-      = image_tag "icons/dashboard/2.png"
-      %span Credit Cards
-  %li
-    =link_to charts_path do
-      = image_tag "icons/dashboard/1.png"
-      %span Charts
-  %li
-    =link_to events_path do
-      = image_tag "icons/dashboard/1.png"
-      %span Events
+-content_for :header do
+  %h1 Dashboard
+
+= contextual_menu do |m|
+  - m.item_to "Kits", kits_path, :title => "Events", :icon => "icons/light/TuneUp-Utilities.png"
+  - m.item_to "Credit Cards", credit_cards_path, :title => "New Event", :icon => "icons/light/Personal.png"
+  - m.item_to "Charts", charts_path, :title => "Charts", :icon => "icons/light/Gear.png"
+  - m.item_to "Events", events_path, :title => "Events", :icon => "icons/light/Gear.png"
