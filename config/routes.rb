@@ -3,6 +3,7 @@ Artfully::Application.routes.draw do
   scope :module => :api do
     constraints :subdomain => "api" do
       resources :events, :only => :show
+      resources :tickets, :only => :index
     end
   end
 
@@ -18,8 +19,6 @@ Artfully::Application.routes.draw do
   resources :credit_cards, :except => :show
 
   resources :people, :only => [:index, :show, :edit, :update]
-
-  resources :tickets, :only => :index
   resources :performances
 
   resources :events do

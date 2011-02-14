@@ -5,13 +5,6 @@ class TicketsController < ApplicationController
     redirect_to root_path
   end
 
-  def index
-    @tickets = AthenaTicket.search(params)
-    respond_to do |format|
-      format.jsonp  { render_jsonp @tickets.to_json }
-    end
-  end
-
   def bulk_edit
     authorize! :bulk_edit, :tickets
     with_confirmation do
