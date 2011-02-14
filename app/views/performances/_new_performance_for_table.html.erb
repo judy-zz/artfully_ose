@@ -3,6 +3,7 @@
     <tr id="new-performance-row" <%=@performance.chart_id.blank? ? "style='display:none'" : ''%>>
       <td style="padding:2px 0px"></td>
       <td style="padding:2px 0px">
+        <%= form.hidden_field :timezone, { :value => event.time_zone } %>
         <%
           clazz = 'datepicker hasDatePicker'
           if !session[:performance].nil?
@@ -21,6 +22,7 @@
         <%=form.select :chart_id, options_from_collection_for_select(event.charts, "id", "name", default_chart_id_as_s) %>
       </td>
       <td colspan="2" style="padding:2px 0px; text-align:right">
+        
         <%= form.submit "Submit" %>
         <%= form.submit "Cancel", {:class=>'cancel-new-performance-link'} %>
       </td>

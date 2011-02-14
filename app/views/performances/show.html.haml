@@ -9,7 +9,7 @@
       = render :partial => 'shared/menu_item', :locals => { :title => 'Put on sale', :href_path => put_performance_on_sale_path(@performance), :icon_path => 'icons/dashboard/87.png', :text => 'Put on sale' }
   %h1.free
     :erb
-      <%=@performance.day_of_week%>, <%=@performance.formatted_performance_date%> <%=@performance.formatted_performance_time%>
+      <%=@performance.day_of_week%>, <%=@performance.formatted_performance_date%> <%=@performance.formatted_performance_time2(@event.time_zone)%>
   .event-name=@event.name
   .venue-name=@event.venue
   .producer-name=@event.producer

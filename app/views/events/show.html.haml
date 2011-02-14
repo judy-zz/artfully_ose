@@ -1,6 +1,5 @@
 - content_for :header do
   %h1= @event.name
-
 %ul.dash
   = render :partial => 'shared/menu_item', :locals => { :title => 'Edit this event', :href_path => edit_event_path(@event), :icon_path => 'icons/dashboard/2.png', :text => 'Edit' }
   %li{:title=>'Add new performance'}
@@ -14,7 +13,7 @@
 .venue-name= @event.venue
 .producer-name= @event.producer
 .venue-location= [@event.city + ',', @event.state].join " "
-
+.venue_time_zone= @event.time_zone
 = render :partial => 'events/performances', :locals => { :event => @event, :performance=>@performance }
 
 .clearboth

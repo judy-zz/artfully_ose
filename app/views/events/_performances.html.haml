@@ -1,4 +1,6 @@
 = render "shared/error_messages", :target => @performance
+:erb
+  <%= Time.zone %>
 
 .sub-container#performance-container
   %h2 Performances
@@ -25,7 +27,7 @@
           %tr{:class => (performance.on_sale? ? "selected" : nil)}
             %td.day-of-week-display= performance.day_of_week
             %td= performance.formatted_performance_date
-            %td= performance.formatted_performance_time
+            %td= performance.formatted_performance_time2(event.time_zone)
             %td= link_to performance.chart.name, chart_path(performance.chart) unless performance.chart.nil?
             %td.actions
               = table_icon_link_to :view, performance_path(performance)

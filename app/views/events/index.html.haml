@@ -1,6 +1,7 @@
 - content_for :header do
   %h1 Events
-
+:erb
+  <%= Time.zone %>
 %ul.dash
   %li
     =link_to new_event_path do
@@ -24,4 +25,3 @@
           %td
             = table_icon_link_to :edit, edit_event_path(event) if can? :edit, event
             = table_icon_link_to :delete, event_path(event), :confirm => "Are you sure?", :method => :delete if can? :destroy, event
-

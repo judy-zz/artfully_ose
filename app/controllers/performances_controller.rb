@@ -35,7 +35,7 @@ class PerformancesController < ApplicationController
     @performance.tickets_created = 'false'
     if @performance.valid? && @performance.save
       session[:performance] = nil
-      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time
+      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time2(@event.time_zone)
       redirect_to event_url(@performance.event)
     else
       #render :action=>'new'

@@ -15,6 +15,7 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'chart_id', :string
     attribute 'producer_pid', :string
     attribute 'datetime', :string
+    attribute 'timezone', :string
     attribute 'tickets_created', :string
     attribute 'on_sale', :string
   end
@@ -71,23 +72,35 @@ class AthenaPerformance < AthenaResource::Base
     self.datetime.strftime("%A")
   end
 
-  def formatted_performance_time
-    self.datetime.strftime("%I:%M %p")
+  def formatted_performance_time2(time_zone) #time_zone is the name of the time zone
+    self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
   end
+
+#  def formatted_performance_time
+#    self.datetime.strftime("%I:%M %p %z")
+#  end
 
   def formatted_performance_date
     self.datetime.strftime("%b, %d %Y")
   end
 
-  def formatted_performance_date_for_input
-    self.datetime.strftime("%m/%d/%Y")
+#  def formatted_performance_date_for_input
+#    self.datetime.strftime("%m/%d/%Y")
+#  end
+
+  def formatted_performance_date_for_input2
+    self.datetime.in_time_zone(attributes['timezone']).strftime("%m/%d/%Y")
+  end
+
+  def formatted_time(time_zone)
+    self.datetime.in_time_zone(time_zone)
   end
 
   def parsed_datetime
     if self.datetime.nil?
       nil
     else
-      DateTime.parse(self.datetime)
+      DateTime.parse(self.datetime.in_time_zone(attributes['timezone']))
     end
   end
 
@@ -105,7 +118,8 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def datetime
-    attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
+    Time.zone = attributes['timezone']
+    attributes['datetime'] = Time.zone.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
   end
 
@@ -146,14 +160,20 @@ class AthenaPerformance < AthenaResource::Base
       tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact
     end
 
-
     def prepare_attr!(attributes)
       #TODO: We need to set the correct time zone to whatever zone they're in
       unless attributes.blank? || attributes['datetime'].blank?
         temp_date_only = Date.strptime(attributes.delete('datetime'), "%m/%d/%Y")
         hour = attributes['datetime(4i)']
         minute = attributes['datetime(5i)']
-        attributes['datetime'] = DateTime.parse("#{temp_date_only.year}-#{temp_date_only.month}-#{temp_date_only.day}T#{hour}:#{minute}:00-04:00")
+        
+        #offset = attributes['timezone']
+        #parsed_date_time = DateTime.parse("#{temp_date_only.year}-#{temp_date_only.month}-#{temp_date_only.day}T#{hour}:#{minute}#{offset}")
+        #parsed_date_time.change( :offset => parsed_date_time.formatted_offset(offset) ) #set the time zone
+
+        #Time.zone = offset
+        Time.zone = attributes['timezone']
+        attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
       else
         attributes['datetime'] = nil
       end
@@ -167,5 +187,6 @@ class AthenaPerformance < AthenaResource::Base
       attributes.delete('datetime(3i)')
       attributes.delete('datetime(4i)')
       attributes.delete('datetime(5i)')
+      attributes.delete('timezone')
     end
 end
