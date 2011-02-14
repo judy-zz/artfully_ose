@@ -76,6 +76,10 @@ class AthenaPerformance < AthenaResource::Base
     self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
   end
 
+#  def formatted_performance_time3 #time_zone is the name of the time zone
+#    self.datetime.in_time_zone(attributes['timezone']).strftime("%I:%M %p")
+#  end
+
 #  def formatted_performance_time
 #    self.datetime.strftime("%I:%M %p %z")
 #  end
@@ -95,6 +99,10 @@ class AthenaPerformance < AthenaResource::Base
   def formatted_time(time_zone)
     self.datetime.in_time_zone(time_zone)
   end
+
+#  def formatted_time2
+#    self.datetime.in_time_zone(attributes['timezone'])
+#  end
 
   def parsed_datetime
     if self.datetime.nil?
@@ -166,12 +174,6 @@ class AthenaPerformance < AthenaResource::Base
         temp_date_only = Date.strptime(attributes.delete('datetime'), "%m/%d/%Y")
         hour = attributes['datetime(4i)']
         minute = attributes['datetime(5i)']
-        
-        #offset = attributes['timezone']
-        #parsed_date_time = DateTime.parse("#{temp_date_only.year}-#{temp_date_only.month}-#{temp_date_only.day}T#{hour}:#{minute}#{offset}")
-        #parsed_date_time.change( :offset => parsed_date_time.formatted_offset(offset) ) #set the time zone
-
-        #Time.zone = offset
         Time.zone = attributes['timezone']
         attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
       else
@@ -187,6 +189,5 @@ class AthenaPerformance < AthenaResource::Base
       attributes.delete('datetime(3i)')
       attributes.delete('datetime(4i)')
       attributes.delete('datetime(5i)')
-      attributes.delete('timezone')
     end
 end

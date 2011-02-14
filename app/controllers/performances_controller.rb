@@ -33,6 +33,7 @@ class PerformancesController < ApplicationController
     
     @performance.event = @event
     @performance.tickets_created = 'false'
+    @performance.timezone = @event.time_zone
     if @performance.valid? && @performance.save
       session[:performance] = nil
       flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time2(@event.time_zone)
@@ -49,6 +50,7 @@ class PerformancesController < ApplicationController
     authorize! :view, @performance
 
     @event = AthenaEvent.find(@performance.event_id)
+    @performance.datetime = @performance.formatted_time(@event.time_zone)
     @performance.tickets = @performance.tickets
     respond_to do |format|
       format.html
@@ -59,6 +61,14 @@ class PerformancesController < ApplicationController
   def edit
     @performance = AthenaPerformance.find(params[:id])
     authorize! :edit, @performance
+    #strip time zone from time before displaying it
+    #the correct time zone will be re-attached by the prepare_attr! method
+    @event = AthenaEvent.find(@performance.event_id)
+    @performance.timezone = @event.time_zone
+    @performance.datetime = @performance.datetime.in_time_zone(@performance.timezone)
+    hour = @performance.datetime.hour
+    min = @performance.datetime.min
+    @performance.datetime = @performance.datetime.to_date.to_datetime.change(:hour=>hour, :min=>min)
   end
 
   def update

@@ -11,9 +11,10 @@
   %p
     = event_form.label :state, "State"
     = event_form.select :state, options_for_select( target.valid_locales, target.state )
-  %p
+  %p    
     = event_form.label :time_zone, "Time Zone"
-    = event_form.select :time_zone, options_for_select( target.us_time_zones, target.time_zone )
+    = event_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones
+    -#    = event_form.select :time_zone, options_for_select( target.us_time_zones, target.time_zone )
   %p
     = event_form.label :producer, "Producer"
     = event_form.text_field :producer
