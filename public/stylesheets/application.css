@@ -224,14 +224,13 @@ opacity:0;
 
 #primary_right .inner {
   clear:both;
-  float:left;
   padding:30px;
   margin-left:230px;
   position:relative;
   background-color:#F0F0F0;
   min-height:1000px;
-  width: auto;
-
+  right:0;
+  max-width:1600px;
 }
 
 /* --- 4.x NOTIFICATIONS --- */
