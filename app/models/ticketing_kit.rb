@@ -1,6 +1,5 @@
 class TicketingKit < Kit
-  acts_as_kit :for => User, :with_approval => false do
-
+  acts_as_kit :with_approval => false do
     activate_kit :unless => :no_cards?
     activate_kit :unless => :no_organization?
 

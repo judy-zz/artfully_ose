@@ -12,29 +12,29 @@ describe TicketingKit do
     it "should start in the new state" do
       subject.should be_new
     end
+  end
 
-    describe "requirements" do
-      it "should not transition to activated if the user does not have a credit card" do
-        subject.user.stub!(:credit_cards).and_return([])
-        subject.activate!
-        subject.should_not be_activated
-      end
+  describe "requirements" do
+    it "should not transition to activated if the user does not have a credit card" do
+      subject.user.stub!(:credit_cards).and_return([])
+      subject.activate!
+      subject.should_not be_activated
+    end
 
-      it "should add an errror message to requirements if the user does not have a credit card" do
-        subject.user.stub!(:credit_cards).and_return([])
-        subject.activate!
-        subject.errors.should have(1).error
-      end
+    it "should add an errror message to requirements if the user does not have a credit card" do
+      subject.user.stub!(:credit_cards).and_return([])
+      subject.activate!
+      subject.errors.should have(1).error
+    end
 
-      it "should not transition to activated if the user does not belong to an organization" do
-        subject.activate!
-        subject.should_not be_activated
-      end
+    it "should not transition to activated if the user does not belong to an organization" do
+      subject.activate!
+      subject.should_not be_activated
+    end
 
-      it "should add an errror message to requirements if the user does not belong to an organization" do
-        subject.activate!
-        subject.errors.should have(1).error
-      end
+    it "should add an errror message to requirements if the user does not belong to an organization" do
+      subject.activate!
+      subject.errors.should have(1).error
     end
 
     it "should change from activated to cancelled when cancelled" do
