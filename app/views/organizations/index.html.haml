@@ -13,5 +13,5 @@
   %tbody
     - @organizations.each do |organization|
       %tr
-        %td= organization.name
-        %td= l organization.created_at
+        %td= link_to organization.name, organization
+        %td= l organization.created_at, :format => :short

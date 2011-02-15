@@ -1,0 +1,6 @@
+- content_for :header do
+  %h1= @organization.name
+
+= contextual_menu do |m|
+  - m.item_to "Ticketing Kit", kits_path(:type => "TicketingKit"), :method => :post
+  - m.item_to "Donation Kit", kits_path(:type => "DonationKit"), :method => :post
