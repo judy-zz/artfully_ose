@@ -1,18 +1,16 @@
 - content_for :header do
   %h1= @event.name
-
 = contextual_menu do |m|
   - m.item_to "Events", events_path, :title => "Events", :icon => "icons/light/Gear.png"
   - m.item_to "New Event", new_event_path, :title => "New Event", :icon => "icons/light/Writing.png"
   - m.item_to "Edit Event", edit_event_path(@event), :icon => "icons/light/Wrench.png"
   - m.item_to "New Performance", new_event_performance_path(@event), :icon => "icons/light/Media-Player.png"
-
 .clearboth
 
 .venue-name= @event.venue
 .producer-name= @event.producer
 .venue-location= [@event.city + ',', @event.state].join " "
-
+.venue_time_zone= @event.time_zone
 = render :partial => 'events/performances', :locals => { :event => @event, :performance=>@performance }
 
 .clearboth

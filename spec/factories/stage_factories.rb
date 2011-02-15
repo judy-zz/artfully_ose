@@ -48,6 +48,7 @@ Factory.define :athena_event, :default_strategy => :build do |e|
   e.city "Some City"
   e.state "Some State"
   e.producer "Some Producer"
+  e.time_zone "Hawaii"
   e.producer_pid { Factory(:athena_person_with_id).id }
 end
 

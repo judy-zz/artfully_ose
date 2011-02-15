@@ -22,4 +22,3 @@
           %td
             = table_icon_link_to :edit, edit_event_path(event) if can? :edit, event
             = table_icon_link_to :delete, event_path(event), :confirm => "Are you sure?", :method => :delete if can? :destroy, event
-

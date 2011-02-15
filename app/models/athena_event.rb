@@ -9,11 +9,12 @@ class AthenaEvent < AthenaResource::Base
     attribute 'venue', :string
     attribute 'state', :string
     attribute 'city', :string
+    attribute 'time_zone', :string
     attribute 'producer', :string
     attribute 'producer_pid', :string
   end
 
-  validates_presence_of :name, :venue, :city, :state, :producer, :producer_pid
+  validates_presence_of :name, :venue, :city, :state, :time_zone, :producer, :producer_pid
 
   def charts
     @attributes['charts'] ||= find_charts
@@ -101,6 +102,17 @@ class AthenaEvent < AthenaResource::Base
       "Wisconsin"=>"WI",
       "West Virginia"=>"WV", 
       "Wyoming"=>"WY"}
+  end
+
+  def us_time_zones
+    [ "Hawaii",
+      "Alaska",
+      "Pacific Time (US & Canada)",
+      "Arizona",
+      "Mountain Time (US & Canada)",
+      "Central Time (US & Canada)",
+      "Eastern Time (US & Canada)",
+      "Indiana (East)" ]
   end
 
   private

@@ -16,18 +16,19 @@ describe AthenaPerformance do
     subject.day_of_week.should eql subject.datetime.strftime("%A")
   end
 
-  it "should accept a string as datetime" do
-    subject.datetime = '2010-03-03T02:02:02-04:00'
-    subject.datetime.kind_of?(DateTime).should be_true
-  end
+#  it "should accept a string as datetime" do
+#    subject.datetime = '2010-03-03T02:02:02-04:00'
+#    subject.datetime.kind_of?(DateTime).should be_true
+#  end
 
   it "should accept a DateTime as datetime" do
     subject.datetime = DateTime.parse('2010-03-03T02:02:02-04:00')
     subject.datetime.kind_of?(DateTime).should be_true
   end
-
+  
   it "should parse the datetime attribute to a DateTime object" do
-    subject.datetime.kind_of?(DateTime).should be_true
+    #subject.datetime.kind_of?(DateTime).should be_true
+    subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end
 
   describe "put on sale" do
