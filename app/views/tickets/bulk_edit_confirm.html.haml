@@ -11,7 +11,7 @@
   =pluralize(@selected_tickets.size, 'ticket')
 	
 %p
-  for the #{@performance.formatted_performance_date}, #{@performance.formatted_performance_time2(@performance.event.time_zone)} performance of
+  for the #{@performance.formatted_performance_date}, #{@performance.formatted_performance_time(@performance.event.time_zone)} performance of
 %p
   =@performance.event.name
 

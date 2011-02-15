@@ -30,13 +30,11 @@ class PerformancesController < ApplicationController
     @performance.update_attributes(params[:athena_performance][:athena_performance])
 
     @performance.producer_pid = current_user.athena_id
-    
     @performance.event = @event
     @performance.timezone = @event.time_zone
-
     if @performance.valid? && @performance.save
       session[:performance] = nil
-      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time2(@event.time_zone)
+      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time(@event.time_zone)
       redirect_to event_url(@performance.event)
     else
       #render :action=>'new'
@@ -61,7 +59,7 @@ class PerformancesController < ApplicationController
   def edit
     @performance = AthenaPerformance.find(params[:id])
     authorize! :edit, @performance
-     #strip time zone from time before displaying it
+    #strip time zone from time before displaying it
     #the correct time zone will be re-attached by the prepare_attr! method
     @event = AthenaEvent.find(@performance.event_id)
     @performance.timezone = @event.time_zone
