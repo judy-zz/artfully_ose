@@ -1,7 +1,7 @@
 class Kit < ActiveRecord::Base
   include ActiveRecord::Transitions
-  belongs_to :user
-  validates_presence_of :user
+  belongs_to :organization
+  validates_presence_of :organization
 
   after_initialize :set_state
 
@@ -10,7 +10,6 @@ class Kit < ActiveRecord::Base
   end
 
   def self.acts_as_kit(options, &block)
-    @kit_for = options.delete(:for) || User
     @with_approval = options.delete(:with_approval) || false
 
     state_machine do
