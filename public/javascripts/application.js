@@ -1,19 +1,6 @@
 jQuery.noConflict();
 var currentState = true; //collapse state
 
-window.onscroll = function()
-{
-    if( window.XMLHttpRequest ) {
-        if (document.documentElement.scrollTop > 0 || self.pageYOffset > 0) {
-            jQuery('#primary_left').css('position','fixed');
-            jQuery('#primary_left').css('top','0');
-        } else if (document.documentElement.scrollTop < 0 || self.pageYOffset < 0) {
-            jQuery('#primary_left').css('position','absolute');
-            jQuery('#primary_left').css('top','175px');
-        }
-    }
-}
-
 function initMenu() {
     jQuery('#menu ul ul').hide();
 
@@ -35,13 +22,7 @@ function initMenu() {
       }
 
 );
-
 }
-
-
-
-
-
 
 jQuery(document).ready(function() {
 
@@ -159,7 +140,7 @@ jQuery(document).ready(function() {
   ); // The fade function
 
   //sortable, portlets
-  jQuery(".ui-sortable").sortable({
+  jQuery(".sortable").sortable({
     connectWith: '.column',
     placeholder: 'ui-sortable-placeholder',
     forcePlaceholderSize: true,
@@ -174,8 +155,6 @@ jQuery(".minimized").hide();
     jQuery(this).toggleClass("ui-icon-minusthick");
     jQuery(this).parents(".portlet:first, .portlet2:first ").find(".portlet-content").toggle();
   });
-
-  //jQuery(".column").disableSelection();
 
   jQuery("table.stats").each(function() {
     if(jQuery(this).attr('rel')) { var statsType = jQuery(this).attr('rel'); }
@@ -210,4 +189,3 @@ jQuery(".minimized").hide();
   //Disable field labels (only use if labels are before!)
   jQuery("input:disabled"). prev().css("color","#e2e2e2");
 });
-
