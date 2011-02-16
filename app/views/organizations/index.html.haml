@@ -1,6 +1,10 @@
 - content_for :header do
   %h1 Organizations
 
+= contextual_menu do |m|
+  - m.item_to "Organizations", organizations_path
+  - m.item_to "New Organization", new_organization_path
+
 %table.normal.fullwidth
   %thead
     %tr
@@ -11,5 +15,3 @@
       %tr
         %td= organization.name
         %td= l organization.created_at
-
-= link_to "Create an Organization", new_organization_path

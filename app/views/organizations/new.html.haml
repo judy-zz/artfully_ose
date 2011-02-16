@@ -1,3 +1,12 @@
+- content_for :header do
+  %h1 New Organization
+
+= contextual_menu do |m|
+  - m.item_to "Organizations", organizations_path
+  - m.item_to "New Organization", new_organization_path
+
+.clearboth
+
 = form_for @organization do |f|
   = f.label :name
   = f.text_field :name
