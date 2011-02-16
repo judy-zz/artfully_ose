@@ -13,14 +13,12 @@
 
 .clearboth
 
-.two_third.column
-.one_third.column.last
-  .stats
-    =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
-    =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@performance.tickets_sold.size}
-    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @performance.gross_potential)}
-    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
-.clearboth
+.stats
+  =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
+  =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@performance.tickets_sold.size}
+  =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @performance.gross_potential)}
+  =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
+  .clearboth
 
 - if @performance.pending?
   %p You have not created tickets for this event.
