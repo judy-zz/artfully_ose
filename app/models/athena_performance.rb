@@ -17,7 +17,7 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'chart_id',         :string
     attribute 'producer_pid',     :string
     attribute 'datetime',         :string
-    attribute 'timezone', 		  :string
+    attribute 'timezone',         :string
     attribute 'state',            :string
   end
 
