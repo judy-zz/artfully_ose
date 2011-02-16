@@ -20,25 +20,12 @@ class Kit < ActiveRecord::Base
     @requirements ||= Hash.new { |h,k|  h[k] = [] }
   end
 
-  def self.grant(options)
-    grants[:roles] << options.delete(:role)
-    grant_procs << options.delete(:by)
-  end
-
-  def self.grants
-    @grants ||= Hash.new { |h,k|  h[k] = [] }
-  end
-
-  def self.grant_abilities(&block)
+  def self.when_active(&block)
     self.ability_proc = Proc.new(&block)
   end
 
   def abilities
     activated? ? self.class.ability_proc : Proc.new {}
-  end
-
-  def self.grant_procs
-    @grant_procs ||= []
   end
 
   def activatable?
@@ -53,20 +40,17 @@ class Kit < ActiveRecord::Base
   end
 
   protected
-    def on_activate
-      self.class.grant_procs.map { |g| g.call(self) }
-    end
 
+  private
     def check_requirements
       check_unlesses and check_ifs
     end
 
-  private
     def self.setup_state_machine
       state_machine do
         state :new
         state :pending
-        state :activated, :enter => :on_activate
+        state :activated
         state :cancelled
 
         event :activate do

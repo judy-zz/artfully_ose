@@ -11,6 +11,15 @@ When /^I fill in valid credit card details$/ do
   When %{I fill in "CVV" with "#{card.cvv}"}
 end
 
+Given /^I have (\d+) saved credit cards$/ do |quantity|
+  cards = quantity.to_i.times.collect { Factory(:credit_card_with_id) }
+  @customer = Factory(:customer_with_id)
+  @customer.credit_cards = cards
+  @current_user.customer = @customer
+  @current_user.save
+  FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
+end
+
 Given /^there are (\d+) saved credit cards for "([^"]*)"$/ do |quantity, email|
   cards = []
   quantity.to_i.times do

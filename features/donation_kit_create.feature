@@ -6,6 +6,6 @@ Feature: Donation Kit
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
     And I am on the organizations page
-    And I click on "Fractured Atlas"
+    When I click on "Fractured Atlas"
     And I click on "Donation Kit"
     Then I should see "Your request has been sent in for approval."

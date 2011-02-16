@@ -5,7 +5,9 @@ class Organization < ActiveRecord::Base
 
   validates_presence_of :name
 
-  scope :selected, where(:selected => true)
+  def owner
+    users.first
+  end
 
   delegate :can?, :cannot?, :to => :ability
   def ability

@@ -21,6 +21,14 @@ describe Organization do
     end
   end
 
+  describe ".owner" do
+    it "should return the first user as the owner of the organization" do
+      user = Factory(:user)
+      subject.users << user
+      subject.owner.should eq user
+    end
+  end
+
   describe "kits" do
     it "should attempt to activate the kit before saving" do
       kit = Factory(:ticketing_kit)
