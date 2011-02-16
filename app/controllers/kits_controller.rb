@@ -3,15 +3,17 @@ class KitsController < ApplicationController
 
   def index
     @kits = []
-    @kits << TicketingKit.new unless current_user.kits.any? { |kit| kit.is_a? TicketingKit }
+    #@kits << TicketingKit.new unless current_user.kits.any? { |kit| kit.is_a? TicketingKit }
   end
 
   def create
     @kit = Kit.new.becomes(Kernel.const_get(params[:type]))
     @kit.type = params[:type]
-    current_user.kits << @kit
+    current_user.current_organization.kits << @kit
     if @kit.activated?
-      flash[:notice] = "Congratulations, you've activated the ticketing kit"
+      flash[:notice] = "Congratulations, you've activated the #{params[:type]}"
+    elsif @kit.pending?
+      flash[:notice] = "Your request has been sent in for approval."
     else
       flash[:error] = @kit.errors[:requirements].join(", ")
     end

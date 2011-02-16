@@ -7,7 +7,7 @@
       %th Name
       %th Status
   %tbody
-    - current_user.kits.each do |kit|
+    - current_user.current_organization.kits.each do |kit|
       %tr
         %td= kit.class
         %td

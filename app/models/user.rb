@@ -43,6 +43,10 @@ class User < ActiveRecord::Base
     save
   end
 
+  def current_organization
+    organizations.first || Organization.new
+  end
+
   def customer
     @customer ||= find_customer
   end

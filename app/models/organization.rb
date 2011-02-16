@@ -5,6 +5,8 @@ class Organization < ActiveRecord::Base
 
   validates_presence_of :name
 
+  scope :selected, where(:selected => true)
+
   delegate :can?, :cannot?, :to => :ability
   def ability
     @ability ||= OrganizationAbility.new(self)

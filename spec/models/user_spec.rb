@@ -139,7 +139,18 @@ describe User do
   end
 
   describe "organizations" do
+    let(:organization) { Factory(:organization) }
+
     it { should respond_to :organizations }
     it { should respond_to :memberships }
+
+    it "should return the first organization as the current organization" do
+      subject.organizations << organization
+      subject.current_organization.should eq organization
+    end
+
+    it "should return a new organization if the user does not belong to any" do
+      subject.current_organization.should be_new_record
+    end
   end
 end
