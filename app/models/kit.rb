@@ -5,12 +5,6 @@ class Kit < ActiveRecord::Base
 
   class_attribute :requires_approval, :ability_proc
 
-#  after_initialize :set_state
-
-#  def set_state
-#    self.state = "new"
-#  end
-
   def self.acts_as_kit(options, &block)
     self.requires_approval = options.delete(:with_approval) || false
     setup_state_machine
