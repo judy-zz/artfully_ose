@@ -11,9 +11,8 @@ Feature: Ticketing Kit
     And I create a new organization called "Fractured Atlas"
     And I am on the organizations page
     When I click on "Fractured Atlas"
-    And I click on "Donation Kit"
-    And I follow "Ticketing Kit"
-    Then I should see "Congratulations, you've activated the ticketing kit"
+    And I click on "Ticketing Kit"
+    Then I should see "Congratulations, you've activated the TicketingKit"
 
   Scenario: A user activates the ticketing kit without a credit card
     Given I am logged in

@@ -6,17 +6,10 @@
     %tr
       %th Name
       %th Status
+      %th Actions
   %tbody
-    - current_user.current_organization.kits.each do |kit|
-      %tr
-        %td= kit.class
-        %td
-          - if kit.activated?
-            = "Active"
-          - else
-            = link_to "Reactivate Ticketing Kit", kit_path(kit), :method => :put
-
     - @kits.each do |kit|
       %tr
-        %td= kit.class
-        %td= link_to "Activate Ticketing Kit", kits_path(:type => kit.type), :method => :post
+        %td= kit.type
+        %td= kit.state.titleize
+        %td= link_to "Reactivate #{kit.type}", kit_path(kit), :method => :put if !kit.activated? and !kit.pending?

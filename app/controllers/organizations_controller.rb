@@ -6,6 +6,7 @@ class OrganizationsController < ApplicationController
 
   def show
     @organization = Organization.find(params[:id])
+    @kits = @organization.kits
   end
 
   def new

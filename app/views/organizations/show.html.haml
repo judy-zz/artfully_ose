@@ -4,3 +4,18 @@
 = contextual_menu do |m|
   - m.item_to "Ticketing Kit", kits_path(:type => "TicketingKit"), :method => :post
   - m.item_to "Donation Kit", kits_path(:type => "DonationKit"), :method => :post
+
+.clearboth
+%h2 Kits
+%table.normal.fullwidth
+  %thead
+    %tr
+      %th Name
+      %th Status
+      %th Actions
+  %tbody
+    - @kits.each do |kit|
+      %tr
+        %td= kit.type
+        %td= kit.state.titleize
+        %td= link_to "Reactivate #{kit.type}", kit_path(kit), :method => :put if !kit.activated? and !kit.pending?
