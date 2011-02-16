@@ -1,0 +1,13 @@
+- content_for :header do
+  %h1 Organization
+
+%table.normal.fullwidth
+  %thead
+    %tr
+      %th Name
+      %th Created Date
+  %tbody
+    - @organizations.each do |organization|
+      %tr
+        %td= link_to organization.name, admin_organization_path(organization)
+        %td= l organization.created_at, :format => :short
