@@ -10,3 +10,10 @@ Feature: Organization Creation
     And I press "Create"
     Then I should see "My Organization has been created"
     And I should be a part of the organization "My Organization"
+
+    Scenario: A registered user creates an organization
+      Given I am logged in
+      And I am part of an organization "Fractured Atlas"
+      And I click on "Organizations"
+      When I click on "New Organization"
+      Then I should see "You can only join one organization at this time."
