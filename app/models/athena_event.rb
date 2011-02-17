@@ -12,7 +12,7 @@ class AthenaEvent < AthenaResource::Base
     attribute 'city', :string
     attribute 'time_zone', :string
     attribute 'producer', :string
-    attribute 'organization_id', :string
+    attribute 'organization_id', :integer
   end
 
   validates_presence_of :name, :venue, :city, :state, :producer, :organization_id, :time_zone
