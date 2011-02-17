@@ -1,0 +1,8 @@
+- content_for :header do
+  %h1= @organization.name
+
+= ap @organization.kits
+
+- @organization.kits.each do |kit|
+  - if kit.pending?
+    = link_to "Approve Donation Kit", activate_admin_organization_kit_path(@organization,kit), :method => :put

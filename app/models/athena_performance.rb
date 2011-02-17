@@ -32,7 +32,7 @@ class AthenaPerformance < AthenaResource::Base
     end
 
     event :put_on_sale do
-      transitions :from => [:built, :off_sale ], :to => :on_sale
+      transitions :from => [ :built, :off_sale ], :to => :on_sale
     end
 
     event :take_off_sale do

@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :organizations, :through => :memberships
 
-  has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
-
   before_save :create_record_in_athena_people, :if => lambda { self.person.nil? }
 
   # Include default devise modules. Others available are:
@@ -43,6 +41,10 @@ class User < ActiveRecord::Base
     raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
     @person, self.athena_id = person, person.id
     save
+  end
+
+  def current_organization
+    organizations.first || Organization.new
   end
 
   def customer

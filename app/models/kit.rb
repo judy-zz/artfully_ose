@@ -1,32 +1,13 @@
 class Kit < ActiveRecord::Base
   include ActiveRecord::Transitions
-  belongs_to :user
-  validates_presence_of :user
+  belongs_to :organization
+  validates_presence_of :organization
 
-  after_initialize :set_state
-
-  def set_state
-    self.state = "new"
-  end
+  class_attribute :requires_approval, :ability_proc
 
   def self.acts_as_kit(options, &block)
-    @kit_for = options.delete(:for) || User
-    @with_approval = options.delete(:with_approval) || false
-
-    state_machine do
-      state :new
-      state :activated, :enter => :on_activate
-      state :cancelled
-
-      event :activate do
-        transitions :from => :new, :to => :activated, :guard => :activatable?
-      end
-
-      event :cancel do
-        transitions :from => [:activated, :rejected ], :to => :cancelled
-      end
-    end
-
+    self.requires_approval = options.delete(:with_approval) || false
+    setup_state_machine
     class_eval(&block)
   end
 
@@ -39,30 +20,68 @@ class Kit < ActiveRecord::Base
     @requirements ||= Hash.new { |h,k|  h[k] = [] }
   end
 
-  def self.grant(options)
-    grants[:roles] << options.delete(:role)
-    grant_procs << options.delete(:by)
+  def self.when_active(&block)
+    self.ability_proc = Proc.new(&block)
   end
 
-  def self.grants
-    @grants ||= Hash.new { |h,k|  h[k] = [] }
-  end
-
-  def self.grant_procs
-    @grant_procs ||= []
+  def abilities
+    activated? ? self.class.ability_proc : Proc.new {}
   end
 
   def activatable?
-    return false unless (new? or user.nil?)
+    return false if organization.nil?
 
-    unlesses =  self.class.requirements[:unless].all? { |req| !self.send(req) }
-    ifs      =  self.class.requirements[:if]    .all? { |req| self.send(req) }
+    if needs_approval
+      submit_for_approval!
+      return false
+    end
 
-    (unlesses.nil? or unlesses) and (ifs.nil? or ifs)
+    check_requirements
   end
 
   protected
-    def on_activate
-      self.class.grant_procs.map { |g| g.call(self) }
+
+  private
+    def check_requirements
+      check_unlesses and check_ifs
+    end
+
+    def self.setup_state_machine
+      state_machine do
+        state :new
+        state :pending
+        state :activated
+        state :cancelled
+
+        event :activate do
+          transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
+        end
+
+        event :cancel do
+          transitions :from => [:activated, :rejected ], :to => :cancelled
+        end
+      end
+
+      if requires_approval
+        state_machine do
+          event :submit_for_approval do
+            transitions :from => :new, :to => :pending
+          end
+        end
+      end
+    end
+
+    def check_unlesses
+      return true if self.class.requirements[:unless].empty?
+      self.class.requirements[:unless].all? { |req| !self.send(req) }
+    end
+
+    def check_ifs
+      return true if self.class.requirements[:ifs].empty?
+      self.class.requirements[:if].all? { |req| self.send(req) }
+    end
+
+    def needs_approval
+      self.class.requires_approval and new?
     end
 end

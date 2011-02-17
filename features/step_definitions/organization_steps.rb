@@ -4,8 +4,15 @@ Given /^"([^"]*)" is part of an organization$/ do |email|
   user.save
 end
 
+Given /^I am part of an organization "([^"]*)"$/ do |name|
+  @current_user.organizations << Organization.new(:name => name)
+end
+
+Given /^I create a new organization called "([^"]*)"$/ do |name|
+  @current_user.organizations << Organization.new(:name => name)
+end
+
 Then /^I should be a part of the organization "([^"]*)"$/ do |name|
   @current_user.reload
   @current_user.organizations.should include Organization.find_by_name(name)
 end
-

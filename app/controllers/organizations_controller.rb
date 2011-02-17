@@ -5,9 +5,16 @@ class OrganizationsController < ApplicationController
   end
 
   def show
+    @organization = Organization.find(params[:id])
+    @kits = @organization.kits
   end
 
   def new
+    unless current_user.current_organization.new_record?
+      flash[:error] = "You can only join one organization at this time."
+      redirect_to organizations_url
+    end
+
     @organization = Organization.new
   end
 

@@ -7,9 +7,18 @@ Artfully::Application.routes.draw do
     end
   end
 
+  namespace :store do
+    resources :events, :only => :show
+  end
+
   namespace :admin do
     root :to => "index#index"
     resources :users
+    resources :organizations do
+      resources :kits do
+        put :activate, :on => :member
+      end
+    end
   end
 
   devise_for :users

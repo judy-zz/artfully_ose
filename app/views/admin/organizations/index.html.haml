@@ -1,9 +1,5 @@
 - content_for :header do
-  %h1 Organizations
-
-= contextual_menu do |m|
-  - m.item_to "Organizations", organizations_path
-  - m.item_to "New Organization", new_organization_path
+  %h1 Organization
 
 %table.normal.fullwidth
   %thead
@@ -13,5 +9,5 @@
   %tbody
     - @organizations.each do |organization|
       %tr
-        %td= link_to organization.name, organization
+        %td= link_to organization.name, admin_organization_path(organization)
         %td= l organization.created_at, :format => :short

@@ -7,4 +7,5 @@ class Api::EventsController < ApiController
       format.jsonp  { render_jsonp @event.to_widget_json }
     end
   end
+
 end
