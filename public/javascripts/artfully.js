@@ -8,7 +8,7 @@ artfully.config = {
 }
 
 artfully.widgets = (function(){
-  var event, cart;
+  var event, cart, donation;
 
   event = (function(){
     function prep(data){
@@ -244,7 +244,7 @@ artfully.models = (function(){
   donation = {
     render: function($t){
       var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart.$iframe.attr('name'), 'action':artfully.config.base_uri + 'order.widget'});
-          $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[producer_id]','value':this.id }),
+          $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.id }),
           $amount = $(document.createElement('input')).attr({'name':'donation[amount]'}),
           $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Add Donation'});
 
