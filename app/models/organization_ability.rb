@@ -11,7 +11,7 @@ class OrganizationAbility
 #    can :manage, AthenaPerformance, :organization_id => organization.id
 #    can :manage, AthenaChart, :organization_id => organization.id
 
-    can :manage, AthenaEvent, do |event|
+    can :manage, AthenaEvent do |event|
       event.organization_id.to_i == organization.id
     end
 
