@@ -1,6 +1,7 @@
 When /^(?:|I )fill in the following event details:$/ do |table|
   event = event_from_table_row(table.hashes.first)
   setup_event(event)
+
   setup_charts([Factory(:athena_chart, :organization_id => event.organization_id)])
   setup_performances([])
 

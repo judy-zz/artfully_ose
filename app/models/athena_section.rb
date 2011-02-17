@@ -5,6 +5,7 @@ class AthenaSection < AthenaResource::Base
   self.collection_name = 'sections'
 
   schema do
+    attribute 'id', :integer
     attribute 'name', :string
     attribute 'capacity', :integer
     attribute 'price', :integer

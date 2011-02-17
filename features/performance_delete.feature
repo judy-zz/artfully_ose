@@ -4,7 +4,7 @@ Feature: Delete a performance
 
   Scenario: A producer deletes a performance without tickets
     Given I am logged in as a "producer"
-    And I am part of an organization
+    And I am part of an organization with access to the ticketing kit
     And there is an Event with 3 Performances
     And I follow "Events"
     And I view the 1st Event
@@ -13,7 +13,7 @@ Feature: Delete a performance
 
   Scenario: A producer attempts to delete a performance with tickets
     Given I am logged in as a "producer"
-    And I am part of an organization
+    And I am part of an organization with access to the ticketing kit
     And there is an Event with 3 Performances
     And the 1st performance has had tickets created
     And I follow "Events"

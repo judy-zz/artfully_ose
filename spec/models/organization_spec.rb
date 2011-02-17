@@ -11,13 +11,15 @@ describe Organization do
     it { should respond_to :ability }
 
     it "should delegate can to it's ability" do
-      subject.ability.should_receive(:can?)
-      subject.can?
+      pending "ability caching disabled until it can be reloaded after kits"
+      subject.ability.should_receive(:can?).with(:do, :something)
+      subject.can? :do, :something
     end
 
     it "should delegate can to it's ability" do
-      subject.ability.should_receive(:cannot?)
-      subject.cannot?
+      pending "ability caching disabled until it can be reloaded after kits"
+      subject.ability.should_receive(:cannot?).with(:do, :something)
+      subject.cannot? :do, :something
     end
   end
 

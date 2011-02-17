@@ -13,6 +13,7 @@ class AthenaPerformance < AthenaResource::Base
   DELETE = 'DELETE'
 
   schema do
+    attribute 'id',               :integer
     attribute 'event_id',         :string
     attribute 'chart_id',         :string
     attribute 'datetime',         :string

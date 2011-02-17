@@ -7,6 +7,7 @@ class AthenaPerson < AthenaResource::Base
   validates_presence_of :email
 
   schema do
+    attribute 'id', :integer
     attribute 'email', :string
   end
 

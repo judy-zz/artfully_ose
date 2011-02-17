@@ -11,7 +11,7 @@ class Organization < ActiveRecord::Base
 
   delegate :can?, :cannot?, :to => :ability
   def ability
-    @ability ||= OrganizationAbility.new(self)
+    OrganizationAbility.new(self)
   end
 
 end

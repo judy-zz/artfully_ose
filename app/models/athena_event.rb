@@ -5,6 +5,7 @@ class AthenaEvent < AthenaResource::Base
   self.collection_name = 'events'
 
   schema do
+    attribute 'id', :integer
     attribute 'name', :string
     attribute 'venue', :string
     attribute 'state', :string
