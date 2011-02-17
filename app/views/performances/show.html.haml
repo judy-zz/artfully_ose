@@ -1,8 +1,5 @@
 - content_for :header do
   %h1= l @performance.datetime, :format => :long_with_day
-  .event-name=@event.name
-  .venue-name=@event.venue
-  .producer-name=@event.producer
 
 = contextual_menu do |m|
   - m.item_to "Event", event_path(@event), :title => "New Event", :icon => "icons/light/Gear.png"
@@ -13,20 +10,25 @@
 
 .clearboth
 
-.stats
-  =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
-  =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@performance.tickets_sold.size}
-  =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @performance.gross_potential)}
-  =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
-  .clearboth
+.event-name=@event.name
+.venue-name=@event.venue
+.producer-name=@event.producer
 
-- if @performance.pending?
-  %p You have not created tickets for this event.
-  %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
-- else
-  = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
-    %div
-      Bulk actions:
-      =select_tag "bulk_action", "<option value='PUT_ON_SALE'>Put on Sale</option><option value='TAKE_OFF_SALE'>Take off Sale</option><option value='DELETE'>Delete</option>".html_safe
-      =submit_tag "GO"
-    =render :partial => 'ticket_table', :locals => { :performance => @performance }
+.three_fourth.column
+  - if @performance.pending?
+    %p You have not created tickets for this event.
+    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
+  - else
+    = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
+      %div
+        Bulk actions:
+        =select_tag "bulk_action", "<option value='PUT_ON_SALE'>Put on Sale</option><option value='TAKE_OFF_SALE'>Take off Sale</option><option value='DELETE'>Delete</option>".html_safe
+        =submit_tag "GO"
+      =render :partial => 'ticket_table', :locals => { :performance => @performance }
+.one_fourth.column.last
+  .stats
+    =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
+    =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@performance.tickets_sold.size}
+    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @performance.gross_potential)}
+    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
+.clearboth

@@ -111,7 +111,7 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.find(params[:id])
     authorize! :take_off_sale, @performance
     with_confirmation do
-      @performance.take_off_sale
+      @performance.take_off_sale!
       flash[:notice] = 'Your performance has been taken off sale!'
       redirect_to performance_url(@performance) and return
     end
