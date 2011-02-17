@@ -17,7 +17,7 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'chart_id',         :string
     attribute 'producer_pid',     :string
     attribute 'datetime',         :string
-    attribute 'timezone', 		  :string
+    attribute 'timezone',         :string
     attribute 'state',            :string
   end
 
@@ -82,37 +82,21 @@ class AthenaPerformance < AthenaResource::Base
     self.datetime.strftime("%A")
   end
 
-  def formatted_performance_time2(time_zone) #time_zone is the name of the time zone
+  def formatted_performance_time(time_zone)
     self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
   end
-
-#  def formatted_performance_time3 #time_zone is the name of the time zone
-#    self.datetime.in_time_zone(attributes['timezone']).strftime("%I:%M %p")
-#  end
-
-#  def formatted_performance_time
-#    self.datetime.strftime("%I:%M %p %z")
-#  end
 
   def formatted_performance_date
     self.datetime.strftime("%b, %d %Y")
   end
 
-#  def formatted_performance_date_for_input
-#    self.datetime.strftime("%m/%d/%Y")
-#  end
-
-  def formatted_performance_date_for_input2
+  def formatted_performance_date_for_input
     self.datetime.in_time_zone(attributes['timezone']).strftime("%m/%d/%Y")
   end
 
   def formatted_time(time_zone)
     self.datetime.in_time_zone(time_zone)
   end
-
-#  def formatted_time2
-#    self.datetime.in_time_zone(attributes['timezone'])
-#  end
 
   def parsed_datetime
     if self.datetime.nil?

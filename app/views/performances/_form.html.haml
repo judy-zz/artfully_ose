@@ -1,7 +1,7 @@
 = parent_form.fields_for target do |performance_form|
   %p
     = performance_form.label :datetime, "Performace date/time"
-    = performance_form.text_field :datetime, {:value=>"#{target.formatted_performance_date_for_input2}", :class=>'datepicker hasDatePicker'}
+    = performance_form.text_field :datetime, {:value=>"#{target.formatted_performance_date_for_input}", :class=>'datepicker hasDatePicker'}
     = performance_form.time_select :datetime, :value=>target
   :erb
     <%= performance_form.hidden_field :timezone, { :value => target.event.time_zone } %>
