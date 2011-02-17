@@ -2,12 +2,12 @@ module AthenaHelpers
   def setup_event(event)
     current_event(event)
     FakeWeb.register_uri(:post, "http://localhost/stage/events/.json", :body => current_event.encode)
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq#{current_event.producer_pid}&isTemplate=eqtrue", :body => "[]")
-    FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?producerPid=eq#{current_event.producer_pid}", :body => "[#{current_event.encode}]")
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?organizationId=eq#{current_event.organization_id}&isTemplate=eqtrue", :body => "[]")
+    FakeWeb.register_uri(:get, "http://localhost/stage/events/.json?organizationId=eq#{current_event.organization_id}", :body => "[#{current_event.encode}]")
   end
 
   def event_from_table_row(attributes)
-    attributes.merge!(:producer_pid => @current_user.athena_id)
+    attributes.merge!(:organization_id => @current_user.current_organization.id)
     Factory(:athena_event_with_id, attributes)
   end
 

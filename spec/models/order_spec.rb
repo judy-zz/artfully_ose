@@ -159,13 +159,12 @@ describe Order do
     let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }
 
     before(:each) do
-      # Debt: There is no way to go from a ticket to the producer that made them (or even to their Event or Performance)
       @events = tickets.collect do |ticket|
         AthenaEvent.find(ticket.event_id)
       end
 
-      @producers = @events.collect do |event|
-        AthenaPerson.find(event.producer_pid)
+      @organizations = @events.collect do |event|
+        Organization.find(event.organization_id)
       end
 
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => Factory(:lock).encode)
@@ -175,7 +174,7 @@ describe Order do
       subject.add_tickets tickets
       donations = subject.generate_donations
       donations.each do |donation|
-        @producers.should include donation.recipient
+        @organizations.should include donation.organization
       end
     end
 

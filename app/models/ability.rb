@@ -10,9 +10,9 @@ class Ability
 
     elsif user.has_role? :producer
       can :bulk_edit, :tickets
-      can :manage, AthenaEvent, :producer_pid => user.person.id
-      can [ :manage, :put_on_sale, :take_off_sale, :duplicate ], AthenaPerformance,  :producer_pid => user.person.id
-      can :manage, AthenaChart, :producer_pid => user.person.id
+      can :manage, AthenaEvent
+      can [ :manage, :put_on_sale, :take_off_sale, :duplicate ], AthenaPerformance
+      can :manage, AthenaChart
 
     elsif user.roles.empty?
       cannot :manage, :all

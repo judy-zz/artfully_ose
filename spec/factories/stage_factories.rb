@@ -4,7 +4,7 @@ end
 
 Factory.define :athena_chart, :class => AthenaChart, :default_strategy => :build do |c|
   c.id { Factory.next :chart_id }
-  c.producer_pid { Factory.next :person_id }
+  c.organization_id { Factory(:organization).id }
   c.name 'Test Chart'
   c.is_template false
   c.sections { 2.times.collect { Factory(:athena_section_with_id) } }
@@ -49,7 +49,7 @@ Factory.define :athena_event, :default_strategy => :build do |e|
   e.state "Some State"
   e.producer "Some Producer"
   e.time_zone "Hawaii"
-  e.producer_pid { Factory(:athena_person_with_id).id }
+  e.organization_id { Factory(:organization).id }
 end
 
 Factory.define :athena_event_with_id, :parent => :athena_event do |e|

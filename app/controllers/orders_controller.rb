@@ -41,9 +41,8 @@ class OrdersController < ApplicationController
     def handle_donation(data)
       donation = Donation.new
 
-      producer = User.find(data.delete(:producer_id))
       donation.amount = data[:amount]
-      donation.recipient = producer.person
+      donation.organization = Organization.find(data.delete(:organization_id))
 
       current_order.donations << donation
     end

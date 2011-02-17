@@ -1,21 +1,11 @@
 class Donation < ActiveRecord::Base
   belongs_to :order
+  belongs_to :organization
 
   validates_numericality_of :amount, :greater_than => 0
-  validates_presence_of :producer_pid
-
-  delegate :user, :to => :recipient
-
-  def recipient
-    @recipient ||= AthenaPerson.find(self.athena_id)
-  end
+  validates_presence_of :organization
 
   def price
     amount
-  end
-
-  def recipient=(recipient)
-    raise TypeError, "Expecting an AthenaPerson" unless recipient.kind_of? AthenaPerson
-    @recipient, self.producer_pid = recipient, recipient.id
   end
 end

@@ -15,10 +15,10 @@ class AthenaPerformance < AthenaResource::Base
   schema do
     attribute 'event_id',         :string
     attribute 'chart_id',         :string
-    attribute 'producer_pid',     :string
     attribute 'datetime',         :string
     attribute 'timezone',         :string
     attribute 'state',            :string
+    attribute 'organization_id',  :string
   end
 
   state_machine do

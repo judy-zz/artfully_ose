@@ -37,17 +37,13 @@ Given /^I have added (\d+) tickets to my order$/ do |a_few|
 end
 
 Given /^I have added (\d+) donations to my order$/ do |a_few|
-  recipient = Factory(:user)
-  donations = a_few.to_i.times.collect { Factory.build(:donation, :producer_pid => recipient.athena_id) }
+  organization = Factory(:organization)
+  donations = a_few.to_i.times.collect { Factory.build(:donation, :organization => organization) }
   donations.each do |donation|
-    page.driver.post "/order", "donation[amount]=#{donation.amount}&donation[producer_id]=#{recipient.id}"
+    page.driver.post "/order", "donation[amount]=#{donation.amount}&donation[organization_id]=#{organization.id}"
   end
 end
 
 Given /^I start the checkout process$/ do
   visit new_checkout_path
-end
-
-When /^I visit the order page$/ do
-  pending # express the regexp above with the code you wish you had
 end

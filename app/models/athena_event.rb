@@ -11,10 +11,10 @@ class AthenaEvent < AthenaResource::Base
     attribute 'city', :string
     attribute 'time_zone', :string
     attribute 'producer', :string
-    attribute 'producer_pid', :string
+    attribute 'organization_id', :string
   end
 
-  validates_presence_of :name, :venue, :city, :state, :time_zone, :producer, :producer_pid
+  validates_presence_of :name, :venue, :city, :state, :producer, :organization_id, :time_zone
 
   def charts
     @attributes['charts'] ||= find_charts
@@ -39,45 +39,45 @@ class AthenaEvent < AthenaResource::Base
     performances.reject! { |performance| !performance.on_sale? }
     to_json(options)
   end
-  
+
   #return valid US states for an event
   #would be be valid states, but states also refer to state machine
   #codes defined here: http://www.itl.nist.gov/fipspubs/fip5-2.htm
   def valid_locales
-    {"Alabama"=>"AL", 
-      "Alaska"=>"AK", 
-      "American Samoa"=>"AS", 
+    {"Alabama"=>"AL",
+      "Alaska"=>"AK",
+      "American Samoa"=>"AS",
       "Arizona"=>"AZ",
-      "Arkansas"=>"AR", 
-      "California"=>"CA", 
-      "Colorado"=>"CO", 
+      "Arkansas"=>"AR",
+      "California"=>"CA",
+      "Colorado"=>"CO",
       "Connecticut"=>"CT",
-      "Delaware"=>"DE", 
-      "District of Columbia"=>"DC", 
+      "Delaware"=>"DE",
+      "District of Columbia"=>"DC",
       "Florida"=>"FL",
-      "Georgia"=>"GA", 
-      "Guam"=>"GU", 
-      "Hawaii"=>"HI", 
+      "Georgia"=>"GA",
+      "Guam"=>"GU",
+      "Hawaii"=>"HI",
       "Idaho"=>"ID",
-      "Illinois"=>"IL", 
-      "Indiana"=>"IN", 
-      "Iowa"=>"IA", 
+      "Illinois"=>"IL",
+      "Indiana"=>"IN",
+      "Iowa"=>"IA",
       "Kansas"=>"KS",
-      "Kentucky"=>"KY", 
-      "Louisiana"=>"LA", 
-      "Maine"=>"ME", 
+      "Kentucky"=>"KY",
+      "Louisiana"=>"LA",
+      "Maine"=>"ME",
       "Marshall Islands"=>"MH",
-      "Maryland"=>"MD", 
-      "Massachusetts"=>"MA", 
+      "Maryland"=>"MD",
+      "Massachusetts"=>"MA",
       "Michigan"=>"MI",
       "Micronesia"=>"FM",
-      "Minnesota"=>"MN", 
-      "Mississippi"=>"MS", 
-      "Missouri"=>"MO", 
+      "Minnesota"=>"MN",
+      "Mississippi"=>"MS",
+      "Missouri"=>"MO",
       "Montana"=>"MT",
-      "Nebraska"=>"NE", 
-      "Nevada"=>"NV", 
-      "New Hampshire"=>"NH", 
+      "Nebraska"=>"NE",
+      "Nevada"=>"NV",
+      "New Hampshire"=>"NH",
       "New Jersey"=>"NJ",
       "New Mexico"=>"NM",
       "New York"=>"NY",
@@ -86,21 +86,21 @@ class AthenaEvent < AthenaResource::Base
       "Ohio"=>"OH",
       "Oklahoma"=>"OK",
       "Oregon"=>"OR",
-      "Palau"=>"PW", 
-      "Pennsylvania"=>"PA", 
-      "Rhode Island"=>"RI", 
+      "Palau"=>"PW",
+      "Pennsylvania"=>"PA",
+      "Rhode Island"=>"RI",
       "Puerto Rico"=>"PR",
-      "South Carolina"=>"SC", 
-      "South Dakota"=>"SD", 
-      "Tennessee"=>"TN", 
+      "South Carolina"=>"SC",
+      "South Dakota"=>"SD",
+      "Tennessee"=>"TN",
       "Texas"=>"TX",
-      "Utah"=>"UT", 
-      "Vermont"=>"VT", 
-      "Virgin Islands"=>"VI", 
+      "Utah"=>"UT",
+      "Vermont"=>"VT",
+      "Virgin Islands"=>"VI",
       "Virginia"=>"VA",
-      "Washington"=>"WA",       
+      "Washington"=>"WA",
       "Wisconsin"=>"WI",
-      "West Virginia"=>"WV", 
+      "West Virginia"=>"WV",
       "Wyoming"=>"WY"}
   end
 

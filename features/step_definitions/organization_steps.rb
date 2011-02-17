@@ -4,6 +4,10 @@ Given /^"([^"]*)" is part of an organization$/ do |email|
   user.save
 end
 
+Given /^I am part of an organization$/ do
+  @current_user.organizations << Factory(:organization)
+end
+
 Given /^I am part of an organization "([^"]*)"$/ do |name|
   @current_user.organizations << Organization.new(:name => name)
 end
