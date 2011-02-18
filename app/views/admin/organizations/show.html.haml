@@ -1,8 +1,45 @@
 - content_for :header do
   %h1= @organization.name
 
-= ap @organization.kits
-
 - @organization.kits.each do |kit|
   - if kit.pending?
     = link_to "Approve Donation Kit", activate_admin_organization_kit_path(@organization,kit), :method => :put
+
+="Add User"
+= form_tag new_admin_organization_membership_path(@organization.id), :method => :get, do
+  = label_tag :user_email, "Email"
+  = text_field_tag :user_email
+  = submit_tag "Add"
+
+= "Current Users"
+- @organization.users.each do |user|
+  %li=[user.id, user.email].join" "
+  = link_to "Remove user from this organization", admin_organization_membership_path(@organization, user.memberships.first), :confirm => "Are you sure?", :method => :delete
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-#= "Current Memberships"
+-#- @organization.memberships.each do |mship|
+-#  %li=[mship.id, user.email].join" "
+-#  = link_to "new admin org", new_admin_organization
+-#  = link_to "Remove user from this organization", edit_admin_organization_membership_path(@organization, mship)
+
+-#= "Users"
+-# @users.each do |u|
+  %li=u.email
+
+-#= form_for @users, :url => new_admin_organization_membership_path(:user) do |f|
+  = f.label  :user, "User"
+  = f.select :user, options_for_select( @users )
+  = f.submit "Add user to organization"

@@ -1,0 +1,7 @@
+= "User page for #{@user.email},"
+= "who is a member of"
+- if [] == @user.organizations
+  = "no organizations."
+-else
+  - @user.organizations.each do |org|
+    %li=[org.id, org.name].join": "
