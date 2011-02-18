@@ -7,7 +7,7 @@ class ChartsController < ApplicationController
   end
 
   def index
-    @charts = AthenaChart.find_templates_by_producer(current_user.person.id).sort_by { |chart| chart.name }
+    @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     authorize! :view, AthenaChart
   end
 
@@ -18,7 +18,7 @@ class ChartsController < ApplicationController
   def create
     @chart = AthenaChart.new
     @chart.update_attributes(params[:athena_chart][:athena_chart])
-    @chart.producer_pid = current_user.person.id
+    @chart.organization_id = current_user.current_organization.id
     @chart.isTemplate = true
 
     if @chart.save
