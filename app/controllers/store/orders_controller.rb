@@ -1,26 +1,24 @@
-class OrdersController < ApplicationController
+class Store::OrdersController < Store::StoreController
+  layout "widget"
   skip_before_filter :verify_authenticity_token
 
   def show
     @donations = current_order.generate_donations
-    respond_to do |format|
-      format.widget
-    end
   end
 
   def create
     handle_order(params)
-    redirect_to order_url
+    redirect_to store_order_url
   end
 
   def update
     handle_order(params)
-    redirect_to order_url
+    redirect_to store_order_url
   end
 
   def destroy
     current_order.destroy
-    redirect_to order_url
+    redirect_to store_order_url
   end
 
   private

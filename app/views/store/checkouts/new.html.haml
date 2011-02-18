@@ -11,7 +11,7 @@
   %li.total
     = "Total: $#{current_order.total}"
 
-= form_tag checkout_path(:format => :widget) do
+= form_tag store_checkout_path do
   - if @needs_confirmation
     = hidden_field_tag :confirmation, 1
     = render :partial => 'athena_customers/athena_customer.html', :object => @payment.customer
@@ -21,4 +21,4 @@
 
   = render :partial => 'athena_payments/form.html', :locals => {:payment => @payment}
 
-= link_to "Cancel Order", order_path(current_order, :format => :widget), :method => :delete, :confirm => 'Are you sure?'
+= link_to "Cancel Order", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure?'

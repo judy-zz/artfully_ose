@@ -50,10 +50,6 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(@performance.event_id)
     @performance.datetime = @performance.formatted_time(@event.time_zone)
     @performance.tickets = @performance.tickets
-    respond_to do |format|
-      format.html
-      format.widget
-    end
   end
 
   def edit

@@ -1,6 +1,8 @@
-class CheckoutsController < ApplicationController
+class Store::CheckoutsController < Store::StoreController
+  layout "widget"
+
   def new
-    redirect_to(order_url, :alert => "This order is empty!") if current_order.empty?
+    redirect_to(store_order_url, :alert => "This order is empty!") if current_order.empty?
     @payment = AthenaPayment.new
   end
 
@@ -27,7 +29,7 @@ class CheckoutsController < ApplicationController
         render :new and return
       end
     else
-      redirect_to current_order, :notice => "This order is already finished!"
+      redirect_to store_order_url(current_order), :notice => "This order is already finished!"
     end
   end
 
@@ -40,7 +42,7 @@ class CheckoutsController < ApplicationController
       current_order.pay_with(@payment)
       current_order.save
       flash[:notice] << 'Thank you for your order!'
-      redirect_to order_url(current_order, :format => :widget)
+      redirect_to store_order_url(current_order)
     end
 
     def request_confirmation

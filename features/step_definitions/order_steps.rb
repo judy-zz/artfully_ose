@@ -33,17 +33,17 @@ Given /^I have added (\d+) tickets to my order$/ do |a_few|
 
   FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :body => Factory(:lock, :tickets => tickets.collect(&:id)).encode)
   body = tickets.collect { |ticket| "tickets[]=#{ticket.id}" }.join("&")
-  page.driver.post "/order", body
+  page.driver.post "/store/order", body
 end
 
 Given /^I have added (\d+) donations to my order$/ do |a_few|
   organization = Factory(:organization)
   donations = a_few.to_i.times.collect { Factory.build(:donation, :organization => organization) }
   donations.each do |donation|
-    page.driver.post "/order", "donation[amount]=#{donation.amount}&donation[organization_id]=#{organization.id}"
+    page.driver.post "/store/order", "donation[amount]=#{donation.amount}&donation[organization_id]=#{organization.id}"
   end
 end
 
 Given /^I start the checkout process$/ do
-  visit new_checkout_path
+  visit new_store_checkout_path
 end
