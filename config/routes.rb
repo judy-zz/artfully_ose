@@ -9,6 +9,8 @@ Artfully::Application.routes.draw do
 
   namespace :store do
     resources :events, :only => :show
+    resource :order, :only => [:show, :create, :update, :destroy ]
+    resource :checkout
   end
 
   namespace :admin do
@@ -38,9 +40,6 @@ Artfully::Application.routes.draw do
   resources :charts do
     resources :sections
   end
-
-  resource :order, :defaults => { :format => :widget }, :only => [:show, :create, :update, :destroy ]
-  resource :checkout
 
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart

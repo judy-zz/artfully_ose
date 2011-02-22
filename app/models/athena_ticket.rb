@@ -5,6 +5,7 @@ class AthenaTicket < AthenaResource::Base
   self.element_name = 'tickets'
 
   schema do
+    attribute 'id',             :integer
     attribute 'event',          :string
     attribute 'event_id',       :integer
     attribute 'venue',          :string

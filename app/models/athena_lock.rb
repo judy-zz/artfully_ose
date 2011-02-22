@@ -9,6 +9,7 @@ class AthenaLock < AthenaResource::Base
   validates_datetime :lock_expires, :after => lambda { DateTime.now }, :allow_blank => true
 
   schema do
+    attribute 'id',             :integer
     attribute 'tickets',        :string
     attribute 'lock_expires',   :string
     attribute 'locked_by_api',  :string

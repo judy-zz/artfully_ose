@@ -6,8 +6,9 @@ class AthenaRelationship < AthenaResource::Base
   self.collection_name = 'relationships'
 
   schema do
+    attribute 'id',                 :integer
     attribute 'left_side_id',       :string
-    attribute 'right_side_id',       :string
+    attribute 'right_side_id',      :string
     attribute 'relationship_type',  :string
     attribute 'inverse_type',       :string
   end

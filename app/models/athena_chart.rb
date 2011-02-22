@@ -12,7 +12,7 @@ class AthenaChart < AthenaResource::Base
     attribute 'event_id', :string
     attribute 'performance_id', :string
     attribute 'is_template', :string
-    attribute 'producer_pid', :string
+    attribute 'organization_id', :string
   end
 
   def sections
@@ -65,12 +65,12 @@ class AthenaChart < AthenaResource::Base
     self.find(:all, :params => { :eventId => "eq#{event.id}" })
   end
 
-  def self.find_by_producer(producer_pid)
-    self.find(:all, :params => { :producerPid => "eq#{producer_pid}" })
+  def self.find_by_organization(organization)
+    self.find(:all, :params => { :organizationId => "eq#{organization.id}" })
   end
 
-  def self.find_templates_by_producer(producer_pid)
-    self.find(:all, :params => { :producerPid => "eq#{producer_pid}", :isTemplate => 'eqtrue' })
+  def self.find_templates_by_organization(organization)
+    self.find(:all, :params => { :organizationId => "eq#{organization.id}", :isTemplate => 'eqtrue' })
   end
 
   def self.get_default_name(prefix)

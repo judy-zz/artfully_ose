@@ -6,9 +6,10 @@ class AthenaTicketFactory < AthenaResource::Base
   self.collection_name = 'ticketfactory'
 
   schema do
-    attribute 'eventId', :string
-    attribute 'chartId', :string
-    attribute 'producerId', :string
+    attribute 'id', :integer
+    attribute 'event_id', :string
+    attribute 'chart_id', :string
+    attribute 'organization_id', :string
     attribute 'datetime', :string
   end
 

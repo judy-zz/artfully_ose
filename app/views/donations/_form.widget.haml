@@ -1,5 +1,0 @@
-= form_for target, :url => order_url do |f|
-  = f.label :amount
-  = f.text_field :amount
-  = hidden_field_tag "donation[producer_id]", target.user.id
-  = f.submit "Add Donation"

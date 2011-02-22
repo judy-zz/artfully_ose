@@ -7,7 +7,7 @@ describe AthenaChart do
 
   it { should respond_to :name }
   it { should respond_to :sections }
-  it { should respond_to :producer_pid }
+  it { should respond_to :organization_id }
   it { should respond_to :is_template }
 
   it "should not be valid without a name" do
@@ -29,20 +29,22 @@ describe AthenaChart do
   end
 
   it "should get charts for an event" do
-    @event = Factory(:athena_event)
-    @event.id = '46'
+    @event = Factory(:athena_event_with_id)
     FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?eventId=eq#{@event.id}", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_event(@event)
+    subject.should eq @charts.first
   end
 
-  it "should get charts for a producer" do
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq50", :body => "[#{subject.encode}]" )
-    @charts = AthenaChart.find_by_producer('50')
+  it "should get charts for an organization" do
+    organization = Factory(:organization)
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?organizationId=eq#{organization.id}", :body => "[#{subject.encode}]" )
+    @charts = AthenaChart.find_by_organization(organization)
   end
 
-  it "should get templates for a producer" do
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?producerPid=eq50&isTemplate=eqtrue", :body => "[#{subject.encode}]" )
-    @charts = AthenaChart.find_templates_by_producer('50')
+  it "should get templates for an organization" do
+    organization = Factory(:organization)
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts/.json?organizationId=eq#{organization.id}&isTemplate=eqtrue", :body => "[#{subject.encode}]" )
+    @charts = AthenaChart.find_templates_by_organization(organization)
   end
 
   describe "sections" do
@@ -67,8 +69,8 @@ describe AthenaChart do
       @copy.name.should eq subject.name
     end
 
-    it "should have the same producer pid" do
-      @copy.producer_pid.should eq subject.producer_pid
+    it "should have the same organization" do
+      @copy.organization_id.should eq subject.organization_id
     end
 
     describe "and sections" do

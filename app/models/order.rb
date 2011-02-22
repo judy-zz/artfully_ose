@@ -76,9 +76,9 @@ class Order < ActiveRecord::Base
   end
 
   def generate_donations
-    producers_from_tickets.collect do |producer|
+    organizations_from_tickets.collect do |organization|
       donation = Donation.new
-      donation.recipient = producer
+      donation.organization = organization
       donation
     end
   end
@@ -94,8 +94,8 @@ class Order < ActiveRecord::Base
       lock
     end
 
-    def producers_from_tickets
+    def organizations_from_tickets
       events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
-      producers = events.collect(&:producer_pid).uniq.collect! { |id| AthenaPerson.find(id) }
+      producers = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
     end
 end

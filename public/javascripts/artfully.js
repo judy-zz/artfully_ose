@@ -4,11 +4,73 @@
 
 artfully.config = {
   base_uri: 'http://api.lvh.me:3000/',
+  store_uri: 'http://localhost:3000/store/',
   maxHeight: '400'
 }
 
+artfully.utils = (function(){
+  function ticket_uri(params){
+    var u = artfully.config.base_uri + 'tickets.jsonp?callback=?';
+    $.each(params, function(k,v){
+      u += "&" + k + (k === "limit" ? "=" : "=eq") + v;
+    });
+    return u;
+  }
+
+  function event_uri(id){
+    return artfully.config.base_uri + 'events/' + id + '.jsonp?callback=?';
+  }
+
+  function performance_uri(id){
+    return artfully.config.base_uri + 'performances/' + id + '.jsonp?callback=?';
+  }
+
+  function order_uri(){
+    return artfully.config.store_uri + 'order';
+  }
+
+  function datestring(datetime){
+    datetime = new Date(datetime);
+    return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
+  }
+
+  function keyOnId(list){
+    var result = [];
+    $.each(list, function(index, item){
+      result[item.id] = item;
+    });
+    return result;
+  }
+
+  function modelize(data, model, callback){
+    if(data){
+      if(data instanceof Array){
+        $.each(data, function(index, item){
+          modelize(item, model, callback);
+        });
+      } else {
+        $.extend(data,model);
+        if(callback !== undefined){
+          callback(data);
+        }
+      }
+    }
+    return data;
+  }
+
+  return {
+    ticket_uri: ticket_uri,
+    performance_uri: performance_uri,
+    event_uri: event_uri,
+    order_uri: order_uri,
+    datestring: datestring,
+    keyOnId: keyOnId,
+    modelize: modelize
+  };
+}());
+
 artfully.widgets = (function(){
-  var event, cart;
+  var event, cart, donation;
 
   event = (function(){
     function prep(data){
@@ -44,7 +106,7 @@ artfully.widgets = (function(){
 
   cart = (function(){
     function hiddenFormFor(tickets){
-      var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart.$iframe.attr('name'), 'action':artfully.config.base_uri + 'order.widget'});
+      var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart.$iframe.attr('name'), 'action':artfully.utils.order_uri()});
 
       $.each(tickets, function(i,ticket){
         $(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':ticket.id}).appendTo($form);
@@ -63,7 +125,7 @@ artfully.widgets = (function(){
         $("<span class='cart-name' />").text("Shopping Cart").appendTo(this.$controls);
 
         this.$iframe = $("<iframe name='shopping-cart-iframe' />")
-                        .attr('src',artfully.config.base_uri + 'order.widget')
+                        .attr('src',artfully.utils.order_uri())
                         .height(artfully.config.maxHeight)
                         .hide()
                         .appendTo(this.$cart);
@@ -243,8 +305,8 @@ artfully.models = (function(){
 
   donation = {
     render: function($t){
-      var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart.$iframe.attr('name'), 'action':artfully.config.base_uri + 'order.widget'});
-          $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[producer_id]','value':this.id }),
+      var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart.$iframe.attr('name'), 'action':artfully.utils.order_uri()});
+          $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.id }),
           $amount = $(document.createElement('input')).attr({'name':'donation[amount]'}),
           $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Add Donation'});
 
@@ -265,61 +327,5 @@ artfully.models = (function(){
     performance: performance,
     event: event,
     donation: donation
-  };
-}());
-
-artfully.utils = (function(){
-  function ticket_uri(params){
-    var u = artfully.config.base_uri + 'tickets.jsonp?callback=?';
-    $.each(params, function(k,v){
-      u += "&" + k + (k === "limit" ? "=" : "=eq") + v;
-    });
-    return u;
-  }
-
-  function event_uri(id){
-    return artfully.config.base_uri + 'events/' + id + '.jsonp?callback=?';
-  }
-
-  function performance_uri(id){
-    return artfully.config.base_uri + 'performances/' + id + '.jsonp?callback=?';
-  }
-
-  function datestring(datetime){
-    datetime = new Date(datetime);
-    return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
-  }
-
-  function keyOnId(list){
-    var result = [];
-    $.each(list, function(index, item){
-      result[item.id] = item;
-    });
-    return result;
-  }
-
-  function modelize(data, model, callback){
-    if(data){
-      if(data instanceof Array){
-        $.each(data, function(index, item){
-          modelize(item, model, callback);
-        });
-      } else {
-        $.extend(data,model);
-        if(callback !== undefined){
-          callback(data);
-        }
-      }
-    }
-    return data;
-  }
-
-  return {
-    ticket_uri: ticket_uri,
-    performance_uri: performance_uri,
-    event_uri: event_uri,
-    datestring: datestring,
-    keyOnId: keyOnId,
-    modelize: modelize
   };
 }());

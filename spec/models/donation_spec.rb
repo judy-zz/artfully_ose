@@ -7,8 +7,6 @@ describe Donation do
 
   it { should respond_to :amount }
   it { should respond_to :order }
-  it { should respond_to :recipient }
-  it { should respond_to :recipient= }
 
   describe ".amount" do
     it "should not be valid without an amount" do
