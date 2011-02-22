@@ -13,10 +13,8 @@ class Store::CheckoutsController < Store::StoreController
 
       if @payment.valid?
         if payment_confirmed?
-          if create_user
-            current_order.user = @user
-            current_order.save
-          else
+
+          unless current_order.user = create_user
             request_confirmation and return
           end
 
@@ -41,7 +39,7 @@ class Store::CheckoutsController < Store::StoreController
     def submit_payment
       current_order.pay_with(@payment)
       current_order.save
-      flash[:notice] << 'Thank you for your order!'
+      flash[:notice] = 'Thank you for your order!'
       redirect_to store_order_url(current_order)
     end
 
@@ -52,22 +50,26 @@ class Store::CheckoutsController < Store::StoreController
     end
 
     def create_user
-      @user = User.new(:email => @payment.customer.email,
-                       :password => params[:options][:password],
-                       :passoword_confirmation => params[:options][:password_confirmation])
-      @user.save
+      password = params[:options].delete(:password)
+      password_confirmation = params[:options].delete(:password_confirmation)
+
+      if password.nil?
+        password, password_confirmation = User.generate_password
+      end
+
+      @user = User.create(:email => @payment.customer.email, :password => password, :passoword_confirmation => password_confirmation)
     end
 
     def save_customer
       @payment.customer.credit_card = @payment.credit_card
       if @payment.customer.save
-        flash[:notice] = ["Successfully saved your information."]
+        flash[:notice] = "Successfully saved your information."
       else
-        flash[:error] = ["Unable to save your information."]
+        flash[:error] = "Unable to save your information."
       end
     end
 
     def should_save_customer?
-      params[:options][:save]
+      params[:options][:save] == 1
     end
 end

@@ -1,0 +1,17 @@
+%h2 Thanks for your order! Here's what you purchased:
+- unless @order.tickets.empty?
+  %h2 Tickets
+  %ul.ticket-list
+    - @order.tickets.each do |ticket|
+      %li
+        %span.price= "$#{ticket.price}"
+        %span.name= "#{ticket.event} at #{l DateTime.parse(ticket.performance), :format => :short}"
+
+- unless @order.donations.empty?
+  %h2 Donations
+  %ul.donation-list
+    - @order.donations.each do |donation|
+      %li
+        %span.price= "$#{donation.amount}"
+        %span.name= "Donation to #{donation.organization.name}"
+

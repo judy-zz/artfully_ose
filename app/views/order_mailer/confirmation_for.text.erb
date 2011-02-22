@@ -1,0 +1,15 @@
+Thanks for your order! Here's what you purchased:
+
+<% unless @order.tickets.empty? %>
+  Tickets
+  <% @order.tickets.each do |ticket| %>
+    - <%= "#{ticket.event} at #{l DateTime.parse(ticket.performance), :format => :short}, $#{ticket.price}" %>
+  <% end %>
+<% end %>
+
+<% unless @order.donations.empty? %>
+  Donations
+  <% @order.donations.each do |donation| %>
+    - <% "Donation to #{donation.organization.name}, $#{donation.amount}" %>
+  <% end %>
+<% end %>

@@ -71,6 +71,7 @@ class Order < ActiveRecord::Base
   end
 
   def finish
+    OrderMailer.confirmation_for(self).deliver
     purchasable_tickets.map(&:sold!)
     purchasable_tickets.delete_if { |item| item.destroy }
   end

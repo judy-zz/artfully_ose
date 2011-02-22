@@ -47,3 +47,7 @@ end
 Given /^I start the checkout process$/ do
   visit new_store_checkout_path
 end
+
+Then /^an email confirmation for the order should have been sent$/ do
+  ActionMailer::Base.deliveries.should_not be_empty
+end
