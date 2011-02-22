@@ -37,13 +37,9 @@ class AthenaCreditCard < AthenaResource::Base
     }.sum % 10 == 0
   end
 
-  def initialize(attributes = {})
+  def load(attributes = {})
     prepare_attr!(attributes) if needs_date_parse(attributes)
-    super
-  end
-
-  def update_attributes(attributes)
-    prepare_attr!(attributes)
+    prepare_customer!(attributes) if needs_customer(attributes)
     super
   end
 
@@ -73,6 +69,14 @@ class AthenaCreditCard < AthenaResource::Base
           attributes['expiration_date'] = Date.parse(attributes['expiration_date'])
         end
       end
+    end
+
+    def needs_customer(attributes)
+      attributes.has_key? "customer"
+    end
+
+    def prepare_customer!(attributes)
+      attributes['customer'] = AthenaCustomer.new(attributes.delete("customer"))
     end
 
     def prepare_for_encode(attributes)
