@@ -10,13 +10,23 @@ describe AthenaCreditCard do
 
   it "should not be valid with a credit card with letters" do
     p subject.new_record?
-    subject.card_number = "A234123412341234"
+    subject.card_number << "A"
     subject.should_not be_valid
   end
 
   it "should not be valid with an invalid credit card number" do
     subject.card_number = "1234123412341234"
     subject.should_not be_valid
+  end
+
+  it "should be valid with a credit card number that has spaces" do
+    subject.card_number = "4111 111111111111"
+    subject.should be_valid
+  end
+
+  it "should be valid with a credit card number that has dashes" do
+    subject.card_number = "4111-1111-1111-1111"
+    subject.should be_valid
   end
 
   describe "#encode" do
