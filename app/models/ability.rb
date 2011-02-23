@@ -10,6 +10,7 @@ class Ability
 
   def default_abilities_for(user)
     cannot [ :edit, :destroy ], AthenaPerformance, :on_sale? => true
+    cannot [ :edit, :destroy ], AthenaPerformance, :off_sale? => true
     cannot [ :edit, :destroy ], AthenaPerformance, :built? => true
 
     cannot :destroy, AthenaEvent do |event|
