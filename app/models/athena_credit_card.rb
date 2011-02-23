@@ -52,6 +52,11 @@ class AthenaCreditCard < AthenaResource::Base
     super(options)
   end
 
+  def valid?
+    clean_card_number
+    super
+  end
+
   private
     def needs_date_parse(attrs = {})
       attrs.has_key? 'expiration_date(3i)' or attrs['expiration_date'].is_a? String
@@ -85,4 +90,9 @@ class AthenaCreditCard < AthenaResource::Base
       hash['expiration_date'] = self.expiration_date.strftime('%m/%Y')
       hash
     end
+
+    def clean_card_number
+      card_number.gsub!(/-|\s/,"") unless card_number.nil?
+    end
+
 end
