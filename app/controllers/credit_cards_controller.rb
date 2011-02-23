@@ -1,6 +1,7 @@
 class CreditCardsController < ApplicationController
   before_filter :authenticate_user!
-
+  before_filter :clean_card_number, :only => [:create]
+  
   def index
     @credit_cards = current_user.credit_cards
   end
@@ -53,4 +54,11 @@ class CreditCardsController < ApplicationController
 
       current_user.customer
     end
+    
+    def clean_card_number
+      card_number = params[:athena_credit_card][:athena_credit_card][:card_number]
+      card_number.gsub!(/-|\s/,"")
+      params[:athena_credit_card][:athena_credit_card][:card_number] = card_number
+    end
+    
 end

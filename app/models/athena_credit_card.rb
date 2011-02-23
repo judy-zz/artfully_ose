@@ -9,7 +9,7 @@ class AthenaCreditCard < AthenaResource::Base
     attribute 'cardholder_name',        :string
     attribute 'card_number',            :string
     attribute 'expiration_date',        :string
-    attribute 'cvv',                   :string
+    attribute 'cvv',                    :string
 
     attribute 'customer', :string
   end
