@@ -6,6 +6,7 @@ Feature: Edit a performance
     Given I am logged in as a "producer" with email "joe.producer@producer.com"
     And I am part of an organization with access to the ticketing kit
     And there is an Event with 3 Performances
+    And the 1st performance has had tickets created
     And the 1st performance is on sale
     And I follow "Events"
     When I view the 1st event

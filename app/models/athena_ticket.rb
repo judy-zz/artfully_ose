@@ -15,6 +15,7 @@ class AthenaTicket < AthenaResource::Base
     attribute 'on_sale',        :string
     attribute 'section',        :string
     attribute 'price',          :integer
+    attribute 'buyer_id',       :integer
   end
 
   def self.search(params)
@@ -44,7 +45,8 @@ class AthenaTicket < AthenaResource::Base
     not on_sale?
   end
 
-  def sold!
+  def sold!(buyer)
+    self.buyer = buyer
     self.sold = true
     save!
   end
@@ -67,4 +69,24 @@ class AthenaTicket < AthenaResource::Base
     super unless sold?
   end
 
+  def buyer
+    @buyer || find_buyer
+  end
+
+  def buyer=(person)
+    raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
+    @buyer, self.buyer_id = person, person.id
+  end
+
+  private
+    def find_buyer
+      return if self.buyer_id.nil?
+
+      begin
+        AthenaPerson.find(self.buyer_id)
+      rescue ActiveResource::ResourceNotFound
+        update_attribute!(:buyer_id, nil)
+        return nil
+      end
+    end
 end

@@ -23,6 +23,7 @@ class Order < ActiveRecord::Base
   end
 
   def clean_order
+    return if approved?
     purchasable_tickets.delete(purchasable_tickets.select{ |item| !item.locked? })
   end
 
@@ -72,8 +73,7 @@ class Order < ActiveRecord::Base
 
   def finish
     OrderMailer.confirmation_for(self).deliver
-    purchasable_tickets.map(&:sold!)
-    purchasable_tickets.delete_if { |item| item.destroy }
+    purchasable_tickets.map { |ticket| ticket.sold!(user.person) }
   end
 
   def generate_donations
