@@ -1,7 +1,15 @@
 = @user.email
 
+- if nil == @user.suspended_at
+  = form_for @user, :url => admin_user_path(@user) do |f|
+    = f.hidden_field :suspend, :value => true
+    = f.label :suspension_reason, "Reason"
+    = f.text_field :suspension_reason
+    = f.submit "Suspend"
+
+- else
+  = "has been suspended for the following reason: \"#{@user.suspension_reason}\""
+
 = form_for @user, :url => admin_user_path(@user) do |f|
-  = f.hidden_field :suspend, :value => true
-  = f.label :suspension_reason, "Reason"
-  = f.text_field :suspension_reason
-  = f.submit "Suspend"
+  = f.hidden_field :reset_password, :value => true
+  = f.submit "Send Password Reset Instructions"

@@ -5,6 +5,7 @@ class Admin::OrganizationsController < Admin::AdminController
 
   def show
     @organization = Organization.find(params[:id])
+    @users = User.all
   end
 
   def new
@@ -21,4 +22,11 @@ class Admin::OrganizationsController < Admin::AdminController
 
   def destroy
   end
+
+  def add_member
+
+  end
+
+
+
 end
