@@ -16,13 +16,13 @@ class Admin::UsersController < Admin::AdminController
 
   def update
     @user = User.find(params[:id])
-    
+
     # Password Reset
     if params[:user][:reset_password]
       @user.send_reset_password_instructions
       redirect_to admin_user_path(@user), :notice => "Instructions to reset this password have been emailed to #{@user.email}." and return
     end
-    
+
     #User Suspension
     if params[:user][:suspend]
       @user.suspend! params[:user][:suspension_reason]

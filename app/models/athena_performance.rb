@@ -78,6 +78,10 @@ class AthenaPerformance < AthenaResource::Base
     @event, self.event_id = event, event.id
   end
 
+  def has_door_list?
+    on_sale? or off_sale?
+  end
+
   #TODO: Move this into localization
   def day_of_week
     self.datetime.strftime("%A")

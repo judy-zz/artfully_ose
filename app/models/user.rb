@@ -14,9 +14,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :suspendable
 
-  def generate_password
-    password = User.generate_token('password')
-    [ password, password ]
+  def self.generate_password
+    Devise.friendly_token
   end
 
   # Setup accessible (or protected) attributes for your model

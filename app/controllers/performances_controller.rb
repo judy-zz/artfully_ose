@@ -88,6 +88,12 @@ class PerformancesController < ApplicationController
     redirect_to event_url(@performance.event)
   end
 
+  def door_list
+    @performance = AthenaPerformance.find(params[:id])
+    authorize! :view, @performance
+    @door_list = DoorList.new(@performance)
+  end
+
   def put_on_sale
     @performance = AthenaPerformance.find(params[:id])
     authorize! :put_on_sale, @performance

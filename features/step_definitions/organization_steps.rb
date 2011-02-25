@@ -24,3 +24,27 @@ Then /^I should be a part of the organization "([^"]*)"$/ do |name|
   @current_user.reload
   @current_user.organizations.should include Organization.find_by_name(name)
 end
+
+Given /^"([^"]*)" is part of "([^"]*)"$/ do |email, organization|
+  user = User.find_by_email(email)
+  organization = Organization.find_by_name(organization)
+  organization.users << user
+end
+
+When /^I click the link to remove "([^"]*)"$/ do |email|
+  within(:xpath, "//ul/li[contains(.,'#{email}')]") do
+    click_link "Remove from organization"
+  end
+end
+
+Then /^"([^"]*)" should be a part of "([^"]*)"$/ do |email, organization|
+  user = User.find_by_email(email)
+  organization = Organization.find_by_name(organization)
+  Membership.find_by_user_id_and_organization_id(user.id, organization.id).should be_persisted
+end
+
+Then /^"([^"]*)" should not be a part of "([^"]*)"$/ do |email, organization|
+  user = User.find_by_email(email)
+  organization = Organization.find_by_name(organization)
+  Membership.find_by_user_id_and_organization_id(user.id, organization.id).should be_nil
+end

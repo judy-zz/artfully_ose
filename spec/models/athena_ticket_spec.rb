@@ -6,10 +6,14 @@ describe AthenaTicket do
     subject { Factory(:ticket) }
 
     it { should respond_to :event }
+    it { should respond_to :event_id }
     it { should respond_to :venue }
     it { should respond_to :performance }
+    it { should respond_to :performance_id }
     it { should respond_to :sold }
+    it { should respond_to :on_sale }
     it { should respond_to :price }
+    it { should respond_to :buyer_id }
   end
 
   describe "#find" do
@@ -173,18 +177,46 @@ describe AthenaTicket do
   end
 
   describe ".sold!" do
+    let (:buyer) { Factory(:athena_person_with_id) }
     subject { Factory(:ticket_with_id) }
 
     it "should mark the ticket as sold" do
       subject.stub!(:save!)
-      subject.sold!
+      subject.sold!(buyer)
       subject.should be_sold
     end
 
     it "should save the updated ticket" do
       subject.stub!(:save!)
       subject.should_receive(:save!)
-      subject.sold!
+      subject.sold!(buyer)
+    end
+
+    it "should set the buyer after being sold" do
+      subject.stub!(:save!)
+      subject.sold!(buyer)
+      subject.buyer.should eq buyer
+    end
+  end
+
+  describe "buyer" do
+    it { should respond_to :buyer }
+    it { should respond_to :buyer= }
+
+    it "should fetch the People record" do
+      person =  Factory(:athena_person_with_id)
+      subject.buyer = person
+      subject.buyer.should eq person
+    end
+
+    it "should not make a request if the customer_id is not set" do
+      subject.buyer_id = nil
+      subject.buyer.should be_nil
+    end
+
+    it "should update the customer id when assigning a new customer record" do
+      subject.buyer = Factory(:athena_person_with_id, :id => 2)
+      subject.buyer_id.should eq(2)
     end
   end
 end

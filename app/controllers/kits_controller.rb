@@ -6,7 +6,7 @@ class KitsController < ApplicationController
   end
 
   def create
-    @kit = Kit.new.becomes(Kernel.const_get(params[:type]))
+    @kit = Kernel.const_get(params[:type]).new
     @kit.type = params[:type]
     current_user.current_organization.kits << @kit
     if @kit.activated?

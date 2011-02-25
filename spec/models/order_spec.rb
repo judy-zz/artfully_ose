@@ -148,11 +148,6 @@ describe Order do
       subject.items.each { |item| item.should_receive(:sold!) }
       subject.finish
     end
-
-    it "clean up left over line items" do
-      subject.finish
-      subject.items.should be_empty
-    end
   end
 
   describe ".generate_donations" do
