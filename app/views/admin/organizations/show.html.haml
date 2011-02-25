@@ -1,17 +1,19 @@
 - content_for :header do
   %h1= @organization.name
 
+%h2 Kits
 - @organization.kits.each do |kit|
-  - if kit.pending?
-    = link_to "Approve Donation Kit", activate_admin_organization_kit_path(@organization,kit), :method => :put
+  = link_to "Approve Donation Kit", activate_admin_organization_kit_path(@organization,kit), :method => :put if kit.pending?
 
-="Add User"
+.clearboth
+
+%h2 Add User
 = form_tag admin_organization_memberships_path(@organization.id), :action => "create" do
   = label_tag :user_email, "Email"
   = text_field_tag :user_email
   = submit_tag "Add"
 
-= "Current Members"
+%h2 Current Members
 %ul#memberships
   - @organization.users.each do |user|
     %li

@@ -1,13 +1,17 @@
 - content_for :header do
-  %h1 Organization
+  %h1 Organizations
 
 %table.normal.fullwidth
   %thead
     %tr
       %th Name
       %th Created Date
+      %th Members
+      %th Owner
   %tbody
     - @organizations.each do |organization|
       %tr
         %td= link_to organization.name, admin_organization_path(organization)
         %td= l organization.created_at, :format => :short
+        %td= organization.memberships.size
+        %td= link_to organization.owner.email, admin_user_path(organization.owner) unless organization.owner.nil?

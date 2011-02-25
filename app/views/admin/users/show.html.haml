@@ -1,7 +1,18 @@
-= "User page for #{@user.email},"
-= "who is a member of"
-- if [] == @user.organizations
-  = "no organizations."
--else
-  - @user.organizations.each do |org|
-    %li=[org.id, org.name].join": "
+- content_for :header do
+  %h1= "User #{@user.email}"
+
+
+%h2 Organizations
+- if @user.organizations.any?
+  %table.normal.fullwidth
+    %thead
+      %tr
+        %th Name
+        %th Created Date
+    %tbody
+      - @user.organizations.each do |organization|
+        %tr
+          %td= link_to organization.name, organization
+          %td= l organization.created_at, :format => :short
+- else
+  %p User is not part of any organizations.
