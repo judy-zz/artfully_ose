@@ -187,3 +187,10 @@
       athena_performance:
         datetime: "Date and time"
 
+  athena_performance:
+    state:
+      pending: "Pending"
+      built: "Off Sale"
+      on_sale: "On Sale"
+      off_sale: "Off Sale"
+
