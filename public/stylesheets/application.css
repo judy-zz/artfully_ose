@@ -1284,7 +1284,7 @@ pre code { font-size:14px; background:none;}
 }
 
 .menuSmSection p{
-  padding:10px;
+  padding:10px 14px;
   text-align:center;
   font-weight:bold;
   border-top: 1px solid #f4f4f4;
@@ -1296,8 +1296,8 @@ pre code { font-size:14px; background:none;}
 border-top: 1px solid #f3fbff;
 }
 
-.menuSmSection p.icon{
-  padding-left:5px !important;
+.menuSmSection img.icon{
+  margin-right:7px;
 }
 .menuSmSection p:hover{
 color:#000;

@@ -14,7 +14,7 @@ class ContextualMenu
       content_tag :span, :class => css_class, :id => css_id do
         link_to path, options do
           content_tag :p do
-            "#{image_tag (icon) unless icon.nil?} #{text}".html_safe
+            "#{image_tag(icon, :class => :icon) unless icon.nil?} #{text}".html_safe
           end
         end
       end
