@@ -7,7 +7,7 @@ html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,
 blockquote,pre,address,code,del,dfn,em,img,q,
 dl,dt,dd,ol,ul,li,
 table,caption,tbody,tfoot,thead,tr,th,td,br,fieldset,textarea{font-family:"Lucida Sans Unicode","Lucida Grande","Trebuchet MS", Helvetica, Arial, sans-serif;line-height:20px;letter-spacing:.1px;word-spacing:1px;margin:0;padding:0;border:0;vertical-align:baseline;}
-h1,h2,h3,h4,h5,h6,hr,p,ul,ol,dl,pre,address,table,form{margin:0 0 20px}
+h3,h4,h5,h6,hr,p,ul,ol,dl,pre,address,table,form{margin:0 0 20px}
 p,h1, h2, h3, h4, h5, h6, ul.check_list, ul.arrowlist{padding-left:2px;}
 strong, b{font-weight:bold;}
 em, dfn, i{font-style:italic;}

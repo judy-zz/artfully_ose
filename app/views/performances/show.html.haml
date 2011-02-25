@@ -1,5 +1,6 @@
 - content_for :header do
   %h1= l @performance.datetime, :format => :long_with_day
+  %h2= "#{@event.name} at #{@event.venue}"
 
 = contextual_menu do |m|
   - m.item_to "Event", event_path(@event), :title => "New Event", :icon => "icons/light/Gear.png"
@@ -10,10 +11,6 @@
   - m.item_to "Door List", door_list_performance_path(@performance) if @performance.on_sale?
 
 .clearboth
-
-.event-name=@event.name
-.venue-name=@event.venue
-.producer-name=@event.producer
 
 .three_fourth.column
   - if @performance.pending?
@@ -33,4 +30,3 @@
     =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @performance.gross_potential)}
     =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
 .clearboth
-
