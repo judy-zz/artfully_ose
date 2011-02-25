@@ -40,13 +40,11 @@ end
 Then /^"([^"]*)" should be a part of "([^"]*)"$/ do |email, organization|
   user = User.find_by_email(email)
   organization = Organization.find_by_name(organization)
-  organization.users.should include user
+  Membership.find_by_user_id_and_organization_id(user.id, organization.id).should be_persisted
 end
 
 Then /^"([^"]*)" should not be a part of "([^"]*)"$/ do |email, organization|
   user = User.find_by_email(email)
   organization = Organization.find_by_name(organization)
-  organization.users.should_not include user
+  Membership.find_by_user_id_and_organization_id(user.id, organization.id).should be_nil
 end
-
-#$x("//ul/li[contains(.,'micah.frost@fracturedatlas.org')]");
