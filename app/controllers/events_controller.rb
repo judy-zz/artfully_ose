@@ -33,14 +33,8 @@ class EventsController < ApplicationController
     @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
     @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @chart = AthenaChart.new
-    
-    if @event.performances.empty?
-      #@next_performance_datetime = DateTime.now
-    else
-      #@next_performance_datetime = @event.performances.last.datetime.in_time_zone(@event.time_zone)
-    end
-    
-    #@next_performance_datetime = @event.performances.empty? ?  : (@event.performances.last.datetime.in_time_zone(@event.time_zone) + 86400)
+    #Incrementing DateTime.now by one day and @event.performances.last.datetime.in_time_zone(@event.time_zone) by 86,400 seconds (one day)
+    @next_performance_datetime = @event.performances.empty? ? (DateTime.now + 1) : (@event.performances.last.datetime.in_time_zone(@event.time_zone) + 86400)
   end
 
   def new
