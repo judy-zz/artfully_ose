@@ -8,9 +8,9 @@ class AthenaPerformance < AthenaResource::Base
 
   validates_presence_of :datetime
 
-  PUT_ON_SALE = 'PUT_ON_SALE'
-  TAKE_OFF_SALE = 'TAKE_OFF_SALE'
-  DELETE = 'DELETE'
+  PUT_ON_SALE = 'Put on Sale'
+  TAKE_OFF_SALE = 'Take off Sale'
+  DELETE = 'Delete'
 
   schema do
     attribute 'id',               :integer

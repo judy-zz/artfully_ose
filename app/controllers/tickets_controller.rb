@@ -9,17 +9,18 @@ class TicketsController < ApplicationController
     authorize! :bulk_edit, :tickets
     with_confirmation do
       @performance = AthenaPerformance.find(params[:performance_id])
-      bulk_edit_tickets(@performance, params[:selected_tickets], params[:bulk_action])
+      bulk_edit_tickets(@performance, params[:selected_tickets], params[:commit])
       redirect_to performance_url(@performance) and return
     end
   end
 
   private
     def with_confirmation
-      if params[:confirm].nil?
+      if params[:confirmed].blank?
         @selected_tickets = params[:selected_tickets]
-        @bulk_action = params[:bulk_action]
+        @bulk_action = params[:commit]
         @performance = AthenaPerformance.find(params[:performance_id])
+        flash[:info] = "Please confirm your changes before we save them."
         render 'tickets/' + params[:action] + '_confirm' and return
       else
         yield
@@ -37,11 +38,11 @@ class TicketsController < ApplicationController
         rejected_ids = performance.bulk_edit_tickets(ticket_ids, action)
         edited_tickets = ticket_ids.size - rejected_ids.size
         case action
-          when "PUT_ON_SALE"
+          when "Put on Sale"
             @msg = "Put " + edited_tickets.to_s + " ticket(s) on sale. "
-          when 'TAKE_OFF_SALE'
+          when 'Take off Sale'
             @msg = "Took " + edited_tickets.to_s + " ticket(s) off sale. "
-          when 'DELETE'
+          when 'Delete'
             @msg = "Deleted " + edited_tickets.to_s + " ticket(s). "
           else
             @msg = "Please select an action. "

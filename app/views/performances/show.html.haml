@@ -18,10 +18,10 @@
     %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
   - else
     = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
-      %div
-        Bulk actions:
-        =select_tag "bulk_action", "<option value='PUT_ON_SALE'>Put on Sale</option><option value='TAKE_OFF_SALE'>Take off Sale</option><option value='DELETE'>Delete</option>".html_safe
-        =submit_tag "GO"
+      %ul.action-list
+        %li= submit_tag "Put on Sale"
+        %li= submit_tag "Take off Sale"
+        %li= submit_tag "Delete"
       =render :partial => 'ticket_table', :locals => { :performance => @performance }
 .one_fourth.column.last
   .stats

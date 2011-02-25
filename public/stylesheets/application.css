@@ -1,6 +1,7 @@
 @import "/stylesheets/jquery/jquery.ui.css";
 @import "/stylesheets/jquery/jquery.iphone-checkboxes.css";
 @import "/stylesheets/jquery/jquery.visualize.css";
+@import "/stylesheets/custom.css";
 /* --- 1. CSS RESET --- */
 
 html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,

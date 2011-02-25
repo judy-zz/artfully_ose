@@ -21,3 +21,11 @@
       %p
         %strong Warning!
         = flash[:alert]
+
+- if flash[:info]
+  .notification.info
+    %span
+    .text
+      %p
+        %strong Info!
+        = flash[:info]
