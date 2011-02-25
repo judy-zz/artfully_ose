@@ -7,7 +7,7 @@
   - m.item_to "Duplicate", duplicate_performance_path(@performance), :icon => "icons/light/Scanner.png"
   - m.item_to "Put on Sale", put_performance_on_sale_path(@performance) unless @performance.on_sale?
   - m.item_to "Take off Sale", take_performance_off_sale_path(@performance) if @performance.on_sale?
-  - m.item_to "Door List", door_list_performance_path(@performance) if @performance.on_sale?
+  - m.item_to "Door List", door_list_performance_path(@performance) if @performance.has_door_list?
 
 - unless @door_list.items.empty?
   %table#door-list.normal.tablesorter.fullwidth
@@ -21,4 +21,4 @@
         %tr
           %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
           %td= "#{item.buyer.email}"
-          %td= item.ticket.price
+          %td= number_to_currency item.ticket.price
