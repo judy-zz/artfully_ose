@@ -132,6 +132,7 @@ class PerformancesController < ApplicationController
   private
     def with_confirmation
       if params[:confirm].nil?
+        flash[:info] = "Please confirm your changes before we save them."
         render params[:action] + '_confirm' and return
       else
         yield

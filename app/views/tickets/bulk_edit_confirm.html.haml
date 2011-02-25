@@ -4,11 +4,11 @@
 %p= "You are #{verbalize_action (@bulk_action)} #{pluralize(@selected_tickets.size, 'ticket')} for the #{@performance.formatted_performance_date}, #{@performance.formatted_performance_time(@performance.event.time_zone)} performance of #{@performance.event.name}"
 
 = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
-  =hidden_field_tag :confirmed, :true
+  = hidden_field_tag :confirmed, :true
   - @selected_tickets.each do |st|
     =hidden_field_tag "selected_tickets[]", st
   %p If this is correct, please click confirm it by clicking
-  =submit_tag @bulk_action
+  = submit_tag @bulk_action
 
 %p
   If this is not correct,
