@@ -82,33 +82,14 @@ class AthenaPerformance < AthenaResource::Base
     on_sale? or off_sale?
   end
 
-  #TODO: Move this into localization
-  def day_of_week
-    self.datetime.strftime("%A")
-  end
-
-  def formatted_performance_time(time_zone)
-    self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
-  end
-
-  def formatted_performance_date
-    self.datetime.strftime("%b, %d %Y")
-  end
-
   def formatted_performance_date_for_input
+    return if self.datetime.blank?
     self.datetime.in_time_zone(attributes['timezone']).strftime("%m/%d/%Y")
   end
 
-  def formatted_time(time_zone)
-    self.datetime.in_time_zone(time_zone)
-  end
-
   def parsed_datetime
-    if self.datetime.nil?
-      nil
-    else
-      DateTime.parse(self.datetime.in_time_zone(attributes['timezone']))
-    end
+    return if self.datetime.nil?
+    DateTime.parse(self.datetime.in_time_zone(attributes['timezone']))
   end
 
   def update_attributes(attributes)
