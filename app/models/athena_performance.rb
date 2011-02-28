@@ -83,7 +83,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def time_zone
-    @time_zone ||= AthenaEvent.find(event_id).time_zone
+    @time_zone ||= event.time_zone
   end
 
   #TODO: Move this into localization
@@ -100,19 +100,11 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def formatted_performance_date_for_input
-    self.datetime.in_time_zone(attributes['timezone']).strftime("%m/%d/%Y")
+    self.datetime.in_time_zone(time_zone).strftime("%m/%d/%Y")
   end
 
   def formatted_time
     self.datetime.in_time_zone(time_zone)
-  end
-
-  def parsed_datetime
-    if self.datetime.nil?
-      nil
-    else
-      DateTime.parse(self.datetime.in_time_zone(attributes['timezone']))
-    end
   end
 
   def update_attributes(attributes)
