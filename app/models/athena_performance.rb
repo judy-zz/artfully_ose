@@ -82,16 +82,20 @@ class AthenaPerformance < AthenaResource::Base
     on_sale? or off_sale?
   end
 
+  def time_zone
+    @time_zone ||= AthenaEvent.find(event_id).time_zone
+  end
+
   #TODO: Move this into localization
   def day_of_week
     self.datetime.strftime("%A")
   end
 
-  def formatted_performance_time(time_zone)
+  def formatted_performance_time
     self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
   end
 
-  def formatted_performance_date(time_zone)
+  def formatted_performance_date
     self.datetime.in_time_zone(time_zone).strftime("%b, %d %Y")
   end
 
@@ -99,7 +103,7 @@ class AthenaPerformance < AthenaResource::Base
     self.datetime.in_time_zone(attributes['timezone']).strftime("%m/%d/%Y")
   end
 
-  def formatted_time(time_zone)
+  def formatted_time
     self.datetime.in_time_zone(time_zone)
   end
 

@@ -35,7 +35,7 @@ class PerformancesController < ApplicationController
     @performance.timezone = @event.time_zone
     if @performance.valid? && @performance.save
       session[:performance] = nil
-      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date(@event.time_zone) + ' at ' + @performance.formatted_performance_time(@event.time_zone)
+      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time
       redirect_to event_url(@performance.event)
     else
       #render :action=>'new'
@@ -49,7 +49,7 @@ class PerformancesController < ApplicationController
     authorize! :view, @performance
 
     @event = AthenaEvent.find(@performance.event_id)
-    @performance.datetime = @performance.formatted_time(@event.time_zone)
+    @performance.datetime = @performance.formatted_time
     @performance.tickets = @performance.tickets
   end
 

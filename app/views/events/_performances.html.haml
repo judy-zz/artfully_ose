@@ -25,8 +25,8 @@
         - event.performances.each do |performance|
           %tr{:class => (performance.on_sale? ? "selected" : nil)}
             %td.day-of-week-display= performance.day_of_week
-            %td= performance.formatted_performance_date(@event.time_zone)
-            %td= performance.formatted_performance_time(@event.time_zone)
+            %td= performance.formatted_performance_date
+            %td= performance.formatted_performance_time
             %td= link_to performance.chart.name, chart_path(performance.chart) unless performance.chart.nil?
             %td= t performance.state, :scope => "athena_performance.state"
             %td.actions
