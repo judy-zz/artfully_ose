@@ -14,7 +14,7 @@ describe AthenaOrder do
     it { should respond_to association + "=" }
   end
 
-  describe "organization" do
+  describe "#organization" do
     it "should return the organization" do
       subject.organization.should be_an Organization
       subject.organization.id.should eq subject.organization_id
@@ -27,7 +27,7 @@ describe AthenaOrder do
     end
   end
 
-  describe "person" do
+  describe "#person" do
     it "should fetch the People record" do
       person =  Factory(:athena_person_with_id)
       subject.person = person
@@ -45,7 +45,7 @@ describe AthenaOrder do
     end
   end
 
-  describe "customer" do
+  describe "#customer" do
     it "should fetch the Customer record" do
       customer =  Factory(:customer_with_id)
       subject.customer = customer
@@ -60,6 +60,23 @@ describe AthenaOrder do
     it "should update the customer id when assigning a new customer record" do
       subject.customer = Factory(:customer_with_id, :id => 2)
       subject.customer_id.should eq(2)
+    end
+  end
+
+  describe "#items" do
+    it "should request items for itself" do
+      items = 2.times.collect { Factory(:athena_item) }
+      AthenaItem.stub(:find_by_order).and_return(items)
+      subject.items.should <=> items
+    end
+  end
+
+  describe "#save" do
+    it "should save the items after saving the order" do
+      items = 2.times.collect { Factory(:athena_item) }
+      items.each { |item| item.should_receive(:save) }
+      AthenaItem.stub(:find_by_order).and_return(items)
+      subject.save
     end
   end
 end

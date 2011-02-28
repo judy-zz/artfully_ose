@@ -1,4 +1,9 @@
 class AthenaOrder < AthenaResource::Base
+  self.site = Artfully::Application.config.orders_component
+  self.headers["User-agent"] = "artful.ly"
+  self.element_name = 'orders'
+  self.collection_name = 'orders'
+
   schema do
     attribute :person_id,       :integer
     attribute :organization_id, :integer
@@ -44,6 +49,20 @@ class AthenaOrder < AthenaResource::Base
     @customer, self.customer_id = customer, customer.id
   end
 
+  def items
+    @items ||= find_items
+  end
+
+  def items=(items)
+    @items = items
+  end
+
+  def save
+    was_saved = super
+    items.each { |item| item.order_id = self.id; item.save } if was_saved
+    was_saved
+  end
+
   private
     def find_person
       return if self.person_id.nil?
@@ -65,5 +84,9 @@ class AthenaOrder < AthenaResource::Base
         update_attribute!(:customer_id, nil)
         return nil
       end
+    end
+
+    def find_items
+      items ||= AthenaItem.find_by_order(self)
     end
 end
