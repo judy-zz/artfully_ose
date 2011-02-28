@@ -11,7 +11,7 @@
   =pluralize(@selected_tickets.size, 'ticket')
 	
 %p
-  for the #{@performance.formatted_performance_date}, #{@performance.formatted_performance_time} performance of
+  for the #{l @performance.datetime.in_time_zone(@performance.event.time_zone), :format=> :long_with_day} performance of
 %p
   =@performance.event.name
 

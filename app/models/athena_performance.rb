@@ -86,27 +86,6 @@ class AthenaPerformance < AthenaResource::Base
     @time_zone ||= event.time_zone
   end
 
-  #TODO: Move this into localization
-  def day_of_week
-    self.datetime.strftime("%A")
-  end
-
-  def formatted_performance_time
-    self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
-  end
-
-  def formatted_performance_date
-    self.datetime.in_time_zone(time_zone).strftime("%b, %d %Y")
-  end
-
-  def formatted_performance_date_for_input
-    self.datetime.in_time_zone(time_zone).strftime("%m/%d/%Y")
-  end
-
-  def formatted_time
-    self.datetime.in_time_zone(time_zone)
-  end
-
   def update_attributes(attributes)
     prepare_attr!(attributes)
     super
@@ -119,7 +98,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def datetime
-    Time.zone = attributes['timezone']
+    @event.nil? ? Time.zone = attributes['timezone'] : Time.zone=(time_zone)
     attributes['datetime'] = Time.zone.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
   end
