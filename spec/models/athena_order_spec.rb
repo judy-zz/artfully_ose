@@ -67,7 +67,7 @@ describe AthenaOrder do
     it "should request items for itself" do
       items = 2.times.collect { Factory(:athena_item) }
       subject.stub(:items).and_return(items)
-      subject.items.should <=> items
+      subject.items.should eq items
     end
   end
 
