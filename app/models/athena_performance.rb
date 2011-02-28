@@ -91,8 +91,8 @@ class AthenaPerformance < AthenaResource::Base
     self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
   end
 
-  def formatted_performance_date
-    self.datetime.strftime("%b, %d %Y")
+  def formatted_performance_date(time_zone)
+    self.datetime.in_time_zone(time_zone).strftime("%b, %d %Y")
   end
 
   def formatted_performance_date_for_input
