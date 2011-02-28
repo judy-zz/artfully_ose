@@ -29,7 +29,7 @@ class AthenaItem < AthenaResource::Base
 
   def self.find_by_order(order)
     return [] if order.id.nil?
-    AthenaItem.find(:all, :params => {:orderId => order.id} )
+    AthenaItem.find(:all, :params => {:orderId => "eq#{order.id}"} )
   end
 
   private

@@ -66,7 +66,7 @@ describe AthenaOrder do
   describe "#items" do
     it "should request items for itself" do
       items = 2.times.collect { Factory(:athena_item) }
-      AthenaItem.stub(:find_by_order).and_return(items)
+      subject.stub(:items).and_return(items)
       subject.items.should <=> items
     end
   end
@@ -75,8 +75,45 @@ describe AthenaOrder do
     it "should save the items after saving the order" do
       items = 2.times.collect { Factory(:athena_item) }
       items.each { |item| item.should_receive(:save) }
-      AthenaItem.stub(:find_by_order).and_return(items)
+      subject.stub(:items).and_return(items)
       subject.save
     end
+  end
+
+  describe "#generate" do
+    let(:organization) { Factory(:organization) }
+    let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
+    let(:donations) { 2.times.collect { Factory(:donation, :organization => organization) } }
+
+    subject do
+      AthenaOrder.generate do |order|
+        order.for_organization organization
+        order.for_items tickets
+        order.for_items donations
+      end
+    end
+
+    before(:each) do
+      FakeWeb.register_uri(:post, "http://localhost/orders/orders/.json", :body => subject.encode)
+    end
+
+    it "should assign the organization to the order" do
+      subject.organization.should eq organization
+    end
+
+    it "should create an item that references each ticket" do
+      subject.items.select { |item| item.item_type == "AthenaTicket" }.size.should eq tickets.size
+      subject.items.select { |item| item.item_type == "AthenaTicket" }.each do |item|
+        tickets.collect(&:id).should include item.item_id
+      end
+    end
+
+    it "should create an item that references each donation" do
+      subject.items.select { |item| item.item_type == "Donation" }.size.should eq donations.size
+      subject.items.select { |item| item.item_type == "Donation" }.each do |item|
+        donations.collect(&:id).should include item.item_id
+      end
+    end
+
   end
 end

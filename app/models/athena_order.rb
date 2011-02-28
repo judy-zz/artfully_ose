@@ -59,8 +59,26 @@ class AthenaOrder < AthenaResource::Base
 
   def save
     was_saved = super
-    items.each { |item| item.order_id = self.id; item.save } if was_saved
+    unless items.empty?
+      items.each { |item| item.order_id = self.id; item.save } if was_saved
+    end
     was_saved
+  end
+
+  def self.generate(&block)
+    order = self.new
+    block.call(order)
+    order
+  end
+
+  def for_organization(org)
+    self.organization = org
+  end
+
+  def for_items(itms)
+    itms.each do |item|
+      self.items << AthenaItem.new(:item_type => item.class.to_s, :item_id => item.id, :price => item.price)
+    end
   end
 
   private
@@ -87,6 +105,7 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def find_items
+      return [] if new_record?
       items ||= AthenaItem.find_by_order(self)
     end
 end
