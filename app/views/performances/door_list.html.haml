@@ -2,7 +2,8 @@
   %h1= "Door List for #{l @performance.datetime, :format => :long_with_day}"
 
 = contextual_menu do |m|
-  - m.item_to "Event", event_path(@event), :title => "New Event", :icon => "icons/light/Gear.png"
+  - m.item_to "Event", event_path(@performance.event), :title => "New Event", :icon => "icons/light/Gear.png"
+  - m.item_to "Performance", performance_path(@performance), :title => "View Performance", :icon => "icons/light/Gear.png"
   - m.item_to "Edit", edit_performance_path(@performance), :icon => "icons/light/Writing.png"
   - m.item_to "Duplicate", duplicate_performance_path(@performance), :icon => "icons/light/Scanner.png"
   - m.item_to "Put on Sale", put_performance_on_sale_path(@performance) unless @performance.on_sale?

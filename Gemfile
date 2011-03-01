@@ -12,6 +12,9 @@ gem 'transitions',
     :path => "#{File.expand_path(__FILE__)}/../vendor/gems/transitions-0.0.9"
 gem 'jquery-rails', '>= 0.2.6'
 
+gem 'capistrano'
+gem 'capistrano-ext'
+
 
 group :test, :development do
   gem "rspec-rails", ">= 2.1"
