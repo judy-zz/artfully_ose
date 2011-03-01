@@ -36,6 +36,7 @@ Artfully::Application.configure do
 
   config.tickets_site = 'http://localhost/tix/'
   config.payments_component = 'http://localhost/payments/'
+  config.orders_component = 'http://localhost/orders'
   config.stage_site = 'http://localhost/stage/'
   config.people_site = 'http://localhost/people/'
 end

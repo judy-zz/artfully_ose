@@ -130,6 +130,7 @@ describe Order do
 
   describe ".finish" do
     before :each do
+      FakeWeb.register_uri(:post, "http://localhost/orders/orders/.json", :body => "")
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)

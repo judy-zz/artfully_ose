@@ -1,11 +1,11 @@
 module BulkEditHelper
   def verbalize_action(bulk_action)
-    if bulk_action=='PUT_ON_SALE'
+    if bulk_action=='Put on Sale'
       'putting on sale'
-    elsif bulk_action=='TAKE_OFF_SALE'
+    elsif bulk_action=='Take off Sale'
       'taking off sale'
-    elsif bulk_action=='DELETE'
-      'deleting'  
+    elsif bulk_action=='Delete'
+      'deleting'
     end
   end
 end

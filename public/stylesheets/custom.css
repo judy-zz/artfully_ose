@@ -1,0 +1,12 @@
+ul.action-list {
+  list-style-type:none;
+  clear:both;
+}
+
+ul.action-list li{
+  float:left;
+}
+
+ul.action-list li input{
+  margin:0 4px 8px 0;
+}

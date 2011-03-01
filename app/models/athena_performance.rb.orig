@@ -82,8 +82,19 @@ class AthenaPerformance < AthenaResource::Base
     on_sale? or off_sale?
   end
 
+<<<<<<< HEAD
   def time_zone
     @time_zone ||= event.time_zone
+=======
+  def formatted_performance_date_for_input
+    return if self.datetime.blank?
+    self.datetime.in_time_zone(attributes['timezone']).strftime("%m/%d/%Y")
+  end
+
+  def parsed_datetime
+    return if self.datetime.nil?
+    DateTime.parse(self.datetime.in_time_zone(attributes['timezone']))
+>>>>>>> master
   end
 
   def update_attributes(attributes)

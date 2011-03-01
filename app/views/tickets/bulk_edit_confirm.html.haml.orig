@@ -1,7 +1,26 @@
+<<<<<<< HEAD
+.notification.info
+  %span
+  .text
+    %p
+      %strong Info!
+      Please confirm your changes before we save them.
+%p
+  You are
+  =verbalize_action (@bulk_action)
+%p	
+  =pluralize(@selected_tickets.size, 'ticket')
+	
+%p
+  for the #{l @performance.datetime.in_time_zone(@performance.event.time_zone), :format=> :long_with_day} performance of
+%p
+  =@performance.event.name
+=======
 -content_for :header do
   %h1= @bulk_action
 
 %p= "You are #{verbalize_action (@bulk_action)} #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime.in_time_zone(@performance.event.time_zone)} performance of #{@performance.event.name}"
+>>>>>>> master
 
 = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
   = hidden_field_tag :confirmed, :true

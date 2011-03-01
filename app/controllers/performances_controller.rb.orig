@@ -35,7 +35,11 @@ class PerformancesController < ApplicationController
     @performance.timezone = @event.time_zone
     if @performance.valid? && @performance.save
       session[:performance] = nil
+<<<<<<< HEAD
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date}  at #{l @performance.datetime, :format => :time}"
+=======
+      flash[:notice] = "Performance created on #{l @performance.datetime, :format => :long_date}  at #{l @performance.datetime.in_time_zone(@event.time_zone), :format => :time}"
+>>>>>>> master
       redirect_to event_url(@performance.event)
     else
       session[:performance] = @performance

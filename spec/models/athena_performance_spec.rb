@@ -15,7 +15,7 @@ describe AthenaPerformance do
     subject.datetime = DateTime.parse('2010-03-03T02:02:02-04:00')
     subject.datetime.kind_of?(DateTime).should be_true
   end
-  
+
   it "should parse the datetime attribute to a DateTime object" do
     subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end

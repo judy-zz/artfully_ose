@@ -16,10 +16,6 @@
       = link_to people_path do
         = image_tag "icons/small_icons_3/users.png", :alt => "People"
         %span People
-    %li
-      = link_to organizations_path do
-        = image_tag "icons/small_icons_3/Box.png", :alt => "Organizations"
-        %span Organizations
     - if can? :administrate, :all
       %li
         = link_to admin_root_path do
