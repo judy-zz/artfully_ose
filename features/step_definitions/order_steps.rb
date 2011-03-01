@@ -1,4 +1,6 @@
 Given /^I enter my payment details$/ do
+  FakeWeb.register_uri(:post, "http://localhost/people/people/.json", :body => Factory(:athena_person_with_id).encode)
+
   payment = Factory(:payment)
 
   with_scope('#customer') do

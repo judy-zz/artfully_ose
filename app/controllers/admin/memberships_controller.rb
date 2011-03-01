@@ -29,7 +29,7 @@ class Admin::MembershipsController < Admin::AdminController
 
       else
         @membership = Membership.new
-        @membership.user_id = @user.athena_id
+        @membership.user_id = @user.id
         @membership.organization_id = @organization.id
 
         if @membership.save
@@ -43,7 +43,7 @@ class Admin::MembershipsController < Admin::AdminController
       end
       redirect_to admin_organization_url(@organization)
     end
-    
+
   end
 
   def edit

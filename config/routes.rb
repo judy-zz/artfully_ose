@@ -31,7 +31,9 @@ Artfully::Application.routes.draw do
   resources :credit_cards, :except => :show
 
   resources :people, :only => [:index, :show, :edit, :update]
-  resources :performances
+  resources :performances do
+    get :door_list, :on => :member
+  end
 
   resources :events do
     resources :performances

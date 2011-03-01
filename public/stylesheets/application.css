@@ -1,13 +1,14 @@
 @import "/stylesheets/jquery/jquery.ui.css";
 @import "/stylesheets/jquery/jquery.iphone-checkboxes.css";
 @import "/stylesheets/jquery/jquery.visualize.css";
+@import "/stylesheets/custom.css";
 /* --- 1. CSS RESET --- */
 
 html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,
 blockquote,pre,address,code,del,dfn,em,img,q,
 dl,dt,dd,ol,ul,li,
 table,caption,tbody,tfoot,thead,tr,th,td,br,fieldset,textarea{font-family:"Lucida Sans Unicode","Lucida Grande","Trebuchet MS", Helvetica, Arial, sans-serif;line-height:20px;letter-spacing:.1px;word-spacing:1px;margin:0;padding:0;border:0;vertical-align:baseline;}
-h1,h2,h3,h4,h5,h6,hr,p,ul,ol,dl,pre,address,table,form{margin:0 0 20px}
+h3,h4,h5,h6,hr,p,ul,ol,dl,pre,address,table,form{margin:0 0 20px}
 p,h1, h2, h3, h4, h5, h6, ul.check_list, ul.arrowlist{padding-left:2px;}
 strong, b{font-weight:bold;}
 em, dfn, i{font-style:italic;}
@@ -1283,7 +1284,7 @@ pre code { font-size:14px; background:none;}
 }
 
 .menuSmSection p{
-  padding:10px;
+  padding:10px 14px;
   text-align:center;
   font-weight:bold;
   border-top: 1px solid #f4f4f4;
@@ -1295,8 +1296,8 @@ pre code { font-size:14px; background:none;}
 border-top: 1px solid #f3fbff;
 }
 
-.menuSmSection p.icon{
-  padding-left:5px !important;
+.menuSmSection img.icon{
+  margin-right:7px;
 }
 .menuSmSection p:hover{
 color:#000;

@@ -18,3 +18,9 @@ end
 Then /^I should see the following users:$/ do |expected_users_table|
   expected_users_table.diff!(tableish('table tr', 'td,th'))
 end
+
+Then /^a reset password email was sent to "([^"]*)"$/ do |email|
+  ActionMailer::Base.deliveries.should_not be_empty
+  ActionMailer::Base.deliveries.first.subject eq "Reset password instructions"
+  ActionMailer::Base.deliveries.first.to.should include email
+end

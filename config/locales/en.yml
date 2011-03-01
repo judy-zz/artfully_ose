@@ -23,8 +23,12 @@
     formats:
       default: "%B %d, %Y %I:%M %p"
       short: "%m/%d/%Y %I:%M %p"
-      long: "%B %d, %Y %I:%M %p"
+      date: "%B %d, %Y"
+      long_date: "%B %d, %Y %I:%M %p"
       long_with_day: "%A, %b, %d %Y %I:%M %p"
+      time: "%I:%M %p"
+      day: "%A"
+      date_for_input: "%m/%d/%Y"
     am: "am"
     pm: "pm"
 
@@ -186,4 +190,11 @@
     attributes:
       athena_performance:
         datetime: "Date and time"
+
+  athena_performance:
+    state:
+      pending: "Pending"
+      built: "Off Sale"
+      on_sale: "On Sale"
+      off_sale: "Off Sale"
 

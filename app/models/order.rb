@@ -23,6 +23,7 @@ class Order < ActiveRecord::Base
   end
 
   def clean_order
+    return if approved?
     purchasable_tickets.delete(purchasable_tickets.select{ |item| !item.locked? })
   end
 
@@ -71,9 +72,17 @@ class Order < ActiveRecord::Base
   end
 
   def finish
+    organizations_from_tickets.each do |organization|
+      order = AthenaOrder.generate do |order|
+        order.for_organization organization
+        order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id }
+        order.for_items donations.select { |donations| donation.organization == organization }
+      end
+      order.save
+    end
+
     OrderMailer.confirmation_for(self).deliver
-    purchasable_tickets.map(&:sold!)
-    purchasable_tickets.delete_if { |item| item.destroy }
+    purchasable_tickets.map { |ticket| ticket.sold!(user.person) }
   end
 
   def generate_donations
@@ -96,7 +105,9 @@ class Order < ActiveRecord::Base
     end
 
     def organizations_from_tickets
+      return @organizations unless @organizations.nil?
+
       events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
-      producers = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
+      @organizations = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
     end
 end

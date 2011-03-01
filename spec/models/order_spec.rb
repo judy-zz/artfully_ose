@@ -130,6 +130,7 @@ describe Order do
 
   describe ".finish" do
     before :each do
+      FakeWeb.register_uri(:post, "http://localhost/orders/orders/.json", :body => "")
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
@@ -147,11 +148,6 @@ describe Order do
     it "should mark each item as sold" do
       subject.items.each { |item| item.should_receive(:sold!) }
       subject.finish
-    end
-
-    it "clean up left over line items" do
-      subject.finish
-      subject.items.should be_empty
     end
   end
 

@@ -8,16 +8,16 @@ class AthenaPerformance < AthenaResource::Base
 
   validates_presence_of :datetime
 
-  PUT_ON_SALE = 'PUT_ON_SALE'
-  TAKE_OFF_SALE = 'TAKE_OFF_SALE'
-  DELETE = 'DELETE'
+  PUT_ON_SALE = 'Put on Sale'
+  TAKE_OFF_SALE = 'Take off Sale'
+  DELETE = 'Delete'
 
   schema do
     attribute 'id',               :integer
     attribute 'event_id',         :string
     attribute 'chart_id',         :string
     attribute 'datetime',         :string
-    attribute 'timezone',         :string
+    attribute 'time_zone',         :string
     attribute 'state',            :string
     attribute 'organization_id',  :string
   end
@@ -78,33 +78,12 @@ class AthenaPerformance < AthenaResource::Base
     @event, self.event_id = event, event.id
   end
 
-  #TODO: Move this into localization
-  def day_of_week
-    self.datetime.strftime("%A")
+  def has_door_list?
+    on_sale? or off_sale?
   end
 
-  def formatted_performance_time(time_zone)
-    self.datetime.in_time_zone(time_zone).strftime("%I:%M %p")
-  end
-
-  def formatted_performance_date
-    self.datetime.strftime("%b, %d %Y")
-  end
-
-  def formatted_performance_date_for_input
-    self.datetime.in_time_zone(attributes['timezone']).strftime("%m/%d/%Y")
-  end
-
-  def formatted_time(time_zone)
-    self.datetime.in_time_zone(time_zone)
-  end
-
-  def parsed_datetime
-    if self.datetime.nil?
-      nil
-    else
-      DateTime.parse(self.datetime.in_time_zone(attributes['timezone']))
-    end
+  def time_zone
+    @time_zone ||= event.time_zone
   end
 
   def update_attributes(attributes)
@@ -119,7 +98,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def datetime
-    Time.zone = attributes['timezone']
+    @event.nil? ? Time.zone = attributes['time_zone'] : Time.zone=(time_zone)
     attributes['datetime'] = Time.zone.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
   end
@@ -158,12 +137,11 @@ class AthenaPerformance < AthenaResource::Base
     end
 
     def prepare_attr!(attributes)
-      #TODO: We need to set the correct time zone to whatever zone they're in
       unless attributes.blank? || attributes['datetime'].blank?
         temp_date_only = Date.strptime(attributes.delete('datetime'), "%m/%d/%Y")
         hour = attributes['datetime(4i)']
         minute = attributes['datetime(5i)']
-        Time.zone = attributes['timezone']
+        Time.zone = attributes['time_zone']
         attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
       else
         attributes['datetime'] = nil

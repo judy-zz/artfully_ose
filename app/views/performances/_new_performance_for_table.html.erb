@@ -3,17 +3,17 @@
     <tr id="new-performance-row" <%=@performance.chart_id.blank? ? "style='display:none'" : ''%>>
       <td style="padding:2px 0px"></td>
       <td style="padding:2px 0px">
-        <%= form.hidden_field :timezone, { :value => event.time_zone } %>
+        <%= form.hidden_field :time_zone, { :value => event.time_zone } %>
         <%
           clazz = 'datepicker hasDatePicker'
           if !session[:performance].nil?
             clazz += ' error'
           end
         %>
-        <%=form.text_field :datetime, {:class=>clazz, :size=>'10'}%>
+        <%=form.text_field :datetime, {:value=> @next_performance_datetime.to_date.strftime("%m/%d/%Y"), :class=>clazz, :size=>'10'}%>
       </td>
       <td style="padding:2px 0px">
-        <%=form.time_select :datetime, {:size=>'3'} %>
+        <%=form.time_select :datetime, {:default=> {:hour=>@next_performance_datetime.hour, :minute=> @next_performance_datetime.min}, :size=>'3'} %>
       </td>
       <td style="padding:2px 0px">
         <%

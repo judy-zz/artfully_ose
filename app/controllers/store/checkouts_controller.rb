@@ -14,7 +14,9 @@ class Store::CheckoutsController < Store::StoreController
       if @payment.valid?
         if payment_confirmed?
 
-          unless current_order.user = create_user
+          if current_order.user = create_user
+            update_people_record(current_order.user)
+          else
             request_confirmation and return
           end
 
@@ -53,11 +55,15 @@ class Store::CheckoutsController < Store::StoreController
       password = params[:options].delete(:password)
       password_confirmation = params[:options].delete(:password_confirmation)
 
-      if password.nil?
-        password, password_confirmation = User.generate_password
-      end
+      password = password_confirmation = User.generate_password if password.blank?
 
-      @user = User.create(:email => @payment.customer.email, :password => password, :passoword_confirmation => password_confirmation)
+      User.find_by_email(@payment.customer.email) || User.create(:email => @payment.customer.email, :password => password, :password_confirmation => password_confirmation)
+    end
+
+    def update_people_record(user)
+      logger.info user.errors
+      user.person.update_attributes(:first_name => @payment.customer.first_name,
+                                      :last_name  => @payment.customer.last_name)
     end
 
     def save_customer

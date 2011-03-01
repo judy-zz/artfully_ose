@@ -18,6 +18,7 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @performance.event = @event
+
     if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
        redirect_to event_url(@event)
@@ -31,13 +32,12 @@ class PerformancesController < ApplicationController
 
     @performance.organization_id = current_user.current_organization.id
     @performance.event = @event
-    @performance.timezone = @event.time_zone
+    @performance.time_zone = @event.time_zone
     if @performance.valid? && @performance.save
       session[:performance] = nil
-      flash[:notice] = 'Performance created on ' + @performance.formatted_performance_date + ' at ' + @performance.formatted_performance_time(@event.time_zone)
+      flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date}  at #{l @performance.datetime, :format => :time}"
       redirect_to event_url(@performance.event)
     else
-      #render :action=>'new'
       session[:performance] = @performance
       redirect_to event_url(@performance.event)
     end
@@ -48,7 +48,7 @@ class PerformancesController < ApplicationController
     authorize! :view, @performance
 
     @event = AthenaEvent.find(@performance.event_id)
-    @performance.datetime = @performance.formatted_time(@event.time_zone)
+    @performance.datetime = @performance.datetime.in_time_zone(@event.time_zone)
     @performance.tickets = @performance.tickets
   end
 
@@ -58,8 +58,8 @@ class PerformancesController < ApplicationController
     #strip time zone from time before displaying it
     #the correct time zone will be re-attached by the prepare_attr! method
     @event = AthenaEvent.find(@performance.event_id)
-    @performance.timezone = @event.time_zone
-    @performance.datetime = @performance.datetime.in_time_zone(@performance.timezone)
+    @performance.time_zone = @event.time_zone
+    @performance.datetime = @performance.datetime.in_time_zone(@performance.time_zone)
     hour = @performance.datetime.hour
     min = @performance.datetime.min
     @performance.datetime = @performance.datetime.to_date.to_datetime.change(:hour=>hour, :min=>min)
@@ -85,6 +85,12 @@ class PerformancesController < ApplicationController
 
     @performance.destroy
     redirect_to event_url(@performance.event)
+  end
+
+  def door_list
+    @performance = AthenaPerformance.find(params[:id])
+    authorize! :view, @performance
+    @door_list = DoorList.new(@performance)
   end
 
   def put_on_sale
@@ -126,6 +132,7 @@ class PerformancesController < ApplicationController
   private
     def with_confirmation
       if params[:confirm].nil?
+        flash[:info] = "Please confirm your changes before we save them."
         render params[:action] + '_confirm' and return
       else
         yield
