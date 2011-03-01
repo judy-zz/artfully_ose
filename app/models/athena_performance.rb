@@ -17,7 +17,7 @@ class AthenaPerformance < AthenaResource::Base
     attribute 'event_id',         :string
     attribute 'chart_id',         :string
     attribute 'datetime',         :string
-    attribute 'timezone',         :string
+    attribute 'time_zone',         :string
     attribute 'state',            :string
     attribute 'organization_id',  :string
   end
@@ -98,7 +98,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def datetime
-    @event.nil? ? Time.zone = attributes['timezone'] : Time.zone=(time_zone)
+    @event.nil? ? Time.zone = attributes['time_zone'] : Time.zone=(time_zone)
     attributes['datetime'] = Time.zone.parse(attributes['datetime']) if attributes['datetime'].is_a? String
     attributes['datetime']
   end
@@ -137,12 +137,11 @@ class AthenaPerformance < AthenaResource::Base
     end
 
     def prepare_attr!(attributes)
-      #TODO: We need to set the correct time zone to whatever zone they're in
       unless attributes.blank? || attributes['datetime'].blank?
         temp_date_only = Date.strptime(attributes.delete('datetime'), "%m/%d/%Y")
         hour = attributes['datetime(4i)']
         minute = attributes['datetime(5i)']
-        Time.zone = attributes['timezone']
+        Time.zone = attributes['time_zone']
         attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
       else
         attributes['datetime'] = nil

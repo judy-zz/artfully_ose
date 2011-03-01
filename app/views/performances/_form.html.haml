@@ -3,7 +3,7 @@
     = performance_form.label :datetime, "Performace date/time"
     = performance_form.text_field :datetime, {:value=>"#{l target.datetime, :format => :date_for_input}", :class=>'datepicker hasDatePicker'}
     = performance_form.time_select :datetime, :value=>target
-    = performance_form.hidden_field :timezone, { :value => target.event.time_zone }
+    = performance_form.hidden_field :time_zone, { :value => target.event.time_zone }
   %p
     = performance_form.label :chart_id, "Seating chart"
     = performance_form.select :chart_id, options_from_collection_for_select(target.event.charts, "id", "name", target.chart_id.to_s )

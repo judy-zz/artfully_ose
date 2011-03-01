@@ -32,7 +32,7 @@ class PerformancesController < ApplicationController
 
     @performance.organization_id = current_user.current_organization.id
     @performance.event = @event
-    @performance.timezone = @event.time_zone
+    @performance.time_zone = @event.time_zone
     if @performance.valid? && @performance.save
       session[:performance] = nil
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date}  at #{l @performance.datetime, :format => :time}"
@@ -58,8 +58,8 @@ class PerformancesController < ApplicationController
     #strip time zone from time before displaying it
     #the correct time zone will be re-attached by the prepare_attr! method
     @event = AthenaEvent.find(@performance.event_id)
-    @performance.timezone = @event.time_zone
-    @performance.datetime = @performance.datetime.in_time_zone(@performance.timezone)
+    @performance.time_zone = @event.time_zone
+    @performance.datetime = @performance.datetime.in_time_zone(@performance.time_zone)
     hour = @performance.datetime.hour
     min = @performance.datetime.min
     @performance.datetime = @performance.datetime.to_date.to_datetime.change(:hour=>hour, :min=>min)

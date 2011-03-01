@@ -3,7 +3,7 @@
     <tr id="new-performance-row" <%=@performance.chart_id.blank? ? "style='display:none'" : ''%>>
       <td style="padding:2px 0px"></td>
       <td style="padding:2px 0px">
-        <%= form.hidden_field :timezone, { :value => event.time_zone } %>
+        <%= form.hidden_field :time_zone, { :value => event.time_zone } %>
         <%
           clazz = 'datepicker hasDatePicker'
           if !session[:performance].nil?
