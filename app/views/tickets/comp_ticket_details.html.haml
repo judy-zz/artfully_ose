@@ -1,0 +1,17 @@
+Enter ticket recipient info
+
+= form_tag comp_ticket_confirmation_path(@performance) do
+  %p
+  = label_tag :user_first_name, "First Name"
+  = text_field_tag :user_first_name
+  %p
+  = label_tag :user_last_name, "Last Name"
+  = text_field_tag :user_last_name
+  %p
+  = label_tag :user_email, "Email"
+  = text_field_tag :user_email
+  %p
+  = label_tag :comp_reason, "Reason for comp"
+  = text_field_tag :comp_reason
+
+=link_to "Comp tickets", comp_ticket_confirmation_path(@performance), :class=>"link"
