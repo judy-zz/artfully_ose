@@ -14,6 +14,16 @@ class TicketsController < ApplicationController
     end
   end
 
+  def comp_ticket_details
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @selected_tickets = params[:selected_tickets]
+  end
+
+  def comp_ticket_confirmation
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @selected_tickets = params[:selected_tickets]
+  end
+
   private
     def with_confirmation
       if params[:confirmed].blank?
@@ -44,6 +54,8 @@ class TicketsController < ApplicationController
             @msg = "Took " + edited_tickets.to_s + " ticket(s) off sale. "
           when 'Delete'
             @msg = "Deleted " + edited_tickets.to_s + " ticket(s). "
+          when 'Comp'
+            @msg = "Comped " + edited_tickets.to_s + " ticket(s). "
           else
             @msg = "Please select an action. "
         end

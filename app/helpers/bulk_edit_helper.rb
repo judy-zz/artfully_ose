@@ -6,6 +6,8 @@ module BulkEditHelper
       'taking off sale'
     elsif bulk_action=='Delete'
       'deleting'
+    elsif bulk_action=='Comp'
+      'comping'
     end
   end
 end

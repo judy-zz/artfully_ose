@@ -11,13 +11,14 @@ class AthenaPerformance < AthenaResource::Base
   PUT_ON_SALE = 'Put on Sale'
   TAKE_OFF_SALE = 'Take off Sale'
   DELETE = 'Delete'
+  COMP = 'Comp'
 
   schema do
     attribute 'id',               :integer
     attribute 'event_id',         :string
     attribute 'chart_id',         :string
     attribute 'datetime',         :string
-    attribute 'time_zone',         :string
+    attribute 'time_zone',        :string
     attribute 'state',            :string
     attribute 'organization_id',  :string
   end
@@ -111,6 +112,8 @@ class AthenaPerformance < AthenaResource::Base
         bulk_off_sale(ticket_ids)
       when DELETE
         bulk_delete(ticket_ids)
+      when COMP
+        bulk_comp(ticket_ids)
     end
   end
 
@@ -134,6 +137,11 @@ class AthenaPerformance < AthenaResource::Base
 
     def bulk_delete(ids)
       tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact
+    end
+
+    def bulk_comp(ids)
+      #TODO: Implement comp
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless true }.compact
     end
 
     def prepare_attr!(attributes)
