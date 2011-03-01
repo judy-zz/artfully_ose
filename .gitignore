@@ -6,3 +6,4 @@ db/schema.rb
 *.swp
 .DS_Store
 nbproject
+*.orig
