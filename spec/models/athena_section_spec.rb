@@ -10,6 +10,33 @@ describe AthenaChart do
   it { should respond_to :price }
   it { should respond_to :chart_id }
 
+  describe "valid?" do
+    it "should not be valid without a name" do
+      subject = Factory(:athena_section, :name => nil)
+      subject.should_not be_valid
+    end
+
+    it "should not be valid without a capacity" do
+      subject = Factory(:athena_section, :capacity => nil)
+      subject.should_not be_valid
+    end
+
+    it "should not be valid without a numerical capacity" do
+      subject = Factory(:athena_section, :capacity => "some cap")
+      subject.should_not be_valid
+    end
+
+    it "should not be valid without price" do
+      subject = Factory(:athena_section, :price => nil)
+      subject.should_not be_valid
+    end
+
+    it "should not be valid without a numerical price" do
+      subject = Factory(:athena_section, :capacity => "some price")
+      subject.should_not be_valid
+    end
+  end
+
   describe "#dup!" do
     before(:each) do
       @copy = subject.dup!

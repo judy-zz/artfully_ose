@@ -2,7 +2,7 @@ Factory.sequence :chart_id do |n|
   n
 end
 
-Factory.define :athena_chart, :class => AthenaChart, :default_strategy => :build do |c|
+Factory.define :athena_chart, :default_strategy => :build do |c|
   c.id { Factory.next :chart_id }
   c.organization_id { Factory(:organization).id }
   c.name 'Test Chart'
@@ -27,7 +27,7 @@ end
 Factory.define :athena_section, :class => AthenaSection, :default_strategy => :build do |section|
   section.name 'Balcony'
   section.capacity 5
-  section.price 5
+  section.price 5000
 end
 
 Factory.define :athena_section_with_id, :parent => :athena_section do |section|
