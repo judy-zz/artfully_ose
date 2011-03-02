@@ -54,6 +54,13 @@ class AthenaPayment < AthenaResource::Base
     self.success == false
   end
 
+  def amount=(amount)
+    return if amount.nil?
+    # Convert from cents to dollars for the payment processor
+    amount = amount / 100.00
+    super(amount)
+  end
+
   def authorize!
     connection.post("/payments/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)

@@ -9,7 +9,7 @@
     %tr
       %td
         =check_box_tag "selected_tickets[]", ticket.id
-      %td=ticket.section
-      %td=number_to_currency ticket.price
+      %td= ticket.section
+      %td= number_as_cents ticket.price
       %td
         =ticket_status(ticket)

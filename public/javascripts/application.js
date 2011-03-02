@@ -26,6 +26,14 @@ function initMenu() {
 
 jQuery(document).ready(function() {
 
+  jQuery(".currency").maskMoney({showSymbol:true, symbolStay:true, symbol:"$"});
+  jQuery(".currency").closest('form').submit(function(){
+    var input = jQuery(this).find(".currency"),
+        cents = new Number(input.val().substr(1)) * 100,
+        hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
+    hiddenCurrency.val(cents);
+  });
+
   Cufon.replace('h1, h2, h5, .notification strong', { hover: 'true' }); // Cufon font replacement
   initMenu(); // Initialize the menu!
   //Nav collapse

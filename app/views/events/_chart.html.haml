@@ -4,7 +4,7 @@
 .portlet2
   .portlet-header
     =chart.name
-  .portlet-content.minimized  
+  .portlet-content.minimized
     %table.fancy
       %thead
         %tr
@@ -17,7 +17,7 @@
           %tr
             %td= section.name
             %td= section.capacity
-            %td= section.price
+            %td= number_as_cents section.price
             %td
               =link_to image_tag('icons/actions_small/Pencil.png'), edit_chart_section_path(chart, section)
               =link_to image_tag('icons/actions_small/Trash.png'), chart_section_path(chart, section), :confirm => "Are you sure?", :method=>:delete

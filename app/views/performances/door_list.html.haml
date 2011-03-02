@@ -22,4 +22,4 @@
         %tr
           %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
           %td= "#{item.buyer.email}"
-          %td= number_to_currency item.ticket.price
+          %td= number_as_cents item.ticket.price

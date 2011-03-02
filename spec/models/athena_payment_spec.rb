@@ -10,7 +10,7 @@ describe AthenaPayment do
 
   describe ".amount" do
     it "should be valid with an amount set" do
-      subject.amount = 10.00
+      subject.amount = 1000
       subject.should be_valid
     end
 
@@ -20,8 +20,13 @@ describe AthenaPayment do
     end
 
     it "should be invalid with an amount less than zero" do
-      subject.amount = -10.00
+      subject.amount = -1000
       subject.should_not be_valid
+    end
+
+    it "should convert cents to dollars when assigning the amount" do
+      subject.amount = 1000
+      subject.amount.should eq 10.00
     end
   end
 
