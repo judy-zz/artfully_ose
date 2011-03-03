@@ -6,10 +6,18 @@
         Purpose of the stylesheet follows.
 */
 
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,
+blockquote,pre,address,code,del,dfn,em,img,q,
+dl,dt,dd,ol,ul,li,
+table,caption,tbody,tfoot,thead,tr,th,td,br,fieldset,textarea{}
+h3,h4,h5,h6,hr,p,ul,ol,dl,pre,address,table,form{margin:0 0 20px}
+p,h1, h2, h3, h4, h5, h6, ul.check_list, ul.arrowlist{padding-left:2px;}
+strong, b{font-weight:bold;}
+
 body {
    color:black;
    background: white;
-   font-size: 12pt;
+   font-size: 12px;
    }
 #primary_left{
    display: none;
@@ -40,6 +48,10 @@ h1 {
 
 }
 
+h1 span {
+  color:white;
+}
+
 .userTab {
 
 
@@ -58,6 +70,49 @@ h1 {
   margin-bottom:5px;
 }
 
+table.normal {
+}
+
+table.fullwidth {
+  width:100%;
+}
+
+table.normal td {
+  padding:5px 15px;
+}
+
+table.normal thead th {
+  background: white;
+  text-transform:uppercase;
+  font-size:10px;
+  font-weight:normal;
+  border-bottom:1px solid #ccc;
+ 
+}
+
+table.normal thead th:hover {
+}
+
+table.normal tbody {
+
+  background:white;
+}
+
+table.normal tbody tr.odd td {
+  background:white;
+}
+table.normal tbody tr.selected td {
+  background:white;
+}
+
+table.normal tbody tr.tablePage td {
+  background:white;
+}
+
+table.normal tbody td {
+  font-size:11px;
+  vertical-align:middle;
+}
 
 a:link, a:visited {
    color: #520;
