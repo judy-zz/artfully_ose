@@ -92,6 +92,7 @@ class AthenaPerformance < AthenaResource::Base
 
   def dup!
     copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' || key == 'state' })
+    copy.event = self.event
     copy.datetime = copy.datetime + 1.day
     copy
   end
