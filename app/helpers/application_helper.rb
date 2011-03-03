@@ -8,4 +8,8 @@ module ApplicationHelper
     block.call(menu)
     menu.render_menu
   end
+
+  def number_as_cents(cents)
+    number_to_currency(cents.to_i / 100.00)
+  end
 end

@@ -245,7 +245,7 @@ artfully.models = (function(){
         },
         render_info: function($target){
           $(document.createElement('span')).addClass('section-name').text(this.name).appendTo($target);
-          $(document.createElement('span')).addClass('section-price').text("$" + this.price).appendTo($target);
+          $(document.createElement('span')).addClass('section-price').text("$" + (new Number(this.price) / 100)).appendTo($target);
         },
         render_form: function($target){
           var $select,

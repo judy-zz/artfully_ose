@@ -3,4 +3,4 @@
   .venue= athena_ticket.venue
   .performance= l(DateTime.parse(athena_ticket.performance), :format => :short)
   .section-name= athena_ticket.section
-  .price= "$#{athena_ticket.price}"
+  .price= number_as_cents athena_ticket.price

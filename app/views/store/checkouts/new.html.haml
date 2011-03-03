@@ -9,7 +9,7 @@
   - current_order.donations.each do |donation|
     %li= render donation
   %li.total
-    = "Total: $#{current_order.total}"
+    = "Total: #{number_as_cents current_order.total}"
 
 = form_tag store_checkout_path do
   - if @needs_confirmation

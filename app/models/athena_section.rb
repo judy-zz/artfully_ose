@@ -12,6 +12,9 @@ class AthenaSection < AthenaResource::Base
     attribute 'chart_id', :string
   end
 
+  validates_presence_of :name, :capacity, :price
+  validates_numericality_of :capacity, :price
+
   def chart
     @chart ||= AthenaChart.find(chart_id)
   end

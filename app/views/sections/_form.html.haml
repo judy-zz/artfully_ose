@@ -7,4 +7,4 @@
     = section_form.text_field :capacity
   %p
     = section_form.label :price, "Price"
-    = section_form.text_field :price
+    = section_form.text_field :price, :class => :currency, :value => number_as_cents(target.price)

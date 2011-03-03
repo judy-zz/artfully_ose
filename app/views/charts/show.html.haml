@@ -21,7 +21,7 @@
       %tr
         %td= section.name
         %td= "#{section.capacity} seats"
-        %td= "$#{section.price}"
+        %td= number_as_cents section.price
         %td
           =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
           =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)
