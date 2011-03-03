@@ -53,7 +53,7 @@ describe AthenaEvent do
   end
 
   describe "charts" do
-    it "should store a list of performances" do
+    it "should store a list of charts" do
       charts = (0..5).collect { Factory(:athena_chart) }
       subject.charts = charts
       subject.charts.size.should eq charts.size

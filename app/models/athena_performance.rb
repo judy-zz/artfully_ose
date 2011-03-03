@@ -49,7 +49,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def tickets
-    @tickets ||= AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" }).sort_by { |ticket| ticket.price }
+    @tickets ||= find_tickets.sort_by { |ticket| ticket.price }
   end
 
   def tickets_sold
@@ -115,6 +115,11 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   private
+
+    def find_tickets
+      return [] if new_record?
+      AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
+    end
 
     def take_tickets_off_sale
       tickets.map(&:off_sale!)
