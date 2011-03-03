@@ -8,7 +8,19 @@
   - m.item_to "Duplicate", duplicate_performance_path(@performance), :icon => "icons/light/Scanner.png"
   - m.item_to "Put on Sale", put_performance_on_sale_path(@performance) unless @performance.on_sale?
   - m.item_to "Take off Sale", take_performance_off_sale_path(@performance) if @performance.on_sale?
-  - m.item_to "Door List", door_list_performance_path(@performance) if @performance.has_door_list?
+  -# m.item_to "Printable Door List", printable_door_list_performance_path(@performance) if @performance.has_door_list?
+
+%br
+%br
+%br
+%br
+= link_to "Printable Door List", printable_door_list_performance_path(@performance), :class => 'button_link'
+= link_to_function("Print this Page", "javascript:print()")
+%br
+%br
+
+<a href="javascript:togglePrintPreview()">Toggle Print Preview</a>
+
 
 - unless @door_list.items.empty?
   %table#door-list.normal.tablesorter.fullwidth

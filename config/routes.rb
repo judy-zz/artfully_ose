@@ -33,6 +33,7 @@ Artfully::Application.routes.draw do
   resources :people, :only => [:index, :show, :edit, :update]
   resources :performances do
     get :door_list, :on => :member
+    get :printable_door_list, :on => :member
   end
 
   resources :events do

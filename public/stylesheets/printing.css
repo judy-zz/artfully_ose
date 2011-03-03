@@ -1,0 +1,80 @@
+/* 
+    Document   : printing.css
+    Created on : Mar 2, 2011, 6:18:13 PM
+    Author     : ian
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body {
+   color:black;
+   background: white;
+   font-size: 12pt;
+   }
+#primary_left{
+   display: none;
+   }
+#primary_right {
+  float:left;
+  width:20cm;
+  margin-left:0px;
+  min-height:0px;
+  overflow:hidden;
+}
+
+.menuSm{
+    display: none;
+}
+
+#bgwrap {
+  float:left;
+  position:relative;
+  width:20cm;
+  background:white;
+}
+
+h1 {
+  color:black;
+  font-size:12px;
+  clear:both;
+
+}
+
+.userTab {
+
+
+  background: white;
+  text-align:left;
+  width: auto;
+
+}
+
+.userTab .text {
+  float:left;
+  color: black;
+}
+
+.userTab p {
+  margin-bottom:5px;
+}
+
+
+a:link, a:visited {
+   color: #520;
+   background: transparent;
+
+   text-decoration: underline;
+   font-size: 12pt;
+   font-weight: normal;
+   }
+#content a:link:after, #content a:visited:after {
+   content: " (" attr(href) ") ";
+   font-size: 12pt;
+   }
+#content a[href^="/"]:after {
+   content: " (http://www.alistapart.com" attr(href) ") ";
+   }
+
+/***************************************************************************/
+   
+

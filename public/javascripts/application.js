@@ -188,4 +188,13 @@ jQuery(".minimized").hide();
 
   //Disable field labels (only use if labels are before!)
   jQuery("input:disabled"). prev().css("color","#e2e2e2");
+
+
 });
+
+function togglePrintPreview(){
+    var currCSS = document.getElementById('printcss');
+      if(currCSS.media == 'screen')
+        currCSS.media = 'print';
+      else currCSS.media = 'screen';
+  }
