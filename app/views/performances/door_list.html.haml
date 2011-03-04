@@ -15,12 +15,11 @@
 %br
 %br
 = link_to "Printable Door List", printable_door_list_performance_path(@performance), :class => 'button_link'
-= link_to_function("Print this Page", "javascript:print()")
 %br
 %br
-
 <a href="javascript:togglePrintPreview()">Toggle Print Preview</a>
-
+%br
+= link_to_function("Print this Page", "javascript:window.print()")
 
 - unless @door_list.items.empty?
   %table#door-list.normal.tablesorter.fullwidth

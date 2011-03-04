@@ -194,7 +194,7 @@ jQuery(".minimized").hide();
 
 function togglePrintPreview(){
     var currCSS = document.getElementById('printcss');
-      if(currCSS.media == 'screen')
+      if(currCSS.media == 'all')
         currCSS.media = 'print';
-      else currCSS.media = 'screen';
+      else currCSS.media = 'all';
   }
