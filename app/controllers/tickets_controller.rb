@@ -24,7 +24,7 @@ class TicketsController < ApplicationController
   end
 
   def comp_ticket_confirmation
-    
+    flash[:info] = "Please confirm your changes before we save them."
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
   end
