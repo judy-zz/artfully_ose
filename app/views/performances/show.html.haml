@@ -27,6 +27,6 @@
   .stats
     =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
     =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@performance.tickets_sold.size}
-    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_to_currency @performance.gross_potential)}
-    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_to_currency @performance.gross_sales)}
+    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_as_cents @performance.gross_potential)}
+    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_as_cents @performance.gross_sales)}
 .clearboth
