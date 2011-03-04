@@ -10,7 +10,7 @@
   - m.item_to "Take off Sale", take_performance_off_sale_path(@performance) if @performance.on_sale?
 
 .clearboth
-= link_to_function("Toggle Print Preview", "javascript:togglePrintPreview()", :class => 'button_link')
+= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
 
 - unless @door_list.items.empty?
   %table#door-list.normal.tablesorter.fullwidth
