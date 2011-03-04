@@ -13,14 +13,7 @@ class Store::CheckoutsController < Store::StoreController
 
       if @payment.valid?
         if payment_confirmed?
-
-          if current_order.user = create_user
-            update_people_record(current_order.user)
-          else
-            request_confirmation and return
-          end
-
-          save_customer if should_save_customer?
+          current_order.person = create_people_record
           submit_payment and return
         else
           request_confirmation and return
@@ -51,19 +44,10 @@ class Store::CheckoutsController < Store::StoreController
       render :new
     end
 
-    def create_user
-      password = params[:options].delete(:password)
-      password_confirmation = params[:options].delete(:password_confirmation)
-
-      password = password_confirmation = User.generate_password if password.blank?
-
-      User.find_by_email(@payment.customer.email) || User.create(:email => @payment.customer.email, :password => password, :password_confirmation => password_confirmation)
-    end
-
-    def update_people_record(user)
-      logger.info user.errors
-      user.person.update_attributes(:first_name => @payment.customer.first_name,
-                                      :last_name  => @payment.customer.last_name)
+    def create_people_record
+      AthenaPerson.create(:first_name => @payment.customer.first_name,
+                          :last_name  => @payment.customer.last_name,
+                          :email => @payment.customer.email)
     end
 
     def save_customer
@@ -73,9 +57,5 @@ class Store::CheckoutsController < Store::StoreController
       else
         flash[:error] = "Unable to save your information."
       end
-    end
-
-    def should_save_customer?
-      params[:options][:save] == 1
     end
 end

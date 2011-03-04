@@ -1,8 +1,6 @@
 class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 
-  belongs_to :user
-
   has_many :purchasable_tickets, :dependent => :destroy
   has_many :donations, :dependent => :destroy
 
@@ -20,6 +18,16 @@ class Order < ActiveRecord::Base
     event :reject do
       transitions :from => :started, :to => :rejected
     end
+  end
+
+  def person
+    @person ||= find_person
+  end
+
+  def person=(person)
+    raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
+    @person, self.person_id = person, person.id
+    save
   end
 
   def clean_order
@@ -82,7 +90,7 @@ class Order < ActiveRecord::Base
     end
 
     OrderMailer.confirmation_for(self).deliver
-    purchasable_tickets.map { |ticket| ticket.sold!(user.person) }
+    purchasable_tickets.map { |ticket| ticket.sold!(person) }
   end
 
   def generate_donations
@@ -109,5 +117,16 @@ class Order < ActiveRecord::Base
 
       events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
       @organizations = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
+    end
+
+    def find_person
+      return if self.person_id.nil?
+
+      begin
+        AthenaCustomer.find(self.person_id)
+      rescue ActiveResource::ResourceNotFound
+        update_attribute!(:person_id, nil)
+        return nil
+      end
     end
 end
