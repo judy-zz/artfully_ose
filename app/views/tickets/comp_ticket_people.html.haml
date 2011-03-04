@@ -1,0 +1,19 @@
+Find person to comp tickets for
+
+%p
+= form_tag comp_ticket_details_path, :method => :get do
+  = label_tag :email, "Email"
+  = text_field_tag :email
+  = submit_tag "Search"
+
+%br
+%br
+%br
+%br
+%br
+
+%p
+=link_to "person record found", comp_ticket_details_path(@performance), :class=>"link"
+%br
+%br
+=link_to "person record not found", comp_ticket_details_people_not_found_path(@performance), :class=>"link"

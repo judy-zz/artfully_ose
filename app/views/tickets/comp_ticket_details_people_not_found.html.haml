@@ -6,15 +6,16 @@
   = text_field_tag :email
   = submit_tag "Search"
 
--#%p
-  = "Person record found! "
-  = "Email: #{@user.email}"
-  = "Name: #{@user.name}"
+%p
+  = "Person record for example.user@example.com not found! "
+  
 
--#= form_tag comp_ticket_confirmation_path(@performance) do
+  = "Enter information to create a new people record"
+
+= form_tag comp_ticket_confirmation_path(@performance) do
   %p
   = label_tag :user_email, "Email"
-  = text_field_tag :user_email
+  = text_field_tag :user_email, "example.user@example.com"
 
   %p
   = label_tag :user_first_name, "First Name"
@@ -27,15 +28,6 @@
   = label_tag :comp_reason, "Reason for comp"
   = text_field_tag :comp_reason
 
-Person record for Example User found.
-%p
-= "Email: example.user@example.com"
-%p
-= "First Name: Example"
-%p
-= "Last Name: User"
-%p
-= label_tag :comp_reason, "Reason for comp"
-= text_field_tag :comp_reason
+
 %p
 =link_to "Comp tickets", comp_ticket_confirmation_path(@performance), :class=>"link"

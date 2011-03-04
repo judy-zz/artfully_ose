@@ -15,11 +15,27 @@ class TicketsController < ApplicationController
   end
 
   def comp_ticket_details
+#    if not params[:email].blank? and @user = User.find_by_email(params[:email])
+#     else
+#      redirect_to comp_ticket_people_path
+#    end
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
   end
 
   def comp_ticket_confirmation
+    
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @selected_tickets = params[:selected_tickets]
+  end
+
+  def comp_ticket_people
+    
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @selected_tickets = params[:selected_tickets]
+  end
+
+  def comp_ticket_details_people_not_found
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
   end
