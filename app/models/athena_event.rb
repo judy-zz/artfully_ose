@@ -35,6 +35,14 @@ class AthenaEvent < AthenaResource::Base
     @attributes['performances'] = performances
   end
 
+  def next_perf
+    next_datetime = performances.empty? ? Time.now : performances.last.datetime
+    next_datetime += 1.day
+    next_perf = AthenaPerformance.new(:datetime=>next_datetime)
+    next_perf.event = self
+    next_perf
+  end
+
   def to_widget_json(options = {})
     performances and charts and charts.each { |chart| chart.sections }
     performances.reject! { |performance| !performance.on_sale? }
@@ -119,12 +127,16 @@ class AthenaEvent < AthenaResource::Base
   private
     def find_charts
       return [] if new_record?
-      AthenaChart.find(:all, :params => { :eventId => "eq#{self.id}" })
+      AthenaChart.find(:all, :params => { :eventId => "eq#{self.id}" }).each do |chart|
+        chart.event = self
+      end
     end
 
     def find_performances
       return [] if new_record?
-      AthenaPerformance.find(:all, :params => { :eventId => "eq#{self.id}" })
+      AthenaPerformance.find(:all, :params => { :eventId => "eq#{self.id}" }).each do |performance|
+        performance.event = self
+      end
     end
 
 end

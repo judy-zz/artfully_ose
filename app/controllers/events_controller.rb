@@ -30,10 +30,9 @@ class EventsController < ApplicationController
   def show
     @event = AthenaEvent.find(params[:id])
     authorize! :view, @event
-    @performance = session[:performance].nil? ? AthenaPerformance.new : session[:performance]
+    @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
     @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @chart = AthenaChart.new
-    @next_performance_datetime = @event.performances.empty? ? (DateTime.now + 1.day) : (@event.performances.last.datetime.in_time_zone(@event.time_zone) + 1.day)
   end
 
   def new

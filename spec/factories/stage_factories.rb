@@ -61,7 +61,7 @@ Factory.define :athena_event_with_id, :parent => :athena_event do |e|
 end
 
 Factory.sequence :performance_datetime do |n|
-  "2011-03-#{n}T10:10:00-04:00"
+  (DateTime.now + n.days).xmlschema
 end
 
 Factory.sequence :performance_id do |id|
@@ -69,12 +69,12 @@ Factory.sequence :performance_id do |id|
 end
 
 Factory.define :athena_performance, :default_strategy => :build do |p|
-  p.datetime Factory.next :performance_datetime
+  p.datetime { Factory.next :performance_datetime }
+  p.event { Factory(:athena_event_with_id) }
 end
 
 Factory.define :athena_performance_with_id, :parent => :athena_performance do |p|
   p.id { Factory.next :performance_id }
-  p.datetime Factory.next :performance_datetime
   p.after_build do |performance|
     FakeWeb.register_uri(:get, "http://localhost/stage/performances/#{performance.id}.json", :body => performance.encode)
     FakeWeb.register_uri(:delete, "http://localhost/stage/performances/#{performance.id}.json", :body => "")
