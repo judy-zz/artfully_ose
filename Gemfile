@@ -18,6 +18,7 @@ gem 'capistrano-ext'
 
 
 group :test, :development do
+  gem 'metric_fu'
   gem "rspec-rails", ">= 2.1"
   gem 'shoulda'
   gem 'fakeweb'
