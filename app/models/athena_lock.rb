@@ -21,28 +21,4 @@ class AthenaLock < AthenaResource::Base
     @attributes['tickets'] ||= []
     @attributes['tickets']
   end
-
-  def lock_expires=(expiration)
-    @attributes['lock_expires'] = parse_lock_expires(expiration)
-  end
-
-  def lock_expires
-    ensure_expiration_parsed
-    @attributes['lock_expires']
-  end
-
-  def valid?
-    ensure_expiration_parsed
-    super
-  end
-
-  private
-    def ensure_expiration_parsed
-      @attributes['lock_expires'] = parse_lock_expires(@attributes['lock_expires'])
-    end
-
-    def parse_lock_expires(expiration)
-      return expiration if expiration.nil? or expiration.instance_of? DateTime
-      DateTime.parse(expiration)
-    end
 end
