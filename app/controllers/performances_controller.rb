@@ -32,7 +32,7 @@ class PerformancesController < ApplicationController
 
     @performance.update_attributes(params[:athena_performance][:athena_performance])
     @performance.organization_id = current_user.current_organization.id
-    
+
     if @performance.valid? && @performance.save
       session[:performance] = nil
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date}  at #{l @performance.datetime, :format => :time}"
