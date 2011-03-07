@@ -21,7 +21,7 @@
         <%=form.select :chart_id, options_from_collection_for_select(event.charts, "id", "name", default_chart_id_as_s) %>
       </td>
       <td colspan="2" style="padding:2px 0px; text-align:right">
-        
+
         <%= form.submit "Submit" %>
         <%= form.submit "Cancel", {:class=>'cancel-new-performance-link'} %>
       </td>

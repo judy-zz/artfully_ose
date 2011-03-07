@@ -12,7 +12,7 @@ describe AthenaPerformance do
   it { should respond_to :datetime }
 
   it "should accept a DateTime as datetime" do
-    subject.datetime = DateTime.parse('2010-03-03T02:02:02-04:00')
+    subject.datetime = DateTime.now
     subject.datetime.kind_of?(DateTime).should be_true
   end
 

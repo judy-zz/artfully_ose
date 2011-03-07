@@ -5,7 +5,8 @@
     - @order.tickets.each do |ticket|
       %li
         %span.price= "$#{ticket.price}"
-        %span.name= "#{ticket.event} at #{l DateTime.parse(ticket.performance), :format => :short}"
+        = ap ticket
+        %span.name= "#{ticket.event} at #{l ticket.performance, :format => :short}"
 
 - unless @order.donations.empty?
   %h2 Donations

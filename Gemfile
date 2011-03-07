@@ -18,6 +18,7 @@ gem 'capistrano-ext'
 
 
 group :test, :development do
+  gem 'metric_fu'
   gem "rspec-rails", ">= 2.1"
   gem 'shoulda'
   gem 'fakeweb'
@@ -31,4 +32,5 @@ group :test, :development do
   gem 'uuid'
   gem 'faker'
   gem 'jasmine'
+  gem 'rbtrace', ">=0.3.12", :require => 'rbtrace'
 end

@@ -4,8 +4,8 @@ class OrderMailer < ActionMailer::Base
 
   def confirmation_for(order)
     @order = order
-    @user = order.user
+    @person = order.person
 
-    mail :to => @user.email, :subject => "Your Order"
+    mail :to => @person.email, :subject => "Your Order"
   end
 end
