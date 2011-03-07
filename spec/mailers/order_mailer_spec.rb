@@ -20,7 +20,7 @@ describe OrderMailer do
 
     it "should be sent to the owner of the order" do
       subject.to.should_not be_blank
-      subject.to.should include order.user.email
+      subject.to.should include order.person.email
     end
   end
 end

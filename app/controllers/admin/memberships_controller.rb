@@ -15,35 +15,11 @@ class Admin::MembershipsController < Admin::AdminController
     @organization = Organization.find(params[:organization_id])
     authorize! :create, Membership
 
-    unless params[:user_email].blank?
-      @user = User.find_by_email(params[:user_email])
-      if @user.nil?
-        flash[:error] = "User #{params[:user_email]} could not be found."
-
-      elsif not (mship = Membership.find_by_user_id(@user.id)).nil?
-        if mship.organization_id == @organization.id
-          flash[:alert] = "#{@user.email} is already a member, and was not added a second time."
-        else
-          flash[:error] = "User #{params[:user_email]} is already a member of #{Organization.find(mship.organization_id).name} and cannot be a member of multiple organizations."
-        end
-
-      else
-        @membership = Membership.new
-        @membership.user_id = @user.id
-        @membership.organization_id = @organization.id
-
-        if @membership.save
-          flash[:notice] = "#{@user.email} has been added successfully."
-        #once a user can be in multiple organizations, this is a better check for duplicate memberships
-        #elsif @membership.errors[:user_id] == ["has already been taken"]
-        #  flash[:alert] = "#{@user.email} is already a member, and was not added a second time."
-        else
-          flash[:error] = "User #{@user.email} could not been added."
-        end
-      end
-      redirect_to admin_organization_url(@organization)
+    with_user do |user|
+      build_membership(user, @organization) or build_errors(user, @organization)
     end
 
+    redirect_to admin_organization_url(@organization)
   end
 
   def edit
@@ -59,5 +35,36 @@ class Admin::MembershipsController < Admin::AdminController
     @mship.destroy
     redirect_to admin_organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
   end
+
+  private
+
+    def build_membership(user, organization)
+      membership = Membership.find_by_user_id_and_organization_id(user.id, organization.id)
+      return false unless membership.nil? or !user.memberships.any?
+
+      @membership = organization.memberships.build(:user => user)
+      if @membership.save
+        flash[:notice] = "#{user.email} has been added successfully."
+      else
+        flash[:error] = "User #{user.email} could not been added."
+      end
+
+      return true
+    end
+
+    def build_errors(user, organization)
+      if user.organizations.first == organization
+        flash[:alert] = "#{user.email} is already a member, and was not added a second time."
+      else
+        flash[:error] = "User #{params[:user_email]} is already a member of #{user.organizations.first.name} and cannot be a member of multiple organizations."
+      end
+    end
+
+    def with_user(&block)
+      flash[:error] = "You must specify an email" and return if params[:user_email].blank?
+      user = User.find_by_email(params[:user_email])
+      flash[:error] = "User #{params[:user_email]} could not be found." and return if user.nil?
+      block.call(user)
+    end
 
 end

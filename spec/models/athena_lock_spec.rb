@@ -26,7 +26,7 @@ describe AthenaLock do
     it "should parse the lock_expires attribute before validation" do
       FakeWeb.register_uri(:post, 'http://localhost/tix/meta/locks/.json', :status => 200, :body => Factory(:lock).encode)
       lock = AthenaLock.create()
-      lock.lock_expires.should be_a_kind_of(DateTime)
+      lock.lock_expires.acts_like_time?.should be_true
     end
   end
 

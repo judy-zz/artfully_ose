@@ -1,6 +1,6 @@
 class CreditCardsController < ApplicationController
   before_filter :authenticate_user!
-  
+
   def index
     @credit_cards = current_user.credit_cards
   end
