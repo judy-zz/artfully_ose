@@ -24,14 +24,21 @@ describe AthenaPurchaseAction do
       subject.should_not be_valid
     end
 
-    it "should not be valid without an item id" do
-      subject.item_id = nil
+    it "should not be valid without an subject id" do
+      subject.subject_id = nil
       subject.should_not be_valid
     end
+  end
 
-    it "should not be valid without an item type" do
-      subject.item_type = nil
-      subject.should_not be_valid
+  describe "subject" do
+    it "should return an AthenaOrder as the subject" do
+      subject.subject.should be_an AthenaOrder
+    end
+
+    it "should fetch the AthenaOrder if not cached" do
+      order = subject.subject
+      subject.instance_variable_set(:@subject, nil)
+      subject.subject.should eq order
     end
   end
 

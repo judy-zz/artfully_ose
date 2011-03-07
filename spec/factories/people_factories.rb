@@ -25,5 +25,5 @@ end
 
 Factory.define :athena_purchase_action, :default_strategy => :build do |a|
   a.person { Factory(:athena_person_with_id) }
-  a.item { Factory(:ticket_with_id) }
+  a.subject { Factory(:athena_order_with_id) }
 end

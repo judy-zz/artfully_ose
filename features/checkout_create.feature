@@ -6,6 +6,7 @@ Feature: Order Checkout
     Given I can authorize Credit Cards in ATHENA
     And I can settle Credit Cards in ATHENA
     And I can save Orders in ATHENA
+    And I can save purchase actions in ATHENA
 
   Scenario: A user checks out without saving information
     Given I have added 2 tickets to my order

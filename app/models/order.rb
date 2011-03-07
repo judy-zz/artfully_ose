@@ -81,7 +81,7 @@ class Order < ActiveRecord::Base
 
   def finish
     organizations_from_tickets.each do |organization|
-      order = AthenaOrder.generate do |order|
+      order = AthenaOrder.new.tap do |order|
         order.for_organization organization
         order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id }
         order.for_items donations.select { |donations| donation.organization == organization }

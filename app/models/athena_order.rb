@@ -11,6 +11,9 @@ class AthenaOrder < AthenaResource::Base
     attribute :price,           :integer
   end
 
+  after_save :save_items, :unless => lambda { items.empty? }
+  after_save :create_purchase_action
+
   def person
     @person ||= find_person
   end
@@ -57,20 +60,6 @@ class AthenaOrder < AthenaResource::Base
     @items = items
   end
 
-  def save
-    was_saved = super
-    unless items.empty?
-      items.each { |item| item.order_id = self.id; item.save } if was_saved
-    end
-    was_saved
-  end
-
-  def self.generate(&block)
-    order = self.new
-    block.call(order)
-    order
-  end
-
   def for_organization(org)
     self.organization = org
   end
@@ -82,6 +71,18 @@ class AthenaOrder < AthenaResource::Base
   end
 
   private
+    def create_purchase_action
+      action = AthenaPurchaseAction.new
+      action.person = person;
+      action.subject = self;
+      action.save!
+      return action
+    end
+
+    def save_items
+      items.each { |item| item.update_attribute(:order_id, self.id) }
+    end
+
     def find_person
       return if self.person_id.nil?
 
