@@ -11,6 +11,7 @@ class AthenaPurchaseAction < AthenaResource::Base
     attribute 'type',       :string
   end
 
+  def type();@attributes['type'];end
   def type=(type);;end
 
   validates_presence_of :person_id, :subject_id
