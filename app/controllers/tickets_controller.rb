@@ -7,10 +7,16 @@ class TicketsController < ApplicationController
 
   def bulk_edit
     authorize! :bulk_edit, :tickets
-    with_confirmation do
-      @performance = AthenaPerformance.find(params[:performance_id])
-      bulk_edit_tickets(@performance, params[:selected_tickets], params[:commit])
-      redirect_to performance_url(@performance) and return
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @selected_tickets = params[:selected_tickets]
+    if 'Comp' == params[:commit]
+      redirect_to comp_ticket_people_url(@performance, @selected_tickets) and return #comp_ticket_people#(@performance, params[:selected_tickets], params[:commit])
+    else
+      with_confirmation do
+        #@performance = AthenaPerformance.find(params[:performance_id])
+        bulk_edit_tickets(@performance, params[:selected_tickets], params[:commit])
+        redirect_to performance_url(@performance) and return
+      end
     end
   end
 
@@ -29,11 +35,21 @@ class TicketsController < ApplicationController
     @selected_tickets = params[:selected_tickets]
   end
 
+#  def comp_ticket_confirmation(performance, selected_tickets)
+#    flash[:info] = "Please confirm your changes before we save them."
+#    @performance = AthenaPerformance.find(params[:performance_id])
+#    @selected_tickets = selected_tickets
+#  end
+
   def comp_ticket_people
-    
-    @performance = AthenaPerformance.find(params[:performance_id])
+   @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
   end
+
+#  def comp_ticket_people(performance, selected_tickets)
+#    @performance = performance
+#    @selected_tickets = selected_tickets
+#  end
 
   def comp_ticket_details_people_not_found
     @performance = AthenaPerformance.find(params[:performance_id])
@@ -70,8 +86,6 @@ class TicketsController < ApplicationController
             @msg = "Took " + edited_tickets.to_s + " ticket(s) off sale. "
           when 'Delete'
             @msg = "Deleted " + edited_tickets.to_s + " ticket(s). "
-          when 'Comp'
-            @msg = "Comped " + edited_tickets.to_s + " ticket(s). "
           else
             @msg = "Please select an action. "
         end
@@ -84,4 +98,8 @@ class TicketsController < ApplicationController
         end
       end
     end
+
+#    def comp_tickets(performance, ticket_ids, action)
+#    end
+
 end
