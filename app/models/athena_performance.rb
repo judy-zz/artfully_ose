@@ -24,8 +24,8 @@ class AthenaPerformance < AthenaResource::Base
   state_machine do
     state :pending
     state :built
-    state :on_sale, :enter => :put_tickets_on_sale
-    state :off_sale, :enter => :take_tickets_off_sale
+    state :on_sale
+    state :off_sale
 
     event :build do
       transitions :from => :pending, :to => :built
@@ -119,14 +119,6 @@ class AthenaPerformance < AthenaResource::Base
     def find_tickets
       return [] if new_record?
       AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
-    end
-
-    def take_tickets_off_sale
-      tickets.map(&:off_sale!)
-    end
-
-    def put_tickets_on_sale
-      tickets.map(&:on_sale!)
     end
 
     def bulk_on_sale(ids)
