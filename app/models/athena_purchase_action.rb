@@ -8,17 +8,17 @@ class AthenaPurchaseAction < AthenaResource::Base
   schema do
     attribute 'person_id',  :string
     attribute 'subject_id', :string
-    attribute 'type',       :string
+    attribute 'action_type',:string
   end
 
-  def type();@attributes['type'];end
-  def type=(type);;end
+  def action_type();@attributes['action_type'];end
+  def action_type=(action_type);;end
 
   validates_presence_of :person_id, :subject_id
 
   def initialize(attributes = {})
     super(attributes)
-    @attributes['type'] = "purchase"
+    @attributes['action_type'] = "purchase"
   end
 
   def person

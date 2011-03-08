@@ -6,15 +6,15 @@ describe AthenaPurchaseAction do
 
   it { should be_valid }
 
-  describe "type" do
+  describe "action type" do
     it "should be of type purchase" do
-      AthenaPurchaseAction.new.type.should eq "purchase"
-      subject.type.should eq "purchase"
+      AthenaPurchaseAction.new.action_type.should eq "purchase"
+      subject.action_type.should eq "purchase"
     end
 
     it "should not change when assigned a different value" do
-      subject.type = "other"
-      subject.type.should eq "purchase"
+      subject.action_type = "other"
+      subject.action_type.should eq "purchase"
     end
   end
 
