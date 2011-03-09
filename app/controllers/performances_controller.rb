@@ -103,7 +103,7 @@ class PerformancesController < ApplicationController
 
     with_confirmation do
       @performance.put_on_sale!
-      flash[:notice] = 'Your performance is on sale!'
+      flash[:notice] = 'Your performance is on sale in the widget!'
       redirect_to performance_url(@performance) and return
     end
   end
@@ -113,7 +113,7 @@ class PerformancesController < ApplicationController
     authorize! :take_off_sale, @performance
     with_confirmation do
       @performance.take_off_sale!
-      flash[:notice] = 'Your performance has been taken off sale!'
+      flash[:notice] = 'Your performance has been taken off sale from the widget!'
       redirect_to performance_url(@performance) and return
     end
   end
