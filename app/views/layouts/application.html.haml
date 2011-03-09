@@ -3,7 +3,8 @@
   %head
     %title= "#{yield :title} : Artful.ly"
 
-    = stylesheet_link_tag "application"
+    = stylesheet_link_tag "application", :media=>:screen
+    = stylesheet_link_tag "printing", :media=>:print, :id=>"printcss"
 
     = javascript_include_tag "cufon-yui", "cufon.harabara-700"
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"

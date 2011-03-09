@@ -2,6 +2,11 @@ require 'athena_resource/formats'
 
 module AthenaResource
   class Base < ActiveResource::Base
+
+    # Enable ActiveModel callbacks for models
+    extend ActiveModel::Callbacks
+    define_model_callbacks :create, :save, :validation
+
     class << self
       def format
         read_inheritable_attribute(:format) || AthenaResource::Formats::AthenaFormat
@@ -20,6 +25,24 @@ module AthenaResource
             raise(MissingPrefixParam, "#{p} prefix_option is missing") if p_options[p].blank?
           end
         end
+    end
+
+    def create
+      run_callbacks :create do
+        super
+      end
+    end
+
+    def save
+      run_callbacks :save do
+        super
+      end
+    end
+
+    def valid?
+      run_callbacks :validation do
+        super
+      end
     end
 
     def encode(options = {})

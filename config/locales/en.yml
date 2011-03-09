@@ -194,7 +194,7 @@
   athena_performance:
     state:
       pending: "Pending"
-      built: "Off Sale"
-      on_sale: "On Sale"
-      off_sale: "Off Sale"
+      built: "Not in Widget"
+      on_sale: "In Widget"
+      off_sale: "Not in Widget"
 

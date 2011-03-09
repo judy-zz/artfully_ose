@@ -6,8 +6,8 @@
   - m.item_to "Event", event_path(@event), :title => "New Event", :icon => "icons/light/Gear.png"
   - m.item_to "Edit", edit_performance_path(@performance), :icon => "icons/light/Writing.png"
   - m.item_to "Duplicate", duplicate_performance_path(@performance), :icon => "icons/light/Scanner.png"
-  - m.item_to "Put on Sale", put_performance_on_sale_path(@performance) unless @performance.on_sale?
-  - m.item_to "Take off Sale", take_performance_off_sale_path(@performance) if @performance.on_sale?
+  - m.item_to "Add to Widget", put_performance_on_sale_path(@performance) unless @performance.on_sale?
+  - m.item_to "Remove from Widget", take_performance_off_sale_path(@performance) if @performance.on_sale?
   - m.item_to "Door List", door_list_performance_path(@performance) if @performance.has_door_list?
 
 .clearboth

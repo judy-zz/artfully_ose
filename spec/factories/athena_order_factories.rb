@@ -7,14 +7,14 @@ Factory.define :athena_order, :default_strategy => :build do |o|
   o.organization { Factory(:organization) }
   o.customer { Factory(:customer_with_id) }
   o.price 50
-
-  o.after_build do |order|
-    FakeWeb.register_uri(:post, "http://localhost/orders/orders/.json", :body => order.encode)
-  end
 end
 
 Factory.define :athena_order_with_id, :parent => :athena_order do |o|
   o.id Factory.next :athena_order_id
+  o.after_build do |order|
+    FakeWeb.register_uri(:post, "http://localhost/orders/orders/.json", :body => order.encode)
+    FakeWeb.register_uri(:any, "http://localhost/orders/orders/#{order.id}.json", :body => order.encode)
+  end
 end
 
 Factory.define :athena_item, :default_strategy => :build do |i|

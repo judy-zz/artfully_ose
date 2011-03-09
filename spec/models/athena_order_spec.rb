@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AthenaOrder do
-  subject { Factory(:athena_order) }
+  subject { Factory(:athena_order_with_id) }
 
   describe "schema" do
     it { should respond_to :person_id }
@@ -72,21 +72,36 @@ describe AthenaOrder do
   end
 
   describe "#save" do
+    before(:each) do
+      FakeWeb.register_uri(:post, "http://localhost/people/actions/.json", :body => Factory(:athena_purchase_action).encode)
+    end
+
     it "should save the items after saving the order" do
       items = 2.times.collect { Factory(:athena_item) }
       items.each { |item| item.should_receive(:save) }
       subject.stub(:items).and_return(items)
       subject.save
     end
+
+    it "should create a purchase action after save" do
+      subject.should_receive(:create_purchase_action)
+      subject.save
+    end
+
+    it "should generate a valid purchase action" do
+      subject.save
+      action = subject.send(:create_purchase_action)
+      action.should be_valid
+    end
   end
 
-  describe "#generate" do
+  describe "generating athena orderes" do
     let(:organization) { Factory(:organization) }
     let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
     let(:donations) { 2.times.collect { Factory(:donation, :organization => organization) } }
 
     subject do
-      AthenaOrder.generate do |order|
+      AthenaOrder.new.tap do |order|
         order.for_organization organization
         order.for_items tickets
         order.for_items donations
