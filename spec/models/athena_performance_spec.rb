@@ -71,7 +71,7 @@ describe AthenaPerformance do
     end
 
     it "should return the ids of ticket that were sold and therefore not taken off sale" do
-      subject.tickets.first.sold = true
+      subject.tickets.first.state = "sold"
       subject.tickets.each { |ticket| ticket.stub!(:off_sale!).and_return(!ticket.sold?) }
 
       rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
@@ -86,7 +86,7 @@ describe AthenaPerformance do
     end
 
     it "should return the ids of tickets that were sold and therefore not destroyed" do
-      subject.tickets.first.sold = true
+      subject.tickets.first.state = "sold"
       subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
 
       rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
