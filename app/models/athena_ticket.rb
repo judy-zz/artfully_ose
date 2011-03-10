@@ -55,7 +55,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def off_sale?
-    not on_sale?
+    state == "on_sale"
   end
 
   def on_sale!
@@ -93,6 +93,7 @@ class AthenaTicket < AthenaResource::Base
     rescue Exception
       return false
     end
+    save!
   end
 
   def comped?
