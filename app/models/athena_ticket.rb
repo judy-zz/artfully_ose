@@ -54,7 +54,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def off_sale?
-    state == "on_sale"
+    state == "off_sale"
   end
 
   def on_sale!
@@ -100,7 +100,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def sold?
-    self.state == "sold"  #state machine
+    self.state == "sold"
   end
 
   def lockable?
