@@ -85,7 +85,7 @@ class AthenaTicket < AthenaResource::Base
     save!
   end
 
- def comp!(buyer)
+ def comped!(buyer)
     begin
       self.buyer = buyer
       self.comp!
