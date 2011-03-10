@@ -81,17 +81,19 @@ class TicketsController < ApplicationController
         edited_tickets = ticket_ids.size - rejected_ids.size
         case action
           when "Put on Sale"
-            @msg = "Put " + edited_tickets.to_s + " ticket(s) on sale. "
+            @msg = "Put #{edited_tickets.to_s} ticket(s) on sale. "
           when 'Take off Sale'
-            @msg = "Took " + edited_tickets.to_s + " ticket(s) off sale. "
+            @msg = "Took #{edited_tickets.to_s} ticket(s) off sale. "
           when 'Delete'
-            @msg = "Deleted " + edited_tickets.to_s + " ticket(s). "
+            @msg = "Deleted #{edited_tickets.to_s} ticket(s). "
           else
             @msg = "Please select an action. "
         end
 
         if rejected_ids.size > 0
-          @msg += rejected_ids.size.to_s + " ticket(s) could not be edited because they have already been sold"
+          @msg += rejected_ids.size.to_s + " ticket(s) could not be edited.
+                Tickets that have been sold or comped can't be put on or taken off sale.
+                A ticket that is already on sale or off sale can't be put on or off sale again."
           flash[:alert] = @msg
         else
           flash[:notice] = @msg
