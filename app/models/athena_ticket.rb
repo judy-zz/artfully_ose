@@ -44,8 +44,7 @@ class AthenaTicket < AthenaResource::Base
 
   def self.search(params)
     search_for = params.dup.reject { |key, value| !known_attributes.include? key }
-    search_for[:sold] ||= "eqfalse"
-    search_for[:onSale] ||= "eqtrue"
+    search_for[:state] ||= "on_sale"
     search_for[:_limit] = params[:limit] || 10
     AthenaTicket.find(:all, :params => search_for) unless search_for.empty?
   end
@@ -55,7 +54,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def off_sale?
-    not on_sale?
+    state == "off_sale"
   end
 
   def on_sale!
@@ -86,13 +85,14 @@ class AthenaTicket < AthenaResource::Base
     save!
   end
 
- def comp!(buyer)
+ def comped!(buyer)
     begin
       self.buyer = buyer
       self.comp!
     rescue Exception
       return false
     end
+    save!
   end
 
   def comped?
@@ -100,7 +100,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def sold?
-    self.state == "sold"  #state machine
+    self.state == "sold"
   end
 
   def lockable?

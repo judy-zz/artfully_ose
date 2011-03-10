@@ -10,8 +10,6 @@ describe AthenaTicket do
     it { should respond_to :venue }
     it { should respond_to :performance }
     it { should respond_to :performance_id }
-    #it { should respond_to :sold }
-    #it { should respond_to :on_sale }
     it { should respond_to :price }
     it { should respond_to :buyer_id }
   end
@@ -100,7 +98,7 @@ describe AthenaTicket do
     it "should default to searching for tickets marked as on sale" do
       FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :body => "[]")
       AthenaTicket.search({})
-      FakeWeb.last_request.path.should match "onSale=eqtrue"
+      FakeWeb.last_request.path.should match "state=on_sale"
     end
   end
 
