@@ -5,11 +5,10 @@
       %th Section
       %th Price
       %th Status
+
   -performance.tickets.each do |ticket|
     %tr
-      %td
-        =check_box_tag "selected_tickets[]", ticket.id
+      %td= check_box_tag "selected_tickets[]", ticket.id
       %td= ticket.section
       %td= number_as_cents ticket.price
-      %td
-        =ticket_status(ticket)
+      %td= ticket_status(ticket)

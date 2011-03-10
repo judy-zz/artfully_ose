@@ -61,7 +61,7 @@ Given /^a patron named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th
   tickets = performance.tickets
   tickets.reject { |t| t.sold? }.first(wanted.to_i).each do |ticket|
     ticket.buyer = customer
-    ticket.sold = true
+    ticket.state = "sold"
   end
 
   body = tickets.collect { |t| t.encode }.join(",")

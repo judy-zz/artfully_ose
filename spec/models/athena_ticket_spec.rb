@@ -10,8 +10,6 @@ describe AthenaTicket do
     it { should respond_to :venue }
     it { should respond_to :performance }
     it { should respond_to :performance_id }
-    it { should respond_to :sold }
-    it { should respond_to :on_sale }
     it { should respond_to :price }
     it { should respond_to :buyer_id }
   end
@@ -55,7 +53,7 @@ describe AthenaTicket do
     end
 
     it "should not delete a ticket that has been marked as sold" do
-      subject.sold = true
+      subject.state = "sold"
       subject.destroy
       FakeWeb.last_request.should be_nil
     end
@@ -100,7 +98,7 @@ describe AthenaTicket do
     it "should default to searching for tickets marked as on sale" do
       FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :body => "[]")
       AthenaTicket.search({})
-      FakeWeb.last_request.path.should match "onSale=eqtrue"
+      FakeWeb.last_request.path.should match "state=on_sale"
     end
   end
 
@@ -116,7 +114,7 @@ describe AthenaTicket do
   end
 
   describe ".on_sale?" do
-    subject { Factory(:ticket_with_id, :on_sale => true) }
+    subject { Factory(:ticket_with_id, :state => "on_sale") }
     it { should be_on_sale }
     it { should_not be_off_sale }
   end
@@ -146,7 +144,7 @@ describe AthenaTicket do
   end
 
   describe ".off_sale!" do
-    subject { Factory(:ticket_with_id, :on_sale => true) }
+    subject { Factory(:ticket_with_id, :state => "on_sale") }
 
     it { should respond_to :on_sale! }
 
@@ -162,15 +160,15 @@ describe AthenaTicket do
       subject.off_sale!
     end
 
-    it "should not be marked as off sale if it is already sold" do
-      subject.sold = true
-      subject.should_not_receive(:save!)
-      subject.off_sale!
-      subject.should be_on_sale
-    end
+#    it "should not be marked as off sale if it is already sold" do
+#      subject.state = "sold"
+#      subject.should_not_receive(:save!)
+#      subject.off_sale!
+#      subject.should be_on_sale
+#    end
 
     it "should return false if it is already sold" do
-      subject.sold = true
+      subject.state = "sold"
       subject.stub(:save!)
       subject.off_sale!.should be_false
     end
@@ -178,12 +176,12 @@ describe AthenaTicket do
 
   describe ".sold!" do
     let (:buyer) { Factory(:athena_person_with_id) }
-    subject { Factory(:ticket_with_id) }
+    subject { Factory(:ticket_with_id, :state=>"on_sale") }
 
     it "should mark the ticket as sold" do
       subject.stub!(:save!)
       subject.sold!(buyer)
-      subject.should be_sold
+      subject.state.should == "sold"
     end
 
     it "should save the updated ticket" do

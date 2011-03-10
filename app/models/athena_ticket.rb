@@ -1,4 +1,6 @@
 class AthenaTicket < AthenaResource::Base
+  include ActiveResource::Transitions
+
   self.site = Artfully::Application.config.tickets_site
   self.headers["User-agent"] = "artful.ly"
   self.collection_name = 'tickets'
@@ -11,48 +13,94 @@ class AthenaTicket < AthenaResource::Base
     attribute 'venue',          :string
     attribute 'performance',    :string
     attribute 'performance_id', :integer
-    attribute 'sold',           :string
-    attribute 'on_sale',        :string
     attribute 'section',        :string
     attribute 'price',          :integer
     attribute 'buyer_id',       :integer
+    attribute 'state',          :string
+  end
+
+  state_machine do
+    state :off_sale 
+    state :on_sale  
+    state :sold     
+    state :comped   
+
+    event :put_on_sale do
+      transitions :from => [:off_sale], :to => :on_sale
+    end
+
+    event :take_off_sale do
+      transitions :from => [:on_sale], :to => :off_sale
+    end
+
+    event :sell do
+      transitions :from => :on_sale, :to => :sold
+    end
+
+    event :comp do
+      transitions :from => [ :on_sale, :off_sale ], :to => :comped
+    end
   end
 
   def self.search(params)
     search_for = params.dup.reject { |key, value| !known_attributes.include? key }
-    search_for[:sold] ||= "eqfalse"
-    search_for[:onSale] ||= "eqtrue"
+    search_for[:state] ||= "on_sale"
     search_for[:_limit] = params[:limit] || 10
     AthenaTicket.find(:all, :params => search_for) unless search_for.empty?
   end
 
   def on_sale?
-    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['on_sale'])
+    attributes['state'] == "on_sale" 
+  end
+
+  def off_sale?
+    state == "off_sale"
   end
 
   def on_sale!
-    self.on_sale = true
+    begin
+      self.put_on_sale! 
+    rescue Exception
+      return false
+    end
     save!
   end
 
   def off_sale!
-    return false if sold?
-    self.on_sale = false
+    begin
+      self.take_off_sale! 
+    rescue Exception
+      return false
+    end
     save!
-  end
-
-  def off_sale?
-    not on_sale?
   end
 
   def sold!(buyer)
-    self.buyer = buyer
-    self.sold = true
+    begin
+      self.buyer = buyer
+      self.sell! 
+    rescue Exception
+      return false
+    end
     save!
   end
 
+ def comp!(buyer)
+    begin
+      self.buyer = buyer
+      self.comp!
+    rescue Exception
+      return false
+    end
+    save!
+  end
+
+  def comped?
+    self.state == "comped"
+  end
+
   def sold?
-    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(attributes['sold'])
+    self.state == "sold"
   end
 
   def lockable?
@@ -66,7 +114,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def destroy
-    super unless sold?
+    super unless sold? or comped?
   end
 
   def buyer

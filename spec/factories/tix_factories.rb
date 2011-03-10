@@ -19,13 +19,14 @@ Factory.define :ticket, :class => AthenaTicket, :default_strategy => :build do |
   t.event { Faker::Lorem.words(2).join(" ") }
   t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
   t.performance { DateTime.now }
-  t.sold false
+  #t.sold false
+  t.state "off_sale" #in replacing t.sold false, should either be on_sale or off_sale, guessing off_sale is more appropriate
   t.price "50.00"
 end
 
 Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build do |t|
   t.id { Factory.next :ticket_id }
-  t.on_sale false
+  t.state "off_sale"
   t.event_id { Factory(:athena_event_with_id).id }
   t.after_build do |ticket|
     FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
