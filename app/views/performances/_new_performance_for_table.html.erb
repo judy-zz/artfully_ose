@@ -9,10 +9,12 @@
             clazz += ' error'
           end
         %>
-        <%=form.text_field :datetime, {:value=> event.next_perf.datetime.to_date.strftime("%m/%d/%Y"), :class=>clazz, :size=>'10'}%>
+        <%# performance is set to event.next_perf, so the date is already incremented properly %>
+        <%  performance.datetime = performance.datetime.in_time_zone(performance.time_zone) %>
+        <%= form.text_field :datetime, {:value=> performance.datetime.to_date.strftime("%m/%d/%Y"), :class=>clazz, :size=>'10'}%>
       </td>
       <td style="padding:2px 0px">
-        <%=form.time_select :datetime, {:default=> {:hour=>event.next_perf.datetime.hour, :minute=> event.next_perf.datetime.min}, :size=>'3'} %>
+        <%=form.time_select :datetime, {:size=>'3'} %>
       </td>
       <td style="padding:2px 0px">
         <%
@@ -21,7 +23,6 @@
         <%=form.select :chart_id, options_from_collection_for_select(event.charts, "id", "name", default_chart_id_as_s) %>
       </td>
       <td colspan="2" style="padding:2px 0px; text-align:right">
-
         <%= form.submit "Submit" %>
         <%= form.submit "Cancel", {:class=>'cancel-new-performance-link'} %>
       </td>
