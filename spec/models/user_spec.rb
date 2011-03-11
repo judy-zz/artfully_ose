@@ -64,17 +64,6 @@ describe User do
     end
   end
 
-  describe ".person" do
-    it { should respond_to :person }
-    it { should respond_to :person= }
-
-    it "should create a new People record before saving if one is not set" do
-      subject.stub(:person).and_return(nil)
-      subject.should_receive(:create_record_in_athena_people)
-      subject.save
-    end
-  end
-
   describe ".credit_cards" do
     it { should respond_to :credit_cards }
     it { should respond_to :credit_cards= }

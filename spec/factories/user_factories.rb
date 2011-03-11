@@ -1,10 +1,6 @@
 Factory.define :user do |u|
   u.email { Faker::Internet.email }
   u.password 'password'
-  u.after_build do |user|
-    person = Factory(:athena_person_with_id, :email => user.email)
-    FakeWeb.register_uri(:post, 'http://localhost/people/people/.json', :body => person.encode)
-  end
 end
 
 Factory.define :admin, :parent => :user do |u|
