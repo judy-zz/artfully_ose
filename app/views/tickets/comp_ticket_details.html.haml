@@ -11,23 +11,31 @@
   = "Email: #{@user.email}"
   = "Name: #{@user.name}"
 
--#= form_tag comp_ticket_confirmation_path(@performance) do
-  %p
-  = label_tag :user_email, "Email"
-  = text_field_tag :user_email
-
-  %p
-  = label_tag :user_first_name, "First Name"
-  = text_field_tag :user_first_name
-  %p
-  = label_tag :user_last_name, "Last Name"
-  = text_field_tag :user_last_name
-
-  %p
-  = label_tag :comp_reason, "Reason for comp"
-  = text_field_tag :comp_reason
-
 Person record for Example User found.
+
+= form_tag comp_ticket_confirm_path(@performance) do
+  -# %p
+    = label_tag :user_email, "Email"
+    = text_field_tag :user_email
+
+    %p
+    = label_tag :user_first_name, "First Name"
+    = text_field_tag :user_first_name
+    %p
+    = label_tag :user_last_name, "Last Name"
+    = text_field_tag :user_last_name
+
+    %p
+    = label_tag :comp_reason, "Reason for comp"
+    = text_field_tag :comp_reason
+    = form_tag comp_ticket_details_path, :method => :get do
+
+  -#= hidden_field_tag :confirmed, :true
+  - @selected_tickets.each do |st|
+    =hidden_field_tag "selected_tickets[]", st
+  = submit_tag "Comp"
+
+
 %p
 = "Email: example.user@example.com"
 %p
@@ -38,4 +46,16 @@ Person record for Example User found.
 = label_tag :comp_reason, "Reason for comp"
 = text_field_tag :comp_reason
 %p
-=link_to "Comp tickets", comp_ticket_confirmation_path(@performance), :class=>"link"
+-#=link_to "Comp tickets", comp_ticket_confirm_path(@performance), :class=>"link"
+
+%p
+= "DEBUG"
+%p
+= "id: #{@performance.id}"
+%p
+= form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
+  = hidden_field_tag :confirmed, :true
+  - @selected_tickets.each do |st|
+    =hidden_field_tag "selected_tickets[]", st
+
+= "selected tickets.size: #{@selected_tickets.size}"

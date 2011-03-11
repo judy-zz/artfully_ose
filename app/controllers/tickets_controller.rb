@@ -9,32 +9,47 @@ class TicketsController < ApplicationController
     authorize! :bulk_edit, :tickets
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
+
     if @selected_tickets.nil?
       flash[:error] = "No tickets were selected"
       redirect_to performance_url(@performance) and return
+
     elsif 'Comp' == params[:commit]
-      redirect_to comp_ticket_people_url(@performance, @selected_tickets) and return #comp_ticket_people#(@performance, params[:selected_tickets], params[:commit])
+      #works# render :comp_ticket_people
+      
+      with_person_search do
+        render :comp_ticket_details and return
+      end
+
+#      with_person_search do
+#        comp_ticket_people(@performance, @selected_tickets)
+#        with_confirmation do
+#          comp_ticket_details(@performance, @selected_tickets)
+#          redirect_to performance_url(@performance) and return
+#        end
+#      end
+
     else
       with_confirmation do
-        bulk_edit_tickets(@performance, params[:selected_tickets], params[:commit])
+        bulk_edit_tickets(@performance, @selected_tickets, params[:commit])
         redirect_to performance_url(@performance) and return
       end
     end
   end
 
   def comp_ticket_details
-#    if not params[:email].blank? and @user = User.find_by_email(params[:email])
-#     else
-#      redirect_to comp_ticket_people_path
-#    end
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
+
   end
 
-  def comp_ticket_confirmation
-    flash[:info] = "Please confirm your changes before we save them."
+  def comp_ticket_confirm
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
+    with_confirmation_comp do
+      comp_tickets(@performance, @selected_tickets)
+      redirect_to performance_url(@performance) and return
+    end
   end
 
 #  def comp_ticket_confirmation(performance, selected_tickets)
@@ -44,15 +59,10 @@ class TicketsController < ApplicationController
 #  end
 
   def comp_ticket_people
-   @performance = AthenaPerformance.find(params[:performance_id])
+    @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
   end
-
-#  def comp_ticket_people(performance, selected_tickets)
-#    @performance = performance
-#    @selected_tickets = selected_tickets
-#  end
-
+  
   def comp_ticket_details_people_not_found
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
@@ -66,6 +76,29 @@ class TicketsController < ApplicationController
         @performance = AthenaPerformance.find(params[:performance_id])
         flash[:info] = "Please confirm your changes before we save them."
         render 'tickets/' + params[:action] + '_confirm' and return
+      else
+        yield
+      end
+    end
+
+    def with_person_search
+      @selected_tickets = params[:selected_tickets]
+      @performance = AthenaPerformance.find(params[:performance_id])
+      if params[:person].blank?  
+        flash[:info] = "Please locate the person record for the person receiving the tickets."
+        render :comp_ticket_people
+      else
+        yield
+      end
+    end
+
+    def with_confirmation_comp
+      if params[:confirmed].blank?
+        @selected_tickets = params[:selected_tickets]
+        @bulk_action = params[:commit]
+        @performance = AthenaPerformance.find(params[:performance_id])
+        flash[:info] = "with_confirmation_comp: Please confirm your changes before we save them."
+        render 'tickets/comp_ticket_confirm' and return
       else
         yield
       end
@@ -89,6 +122,21 @@ class TicketsController < ApplicationController
         @msg += rejected_ids.size.to_s + " ticket(s) could not be edited.
                 Tickets that have been sold or comped can't be put on or taken off sale.
                 A ticket that is already on sale or off sale can't be put on or off sale again."
+        flash[:alert] = @msg
+      else
+        flash[:notice] = @msg
+      end
+    end
+
+    def comp_tickets(performance, ticket_ids)
+      #TODO:
+      #rejected_ids = performance.bulk_edit_tickets(ticket_ids, "Comp")
+      #edited_tickets = ticket_ids.size - rejected_ids.size
+      mock_edited_tickets = ticket_ids.size
+      rejected_ids = []
+      @msg = "Mock Comped #{mock_edited_tickets.to_s} ticket(s)."
+       if rejected_ids.size > 0
+        @msg += rejected_ids.size.to_s + " ticket(s) could not be comped."
         flash[:alert] = @msg
       else
         flash[:notice] = @msg
