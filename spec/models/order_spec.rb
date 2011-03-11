@@ -137,7 +137,7 @@ describe Order do
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks/.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
-      subject.items.each { |item| item.stub!(:sold!) }
+      subject.items.each { |item| item.stub!(:sell_to) }
       subject.items.each { |item| item.stub!(:sold?).and_return(true) }
     end
 
@@ -148,7 +148,7 @@ describe Order do
     end
 
     it "should mark each item as sold" do
-      subject.items.each { |item| item.should_receive(:sold!) }
+      subject.items.each { |item| item.should_receive(:sell_to) }
       subject.finish
     end
   end

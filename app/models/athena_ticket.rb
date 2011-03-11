@@ -20,17 +20,17 @@ class AthenaTicket < AthenaResource::Base
   end
 
   state_machine do
-    state :off_sale 
-    state :on_sale  
-    state :sold     
-    state :comped   
+    state :off_sale
+    state :on_sale
+    state :sold
+    state :comped
 
-    event :put_on_sale do
-      transitions :from => [:off_sale], :to => :on_sale
+    event :on_sale do
+      transitions :from => :off_sale, :to => :on_sale
     end
 
-    event :take_off_sale do
-      transitions :from => [:on_sale], :to => :off_sale
+    event :off_sale do
+      transitions :from => :on_sale, :to => :off_sale
     end
 
     event :sell do
@@ -49,58 +49,38 @@ class AthenaTicket < AthenaResource::Base
     AthenaTicket.find(:all, :params => search_for) unless search_for.empty?
   end
 
-  def on_sale?
-    attributes['state'] == "on_sale" 
-  end
-
-  def off_sale?
-    state == "off_sale"
-  end
-
-  def on_sale!
+  def take_off_sale
     begin
-      self.put_on_sale! 
-    rescue Exception
+      off_sale!
+    rescue Transitions::InvalidTransition
       return false
     end
-    save!
   end
 
-  def off_sale!
+  def put_on_sale
     begin
-      self.take_off_sale! 
-    rescue Exception
+      on_sale!
+    rescue Transitions::InvalidTransition
       return false
     end
-    save!
   end
 
-  def sold!(buyer)
+  def sell_to(buyer)
     begin
       self.buyer = buyer
-      self.sell! 
-    rescue Exception
+      self.sell!
+    rescue Transitions::InvalidTransition
       return false
     end
-    save!
   end
 
- def comped!(buyer)
+ def comp_to(buyer)
     begin
       self.buyer = buyer
       self.comp!
-    rescue Exception
+    rescue Transitions::InvalidTransition
       return false
     end
-    save!
-  end
-
-  def comped?
-    self.state == "comped"
-  end
-
-  def sold?
-    self.state == "sold"
   end
 
   def lockable?

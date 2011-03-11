@@ -146,7 +146,7 @@ describe AthenaTicket do
   describe ".off_sale!" do
     subject { Factory(:ticket_with_id, :state => "on_sale") }
 
-    it { should respond_to :on_sale! }
+    it { should respond_to :off_sale! }
 
     it "should mark the ticket as on sale" do
       subject.stub(:save!)
@@ -159,40 +159,42 @@ describe AthenaTicket do
       subject.should_receive(:save!)
       subject.off_sale!
     end
+  end
 
-#    it "should not be marked as off sale if it is already sold" do
-#      subject.state = "sold"
-#      subject.should_not_receive(:save!)
-#      subject.off_sale!
-#      subject.should be_on_sale
-#    end
+  describe "take_off_sale" do
+    it "should not be marked as off sale if it is already sold" do
+      subject.state = "sold"
+      subject.should_not_receive(:save!)
+      subject.take_off_sale
+      subject.should be_sold
+    end
 
     it "should return false if it is already sold" do
       subject.state = "sold"
       subject.stub(:save!)
-      subject.off_sale!.should be_false
+      subject.take_off_sale.should be_false
     end
   end
 
-  describe ".sold!" do
+  describe ".sell_to" do
     let (:buyer) { Factory(:athena_person_with_id) }
     subject { Factory(:ticket_with_id, :state=>"on_sale") }
 
     it "should mark the ticket as sold" do
       subject.stub!(:save!)
-      subject.sold!(buyer)
+      subject.sell_to(buyer)
       subject.state.should == "sold"
     end
 
     it "should save the updated ticket" do
       subject.stub!(:save!)
       subject.should_receive(:save!)
-      subject.sold!(buyer)
+      subject.sell_to(buyer)
     end
 
     it "should set the buyer after being sold" do
       subject.stub!(:save!)
-      subject.sold!(buyer)
+      subject.sell_to(buyer)
       subject.buyer.should eq buyer
     end
   end
