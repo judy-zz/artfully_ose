@@ -46,9 +46,7 @@ describe Checkout do
         :email => payment.customer.email
       }
 
-      AthenaPerson.should_receive(:create)
-                  .with(attributes)
-                  .and_return(Factory(:athena_person,attributes))
+      AthenaPerson.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))
 
       subject.finish
     end
