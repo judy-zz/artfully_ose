@@ -21,14 +21,6 @@ class TicketsController < ApplicationController
         render :comp_ticket_details and return
       end
 
-#      with_person_search do
-#        comp_ticket_people(@performance, @selected_tickets)
-#        with_confirmation do
-#          comp_ticket_details(@performance, @selected_tickets)
-#          redirect_to performance_url(@performance) and return
-#        end
-#      end
-
     else
       with_confirmation do
         bulk_edit_tickets(@performance, @selected_tickets, params[:commit])
@@ -40,27 +32,41 @@ class TicketsController < ApplicationController
   def comp_ticket_details
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
-
+    unless params[:email].blank?
+      @user = AthenaPerson.find_by_email(params[:email]).first
+      if @user.nil?
+        flash[:alert] = "Person record not found! You can create a person record directly from this page, or go back an try searching again."
+        @user = AthenaPerson.new(:email=>params[:email])
+      end
+      #render comp_ticket_details_path unless @user.nil?
+    end
   end
 
   def comp_ticket_confirm
     @performance = AthenaPerformance.find(params[:performance_id])
+    @reason_for_comp = params[:comp_reason]
     @selected_tickets = params[:selected_tickets]
+    @person = params[:athena_person]
     with_confirmation_comp do
-      comp_tickets(@performance, @selected_tickets)
-      redirect_to performance_url(@performance) and return
+      @p2 = Hash.try_convert(@person)
+      
+      #athenaperson = AthenaPerson.new(:email=>@person.email, :first_name=>@person.first_name, :last_name=>@person.last_name)
+      if true#athenaperson.save
+        comp_tickets(@performance, @selected_tickets)
+        redirect_to performance_url(@performance) and return
+      else
+        flash[:notice] = "Person record could not be created!"
+      end
     end
   end
-
-#  def comp_ticket_confirmation(performance, selected_tickets)
-#    flash[:info] = "Please confirm your changes before we save them."
-#    @performance = AthenaPerformance.find(params[:performance_id])
-#    @selected_tickets = selected_tickets
-#  end
 
   def comp_ticket_people
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
+#    unless params[:email].blank?
+#      @user = AthenaPerson.find_by_email(params[:email])
+#      render comp_ticket_details_path unless @user.nil?
+#    end
   end
   
   def comp_ticket_details_people_not_found
@@ -84,7 +90,7 @@ class TicketsController < ApplicationController
     def with_person_search
       @selected_tickets = params[:selected_tickets]
       @performance = AthenaPerformance.find(params[:performance_id])
-      if params[:person].blank?  
+      if params[:person].blank?
         flash[:info] = "Please locate the person record for the person receiving the tickets."
         render :comp_ticket_people
       else

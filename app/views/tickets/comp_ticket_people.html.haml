@@ -1,41 +1,9 @@
-Find person to comp tickets for
+Find person to comp tickets to
 
 %p
 = form_tag comp_ticket_details_path, :method => :get do
   = label_tag :email, "Email"
   = text_field_tag :email
-  = hidden_field_tag :confirmed, :true
   - @selected_tickets.each do |st|
     =hidden_field_tag "selected_tickets[]", st
   = submit_tag "Search"
-
-%br
-%br
-%br
-%br
-%br
-
-%p
--#=link_to "person record found", comp_ticket_details_path(@performance), :class=>"link"
-%br
-%br
--#=link_to "person record not found", comp_ticket_details_people_not_found_path(@performance), :class=>"link"
-%p
-= "DEBUG"
-%p
-= "id: #{@performance.id}"
-%p
-= form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
-  -#= hidden_field_tag :confirmed, :true
-  - @selected_tickets.each do |st|
-    =hidden_field_tag "selected_tickets[]", st
-
-= "selected tickets.size: #{@selected_tickets.size}"
-%p
-%p
-%p
-%p
-%p
-%p
-%p
-%p
