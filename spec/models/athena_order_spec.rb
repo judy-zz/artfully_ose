@@ -93,6 +93,17 @@ describe AthenaOrder do
       action = subject.send(:create_purchase_action)
       action.should be_valid
     end
+
+    it "should generate a valid donation action for each donation" do
+      donations = 2.times.collect { Factory(:donation) }
+      subject.for_items(donations)
+      actions = subject.send(:create_donation_actions)
+      actions.should have(2).donation_actions
+      actions.each do |action|
+        action.should be_valid
+        donations.should include action.subject
+      end
+    end
   end
 
   describe "generating athena orderes" do
