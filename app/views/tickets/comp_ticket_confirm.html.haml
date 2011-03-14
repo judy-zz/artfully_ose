@@ -1,0 +1,13 @@
+Are you sure you want to comp 2 tickets for Example User to attend the Wednesday, March 02 2011 5:00pm performance of Generic Example Event?
+
+= form_for @performance, :url => comp_ticket_confirm_path(@performance) do |form|
+  = hidden_field_tag :confirmed, :true
+  - @selected_tickets.each do |st|
+    =hidden_field_tag "selected_tickets[]", st
+  %p If this is correct, please click confirm it by clicking
+  = submit_tag @bulk_action
+
+
+%p
+=link_to "Yes", performance_path(@performance), :class=>"link"
+=link_to "No", performance_path(@performance), :class=>"link"
