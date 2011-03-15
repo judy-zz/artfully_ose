@@ -43,24 +43,18 @@ class TicketsController < ApplicationController
     @performance = AthenaPerformance.find(params[:performance_id])
     @reason_for_comp = params[:comp_reason]
     @selected_tickets = params[:selected_tickets]
-    @person = params[:athena_person]
+    @person = params[:person]
     @person_id = params[:person_id]
 
     @confirmed = params[:confirmed]
     unless @confirmed
       if @person_id.nil? or @person_id == ""
-        #flash[:notice] = "@Person id is nil :-/"
         @athena_person = AthenaPerson.new(:email=> @person[:athena_person][:email], :first_name=> @person[:athena_person][:first_name], :last_name=> @person[:athena_person][:last_name])
       else
-        #flash[:notice] = "@Person is is not nil :-)"
         @athena_person = AthenaPerson.find(@person_id)
-        #@athena_person.email = @person[:athena_person][:email]
-        #@athena_person.first_name = @person[:athena_person][:first_name]
-        #@athena_person.last_name = @person[:athena_person][:last_name]
       end
 
       if @athena_person.save
-        #flash[:notice] = "Person record saved!"
         @person_id = @athena_person.id
       else
         flash[:notice] = "Person record could not be created!"
@@ -68,7 +62,9 @@ class TicketsController < ApplicationController
     end
 
     with_confirmation_comp do
-        comp_tickets(@performance, @selected_tickets)
+        @user = User.new #TODO: Get current user
+        @athena_person = AthenaPerson.find(params[:person_id])
+        comp_tickets(@athena_person, @user, @performance, @selected_tickets)
         redirect_to performance_url(@performance) and return
     end
   end
@@ -138,15 +134,36 @@ class TicketsController < ApplicationController
       end
     end
 
-    def comp_tickets(performance, ticket_ids)
-      #TODO:
+    def comp_tickets(person, user, performance, ticket_ids) #(performance, ticket_ids)
+      comped_ids = performance.bulk_comp_to(ticket_ids, person)
+      comped_tickets = comped_ids.collect{|id| AthenaTicket.find(id)}
+      flash[:info] = "comped_tickets.first#{comped_tickets.first.state}"
+      
+      #create order # #################################################################
+      order = AthenaOrder.new.tap do |order|
+        #order.for_organization organization
+        #order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id }
+        #order.for_items donations.select { |donations| donation.organization == organization }
+        #order.person = person
+
+        #order = AthenaOrder.new
+        order.for_organization Organization.find(performance.event.organization_id)
+        order.for_items comped_tickets
+        order.person = person
+        #TODO: save the user who is comping the tickets
+        #order.user = user
+      end
+      order.save
+      
       #rejected_ids = performance.bulk_edit_tickets(ticket_ids, "Comp")
-      #edited_tickets = ticket_ids.size - rejected_ids.size
-      mock_edited_tickets = ticket_ids.size
-      rejected_ids = []
-      @msg = "Mock Comped #{mock_edited_tickets.to_s} ticket(s)."
-       if rejected_ids.size > 0
-        @msg += rejected_ids.size.to_s + " ticket(s) could not be comped."
+      #edited_tickets = ticket_ids.size - comped_ids.size
+      rejected_tickets = ticket_ids.size - comped_ids.size
+      #mock_edited_tickets = ticket_ids.size
+
+      #@msg = "Mock Comped #{mock_edited_tickets.to_s} ticket(s)."
+      @msg = "Comped #{comped_ids.size.to_s} ticket(s)."
+       if rejected_tickets > 0
+        @msg += rejected_tickets.size.to_s + " ticket(s) could not be comped."
         flash[:alert] = @msg
       else
         flash[:notice] = @msg

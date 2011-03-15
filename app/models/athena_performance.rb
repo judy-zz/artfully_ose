@@ -116,6 +116,11 @@ class AthenaPerformance < AthenaResource::Base
         bulk_comp(ticket_ids)
     end
   end
+  
+  #return accepted id's
+  def bulk_comp_to(ids, buyer)
+    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.comp_to(buyer) }.compact
+  end
 
   private
 
@@ -138,7 +143,7 @@ class AthenaPerformance < AthenaResource::Base
 
     def bulk_comp(ids)
       #TODO: Implement comp
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless true }.compact
+      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
     end
 
     def prepare_attr!(attributes)
