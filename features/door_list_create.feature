@@ -1,5 +1,5 @@
 Feature: Door List Creation
-  In order to view the patrons attending a performance
+  In order to view the user@example.coms attending a performance
   the producer wants to be able to view a list of names
 
   Background:
@@ -11,8 +11,8 @@ Feature: Door List Creation
 
 
   Scenario: A producer views the door list for a performance
-    Given a patron named "Joe Patron" buys 2 tickets from the 1st performance
-    And a patron named "Bob Patron" buys 3 tickets from the 1st performance
+    Given a user@example.com named "Joe Patron" buys 2 tickets from the 1st performance
+    And a user@example.com named "Bob Patron" buys 3 tickets from the 1st performance
     When I go to the events page
     And I view the 1st event
     And I view the 1st performance

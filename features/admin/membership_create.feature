@@ -5,16 +5,16 @@ Feature: Organization Membership Create
 
   Background:
     Given an organization exists with an name of "Fractured Atlas"
-    And a patron exists with an email of "patron@example.com"
-    And I am logged in as an "admin"
+    And a user exists with an email of "user@example.com"
+    And I am logged in as an admin
     And I am on the admin root page
     And I click on "Administer Organizations"
     And I click on "Fractured Atlas"
 
   Scenario: An admin adds a user to an organization
-    Given I fill in "Email" with "patron@example.com"
+    Given I fill in "Email" with "user@example.com"
     When I press "Add"
-    Then "patron@example.com" should be a part of "Fractured Atlas"
+    Then "user@example.com" should be a part of "Fractured Atlas"
 
   Scenario: An admin tries to add a user that does not exist to an organization.
     Given I fill in "Email" with "nobody@example.com"
@@ -22,7 +22,7 @@ Feature: Organization Membership Create
     Then I should see "User nobody@example.com could not be found."
 
   Scenario: An admin tries to add the a user with an existing membership
-    Given "patron@example.com" is part of "Fractured Atlas"
-    And I fill in "Email" with "patron@example.com"
+    Given "user@example.com" is part of "Fractured Atlas"
+    And I fill in "Email" with "user@example.com"
     When I press "Add"
-    Then I should see "patron@example.com is already a member, and was not added a second time."
+    Then I should see "user@example.com is already a member, and was not added a second time."

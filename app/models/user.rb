@@ -27,10 +27,6 @@ class User < ActiveRecord::Base
     self.roles << Role.find_by_name(role) unless has_role?(role)
   end
 
-  def to_producer
-    self.roles << Role.producer unless self.roles.include? Role.producer
-  end
-
   def to_admin
     self.roles << Role.admin unless self.roles.include? Role.admin
   end

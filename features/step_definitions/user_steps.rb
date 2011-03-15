@@ -1,7 +1,6 @@
-Given /^I am logged in(?: as an? "([^"]*)"(?: with email "([^"]*)")?)?$/ do |role, email|
-  role ||= "patron"
-  @current_user = Factory(role)
-  @current_user.update_attributes(:email => email) unless email.blank?
+Given /^I am logged in(?: as an? ([^"]*)(?: with email "([^"]*)")?)?$/ do |role, email|
+  role ||= :user
+  @current_user = email.blank? ? Factory(role) : Factory(role, :email => email)
   visit new_user_session_path
   fill_in("Email", :with => @current_user.email)
   fill_in("Password", :with => @current_user.password)

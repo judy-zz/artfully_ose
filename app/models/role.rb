@@ -4,10 +4,6 @@ class Role < ActiveRecord::Base
 
 
   class << self
-    def producer
-      Role.limit(1).where(:name => "producer").first
-    end
-
     def admin
       Role.limit(1).where(:name => "admin").first
     end

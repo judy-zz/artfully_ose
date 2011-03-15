@@ -53,7 +53,7 @@ Then /^I should see not be able to edit the (\d+)(?:st|nd|rd|th) [Pp]erformance$
   page.should have_no_xpath "(//tr[position()=#{pos.to_i}]/td[@class='actions']/a[@title='Edit'])"
 end
 
-Given /^a patron named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |name, wanted, pos|
+Given /^a user@example.com named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |name, wanted, pos|
   fname, lname = name.split(" ")
   customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname)
 

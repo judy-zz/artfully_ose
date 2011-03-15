@@ -96,34 +96,18 @@ describe User do
         subject = Factory(:admin)
         subject.should have_role :admin
       end
-
-      it "producer should return true when the user is a producer" do
-        subject = Factory(:producer)
-        subject.should have_role :producer
-      end
-
-      it "patron should return true when the user is a patron" do
-        subject = Factory(:patron)
-        subject.should have_role :patron
-      end
     end
 
     describe ".add_role" do
       it "should add the role if the user does not already have it" do
-        subject.add_role(:producer)
-        subject.should have_role(:producer)
+        subject.add_role(:admin)
+        subject.should have_role(:admin)
       end
 
       it "should not add the role if the user already has it" do
-        2.times { subject.add_role :producer }
+        2.times { subject.add_role :admin }
         subject.roles.length.should eq 1
       end
-    end
-
-    it "#to_producer" do
-      subject.to_producer
-      subject.save
-      subject.roles.should include(Role.producer)
     end
   end
 

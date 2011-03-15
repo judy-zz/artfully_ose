@@ -6,4 +6,4 @@
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
 
-[:admin, :patron, :producer].each { |role| Role.create(:name => role) }
+[:admin].each { |role| Role.create(:name => role) }

@@ -7,7 +7,7 @@ Feature: Event creation
     And I can get Tickets from ATHENA
 
   Scenario: A producer creates a new event
-    Given I am logged in as a "producer"
+    Given I am logged in
     And I am part of an organization with access to the ticketing kit
     And I am on the new event page
     When I fill in the following event details:

@@ -3,7 +3,7 @@ Feature: Donation Kit Approval
   an admin wants to be able to view pending kit applications and approve them.
 
   Scenario: An admin approves a pending donation kit
-    Given I am logged in as an "admin"
+    Given I am logged in as an admin
     And there is a pending donation kit application for "Fractured Atlas"
     And I am on the admin root page
     And I click on "Administer Organizations"
