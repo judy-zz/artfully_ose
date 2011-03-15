@@ -33,12 +33,20 @@ class TicketsController < ApplicationController
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
     unless params[:email].blank?
-      @user = AthenaPerson.find_by_email(params[:email]).first
-      if @user.nil?
+      @user = AthenaPerson.find_by_email(params[:email]).first 
+
+      person = AthenaPerson.find_by_email(params[:email]).first
+
+      if person.nil? #@user.nil?
         flash[:alert] = "Person record not found! You can create a person record directly from this page, or go back an try searching again."
         @user = AthenaPerson.new(:email=>params[:email])
+        @person = AthenaPerson.new(:email=>params[:email])
+      else
+        flash[:info] = "Person record found"
+        @person = person
       end
-      #render comp_ticket_details_path unless @user.nil?
+      @person_id = @person.id
+
     end
   end
 
@@ -47,16 +55,31 @@ class TicketsController < ApplicationController
     @reason_for_comp = params[:comp_reason]
     @selected_tickets = params[:selected_tickets]
     @person = params[:athena_person]
-    with_confirmation_comp do
-      @p2 = Hash.try_convert(@person)
-      
-      #athenaperson = AthenaPerson.new(:email=>@person.email, :first_name=>@person.first_name, :last_name=>@person.last_name)
-      if true#athenaperson.save
-        comp_tickets(@performance, @selected_tickets)
-        redirect_to performance_url(@performance) and return
+    @person_id = params[:person_id]
+
+    @confirmed = params[:confirmed]
+    unless @confirmed
+      if @person_id.nil? or @person_id == ""
+        flash[:notice] = "@Person id is nil :-/"
+        @athena_person = AthenaPerson.new(:email=> @person[:athena_person][:email], :first_name=> @person[:athena_person][:first_name], :last_name=> @person[:athena_person][:last_name])
+      else
+        flash[:notice] = "@Person is is not nil :-)"
+        @athena_person = AthenaPerson.find(@person_id)
+        @athena_person.email = @person[:athena_person][:email]
+        @athena_person.first_name = @person[:athena_person][:first_name]
+        @athena_person.last_name = @person[:athena_person][:last_name]
+      end
+
+      if @athena_person.save
+        flash[:notice] = "Person record saved!"
       else
         flash[:notice] = "Person record could not be created!"
       end
+    end
+
+    with_confirmation_comp do
+        comp_tickets(@performance, @selected_tickets)
+        redirect_to performance_url(@performance) and return
     end
   end
 

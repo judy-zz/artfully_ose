@@ -1,13 +1,13 @@
-= parent_form.fields_for target do |event_form|
+= parent_form.fields_for target do |person_form|
   %p
-    = event_form.label :first_name, "First Name"
-    = event_form.text_field :first_name
+    = person_form.label :first_name, "First Name"
+    = person_form.text_field :first_name
   %p
-    = event_form.label :last_name, "Last Name"
-    = event_form.text_field :last_name
+    = person_form.label :last_name, "Last Name"
+    = person_form.text_field :last_name
   %p
-    = event_form.label :email, "Email Address"
-    = event_form.text_field :email
+    = person_form.label :email, "Email Address"
+    = person_form.text_field :email
   -#%p
-    = event_form.label :reason_for_comp, "Reason for Comp"
-    = event_form.text_field :reason_for_comp
+    = person_form.label :reason_for_comp, "Reason for Comp"
+    = person_form.text_field :reason_for_comp
