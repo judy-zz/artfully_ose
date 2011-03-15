@@ -48,23 +48,23 @@ describe AthenaPerformance do
     end
 
     it "should put tickets on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:on_sale!) }
-      subject.tickets.each { |ticket| ticket.should_receive(:on_sale!) }
+      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
+      subject.tickets.each { |ticket| ticket.should_receive(:put_on_sale) }
 
       subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
     end
 
     it "should return the ids of the tickets that were not put on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:on_sale!).and_return(true) }
-      subject.tickets.first.stub(:on_sale!).and_return(false)
+      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
+      subject.tickets.first.stub(:put_on_sale).and_return(false)
 
       rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
       rejected_ids.first.should eq subject.tickets.first.id
     end
 
     it "should take tickets off sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:off_sale!) }
-      subject.tickets.each { |ticket| ticket.should_receive(:off_sale!) }
+      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(true) }
+      subject.tickets.each { |ticket| ticket.should_receive(:take_off_sale) }
 
       subject.tickets.each { |ticket| ticket.on_sale = true }
       subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
@@ -72,7 +72,7 @@ describe AthenaPerformance do
 
     it "should return the ids of ticket that were sold and therefore not taken off sale" do
       subject.tickets.first.state = "sold"
-      subject.tickets.each { |ticket| ticket.stub!(:off_sale!).and_return(!ticket.sold?) }
+      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(!ticket.sold?) }
 
       rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
       rejected_ids.first.should eq subject.tickets.first.id

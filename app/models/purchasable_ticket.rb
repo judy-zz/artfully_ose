@@ -5,7 +5,7 @@ class PurchasableTicket < ActiveRecord::Base
   before_destroy :unlock, :unless => lambda { |p| p.sold? }
 
   delegate :lockable?, :to => :ticket
-  delegate :sold!, :to => :ticket
+  delegate :sell_to, :to => :ticket
   delegate :sold?, :to => :ticket
 
   def price

@@ -4,58 +4,35 @@ class Store::CheckoutsController < Store::StoreController
   def new
     redirect_to(store_order_url, :alert => "This order is empty!") if current_order.empty?
     @payment = AthenaPayment.new
+    @checkout = Checkout.new(current_order, @payment)
   end
 
   def create
-    if current_order.unfinished?
-      @payment = AthenaPayment.new(params[:athena_payment])
-      @payment.amount = current_order.total
+    unless current_order.unfinished?
+      redirect_to store_order_url(current_order), :notice => "This order is already finished!" and return
+    end
 
-      if @payment.valid?
-        if payment_confirmed?
-          current_order.person = create_people_record
-          submit_payment and return
-        else
-          request_confirmation and return
-        end
-      else
-        render :new and return
-      end
-    else
-      redirect_to store_order_url(current_order), :notice => "This order is already finished!"
+    @payment = AthenaPayment.new(params[:athena_payment])
+    @checkout = Checkout.new(current_order, @payment)
+
+    unless @checkout.valid?
+      render :new and return
+    end
+
+    with_confirmation do
+      @checkout.finish
+      redirect_to store_order_url(current_order), :notice => 'Thank you for your order!'
     end
   end
 
   private
-    def payment_confirmed?
-      not params[:confirmation].blank?
-    end
-
-    def submit_payment
-      current_order.pay_with(@payment)
-      current_order.save
-      flash[:notice] = 'Thank you for your order!'
-      redirect_to store_order_url(current_order)
-    end
-
-    def request_confirmation
-      @needs_confirmation = true
-      flash[:notice] = 'Please confirm your payment details'
-      render :new
-    end
-
-    def create_people_record
-      AthenaPerson.create(:first_name => @payment.customer.first_name,
-                          :last_name  => @payment.customer.last_name,
-                          :email => @payment.customer.email)
-    end
-
-    def save_customer
-      @payment.customer.credit_card = @payment.credit_card
-      if @payment.customer.save
-        flash[:notice] = "Successfully saved your information."
+    def with_confirmation
+      if params[:confirmation].blank?
+        @needs_confirmation = true
+        flash[:notice] = 'Please confirm your payment details'
+        render :new
       else
-        flash[:error] = "Unable to save your information."
+        yield
       end
     end
 end

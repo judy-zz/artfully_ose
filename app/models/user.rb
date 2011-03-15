@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :organizations, :through => :memberships
 
-  before_save :create_record_in_athena_people, :if => lambda { self.person.nil? }
-
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
@@ -37,16 +35,6 @@ class User < ActiveRecord::Base
     self.roles << Role.admin unless self.roles.include? Role.admin
   end
 
-  def person
-    @person ||= find_person
-  end
-
-  def person=(person)
-    raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
-    @person, self.athena_id = person, person.id
-    save
-  end
-
   def current_organization
     organizations.first || Organization.new
   end
@@ -69,15 +57,6 @@ class User < ActiveRecord::Base
   end
 
   private
-    def create_record_in_athena_people
-      self.person = AthenaPerson.create(:email => self.email)
-    end
-
-    def find_person
-      return nil if athena_id.blank?
-      AthenaPerson.find(self.athena_id)
-    end
-
     def find_customer
       begin
         return AthenaCustomer.find(self.customer_id)

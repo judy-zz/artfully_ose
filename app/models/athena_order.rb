@@ -13,6 +13,7 @@ class AthenaOrder < AthenaResource::Base
 
   after_save :save_items, :unless => lambda { items.empty? }
   after_save :create_purchase_action
+  after_save :create_donation_actions
 
   def person
     @person ||= find_person
@@ -73,10 +74,20 @@ class AthenaOrder < AthenaResource::Base
   private
     def create_purchase_action
       action = AthenaPurchaseAction.new
-      action.person = person;
-      action.subject = self;
+      action.person = person
+      action.subject = self
       action.save!
-      return action
+      action
+    end
+
+    def create_donation_actions
+      items.select { |item| item.item_type == "Donation" }.collect do |item|
+        action = AthenaDonationAction.new
+        action.person = person
+        action.subject = Donation.find(item.item_id)
+        action.save!
+        action
+      end
     end
 
     def save_items

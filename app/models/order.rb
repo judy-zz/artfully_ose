@@ -91,7 +91,7 @@ class Order < ActiveRecord::Base
     end
 
     OrderMailer.confirmation_for(self).deliver
-    purchasable_tickets.map { |ticket| ticket.sold!(person) }
+    purchasable_tickets.map { |ticket| ticket.sell_to(person) }
   end
 
   def generate_donations

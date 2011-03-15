@@ -1,4 +1,4 @@
-/* 
+/*
     Document   : printing.css
     Created on : Mar 2, 2011, 6:18:13 PM
     Author     : ian
@@ -53,8 +53,7 @@ h1 span {
 }
 
 .userTab {
-
-
+  display:none;
   background: white;
   text-align:left;
   width: auto;
@@ -87,7 +86,7 @@ table.normal thead th {
   font-size:10px;
   font-weight:normal;
   border-bottom:1px solid #ccc;
- 
+
 }
 
 table.normal thead th:hover {
@@ -122,14 +121,17 @@ a:link, a:visited {
    font-size: 12pt;
    font-weight: normal;
    }
+
+
+/* DEBT: This doesn't seem to be working yet. Check it out when we clean up the print stylesheet*/
 #content a:link:after, #content a:visited:after {
    content: " (" attr(href) ") ";
    font-size: 12pt;
    }
 #content a[href^="/"]:after {
-   content: " (http://www.alistapart.com" attr(href) ") ";
+   content: " (http://www.artful.ly" attr(href) ") ";
    }
 
 /***************************************************************************/
-   
+
 

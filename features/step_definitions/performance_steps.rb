@@ -37,7 +37,7 @@ Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance is on sale$/ do |pos|
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/#{performance.id}.json", :body => performance.encode)
 
   tickets = performance.tickets
-  tickets.each { |ticket| ticket.on_sale = true }
+  tickets.each { |ticket| ticket.state = "on_sale" }
   body = tickets.collect { |t| t.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{performance.id}", :body => "[#{body}]")
 
@@ -59,7 +59,7 @@ Given /^a patron named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th
 
   performance = current_performances[pos.to_i - 1]
   tickets = performance.tickets
-  tickets.reject { |t| t.sold? }.first(wanted.to_i).each do |ticket|
+  tickets.reject { |t| t.state == "sold" }.first(wanted.to_i).each do |ticket|
     ticket.buyer = customer
     ticket.state = "sold"
   end

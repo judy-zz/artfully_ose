@@ -201,8 +201,14 @@ jQuery(".minimized").hide();
 });
 
 function togglePrintPreview(){
-    var currCSS = document.getElementById('printcss');
-      if(currCSS.media == 'all')
-        currCSS.media = 'print';
-      else currCSS.media = 'all';
+    var screenStyles = jQuery('link[rel="stylesheet"][media="screen"]'),
+        printStyles = jQuery('link[rel="stylesheet"][href*="print"]');
+
+    if(screenStyles.get(0).disabled){
+      screenStyles.get(0).disabled = false;
+      printStyles.attr('media','print');
+    } else {
+      screenStyles.get(0).disabled = true;
+      printStyles.attr('media','all');
   }
+}

@@ -69,11 +69,11 @@ describe PurchasableTicket do
     end
   end
 
-  describe ".sold!" do
-    it "should delegate sold! to the ticket" do
-      subject.ticket.stub!(:sold!)
-      subject.ticket.should_receive :sold!
-      subject.sold!
+  describe ".sell_to" do
+    it "should delegate sell_to to the ticket" do
+      subject.ticket.stub!(:sell_to)
+      subject.ticket.should_receive :sell_to
+      subject.sell_to(Factory(:athena_person_with_id))
     end
   end
 
