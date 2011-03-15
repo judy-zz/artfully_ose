@@ -1,5 +1,6 @@
 
 %br
+= render "shared/error_messages", :target => @event
 
 -#= form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
   = render :partial => 'tickets/form', :locals => { :parent_form => form, :target => @person }
@@ -36,4 +37,3 @@
     = label_tag :comp_reason, "Reason for comp"
     = text_field_tag :comp_reason
     = form.submit "Submit"
-
