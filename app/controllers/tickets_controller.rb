@@ -13,14 +13,10 @@ class TicketsController < ApplicationController
     if @selected_tickets.nil?
       flash[:error] = "No tickets were selected"
       redirect_to performance_url(@performance) and return
-
-    elsif 'Comp' == params[:commit]
-      #works# render :comp_ticket_people
-      
+    elsif 'Comp' == params[:commit]      
       with_person_search do
         render :comp_ticket_details and return
       end
-
     else
       with_confirmation do
         bulk_edit_tickets(@performance, @selected_tickets, params[:commit])
@@ -30,23 +26,16 @@ class TicketsController < ApplicationController
   end
 
   def comp_ticket_details
-    @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
-    unless params[:email].blank?
-      @user = AthenaPerson.find_by_email(params[:email]).first 
-
-      person = AthenaPerson.find_by_email(params[:email]).first
-
-      if person.nil? #@user.nil?
-        flash[:alert] = "Person record not found! You can create a person record directly from this page, or go back an try searching again."
-        @user = AthenaPerson.new(:email=>params[:email])
-        @person = AthenaPerson.new(:email=>params[:email])
-      else
-        flash[:info] = "Person record found"
+    unless params[:email].blank?      
+      if person = AthenaPerson.find_by_email(params[:email]).first
+        flash[:info] = "Person record found."
         @person = person
+      else
+        flash[:alert] = "Person record not found! You can create a person record directly from this page, or go back an try searching again."
+        @person = AthenaPerson.new(:email=>params[:email])
       end
       @person_id = @person.id
-
     end
   end
 
@@ -60,18 +49,19 @@ class TicketsController < ApplicationController
     @confirmed = params[:confirmed]
     unless @confirmed
       if @person_id.nil? or @person_id == ""
-        flash[:notice] = "@Person id is nil :-/"
+        #flash[:notice] = "@Person id is nil :-/"
         @athena_person = AthenaPerson.new(:email=> @person[:athena_person][:email], :first_name=> @person[:athena_person][:first_name], :last_name=> @person[:athena_person][:last_name])
       else
-        flash[:notice] = "@Person is is not nil :-)"
+        #flash[:notice] = "@Person is is not nil :-)"
         @athena_person = AthenaPerson.find(@person_id)
-        @athena_person.email = @person[:athena_person][:email]
-        @athena_person.first_name = @person[:athena_person][:first_name]
-        @athena_person.last_name = @person[:athena_person][:last_name]
+        #@athena_person.email = @person[:athena_person][:email]
+        #@athena_person.first_name = @person[:athena_person][:first_name]
+        #@athena_person.last_name = @person[:athena_person][:last_name]
       end
 
       if @athena_person.save
-        flash[:notice] = "Person record saved!"
+        #flash[:notice] = "Person record saved!"
+        @person_id = @athena_person.id
       else
         flash[:notice] = "Person record could not be created!"
       end
@@ -83,19 +73,10 @@ class TicketsController < ApplicationController
     end
   end
 
-  def comp_ticket_people
-    @performance = AthenaPerformance.find(params[:performance_id])
-    @selected_tickets = params[:selected_tickets]
-#    unless params[:email].blank?
-#      @user = AthenaPerson.find_by_email(params[:email])
-#      render comp_ticket_details_path unless @user.nil?
-#    end
-  end
-  
-  def comp_ticket_details_people_not_found
-    @performance = AthenaPerformance.find(params[:performance_id])
-    @selected_tickets = params[:selected_tickets]
-  end
+#  def comp_ticket_people
+#    @performance = AthenaPerformance.find(params[:performance_id])
+#    @selected_tickets = params[:selected_tickets]
+#  end
 
   private
     def with_confirmation
@@ -126,7 +107,7 @@ class TicketsController < ApplicationController
         @selected_tickets = params[:selected_tickets]
         @bulk_action = params[:commit]
         @performance = AthenaPerformance.find(params[:performance_id])
-        flash[:info] = "with_confirmation_comp: Please confirm your changes before we save them."
+        flash[:info] = "Please confirm your changes before we save them."
         render 'tickets/comp_ticket_confirm' and return
       else
         yield

@@ -1,5 +1,6 @@
 = "Area you sure you want to comp #{pluralize(@selected_tickets.size, 'ticket')}"
-= " to \"#{@person[:athena_person][:first_name]} #{@person[:athena_person][:last_name]}\""
+-#= " to \"#{@person[:athena_person][:first_name]} #{@person[:athena_person][:last_name]}\""
+= " to \"#{@athena_person.first_name} #{@athena_person.last_name}\""
 = " for the #{l @performance.datetime, :format=> :date_at_time} performance"
 = " of #{@performance.event.name}?"
 %p
@@ -15,10 +16,3 @@
 
 %p
 =link_to "Cancel Ticket Comp", performance_path(@performance), :class=>"link"
-
-= "DEBUG"
-=ap @person
-
-%p
-= "Person id: "
-= ap @person_id

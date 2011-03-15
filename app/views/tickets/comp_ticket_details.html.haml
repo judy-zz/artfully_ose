@@ -1,7 +1,7 @@
 
 %br
 
-= form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
+-#= form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
   = render :partial => 'tickets/form', :locals => { :parent_form => form, :target => @person }
   - @selected_tickets.each do |st|
     = hidden_field_tag "selected_tickets[]", st
@@ -10,7 +10,30 @@
   = text_field_tag :comp_reason
   = form.submit "Submit"
 
-= "DEBUG"
 %p
-= "Person id: "
-= ap @person_id
+-if @person.id.nil?
+  = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
+    = render :partial => 'tickets/form', :locals => { :parent_form => form, :target => @person }
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    = hidden_field_tag "person_id", nil
+    = label_tag :comp_reason, "Reason for comp"
+    = text_field_tag :comp_reason
+    = form.submit "Submit"
+
+-else
+  %p
+    = "First Name: #{@person.first_name}"
+  %p
+    = "Last Name: #{@person.last_name}"
+  %p
+    = "Email Address: #{@person.email}"
+
+  = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    = hidden_field_tag "person_id", @person_id
+    = label_tag :comp_reason, "Reason for comp"
+    = text_field_tag :comp_reason
+    = form.submit "Submit"
+
