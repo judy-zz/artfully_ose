@@ -6,13 +6,14 @@ Factory.define :athena_person, :default_strategy => :build do |p|
   p.email           { Faker::Internet.email}
   p.first_name      { Faker::Name.first_name }
   p.last_name       { Faker::Name.last_name }
+  p.organization    { Factory(:organization) }
 end
 
 Factory.define :athena_person_with_id, :parent => :athena_person do |p|
   p.id { Factory.next :person_id }
   p.after_build do |person|
     FakeWeb.register_uri(:any, "http://localhost/people/people/#{person.id}.json", :body => person.encode)
-    FakeWeb.register_uri(:get, "http://localhost/people/people/.json?email=eq#{CGI::escape(person.email)}", :body => "[#{person.encode}]")
+    FakeWeb.register_uri(:get, "http://localhost/people/people/.json?email=eq#{CGI::escape(person.email)}&organizationId=eq#{person.organization_id}", :body => "[#{person.encode}]")
   end
 end
 

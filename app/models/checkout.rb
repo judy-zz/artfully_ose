@@ -19,6 +19,13 @@ class Checkout
 
   private
     def create_people_record
-      AthenaPerson.create(:first_name => payment.customer.first_name, :last_name  => payment.customer.last_name,:email => payment.customer.email)
+      params = {
+        :first_name      => payment.customer.first_name,
+        :last_name       => payment.customer.last_name,
+        :email           => payment.customer.email,
+        # DEBT: This doesn't account for multiple organizations per order
+        :organization_id => order.organizations_from_tickets.first.id
+      }
+      AthenaPerson.create(params)
     end
 end

@@ -37,13 +37,17 @@ describe Checkout do
     before(:each) do
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => '{ "success":true }')
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => '{ "success":true }')
+      subject.order.stub(:pay_with)
     end
 
     it "should create a person record when finishing" do
+      subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
+
       attributes = {
         :first_name => payment.customer.first_name,
         :last_name  => payment.customer.last_name,
-        :email => payment.customer.email
+        :email => payment.customer.email,
+        :organization_id => subject.order.organizations_from_tickets.first.id
       }
 
       AthenaPerson.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))

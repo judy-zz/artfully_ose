@@ -102,6 +102,13 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def organizations_from_tickets
+    return @organizations unless @organizations.nil?
+
+    events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
+    @organizations = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
+  end
+
   private
     #TODO: Debt: Move this out of order into PurchasableCollection
     def create_lock(ids)
@@ -111,13 +118,6 @@ class Order < ActiveRecord::Base
         self.errors.add(:items, "could not be locked")
       end
       lock
-    end
-
-    def organizations_from_tickets
-      return @organizations unless @organizations.nil?
-
-      events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
-      @organizations = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
     end
 
     def find_person
