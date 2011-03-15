@@ -1,7 +1,10 @@
 class User < ActiveRecord::Base
+
+  include RoleModel
+  # Always append new roles if you add more.
+  roles :admin
+
   has_many :performances
-  has_many :user_roles
-  has_many :roles, :through => :user_roles
   has_many :orders
 
   has_many :memberships
@@ -18,18 +21,6 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
-
-  def has_role?(role)
-    !!self.roles.find_by_name(role)
-  end
-
-  def add_role(role)
-    self.roles << Role.find_by_name(role) unless has_role?(role)
-  end
-
-  def to_admin
-    self.roles << Role.admin unless self.roles.include? Role.admin
-  end
 
   def current_organization
     organizations.first || Organization.new

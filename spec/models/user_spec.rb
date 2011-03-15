@@ -97,18 +97,6 @@ describe User do
         subject.should have_role :admin
       end
     end
-
-    describe ".add_role" do
-      it "should add the role if the user does not already have it" do
-        subject.add_role(:admin)
-        subject.should have_role(:admin)
-      end
-
-      it "should not add the role if the user already has it" do
-        2.times { subject.add_role :admin }
-        subject.roles.length.should eq 1
-      end
-    end
   end
 
   describe "organizations" do

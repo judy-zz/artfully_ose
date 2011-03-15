@@ -5,7 +5,8 @@ namespace :admin do
     if user.nil?
       puts "Unable to find a user for #{args[:email]}."
     else
-      user.to_admin
+      user.roles << :admin
+      user.save
     end
   end
 end

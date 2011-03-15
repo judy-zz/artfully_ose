@@ -4,5 +4,8 @@ Factory.define :user do |u|
 end
 
 Factory.define :admin, :parent => :user do |u|
-  u.after_create { |user| user.roles << ( Role.find_by_name(:admin) || Factory(:admin_role) ) }
+  u.after_create do |user|
+    user.roles << :admin
+    user.save
+  end
 end
