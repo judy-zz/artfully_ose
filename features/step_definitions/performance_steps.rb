@@ -68,3 +68,43 @@ Given /^a patron named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th
   FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq#{performance.id}", :body => "[#{body}]")
 end
 
+When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
+  fname, lname = name.split(" ")
+  customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname, :email=>email)
+
+  When %{I fill in "Email" with "#{email}"}
+  And %{I press "Search"}
+end
+
+When /^I confirm comp$/ do
+  customer = Factory(:athena_person_with_id)
+  ticket = Factory(:ticket_with_id)
+
+  body1 = '{"subjectId":"1","personId":"1","actionType":"purchase","id":"1"}'
+  FakeWeb.register_uri(:post, "http://localhost/orders/orders/.json", :body => "#{body1}")
+
+  body2 = '{"price":"1","itemType":"AthenaTicket","itemId":"1","orderId":"1","id":"1"}'
+  FakeWeb.register_uri(:post, "http://localhost/orders/items/.json", :body => "#{body2}")
+
+  FakeWeb.register_uri(:post, "http://localhost/people/actions/.json ", :body => "#{body1}")
+  
+  FakeWeb.register_uri(:any, :get, "http://localhost/tix/tickets/.json?performanceId=eq3")
+  performance = current_performances.last
+  performance.tickets.first.state = "comped"
+
+  #tickets.first.state = "comped"
+  And %{I press "Confirm"}
+end
+
+
+#Given /^a patron named "([^"]*)"$/ do |name|
+#  fname, lname = name.split(" ")
+#  customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname)
+#end
+#
+#When /^I search for the patron$/ do
+#
+#  FakeWeb.register_uri(:get, "http://localhost/people/people/.json?email=eq#{customer.email}", :body => "")
+#  click_button("Search")
+#end
+

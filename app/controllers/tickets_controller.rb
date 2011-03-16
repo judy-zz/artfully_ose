@@ -69,11 +69,6 @@ class TicketsController < ApplicationController
     end
   end
 
-#  def comp_ticket_people
-#    @performance = AthenaPerformance.find(params[:performance_id])
-#    @selected_tickets = params[:selected_tickets]
-#  end
-
   private
     def with_confirmation
       if params[:confirmed].blank?
@@ -134,19 +129,11 @@ class TicketsController < ApplicationController
       end
     end
 
-    def comp_tickets(person, user, performance, ticket_ids) #(performance, ticket_ids)
+    def comp_tickets(person, user, performance, ticket_ids)
       comped_ids = performance.bulk_comp_to(ticket_ids, person)
       comped_tickets = comped_ids.collect{|id| AthenaTicket.find(id)}
-      flash[:info] = "comped_tickets.first#{comped_tickets.first.state}"
-      
-      #create order # #################################################################
-      order = AthenaOrder.new.tap do |order|
-        #order.for_organization organization
-        #order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id }
-        #order.for_items donations.select { |donations| donation.organization == organization }
-        #order.person = person
 
-        #order = AthenaOrder.new
+      order = AthenaOrder.new.tap do |order|
         order.for_organization Organization.find(performance.event.organization_id)
         order.for_items comped_tickets
         order.person = person
@@ -155,15 +142,11 @@ class TicketsController < ApplicationController
       end
       order.save
       
-      #rejected_ids = performance.bulk_edit_tickets(ticket_ids, "Comp")
-      #edited_tickets = ticket_ids.size - comped_ids.size
-      rejected_tickets = ticket_ids.size - comped_ids.size
-      #mock_edited_tickets = ticket_ids.size
-
-      #@msg = "Mock Comped #{mock_edited_tickets.to_s} ticket(s)."
-      @msg = "Comped #{comped_ids.size.to_s} ticket(s)."
-       if rejected_tickets > 0
-        @msg += rejected_tickets.size.to_s + " ticket(s) could not be comped."
+      num_rejected_tickets = ticket_ids.size - comped_ids.size
+      @msg = "Comped #{comped_ids.size.to_s} ticket(s). "
+     
+      if num_rejected_tickets > 0
+        @msg += num_rejected_tickets.to_s + " ticket(s) could not be comped. "
         flash[:alert] = @msg
       else
         flash[:notice] = @msg
