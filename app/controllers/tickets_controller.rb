@@ -43,18 +43,21 @@ class TicketsController < ApplicationController
     @performance = AthenaPerformance.find(params[:performance_id])
     @reason_for_comp = params[:comp_reason]
     @selected_tickets = params[:selected_tickets]
-    @person = params[:person]
+    @person = params[:athena_person]
     @person_id = params[:person_id]
 
     @confirmed = params[:confirmed]
     unless @confirmed
-      if @person_id.nil? or @person_id == ""
+      if @person_id == ""
         @athena_person = AthenaPerson.new(:email=> @person[:athena_person][:email], :first_name=> @person[:athena_person][:first_name], :last_name=> @person[:athena_person][:last_name])
       else
         @athena_person = AthenaPerson.find(@person_id)
       end
 
       if @athena_person.save
+        if @person_id == ""
+          flash[:notice] = "Person record created!"
+        end
         @person_id = @athena_person.id
       else
         flash[:notice] = "Person record could not be created!"

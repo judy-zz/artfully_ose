@@ -51,8 +51,6 @@ Artfully::Application.routes.draw do
   match '/performances/:performance_id/tickets/bulk_edit' => 'tickets#bulk_edit', :as => :bulk_edit_performance_tickets
   match '/performances/:performance_id/tickets/comp_ticket_details' => 'tickets#comp_ticket_details', :as => :comp_ticket_details
   match '/performances/:performance_id/tickets/comp_ticket_confirm' => 'tickets#comp_ticket_confirm', :as => :comp_ticket_confirm
-  match '/performances/:performance_id/tickets/comp_ticket_people' => 'tickets#comp_ticket_people', :as => :comp_ticket_people
-  match '/performances/:performance_id/tickets/comp_ticket_details_people_not_found' => 'tickets#comp_ticket_details_people_not_found', :as => :comp_ticket_details_people_not_found
-
+  
   root :to => "index#index"
 end

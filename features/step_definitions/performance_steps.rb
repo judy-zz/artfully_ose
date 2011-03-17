@@ -88,23 +88,9 @@ When /^I confirm comp$/ do
 
   FakeWeb.register_uri(:post, "http://localhost/people/actions/.json ", :body => "#{body1}")
   
-  FakeWeb.register_uri(:any, :get, "http://localhost/tix/tickets/.json?performanceId=eq3")
-  performance = current_performances.last
-  performance.tickets.first.state = "comped"
+  #FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq3", :body=>"")
+  #performance = current_performances.first
+  #performance.tickets.first.state = "comped"
 
-  #tickets.first.state = "comped"
   And %{I press "Confirm"}
 end
-
-
-#Given /^a patron named "([^"]*)"$/ do |name|
-#  fname, lname = name.split(" ")
-#  customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname)
-#end
-#
-#When /^I search for the patron$/ do
-#
-#  FakeWeb.register_uri(:get, "http://localhost/people/people/.json?email=eq#{customer.email}", :body => "")
-#  click_button("Search")
-#end
-
