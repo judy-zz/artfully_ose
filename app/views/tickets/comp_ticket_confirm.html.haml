@@ -1,4 +1,4 @@
-= "Area you sure you want to comp #{pluralize(@selected_tickets.size, 'ticket')}"
+= "Are you sure you want to comp #{pluralize(@selected_tickets.size, 'ticket')}"
 -#= " to \"#{@person[:athena_person][:first_name]} #{@person[:athena_person][:last_name]}\""
 = " to \"#{@athena_person.first_name} #{@athena_person.last_name}\""
 = " for the #{l @performance.datetime, :format=> :date_at_time} performance"
