@@ -86,7 +86,7 @@ When /^I confirm comp$/ do
   body2 = '{"price":"1","itemType":"AthenaTicket","itemId":"1","orderId":"1","id":"1"}'
   FakeWeb.register_uri(:post, "http://localhost/orders/items/.json", :body => "#{body2}")
 
-  FakeWeb.register_uri(:post, "http://localhost/people/actions/.json ", :body => "#{body1}")
+  FakeWeb.register_uri(:post, "http://localhost/people/actions/.json", :body => "#{body1}")
   
   #FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq3", :body=>"")
   #performance = current_performances.first
