@@ -27,16 +27,14 @@ class TicketsController < ApplicationController
 
   def comp_ticket_details
     @selected_tickets = params[:selected_tickets]
-    unless params[:email].blank?      
-      if person = AthenaPerson.find_by_email(params[:email]).first
-        flash[:info] = "Person record found."
-        @person = person
-      else
-        flash[:alert] = "Person record not found! You can create a person record directly from this page, or go back an try searching again."
-        @person = AthenaPerson.new(:email=>params[:email])
-      end
-      @person_id = @person.id
+    if person = AthenaPerson.find_by_email(params[:email]).first
+      flash[:info] = "Person record found."
+      @person = person
+    else
+      flash[:alert] = "Person record not found! You can create a person record directly from this page, or go back an try searching again."
+      @person = AthenaPerson.new(:email=>params[:email])
     end
+    @person_id = @person.id
   end
 
   def comp_ticket_confirm
