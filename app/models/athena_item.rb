@@ -28,7 +28,7 @@ class AthenaItem < AthenaResource::Base
   end
 
   def self.find_by_order(order)
-    return [] if order.id?
+    return [] unless order.id?
     AthenaItem.find(:all, :params => {:orderId => "eq#{order.id}"} )
   end
 

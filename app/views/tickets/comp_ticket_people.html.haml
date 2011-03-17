@@ -1,0 +1,8 @@
+Find person to comp tickets to
+%p
+= form_tag comp_ticket_details_path, :method => :get do
+  = label_tag :email, "Email"
+  = text_field_tag :email
+  - @selected_tickets.each do |st|
+    =hidden_field_tag "selected_tickets[]", st
+  = submit_tag "Search"

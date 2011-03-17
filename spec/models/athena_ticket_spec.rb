@@ -199,6 +199,29 @@ describe AthenaTicket do
     end
   end
 
+   describe ".comp_to" do
+    let (:buyer) { Factory(:athena_person_with_id) }
+    subject { Factory(:ticket_with_id, :state=>"on_sale") }
+
+    it "should mark the ticket as comped" do
+      subject.stub!(:save!)
+      subject.comp_to(buyer)
+      subject.state.should == "comped"
+    end
+
+    it "should save the updated ticket" do
+      subject.stub!(:save!)
+      subject.should_receive(:save!)
+      subject.comp_to(buyer)
+    end
+
+    it "should set the buyer after being sold" do
+      subject.stub!(:save!)
+      subject.comp_to(buyer)
+      subject.buyer.should eq buyer
+    end
+  end
+
   describe "buyer" do
     it { should respond_to :buyer }
     it { should respond_to :buyer= }

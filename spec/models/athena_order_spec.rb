@@ -74,6 +74,7 @@ describe AthenaOrder do
   describe "#save" do
     before(:each) do
       FakeWeb.register_uri(:post, "http://localhost/people/actions/.json", :body => Factory(:athena_purchase_action).encode)
+      FakeWeb.register_uri(:get, "http://localhost/orders/items/.json?orderId=eq1", :body=>"")
     end
 
     it "should save the items after saving the order" do

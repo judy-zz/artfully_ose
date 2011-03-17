@@ -6,7 +6,7 @@ class DoorList
   end
 
   def items
-    @items ||= performance.tickets.select(&:sold?).collect do |ticket|
+    @items ||= performance.tickets.select(&:committed?).collect do |ticket|
       Item.new(ticket, ticket.buyer)
     end
   end
