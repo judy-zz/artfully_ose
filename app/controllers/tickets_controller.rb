@@ -70,6 +70,7 @@ class TicketsController < ApplicationController
     end
   end
 
+
   private
     def with_confirmation
       if params[:confirmed].blank?
@@ -109,19 +110,20 @@ class TicketsController < ApplicationController
     def bulk_edit_tickets(performance, ticket_ids, action)
       rejected_ids = performance.bulk_edit_tickets(ticket_ids, action)
       edited_tickets = ticket_ids.size - rejected_ids.size
+
       case action
       when "Put on Sale"
-        @msg = "Put #{edited_tickets.to_s} ticket(s) on sale. "
+        @msg = "Put #{to_plural(edited_tickets, 'ticket')} on sale. "
       when 'Take off Sale'
-        @msg = "Took #{edited_tickets.to_s} ticket(s) off sale. "
+        @msg = "Took #{to_plural(edited_tickets, 'ticket')} off sale. "
       when 'Delete'
-        @msg = "Deleted #{edited_tickets.to_s} ticket(s). "
+        @msg = "Deleted #{to_plural(edited_tickets, 'ticket')}. "
       else
         @msg = "Please select an action. "
       end
 
       if rejected_ids.size > 0
-        @msg += rejected_ids.size.to_s + " ticket(s) could not be edited.
+        @msg += "#{to_plural(rejected_ids.size, 'ticket')} could not be edited.
                 Tickets that have been sold or comped can't be put on or taken off sale.
                 A ticket that is already on sale or off sale can't be put on or off sale again."
         flash[:alert] = @msg
@@ -144,13 +146,16 @@ class TicketsController < ApplicationController
       order.save
       
       num_rejected_tickets = ticket_ids.size - comped_ids.size
-      @msg = "Comped #{comped_ids.size.to_s} ticket(s). "
-     
+      @msg = "Comped #{to_plural(comped_ids.size, 'ticket')}. "
       if num_rejected_tickets > 0
-        @msg += num_rejected_tickets.to_s + " ticket(s) could not be comped. "
+        @msg += "#{to_plural(num_rejected_tickets, 'ticket')} could not be comped. "
         flash[:alert] = @msg
       else
         flash[:notice] = @msg
       end
+    end
+
+    def to_plural(variable, word)
+      self.class.helpers.pluralize(variable, word)
     end
 end
