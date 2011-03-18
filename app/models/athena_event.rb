@@ -49,11 +49,16 @@ class AthenaEvent < AthenaResource::Base
     to_json(options)
   end
 
+  def sorted_locales
+    sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
+    sorted_locales
+  end
+
   #return valid US states for an event
   #would be be valid states, but states also refer to state machine
   #codes defined here: http://www.itl.nist.gov/fipspubs/fip5-2.htm
   def valid_locales
-    {"Alabama"=>"AL",
+    { "Alabama"=>"AL",
       "Alaska"=>"AK",
       "American Samoa"=>"AS",
       "Arizona"=>"AZ",
