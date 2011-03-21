@@ -40,17 +40,41 @@ describe Checkout do
       subject.order.stub(:pay_with)
     end
 
-    it "should create a person record when finishing" do
+    it "should create a person record when finishing with a new customer" do
       subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
+      
+      email = payment.customer.email
+      organization_id = subject.order.organizations_from_tickets.first.id
+      
+      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization_id).and_return(nil)
 
       attributes = {
+        :email => email,
+        :organization_id => organization_id,
         :first_name => payment.customer.first_name,
-        :last_name  => payment.customer.last_name,
-        :email => payment.customer.email,
-        :organization_id => subject.order.organizations_from_tickets.first.id
+        :last_name  => payment.customer.last_name
       }
 
       AthenaPerson.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))
+
+      subject.finish
+    end
+
+    it "should not create a person record when the person already exists" do
+      subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
+      
+      email = payment.customer.email
+      organization_id = subject.order.organizations_from_tickets.first.id
+      
+      attributes = {
+        :email => email,
+        :organization_id => organization_id,
+        :first_name => payment.customer.first_name,
+        :last_name  => payment.customer.last_name
+      }
+      
+      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization_id).and_return(Factory(:athena_person,attributes))
+      AthenaPerson.should_not_receive(:create)
 
       subject.finish
     end

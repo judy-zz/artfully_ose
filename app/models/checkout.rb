@@ -12,20 +12,27 @@ class Checkout
   end
 
   def finish
-    order.person = create_people_record
+    order.person = find_or_create_people_record
     order.pay_with(@payment)
     order.save
   end
 
   private
-    def create_people_record
-      params = {
-        :first_name      => payment.customer.first_name,
-        :last_name       => payment.customer.last_name,
-        :email           => payment.customer.email,
-        # DEBT: This doesn't account for multiple organizations per order
-        :organization_id => order.organizations_from_tickets.first.id
-      }
-      AthenaPerson.create(params)
+    def find_or_create_people_record
+      organization_id = order.organizations_from_tickets.first.id
+      
+      person = AthenaPerson.find_by_email_and_organization(payment.customer.email, organization_id)
+      
+      if person.nil?
+        params = {
+          :first_name      => payment.customer.first_name,
+          :last_name       => payment.customer.last_name,
+          :email           => payment.customer.email,
+          # DEBT: This doesn't account for multiple organizations per order
+          :organization_id => organization_id
+        }
+        person = AthenaPerson.create(params)
+      end
+      person
     end
 end

@@ -6,7 +6,7 @@ describe AthenaPerson do
   it { should be_valid }
   it { should respond_to :email }
 
-  it "should not be valid with an email address" do
+  it "should not be valid without an email address" do
     subject.email = nil
     subject.should_not be_valid
   end
@@ -29,8 +29,15 @@ describe AthenaPerson do
         :email => "eqperson@example.com",
         :organizationId => "eq#{organization.id}"
       }
-      AthenaPerson.should_receive(:find).with(:all, :params => params)
+      AthenaPerson.should_receive(:find).with(:first, :params => params)
       AthenaPerson.find_by_email_and_organization("person@example.com", organization)
+    end
+
+    it "should return nil if it doesn't find anyone" do
+      email = "person@example.com"
+      FakeWeb.register_uri(:get, "http://localhost/payments/transactions/settle", :body => '[]')
+      p = AthenaPerson.find_by_email_and_organization(email, organization)
+      p.should eq nil
     end
   end
 
