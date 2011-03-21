@@ -13,7 +13,7 @@ class TicketsController < ApplicationController
     if @selected_tickets.nil?
       flash[:error] = "No tickets were selected"
       redirect_to performance_url(@performance) and return
-    elsif 'Comp' == params[:commit]      
+    elsif 'Comp' == params[:commit]
       with_person_search do
         render :comp_ticket_details and return
       end
@@ -27,7 +27,7 @@ class TicketsController < ApplicationController
 
   def comp_ticket_details
     @selected_tickets = params[:selected_tickets]
-    if person = AthenaPerson.find_by_email(params[:email]).first
+    if person = AthenaPerson.find_by_email_and_organization(params[:email],current_user.current_organization).first
       flash[:info] = "Person record found."
       @person = person
     else
@@ -144,7 +144,7 @@ class TicketsController < ApplicationController
         #order.user = user
       end
       order.save
-      
+
       num_rejected_tickets = ticket_ids.size - comped_ids.size
       @msg = "Comped #{to_plural(comped_ids.size, 'ticket')}. "
       if num_rejected_tickets > 0

@@ -70,7 +70,7 @@ end
 
 When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
   fname, lname = name.split(" ")
-  customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname, :email=>email)
+  customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
 
   When %{I fill in "Email" with "#{email}"}
   And %{I press "Search"}
@@ -87,7 +87,7 @@ When /^I confirm comp$/ do
   FakeWeb.register_uri(:post, "http://localhost/orders/items/.json", :body => "#{body2}")
 
   FakeWeb.register_uri(:post, "http://localhost/people/actions/.json", :body => "#{body1}")
-  
+
   #FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?performanceId=eq3", :body=>"")
   #performance = current_performances.first
   #performance.tickets.first.state = "comped"
