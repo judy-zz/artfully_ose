@@ -21,8 +21,7 @@ class AthenaPerson < AthenaResource::Base
   end
 
   def self.find_by_email_and_organization(email, organization)
-    org_id = organization.respond_to?(:id) ? organization.id : organization
-    find(:all, :params => { :email => "eq#{email}", :organizationId => "eq#{org_id}"})
+    find(:all, :params => { :email => "eq#{email}", :organizationId => "eq#{organization.id}"})
   end
 
   def organization

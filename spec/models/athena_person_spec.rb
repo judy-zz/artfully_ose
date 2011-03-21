@@ -32,15 +32,6 @@ describe AthenaPerson do
       AthenaPerson.should_receive(:find).with(:all, :params => params)
       AthenaPerson.find_by_email_and_organization("person@example.com", organization)
     end
-
-    it "should search for the Person by email address and organization id" do
-      params = {
-        :email => "eqperson@example.com",
-        :organizationId => "eq#{organization.id}"
-      }
-      AthenaPerson.should_receive(:find).with(:all, :params => params)
-      AthenaPerson.find_by_email_and_organization("person@example.com", organization.id)
-    end
   end
 
   describe "organization" do
