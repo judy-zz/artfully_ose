@@ -63,9 +63,8 @@ class TicketsController < ApplicationController
     end
 
     with_confirmation_comp do
-        @user = User.new #TODO: Get current user
         @athena_person = AthenaPerson.find(params[:person_id])
-        comp_tickets(@athena_person, @user, @performance, @selected_tickets)
+        comp_tickets(@athena_person, @performance, @selected_tickets)
         redirect_to performance_url(@performance) and return
     end
   end
@@ -132,7 +131,7 @@ class TicketsController < ApplicationController
       end
     end
 
-    def comp_tickets(person, user, performance, ticket_ids)
+    def comp_tickets(person, performance, ticket_ids)
       comped_ids = performance.bulk_comp_to(ticket_ids, person)
       comped_tickets = comped_ids.collect{|id| AthenaTicket.find(id)}
 
@@ -140,8 +139,7 @@ class TicketsController < ApplicationController
         order.for_organization Organization.find(performance.event.organization_id)
         order.for_items comped_tickets
         order.person = person
-        #TODO: save the user who is comping the tickets
-        #order.user = user
+        order.details = "Comped by:#{current_user.email}"
       end
       order.save
 

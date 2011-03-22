@@ -9,6 +9,7 @@ class AthenaOrder < AthenaResource::Base
     attribute :organization_id, :integer
     attribute :customer_id,     :string
     attribute :price,           :integer
+    attribute :details,         :string
   end
 
   after_save :save_items, :unless => lambda { items.empty? }
