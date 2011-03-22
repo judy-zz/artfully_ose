@@ -19,9 +19,9 @@ class Checkout
 
   private
     def find_or_create_people_record
-      organization_id = order.organizations_from_tickets.first.id
+      organization = order.organizations_from_tickets.first
       
-      person = AthenaPerson.find_by_email_and_organization(payment.customer.email, organization_id)
+      person = AthenaPerson.find_by_email_and_organization(payment.customer.email, organization)
       
       if person.nil?
         params = {
@@ -29,7 +29,7 @@ class Checkout
           :last_name       => payment.customer.last_name,
           :email           => payment.customer.email,
           # DEBT: This doesn't account for multiple organizations per order
-          :organization_id => organization_id
+          :organization_id => organization.id
         }
         person = AthenaPerson.create(params)
       end

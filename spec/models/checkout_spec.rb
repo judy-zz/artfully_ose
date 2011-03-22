@@ -44,13 +44,13 @@ describe Checkout do
       subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
       
       email = payment.customer.email
-      organization_id = subject.order.organizations_from_tickets.first.id
+      organization = subject.order.organizations_from_tickets.first
       
-      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization_id).and_return(nil)
+      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
 
       attributes = {
         :email => email,
-        :organization_id => organization_id,
+        :organization_id => organization.id,
         :first_name => payment.customer.first_name,
         :last_name  => payment.customer.last_name
       }
@@ -64,16 +64,16 @@ describe Checkout do
       subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
       
       email = payment.customer.email
-      organization_id = subject.order.organizations_from_tickets.first.id
+      organization = subject.order.organizations_from_tickets.first
       
       attributes = {
         :email => email,
-        :organization_id => organization_id,
+        :organization_id => organization.id,
         :first_name => payment.customer.first_name,
         :last_name  => payment.customer.last_name
       }
       
-      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization_id).and_return(Factory(:athena_person,attributes))
+      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:athena_person,attributes))
       AthenaPerson.should_not_receive(:create)
 
       subject.finish

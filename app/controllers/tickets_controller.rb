@@ -27,7 +27,7 @@ class TicketsController < ApplicationController
 
   def comp_ticket_details
     @selected_tickets = params[:selected_tickets]
-    if person = AthenaPerson.find_by_email_and_organization(params[:email],current_user.current_organization).first
+    if person = AthenaPerson.find_by_email_and_organization(params[:email], current_user.current_organization)
       flash[:info] = "Person record found."
       @person = person
     else
@@ -47,7 +47,7 @@ class TicketsController < ApplicationController
     @confirmed = params[:confirmed]
     unless @confirmed
       if @person_id == ""
-        @athena_person = AthenaPerson.new(:email=> @person[:athena_person][:email], :first_name=> @person[:athena_person][:first_name], :last_name=> @person[:athena_person][:last_name])
+        @athena_person = AthenaPerson.new(:email=> @person[:athena_person][:email], :first_name=> @person[:athena_person][:first_name], :last_name=> @person[:athena_person][:last_name], :organization_id=>current_user.current_organization.id)
       else
         @athena_person = AthenaPerson.find(@person_id)
       end
@@ -58,7 +58,7 @@ class TicketsController < ApplicationController
         end
         @person_id = @athena_person.id
       else
-        flash[:notice] = "Person record could not be created!"
+        flash[:alert] = "Person record could not be created!"
       end
     end
 
