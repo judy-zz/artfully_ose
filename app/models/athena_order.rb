@@ -91,7 +91,10 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def save_items
-      items.each { |item| item.update_attribute(:order_id, self.id) }
+      items.each do |item|
+        item.order=self
+        item.save
+      end 
     end
 
     def find_person

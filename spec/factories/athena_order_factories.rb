@@ -2,6 +2,10 @@ Factory.sequence :athena_order_id do |n|
   n
 end
 
+Factory.sequence :athena_item_id do |n|
+  n
+end
+
 Factory.define :athena_order, :default_strategy => :build do |o|
   o.person { Factory(:athena_person_with_id) }
   o.organization { Factory(:organization) }
@@ -18,8 +22,8 @@ Factory.define :athena_order_with_id, :parent => :athena_order do |o|
 end
 
 Factory.define :athena_item, :default_strategy => :build do |i|
-  i.order { Factory(:athena_order) }
+  i.order { Factory(:athena_order_with_id) }
   i.item_type "AthenaTicket"
-  i.item_id { Factory(:ticket_with_id) }
+  i.item_id Factory.next :athena_item_id
   i.price 10
 end
