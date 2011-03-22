@@ -79,11 +79,16 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def finish
+  def finish    
+    logger.debug("FINISHING ORDER")
+
     organizations_from_tickets.each do |organization|
       order = AthenaOrder.new.tap do |order|
         order.for_organization organization
+        logger.debug("For items tickets")
         order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id }
+        
+        logger.debug("For items tickets")
         order.for_items donations.select { |donation| donation.organization == organization }
         order.person = person
       end

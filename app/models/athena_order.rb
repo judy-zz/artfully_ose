@@ -65,7 +65,10 @@ class AthenaOrder < AthenaResource::Base
     self.organization = org
   end
 
-  def for_items(itms)
+  def for_items(itms)    
+    logger.debug("FOR ITEMS")
+    logger.debug(itms)
+
     itms.each do |item|
       self.items << AthenaItem.new(:item_type => item.class.to_s, :item_id => item.id, :price => item.price)
     end
@@ -91,7 +94,14 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def save_items
+      logger.debug("saving items for order: " + self.id)
       items.each do |item|
+        
+        logger.debug("New item ------------------------------")
+        logger.debug(item)
+        logger.debug(item.valid?)
+        logger.debug(item.errors)
+
         item.order=self
         item.save
       end 
