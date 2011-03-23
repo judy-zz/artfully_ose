@@ -78,8 +78,8 @@ describe AthenaOrder do
     end
 
     it "should save the items after saving the order" do
+      FakeWeb.register_uri(:post, "http://localhost/orders/items/.json", :body=>"")
       items = 2.times.collect { Factory(:athena_item) }
-      items.each { |item| item.should_receive(:save) }
       subject.stub(:items).and_return(items)
       subject.save
     end
