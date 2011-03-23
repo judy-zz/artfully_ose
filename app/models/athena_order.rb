@@ -66,12 +66,13 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def for_items(itms)    
-    logger.debug("FOR ITEMS")
+    logger.debug("for_items called with:")
     logger.debug(itms)
 
     itms.each do |item|
       self.items << AthenaItem.new(:item_type => item.class.to_s, :item_id => item.id, :price => item.price)
     end
+    logger.debug("End for_items")
   end
 
   private
