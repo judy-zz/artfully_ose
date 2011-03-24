@@ -259,12 +259,12 @@ artfully.models = (function(){
             $(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
           }
 
-          $(document.createElement('input')).attr('type','submit').val('Buy').appendTo($form);
+          $(document.createElement('input')).attr('textype','submit').val('Buy').appendTo($form);
 
           $form.submit(function(){
             var params = {
               'limit': $('#ticket-count').val(),
-              'performanceId': $(this).closest('.performance').data('performance').id,
+              'performance_id': $(this).closest('.performance').data('performance').id,
               'price': obj.price
             };
 

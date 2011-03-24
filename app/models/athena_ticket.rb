@@ -43,10 +43,13 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def self.search(params)
-    search_for = params.dup.reject { |key, value| !known_attributes.include? key }
-    search_for[:state] ||= "on_sale"
-    search_for[:_limit] = params[:limit] || 10
-    AthenaTicket.find(:all, :params => search_for) unless search_for.empty?
+    terms = params.dup.with_indifferent_access
+    limit = terms.delete(:limit) || 10
+    raise ArgumentError unless terms.all? { |key, value| known_attributes.include? key }
+
+    terms[:state] ||= "on_sale"
+    terms[:_limit] = limit
+    AthenaTicket.find(:all, :params => terms) unless terms.empty?
   end
 
   def take_off_sale

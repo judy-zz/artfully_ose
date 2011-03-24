@@ -100,6 +100,10 @@ describe AthenaTicket do
       AthenaTicket.search({})
       FakeWeb.last_request.path.should match "state=on_sale"
     end
+
+    it "should raise an error if an unknown attribute is used" do
+      lambda { AthenaTicket.search({:foo => "bar"}) }.should raise_error(ArgumentError)
+    end
   end
 
   describe ".to_item" do
