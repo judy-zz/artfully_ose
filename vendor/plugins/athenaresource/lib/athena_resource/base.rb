@@ -12,6 +12,10 @@ module AthenaResource
         read_inheritable_attribute(:format) || AthenaResource::Formats::AthenaFormat
       end
 
+      def parameterize(params = {})
+        Hash[params.collect{|key, value| [key.camelize(:lower),value] }]
+      end
+
       def collection_path(prefix_options = {}, query_options = nil)
         check_prefix_options(prefix_options)
         prefix_options, query_options = split_options(prefix_options) if query_options.nil?
@@ -50,8 +54,5 @@ module AthenaResource
       return self.class.format.encode(attrs, options) if self.class.format.respond_to? :encode
       super(options)
     end
-  end
-
-  class Base < ActiveResource::Base
   end
 end

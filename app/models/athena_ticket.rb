@@ -49,7 +49,7 @@ class AthenaTicket < AthenaResource::Base
 
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
-    AthenaTicket.find(:all, :params => terms) unless terms.empty?
+    AthenaTicket.find(:all, :params => parameterize(terms)) unless terms.empty?
   end
 
   def take_off_sale

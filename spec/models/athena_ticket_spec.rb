@@ -104,6 +104,12 @@ describe AthenaTicket do
     it "should raise an error if an unknown attribute is used" do
       lambda { AthenaTicket.search({:foo => "bar"}) }.should raise_error(ArgumentError)
     end
+
+    it "should camelize the keys for the search terms" do
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :body => "[]")
+      AthenaTicket.search({:performance_id => 1})
+      FakeWeb.last_request.path.should match "performanceId"
+    end
   end
 
   describe ".to_item" do
