@@ -1,6 +1,7 @@
 Given /^I enter my payment details$/ do
-  FakeWeb.register_uri(:post, "http://localhost/people/people/.json", :body => Factory(:athena_person_with_id).encode)
-
+  person = Factory(:athena_person_with_id)
+  FakeWeb.register_uri(:get, %r|http://localhost/people/people/.*|, :body => "[#{person.encode}]")
+  FakeWeb.register_uri(:post, "http://localhost/people/people/.json", :body => person.encode)
   payment = Factory(:payment)
 
   with_scope('#customer') do
@@ -30,7 +31,8 @@ end
 
 Given /^I have added (\d+) tickets to my order$/ do |a_few|
   producer = Factory(:user)
-  event = Factory(:athena_event_with_id, :producer_pid => producer.athena_id )
+  producer.organizations << Factory(:organization)
+  event = Factory(:athena_event_with_id, :organization_id => producer.current_organization.id )
   tickets = a_few.to_i.times.collect { Factory(:ticket_with_id, :event_id => event.id) }
 
   FakeWeb.register_uri(:any, %r|http://localhost/tix/meta/locks/.*\.json|, :body => Factory(:lock, :tickets => tickets.collect(&:id)).encode)

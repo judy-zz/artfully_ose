@@ -66,7 +66,7 @@ class AthenaOrder < AthenaResource::Base
     self.organization = org
   end
 
-  def for_items(itms)    
+  def for_items(itms)
     logger.debug("for_items called with:")
     logger.debug(itms)
 
@@ -96,9 +96,9 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def save_items
-      logger.debug("saving items for order: " + self.id)
+      logger.debug("saving items for order: #{self.id}")
       items.each do |item|
-        
+
         logger.debug("New item ------------------------------")
         logger.debug(item)
         logger.debug(item.valid?)
@@ -106,7 +106,7 @@ class AthenaOrder < AthenaResource::Base
 
         item.order=self
         item.save
-      end 
+      end
     end
 
     def find_person
