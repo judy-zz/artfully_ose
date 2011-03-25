@@ -79,17 +79,19 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def finish    
+  def finish
     logger.debug("FINISHING ORDER")
 
     organizations_from_tickets.each do |organization|
+      logger.debug("This order is for organization [" + organization.id.to_s + "]")
       order = AthenaOrder.new.tap do |order|
         order.for_organization organization
-        logger.debug("Calling for_items with tickets")
-        logger.debug("Calling with these tickets:")
+        logger.debug("Calling for_items with these tickets:")
         logger.debug(tickets)
-        order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id }
-        
+
+        #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be    
+        order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
+
         logger.debug("Calling for_items with donations")
         order.for_items donations.select { |donation| donation.organization == organization }
         order.person = person
