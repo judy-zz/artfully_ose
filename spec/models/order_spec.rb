@@ -148,6 +148,8 @@ describe Order do
     end
 
     it "should mark each item as sold" do
+      item = Factory(:athena_item)
+      FakeWeb.register_uri(:get, %r|http://localhost/orders/items/.json\?orderId=eq|, :status => 200, :body => "[#{item.encode}]")
       subject.items.each { |item| item.should_receive(:sell_to) }
       subject.finish
     end
