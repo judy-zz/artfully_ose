@@ -33,6 +33,23 @@ jQuery(document).ready(function() {
     $("tr:odd", this).addClass("odd");
   });
 
+
+  $("#header-controls").click(function(){
+    if($("#header-content").is(":visible")){
+      $("#header-controls > a").html("&#9660;")
+    } else {
+      $("#header-controls > a").html("&#9650;")
+    }
+
+    $("#header-content").slideToggle();
+  });
+
+  $(".stats-controls").click(function(){
+    $(this).parent('li').toggleClass('selected')
+    $(this).siblings('.hidden-stats').slideToggle('fast');
+    return false
+  });
+
   jQuery(".currency").maskMoney({showSymbol:true, symbolStay:true, symbol:"$"});
   jQuery(".currency").closest('form').submit(function(){
     var input = jQuery(this).find(".currency"),
