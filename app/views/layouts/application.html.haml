@@ -3,12 +3,13 @@
   %head
     %title= "#{yield :title} : Artful.ly"
 
-    = stylesheet_link_tag "application", :media => :screen
+    = stylesheet_link_tag "application", "formalize", :media => :screen
     = stylesheet_link_tag "printing", :media => :print
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
     = javascript_include_tag "jquery/jquery-ui-1.8.5.custom.min.js", "jquery/jquery-ui-1.8.5.custom.min.js","jquery/jquery.hover-intent.min.js","jquery/jquery.tablesorter.min.js","jquery/jquery.easy-tooltip.js","jquery/jquery.iphone-checkboxes.js","jquery/jquery.visualize.js", "jquery/jquery.mask-money.js"
+    = javascript_include_tag "jquery/jquery.formalize.js"
     = javascript_include_tag "application"
     = javascript_include_tag "rails"
 

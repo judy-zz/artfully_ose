@@ -509,9 +509,11 @@ path
 
 
 .element
-  @extend .stack3of4
+  @extend .stack2of3
+  input
+    width: 75%
 .label
-  @extend .stack1of4
+  @extend .stack1of3
   label
     font-family: "Raleway"
 
@@ -524,13 +526,17 @@ form ul li
   @include stack-list
   padding: .5em 0
   position: relative
-  input
-    width: 100%
+  input[type="submit"]
+    float: left
   .description
     font-size: .8em
     margin: .5em 0
     width: 75%
     color: #999
+
+#user_new
+  width: 480px
+  margin: 0 auto
 
 .changable-overlay
   display: none

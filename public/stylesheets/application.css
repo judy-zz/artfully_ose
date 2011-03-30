@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, .stack1of2, .stack1of3, .stack2of3, .stack1of4, .context, .label, .stack3of4, .document, .element, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
+.stack, .stack1of2, .stack1of3, .label, .stack2of3, .element, .stack1of4, .context, .stack3of4, .document, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -15,16 +15,16 @@
 .stack1of2 {
   width: 50%; }
 
-.stack1of3 {
+.stack1of3, .label {
   width: 33.334%; }
 
-.stack2of3 {
+.stack2of3, .element {
   width: 66.667%; }
 
-.stack1of4, .context, .label {
+.stack1of4, .context {
   width: 25%; }
 
-.stack3of4, .document, .element {
+.stack3of4, .document {
   width: 75%; }
 
 .stack1of5 {
@@ -530,6 +530,9 @@ path {
   padding: 0.5em;
   background: #eeeeee; }
 
+.element input {
+  width: 75%; }
+
 .label label {
   font-family: "Raleway"; }
 
@@ -554,13 +557,17 @@ form ul li {
   vertical-align: top;
   padding: 0.5em 0;
   position: relative; }
-  form ul li input {
-    width: 100%; }
+  form ul li input[type="submit"] {
+    float: left; }
   form ul li .description {
     font-size: 0.8em;
     margin: 0.5em 0;
     width: 75%;
     color: #999999; }
+
+#user_new {
+  width: 480px;
+  margin: 0 auto; }
 
 .changable-overlay {
   display: none;
