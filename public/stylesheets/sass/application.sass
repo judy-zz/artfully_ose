@@ -1,0 +1,581 @@
+@mixin stack-layout
+  display: inline-block
+  font-family: 'Courier New',monospace
+  letter-spacing: -0.65em
+  word-spacing: -0.65em
+  text-align: center
+  vertical-align: top
+
+@mixin stack-list
+  font-family: 'Courier New',monospace
+  letter-spacing: -0.65em
+  word-spacing: -0.65em
+  text-align: center
+  vertical-align: top
+
+@mixin stack-content
+  display: block
+  font-family: "Arimo", sans-serif
+  letter-spacing: normal
+  word-spacing: normal
+  text-align: left
+  &:after
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    visibility: hidden
+
+.stackAuto
+  width: auto
+//  .stackContent
+//    text-align: center
+
+.stack, .stack1of2, .stack1of3, .stack2of3, .stack1of4, .stack3of4, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .stackAuto
+  @include stack-layout
+
+.stack
+  width: 100%
+
+.stack1of2
+  width: 50%
+
+.stack1of3
+  width: 33.334%
+
+.stack2of3
+  width: 66.667%
+
+.stack1of4
+  width: 25%
+
+.stack3of4
+  width: 75%
+
+.stack1of5
+  width: 20%
+
+.stack2of5
+  width: 40%
+
+.stack3of5
+  width: 60%
+
+.stack4of5
+  width: 80%
+
+.stack1of7
+  width: 14.285%
+
+@mixin shadow($color: #333333)
+  -moz-box-shadow: 0px 2px 2px $color
+  -webkit-box-shadow: 0px 2px 2px $color
+  box-shadow: 0px 2px 2px $color
+  -ms-filter: "progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color='$color')"
+  filter: progid:DXImageTransform.Microsoft.Shadow(Strength=4, Direction=90, Color='$color')
+
+@mixin gradient($start, $finish, $offset-start: 0%, $offset-finish: 100%)
+  background: $start
+  background: -moz-linear-gradient(top, $start $offset-start, $finish $offset-finish)
+  background: -webkit-gradient(linear, left top, left bottom, color-stop($offset-start, $start), color-stop($offset-finish, $finish))
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$finish',GradientType=0 )
+
+@mixin rounded-corners($top, $right, $down, $left)
+  -moz-border-radius: $top $right $down $left
+  -webkit-border-radius: $top $right $down $left
+  border-radius: $top $right $down $left
+
+@mixin inset-text($color: #fff)
+  color: $color
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3)
+
+@mixin fullwidth
+  margin: 0 auto
+  width: 960px
+
+/* http://meyerweb.com/eric/tools/css/reset/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video
+  margin: 0
+  padding: 0
+  border: 0
+  font-size: 100%
+  font: inherit
+  vertical-align: baseline
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section
+  display: block
+
+body
+  line-height: 1
+  font-family: "Arimo", sans-serif
+  font-size: 11pt
+
+ol, ul
+  list-style: none
+
+blockquote, q
+  quotes: none
+
+blockquote
+  &:before, &:after
+    content: ''
+    content: none
+
+q
+  &:before, &:after
+    content: ''
+    content: none
+
+table
+  border-collapse: collapse
+  border-spacing: 0
+
+form#login
+  width: 50%
+  margin: 0 auto
+
+#large-header
+  background: #eee
+  @include shadow(#ddd)
+  padding: 75px 0
+  text-align: center
+  img
+
+a
+  color: #077083
+  text-decoration: none
+
+#header
+  @include shadow(#ddd)
+  border-bottom: 1px solid #ccc
+  background: #eee
+  position: relative
+
+#logo
+  @include fullwidth
+  img
+    background: #e0e0e0
+    float: right
+    padding: 25px 25px 15px
+
+#header-controls a
+  display: block
+  text-decoration: none
+  text-align: center
+  color: #aaa
+  border-top: 1px solid #e0e0e0
+  padding: 5px 0
+  font-size: .5em
+
+#main-menu
+  width: 960px
+  margin: 0 auto
+  > li
+    /* --- IE7 Hacks
+    zoom: 1
+    *display: inline
+    /* --- IE7 Hacks
+    display: inline-block
+    vertical-align: top
+    width: 160px
+    padding: 25px 10px
+    > a
+      display: block
+      color: #666
+      font-size: 1.2em
+      line-height: 1.5em
+      text-decoration: none
+  li
+    &.active
+      background: #eaeaea
+      border-left: 1px solid #e0e0e0
+      border-right: 1px solid #e0e0e0
+      > a
+        @include rounded-corners(2px, 2px, 2px, 2px)
+        @include inset-text
+        @include gradient(#efa958, #f08204, 14%, 100%)
+        border: 1px solid #F08204
+        padding-left: 8px
+        padding-right: 8px
+      ul
+        padding: 0 8px
+    ul
+      width: 160px
+      li
+        font-size: .9em
+        a
+          color: #888
+          display: block
+          text-decoration: none
+          line-height: 1.5em
+          &:hover
+            color: #666
+
+#content
+  margin: 25px 2%
+  width: 96%
+  @include stack-layout
+
+h1, h2, h3
+  font-family: "Raleway" !important
+  @include stack-content
+
+h1
+  font-size: 3.5em
+  color: #077083
+
+h2
+  margin-bottom: 3em
+
+h3
+  font-size: 2em
+  color: #F08204
+  margin-bottom: .5em
+
+h4
+  color: #666
+  font-size: 1.25em
+  margin-bottom: .5em
+
+.context
+  position: relative
+  @extend .stack1of4
+  > *
+    margin: 10px
+    @include stack-content
+
+.document
+  position: relative
+  @extend .stack3of4
+  > *
+    margin: 10px
+    @include stack-content
+
+.detailed-list
+  > li
+    margin: 10px 0
+    border-bottom: 1px solid #CED1CB
+    color: #594B43
+    padding: 10px
+    &.active
+      background: #eee
+  ul.details li
+    display: inline
+    font-size: .9em
+  h4
+    font-family: "Raleway"
+    font-size: 1.4em
+    margin-bottom: 0
+    a
+      text-decoration: none
+      color: inherit
+
+
+.order-list ul li
+  display: block
+  font-size: .9em
+
+.performance-list
+  color: #594B43
+  border: 1px solid #ccc
+  border-top: none
+  > li
+    position: relative
+    display: block
+    padding: 10px
+  > li.even
+    background: #eee
+  .status
+    font-size: .9em
+  h6
+    display: inline
+  .selected
+    @include shadow(#ddd)
+    h6
+      font-weight: bold
+
+.controls
+  position: absolute
+  right: 0
+  top: 10px
+
+.controls li
+  margin-top: -4px
+  display: inline-block
+  a
+    @include rounded-corners(4px, 4px, 4px, 4px)
+    text-decoration: none
+    color: #666
+    font-size: .9em
+    background: rgba(255, 255, 255, 0.5)
+    padding: 4px
+    width: 16px
+    height: 16px
+    display: inline-block
+    &:hover
+      background: rgba(255, 255, 255, 0.9)
+
+#content p
+  font-size: .9em
+  line-height: 1.5em
+  margin: 1em inherit
+  color: #666
+
+strong
+  font-weight: bold
+  color: #077083
+
+table
+  width: 100%
+  display: table !important
+  border: 1px solid #ccc
+  border-top: none
+  font-size: .9em
+  td, th
+    padding: .5em
+    &.checkbox
+      width: 1em
+  td
+    color: #666
+  th
+    color: #666
+    background: #eee
+    text-align: left
+    font-weight: bold
+    border: 1px solid #ccc
+    border-top: none
+
+.calendar
+  @include stack-list
+  border-right: 1px solid #ccc
+  margin-bottom: 25px
+  > li
+    @extend .stack1of7
+  .day
+    @include stack-content
+    border: 1px solid #ccc
+    border-right: none
+    min-height: 100px
+    .number
+      color: #aaa
+      padding: 3px
+      text-align: right
+
+.on-sale
+  background: rgba(7, 112, 131, 0.1)
+
+.sold-out
+  background: rgba(240, 130, 4, 0.1)
+
+.more
+  font-size: .8em
+  background: #eee
+  @include rounded-corners(4px, 4px, 4px, 4px)
+  li
+    color: #fff
+    margin: 0
+    float: left
+    padding: 4px 8px
+    a
+      display: block
+      font-weight: bold
+      padding: .25em
+
+.call-to-action
+  float: right
+
+.stats-controls
+  float: right
+  a
+    color: #333
+    font-size: .7em
+
+.hidden-stats
+  position: relative
+  font-size: .8em
+  display: none
+  margin-top: 5px
+  padding-top: 5px
+  border-top: 1px solid rgba(0, 0, 0, 0.05)
+
+.new-item input[type="submit"]
+  float: right
+
+path
+  stroke: #077083
+
+.med-form
+  margin-bottom: 3em
+
+.med-form-inline
+  margin-bottom: 0em
+
+.med-form input[type='text']
+  width: 60%
+  margin-bottom: 5px
+
+.left-form td.left
+  text-align: right
+  font-weight: bold
+
+.big-search
+  margin-bottom: 3em
+  input
+    &[type='text']
+      width: 80%
+    &[type='submit']
+      width: 15%
+      margin: 0
+
+.people-list
+  li
+    margin: 1em 0
+    border-bottom: 1px solid #ccc
+    position: relative
+  h4
+    font-family: "Raleway"
+    padding: .25em 0
+  .email
+    font-size: .9em
+    color: #666
+    position: absolute
+    right: 0
+    top: 0
+
+.zebra .even
+  background: rgba(7, 112, 131, 0.1)
+
+.zebra tr td:nth-child(odd)
+  background: rgba(255,255,255,0.5)
+
+.starred
+  width: 1em
+
+.kv
+  font-size: .9em
+  margin-bottom: 2em
+  li
+    padding: .25em 0
+  .key, .value
+    display: inline-block
+    color: #666
+  .key
+    font-weight: bold
+    width: 30%
+
+.tags
+  margin-bottom: 2em
+  li
+    @include rounded-corners(3px, 3px, 3px, 3px)
+    @include gradient(#0baac6, #077083)
+    @include inset-text
+    display: inline-block
+    padding: 4px 8px
+
+.taglist
+  background: #eee
+  text-align: right
+
+
+.table-controls
+  @include rounded-corners(3px, 3px, 0, 0)
+  border: 1px solid #ccc
+  padding: .5em
+  background: #eee
+  border-bottom: 1px solid #ddd
+  overflow: auto
+
+.bulk-actions
+  li
+    display: inline
+    input
+      @include rounded-corners(0, 0, 0, 0)
+      border-right: none
+    &:first-child input
+      @include rounded-corners(11px, 0, 0, 11px)
+    &:last-child input
+      @include rounded-corners(0, 11px, 11px, 0)
+      border-right: 1px solid #bbb
+
+.filter
+  float: right
+
+.pagination
+  @include rounded-corners(0, 0, 3px, 3px)
+  border: 1px solid #ccc
+  border-top: 0
+  padding: .5em
+  background: #eee
+
+
+.element
+  @extend .stack3of4
+.label
+  @extend .stack1of4
+  label
+    font-family: "Raleway"
+
+.element, .label
+  > *
+    @include stack-content
+
+
+form ul li
+  @include stack-list
+  padding: .5em 0
+  position: relative
+  input
+    width: 100%
+  .description
+    font-size: .8em
+    margin: .5em 0
+    width: 75%
+    color: #999
+
+.changable-overlay
+  display: none
+  position: absolute
+  left: 0
+  background: rgba(34, 34, 44, 0.7)
+  z-index: 2
+  color: white
+  padding: 5px 15px
+  a
+    color: white
+    text-decoration: none
+    &:hover
+      color: white
+      text-decoration: underline
+
+$orange: #F08204
+$light-orange: lighten($orange, 10%)
+$dark-orange: darken($orange, 25%)
+
+$grey: #CED1CB
+$light-grey: lighten($grey, 10%)
+$dark-grey: darken($grey, 50%)
+
+$blue: #077083
+$light-blue: lighten($blue, 10%)
+$dark-blue: darken($blue, 50%)
+
+$red: #f03504
+$light-red: lighten($red, 10%)
+$dark-red: darken($red, 25%)
+
+
+.flash
+  @include rounded-corners(4px, 4px, 4px, 4px)
+  @include inset-text
+  color: rgba(255,255,255,0.97)
+  padding: 1em
+  line-height: 1.2em
+  .close
+    margin-left: 1em
+    float: right
+
+.error
+  @include gradient($light-red, $red)
+
+.notice
+  @include gradient($light-blue, $blue)

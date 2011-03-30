@@ -5,44 +5,36 @@
 
     = stylesheet_link_tag "application", :media => :screen
     = stylesheet_link_tag "printing", :media => :print
-
-    = javascript_include_tag "cufon-yui", "cufon.harabara-700"
+    = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
+    = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"
     = javascript_include_tag "jquery/jquery-ui-1.8.5.custom.min.js", "jquery/jquery-ui-1.8.5.custom.min.js","jquery/jquery.hover-intent.min.js","jquery/jquery.tablesorter.min.js","jquery/jquery.easy-tooltip.js","jquery/jquery.iphone-checkboxes.js","jquery/jquery.visualize.js", "jquery/jquery.mask-money.js"
     = javascript_include_tag "application"
     = javascript_include_tag "rails"
 
     /[if IE 8]
-      = javascript_include_tag "ie/excanvas.js"
-      = stylesheet_link_tag "ie/IEFix"
+      /= javascript_include_tag "ie/excanvas.js"
+      /= stylesheet_link_tag "ie/IEFix"
     /[if IE 7]
-      = javascript_include_tag "ie/excanvas.js"
-      = stylesheet_link_tag "ie/IEFix"
+      /= javascript_include_tag "ie/excanvas.js"
+      /= stylesheet_link_tag "ie/IEFix"
 
     = csrf_meta_tag
 
+
   %body
-    #container
-      #bgwrap
-        #primary_left
-          #logoSmall
-            = link_to image_tag('logoSmall.png', :alt => 'Logo (Small)', :width => "30px"), root_path
-          #logo
-            = link_to image_tag('logo.png', :alt => 'Logo', :width => "175px"), root_path
-          #menu
-            = render 'layouts/menu'
-          #HelpBtn
-            -# <img src="/images/helpbtn/helpLeft.jpg" width="12" height="93"><a href="http://artfully.brandonstore.com/Help"><img src="/images/helpbtn/helpRight.jpg" width="36" height="84"></a>
-        #primary_right
-          .inner
-            .headerStrip
-              .two_third.column
-                = yield :header
-              .one_third.column.last
-                = render :partial => 'layouts/session_nav'
+    #header
+      #header-content
+        #logo
+          %img{ :src => '/images/logo.png' }
+        = render :partial => 'layouts/menu', :locals => { :current => :events }
+      #header-controls
+        %a{ :href => "#"} &#9650;
 
-            .clearboth
-
-            = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
-            - flash.discard
-            = yield
+    #content
+      #page
+        = yield :header
+        = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+        - flash.discard
+        .document
+          = yield

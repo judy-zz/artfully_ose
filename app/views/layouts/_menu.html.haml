@@ -1,23 +1,35 @@
-#menu
-  %ul
-    %li
-      = link_to root_path do
-        = image_tag "icons/small_icons_3/dashboard2.png", :alt => "Dashboard"
-        %span Dashboard
-    %li
-      = link_to events_path do
-        = image_tag "icons/small_icons_3/MyEvents.png", :alt => "Events"
-        %span Events
-    %li
-      = link_to charts_path do
-        = image_tag "icons/small_icons_3/Designs.png", :alt => "Charts"
-        %span Charts
-    %li
-      = link_to people_path do
-        = image_tag "icons/small_icons_3/users.png", :alt => "People"
-        %span People
-    - if can? :administrate, :all
+%ul#main-menu
+  %li{ :class => current == :events && "active"}
+    = link_to "Events", events_path
+    %ul
       %li
-        = link_to admin_root_path do
-          = image_tag "icons/small_icons_3/settings.png", :alt => "Administration"
-          %span Administration
+        %a{:href => "#"} Events
+      %li
+        %a{:href => "#"} Chart Templates
+      %li
+        %a{:href => "#"} Reports
+      %li
+        %a{:href => "#"} Configuration
+
+    %li{ :class => current == :people && "active"}
+      = link_to "People", people_path
+      %ul
+        %li
+          %a{:href => "/people/new"} New Person
+        %li
+          %a{:href => "/people"} Search
+        %li
+          %a{:href => "#"} Donations
+        %li
+          %a{:href => "/orders"} Orders
+
+    %li
+      = link_to "Dashboard", root_path
+      %ul
+        %li
+          %a{:href => "#"} Configuration
+        %li
+          %a{:href => "#"} Help
+        %li= link_to "Sign out", destroy_user_session_path
+    - if can? :administrate, :all
+      %li= link_to "Administration", admin_root_path

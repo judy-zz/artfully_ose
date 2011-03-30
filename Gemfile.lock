@@ -215,6 +215,7 @@ GEM
     ruby_parser (2.0.6)
       sexp_processor (~> 3.0)
     rubyzip (0.9.4)
+    sass (3.1.0.alpha.252)
     selenium-client (1.2.18)
     selenium-rc (2.3.2)
       selenium-client (>= 1.2.18)
@@ -271,6 +272,7 @@ DEPENDENCIES
   rbtrace (>= 0.3.12)
   role_model
   rspec-rails (>= 2.1)
+  sass
   shoulda
   sqlite3-ruby
   transitions!
