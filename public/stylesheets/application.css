@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, .stack1of2, .stack1of3, .label, .stack2of3, .element, .stack1of4, .context, .stack3of4, .document, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
+.stack, .stack1of2, .stack1of3, .label, .stack2of3, .element, .stack1of4, .context, .tip, .stack3of4, .document, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -21,7 +21,7 @@
 .stack2of3, .element {
   width: 66.667%; }
 
-.stack1of4, .context {
+.stack1of4, .context, .tip {
   width: 25%; }
 
 .stack3of4, .document {
@@ -212,16 +212,16 @@ h4 {
   font-size: 1.25em;
   margin-bottom: 0.5em; }
 
-.context {
+.context, .tip {
   position: relative; }
-  .context > * {
+  .context > *, .tip > * {
     margin: 10px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
-    .context > *:after {
+    .context > *:after, .tip > *:after {
       content: ".";
       display: block;
       height: 0;

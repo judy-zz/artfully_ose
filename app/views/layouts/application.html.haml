@@ -37,5 +37,4 @@
         = yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard
-        .document
-          = yield
+        = yield

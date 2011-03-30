@@ -1,24 +1,16 @@
 - content_for :header do
-  %h1 Events
+  %h1 Ticketing &amp; Events
 
-= contextual_menu do |m|
-  - m.item_to "Events", events_path, :title => "Events", :icon => "icons/light/Gear.png"
-  - m.item_to "New Event", new_event_path, :title => "New Event", :icon => "icons/light/Writing.png"
-
-- unless @events.blank?
-  %table.normal.tablesorter.fullwidth
-    %thead
-      %tr
-        %th Name
-        %th Venue
-        %th Producer
-        %th Actions
-    %tbody
+.context
+  %h3 Events
+  - unless @events.blank?
+    %ul.detailed-list
       - @events.each do |event|
-        %tr
-          %td= link_to event.name, event_path(event), :title => 'event-name'
-          %td= event.venue
-          %td= event.producer
-          %td
-            = table_icon_link_to :edit, edit_event_path(event) if can? :edit, event
-            = table_icon_link_to :delete, event_path(event), :confirm => "Are you sure?", :method => :delete if can? :destroy, event
+        %li
+          %h4= link_to event.name, event_path(event), :title => 'event-name'
+          %ul.details
+            %li= event.venue
+            %li= event.producer
+
+.document
+  %h3 Ticketing Dashboard
