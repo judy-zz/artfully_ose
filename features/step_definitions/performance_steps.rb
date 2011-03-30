@@ -3,19 +3,19 @@ When /^I delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
   body = current_performances.collect { |p| p.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
 
-  within(:xpath, "(//table[@id='performance-table']/tbody/tr)[#{pos.to_i}]") do
+  within(:xpath, "(//ul[@id='of_performances']/li)[#{pos.to_i}]") do
     click_link "Delete"
   end
 end
 
 When /^I view the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
-  within(:xpath, "(//table[@id='performance-table']/tbody/tr)[#{pos.to_i}]") do
-    click_link "View Tickets"
+  within(:xpath, "(//ul[@id='of_performances']/li)[#{pos.to_i}]") do
+    click_link "performance-datetime"
   end
 end
 
 Then /^I should see (\d+) [Pp]erformances$/ do |count|
-  page.should have_xpath("//table[@id='performance-table']/tbody/tr", :count => count.to_i)
+  page.should have_xpath("//ul[@id='of_performances']/li", :count => count.to_i)
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance has had tickets created$/ do |pos|

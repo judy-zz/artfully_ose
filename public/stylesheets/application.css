@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, .stack1of2, .stack1of3, .label, .stack2of3, .element, .stack1of4, .context, .tip, .stack3of4, .document, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
+.stack, .stack1of2, .stack1of3, .context, .tip, .label, .stack2of3, .document, .element, .stack1of4, .stack3of4, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -15,16 +15,16 @@
 .stack1of2 {
   width: 50%; }
 
-.stack1of3, .label {
+.stack1of3, .context, .tip, .label {
   width: 33.334%; }
 
-.stack2of3, .element {
+.stack2of3, .document, .element {
   width: 66.667%; }
 
-.stack1of4, .context, .tip {
+.stack1of4 {
   width: 25%; }
 
-.stack3of4, .document {
+.stack3of4 {
   width: 75%; }
 
 .stack1of5 {
