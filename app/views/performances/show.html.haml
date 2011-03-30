@@ -2,33 +2,48 @@
   %h1= l @performance.datetime, :format => :long_with_day
   %h2= "#{@event.name} at #{@event.venue}"
 
-= contextual_menu do |m|
-  - m.item_to "Event", event_path(@event), :title => "New Event", :icon => "icons/light/Gear.png"
-  - m.item_to "Edit", edit_performance_path(@performance), :icon => "icons/light/Writing.png"
-  - m.item_to "Duplicate", duplicate_performance_path(@performance), :icon => "icons/light/Scanner.png"
-  - m.item_to "Add to Widget", put_performance_on_sale_path(@performance) unless @performance.on_sale?
-  - m.item_to "Remove from Widget", take_performance_off_sale_path(@performance) if @performance.on_sale?
-  - m.item_to "Door List", door_list_performance_path(@performance) if @performance.has_door_list?
+.context
+  %h3 Performances
+  - unless @event.performances.empty?
+    %ul.detailed-list#of_performances
+      - @event.performances.each do |performance|
+        %li
+          %h4= link_to l(performance.datetime, :format => :short), performance_path(performance), :title => 'performance-datetime'
+          %ul.details
+            %li= link_to "Delete", event_performance_path(@event, performance), :confirm => "Are you sure?", :method => :delete if can?(:destroy, performance)
+  %ul.more
+    %li= link_to "New Performance", new_event_performance_path(@event)
+    %li= link_to "View all Performances", event_performances_path(@event)
 
-.clearboth
-
-.three_fourth.column
+.document
+  .call-to-action
+    = link_to "Door List", door_list_performance_path(@performance)
+  %h3 Tickets
   - if @performance.pending?
     %p You have not created tickets for this event.
     %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
   - else
     = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
-      %ul.action-list
-        %li= submit_tag "Put on Sale"
-        %li= submit_tag "Take off Sale"
-        %li= submit_tag "Delete"
-        %li= submit_tag "Comp"
+      .table-controls
+        %ul.bulk-actions
+          %li= submit_tag "Put on Sale"
+          %li= submit_tag "Take off Sale"
+          %li= submit_tag "Delete"
+          %li= submit_tag "Comp"
 
       =render :partial => 'ticket_table', :locals => { :performance => @performance }
-.one_fourth.column.last
-  .stats
-    =render :partial => 'stat', :locals => {:label=>'TICKETS', :value=>@performance.tickets.size}
-    =render :partial => 'stat', :locals => {:label=>'SOLD', :value=>@performance.tickets_sold.size}
-    =render :partial => 'stat', :locals => {:label=>'GROSS POTENTIAL', :value=>(number_as_cents @performance.gross_potential)}
-    =render :partial => 'stat', :locals => {:label=>'GROSS SALES', :value=>(number_as_cents @performance.gross_sales)}
-.clearboth
+
+  %h3 Stats
+  %ul.kv
+    %li
+      .key Tickets
+      .value= @performance.tickets.size
+    %li
+      .key Sold
+      .value= @performance.tickets_sold.size
+    %li
+      .key Gross Potential
+      .value= number_as_cents(@performance.gross_potential)
+    %li
+      .key Gross Sales
+      .value= number_as_cents(@performance.gross_sales)

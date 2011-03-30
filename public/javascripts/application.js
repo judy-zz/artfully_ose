@@ -1,4 +1,3 @@
-jQuery.noConflict();
 var currentState = true; //collapse state
 
 function initMenu() {
@@ -25,6 +24,14 @@ function initMenu() {
 }
 
 jQuery(document).ready(function() {
+
+  $(".zebra tbody").each(function(){
+    $("tr:even", this).addClass("even");
+  });
+
+  $(".zebra tbody").each(function(){
+    $("tr:odd", this).addClass("odd");
+  });
 
   jQuery(".currency").maskMoney({showSymbol:true, symbolStay:true, symbol:"$"});
   jQuery(".currency").closest('form').submit(function(){
@@ -196,7 +203,6 @@ jQuery(".minimized").hide();
 
   //Disable field labels (only use if labels are before!)
   jQuery("input:disabled"). prev().css("color","#e2e2e2");
-
 
 });
 
