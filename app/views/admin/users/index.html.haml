@@ -1,9 +1,16 @@
 - content_for :header do
   %h1 User Administration
 
-%p Start by finding a user by email address.
+.context
+.document
+  = form_tag admin_users_path, :method => :get do
+    %ul
+      %li
+        .label
+          = label_tag :email, "Email"
+        .element
+          = text_field_tag :email
+          .description Start by finding a user by email address.
 
-= form_tag admin_users_path, :method => :get do
-  = label_tag :email, "Email"
-  = text_field_tag :email
-  = submit_tag "Search"
+      %li
+        = submit_tag "Search"

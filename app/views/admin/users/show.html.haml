@@ -1,18 +1,20 @@
 - content_for :header do
-  %h1= "User #{@user.email}"
+  %h1 User Administration
+  %h2= @user.email
 
-
-%h2 Organizations
-- if @user.organizations.any?
-  %table.normal.fullwidth
-    %thead
-      %tr
-        %th Name
-        %th Created Date
-    %tbody
-      - @user.organizations.each do |organization|
+.context
+.document
+  %h2 Organizations
+  - if @user.organizations.any?
+    %table.normal.fullwidth
+      %thead
         %tr
-          %td= link_to organization.name, organization
-          %td= l organization.created_at, :format => :short
-- else
-  %p User is not part of any organizations.
+          %th Name
+          %th Created Date
+      %tbody
+        - @user.organizations.each do |organization|
+          %tr
+            %td= link_to organization.name, organization
+            %td= l organization.created_at, :format => :short
+  - else
+    %p User is not part of any organizations.
