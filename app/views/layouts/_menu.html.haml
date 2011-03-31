@@ -1,35 +1,34 @@
 %ul#main-menu
+  %li
+    = link_to "Dashboard", root_path
+    %ul
+      %li= link_to "Credit Cards", credit_cards_path
+      %li= link_to "My Organization", organizations_path
+      %li
+        %a{:href => "#"} Configuration
+      %li
+        %a{:href => "#"} Help
+      %li= link_to "Sign out", destroy_user_session_path
+
+
   %li{ :class => current == :events && "active"}
     = link_to "Events", events_path
     %ul
-      %li
-        %a{:href => "#"} Events
-      %li
-        %a{:href => "#"} Chart Templates
-      %li
-        %a{:href => "#"} Reports
-      %li
-        %a{:href => "#"} Configuration
+      %li= link_to "Chart Templates", charts_path
+      %li= link_to "Reports", "#"
+      %li= link_to "Configuration", "#"
 
-    %li{ :class => current == :people && "active"}
-      = link_to "People", people_path
-      %ul
-        %li
-          %a{:href => "/people/new"} New Person
-        %li
-          %a{:href => "/people"} Search
-        %li
-          %a{:href => "#"} Donations
-        %li
-          %a{:href => "/orders"} Orders
+  %li{ :class => current == :people && "active"}
+    = link_to "People", people_path
+    %ul
+      %li
+        %a{:href => "/people/new"} New Person
+      %li
+        %a{:href => "/people"} Search
+      %li
+        %a{:href => "#"} Donations
+      %li
+        %a{:href => "/orders"} Orders
 
-    %li
-      = link_to "Dashboard", root_path
-      %ul
-        %li
-          %a{:href => "#"} Configuration
-        %li
-          %a{:href => "#"} Help
-        %li= link_to "Sign out", destroy_user_session_path
-    - if can? :administrate, :all
-      %li= link_to "Administration", admin_root_path
+  - if can? :administrate, :all
+    %li= link_to "Administration", admin_root_path
