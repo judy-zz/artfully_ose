@@ -1,7 +1,12 @@
 - content_for :header do
-  %h1 Edit Section
+  %h1 Chart Templates
 
-= render "shared/error_messages", :target => @section
-= form_for @section, :url => chart_section_path(@chart, @section) do |form|
-  = render :partial => 'sections/form', :locals => { :parent_form => form, :target => @section }
-  = form.submit "Submit"
+
+.context
+.document
+  %h3 Edit Section
+  = render "shared/error_messages", :target => @section
+  = form_for @section, :url => chart_section_path(@chart, @section) do |form|
+    %ul
+      = render :partial => 'sections/form', :locals => { :parent_form => form, :target => @section }
+      %li= form.submit "Submit"

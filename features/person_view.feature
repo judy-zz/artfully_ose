@@ -17,4 +17,4 @@ Feature: View the record for a person
     And I am on the people page
     When I fill in "email" with "doesnotexist@example.com"
     And I press "Search"
-    Then I should see "Oops! No results found."
+    Then I should see "No results found."

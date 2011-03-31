@@ -1,0 +1,18 @@
+.flash
+  @include stack-content
+  @include rounded-corners(4px, 4px, 4px, 4px)
+  @include inset-text
+  padding: 1em
+  line-height: 1.2em
+  .close
+    margin-left: 1em
+    float: right
+    cursor: pointer
+  p
+    color: rgba(255,255,255,0.97) !important
+
+.error, .warning
+  @include gradient($light-red, $red)
+
+.notice, .info, .success
+  @include gradient($light-blue, $blue)

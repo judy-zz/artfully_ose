@@ -1,15 +1,17 @@
--content_for :header do
+- content_for :header do
   %h1= @bulk_action
 
-%p= "You are #{verbalize_action (@bulk_action)} #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime.in_time_zone(@performance.event.time_zone)} performance of #{@performance.event.name}"
+.context
+.document
+  %p= "You are #{verbalize_action (@bulk_action)} #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime.in_time_zone(@performance.event.time_zone)} performance of #{@performance.event.name}"
 
-= form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
-  = hidden_field_tag :confirmed, :true
-  - @selected_tickets.each do |st|
-    = hidden_field_tag "selected_tickets[]", st
-  %p If this is correct, please click confirm it by clicking
-  = submit_tag @bulk_action
+  = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
+    = hidden_field_tag :confirmed, :true
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    %p If this is correct, please click confirm it by clicking
+    = submit_tag @bulk_action
 
-%p
-  If this is not correct,
-  = link_to "cancel this action and return to the performance page", performance_url(@performance)
+  %p
+    If this is not correct,
+    = link_to "cancel this action and return to the performance page", performance_url(@performance)

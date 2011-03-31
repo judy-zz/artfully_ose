@@ -1,0 +1,32 @@
+.big-search
+  margin-bottom: 3em
+  input
+    &[type='text']
+      width: 80%
+    &[type='submit']
+      width: 15%
+      margin: 0
+
+form ul li
+  @include stack-list
+  padding: .5em 0
+  position: relative
+  input[type="submit"]
+    float: left
+  .element
+    @extend .stack2of3
+    input
+      width: 75%
+  .label
+    @extend .stack1of3
+    label
+      font-family: "Raleway"
+  .description
+    font-size: .8em
+    margin: .5em 0
+    width: 75%
+    color: #999
+
+.element, .label
+  > *
+    @include stack-content

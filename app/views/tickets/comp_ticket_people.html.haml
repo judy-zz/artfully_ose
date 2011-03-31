@@ -1,8 +1,16 @@
-Find person to comp tickets to
-%p
-= form_tag comp_ticket_details_path, :method => :get do
-  = label_tag :email, "Email"
-  = text_field_tag :email
-  - @selected_tickets.each do |st|
-    =hidden_field_tag "selected_tickets[]", st
-  = submit_tag "Search"
+-content_for :header do
+  %h1 Ticketing and Events
+
+.context
+.document
+  %h3 Find Recipient
+  = form_tag comp_ticket_details_path, :method => :get do
+    %ul
+      %li
+        .label
+          = label_tag :email, "Email"
+        .element
+          = text_field_tag :email
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    = submit_tag "Search"

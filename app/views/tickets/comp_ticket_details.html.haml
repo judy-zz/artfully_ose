@@ -1,33 +1,49 @@
+-content_for :header do
+  %h1 Ticketing and Events
 
-%br
 = render "shared/error_messages", :target => @event
 
-%p
--if @person.id.nil?
-  = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
-    = render :partial => 'tickets/form', :locals => { :parent_form => form, :target => @person }
-    - @selected_tickets.each do |st|
-      = hidden_field_tag "selected_tickets[]", st
-    = hidden_field_tag "person_id", nil
-    = label_tag :comp_reason, "Reason for comp"
-    = text_field_tag :comp_reason
-    = form.submit "Submit"
+.context
 
--else
-  %p
-    = "First Name: #{@person.first_name}"
-  %p
-    = "Last Name: #{@person.last_name}"
-  %p
-    = "Email Address: #{@person.email}"
+.document
+  - if @person.id.nil?
+    = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
+      %ul
+        = render :partial => 'tickets/form', :locals => { :parent_form => form, :target => @person }
+      - @selected_tickets.each do |st|
+        = hidden_field_tag "selected_tickets[]", st
+      = hidden_field_tag "person_id", nil
+      %ul
+        %li
+          .label
+            = label_tag :comp_reason, "Reason for Comp"
+          .element
+            = text_field_tag :comp_reason
+        %li= form.submit "Submit"
 
-  = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
-    - @selected_tickets.each do |st|
-      = hidden_field_tag "selected_tickets[]", st
-    = hidden_field_tag "person_id", @person_id
-    = label_tag :comp_reason, "Reason for comp"
-    = text_field_tag :comp_reason
-    = form.submit "Submit"
-%p
-<a href=javascript:history.back()> Search for a different Person Record </a>
+  - else
+    %ul.kv
+      %li
+        .key First Name
+        .value= @person.first_name
+      %li
+        .key Last Name
+        .value= @person.last_name
+      %li
+        .key Email Address
+        .value= @person.email
+
+    = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
+      - @selected_tickets.each do |st|
+        = hidden_field_tag "selected_tickets[]", st
+      = hidden_field_tag "person_id", @person_id
+      %ul
+        %li
+          .label
+            = label_tag :comp_reason, "Reason for Comp"
+          .element
+            = text_field_tag :comp_reason
+        %li= form.submit "Submit"
+  %p
+  <a href=javascript:history.back()> Search for a different Person Record </a>
 
