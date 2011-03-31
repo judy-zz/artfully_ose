@@ -1,0 +1,48 @@
+.table-controls
+  @include rounded-corners(3px, 3px, 0, 0)
+  border: 1px solid #ccc
+  padding: .5em
+  background: #eee
+  border-bottom: 1px solid #ddd
+  overflow: auto
+
+table
+  width: 100%
+  display: table !important
+  border: 1px solid #ccc
+  border-top: none
+  font-size: .9em
+  td, th
+    padding: .5em
+    &.checkbox
+      width: 1em
+  td
+    color: #666
+  th
+    color: #666
+    background: #eee
+    text-align: left
+    font-weight: bold
+    border: 1px solid #ccc
+    border-top: none
+
+.zebra .even
+  background: rgba(7, 112, 131, 0.1)
+
+.zebra tr td:nth-child(odd)
+  background: rgba(255,255,255,0.5)
+
+.bulk-actions
+  li
+    display: inline
+    input
+      @include rounded-corners(0, 0, 0, 0)
+      border-right: none
+    &:first-child input
+      @include rounded-corners(11px, 0, 0, 11px)
+    &:last-child input
+      @include rounded-corners(0, 11px, 11px, 0)
+      border-right: 1px solid #bbb
+
+.filter
+  float: right

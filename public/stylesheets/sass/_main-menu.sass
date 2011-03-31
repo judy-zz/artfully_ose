@@ -1,0 +1,43 @@
+#main-menu
+  width: 960px
+  margin: 0 auto
+  > li
+    /* --- IE7 Hacks
+    zoom: 1
+    *display: inline
+    /* --- IE7 Hacks
+    display: inline-block
+    vertical-align: top
+    width: 160px
+    padding: 25px 10px
+    > a
+      display: block
+      color: #666
+      font-size: 1.2em
+      line-height: 1.5em
+      text-decoration: none
+  li
+    &.active
+      background: #eaeaea
+      border-left: 1px solid #e0e0e0
+      border-right: 1px solid #e0e0e0
+      > a
+        @include rounded-corners(2px, 2px, 2px, 2px)
+        @include inset-text
+        @include gradient(#efa958, #f08204, 14%, 100%)
+        border: 1px solid #F08204
+        padding-left: 8px
+        padding-right: 8px
+      ul
+        padding: 0 8px
+    ul
+      width: 160px
+      li
+        font-size: .9em
+        a
+          color: #888
+          display: block
+          text-decoration: none
+          line-height: 1.5em
+          &:hover
+            color: #666
