@@ -144,7 +144,6 @@ GEM
       roodi (>= 2.1.0)
       syntax
     mime-types (1.16)
-    msgpack (0.4.4)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
     net-sftp (2.0.5)
@@ -183,10 +182,6 @@ GEM
       rake (>= 0.8.7)
       thor (~> 0.14.4)
     rake (0.8.7)
-    rbtrace (0.3.12)
-      ffi (>= 1.0.6)
-      msgpack (>= 0.4.3)
-      trollop (>= 1.16.2)
     rcov (0.9.9)
     reek (1.2.8)
       ruby2ruby (~> 1.2)
@@ -234,7 +229,6 @@ GEM
     timeliness (0.3.3)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
-    trollop (1.16.2)
     tzinfo (0.3.24)
     uuid (2.3.1)
       macaddr (~> 1.0)
@@ -269,7 +263,6 @@ DEPENDENCIES
   nokogiri
   rack-jsonp-middleware
   rails
-  rbtrace (>= 0.3.12)
   role_model
   rspec-rails (>= 2.1)
   sass

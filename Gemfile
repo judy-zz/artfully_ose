@@ -34,5 +34,4 @@ group :test, :development do
   gem 'uuid'
   gem 'faker'
   gem 'jasmine'
-  gem 'rbtrace', ">=0.3.12", :require => 'rbtrace'
 end

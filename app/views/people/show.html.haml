@@ -1,2 +1,104 @@
-- content_for :header do
-  %h1= "People Record for #{@person.email}"
+%h1 People
+%h2 Find and manage important relationships with people
+
+.context
+  %h3="#{@person.first_name} #{@person.last_name}"
+
+  %ul.kv
+    %li
+      .key Nickname
+      .value Gary
+    %li
+      .key Salutation
+      .value Mr. Moore
+    %li
+      .key Donor Listing
+      .value Anonymous
+
+  %h4 Contact Information
+  %ul.kv
+    %li
+      .key Email
+      .value=@person.email
+    %li
+      .key Cell
+      .value 555-555-1234
+    %li
+      .key Home
+      .value 555-555-3245
+    %li
+      .key Twitter
+      .value gmoore
+    %li
+      .key LinkedIn
+      .value /gmoore
+
+  %h4 Key Relationships
+  %ul.kv
+    %li
+      .key Founder
+      .value Some Organization
+
+    %li
+      .key Husband
+      .value Mrs. Moore
+
+
+.document
+  %h3 Tags
+  %ul.tags
+    %li (TODO)
+    %li tags
+
+  %h3 Actions
+  #actions
+    .table-controls
+      %input.filter{ :type => :text, :value => "Filter" }
+    %table.zebra
+      %thead
+        %tr
+          %th.starred &#10029;
+          %th Date
+          %th Type
+          %th Details
+      %tbody
+        - (5..11).each do |i|
+          %tr
+            %td.starred &#10025;
+            %td= "5/#{i}/11 8:00 PM"
+            %td= %w( Join Get Hear Do ).sample
+            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(5).join(" ").capitalize
+
+  %h3 Relationships
+  #relationships
+    .table-controls
+      %input.filter{ :type => :text, :value => "Filter" }
+    %table.zebra
+      %thead
+        %tr
+          %th.starred &#10029;
+          %th Relationship
+          %th Type
+      %tbody
+        - 5.times do |i|
+          %tr
+            %td.starred &#10025;
+            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(2).join(" ").capitalize
+            %td= %w( Father Founder Patron Friend Husband ).sample
+
+  %h3 Notes
+  #notes
+    .table-controls
+      %input.filter{ :type => :text, :value => "Filter" }
+    %table.zebra
+      %thead
+        %tr
+          %th Date
+          %th Subject
+          %th Details
+      %tbody
+        - (2..7).each do |i|
+          %tr
+            %td= "5/#{i}/11 8:00 PM"
+            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(2).join(" ").capitalize
+            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(5).join(" ").capitalize

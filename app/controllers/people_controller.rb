@@ -1,14 +1,15 @@
 class PeopleController < ApplicationController
 
   def index
+    @people = []
     if params[:email]
       begin
-        @person = AthenaPerson.find_by_email_and_organization(params[:email], current_user.current_organization)
-        redirect_to person_url(@person) if @person
+        person = AthenaPerson.find_by_email_and_organization(params[:email], current_user.current_organization)
       rescue
-        flash[:error] = "No people records for this email address."
+        flash[:error] = "No results found."
       end
     end
+    @people << person unless person.nil?
   end
 
   def show

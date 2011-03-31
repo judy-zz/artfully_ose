@@ -58,7 +58,6 @@ jQuery(document).ready(function() {
     hiddenCurrency.val(cents);
   });
 
-  Cufon.replace('h1, h2, h5, .notification strong', { hover: 'true' }); // Cufon font replacement
   initMenu(); // Initialize the menu!
   //Nav collapse
    jQuery(".collapse").click(function() {
