@@ -41,6 +41,7 @@ end
 Given /^I can save Orders in ATHENA$/ do
   FakeWeb.register_uri(:post, 'http://localhost/orders/orders/.json', :body => Factory(:athena_order_with_id).encode )
   FakeWeb.register_uri(:post, 'http://localhost/orders/items/.json', :body => Factory(:athena_item).encode )
+  FakeWeb.register_uri(:get, %r|http://localhost/orders/items/.json.*|, :body => "[]")
 end
 
 Given /^the following tickets exist in ATHENA:$/ do |table|

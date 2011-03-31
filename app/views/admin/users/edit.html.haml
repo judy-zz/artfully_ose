@@ -1,16 +1,30 @@
 - content_for :header do
-  %h1= "User #{@user.email}"
+  %h1 User Administration
+  %h2= @user.email
 
-- if nil == @user.suspended_at
+
+.context
+  %h3 Password Reset
   = form_for @user, :url => admin_user_path(@user) do |f|
-    = f.hidden_field :suspend, :value => true
-    = f.label :suspension_reason, "Reason"
-    = f.text_field :suspension_reason
-    = f.submit "Suspend"
+    = f.hidden_field :reset_password, :value => true
+    = f.submit "Send Password Reset Instructions"
 
-- else
-  = "#{@user.email} has been suspended for the following reason: \"#{@user.suspension_reason}\""
+.document
+  %h3 Suspend User
+  - if nil == @user.suspended_at
+    = form_for @user, :url => admin_user_path(@user) do |f|
+      = f.hidden_field :suspend, :value => true
+      %ul
+        %li
+          .label
+            = f.label :suspension_reason, "Reason"
+          .element
+            = f.text_field :suspension_reason
+        %li
+          = f.submit "Suspend"
+  - else
+    %p
+      %strong= @user.email
+      has been suspended for the following reason:
+      %strong= @user.suspension_reason
 
-= form_for @user, :url => admin_user_path(@user) do |f|
-  = f.hidden_field :reset_password, :value => true
-  = f.submit "Send Password Reset Instructions"

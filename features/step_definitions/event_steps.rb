@@ -24,7 +24,7 @@ Given /^there is an [Ee]vent with (\d+) [Pp]erformances$/ do |performance_count|
 end
 
 Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
-  within(:xpath, "(//tbody/tr)[#{pos.to_i}]") do
+  within(:xpath, "(//ul[@class='detailed-list']/li)[#{pos.to_i}]") do
     click_link "event-name"
   end
 end

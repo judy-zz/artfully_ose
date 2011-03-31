@@ -1,4 +1,3 @@
-jQuery.noConflict();
 var currentState = true; //collapse state
 
 function initMenu() {
@@ -26,6 +25,31 @@ function initMenu() {
 
 jQuery(document).ready(function() {
 
+  $(".zebra tbody").each(function(){
+    $("tr:even", this).addClass("even");
+  });
+
+  $(".zebra tbody").each(function(){
+    $("tr:odd", this).addClass("odd");
+  });
+
+
+  $("#header-controls").click(function(){
+    if($("#header-content").is(":visible")){
+      $("#header-controls > a").html("&#9660;")
+    } else {
+      $("#header-controls > a").html("&#9650;")
+    }
+
+    $("#header-content").slideToggle();
+  });
+
+  $(".stats-controls").click(function(){
+    $(this).parent('li').toggleClass('selected')
+    $(this).siblings('.hidden-stats').slideToggle('fast');
+    return false
+  });
+
   jQuery(".currency").maskMoney({showSymbol:true, symbolStay:true, symbol:"$"});
   jQuery(".currency").closest('form').submit(function(){
     var input = jQuery(this).find(".currency"),
@@ -34,7 +58,6 @@ jQuery(document).ready(function() {
     hiddenCurrency.val(cents);
   });
 
-  Cufon.replace('h1, h2, h5, .notification strong', { hover: 'true' }); // Cufon font replacement
   initMenu(); // Initialize the menu!
   //Nav collapse
    jQuery(".collapse").click(function() {
@@ -196,7 +219,6 @@ jQuery(".minimized").hide();
 
   //Disable field labels (only use if labels are before!)
   jQuery("input:disabled"). prev().css("color","#e2e2e2");
-
 
 });
 

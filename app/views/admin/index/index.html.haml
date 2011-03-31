@@ -1,6 +1,9 @@
 - content_for :header do
   %h1 Administration
 
-= contextual_menu do |m|
-  - m.item_to "Administer Users", admin_users_path
-  - m.item_to "Administer Organizations", admin_organizations_path
+.context
+  %ul
+    %li= link_to "Administer Users", admin_users_path
+    %li= link_to "Administer Organizations", admin_organizations_path
+
+.document

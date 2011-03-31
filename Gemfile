@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem 'rails'
 gem 'sqlite3-ruby', :require => 'sqlite3'
 gem 'haml'
+gem 'sass'
 gem 'devise'
 gem 'cancan'
 gem 'role_model'
@@ -33,5 +34,4 @@ group :test, :development do
   gem 'uuid'
   gem 'faker'
   gem 'jasmine'
-  gem 'rbtrace', ">=0.3.12", :require => 'rbtrace'
 end

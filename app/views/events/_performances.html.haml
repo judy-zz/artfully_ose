@@ -1,9 +1,8 @@
 = render "shared/error_messages", :target => @performance
 
-.sub-container#performance-container
-  %h2 Performances
-  %div{:style=>'text-align:right'}
-    =link_to image_tag("icons/small_icons/Add.png") + " Add New Performance", event_performances_path(event, performance), {:id=>'new-performance-button', :class => 'table_icon new-performance-link', :style=>'float:none;text-decoration:none;'}
+  %h3 Performances
+/  %div{:style=>'text-align:right'}
+/    =link_to image_tag("icons/small_icons/Add.png") + " Add New Performance", event_performances_path(event, performance), {:id=>'new-performance-button', :class => 'table_icon new-performance-link', :style=>'float:none;text-decoration:none;'}
   %table#performance-table.normal.tablesorter.fullwidth
     %thead
       %tr
