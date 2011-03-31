@@ -1,4 +1,6 @@
 = parent_form.fields_for target do |chart_form|
-  %p
-    = chart_form.label :name, "Name"
-    = chart_form.text_field :name
+  %li
+    .label
+      = chart_form.label :name, "Name"
+    .element
+      = chart_form.text_field :name

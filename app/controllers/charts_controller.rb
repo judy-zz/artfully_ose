@@ -29,6 +29,7 @@ class ChartsController < ApplicationController
   end
 
   def show
+    @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @chart = AthenaChart.find(params[:id])
     authorize! :view, @chart
   end

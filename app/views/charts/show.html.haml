@@ -1,29 +1,38 @@
 - content_for :header do
-  %h1= @chart.name
+  %h1 Chart Templates
+  %h2= @chart.name
 
-= contextual_menu do |m|
-  - m.item_to "Charts", charts_path, :title => "Charts", :icon => "icons/light/Gear.png"
-  - m.item_to "New Chart", new_chart_path, :title => "New Chart", :icon => "icons/light/Writing.png"
-  - m.item_to "Edit this chart", edit_chart_path(@chart), :title => "Edit Chart" if can?(:edit, @chart)
+/= contextual_menu do |m|
+/  - m.item_to "Charts", charts_path, :title => "Charts", :icon => "icons/light/Gear.png"
+/  - m.item_to "New Chart", new_chart_path, :title => "New Chart", :icon => "icons/light/Writing.png"
+/  - m.item_to "Edit this chart", edit_chart_path(@chart), :title => "Edit Chart" if can?(:edit, @chart)
 
-.clearboth
+.context
+  %h3 Charts
+  %ul.detailed-list
+    - @charts.each do |chart|
+      %li
+        %h4= chart.name
+        %ul.details
+          %li= pluralize(chart.sections.size, "Section")
 
-%h2 Sections
-%table.normal
-  %thead
-    %tr
-      %th Name
-      %th Seats
-      %th Price
-      %th Actions
-  %tbody
-    - @chart.sections.each do |section|
+.document
+  %h3= "#{@chart.name} Sections"
+  %table.normal
+    %thead
       %tr
-        %td= section.name
-        %td= "#{section.capacity} seats"
-        %td= number_as_cents section.price
-        %td
-          =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
-          =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)
+        %th Name
+        %th Seats
+        %th Price
+        %th Actions
+    %tbody
+      - @chart.sections.each do |section|
+        %tr
+          %td= section.name
+          %td= "#{section.capacity} seats"
+          %td= number_as_cents section.price
+          %td
+            =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
+            =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)
 
-=link_to "Add a section to this chart", new_chart_section_path(@chart), :class => "link"
+  =link_to "Add a section to this chart", new_chart_section_path(@chart), :class => "link"
