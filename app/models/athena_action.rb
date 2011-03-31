@@ -5,10 +5,18 @@ class AthenaAction < AthenaResource::Base
   self.element_name = 'actions'
   self.collection_name = 'actions'
 
+  #
+  # Action types: give, go, do, get, join, hear
+  #
+
   schema do
-    attribute 'person_id',  :string
-    attribute 'subject_id', :string
-    attribute 'action_type',:string
+    attribute 'organization_id',    :string
+    attribute 'person_id',          :string
+    attribute 'subject_id',         :string
+    attribute 'action_type',        :string
+    attribute 'details',            :string
+    attribute 'datetime',           :string
+    attribute 'starred',            :string
   end
 
   def action_type(); @attributes['action_type']; end
@@ -18,6 +26,14 @@ class AthenaAction < AthenaResource::Base
 
   def initialize(attributes = {})
     super(attributes)
+  end
+  
+  def starred?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? starred
+  end
+
+  def unstarred?
+    !starred?
   end
 
   def person
@@ -38,9 +54,19 @@ class AthenaAction < AthenaResource::Base
     @subject ||= find_subject
   end
 
+  def self.find_by_person_and_organization(person, organization)
+    find(:all, :params => { :personId => "eq#{person.id}", :organizationId => "eq#{organization.id}"})
+  end
+
   def subject=(subject)
     return if subject.nil? or subject.id.nil?
     @subject, self.subject_id = subject, subject.id
+  end
+
+  #TODO: push up into AthenaResource
+  def datetime
+    attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
+    attributes['datetime']
   end
 
   private

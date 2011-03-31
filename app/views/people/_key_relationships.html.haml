@@ -1,0 +1,5 @@
+%ul.kv
+  -person.starred_relationships.each do |rel|
+    %li
+      .key=rel.relationship(person)
+      .value=relationship_name_display rel.person(person)

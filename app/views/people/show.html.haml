@@ -34,15 +34,7 @@
       .value /gmoore
 
   %h4 Key Relationships
-  %ul.kv
-    %li
-      .key Founder
-      .value Some Organization
-
-    %li
-      .key Husband
-      .value Mrs. Moore
-
+  =render :partial=>'key_relationships', :locals => { :person => @person }
 
 .document
   %h3 Tags
@@ -54,37 +46,13 @@
   #actions
     .table-controls
       %input.filter{ :type => :text, :value => "Filter" }
-    %table.zebra
-      %thead
-        %tr
-          %th.starred &#10029;
-          %th Date
-          %th Type
-          %th Details
-      %tbody
-        - (5..11).each do |i|
-          %tr
-            %td.starred &#10025;
-            %td= "5/#{i}/11 8:00 PM"
-            %td= %w( Join Get Hear Do ).sample
-            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(5).join(" ").capitalize
+    =render :partial=>'action_list', :locals => { :person => @person }
 
   %h3 Relationships
   #relationships
     .table-controls
       %input.filter{ :type => :text, :value => "Filter" }
-    %table.zebra
-      %thead
-        %tr
-          %th.starred &#10029;
-          %th Relationship
-          %th Type
-      %tbody
-        - 5.times do |i|
-          %tr
-            %td.starred &#10025;
-            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(2).join(" ").capitalize
-            %td= %w( Father Founder Patron Friend Husband ).sample
+    =render :partial=>'relationship_table', :locals => { :person => @person }
 
   %h3 Notes
   #notes

@@ -1,0 +1,9 @@
+%tr
+  %td.starred 
+    -if action.starred?
+      &#10029;
+    -else
+      &#10025;
+  %td= l action.datetime, :format => :short
+  %td= action.action_type.capitalize
+  %td= action.details

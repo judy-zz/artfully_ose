@@ -1,6 +1,6 @@
 class AthenaRelationship < AthenaResource::Base
   self.headers["User-agent"] = "artful.ly"
-  self.site = Artfully::Application.config.people_site + "meta/"
+  self.site = Artfully::Application.config.people_site
 
   self.element_name = 'relationships'
   self.collection_name = 'relationships'
@@ -8,9 +8,10 @@ class AthenaRelationship < AthenaResource::Base
   schema do
     attribute 'id',                 :integer
     attribute 'left_side_id',       :string
-    attribute 'right_side_id',      :string
     attribute 'relationship_type',  :string
+    attribute 'right_side_id',      :string
     attribute 'inverse_type',       :string
+    attribute 'starred',            :string
   end
 
   validates_presence_of :left_side_id, :right_side_id
@@ -18,6 +19,14 @@ class AthenaRelationship < AthenaResource::Base
 
   def subject
     @subject ||= find_subject
+  end
+
+  def starred?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? starred
+  end
+
+  def unstarred?
+    !starred?
   end
 
   def subject=(subject)
@@ -37,7 +46,39 @@ class AthenaRelationship < AthenaResource::Base
   def self.find_by_person(person_or_id)
     id = person_or_id.kind_of?(AthenaPerson)? person_or_id.id : person_or_id
     return if id.nil?
-    find(:all, :from => "people/#{id}".to_sym)
+    
+    #TODO: This is a hack because the relationship helper listens at (COMPONENT_NAME)/meta/relationships
+    self.collection_name = 'meta/relationships'
+    relationships = find(:all, :from => "people/#{id}".to_sym)
+    self.collection_name = 'relationships'
+    relationships
+  end
+
+  #convenience methods for normalizing the target of this relationship
+  #since the person may be on the left of right
+  
+  #returns an AthenaPerson or nil if person is not a member of this relationship
+  def person(person)
+    id = person.kind_of?(AthenaPerson)? person.id : person
+    if left_side_id == id.to_s
+      AthenaPerson.find(right_side_id)
+    elsif right_side_id == id.to_s
+      AthenaPerson.find(left_side_id)
+    else
+      nil
+    end
+  end
+
+  #Returns a string describing the relationship or '' if person is not a member of this relationship
+  def relationship(person)
+    id = person.kind_of?(AthenaPerson)? person.id : person
+    if left_side_id == id.to_s
+      relationship_type
+    elsif right_side_id == id.to_s
+      inverse_type
+    else
+      ''
+    end
   end
 
   private

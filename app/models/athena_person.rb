@@ -24,8 +24,37 @@ class AthenaPerson < AthenaResource::Base
     find(:first, :params => { :email => "eq#{email}", :organizationId => "eq#{organization.id}"})
   end
 
+  def self.find_by_organization(organization)
+    find(:first, :params => { :organizationId => "eq#{organization.id}"})
+  end
+
   def organization
     @organization ||= Organization.find(organization_id)
+  end
+
+  #Sort of a verbose Java-like pattern, but it makes the views very readable
+  def actions
+    @actions ||= AthenaAction.find_by_person_and_organization(self, organization)
+  end
+
+  def starred_actions
+    actions.select { |action| action.starred? }
+  end
+  
+  def unstarred_actions
+    actions.select { |action| action.unstarred? }
+  end  
+  
+  def relationships
+    @relationships ||= AthenaRelationship.find_by_person(self)
+  end
+
+  def starred_relationships
+    relationships.select { |relationship| relationship.starred? }
+  end
+
+  def unstarred_relationships
+    relationships.select { |relationship| relationship.unstarred? }
   end
 
   def organization=(org)

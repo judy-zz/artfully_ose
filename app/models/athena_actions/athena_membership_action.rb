@@ -1,4 +1,4 @@
-class AthenaPurchaseAction < AthenaAction
+class AthenaMembershipAction < AthenaAction
 
   self.site = Artfully::Application.config.people_site
   self.headers["User-agent"] = "artful.ly"
@@ -7,7 +7,7 @@ class AthenaPurchaseAction < AthenaAction
 
   def initialize(attributes = {})
     super(attributes)
-    @attributes['action_type'] = "purchase"
+    @attributes['action_type'] = "Join"
   end
   
 end

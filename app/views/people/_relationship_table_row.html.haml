@@ -1,0 +1,8 @@
+%tr
+  %td
+    -if rel.starred?
+      &#10029;
+    -else
+      &#10025;
+  %td= rel.relationship(person)
+  %td= relationship_name_display rel.person(person)
