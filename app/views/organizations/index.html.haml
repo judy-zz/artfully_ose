@@ -1,17 +1,22 @@
 - content_for :header do
   %h1 Organizations
 
-= contextual_menu do |m|
-  - m.item_to "Organizations", organizations_path
-  - m.item_to "New Organization", new_organization_path
 
-%table.normal.fullwidth
-  %thead
-    %tr
-      %th Name
-      %th Created Date
-  %tbody
-    - @organizations.each do |organization|
-      %tr
-        %td= link_to organization.name, organization
-        %td= l organization.created_at, :format => :short
+.context
+
+.document
+  .call-to-action
+    = link_to "New Organization", new_organization_path
+  %h3 Organizations
+  #organizations
+    .table-controls
+    %table
+      %thead
+        %tr
+          %th Name
+          %th Created Date
+      %tbody
+        - @organizations.each do |organization|
+          %tr
+            %td= link_to organization.name, organization
+            %td= l organization.created_at, :format => :short

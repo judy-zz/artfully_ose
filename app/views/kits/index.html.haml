@@ -1,15 +1,18 @@
 -content_for :header do
   %h1 Kits
-
-%table.normal.fullwidth
-  %thead
-    %tr
-      %th Name
-      %th Status
-      %th Actions
-  %tbody
-    - @kits.each do |kit|
-      %tr
-        %td= kit.type
-        %td= kit.state.titleize
-        %td= link_to "Reactivate #{kit.type}", kit_path(kit), :method => :put if !kit.activated? and !kit.pending?
+.context
+.document
+  #kits
+    .table-controls
+    %table
+      %thead
+        %tr
+          %th Name
+          %th Status
+          %th Actions
+      %tbody
+        - @kits.each do |kit|
+          %tr
+            %td= kit.type
+            %td= kit.state.titleize
+            %td= link_to "Reactivate #{kit.type}", kit_path(kit), :method => :put if !kit.activated? and !kit.pending?

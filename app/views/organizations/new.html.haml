@@ -1,14 +1,16 @@
 - content_for :header do
-  %h1 New Organization
+  %h1 Organizations
 
-= contextual_menu do |m|
-  - m.item_to "Organizations", organizations_path
-  - m.item_to "New Organization", new_organization_path
 
-.clearboth
-
-= form_for @organization do |f|
-  = f.label :name
-  = f.text_field :name
-
-  = f.submit "Create"
+.context
+.document
+  %h3 New Organization
+  = form_for @organization do |f|
+    %ul
+      %li
+        .label
+          = f.label :name
+        .element
+          = f.text_field :name
+      %li
+        = f.submit "Create"
