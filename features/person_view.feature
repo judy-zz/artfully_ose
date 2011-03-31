@@ -2,18 +2,19 @@ Feature: View the record for a person
   In order to view a history and perform actions
   a user wants to be able to view the details of a People record
 
+
   Scenario: A user views the Person Record for another user
     Given I am logged in
     And I am on the people page
     And I am part of an organization
     And an athena person exists with an email of "person@example.com" for my organization
-    When I fill in "Email Address" with "person@example.com"
+    When I fill in "email" with "person@example.com"
     And I press "Search"
-    Then I should see "People Record for person@example.com"
+    Then I should see "person@example.com"
 
   Scenario: A user attempts to view a Person Record for a non-existent user
     Given I am logged in
     And I am on the people page
-    When I fill in "Email Address" with "doesnotexist@example.com"
+    When I fill in "email" with "doesnotexist@example.com"
     And I press "Search"
-    Then I should see "Oops! No people records for this email address."
+    Then I should see "Oops! No results found."
