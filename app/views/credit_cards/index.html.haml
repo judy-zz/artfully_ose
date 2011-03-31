@@ -1,20 +1,25 @@
 - content_for :header do
-  %h1 My Credit Cards
-%table.normal
-  %thead
-    %tr
-      %th Name
-      %th Number
-      %th Expiration Date
-      %th Actions
-  %tbody
-    - @credit_cards.each do |credit_card|
-      %tr
-        %td= credit_card.cardholder_name
-        %td= credit_card.card_number
-        %td= credit_card.expiration_date.strftime "%m/%Y"
-        %td
-          = table_icon_link_to :edit, edit_credit_card_path(credit_card)
-          = table_icon_link_to :delete, credit_card_path(credit_card), :method => :delete, :confirm => 'Are you sure?'
+  %h1 Credit Cards
 
-= link_to "New Credit Card", new_credit_card_path
+.context
+.document
+  .call-to-action
+    = link_to "New Credit Card", new_credit_card_path
+  %h3 Saved Cards
+  %table
+    %thead
+      %tr
+        %th Name
+        %th Number
+        %th Expiration Date
+        %th Actions
+    %tbody
+      - @credit_cards.each do |credit_card|
+        %tr
+          %td= credit_card.cardholder_name
+          %td= credit_card.card_number
+          %td= credit_card.expiration_date.strftime "%m/%Y"
+          %td
+            = table_icon_link_to :edit, edit_credit_card_path(credit_card)
+            = table_icon_link_to :delete, credit_card_path(credit_card), :method => :delete, :confirm => 'Are you sure?'
+

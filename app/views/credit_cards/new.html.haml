@@ -1,15 +1,18 @@
 - content_for :header do
-  %h1 New Credit Card
+  %h1 Credit Cards
 
 = render "shared/error_messages", :target => @customer
 = render "shared/error_messages", :target => @credit_card
 
-= form_for @credit_card, :url => credit_cards_path do |form|
-  #customer
+.context
+.document
+  = form_for @credit_card, :url => credit_cards_path do |form|
     - if current_user.customer.nil?
       %h3 Customer Information
-      = render :partial => 'athena_customers/form', :locals => { :parent_form => form, :target => @customer }
-  #credit_card
+      %ul#customer
+        = render :partial => 'athena_customers/form', :locals => { :parent_form => form, :target => @customer }
+
     %h3 Credit Card Information
-    = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => form, :target => @credit_card }
-    = form.submit "Create"
+    %ul#credit_card
+      = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => form, :target => @credit_card }
+      %li= form.submit "Save Card"
