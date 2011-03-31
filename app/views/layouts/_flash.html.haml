@@ -1,31 +1,19 @@
 - if flash[:notice]
-  .notification.success
-    %span
-    .text
-      %p
-        %strong Success!
-        = flash[:notice]
+  .flash.success
+    .close &#10006;
+    %p= flash[:notice]
 
 - if flash[:error]
-  .notification.error
-    %span
-    .text
-      %p
-        %strong Oops!
-        = flash[:error]
+  .flash.error
+    .close &#10006;
+    %p= flash[:error]
 
 - if flash[:alert]
-  .notification.warning
-    %span
-    .text
-      %p
-        %strong Warning!
-        = flash[:alert]
+  .flash.warning
+    .close &#10006;
+    %p= flash[:alert]
 
 - if flash[:info]
-  .notification.info
-    %span
-    .text
-      %p
-        %strong Info!
-        = flash[:info]
+  .flash.info
+    .close &#10006;
+    = flash[:info]

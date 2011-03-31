@@ -7,6 +7,9 @@ $(document).ready(function() {
     $("tr:odd", this).addClass("odd");
   });
 
+  $(".close").click(function(){
+    $(this).closest('.flash').remove();
+  })
 
   $("#header-controls").click(function(){
     if($("#header-content").is(":visible")){

@@ -1,10 +1,7 @@
 - if !target.nil? && target.errors.any?
-  #error_explanation.notification.error
-    %span
-    .text
-      - target.errors.full_messages.each do |msg|
-        %p
-          %strong Oops
-          =msg
+  .flash.error
+    .close &#10006;
+    - target.errors.full_messages.each do |message|
+      %p= message
 
 
