@@ -8,6 +8,6 @@ Feature: Donation Kit Approval
     And I am on the admin root page
     And I click on "Administer Organizations"
     When I click on "Fractured Atlas"
-    And I click on "Approve Donation Kit"
+    And I click on "Approve"
     Then I should see "This kit has been activated"
     And the donation kit for "Fractured Atlas" should be activated
