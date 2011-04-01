@@ -1,8 +1,13 @@
 class PerformancesController < ApplicationController
-
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to event_url(@performance.event)
+  end
+
+  def index
+    @event = AthenaEvent.find(params[:event_id])
+    @performances = @event.performances
+    @performance = @event.next_perf
   end
 
   def duplicate
@@ -15,9 +20,8 @@ class PerformancesController < ApplicationController
   end
 
   def new
-    @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
-    @performance.event = @event
+    @performance = @event.next_perf
 
     if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
@@ -30,7 +34,7 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @performance.event = @event
 
-    @performance.update_attributes(params[:athena_performance][:athena_performance])
+    @performance.update_attributes(params[:athena_performance])
     @performance.organization_id = current_user.current_organization.id
 
     if @performance.valid? && @performance.save
