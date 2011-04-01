@@ -17,7 +17,7 @@
 
 .document
   .call-to-action
-    = button_to "New Performance", new_performance_path, :method => :get
+    = button_to "New Performance", new_event_performance_path(@event), :method => :get
   %h3 This Week
   %ol.calendar.week
     - (5..11).each do |day|

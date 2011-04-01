@@ -2,5 +2,6 @@
 = form_for @performance, :url => event_performances_path(@event, @performance) do |form|
   #performance
     %h3 New Performance
-    = render :partial => 'performances/form', :locals => { :parent_form => form, :target => @performance }
-    = form.submit "Submit"
+    %ul
+      = render :partial => 'performances/form', :locals => { :parent_form => form, :target => @performance }
+      %li= form.submit "Submit"
