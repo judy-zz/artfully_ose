@@ -1,6 +1,6 @@
 class AthenaRelationship < AthenaResource::Base
   self.headers["User-agent"] = "artful.ly"
-  self.site = Artfully::Application.config.people_site
+  self.site = Artfully::Application.config.people_site + "meta/"
 
   self.element_name = 'relationships'
   self.collection_name = 'relationships'
@@ -46,17 +46,12 @@ class AthenaRelationship < AthenaResource::Base
   def self.find_by_person(person_or_id)
     id = person_or_id.kind_of?(AthenaPerson)? person_or_id.id : person_or_id
     return if id.nil?
-    
-    #TODO: This is a hack because the relationship helper listens at (COMPONENT_NAME)/meta/relationships
-    self.collection_name = 'meta/relationships'
-    relationships = find(:all, :from => "people/#{id}".to_sym)
-    self.collection_name = 'relationships'
-    relationships
+    find(:all, :from => "people/#{id}".to_sym)
   end
 
   #convenience methods for normalizing the target of this relationship
   #since the person may be on the left of right
-  
+
   #returns an AthenaPerson or nil if person is not a member of this relationship
   def person(person)
     id = person.kind_of?(AthenaPerson)? person.id : person
