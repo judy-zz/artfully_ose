@@ -30,6 +30,10 @@ class AthenaEvent < AthenaResource::Base
     @attributes['performances'] ||= find_performances.sort_by { |performance| performance.datetime }
   end
 
+  def upcoming_performances(limit = 5)
+    @upcoming ||= performances.select { |performance| performance.datetime > DateTime.now.beginning_of_day }.take(limit)
+  end
+
   def performances=(performances)
     raise TypeError, "Expecting an Array" unless performances.kind_of? Array
     @attributes['performances'] = performances

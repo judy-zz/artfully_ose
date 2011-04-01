@@ -1,6 +1,9 @@
 class EventsController < ApplicationController
   before_filter :authenticate_user!
 
+  before_filter :find_event, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :upcoming_performances, :only => :show
+
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to root_path
@@ -28,7 +31,6 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = AthenaEvent.find(params[:id])
     authorize! :view, @event
     @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
     @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
@@ -41,12 +43,10 @@ class EventsController < ApplicationController
   end
 
   def edit
-    @event = AthenaEvent.find(params[:id])
     authorize! :edit, @event
   end
 
   def update
-    @event = AthenaEvent.find(params[:id])
     authorize! :edit, @event
 
     @event.update_attributes(params[:athena_event][:athena_event])
@@ -60,10 +60,19 @@ class EventsController < ApplicationController
   end
 
   def destroy
-    @event = AthenaEvent.find(params[:id])
     authorize! :destroy, @event
     @event.destroy
     redirect_to events_url
+  end
+
+  private
+
+  def find_event
+    @event = AthenaEvent.find(params[:id])
+  end
+
+  def upcoming_performances
+    @upcoming = @event.upcoming_performances
   end
 
 end

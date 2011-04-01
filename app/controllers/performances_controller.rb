@@ -1,11 +1,14 @@
 class PerformancesController < ApplicationController
+
+  before_filter :find_event, :only => [ :index, :show ]
+  before_filter :upcoming_performances, :only => [ :index, :show ]
+
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to event_url(@performance.event)
   end
 
   def index
-    @event = AthenaEvent.find(params[:event_id])
     @performances = @event.performances
     @performance = @event.next_perf
   end
@@ -51,7 +54,6 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.find(params[:id])
     authorize! :view, @performance
 
-    @event = AthenaEvent.find(@performance.event_id)
     @performance.datetime = @performance.datetime.in_time_zone(@event.time_zone)
     @performance.tickets = @performance.tickets
   end
@@ -73,7 +75,7 @@ class PerformancesController < ApplicationController
     authorize! :edit, @performance
 
     without_tickets do
-      @performance.update_attributes(params[:athena_performance][:athena_performance])
+      @performance.update_attributes(params[:athena_performance])
       if @performance.save
         redirect_to event_url(@performance.event)
       else
@@ -133,6 +135,14 @@ class PerformancesController < ApplicationController
   end
 
   private
+    def find_event
+      @event = AthenaEvent.find(params[:event_id])
+    end
+
+    def upcoming_performances
+      @upcoming = @event.upcoming_performances
+    end
+
     def with_confirmation
       if params[:confirm].nil?
         flash[:info] = "Please confirm your changes before we save them."

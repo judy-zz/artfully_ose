@@ -3,17 +3,7 @@
   %h2= "#{@event.producer}: #{@event.city}, #{@event.state}"
 
 .context
-  %h3 Performances
-  - unless @event.performances.empty?
-    %ul.detailed-list#of_performances
-      - @event.performances.each do |performance|
-        %li
-          %h4= link_to l(performance.datetime, :format => :short), performance_path(performance), :title => 'performance-datetime'
-          %ul.details
-            %li= link_to "Delete", event_performance_path(@event, performance), :confirm => "Are you sure?", :method => :delete if can?(:destroy, performance)
-  %ul.more
-    %li= link_to "New Performance", new_event_performance_path(@event)
-    %li= link_to "View all Performances", event_performances_path(@event)
+  = render :partial => "performances/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
 .document
   .call-to-action

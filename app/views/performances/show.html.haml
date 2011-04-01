@@ -3,21 +3,14 @@
   %h2= "#{@event.name} at #{@event.venue}"
 
 .context
-  %h3 Performances
-  - unless @event.performances.empty?
-    %ul.detailed-list#of_performances
-      - @event.performances.each do |performance|
-        %li
-          %h4= link_to l(performance.datetime, :format => :short), performance_path(performance), :title => 'performance-datetime'
-          %ul.details
-            %li= link_to "Delete", event_performance_path(@event, performance), :confirm => "Are you sure?", :method => :delete if can?(:destroy, performance)
+  = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
   %ul.more
     %li= link_to "New Performance", new_event_performance_path(@event)
     %li= link_to "View all Performances", event_performances_path(@event)
 
 .document
   .call-to-action
-    = link_to "Door List", door_list_performance_path(@performance)
+    = link_to "Door List", door_list_event_performance_path(@event,@performance)
   %h3 Tickets
   - if @performance.pending?
     %p You have not created tickets for this event.

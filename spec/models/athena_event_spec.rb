@@ -52,6 +52,20 @@ describe AthenaEvent do
     end
   end
 
+  describe "#upcoming_performances" do
+    it "should default to a limit of 5 performances" do
+      subject.performances = 10.times.collect { Factory(:athena_performance, :datetime => DateTime.tomorrow) }
+      subject.upcoming_performances.should have(5).performances
+    end
+
+    it "should fetch performances that occur after today at the beginning of the day" do
+      test_performances = 3.times.collect { Factory(:athena_performance, :datetime => DateTime.tomorrow) }
+      test_performances += 2.times.collect { Factory(:athena_performance, :datetime => DateTime.yesterday) }
+      subject.performances = test_performances
+      subject.upcoming_performances.should have(3).performances
+    end
+  end
+
   describe "charts" do
     it "should store a list of charts" do
       charts = (0..5).collect { Factory(:athena_chart) }

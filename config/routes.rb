@@ -31,12 +31,11 @@ Artfully::Application.routes.draw do
   resources :credit_cards, :except => :show
 
   resources :people, :only => [:index, :show, :edit, :update]
-  resources :performances do
-    get :door_list, :on => :member
-  end
 
   resources :events do
-    resources :performances
+    resources :performances do
+      get :door_list, :on => :member
+    end
   end
 
   resources :charts do
@@ -51,8 +50,7 @@ Artfully::Application.routes.draw do
   match '/performances/:performance_id/tickets/bulk_edit' => 'tickets#bulk_edit', :as => :bulk_edit_performance_tickets
   match '/performances/:performance_id/tickets/comp_ticket_details' => 'tickets#comp_ticket_details', :as => :comp_ticket_details
   match '/performances/:performance_id/tickets/comp_ticket_confirm' => 'tickets#comp_ticket_confirm', :as => :comp_ticket_confirm
-  
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
-  
+
   root :to => "index#index"
 end
