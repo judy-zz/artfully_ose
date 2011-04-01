@@ -1,5 +1,5 @@
 %tr
-  %td.starred 
+  %td.starred{:id => [person.id, 'action', action.id]}
     -if action.starred?
       &#10029;
     -else

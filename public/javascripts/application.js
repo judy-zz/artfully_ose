@@ -51,6 +51,30 @@ $(document).ready(function() {
   $(".checkall").click(function(){
     $(this).closest('form').find("input[type='checkbox']").attr("checked", $(this).is(":checked"));
   });
+  
+  $(".starred").click(function() {
+    star = $(this).html().trim()
+    person_id = $(this).attr("id").split("_")[0]
+    type = $(this).attr("id").split("_")[1]
+    id = $(this).attr("id").split("_")[2]
+    
+    $.ajax({
+       type: "POST",
+       url: "/people/" + person_id + "/star/" + type+ "/" + id,
+     });
+     this_table = $(this).parents('table')
+     this_row = $(this).parents('tr')
+     
+    //272D is the filled-in star
+    if(star == "\u272D") {
+      $(this).html("&#10025;")
+      console.log(this_table)
+      this_table.append(this_row) 
+    } else {  
+      $(this).html("&#10029;")  
+      this_row.prependTo('tbody:first', this_table)	  
+    }
+  });
 });
 
 function togglePrintPreview(){

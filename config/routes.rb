@@ -52,5 +52,7 @@ Artfully::Application.routes.draw do
   match '/performances/:performance_id/tickets/comp_ticket_details' => 'tickets#comp_ticket_details', :as => :comp_ticket_details
   match '/performances/:performance_id/tickets/comp_ticket_confirm' => 'tickets#comp_ticket_confirm', :as => :comp_ticket_confirm
   
+  match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
+  
   root :to => "index#index"
 end
