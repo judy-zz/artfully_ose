@@ -16,7 +16,7 @@
     %p You have not created tickets for this event.
     %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
   - else
-    = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance) do |form|
+    = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
       .table-controls
         %ul.bulk-actions
           %li= submit_tag "Put on Sale"
