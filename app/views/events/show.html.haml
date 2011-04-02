@@ -3,6 +3,12 @@
   %h2= "#{@event.producer}: #{@event.city}, #{@event.state}"
 
 .context
+  %h3= link_to @event.name, event_path(@event)
+
+  %ul.more
+    %li= link_to "New Performance", new_event_performance_path(@event)
+    %li= link_to "View all Performances", event_performances_path(@event)
+
   = render :partial => "performances/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
 .document

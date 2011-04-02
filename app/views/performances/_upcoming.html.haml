@@ -1,9 +1,3 @@
-%h3 Upcoming Performances
-
-%ul.more
-  %li= link_to "New Performance", new_event_performance_path(@event)
-  %li= link_to "View all Performances", event_performances_path(@event)
-
 - if upcoming.empty?
   %p There are no upcoming performances.
 - else
