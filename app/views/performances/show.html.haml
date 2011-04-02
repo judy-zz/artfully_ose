@@ -17,7 +17,7 @@
   %h3 Tickets
   - if @performance.pending?
     %p You have not created tickets for this event.
-    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class=>"link"
+    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance)
   - else
     = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
       .table-controls
@@ -29,17 +29,17 @@
 
       =render :partial => 'ticket_table', :locals => { :performance => @performance }
 
-  %h3 Stats
-  %ul.kv
-    %li
-      .key Tickets
-      .value= @performance.tickets.size
-    %li
-      .key Sold
-      .value= @performance.tickets_sold.size
-    %li
-      .key Gross Potential
-      .value= number_as_cents(@performance.gross_potential)
-    %li
-      .key Gross Sales
-      .value= number_as_cents(@performance.gross_sales)
+    %h3 Stats
+    %ul.kv
+      %li
+        .key Tickets
+        .value= @performance.tickets.size
+      %li
+        .key Sold
+        .value= @performance.tickets_sold.size
+      %li
+        .key Gross Potential
+        .value= number_as_cents(@performance.gross_potential)
+      %li
+        .key Gross Sales
+        .value= number_as_cents(@performance.gross_sales)
