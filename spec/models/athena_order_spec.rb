@@ -4,9 +4,9 @@ describe AthenaOrder do
   subject { Factory(:athena_order_with_id) }
 
   describe "schema" do
-    it { should respond_to :person_id }
-    it { should respond_to :organization_id }
-    it { should respond_to :customer_id }
+    %w( person_id organization_id customer_id transaction_id ).each do |attr|
+      it { should respond_to attr }
+    end
   end
 
   %w( person organization customer ).each do |association|
@@ -107,7 +107,7 @@ describe AthenaOrder do
     end
   end
 
-  describe "generating athena orderes" do
+  describe "generating athena orders" do
     let(:organization) { Factory(:organization) }
     let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
     let(:donations) { 2.times.collect { Factory(:donation, :organization => organization) } }

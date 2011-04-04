@@ -9,13 +9,17 @@ class AthenaOrder < AthenaResource::Base
     attribute :person_id,       :integer
     attribute :organization_id, :integer
     attribute :customer_id,     :string
+    attribute :transaction_id,  :string
     attribute :price,           :integer
     attribute :details,         :string
     attribute :timestamp,       :string
   end
 
-  before_save :set_timestamp
+  validates_presence_of :person_id
+  validates_presence_of :organization_id
+  validates_presence_of :transaction_id
 
+  before_save :set_timestamp
   after_save :save_items, :unless => lambda { items.empty? }
   after_save :create_purchase_action
   after_save :create_donation_actions
@@ -109,13 +113,12 @@ class AthenaOrder < AthenaResource::Base
     def save_items
       logger.debug("saving items for order: #{self.id}")
       items.each do |item|
-
+        item.order = self
         logger.debug("New item ------------------------------")
         logger.debug(item)
         logger.debug(item.valid?)
         logger.debug(item.errors)
 
-        item.order=self
         item.save
       end
     end

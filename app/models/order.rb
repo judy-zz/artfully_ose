@@ -8,9 +8,9 @@ class Order < ActiveRecord::Base
   after_initialize :clean_order
 
   state_machine do
-    state :started      # The user has added items to their order
+    state :started
     state :approved, :enter => :finish
-    state :rejected     # ATHENA has rejected the payment
+    state :rejected
 
     event :approve do
       transitions :from => [ :started, :rejected ], :to => :approved
@@ -72,6 +72,7 @@ class Order < ActiveRecord::Base
   end
 
   def pay_with(payment, options = {})
+    @payment = payment
     options[:settle] = true if options[:settle].nil?
 
     payment.authorize! ? approve! : reject!
@@ -87,17 +88,21 @@ class Order < ActiveRecord::Base
       logger.debug("This order is for organization [" + organization.id.to_s + "]")
       order = AthenaOrder.new.tap do |order|
         order.for_organization organization
-        logger.debug("Calling for_items with these tickets:")
-        logger.debug(tickets)
+        # logger.debug("Calling for_items with these tickets:")
+        # logger.debug(tickets)
 
-        #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be    
+        #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
         order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
 
-        logger.debug("Calling for_items with donations")
+        #logger.debug("Calling for_items with donations")
         order.for_items donations.select { |donation| donation.organization == organization }
         order.person = person
+        order.transaction_id = @payment.transaction_id
       end
-      order.save
+      logger.debug(order.valid?)
+      logger.debug(order)
+
+      order.save!
     end
 
     OrderMailer.confirmation_for(self).deliver
