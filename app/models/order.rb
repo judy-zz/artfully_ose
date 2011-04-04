@@ -1,3 +1,4 @@
+#Used for shopping cart in the widget
 class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 

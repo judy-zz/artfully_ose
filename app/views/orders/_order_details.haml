@@ -1,0 +1,46 @@
+%h3 #{order.id}
+
+%ul.kv
+  %li
+    .key Ordered by
+    .value 
+      =link_to "#{person.last_name}, #{person.first_name}", person_path(person)
+  %li
+    .key Date
+    .value 00/00/0000
+  -#
+    %li
+    .key Placed
+    .value On website
+  %li
+    .key Total
+    .value #{number_as_cents(@total)}
+  %li
+    .key Details
+    .value #{order.details}
+%ul.bulk-actions
+  %li
+    %input{ :type => :button, :value => "Refund"}
+  %li
+    %input{ :type => :button, :value => "Exchange"}
+
+-if order.items.first.item_type == "AthenaTicket"
+  %table.zebra
+    %thead
+      %tr
+        %th
+          %input.checkall#all{:type => :checkbox}
+        %th Type
+        %th ID
+        %th Event
+        %th Performance
+    %tbody
+      - (order.items).each do |item|
+        - ticket = AthenaTicket.find(item.item_id)
+        %tr
+          %td
+            %input{:type => :checkbox}
+          %td Ticket
+          %td=item.id
+          %td=link_to "#{ticket.event}", event_path(ticket.event_id)
+          %td #{l ticket.performance.in_time_zone(AthenaEvent.find(ticket.event_id).time_zone)}

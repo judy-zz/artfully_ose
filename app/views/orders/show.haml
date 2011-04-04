@@ -1,0 +1,42 @@
+%h1 Orders & Donations
+
+-#.context
+  %h3 #{@person.last_name}, #{@person.first_name}
+  .value Person Details
+
+.context
+  %h3="#{@person.first_name} #{@person.last_name}"
+
+  %ul.kv
+    %li
+      .key Nickname
+      .value Gary
+    %li
+      .key Salutation
+      .value Mr. Moore
+    %li
+      .key Donor Listing
+      .value Anonymous
+
+  %h4 Contact Information
+  %ul.kv
+    %li
+      .key Email
+      .value=@person.email
+    %li
+      .key Cell
+      .value 555-555-1234
+    %li
+      .key Home
+      .value 555-555-3245
+    %li
+      .key Twitter
+      .value gmoore
+    %li
+      .key LinkedIn
+      .value /gmoore
+
+  %h4 Key Relationships
+
+.document
+  = render :partial=>'order_details', :locals => { :order => @order, :person => @person }

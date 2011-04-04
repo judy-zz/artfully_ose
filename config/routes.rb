@@ -43,6 +43,8 @@ Artfully::Application.routes.draw do
     resources :sections
   end
 
+  resources :orders
+
   match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
   match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance

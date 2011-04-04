@@ -1,0 +1,42 @@
+%h1 Orders & Donations
+
+.context
+  %h3 Search
+
+%form.big-search
+  = form_tag orders_path, :method => :get do
+    = text_field_tag :search
+    = submit_tag "Search"
+
+.document
+  %h3
+    -if @results.nil?
+      ="No results found"
+    
+    -elsif @results == "No search performed"
+      ="Enter search"
+
+    -else
+      ="Search Results"
+      -#%ul.order-info
+      -#@results.each do |order|
+      %h6
+        %table.zebra
+          %thead
+            %tr
+              %th ID
+              %th Last Name
+              %th First Name
+              %th Date
+              %th Event
+              %th Detail
+          %tbody
+            -@results.each do |order|
+              %tr
+                %td=link_to  "#{order.id}", order_path(order)
+                %td="#{AthenaPerson.find(order.person_id).last_name}"
+                %td="#{AthenaPerson.find(order.person_id).first_name}"
+                %td 00/00/0000
+                -if order.items.size > 0 and "AthenaTicket" == order.items.first.item_type
+                  %td="#{AthenaTicket.find(order.items.first.item_id).event}"
+                  %td="#{order.items.size} tickets"
