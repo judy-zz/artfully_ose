@@ -12,7 +12,7 @@ class TicketsController < ApplicationController
 
     if @selected_tickets.nil?
       flash[:error] = "No tickets were selected"
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     elsif 'Comp' == params[:commit]
       with_person_search do
         render :comp_ticket_details and return

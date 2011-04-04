@@ -104,13 +104,13 @@ class PerformancesController < ApplicationController
 
     if @performance.tickets.empty?
       flash[:error] = 'Please create tickets for this performance before putting it on sale'
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     end
 
     with_confirmation do
       @performance.put_on_sale!
       flash[:notice] = 'Your performance is on sale in the widget!'
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     end
   end
 
@@ -120,7 +120,7 @@ class PerformancesController < ApplicationController
     with_confirmation do
       @performance.take_off_sale!
       flash[:notice] = 'Your performance has been taken off sale from the widget!'
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     end
   end
 
@@ -131,7 +131,7 @@ class PerformancesController < ApplicationController
     AthenaTicketFactory.for_performance(@performance)
     @event = AthenaEvent.find(@performance.event_id)
     @charts = AthenaChart.find_by_event(@event)
-    redirect_to performance_url(@performance)
+    redirect_to event_performance_url(@event, @performance)
   end
 
   private
