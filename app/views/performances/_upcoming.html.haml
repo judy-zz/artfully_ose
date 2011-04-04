@@ -1,0 +1,9 @@
+- if upcoming.empty?
+  %p There are no upcoming performances.
+- else
+  %ul.detailed-list#of_performances
+    - upcoming.each do |performance|
+      %li
+        %h4= link_to l(performance.datetime, :format => :short), event_performance_path(event,performance), :title => 'performance-datetime'
+        %ul.details
+          %li= link_to "Delete", event_performance_path(event, performance), :confirm => "Are you sure?", :method => :delete if can?(:destroy, performance)

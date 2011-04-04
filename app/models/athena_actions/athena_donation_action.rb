@@ -9,5 +9,9 @@ class AthenaDonationAction < AthenaAction
     super(attributes)
     @attributes['action_type'] = "Give"
   end
-  
+
+  private
+    def find_subject
+      Donation.find(self.subject_id)
+    end
 end

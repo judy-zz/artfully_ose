@@ -4,10 +4,11 @@
 = render "shared/error_messages", :target => @event
 
 .context
-
 .document
   - if @person.id.nil?
-    = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
+    / Holy HACK batman. It seems that form_for ignores :method when dealing with "new" models.
+    - @person.id = 0
+    = form_for @person, :url => comp_confirm_performance_tickets_path(@performance), :method => :put do |form|
       %ul
         = render :partial => 'tickets/form', :locals => { :parent_form => form, :target => @person }
       - @selected_tickets.each do |st|
@@ -15,10 +16,8 @@
       = hidden_field_tag "person_id", nil
       %ul
         %li
-          .label
-            = label_tag :comp_reason, "Reason for Comp"
-          .element
-            = text_field_tag :comp_reason
+          .label= label_tag :comp_reason, "Reason for Comp"
+          .element= text_field_tag :comp_reason
         %li= form.submit "Submit"
 
   - else
@@ -33,7 +32,7 @@
         .key Email Address
         .value= @person.email
 
-    = form_for @person, :url =>  comp_ticket_confirm_path(@performance) do |form|
+    = form_for @person, :url =>  comp_confirm_performance_tickets_path(@performance), :method => :put do |form|
       - @selected_tickets.each do |st|
         = hidden_field_tag "selected_tickets[]", st
       = hidden_field_tag "person_id", @person_id

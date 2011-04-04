@@ -5,10 +5,10 @@ describe AthenaRelationship do
   subject { Factory(:athena_relationship) }
 
   describe "as a remote resource" do
-    it "should use the prefix /tix/meta/" do
-      FakeWeb.register_uri(:get, "http://localhost/people/meta/relationships/.json", :body => "[]")
+    it "should use the prefix /people/meta" do
+      FakeWeb.register_uri(:get, "http://localhost/people/relationships/.json", :body => "[]")
       AthenaRelationship.all
-      FakeWeb.last_request.path.should == "/people/meta/relationships/.json"
+      FakeWeb.last_request.path.should == "/people/relationships/.json"
     end
   end
 

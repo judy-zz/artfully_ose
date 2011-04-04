@@ -10,13 +10,13 @@ describe AthenaDonationAction do
 
   describe "action type" do
     it "should be of type donation" do
-      AthenaDonationAction.new.action_type.should eq "donation"
-      subject.action_type.should eq "donation"
+      AthenaDonationAction.new.action_type.should eq "Give"
+      subject.action_type.should eq "Give"
     end
 
     it "should not change when assigned a different value" do
       subject.action_type = "other"
-      subject.action_type.should eq "donation"
+      subject.action_type.should eq "Give"
     end
   end
 

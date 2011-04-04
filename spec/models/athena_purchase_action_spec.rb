@@ -8,13 +8,13 @@ describe AthenaPurchaseAction do
 
   describe "action type" do
     it "should be of type purchase" do
-      AthenaPurchaseAction.new.action_type.should eq "purchase"
-      subject.action_type.should eq "purchase"
+      AthenaPurchaseAction.new.action_type.should eq "Get"
+      subject.action_type.should eq "Get"
     end
 
     it "should not change when assigned a different value" do
       subject.action_type = "other"
-      subject.action_type.should eq "purchase"
+      subject.action_type.should eq "Get"
     end
   end
 

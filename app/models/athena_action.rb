@@ -27,7 +27,7 @@ class AthenaAction < AthenaResource::Base
   def initialize(attributes = {})
     super(attributes)
   end
-  
+
   def starred?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? starred
   end
@@ -77,15 +77,6 @@ class AthenaAction < AthenaResource::Base
         AthenaPerson.find(self.person_id)
       rescue ActiveResource::ResourceNotFound
         update_attribute(:person_id, nil)
-        return nil
-      end
-    end
-
-    def find_subject
-      begin
-        AthenaOrder.find(self.subject_id)
-      rescue ActiveResource::ResourceNotFound
-        update_attribute(:subject_id, nil)
         return nil
       end
     end

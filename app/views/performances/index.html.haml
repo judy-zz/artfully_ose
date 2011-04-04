@@ -1,5 +1,24 @@
-%ul.performance-list
-  - @performances.each do |performance|
-    %li= render performance
+= render :partial => "shared/headers/ticketing"
 
-= link_to "New Performance", new_performance_path
+.context
+  %h3= link_to @event.name, event_path(@event)
+
+  %ul.more
+    %li= link_to "New Performance", new_event_performance_path(@event)
+    %li= link_to "View all Performances", event_performances_path(@event)
+
+  = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
+
+.document
+  %h3 All Performances
+  #performances
+    .table-controls
+    %ul.performance-list
+      - @performances.each do |performance|
+        %li
+          %span.stats-controls= link_to "(more)", "#"
+          %h6= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
+          .hidden-stats
+            = render :partial => "stats", :locals => { :performance => performance }
+      %li.new-item
+        = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }

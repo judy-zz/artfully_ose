@@ -48,6 +48,7 @@ class AthenaRelationship < AthenaResource::Base
     return if id.nil?
     
     #TODO: This is a hack because the relationship helper listens at (COMPONENT_NAME)/meta/relationships
+    # but we need to POST to /relationships to create a new object
     self.collection_name = 'meta/relationships'
     relationships = find(:all, :from => "people/#{id}".to_sym)
     self.collection_name = 'relationships'

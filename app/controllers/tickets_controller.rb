@@ -12,7 +12,7 @@ class TicketsController < ApplicationController
 
     if @selected_tickets.nil?
       flash[:error] = "No tickets were selected"
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     elsif 'Comp' == params[:commit]
       with_person_search do
         render :comp_ticket_details and return
@@ -20,12 +20,12 @@ class TicketsController < ApplicationController
     else
       with_confirmation do
         bulk_edit_tickets(@performance, @selected_tickets, params[:commit])
-        redirect_to performance_url(@performance) and return
+        redirect_to event_performance_url(@performance.event, @performance) and return
       end
     end
   end
 
-  def comp_ticket_details
+  def comp_details
     @selected_tickets = params[:selected_tickets]
     if person = AthenaPerson.find_by_email_and_organization(params[:email], current_user.current_organization)
       flash[:info] = "Person record found."
@@ -37,7 +37,7 @@ class TicketsController < ApplicationController
     @person_id = @person.id
   end
 
-  def comp_ticket_confirm
+  def comp_confirm
     @performance = AthenaPerformance.find(params[:performance_id])
     @reason_for_comp = params[:comp_reason]
     @selected_tickets = params[:selected_tickets]
@@ -65,7 +65,7 @@ class TicketsController < ApplicationController
     with_confirmation_comp do
         @athena_person = AthenaPerson.find(params[:person_id])
         comp_tickets(@athena_person, @performance, @selected_tickets)
-        redirect_to performance_url(@performance) and return
+        redirect_to event_performance_url(@performance.event, @performance) and return
     end
   end
 
@@ -88,7 +88,7 @@ class TicketsController < ApplicationController
       @performance = AthenaPerformance.find(params[:performance_id])
       if params[:person].blank?
         flash[:info] = "Please locate the person record for the person receiving the tickets."
-        render :comp_ticket_people
+        render :comp_people
       else
         yield
       end
@@ -100,7 +100,7 @@ class TicketsController < ApplicationController
         @bulk_action = params[:commit]
         @performance = AthenaPerformance.find(params[:performance_id])
         flash[:info] = "Please confirm your changes before we save them."
-        render 'tickets/comp_ticket_confirm' and return
+        render 'tickets/comp_confirm' and return
       else
         yield
       end

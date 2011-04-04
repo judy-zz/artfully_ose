@@ -1,14 +1,11 @@
-- content_for :header do
-  %h1 Edit Event
+= render :partial => "shared/headers/ticketing"
 
-= contextual_menu do |m|
-  - m.item_to "Events", events_path, :title => "Events", :icon => "icons/light/Gear.png"
-  - m.item_to "New Event", new_event_path, :title => "New Event", :icon => "icons/light/Writing.png"
+.context
+  = render "shared/error_messages", :target => @event
 
-.clearboth
-
-= render "shared/error_messages", :target => @event
-= form_for @event, :url => event_path(@event) do |form|
-  #event
-    = render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
-    = form.submit "Submit"
+.document
+  %h3= "Edit #{@event.name}"
+  = form_for @event, :url => event_path(@event) do |form|
+    %ul#event
+      = render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
+      %li= form.submit "Submit"

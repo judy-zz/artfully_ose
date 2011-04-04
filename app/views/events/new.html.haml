@@ -1,8 +1,11 @@
 - content_for :header do
   %h1 New Event
 
-= render "shared/error_messages", :target => @event
+.context
+.document
+  = render "shared/error_messages", :target => @event
 
-= form_for @event, :url => events_path do |form|
-  = render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
-  = form.submit "Submit"
+  = form_for @event, :url => events_path do |form|
+    %ul
+      = render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
+      %li= form.submit "Submit"

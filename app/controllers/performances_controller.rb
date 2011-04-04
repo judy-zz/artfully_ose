@@ -1,8 +1,16 @@
 class PerformancesController < ApplicationController
 
+  before_filter :find_event, :only => [ :index, :show ]
+  before_filter :upcoming_performances, :only => [ :index, :show ]
+
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to event_url(@performance.event)
+  end
+
+  def index
+    @performances = @event.performances
+    @performance = @event.next_perf
   end
 
   def duplicate
@@ -15,9 +23,8 @@ class PerformancesController < ApplicationController
   end
 
   def new
-    @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
-    @performance.event = @event
+    @performance = @event.next_perf
 
     if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
@@ -30,7 +37,7 @@ class PerformancesController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @performance.event = @event
 
-    @performance.update_attributes(params[:athena_performance][:athena_performance])
+    @performance.update_attributes(params[:athena_performance])
     @performance.organization_id = current_user.current_organization.id
 
     if @performance.valid? && @performance.save
@@ -47,7 +54,6 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.find(params[:id])
     authorize! :view, @performance
 
-    @event = AthenaEvent.find(@performance.event_id)
     @performance.datetime = @performance.datetime.in_time_zone(@event.time_zone)
     @performance.tickets = @performance.tickets
   end
@@ -69,7 +75,7 @@ class PerformancesController < ApplicationController
     authorize! :edit, @performance
 
     without_tickets do
-      @performance.update_attributes(params[:athena_performance][:athena_performance])
+      @performance.update_attributes(params[:athena_performance])
       if @performance.save
         redirect_to event_url(@performance.event)
       else
@@ -98,13 +104,13 @@ class PerformancesController < ApplicationController
 
     if @performance.tickets.empty?
       flash[:error] = 'Please create tickets for this performance before putting it on sale'
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     end
 
     with_confirmation do
       @performance.put_on_sale!
       flash[:notice] = 'Your performance is on sale in the widget!'
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     end
   end
 
@@ -114,7 +120,7 @@ class PerformancesController < ApplicationController
     with_confirmation do
       @performance.take_off_sale!
       flash[:notice] = 'Your performance has been taken off sale from the widget!'
-      redirect_to performance_url(@performance) and return
+      redirect_to event_performance_url(@performance.event, @performance) and return
     end
   end
 
@@ -125,10 +131,18 @@ class PerformancesController < ApplicationController
     AthenaTicketFactory.for_performance(@performance)
     @event = AthenaEvent.find(@performance.event_id)
     @charts = AthenaChart.find_by_event(@event)
-    redirect_to performance_url(@performance)
+    redirect_to event_performance_url(@event, @performance)
   end
 
   private
+    def find_event
+      @event = AthenaEvent.find(params[:event_id])
+    end
+
+    def upcoming_performances
+      @upcoming = @event.upcoming_performances
+    end
+
     def with_confirmation
       if params[:confirm].nil?
         flash[:info] = "Please confirm your changes before we save them."

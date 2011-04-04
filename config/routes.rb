@@ -31,13 +31,28 @@ Artfully::Application.routes.draw do
   resources :credit_cards, :except => :show
 
   resources :people, :only => [:index, :show, :edit, :update]
-  resources :performances do
-    get :door_list, :on => :member
-  end
 
   resources :events do
-    resources :performances
+    resources :performances do
+      member do
+        get :door_list
+        post :duplicate
+        put :put_on_sale
+        put :take_off_sale
+      end
+    end
   end
+
+  resources :performances, :only => [] do
+    resources :tickets, :only => [] do
+      collection do
+        put :bulk_edit
+        put :comp_details
+        put :comp_confirm
+      end
+    end
+  end
+
 
   resources :charts do
     resources :sections
@@ -45,14 +60,9 @@ Artfully::Application.routes.draw do
 
   resources :orders
 
-  match '/performances/:id/duplicate/' => 'performances#duplicate', :as => :duplicate_performance
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
   match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
-  match '/performances/:id/put_on_sale/' => 'performances#put_on_sale', :as => :put_performance_on_sale
-  match '/performances/:id/take_off_sale/' => 'performances#take_off_sale', :as => :take_performance_off_sale
-  match '/performances/:performance_id/tickets/bulk_edit' => 'tickets#bulk_edit', :as => :bulk_edit_performance_tickets
-  match '/performances/:performance_id/tickets/comp_ticket_details' => 'tickets#comp_ticket_details', :as => :comp_ticket_details
-  match '/performances/:performance_id/tickets/comp_ticket_confirm' => 'tickets#comp_ticket_confirm', :as => :comp_ticket_confirm
-  
+  match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
+
   root :to => "index#index"
 end

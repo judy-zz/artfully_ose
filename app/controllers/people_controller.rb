@@ -15,6 +15,17 @@ class PeopleController < ApplicationController
   def show
     @person = AthenaPerson.find(params[:id])
   end
+  
+  def star
+    render :nothing => true
+    action = AthenaAction.find(params[:action_id])
+    if action.starred?
+      action.starred = false
+    else
+      action.starred = true
+    end
+    action.save
+  end
 
   def edit
   end

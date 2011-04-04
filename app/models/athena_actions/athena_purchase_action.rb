@@ -9,5 +9,15 @@ class AthenaPurchaseAction < AthenaAction
     super(attributes)
     @attributes['action_type'] = "Get"
   end
-  
+
+  private
+    def find_subject
+      begin
+        AthenaOrder.find(self.subject_id)
+      rescue ActiveResource::ResourceNotFound
+        update_attribute(:subject_id, nil)
+        return nil
+      end
+    end
+
 end
