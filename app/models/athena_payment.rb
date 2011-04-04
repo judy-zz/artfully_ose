@@ -49,6 +49,7 @@ class AthenaPayment < AthenaResource::Base
   def approved?
     self.success == true
   end
+  alias :refunded? :approved?
 
   def rejected?
     self.success == false
@@ -75,6 +76,13 @@ class AthenaPayment < AthenaResource::Base
       load_attributes_from_response(response)
     end
     approved?
+  end
+
+  def refund!
+    connection.post("/payments/transactions/refund", encode, self.class.headers).tap do |response|
+      load_attributes_from_response(response)
+    end
+    refunded?
   end
 end
 
