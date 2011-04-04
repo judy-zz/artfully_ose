@@ -1,6 +1,4 @@
-- content_for :header do
-  %h1= l @performance.datetime, :format => :long_with_day
-  %h2= "#{@event.name} at #{@event.venue}"
+= render :partial => "shared/headers/ticketing"
 
 .context
   %h3= link_to @event.name, event_path(@event)
@@ -14,6 +12,7 @@
 .document
   .call-to-action
     = link_to "Door List", door_list_event_performance_path(@event,@performance)
+  %h3= l @performance.datetime, :format => :long_with_day
   %h3 Tickets
   - if @performance.pending?
     %p You have not created tickets for this event.
@@ -30,16 +29,4 @@
       =render :partial => 'ticket_table', :locals => { :performance => @performance }
 
     %h3 Stats
-    %ul.kv
-      %li
-        .key Tickets
-        .value= @performance.tickets.size
-      %li
-        .key Sold
-        .value= @performance.tickets_sold.size
-      %li
-        .key Gross Potential
-        .value= number_as_cents(@performance.gross_potential)
-      %li
-        .key Gross Sales
-        .value= number_as_cents(@performance.gross_sales)
+    = render :partial => "stats", :locals => { :performance => @performance }

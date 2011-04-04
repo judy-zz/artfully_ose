@@ -1,0 +1,13 @@
+%ul.kv
+  %li
+    .key Tickets
+    .value= performance.tickets.size
+  %li
+    .key Sold
+    .value= performance.tickets_sold.size
+  %li
+    .key Gross Potential
+    .value= number_as_cents(performance.gross_potential)
+  %li
+    .key Gross Sales
+    .value= number_as_cents(performance.gross_sales)

@@ -1,3 +1,5 @@
+= render :partial => "shared/headers/ticketing"
+
 .context
   %h3= link_to @event.name, event_path(@event)
 
@@ -16,5 +18,7 @@
         %li
           %span.stats-controls= link_to "(more)", "#"
           %h6= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
+          .hidden-stats
+            = render :partial => "stats", :locals => { :performance => performance }
       %li.new-item
         = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
