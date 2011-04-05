@@ -1,4 +1,4 @@
-%table.zebra.tablesorter
+%table.zebra.tablesorter.sortedstar
   %thead
     %tr
       %th.starred &#10029;
@@ -8,7 +8,8 @@
   %tbody
     -if person.actions.empty?
       %tr
-        %td{:colspan=>4}
+        %td
+        %td{:colspan=>3}
           No actions for this person
     -person.starred_actions.each do |action|
       =render :partial=>'action_list_row', :locals => { :person => person, :action => action }

@@ -1,8 +1,8 @@
 %tr
-  %td
+  %td.relationship_starred.starable{:id => [person.id, 'relationship', rel.id]}
     -if rel.starred?
       &#10029;
     -else
       &#10025;
-  %td= rel.relationship(person)
-  %td= relationship_name_display rel.person(person)
+  %td.relationship_type=rel.relationship(person)
+  %td.relationship_person=relationship_name_display rel.person(person)

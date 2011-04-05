@@ -20,12 +20,6 @@ class OrdersController < ApplicationController
     @order.items.each{ |item| @total += item.price.to_i }
   end
 
-  def edit
-  end
-
-  def update
-  end
-
   private
 
   def search(query)
