@@ -18,29 +18,31 @@
   %li
     .key Details
     .value #{order.details}
-%ul.bulk-actions
-  %li
-    %input{ :type => :button, :value => "Refund"}
-  %li
-    %input{ :type => :button, :value => "Exchange"}
 
--if !order.items.nil? 
-  %table.zebra
-    %thead
-      %tr
-        %th
-          %input.checkall#all{:type => :checkbox}
-        %th Type
-        %th ID
-        %th Event
-        %th Performance
-    %tbody
-      - (order.items).each do |item|
-        - ticket = AthenaTicket.find(item.item_id)
+= form_for order, :url => "", :method => :put do |form|
+  .table-controls
+    %ul.bulk-actions
+      %li
+        %input{ :type => :button, :value => "Refund"}
+      %li
+        %input{ :type => :button, :value => "Exchange"}
+
+  -if !order.items.nil?
+    %table.zebra
+      %thead
         %tr
-          %td
-            %input{:type => :checkbox}
-          %td Ticket
-          %td=item.id
-          %td=link_to "#{ticket.event}", event_path(ticket.event_id)
-          %td #{l ticket.performance.in_time_zone(AthenaEvent.find(ticket.event_id).time_zone)}
+          %th=check_box_tag :all, nil, false, :class=>'checkall'
+          %th Type
+          %th ID
+          %th Event
+          %th Performance
+      %tbody
+        - (order.items).each do |item|
+        - ticket = AthenaTicket.find(item.item_id)
+          %tr
+            %td
+              %input{:type => :checkbox}
+            %td Ticket
+            %td=item.id
+            %td=link_to "#{ticket.event}", event_path(ticket.event_id)
+            %td #{l ticket.performance.in_time_zone(AthenaEvent.find(ticket.event_id).time_zone)}
