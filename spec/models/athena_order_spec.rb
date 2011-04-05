@@ -27,6 +27,13 @@ describe AthenaOrder do
     end
   end
 
+  describe "payment" do
+    it "should return a new Payment based on the transaction ID" do
+      subject.payment.should be_an AthenaPayment
+      subject.payment.transaction_id.should eq subject.transaction_id
+    end
+  end
+
   describe "#person" do
     it "should fetch the People record" do
       person =  Factory(:athena_person_with_id)

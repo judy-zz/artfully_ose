@@ -84,6 +84,10 @@ class AthenaOrder < AthenaResource::Base
     logger.debug("End for_items")
   end
 
+  def payment
+    AthenaPayment.new(:transaction_id => transaction_id)
+  end
+
   private
     def create_purchase_action
       action                 = AthenaPurchaseAction.new

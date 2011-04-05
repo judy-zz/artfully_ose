@@ -1,4 +1,6 @@
 class AthenaItem < AthenaResource::Base
+  include ActiveResource::Transitions
+
   self.site = Artfully::Application.config.orders_component
   self.headers["User-agent"] = "artful.ly"
   self.element_name = 'items'
@@ -9,6 +11,16 @@ class AthenaItem < AthenaResource::Base
     attribute 'item_type',  :string
     attribute 'item_id',    :string
     attribute 'price',      :integer
+    attribute 'state',      :string
+  end
+
+  state_machine do
+    state :normal
+    state :refunded
+
+    event :refund do
+      transitions :from => :normal, :to => :refunded
+    end
   end
 
   validates_presence_of :order_id, :item_type, :item_id, :price
