@@ -7,7 +7,7 @@
       =link_to "#{person.last_name}, #{person.first_name}", person_path(person)
   %li
     .key Date
-    .value 00/00/0000
+    .value #{(l order.timestamp) unless order.timestamp.nil?}
   -#
     %li
     .key Placed

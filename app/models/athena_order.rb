@@ -11,7 +11,10 @@ class AthenaOrder < AthenaResource::Base
     attribute :customer_id,     :string
     attribute :price,           :integer
     attribute :details,         :string
+    attribute :timestamp,       :string
   end
+
+  before_save :set_datetime
 
   after_save :save_items, :unless => lambda { items.empty? }
   after_save :create_purchase_action
@@ -135,5 +138,11 @@ class AthenaOrder < AthenaResource::Base
     def find_items
       return [] if new_record?
       items ||= AthenaItem.find_by_order(self)
+    end
+
+    def set_datetime
+      if @attributes['timestamp'].nil?
+        @attributes['timestamp'] = DateTime.now
+      end
     end
 end
