@@ -46,6 +46,7 @@ class TicketsController < ApplicationController
 
     @confirmed = params[:confirmed]
     unless @confirmed
+      @reason_for_comp = params[:comp_reason]
       if @person_id == ""
         @athena_person = AthenaPerson.new(:email=> @person[:athena_person][:email], :first_name=> @person[:athena_person][:first_name], :last_name=> @person[:athena_person][:last_name], :organization_id=>current_user.current_organization.id)
       else
@@ -64,7 +65,7 @@ class TicketsController < ApplicationController
 
     with_confirmation_comp do
         @athena_person = AthenaPerson.find(params[:person_id])
-        comp_tickets(@athena_person, @performance, @selected_tickets)
+        comp_tickets(@athena_person, @performance, @selected_tickets, params[:reason_for_comp])
         redirect_to event_performance_url(@performance.event, @performance) and return
     end
   end
@@ -131,7 +132,7 @@ class TicketsController < ApplicationController
       end
     end
 
-    def comp_tickets(person, performance, ticket_ids)
+    def comp_tickets(person, performance, ticket_ids, reason_for_comp)
       comped_ids = performance.bulk_comp_to(ticket_ids, person)
       comped_tickets = comped_ids.collect{|id| AthenaTicket.find(id)}
 
@@ -139,7 +140,7 @@ class TicketsController < ApplicationController
         order.for_organization Organization.find(performance.event.organization_id)
         order.for_items comped_tickets
         order.person = person
-        order.details = "Comped by:#{current_user.email}"
+        order.details = "Comped by: #{current_user.email} Reason: #{reason_for_comp}"
       end
       order.save
 

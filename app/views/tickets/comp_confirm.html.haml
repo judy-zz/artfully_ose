@@ -14,6 +14,7 @@
     - @selected_tickets.each do |st|
       =hidden_field_tag "selected_tickets[]", st
     = hidden_field_tag :person_id, @athena_person.id
+    = hidden_field_tag :reason_for_comp, @reason_for_comp
     %p If this is correct, please click confirm it by clicking
     = submit_tag "Confirm"
 
