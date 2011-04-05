@@ -24,7 +24,7 @@
   %li
     %input{ :type => :button, :value => "Exchange"}
 
--if order.items.first.item_type == "AthenaTicket"
+-if !order.items.nil? 
   %table.zebra
     %thead
       %tr

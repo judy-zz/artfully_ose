@@ -23,17 +23,14 @@ class OrdersController < ApplicationController
   private
 
   def search(query)
-    if ":ALL" == query
-      orders = AthenaOrder.find(:all, :params =>{ :organizationId => "eq#{current_user.current_organization.id}"})
-    else 
-      begin
-        orders = AthenaOrder.find(query)
-      rescue ActiveResource::ResourceNotFound
-        ##TODO: Implement search by first name, last name, email, last four of CC number
-        orders = nil
-      end     
-    end
-
+    begin
+      orders = AthenaOrder.find(query)
+    rescue ActiveResource::ResourceNotFound
+      ##TODO: Implement search by first name, last name, email, last four of CC number
+      orders = nil
+    rescue ActiveResource::ForbiddenAccess #occurs when search string == ""
+      orders = nil
+    end     
     orders
   end
 
