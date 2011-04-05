@@ -33,9 +33,6 @@
       .key LinkedIn
       .value /gmoore
 
-  %h4 Key Relationships
-  =render :partial=>'key_relationships', :locals => { :person => @person }
-
 .document
   %h3 Actions
 
@@ -43,26 +40,3 @@
     .table-controls
       %input.filter{ :type => :text, :value => "Filter" }
     =render :partial=>'action_list', :locals => { :person => @person }
-
-  %h3 Relationships
-  #relationships
-    .table-controls
-      %input.filter{ :type => :text, :value => "Filter" }
-    =render :partial=>'relationship_table', :locals => { :person => @person }
-
-  %h3 Notes
-  #notes
-    .table-controls
-      %input.filter{ :type => :text, :value => "Filter" }
-    %table.zebra
-      %thead
-        %tr
-          %th Date
-          %th Subject
-          %th Details
-      %tbody
-        - (2..7).each do |i|
-          %tr
-            %td= "5/#{i}/11 8:00 PM"
-            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(2).join(" ").capitalize
-            %td= %w(Lorem ipsum dolor sit amet, consectetur adipiscing elit).sample(5).join(" ").capitalize
