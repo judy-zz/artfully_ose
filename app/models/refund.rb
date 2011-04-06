@@ -7,7 +7,6 @@ class Refund
   def submit
     payment.refund!
     if @success = payment.refunded?
-      refund_items
       create_refund_order
     end
   end
@@ -33,5 +32,15 @@ class Refund
   end
 
   def create_refund_order
+    refunded_items = @items.collect(&:refund_item)
+
+    refund_order = AthenaOrder.new.tap do |refund_order|
+      refund_order.for_organization @order.organization
+      refund_order.person = @order.person
+      refund_order.for_items @items
+      refund_order.transaction_id = payment.transaction_id
+    end
+
+    refund_order.save!
   end
 end

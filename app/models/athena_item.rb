@@ -1,6 +1,4 @@
 class AthenaItem < AthenaResource::Base
-  include ActiveResource::Transitions
-
   self.site = Artfully::Application.config.orders_component
   self.headers["User-agent"] = "artful.ly"
   self.element_name = 'items'
@@ -12,15 +10,6 @@ class AthenaItem < AthenaResource::Base
     attribute 'item_id',    :string
     attribute 'price',      :integer
     attribute 'state',      :string
-  end
-
-  state_machine do
-    state :normal
-    state :refunded
-
-    event :refund do
-      transitions :from => :normal, :to => :refunded
-    end
   end
 
   validates_presence_of :order_id, :item_type, :item_id, :price
@@ -37,6 +26,12 @@ class AthenaItem < AthenaResource::Base
 
     raise TypeError, "Expecting an AthenaOrder" unless order.kind_of? AthenaOrder
     @order, self.order_id = order, order.id
+  end
+
+  def refund_item
+    new_attrs = attributes.reject { |key, value| %w( id ).include? key }
+    new_attrs.merge!({:state => "refunded"})
+    AthenaItem.new(new_attrs)
   end
 
   def self.find_by_order(order)
