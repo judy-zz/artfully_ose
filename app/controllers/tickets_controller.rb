@@ -140,6 +140,7 @@ class TicketsController < ApplicationController
         order.for_organization Organization.find(performance.event.organization_id)
         order.for_items comped_tickets
         order.person = person
+        order.organization = current_user.current_organization
         order.details = "Comped by: #{current_user.email} Reason: #{reason_for_comp}"
       end
       order.save

@@ -82,18 +82,25 @@ class AthenaOrder < AthenaResource::Base
 
   private
     def create_purchase_action
-      action = AthenaPurchaseAction.new
-      action.person = person
-      action.subject = self
+      action                 = AthenaPurchaseAction.new
+      action.person          = person
+      action.subject         = self
+      action.organization_id = organization.id
+      action.datetime        = self.timestamp
+      action.details         = self.details
+      logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
       action.save!
       action
     end
 
     def create_donation_actions
       items.select { |item| item.item_type == "Donation" }.collect do |item|
-        action = AthenaDonationAction.new
-        action.person = person
-        action.subject = Donation.find(item.item_id)
+        action                 = AthenaDonationAction.new
+        action.person          = person
+        action.subject         = Donation.find(item.item_id)
+        action.organization_id = organization.id
+        action.datetime        = self.timestamp
+        action.details         = self.details
         action.save!
         action
       end
