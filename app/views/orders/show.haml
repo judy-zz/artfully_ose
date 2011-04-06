@@ -1,7 +1,7 @@
 %h1 Orders & Donations
 
 .context
-  = render :partial=>'shared/person_summary_sidebar', :locals => { :person => @person }
+  = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }
 
 .document
   = render :partial=>'order_details', :locals => { :order => @order, :person => @person }
