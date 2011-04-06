@@ -62,6 +62,10 @@ class AthenaOrder < AthenaResource::Base
     @parent, self.parent_id = parent, parent.id
   end
 
+  def children
+    @children ||= AthenaOrder.find(:all, :params => { :parentId => self.id } )
+  end
+
   def customer
     @customer ||= find_customer
   end
