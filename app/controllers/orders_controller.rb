@@ -1,4 +1,10 @@
 class OrdersController < ApplicationController
+  before_filter :authenticate_user!
+
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to root_path
+  end
 
   def index
     if params[:search]
@@ -14,6 +20,8 @@ class OrdersController < ApplicationController
 
   def show
     @order = AthenaOrder.find(params[:id])
+    authorize! :view, @order
+    
     @person = AthenaPerson.find(@order.person_id)
 
     @total = 0

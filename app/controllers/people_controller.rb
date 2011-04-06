@@ -1,5 +1,11 @@
 class PeopleController < ApplicationController
+  before_filter :authenticate_user!
 
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to root_path
+  end
+  
   def index
     @people = []
     if params[:email]
@@ -14,6 +20,7 @@ class PeopleController < ApplicationController
 
   def show
     @person = AthenaPerson.find(params[:id])
+    authorize! :view, @person
   end
   
   def star

@@ -22,5 +22,14 @@ class OrganizationAbility
     can :manage, AthenaChart do |chart|
       chart.organization_id.to_i == organization.id
     end
+
+    can :manage, AthenaPerson do |person|
+      person.organization_id.to_i == organization.id
+    end
+
+    can :manage, AthenaOrder do |order|
+      order.organization_id.to_i == organization.id
+    end
+
   end
 end

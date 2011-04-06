@@ -3,8 +3,11 @@ class Ability
 
   def initialize(user)
     user ||= User.new
+
     admin_abilities_for(user) if user.has_role? :admin
     ticketing_abilities_for(user) if user.current_organization.can? :access, :ticketing
+    person_abilities_for(user)
+    order_ablilities_for(user)
     default_abilities_for(user)
   end
 
@@ -37,6 +40,18 @@ class Ability
     can :manage, AthenaChart do |chart|
       user.current_organization.can? :manage, chart
     end
-
   end
+
+  def order_ablilities_for(user)
+    can :manage, AthenaOrder do |order|
+      user.current_organization.can? :manage, order
+    end
+  end
+  
+  def person_abilities_for(user)
+    can :manage, AthenaPerson do |person|
+      user.current_organization.can? :manage, person
+    end
+  end
+
 end
