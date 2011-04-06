@@ -1,6 +1,11 @@
 class CreditCardsController < ApplicationController
   before_filter :authenticate_user!
 
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to root_path
+  end
+
   def index
     @credit_cards = current_user.credit_cards
   end
@@ -30,10 +35,12 @@ class CreditCardsController < ApplicationController
 
   def edit
     @credit_card = AthenaCreditCard.find(params[:id])
+    authorize! :edit, @credit_card
   end
 
   def update
     @credit_card = AthenaCreditCard.find(params[:id])
+    authorize! :edit, @credit_card
     # TODO: Fix form_for nested fields issue.
     @credit_card.update_attributes(params[:athena_credit_card][:athena_credit_card])
     if @credit_card.save
@@ -45,6 +52,7 @@ class CreditCardsController < ApplicationController
 
   def destroy
     @credit_card = AthenaCreditCard.find(params[:id])
+    authorize! :destroy, @credit_card
     @credit_card.destroy
     redirect_to credit_cards_url
   end

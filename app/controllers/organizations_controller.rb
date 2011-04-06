@@ -1,4 +1,10 @@
 class OrganizationsController < ApplicationController
+  before_filter :authenticate_user!
+
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = exception.message
+    redirect_to root_path
+  end
 
   def index
     @organizations = current_user.organizations || []
@@ -6,6 +12,7 @@ class OrganizationsController < ApplicationController
 
   def show
     @organization = Organization.find(params[:id])
+    authorize! :view, @organization
     @kits = @organization.kits
   end
 

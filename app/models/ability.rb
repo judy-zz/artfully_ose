@@ -19,6 +19,14 @@ class Ability
     cannot :destroy, AthenaEvent do |event|
       event.performances.any?{ |performance| cannot? :destroy, performance }
     end
+
+    can :manage, Organization do |organization|
+      user.current_organization.can? :manage, organization
+    end
+
+    can :manage, AthenaCreditCard do |card|
+      user.credit_cards.any?{|c| c.id == card.id}
+    end
   end
 
   def admin_abilities_for(user)

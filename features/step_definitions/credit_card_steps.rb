@@ -56,7 +56,7 @@ end
 When /^I update (\d+)st credit card details with:$/ do |pos, table|
   Given %{I follow "Edit" for the 1st credit card}
   card = Factory(:credit_card_with_id, table.hashes.first)
-  @customer.credit_cards[pos.to_i-1] = card
+  @customer.credit_cards[pos.to_i-1].cardholder_name = card.cardholder_name
   FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
 end
 
