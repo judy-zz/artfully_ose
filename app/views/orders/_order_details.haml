@@ -21,7 +21,7 @@
 
 - unless order.items.empty?
   #items
-    = form_for Refund.new, :url => '/refunds' do |form|
+    = form_for :refund, :url => '/refunds' do |form|
       = hidden_field_tag :order_id, order.id
       .table-controls
         %ul.bulk-actions

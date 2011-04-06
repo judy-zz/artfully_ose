@@ -3,8 +3,8 @@ class RefundsController < ApplicationController
     order = AthenaOrder.find(params[:order_id])
     # Check for :all first?
     items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
-    Refund.new(order, items)
 
+    refund = Refund.new(order, items)
     refund.submit
 
     if refund.successful?
@@ -12,5 +12,7 @@ class RefundsController < ApplicationController
     else
       flash[:error] = "Unable to refund tickets."
     end
+
+    redirect_to order_url(order)
   end
 end

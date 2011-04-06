@@ -58,7 +58,7 @@ class AthenaPayment < AthenaResource::Base
   def amount=(amount)
     return if amount.nil?
     # Convert from cents to dollars for the payment processor
-    amount = amount / 100.00
+    amount = amount.to_i / 100.00
     super(amount)
   end
 

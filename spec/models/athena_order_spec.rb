@@ -70,6 +70,24 @@ describe AthenaOrder do
     end
   end
 
+  describe "parent" do
+    it "should fetch the Parent Order record" do
+      parent = Factory(:athena_order_with_id)
+      subject.parent = parent
+      subject.parent.should eq parent
+    end
+
+    it "should not make a request if the parent_id is not set" do
+      subject.parent = subject.parent_id = nil
+      subject.parent.should be_nil
+    end
+
+    it "should update the parent id when assigning a new parent record" do
+      subject.parent = Factory(:athena_order_with_id, :id => 2)
+      subject.parent_id.should eq(2)
+    end
+  end
+
   describe "#items" do
     it "should request items for itself" do
       items = 2.times.collect { Factory(:athena_item) }

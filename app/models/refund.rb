@@ -19,6 +19,10 @@ class Refund
     @amount ||= @items.collect(&:price).reduce(:+)
   end
 
+  def refunded_items
+    @items.size
+  end
+
   private
 
   def payment
@@ -39,6 +43,7 @@ class Refund
       refund_order.person = @order.person
       refund_order.for_items @items
       refund_order.transaction_id = payment.transaction_id
+      refund_order.parent = @order
     end
 
     refund_order.save!

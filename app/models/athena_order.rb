@@ -10,6 +10,7 @@ class AthenaOrder < AthenaResource::Base
     attribute :organization_id, :integer
     attribute :customer_id,     :string
     attribute :transaction_id,  :string
+    attribute :parent_id,       :string
     attribute :price,           :integer
     attribute :details,         :string
     attribute :timestamp,       :string
@@ -48,13 +49,26 @@ class AthenaOrder < AthenaResource::Base
     @organization, self.organization_id = org, org.id
   end
 
+  def parent
+    @parent ||= find_parent
+  end
+
+  def parent=(parent)
+    if parent.nil?
+      @parent = parent_id = nil
+      return
+    end
+
+    @parent, self.parent_id = parent, parent.id
+  end
+
   def customer
     @customer ||= find_customer
   end
 
   def customer=(customer)
     if customer.nil?
-      @customer = customer_id = customer
+      @customer = customer_id = nil
       return
     end
 
@@ -134,6 +148,16 @@ class AthenaOrder < AthenaResource::Base
         AthenaPerson.find(self.person_id)
       rescue ActiveResource::ResourceNotFound
         update_attribute!(:person_id, nil)
+        return nil
+      end
+    end
+
+    def find_parent
+      return if self.parent_id.nil?
+
+      begin
+        AthenaOrder.find(parent_id)
+      rescue ActiveResource::ResourceNotFound
         return nil
       end
     end
