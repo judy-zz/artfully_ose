@@ -17,22 +17,26 @@
           %li= pluralize(chart.sections.size, "Section")
 
 .document
+  .call-to-action
+    =link_to "Add a section to this chart", new_chart_section_path(@chart), :class => "link"
   %h3= "#{@chart.name} Sections"
-  %table.normal
-    %thead
-      %tr
-        %th Name
-        %th Seats
-        %th Price
-        %th Actions
-    %tbody
-      - @chart.sections.each do |section|
+  #chart_sections
+    .table_controls
+    %table.normal
+      %thead
         %tr
-          %td= section.name
-          %td= "#{section.capacity} seats"
-          %td= number_as_cents section.price
-          %td
-            =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
-            =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)
+          %th Name
+          %th Seats
+          %th Price
+          %th Actions
+      %tbody
+        - @chart.sections.each do |section|
+          %tr
+            %td= section.name
+            %td= "#{section.capacity} seats"
+            %td= number_as_cents section.price
+            %td
+              =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
+              =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)
 
-  =link_to "Add a section to this chart", new_chart_section_path(@chart), :class => "link"
+  
