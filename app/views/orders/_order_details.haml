@@ -47,8 +47,8 @@
               %td= l ticket.performance.in_time_zone(AthenaEvent.find(ticket.event_id).time_zone)
 
 %h3 Refunds
-- children.each do |child|
-  #items
+#refunds
+  - children.each do |child|
     .table-controls
     %table.zebra
       %thead

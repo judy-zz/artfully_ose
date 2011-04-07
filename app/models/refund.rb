@@ -19,7 +19,7 @@ class Refund
     @amount ||= @items.collect(&:price).reduce(:+)
   end
 
-  def refunded_items
+  def items_refunded
     @items.size
   end
 
