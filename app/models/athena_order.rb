@@ -14,7 +14,7 @@ class AthenaOrder < AthenaResource::Base
     attribute :timestamp,       :string
   end
 
-  before_save :set_datetime
+  before_save :set_timestamp
 
   after_save :save_items, :unless => lambda { items.empty? }
   after_save :create_purchase_action
@@ -86,7 +86,7 @@ class AthenaOrder < AthenaResource::Base
       action.person          = person
       action.subject         = self
       action.organization_id = organization.id
-      action.datetime        = self.timestamp
+      action.timestamp       = self.timestamp
       action.details         = self.details
       logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
       action.save!
@@ -99,7 +99,7 @@ class AthenaOrder < AthenaResource::Base
         action.person          = person
         action.subject         = Donation.find(item.item_id)
         action.organization_id = organization.id
-        action.datetime        = self.timestamp
+        action.timestamp       = self.timestamp
         action.details         = self.details
         action.save!
         action
@@ -147,7 +147,7 @@ class AthenaOrder < AthenaResource::Base
       items ||= AthenaItem.find_by_order(self)
     end
 
-    def set_datetime
+    def set_timestamp
       if @attributes['timestamp'].nil?
         @attributes['timestamp'] = DateTime.now
       end

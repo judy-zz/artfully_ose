@@ -15,7 +15,7 @@ class AthenaAction < AthenaResource::Base
     attribute 'subject_id',         :string
     attribute 'action_type',        :string
     attribute 'details',            :string
-    attribute 'datetime',           :string
+    attribute 'timestamp',          :string
     attribute 'starred',            :string
   end
 
@@ -64,9 +64,9 @@ class AthenaAction < AthenaResource::Base
   end
 
   #TODO: push up into AthenaResource
-  def datetime
-    attributes['datetime'] = DateTime.parse(attributes['datetime']) if attributes['datetime'].is_a? String
-    attributes['datetime']
+  def timestamp
+    attributes['timestamp'] = DateTime.parse(attributes['timestamp']) if attributes['timestamp'].is_a? String
+    attributes['timestamp']
   end
 
   private
