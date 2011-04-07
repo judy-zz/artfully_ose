@@ -546,6 +546,7 @@ table {
   color: white;
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
   padding: 1em;
+  margin-bottom: 1em;
   line-height: 1.2em; }
   .flash:after {
     content: ".";
@@ -559,6 +560,18 @@ table {
     cursor: pointer; }
   .flash p {
     color: rgba(255, 255, 255, 0.97) !important; }
+  .flash ul li {
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    .flash ul li:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
 
 .error, .warning {
   background: #fb572c;
