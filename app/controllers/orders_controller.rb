@@ -21,7 +21,8 @@ class OrdersController < ApplicationController
   def show
     @order = AthenaOrder.find(params[:id])
     authorize! :view, @order
-    
+
+    @children = @order.children
     @person = AthenaPerson.find(@order.person_id)
 
     @total = 0
@@ -38,7 +39,7 @@ class OrdersController < ApplicationController
       orders = nil
     rescue ActiveResource::ForbiddenAccess #occurs when search string == ""
       orders = nil
-    end     
+    end
     orders
   end
 

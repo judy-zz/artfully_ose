@@ -9,13 +9,18 @@ class AthenaOrder < AthenaResource::Base
     attribute :person_id,       :integer
     attribute :organization_id, :integer
     attribute :customer_id,     :string
+    attribute :transaction_id,  :string
+    attribute :parent_id,       :string
     attribute :price,           :integer
     attribute :details,         :string
     attribute :timestamp,       :string
   end
 
-  before_save :set_timestamp
+  validates_presence_of :person_id
+  validates_presence_of :organization_id
+  validates_presence_of :transaction_id
 
+  before_save :set_timestamp
   after_save :save_items, :unless => lambda { items.empty? }
   after_save :create_purchase_action
   after_save :create_donation_actions
@@ -44,13 +49,30 @@ class AthenaOrder < AthenaResource::Base
     @organization, self.organization_id = org, org.id
   end
 
+  def parent
+    @parent ||= find_parent
+  end
+
+  def parent=(parent)
+    if parent.nil?
+      @parent = parent_id = nil
+      return
+    end
+
+    @parent, self.parent_id = parent, parent.id
+  end
+
+  def children
+    @children ||= AthenaOrder.find(:all, :params => { :parentId => self.id } )
+  end
+
   def customer
     @customer ||= find_customer
   end
 
   def customer=(customer)
     if customer.nil?
-      @customer = customer_id = customer
+      @customer = customer_id = nil
       return
     end
 
@@ -78,6 +100,10 @@ class AthenaOrder < AthenaResource::Base
       self.items << AthenaItem.new(:item_type => item.class.to_s, :item_id => item.id, :price => item.price)
     end
     logger.debug("End for_items")
+  end
+
+  def payment
+    AthenaPayment.new(:transaction_id => transaction_id)
   end
 
   private
@@ -109,13 +135,12 @@ class AthenaOrder < AthenaResource::Base
     def save_items
       logger.debug("saving items for order: #{self.id}")
       items.each do |item|
-
+        item.order = self
         logger.debug("New item ------------------------------")
         logger.debug(item)
         logger.debug(item.valid?)
         logger.debug(item.errors)
 
-        item.order=self
         item.save
       end
     end
@@ -127,6 +152,16 @@ class AthenaOrder < AthenaResource::Base
         AthenaPerson.find(self.person_id)
       rescue ActiveResource::ResourceNotFound
         update_attribute!(:person_id, nil)
+        return nil
+      end
+    end
+
+    def find_parent
+      return if self.parent_id.nil?
+
+      begin
+        AthenaOrder.find(parent_id)
+      rescue ActiveResource::ResourceNotFound
         return nil
       end
     end

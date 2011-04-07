@@ -3,6 +3,7 @@
   @include rounded-corners(4px, 4px, 4px, 4px)
   @include inset-text
   padding: 1em
+  margin-bottom: 1em
   line-height: 1.2em
   .close
     margin-left: 1em
@@ -10,6 +11,8 @@
     cursor: pointer
   p
     color: rgba(255,255,255,0.97) !important
+  ul li
+    @include stack-content
 
 .error, .warning
   @include gradient($light-red, $red)

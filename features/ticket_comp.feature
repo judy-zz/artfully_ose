@@ -9,7 +9,6 @@ Feature: Ticket Comp
     And the 1st performance has had tickets created
     And the 1st performance is on sale
 
-  @wip
   Scenario: A producer comps a ticket
     When I go to the events page
     And I view the 1st event

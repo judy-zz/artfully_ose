@@ -20,4 +20,16 @@ describe AthenaItem do
       subject.order.should be_nil
     end
   end
+
+  describe "refund_item" do
+    it "should create a duplicate item without the id" do
+      old_attr = subject.attributes.dup
+      old_attr.delete(:id)
+
+      new_attr = subject.refund_item.attributes
+      new_attr.delete(:state)
+
+      old_attr.should eq new_attr
+    end
+  end
 end

@@ -68,4 +68,5 @@ Factory.define :payment, :class => AthenaPayment, :default_strategy => :build do
   p.billing_address { Factory(:address) }
   p.credit_card { Factory(:credit_card) }
   p.customer { Factory(:customer) }
+  p.transaction_id "j59qrb"
 end

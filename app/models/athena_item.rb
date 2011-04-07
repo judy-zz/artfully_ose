@@ -9,6 +9,7 @@ class AthenaItem < AthenaResource::Base
     attribute 'item_type',  :string
     attribute 'item_id',    :string
     attribute 'price',      :integer
+    attribute 'state',      :string
   end
 
   validates_presence_of :order_id, :item_type, :item_id, :price
@@ -25,6 +26,12 @@ class AthenaItem < AthenaResource::Base
 
     raise TypeError, "Expecting an AthenaOrder" unless order.kind_of? AthenaOrder
     @order, self.order_id = order, order.id
+  end
+
+  def refund_item
+    new_attrs = attributes.reject { |key, value| %w( id ).include? key }
+    new_attrs.merge!({:state => "refunded"})
+    AthenaItem.new(new_attrs)
   end
 
   def self.find_by_order(order)

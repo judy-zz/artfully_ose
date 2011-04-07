@@ -134,5 +134,20 @@ describe AthenaPayment do
         subject.authorize!.should be_false
       end
     end
+
+    describe "refunds" do
+      it { should respond_to :refunded? }
+
+      it "should be refunded when ATHENA returns success as true" do
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/refund', :status => 200, :body => '{ "success": true }')
+        subject.refund!
+        subject.refunded?.should be_true
+      end
+
+      it "should return false when ATHENA returns success as false" do
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/refund', :status => 200, :body => '{ "success": false }')
+        subject.refund!.should be_false
+      end
+    end
   end
 end

@@ -139,6 +139,7 @@ describe Order do
       subject.add_tickets tickets
       subject.items.each { |item| item.stub!(:sell_to) }
       subject.items.each { |item| item.stub!(:sold?).and_return(true) }
+      subject.instance_variable_set(:@payment, Factory(:payment))
     end
 
     it "should be called when the order is approved" do

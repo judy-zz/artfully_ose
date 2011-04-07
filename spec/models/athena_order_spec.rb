@@ -4,9 +4,9 @@ describe AthenaOrder do
   subject { Factory(:athena_order_with_id) }
 
   describe "schema" do
-    it { should respond_to :person_id }
-    it { should respond_to :organization_id }
-    it { should respond_to :customer_id }
+    %w( person_id organization_id customer_id transaction_id ).each do |attr|
+      it { should respond_to attr }
+    end
   end
 
   %w( person organization customer ).each do |association|
@@ -24,6 +24,13 @@ describe AthenaOrder do
       organization = Factory(:organization)
       subject.organization = organization
       subject.organization.should eq organization
+    end
+  end
+
+  describe "payment" do
+    it "should return a new Payment based on the transaction ID" do
+      subject.payment.should be_an AthenaPayment
+      subject.payment.transaction_id.should eq subject.transaction_id
     end
   end
 
@@ -60,6 +67,24 @@ describe AthenaOrder do
     it "should update the customer id when assigning a new customer record" do
       subject.customer = Factory(:customer_with_id, :id => 2)
       subject.customer_id.should eq(2)
+    end
+  end
+
+  describe "parent" do
+    it "should fetch the Parent Order record" do
+      parent = Factory(:athena_order_with_id)
+      subject.parent = parent
+      subject.parent.should eq parent
+    end
+
+    it "should not make a request if the parent_id is not set" do
+      subject.parent = subject.parent_id = nil
+      subject.parent.should be_nil
+    end
+
+    it "should update the parent id when assigning a new parent record" do
+      subject.parent = Factory(:athena_order_with_id, :id => 2)
+      subject.parent_id.should eq(2)
     end
   end
 
@@ -107,7 +132,7 @@ describe AthenaOrder do
     end
   end
 
-  describe "generating athena orderes" do
+  describe "generating athena orders" do
     let(:organization) { Factory(:organization) }
     let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
     let(:donations) { 2.times.collect { Factory(:donation, :organization => organization) } }
