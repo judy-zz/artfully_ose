@@ -1,3 +1,4 @@
+class PeopleController < ApplicationController
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
