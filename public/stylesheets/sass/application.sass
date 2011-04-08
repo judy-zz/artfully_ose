@@ -1,29 +1,14 @@
 @import "reset.css"
 @import "stack-layout"
+@import "colors"
 @import "mixins"
-
-$orange: #F08204
-$light-orange: lighten($orange, 10%)
-$dark-orange: darken($orange, 25%)
-
-$grey: #CED1CB
-$light-grey: lighten($grey, 10%)
-$dark-grey: darken($grey, 50%)
-
-$blue: #077083
-$light-blue: lighten($blue, 10%)
-$dark-blue: darken($blue, 50%)
-
-$red: #f03504
-$light-red: lighten($red, 10%)
-$dark-red: darken($red, 25%)
 
 body
   font:
     size: 11pt
     family: Arimo, sans-serif
 a
-  color: #077083
+  color: $compliment
   text-decoration: none
 
 h1, h2, h3, h4
@@ -32,14 +17,14 @@ h1, h2, h3, h4
 
 h1
   font-size: 3.5em
-  color: #077083
+  color: $compliment
 
 h2
   margin-bottom: 3em
 
 h3
   font-size: 2em
-  color: #F08204
+  color: $primary
   margin-bottom: .5em
 
 h4
@@ -49,7 +34,7 @@ h4
 
 strong
   font-weight: bold
-  color: #077083
+  color: $compliment
 
 #large-header
   background: #eee
@@ -108,8 +93,8 @@ strong
 .detailed-list
   > li
     margin: 10px 0
-    border-bottom: 1px solid #CED1CB
-    color: #594B43
+    border-bottom: 1px solid $neutral-1
+    color: $secondary
     padding: 10px
     &.active
       background: #eee
@@ -128,7 +113,7 @@ strong
   font-size: .9em
 
 .performance-list
-  color: #594B43
+  color: $secondary
   border: 1px solid #ccc
   border-top: none
   > li
@@ -267,7 +252,7 @@ strong
   margin-bottom: 2em
   li
     @include rounded-corners(3px, 3px, 3px, 3px)
-    @include gradient(#0baac6, #077083)
+    @include gradient(#0baac6, $compliment)
     @include inset-text
     display: inline-block
     padding: 4px 8px

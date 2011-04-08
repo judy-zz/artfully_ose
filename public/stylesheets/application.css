@@ -43,6 +43,9 @@
 .stack1of7, .calendar > li {
   width: 14.285%; }
 
+.test {
+  color: #f18305; }
+
 body {
   font-size: 11pt;
   font-family: Arimo, sans-serif; }
@@ -416,11 +419,11 @@ strong {
       border-radius: 2px 2px 2px 2px;
       color: white;
       text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
-      background: #efa958;
-      background: -moz-linear-gradient(top, #efa958 14%, #f08204 100%);
-      background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #efa958), color-stop(100%, #f08204));
+      background: #fb9b2c;
+      background: -moz-linear-gradient(top, #fb9b2c 14%, #f08204 100%);
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #fb9b2c), color-stop(100%, #f08204));
       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$finish',GradientType=0 );
-      border: 1px solid #f08204;
+      border: 1px solid #d77404;
       padding-left: 8px;
       padding-right: 8px; }
     #main-menu li.active ul {
