@@ -1,0 +1,21 @@
+%h3 Refunds
+#refunds
+  - children.each do |child|
+    .table-controls
+    %table.zebra
+      %thead
+        %tr
+          %th Type
+          %th ID
+          %th Price
+          %th Event
+          %th Performance
+      %tbody
+        - (child.items).each do |item|
+          - ticket = AthenaTicket.find(item.item_id)
+          %tr
+            %td Ticket
+            %td=item.id
+            %td= number_as_cents item.price
+            %td=link_to "#{ticket.event}", event_path(ticket.event_id)
+            %td= l ticket.performance.in_time_zone(AthenaEvent.find(ticket.event_id).time_zone)

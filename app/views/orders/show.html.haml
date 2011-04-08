@@ -4,4 +4,6 @@
   = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }
 
 .document
-  = render :partial=>'order_details', :locals => { :order => @order, :person => @person, :children => @children }
+  = render :partial=>'order_details', :locals => { :order => @order, :person => @person }
+  = render :partial=>'item_table', :locals => { :order => @order }
+  = render :partial=>'refund_table', :locals => { :children => @children }
