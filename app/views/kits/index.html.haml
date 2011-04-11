@@ -1,18 +1,12 @@
 -content_for :header do
   %h1 Kits
+
 .context
+  %h2 Explanation of Kits
+  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+
 .document
-  #kits
-    .table-controls
-    %table
-      %thead
-        %tr
-          %th Name
-          %th Status
-          %th Actions
-      %tbody
-        - @kits.each do |kit|
-          %tr
-            %td= kit.type
-            %td= kit.state.titleize
-            %td= link_to "Reactivate #{kit.type}", kit_path(kit), :method => :put if !kit.activated? and !kit.pending?
+  .call-to-action
+    = link_to "Add Ticketing Kit", kits_path(:type => "TicketingKit"), :method => :post
+    = link_to "Add Donation Kit", kits_path(:type => "DonationKit"), :method => :post
+  = render :partial=>'kits/kits_table', :locals => { :kits => @kits }

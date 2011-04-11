@@ -1,25 +1,6 @@
 - content_for :header do
   %h1 Organization
-  %h2= @organization.name
-
 .context
-  %ul
-    %li= link_to "Ticketing Kit", kits_path(:type => "TicketingKit"), :method => :post
-    %li= link_to "Donation Kit", kits_path(:type => "DonationKit"), :method => :post
+  = link_to "Kits", kits_path
 
 .document
-  %h3 Kits
-  #kits
-    .table-controls
-    %table
-      %thead
-        %tr
-          %th Name
-          %th Status
-          %th Actions
-      %tbody
-        - @kits.each do |kit|
-          %tr
-            %td= kit.type
-            %td= kit.state.titleize
-            %td= link_to "Reactivate #{kit.type}", kit_path(kit), :method => :put if !kit.activated? and !kit.pending?
