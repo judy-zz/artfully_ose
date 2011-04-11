@@ -1,0 +1,24 @@
+.context
+  %ul.detailed-list
+    - @events.each do |event|
+      %li
+        %h4= link_to event.name, params.merge({:event_id => event.id}), :title => 'event-name'
+
+.context
+  %ul.detailed-list#of_performances
+    - @performances.each do |performance|
+      %li
+        %h4= link_to l(performance.datetime, :format => :short), params.merge({:performance_id => performance.id}), :title => 'performance-datetime'
+
+.context
+  - unless @performance.nil?
+    = form_tag '/exchanges' do
+      = hidden_field_tag :order_id, params[:order_id]
+      - params[:items].each do |item_id|
+        = hidden_field_tag "items[]", item_id
+      %ul.detailed-list
+        - @performance.tickets.each do |ticket|
+          %li
+            = check_box_tag "tickets[]", ticket.id, false, :id => "ticket_#{ticket.id}"
+            = label_tag "ticket_#{ticket.id}", "#{ticket.section}: #{number_as_cents ticket.price}"
+      = submit_tag "Exchange these tickets"

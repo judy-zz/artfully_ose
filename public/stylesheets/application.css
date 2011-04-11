@@ -43,9 +43,6 @@
 .stack1of7, .calendar > li {
   width: 14.285%; }
 
-.test {
-  color: #f18305; }
-
 body {
   font-size: 11pt;
   font-family: Arimo, sans-serif; }
@@ -174,10 +171,21 @@ strong {
       visibility: hidden; }
 
 .detailed-list > li {
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left;
   margin: 10px 0;
   border-bottom: 1px solid #ced1cb;
   color: #594b43;
   padding: 10px; }
+  .detailed-list > li:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
   .detailed-list > li.active {
     background: #eeeeee; }
 .detailed-list ul.details li {

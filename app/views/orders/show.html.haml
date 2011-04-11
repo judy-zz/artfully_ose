@@ -4,6 +4,21 @@
   = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }
 
 .document
-  = render :partial=>'order_details', :locals => { :order => @order, :person => @person }
+  %h3 #{@order.id}
+
+  %ul.kv
+    %li
+      .key Ordered by
+      .value=link_to "#{@person.last_name}, #{@person.first_name}", person_path(@person)
+    %li
+      .key Date
+      .value #{(l @order.timestamp) unless @order.timestamp.nil?}
+    %li
+      .key Total
+      .value #{number_as_cents(@total)}
+    %li
+      .key Details
+      .value #{@order.details}
+
   = render :partial=>'item_table', :locals => { :order => @order }
   = render :partial=>'refund_table', :locals => { :children => @children }

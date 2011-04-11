@@ -61,6 +61,7 @@ Artfully::Application.routes.draw do
 
   resources :orders
   resources :refunds
+  resources :exchanges
 
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
   match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance

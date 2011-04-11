@@ -1,7 +1,28 @@
 - unless order.items.empty?
-  #items
+  #refunds
+    %h3 Refunds
     = form_for :refund, :url => '/refunds' do |form|
       = hidden_field_tag :order_id, order.id
+      %ul
+        - order.items.each do |item|
+          %li
+            = check_box_tag "items[]", item.id, false, :id => "item_#{item.id}"
+            = label_tag "item_#{item.id}", item.id
+      = submit_tag "Refund"
+
+  #exchanges
+    %h3 Exchanges
+    = form_tag '/exchanges/new', :method => :get do |form|
+      = hidden_field_tag :order_id, order.id
+      %ul
+        - order.items.each do |item|
+          %li
+            = check_box_tag "items[]", item.id, false, :id => "item_#{item.id}"
+            = label_tag "item_#{item.id}", item.id
+      = submit_tag "Exchange"
+
+  #items
+    = form_tag do
       .table-controls
         %ul.bulk-actions
           %li= submit_tag "Refund"
@@ -15,7 +36,7 @@
             %th Event
             %th Performance
         %tbody
-          - (order.items).each do |item|
+          - order.items.each do |item|
             - ticket = AthenaTicket.find(item.item_id)
             %tr
               %td= check_box_tag "items[]", item.id
