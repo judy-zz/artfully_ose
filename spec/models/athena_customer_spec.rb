@@ -45,11 +45,11 @@ describe AthenaCustomer do
     end
 
     it "should issue a POST when creating a new AthenaCustomer" do
-      FakeWeb.register_uri(:post, "http://localhost/payments/customers/.json", :body => "{}")
+      FakeWeb.register_uri(:post, "http://localhost/payments/customers.json", :body => "{}")
       @customer = Factory.create(:customer)
 
       FakeWeb.last_request.method.should == "POST"
-      FakeWeb.last_request.path.should == "/payments/customers/.json"
+      FakeWeb.last_request.path.should == "/payments/customers.json"
     end
   end
 

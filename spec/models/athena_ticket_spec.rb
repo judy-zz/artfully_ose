@@ -24,7 +24,7 @@ describe AthenaTicket do
     end
 
     it "should raise ForbiddenAccess when attempting to fetch all tickets" do
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json", :status => "403")
+      FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json", :status => "403")
       lambda { AthenaTicket.all }.should raise_error(ActiveResource::ForbiddenAccess)
     end
 
@@ -35,7 +35,7 @@ describe AthenaTicket do
 
     it "should generate a query string for a single parameter search" do
       @ticket = Factory(:ticket, :price => 50)
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets/.json?price=eq50", :body => "[#{@ticket.encode}]" )
+      FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json?price=eq50", :body => "[#{@ticket.encode}]" )
       @tickets = AthenaTicket.find(:all, :params => {:price => "eq50"})
       @tickets.map { |ticket| ticket.price.should == 50 }
     end
@@ -70,17 +70,17 @@ describe AthenaTicket do
     end
 
     it "should issue a POST when creating a new AthenaTicket" do
-      FakeWeb.register_uri(:post, "http://localhost/tix/tickets/.json", :body => "{}")
+      FakeWeb.register_uri(:post, "http://localhost/tix/tickets.json", :body => "{}")
       @ticket = Factory.create(:ticket)
 
       FakeWeb.last_request.method.should == "POST"
-      FakeWeb.last_request.path.should == "/tix/tickets/.json"
+      FakeWeb.last_request.path.should == "/tix/tickets.json"
     end
   end
 
   describe "searching"do
     it "by performance" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?|, :body => "[]")
       now = DateTime.now
       params = { "performance" => "eq#{now.as_json}" }
       AthenaTicket.search(params)
@@ -89,14 +89,14 @@ describe AthenaTicket do
     end
 
     it "should add _limit to the query string when included in the arguments" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?_limit=10|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?_limit=10|, :body => "[]")
       params = { "limit" => "10" }
       AthenaTicket.search(params)
       FakeWeb.last_request.path.should match "_limit=10"
     end
 
     it "should default to searching for tickets marked as on sale" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?|, :body => "[]")
       AthenaTicket.search({})
       FakeWeb.last_request.path.should match "state=on_sale"
     end
@@ -106,7 +106,7 @@ describe AthenaTicket do
     end
 
     it "should camelize the keys for the search terms" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/.json\?|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?|, :body => "[]")
       AthenaTicket.search({:performance_id => 1})
       FakeWeb.last_request.path.should match "performanceId"
     end

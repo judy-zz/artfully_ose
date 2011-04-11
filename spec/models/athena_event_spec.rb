@@ -38,7 +38,7 @@ describe AthenaEvent do
     it "should fetch the performances from ATHENA if not yet cached" do
       test_performances = (0..1).collect { Factory(:athena_performance) }
       subject.id = 1
-      FakeWeb.register_uri(:get, 'http://localhost/stage/performances/.json?eventId=eq1', :status => 200, :body => test_performances.to_json)
+      FakeWeb.register_uri(:get, 'http://localhost/stage/performances.json?eventId=eq1', :status => 200, :body => test_performances.to_json)
       subject.performances.should eq test_performances
     end
 
@@ -81,7 +81,7 @@ describe AthenaEvent do
     it "should fetch the charts from ATHENA if not yet cached" do
       charts = (0..5).collect { Factory(:athena_chart) }
       subject.id = 1
-      FakeWeb.register_uri(:get, 'http://localhost/stage/charts/.json?eventId=eq1', :status => 200, :body => charts.to_json)
+      FakeWeb.register_uri(:get, 'http://localhost/stage/charts.json?eventId=eq1', :status => 200, :body => charts.to_json)
       subject.charts.size.should eq charts.size
     end
 

@@ -11,7 +11,7 @@ Factory.define :athena_chart, :default_strategy => :build do |c|
 
   c.after_build do |chart|
     FakeWeb.register_uri(:get, "http://localhost/stage/charts/#{chart.id}.json", :body => chart.encode)
-    FakeWeb.register_uri(:post, "http://localhost/stage/charts/.json", :body => chart.encode)
+    FakeWeb.register_uri(:post, "http://localhost/stage/charts.json", :body => chart.encode)
     FakeWeb.register_uri(:put, "http://localhost/stage/charts/#{chart.id}.json", :body => chart.encode)
   end
 end
@@ -55,7 +55,7 @@ end
 Factory.define :athena_event_with_id, :parent => :athena_event do |e|
   e.id { Factory.next :event_id }
   e.after_build do |event|
-    FakeWeb.register_uri(:post, "http://localhost/stage/events/.json", :body => event.encode)
+    FakeWeb.register_uri(:post, "http://localhost/stage/events.json", :body => event.encode)
     FakeWeb.register_uri(:any, "http://localhost/stage/events/#{event.id}.json", :body => event.encode)
   end
 end

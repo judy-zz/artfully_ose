@@ -1,7 +1,7 @@
 Given /^I enter my payment details$/ do
   person = Factory(:athena_person_with_id)
-  FakeWeb.register_uri(:get, %r|http://localhost/people/people/.*|, :body => "[#{person.encode}]")
-  FakeWeb.register_uri(:post, "http://localhost/people/people/.json", :body => person.encode)
+  FakeWeb.register_uri(:get, %r|http://localhost/people/people.*|, :body => "[#{person.encode}]")
+  FakeWeb.register_uri(:post, "http://localhost/people/people.json", :body => person.encode)
   payment = Factory(:payment)
 
   with_scope('#customer') do

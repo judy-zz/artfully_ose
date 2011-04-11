@@ -98,12 +98,12 @@ describe AthenaOrder do
 
   describe "#save" do
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/people/actions/.json", :body => Factory(:athena_purchase_action).encode)
-      FakeWeb.register_uri(:get, "http://localhost/orders/items/.json?orderId=eq1", :body=>"")
+      FakeWeb.register_uri(:post, "http://localhost/people/actions.json", :body => Factory(:athena_purchase_action).encode)
+      FakeWeb.register_uri(:get, "http://localhost/orders/items.json?orderId=eq1", :body=>"")
     end
 
     it "should save the items after saving the order" do
-      FakeWeb.register_uri(:post, "http://localhost/orders/items/.json", :body=>"")
+      FakeWeb.register_uri(:post, "http://localhost/orders/items.json", :body=>"")
       items = 2.times.collect { Factory(:athena_item) }
       subject.stub(:items).and_return(items)
       subject.save
@@ -146,7 +146,7 @@ describe AthenaOrder do
     end
 
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/orders/orders/.json", :body => subject.encode)
+      FakeWeb.register_uri(:post, "http://localhost/orders/orders.json", :body => subject.encode)
     end
 
     it "should assign the organization to the order" do

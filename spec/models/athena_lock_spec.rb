@@ -7,9 +7,9 @@ describe AthenaLock do
 
   describe "as a remote resource" do
     it "should use the prefix /tix/meta/" do
-      FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks/.json", :status => 200, :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks.json", :status => 200, :body => "[]")
       AthenaLock.all
-      FakeWeb.last_request.path.should == "/tix/meta/locks/.json"
+      FakeWeb.last_request.path.should == "/tix/meta/locks.json"
     end
   end
 
@@ -24,7 +24,7 @@ describe AthenaLock do
     it { should respond_to :status }
 
     it "should parse the lock_expires attribute before validation" do
-      FakeWeb.register_uri(:post, 'http://localhost/tix/meta/locks/.json', :status => 200, :body => Factory(:lock).encode)
+      FakeWeb.register_uri(:post, 'http://localhost/tix/meta/locks.json', :status => 200, :body => Factory(:lock).encode)
       lock = AthenaLock.create()
       lock.lock_expires.acts_like_time?.should be_true
     end

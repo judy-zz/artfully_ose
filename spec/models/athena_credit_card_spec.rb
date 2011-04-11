@@ -76,11 +76,11 @@ describe AthenaCreditCard do
     end
 
     it "should issue a POST when creating a new AthenaCreditCard" do
-      FakeWeb.register_uri(:post, "http://localhost/payments/cards/.json", :body => "{}")
+      FakeWeb.register_uri(:post, "http://localhost/payments/cards.json", :body => "{}")
       @card = Factory.create(:credit_card, :id => nil)
 
       FakeWeb.last_request.method.should == "POST"
-      FakeWeb.last_request.path.should == "/payments/cards/.json"
+      FakeWeb.last_request.path.should == "/payments/cards.json"
     end
   end
 
