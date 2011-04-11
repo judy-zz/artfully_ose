@@ -4,7 +4,7 @@ class PeopleController < ApplicationController
     flash[:alert] = exception.message
     redirect_to root_path
   end
-  
+
   def index
     @people = []
     if params[:email]
@@ -21,16 +21,16 @@ class PeopleController < ApplicationController
     @person = AthenaPerson.find(params[:id])
     authorize! :view, @person
   end
-  
+
   def star
     render :nothing => true
-    type = params[:action_type]
-    if(type == 'action')
+    type = params[:type]
+    if type == 'action'
       starable = AthenaAction.find(params[:action_id])
     else
       starable = AthenaRelationship.find(params[:action_id])
     end
-    
+
     if starable.starred?
       starable.starred = false
     else
