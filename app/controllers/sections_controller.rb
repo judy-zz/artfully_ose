@@ -1,6 +1,4 @@
 class SectionsController < ApplicationController
-  before_filter :authenticate_user!
-
   def new
     @section = AthenaSection.new
     @chart = AthenaChart.find(params[:chart_id])

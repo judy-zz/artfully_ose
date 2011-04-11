@@ -1,6 +1,4 @@
 class Admin::KitsController < Admin::AdminController
-  before_filter :authenticate_user!
-
   def activate
     @kit = Kit.find(params[:id])
     @kit.activate!

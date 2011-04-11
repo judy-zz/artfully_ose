@@ -1,6 +1,4 @@
 class KitsController < ApplicationController
-  before_filter :authenticate_user!
-
   def index
     @kits = current_user.current_organization.kits
   end
