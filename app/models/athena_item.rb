@@ -53,10 +53,12 @@ class AthenaItem < AthenaResource::Base
     AthenaItem.new(new_attrs)
   end
 
+  def returnable?
+    item.expired?
+  end
+
   def return_item
-    unless item.expired?
-      item.on_sale!
-    end
+    item.on_sale! unless returnable?
   end
 
   def self.find_by_order(order)

@@ -98,7 +98,6 @@ class AthenaTicket < AthenaResource::Base
     sold? or comped?
   end
 
-
   def to_item
     pt = PurchasableTicket.new
     pt.ticket = self

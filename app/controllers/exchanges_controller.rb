@@ -20,6 +20,7 @@ class ExchangesController < ApplicationController
 
     if @exchange.valid?
       @exchange.submit
+      redirect_to order_url(order)
     else
       flash[:error] = "Unable to process exchange."
       redirect_to :back

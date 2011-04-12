@@ -6,7 +6,9 @@ class Exchange
   validates_presence_of :order
   validates_length_of :items,   :minimum => 1
   validates_length_of :tickets, :minimum => 1
+  validate :items_are_returnable
   validate :tickets_match_items
+  validate :tickets_are_available
 
   def initialize(order, items, tickets = [])
     self.order =        order
@@ -14,16 +16,25 @@ class Exchange
     self.tickets =      tickets
   end
 
+  def items_are_returnable
+    errors.add(:items, "are not available to return") unless items.all?(&:returnable?)
+  end
+
   def tickets_match_items
     errors.add(:tickets, "must match the items to exchange") unless tickets.length == items.length
   end
 
+  def tickets_are_available
+    errors.add(:tickets, "are not available to exchange") if tickets.any?(&:committed?)
+  end
+
   def submit
-    return_items and sell_new_items
+    return_items
+    sell_new_items
   end
 
   def return_items
-    items.map(&:return_item).all?
+    items.map(&:return_item)
   end
 
   def sell_new_items

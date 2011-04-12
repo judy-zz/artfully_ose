@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Exchange do
   let(:order)       { Factory(:athena_order_with_id) }
   let(:items)       { 3.times.collect { Factory(:athena_item) } }
-  let(:tickets)     { 3.times.collect { Factory(:ticket_with_id) } }
+  let(:tickets)     { 3.times.collect { Factory(:ticket_with_id, :state => "on_sale") } }
 
   subject { Exchange.new(order, items, tickets) }
 
@@ -30,21 +30,19 @@ describe Exchange do
       subject.tickets.stub(:length).and_return(3)
       subject.should_not be_valid
     end
+
+    it "should not be valid if any of the items are not returnable" do
+      subject.items.first.stub(:returnable?).and_return(false)
+      subject.should_not be_valid
+    end
+
+    it "should not be valid if any of the tickets are comitted" do
+      subject.tickets.first.stub(:committed?).and_return(true)
+      subject.should_not be_valid
+    end
   end
 
   describe ".submit" do
-    it "should sell the new items if it succeeds at returning the old items" do
-      subject.stub(:return_items).and_return(true)
-      subject.should_receive(:sell_new_items)
-      subject.submit
-    end
-
-    it "should not sell the new items if it failed to return the old ones" do
-      subject.stub(:return_items).and_return(false)
-      subject.should_not_receive(:sell_new_items)
-      subject.submit
-    end
-
     describe "return_items" do
       before(:each) do
         subject.stub(:create_athena_order)
