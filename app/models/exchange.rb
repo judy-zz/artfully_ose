@@ -27,9 +27,18 @@ class Exchange
   end
 
   def sell_new_items
-
+    tickets.each { |ticket| ticket.sell_to(order.person) }
+    create_athena_order
   end
 
   def create_athena_order
+    exchange_order = AthenaOrder.new.tap do |exchange_order|
+      exchange_order.person = order.person
+      exchange_order.parent = order
+      exchange_order.for_organization order.organization
+      exchange_order.for_items tickets
+    end
+
+    exchange_order.save!
   end
 end

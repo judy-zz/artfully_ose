@@ -33,15 +33,45 @@ describe Exchange do
   end
 
   describe ".submit" do
-    it "should return the items in the exchange" do
-      subject.items.each { |item| item.should_receive(:return_item).and_return(true) }
+    it "should sell the new items if it succeeds at returning the old items" do
+      subject.stub(:return_items).and_return(true)
+      subject.should_receive(:sell_new_items)
       subject.submit
     end
 
-    it "should not update the new items if it failed to return the old ones" do
-      subject.items.first.stub(:return_item).and_return(false)
-      subject.should_not_receive(:update_items)
+    it "should not sell the new items if it failed to return the old ones" do
+      subject.stub(:return_items).and_return(false)
+      subject.should_not_receive(:sell_new_items)
       subject.submit
+    end
+
+    describe "return_items" do
+      before(:each) do
+        subject.stub(:create_athena_order)
+      end
+
+      it "should return the items in the exchange" do
+        subject.items.each { |item| item.should_receive(:return_item).and_return(true) }
+        subject.submit
+      end
+    end
+
+    describe "sell_new_items" do
+      before(:each) do
+        subject.stub(:return_items).and_return(true)
+        subject.stub(:create_athena_order)
+      end
+
+      it "should sell each new ticket to the person associated with the order" do
+        subject.tickets.each { |ticket| ticket.should_receive(:sell_to).with(subject.order.person) }
+        subject.submit
+      end
+
+      it "should create an exchange order if all of the tickets are sold successfully" do
+        subject.tickets.each { |ticket| ticket.stub(:sell_to).and_return(true) }
+        subject.should_receive(:create_athena_order)
+        subject.submit
+      end
     end
   end
 end

@@ -18,7 +18,7 @@ class AthenaOrder < AthenaResource::Base
 
   validates_presence_of :person_id
   validates_presence_of :organization_id
-  validates_presence_of :transaction_id
+  validates_presence_of :transaction_id, :if => lambda { parent_id.nil? }
 
   before_save :set_timestamp
   after_save :save_items, :unless => lambda { items.empty? }
