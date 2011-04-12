@@ -1,0 +1,63 @@
+- content_for :header do
+  %h1 Donation Kit Details
+
+.context
+  %h3 Description
+  -#=link_to "Submit", new_donation_kit_path
+  -#<div id="d1">501c3</div>
+  #d1
+    %h4 501c3 Donations
+    %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+  #d2
+    %h4 Fractued Atlas Fiscal Sponsorship Donations
+    %p Suspendisse non euismod justo. Curabitur pharetra justo non lacus adipiscing eu mollis magna viverra. Fusce quam quam, interdum scelerisque sodales sit amet, mollis non urna. Sed elit urna, porttitor sed vestibulum non, interdum non nunc. Fusce a velit felis. Proin quis erat in erat pellentesque tempor.
+  #d3
+    %h4 None
+    %p Proin a lectus nisi. Aliquam volutpat malesuada eros, id scelerisque lacus varius a. Curabitur molestie quam at metus sollicitudin imperdiet. Cras dictum fermentum luctus. Pellentesque hendrerit metus nec lorem pulvinar nec malesuada mi pulvinar. 
+.document
+  #radio
+  = form_for current_user, :url => new_donation_kit_path do |form|
+    %br
+    = radio_button_tag :donation_type, "501c3"
+    = label_tag :donation_type, "501c3"
+    %br
+    = radio_button_tag :donation_type, "fafs"
+    = label_tag :donation_type, "FAFS"
+    %br
+    = radio_button_tag :donation_type, "none"
+    = label_tag :donation_type, "None"
+
+    -#= hidden_field_tag :donation_type, :moof
+    -#%p If this is correct, please click confirm it by clicking
+    %p
+    = submit_tag "Select"
+
+:javascript
+  $(document).ready(
+    function(){
+        $('#d1').hide();
+        $('#d2').hide();
+        $('#d3').hide();
+        $('input:radio[name=donation_type]').change(
+            function(){
+                if ($(this).val()=="501c3") {
+                    $('#d1').show();
+                }else {
+                    $('#d1').hide();
+                }
+
+                if ($(this).val()== "fafs") {
+                    $('#d2').show();
+                } else {
+                    $('#d2').hide();
+                }
+
+                if ($(this).val()== "none") {
+                    $('#d3').show();
+                }
+                else {
+                    $('#d3').hide();
+                }
+            }
+            );
+    });

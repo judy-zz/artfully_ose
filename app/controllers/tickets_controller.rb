@@ -70,7 +70,6 @@ class TicketsController < ApplicationController
     end
   end
 
-
   private
     def with_confirmation
       if params[:confirmed].blank?

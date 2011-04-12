@@ -26,6 +26,8 @@ Artfully::Application.routes.draw do
 
   devise_for :users
 
+  match '/kits/new_donation_kit' => 'kits#new_donation_kit', :as => :new_donation_kit
+
   resources :organizations
   resources :kits
   resources :credit_cards, :except => :show
@@ -52,7 +54,6 @@ Artfully::Application.routes.draw do
       end
     end
   end
-
 
   resources :charts do
     resources :sections
