@@ -31,10 +31,6 @@ class Refund
     end
   end
 
-  def refund_items
-    @items.map(&:refund!)
-  end
-
   def create_refund_order
     refunded_items = @items.collect(&:refund_item)
 

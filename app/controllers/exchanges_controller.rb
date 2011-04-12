@@ -12,5 +12,17 @@ class ExchangesController < ApplicationController
   end
 
   def create
+    order = AthenaOrder.find(params[:order_id])
+    items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
+    tickets = params[:tickets].collect { |ticket_id| AthenaTicket.find(ticket_id) }
+
+    @exchange = Exchange.new(order, items, tickets)
+
+    if @exchange.valid?
+      @exchange.submit
+    else
+      flash[:error] = "Unable to process exchange."
+      redirect_to :back
+    end
   end
 end

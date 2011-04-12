@@ -5,10 +5,6 @@ describe Refund do
   let(:items) { 3.times.collect { Factory(:athena_item)}}
   subject { Refund.new(order, items) }
 
-  before(:each) do
-    items.each { |item| item.stub(:refund!).and_return(true) }
-  end
-
   describe "#submit" do
     before(:each) do
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/refund", :body => "{ success: true }")

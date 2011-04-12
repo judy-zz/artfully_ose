@@ -26,7 +26,7 @@ class AthenaTicket < AthenaResource::Base
     state :comped
 
     event :on_sale do
-      transitions :from => :off_sale, :to => :on_sale
+      transitions :from => [ :off_sale, :sold ], :to => :on_sale
     end
 
     event :off_sale do
@@ -50,6 +50,10 @@ class AthenaTicket < AthenaResource::Base
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
     AthenaTicket.find(:all, :params => parameterize(terms)) unless terms.empty?
+  end
+
+  def expired?
+    performance < DateTime.now
   end
 
   def take_off_sale
@@ -77,7 +81,7 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
- def comp_to(buyer)
+  def comp_to(buyer)
     begin
       self.buyer = buyer
       self.comp!
