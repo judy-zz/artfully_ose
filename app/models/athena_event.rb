@@ -31,7 +31,9 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def upcoming_performances(limit = 5)
-    @upcoming ||= performances.select { |performance| performance.datetime > DateTime.now.beginning_of_day }.take(limit)
+    upcoming = performances.select { |performance| performance.datetime > DateTime.now.beginning_of_day }
+    return upcoming if limit == :all
+    upcoming.take(limit)
   end
 
   def performances=(performances)

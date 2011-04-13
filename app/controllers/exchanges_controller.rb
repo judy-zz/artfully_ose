@@ -4,9 +4,10 @@ class ExchangesController < ApplicationController
 
     unless params[:event_id].blank?
       @event = AthenaEvent.find(params[:event_id])
-      @performances = @event.performances
+      @performances = @event.upcoming_performances(:all)
       unless params[:performance_id].blank?
         @performance = AthenaPerformance.find(params[:performance_id])
+        @tickets = @performance.tickets.select(&:on_sale?)
       end
     end
   end
