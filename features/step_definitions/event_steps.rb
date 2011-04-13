@@ -19,8 +19,8 @@ Given /^there is an [Ee]vent with (\d+) [Pp]erformances$/ do |performance_count|
   charts = setup_charts([Factory(:athena_chart, :organization_id => @current_user.current_organization.id)])
   setup_performances(performance_count.to_i.times.collect { Factory(:athena_performance_with_id, :event => current_event, :chart => charts.first, :organization_id => @current_user.current_organization.id) })
 
-  visit events_path
-  Given %{I follow "#{event.name}"}
+#  visit events_path
+#  Given %{I follow "#{event.name}"}
 end
 
 Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|

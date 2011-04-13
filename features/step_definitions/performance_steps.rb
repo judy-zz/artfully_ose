@@ -23,7 +23,10 @@ Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance has had tickets created$/ do |po
   performance = current_performances[pos.to_i - 1]
   FakeWeb.register_uri(:get, "http://localhost/stage/performances/#{performance.id}.json", :body => performance.encode)
 
-  tickets = 5.times.collect { Factory(:ticket_with_id, :performance_id => performance.id) }
+  tickets = 5.times.collect { Factory(:ticket_with_id) }
+  tickets.each do |ticket|
+    ticket.performance_id = performance.id
+  end
   body = tickets.collect { |t| t.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json?performanceId=eq#{performance.id}", :body => "[#{body}]")
 

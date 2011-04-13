@@ -59,7 +59,7 @@ describe AthenaItem do
 
   describe ".return_item" do
     describe "and tickets" do
-      it "it return the ticket to inventory if it has not expired" do
+      it "returns the ticket to inventory if it has not expired" do
         item = Factory(:ticket_with_id, :performance => DateTime.now + 1.day)
         subject.item = item
         item.should_receive(:on_sale!)

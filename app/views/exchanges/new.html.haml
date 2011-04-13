@@ -1,15 +1,17 @@
 .context
-  %ul.detailed-list
+  %p= "Exchanging #{pluralize(params[:items].length, 'item')}"
+.document
+
+.context
+  %ul.detailed-list#event-drilldown
     - @events.each do |event|
-      %li
-        %h4= link_to event.name, params.merge({:event_id => event.id}), :title => 'event-name'
+      %li= link_to event.name, params.merge({:event_id => event.id}), :title => 'event-name'
 
 .context
   - unless @performances.nil?
-    %ul.detailed-list#of_performances
+    %ul.detailed-list#performance-drilldown
       - @performances.each do |performance|
-        %li
-          %h4= link_to l(performance.datetime, :format => :short), params.merge({:performance_id => performance.id}), :title => 'performance-datetime'
+        %li= link_to l(performance.datetime, :format => :short), params.merge({:performance_id => performance.id}), :title => 'performance-datetime'
 
 .context
   - unless @performance.nil?
@@ -17,7 +19,7 @@
       = hidden_field_tag :order_id, params[:order_id]
       - params[:items].each do |item_id|
         = hidden_field_tag "items[]", item_id
-      %ul.detailed-list
+      %ul.detailed-list#ticket-drilldown
         - @performance.tickets.each do |ticket|
           %li
             = check_box_tag "tickets[]", ticket.id, false, :id => "ticket_#{ticket.id}"

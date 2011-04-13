@@ -20,7 +20,7 @@ class ExchangesController < ApplicationController
 
     if @exchange.valid?
       @exchange.submit
-      redirect_to order_url(order)
+      redirect_to order_url(order), :notice => "Successfully exchanged #{self.class.helpers.pluralize(items.length, 'item')}"
     else
       flash[:error] = "Unable to process exchange."
       redirect_to :back

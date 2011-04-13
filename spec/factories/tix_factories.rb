@@ -18,7 +18,7 @@ end
 Factory.define :ticket, :class => AthenaTicket, :default_strategy => :build do |t|
   t.event { Faker::Lorem.words(2).join(" ") }
   t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
-  t.performance { DateTime.now }
+  t.performance { DateTime.now + 1.month }
   # Debt: this does not need to be set by the factory
   t.state "off_sale" #in replacing t.sold false, should either be on_sale or off_sale, guessing off_sale is more appropriate
   t.price "50.00"

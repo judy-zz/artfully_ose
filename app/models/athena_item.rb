@@ -54,11 +54,11 @@ class AthenaItem < AthenaResource::Base
   end
 
   def returnable?
-    item.expired?
+    !item.expired?
   end
 
   def return_item
-    item.on_sale! unless returnable?
+    item.on_sale! if returnable?
   end
 
   def self.find_by_order(order)
