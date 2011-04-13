@@ -1,21 +1,13 @@
 class KitsController < ApplicationController
   def index
-    @kits = current_user.current_organization.kits
+    @kits_hash = kits_to_hash(current_user.current_organization.kits)
   end
 
   def create
     @kit = Kernel.const_get(params[:type]).new
     @kit.type = params[:type]
 
-    current_user.current_organization.kits << @kit
-
-    if @kit.activated?
-      flash[:notice] = "Congratulations, you've activated the #{params[:type]}"
-    elsif @kit.pending?
-      flash[:notice] = "Your request has been sent in for approval."
-    else
-      flash[:error] = @kit.errors[:requirements].join(", ")
-    end
+    add_kit(params[:type])
 
     redirect_to kits_url
   end
@@ -28,21 +20,10 @@ class KitsController < ApplicationController
   end
 
   def new_donation_kit
-    with_donation_kit_details do 
-      
-    @kit = DonationKit.new
-    @kit.type = "DonationKit"
-
     with_donation_kit_details do
-      current_user.current_organization.kits << @kit
-      if @kit.activated?
-        flash[:notice] = "Congratulations, you've activated the #{params[:type]}"
-      elsif @kit.pending?
-        flash[:notice] = "Your request has been sent in for approval."
-      else
-        flash[:error] = @kit.errors[:requirements].join(", ")
+      with_donation_kit_details do
+        add_kit("DonationKit")
       end
-    end
       redirect_to kits_url
     end
   end
@@ -62,6 +43,41 @@ class KitsController < ApplicationController
       else
         yield
       end
+    end
+
+    def add_kit(type)
+      @kit = Kernel.const_get(type).new
+      @kit.type = type
+
+      can_add_kit = true
+      current_user.current_organization.kits.each{ |kit|
+        if kit.type == @kit.type
+          can_add_kit = false
+          break
+        end
+      }
+
+      if can_add_kit
+        current_user.current_organization.kits << @kit
+
+        if @kit.activated?
+          flash[:notice] = "Congratulations, you've activated the #{@kit.type}"
+        elsif @kit.pending?
+          flash[:notice] = "Your request has been sent in for approval."
+        else
+          flash[:error] = @kit.errors[:requirements].join(", ")
+        end
+
+      else
+        flash[:error] = "You already have a #{@kit.type}"
+      end
+    end
+
+    def kits_to_hash(kits)
+      donation_kit = nil
+      ticketing_kit = nil
+      kits.each{|kit| if kit.type == "DonationKit"; donation_kit = kit end; if kit.type == "TicketingKit"; ticketing_kit = kit end}
+      kits_hash = {"DonationKit"=> donation_kit, "TicketingKit"=>ticketing_kit}
     end
 
 end
