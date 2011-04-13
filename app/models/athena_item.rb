@@ -58,7 +58,11 @@ class AthenaItem < AthenaResource::Base
   end
 
   def return_item
-    item.on_sale! if returnable?
+    if returnable?
+      item.attributes.delete(:buyer_id)
+      item.on_sale
+      item.save!
+    end
   end
 
   def self.find_by_order(order)

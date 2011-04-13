@@ -62,15 +62,23 @@ describe AthenaItem do
       it "returns the ticket to inventory if it has not expired" do
         item = Factory(:ticket_with_id, :performance => DateTime.now + 1.day)
         subject.item = item
-        item.should_receive(:on_sale!)
+        item.should_receive(:on_sale)
         subject.return_item
       end
 
       it "should not return the ticket to inventory if it has expired" do
         item = Factory(:ticket_with_id, :performance => DateTime.now - 1.day)
         subject.item = item
-        item.should_not_receive(:on_sale!)
+        item.should_not_receive(:on_sale)
         subject.return_item
+      end
+
+      it "removes the buyer from the item" do
+        item = Factory(:ticket_with_id, :performance => DateTime.now + 1.day, :buyer => Factory(:athena_person_with_id))
+        item.stub(:save!)
+        subject.item = item
+        subject.return_item
+        subject.item.buyer_id.should be_nil
       end
     end
   end
