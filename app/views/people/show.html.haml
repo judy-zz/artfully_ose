@@ -7,7 +7,12 @@
 .document
   %h3 Actions
 
-  #actions
+  .call-to-action
+    =link_to "Log Action", new_person_action_path(@person)
+  %br
+  %br
+
+  #actions   
     .table-controls
       %input.filter{ :type => :text, :value => "Filter" }
     =render :partial=>'action_list', :locals => { :person => @person }

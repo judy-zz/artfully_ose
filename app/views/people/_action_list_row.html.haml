@@ -6,4 +6,9 @@
       &#10025;
   %td= l action.timestamp, :format => :short
   %td= action.action_type.capitalize
+  -unless action.action_subtype.nil?
+    %td=link_to action.action_subtype, edit_person_action_path(person, action)
+    -#edit_person_action_path(action, person)
+  -else
+    %td
   %td= action.details
