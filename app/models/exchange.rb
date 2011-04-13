@@ -9,6 +9,7 @@ class Exchange
   validate :items_are_returnable
   validate :tickets_match_items
   validate :tickets_are_available
+  validate :tickets_belong_to_organization
 
   def initialize(order, items, tickets = [])
     self.order =        order
@@ -26,6 +27,10 @@ class Exchange
 
   def tickets_are_available
     errors.add(:tickets, "are not available to exchange") if tickets.any?(&:committed?)
+  end
+
+  def tickets_belong_to_organization
+    errors.add(:tickets, "do not belong to this organization") unless tickets.all? { |ticket| order.organization.can? :manage, ticket }
   end
 
   def submit

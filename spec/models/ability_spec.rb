@@ -51,7 +51,11 @@ describe Ability do
     end
 
     describe "and tickets" do
-      it { should be_able_to(:bulk_edit, :tickets) }
+      let(:event) { Factory(:athena_event_with_id, :organization_id => organization.id) }
+
+      it { should be_able_to(:manage, Factory(:ticket_with_id, :event_id => event.id)) }
+      it { should be_able_to(:manage, AthenaTicket) }
+      it { should be_able_to(:bulk_edit, AthenaTicket) }
     end
   end
 

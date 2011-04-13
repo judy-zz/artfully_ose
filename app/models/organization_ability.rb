@@ -19,6 +19,10 @@ class OrganizationAbility
       performance.organization_id.to_i == organization.id
     end
 
+    can :manage, AthenaTicket do |ticket|
+      can? :manage, AthenaEvent.find(ticket.event_id)
+    end
+
     can :manage, AthenaChart do |chart|
       chart.organization_id.to_i == organization.id
     end

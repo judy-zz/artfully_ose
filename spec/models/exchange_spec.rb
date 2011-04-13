@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Exchange do
   let(:order)       { Factory(:athena_order_with_id) }
   let(:items)       { 3.times.collect { Factory(:athena_item) } }
-  let(:tickets)     { 3.times.collect { Factory(:ticket_with_id, :state => "on_sale") } }
+  let(:event)       { Factory(:athena_event_with_id, :organization_id => order.organization.id) }
+  let(:tickets)     { 3.times.collect { Factory(:ticket_with_id, :state => "on_sale", :event_id => event.id) } }
 
   subject { Exchange.new(order, items, tickets) }
 
@@ -38,6 +39,11 @@ describe Exchange do
 
     it "should not be valid if any of the tickets are comitted" do
       subject.tickets.first.stub(:committed?).and_return(true)
+      subject.should_not be_valid
+    end
+
+    it "should not be valid if any of the tickets belong to another organization" do
+      subject.tickets.first.event_id = Factory(:athena_event_with_id).id
       subject.should_not be_valid
     end
   end

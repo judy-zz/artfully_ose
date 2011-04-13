@@ -6,7 +6,7 @@ class TicketsController < ApplicationController
   end
 
   def bulk_edit
-    authorize! :bulk_edit, :tickets
+    authorize! :bulk_edit, AthenaTicket
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
 
