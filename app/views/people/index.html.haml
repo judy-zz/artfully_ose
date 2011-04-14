@@ -1,5 +1,5 @@
-%h1 People
-%h2 Find and manage important relationships with people
+= render :partial => "shared/headers/people"
+
 %form.big-search
   = form_tag people_path, :method => :get do
     = text_field_tag :email

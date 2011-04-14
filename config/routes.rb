@@ -32,7 +32,7 @@ Artfully::Application.routes.draw do
   resources :kits
   resources :credit_cards, :except => :show
 
-  resources :people, :only => [:index, :show, :edit, :update]
+  resources :people, :except => :destroy
 
   resources :events do
     resources :performances do

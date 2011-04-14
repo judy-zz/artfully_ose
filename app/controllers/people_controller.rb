@@ -1,8 +1,10 @@
 class PeopleController < ApplicationController
-
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to root_path
+  end
+
+  def new
   end
 
   def index
