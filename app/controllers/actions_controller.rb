@@ -34,7 +34,7 @@ class ActionsController < ApplicationController
     #flash[:alert] = "params #{@action.attributes}"
 
     if @action.save
-      flash[:notice] = "Action Logged successfully!"
+      flash[:notice] = "Action logged successfully!"
     else
       flash[:notice] = "Action could not be logged"
     end
