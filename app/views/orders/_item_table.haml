@@ -1,29 +1,31 @@
+= javascript_include_tag "grouped-form"
 - unless order.items.empty?
-  #refunds
+  #refunds.grouped-form
     %h3 Refunds
     = form_for :refund, :url => '/refunds' do |form|
       = hidden_field_tag :order_id, order.id
       %ul
         - order.items.each do |item|
           %li
-            = check_box_tag "items[]", item.id, false, :id => "item_#{item.id}"
-            = label_tag "item_#{item.id}", item.id
+            .label-and-element
+              = check_box_tag "items[]", item.id, false, :id => "refund_item_#{item.id}", :class => "item_#{item.id}"
+              = label_tag "refund_item_#{item.id}", item.id
       = submit_tag "Refund"
 
-  #exchanges
+  #exchanges.grouped-form
     %h3 Exchanges
     = form_tag '/exchanges/new', :method => :get do |form|
       = hidden_field_tag :order_id, order.id
       %ul
         - order.items.each do |item|
           %li
-            = check_box_tag "items[]", item.id, false, :id => "item_#{item.id}"
-            = label_tag "item_#{item.id}", item.id
+            .label-and-element
+              = check_box_tag "items[]", item.id, false, :id => "exchange_item_#{item.id}", :class => "item_#{item.id}"
+              = label_tag "item_#{item.id}", item.id
       = submit_tag "Exchange"
 
-  #items
+  #items.grouped-form-target
     = form_tag do
-      .table-controls
       %table.zebra
         %thead
           %tr
@@ -36,8 +38,7 @@
         %tbody
           - order.items.each do |item|
             - ticket = AthenaTicket.find(item.item_id)
-            %tr
-              %td= check_box_tag "items[]", item.id
+            %tr{:class => "row_item_#{item.id}"}
               %td Ticket
               %td=item.id
               %td= number_as_cents item.price

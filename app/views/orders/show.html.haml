@@ -21,4 +21,5 @@
       .value #{@order.details}
 
   = render :partial=>'item_table', :locals => { :order => @order }
-  = render :partial=>'refund_table', :locals => { :children => @children }
+  - unless @children.empty?
+    = render :partial=>'refund_table', :locals => { :children => @children }

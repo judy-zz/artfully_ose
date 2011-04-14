@@ -2,7 +2,7 @@ zebra = function(table) {
     $("tr", table).removeClass("odd");
     $("tr", table).removeClass("even");
     $("tr:even", table).addClass("even");
-    $("tr:odd", table).addClass("odd");	
+    $("tr:odd", table).addClass("odd");
 }
 
 $(document).ready(function() {
@@ -52,7 +52,12 @@ $(document).ready(function() {
   });
 
   $(".checkall").click(function(){
-    $(this).closest('form').find("input[type='checkbox']").attr("checked", $(this).is(":checked"));
+    var isChecked = $(this).is(":checked")
+    $(this).closest('form').find("input[type='checkbox']").each(function(){
+      if(isChecked != $(this).is(":checked")){
+        $(this).click();
+      }
+    });
   });
 
   $(".sortedstar").tablesorter( {sortList: [[0,1], [1,1]]} );
