@@ -13,6 +13,8 @@
   .call-to-action
     = link_to "Door List", door_list_event_performance_path(@event,@performance)
   %h3= l @performance.datetime, :format => :long_with_day
+  = render :partial => "stats", :locals => { :performance => @performance }
+
   %h3 Tickets
   - if @performance.pending?
     %p You have not created tickets for this event.
@@ -27,6 +29,3 @@
           %li= submit_tag "Comp"
 
       =render :partial => 'ticket_table', :locals => { :performance => @performance }
-
-    %h3 Stats
-    = render :partial => "stats", :locals => { :performance => @performance }
