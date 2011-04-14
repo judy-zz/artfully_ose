@@ -10,10 +10,10 @@
   %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
 
 .document
-  %h3 Results
-  %ul.people-list
-    - @people.each do |person|
-      %li
-        %h4.name
-          %a{ :href => "/people/#{person.id}"}="#{person.first_name} #{person.last_name}"
-        .email=person.email
+  - unless @people.empty?
+    %h3 Results
+    %ul.people-list
+      - @people.each do |person|
+        %li
+          %h4.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
+          .email= person.email
