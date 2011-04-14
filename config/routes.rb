@@ -4,6 +4,9 @@ Artfully::Application.routes.draw do
     constraints :subdomain => "api" do
       resources :events, :only => :show
       resources :tickets, :only => :index
+      resources :organizations, :only => [] do
+        get :authorization
+      end
     end
   end
 

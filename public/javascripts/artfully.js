@@ -34,6 +34,10 @@ artfully.utils = (function(){
     return artfully.config.store_uri + 'order';
   }
 
+  function donation_uri(id){
+    return artfully.config.base_uri + 'organizations/' + id + '/authorization.jsonp?callback=?';
+  }
+
   function datestring(datetime){
     datetime = new Date(datetime);
     return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
@@ -67,6 +71,7 @@ artfully.utils = (function(){
     ticket_uri: ticket_uri,
     performance_uri: performance_uri,
     event_uri: event_uri,
+    donation_uri: donation_uri,
     order_uri: order_uri,
     datestring: datestring,
     keyOnId: keyOnId,
@@ -183,14 +188,21 @@ artfully.widgets = (function(){
     function prep(donation){
       return artfully.utils.modelize(donation, artfully.models.donation);
     }
+    function authorize(donation){
+      $.getJSON(artfully.utils.donation_uri(donation.organizationId), function(data){
+        if(data.authorized){
+          donation.render($('#donation'));
+        }
+      });
+    }
     function render(data){
       var donation = prep(data);
-      donation.render($('#donation'));
+      authorize(donation);
     }
     if(widgetCache.donation === undefined){
       widgetCache.donation = {
         display: function(id){
-          var data = { id:id };
+          var data = { organizationId:id };
           render(data);
         }
       };
@@ -342,7 +354,7 @@ artfully.models = (function(){
       modelCache.donation = {
         render: function($t){
           var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart().$iframe.attr('name'), 'action':artfully.utils.order_uri()}),
-              $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.id }),
+              $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.organizationId }),
               $amount = $(document.createElement('input')).attr({'name':'donation[amount]'}),
               $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Add Donation'});
 
