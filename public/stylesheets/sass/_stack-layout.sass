@@ -26,6 +26,13 @@
     clear: both
     visibility: hidden
 
+@mixin section
+  position: relative
+  > *
+    margin: 10px
+    @include stack-content
+
+
 .stackAuto
   width: auto
 //  .stackContent
