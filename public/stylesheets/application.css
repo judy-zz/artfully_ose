@@ -503,10 +503,14 @@ strong {
 .big-search {
   margin-bottom: 3em; }
   .big-search input[type='text'] {
-    width: 80%; }
+    width: 85%; }
   .big-search input[type='submit'] {
     width: 15%;
-    margin: 0; }
+    margin: 0;
+    border-left: none;
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0; }
 
 form ul li {
   font-family: "Courier New", monospace;
