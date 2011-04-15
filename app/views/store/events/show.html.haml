@@ -1,4 +1,12 @@
 = render :partial => 'widgets/event', :locals => { :event => @event }
 = render :partial => 'widgets/donation', :locals => { :organization_id => @event.organization_id }
-#donation
-#event
+
+#sidebar
+  #donation
+    %h1 Donate
+    %h2 Add a donation
+
+    %p Help support the show by adding a donation to your order!
+
+#store
+  #event

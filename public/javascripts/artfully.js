@@ -355,7 +355,7 @@ artfully.models = (function(){
         render: function($t){
           var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart().$iframe.attr('name'), 'action':artfully.utils.order_uri()}),
               $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.organizationId }),
-              $amount = $(document.createElement('input')).attr({'name':'donation[amount]'}),
+              $amount = $(document.createElement('input')).attr({'type':'text', 'name':'donation[amount]'}),
               $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Add Donation'});
 
           $form.submit(function(){

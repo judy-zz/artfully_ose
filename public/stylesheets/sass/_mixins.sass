@@ -19,3 +19,10 @@
 @mixin inset-text($color: #fff)
   color: $color
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3)
+
+@mixin opacity($opacity)
+  opacity: $opacity
+  -moz-opacity: $opacity
+  -khtml-opacity: $opacity
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=" + round($opacity*100) + ")"
+  filter: "alpha(opacity=" + round($opacity*100) + ")"
