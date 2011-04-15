@@ -13,7 +13,10 @@ class AthenaAction < AthenaResource::Base
     attribute 'organization_id',    :string
     attribute 'person_id',          :string
     attribute 'subject_id',         :string
+    attribute 'creator_id',         :string
     attribute 'action_type',        :string
+    attribute 'action_subtype',     :string
+    attribute 'action_time',        :string
     attribute 'details',            :string
     attribute 'timestamp',          :string
     attribute 'starred',            :string
@@ -67,6 +70,11 @@ class AthenaAction < AthenaResource::Base
   def timestamp
     attributes['timestamp'] = DateTime.parse(attributes['timestamp']) if attributes['timestamp'].is_a? String
     attributes['timestamp']
+  end
+
+
+  def hear_action_subtypes
+    ["Email", "Phone Call", "Text"]
   end
 
   private

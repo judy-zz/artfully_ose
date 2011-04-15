@@ -141,9 +141,13 @@ class TicketsController < ApplicationController
         order.person = person
         order.organization = current_user.current_organization
         order.details = "Comped by: #{current_user.email} Reason: #{reason_for_comp}"
+        order.transaction_id = nil
       end
-      order.save
 
+      if 0 < comped_tickets.size
+        order.save
+      end
+      
       num_rejected_tickets = ticket_ids.size - comped_ids.size
       @msg = "Comped #{to_plural(comped_ids.size, 'ticket')}. "
       if num_rejected_tickets > 0

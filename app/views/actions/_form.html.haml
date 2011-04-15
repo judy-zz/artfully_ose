@@ -1,0 +1,26 @@
+= parent_form.fields_for target do |action_form|
+  %li
+    .label= action_form.label :action_subtype, "Action SubType"
+    .element= action_form.select :action_subtype, options_for_select( target.hear_action_subtypes, target.action_subtype )
+
+  -unless :creator
+    %li
+      .label= action_form.label :creator, "Created By"
+      .element= action_form.text_field :creator, :disabled => true
+
+  %li
+    .label= action_form.label :action_time, "Action date/time"
+    .element
+      = action_form.text_field :action_time, { :value => "#{(l target.action_time, :format => :date_for_input) unless target.action_time.nil?}", :class=>'datepicker hasDatePicker'}
+      = action_form.time_select :action_time, :value => target
+
+  -unless :timestamp
+    %li
+      .label= action_form.label :timestamp, "Created On"
+      .element= action_form.text_field :timestamp, :disabled => true
+
+  %li
+    .label= action_form.label :details, "Details"
+    .element= action_form.text_area :details
+
+

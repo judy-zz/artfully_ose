@@ -18,7 +18,6 @@ class AthenaOrder < AthenaResource::Base
 
   validates_presence_of :person_id
   validates_presence_of :organization_id
-  validates_presence_of :transaction_id, :if => lambda { parent_id.nil? }
 
   before_save :set_timestamp
   after_save :save_items, :unless => lambda { items.empty? }
@@ -113,8 +112,12 @@ class AthenaOrder < AthenaResource::Base
       action.subject         = self
       action.organization_id = organization.id
       action.timestamp       = self.timestamp
-      action.details         = self.details
+      action.details         = "#{items.size} Tickets #{self.details}"
+      action.action_time     = action.timestamp
+      action.action_subtype = "Purchase"
+
       logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
+      logger.debug("Action: #{action.attributes}")
       action.save!
       action
     end
@@ -127,6 +130,8 @@ class AthenaOrder < AthenaResource::Base
         action.organization_id = organization.id
         action.timestamp       = self.timestamp
         action.details         = self.details
+        action.action_subtype  = "Donation"
+        action.action_time     = action.timestamp
         action.save!
         action
       end

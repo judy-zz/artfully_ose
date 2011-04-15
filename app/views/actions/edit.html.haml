@@ -1,0 +1,13 @@
+-content_for :header do
+  %h1 Edit Action
+
+.context
+  = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }
+
+.document
+  = form_for @action, :url => person_action_path(@person) do |form|
+    %ul
+      = render :partial => 'actions/form', :locals => { :parent_form => form, :target => @action }
+      %li= form.submit "Submit"
+
+  =link_to "Cancel", :back

@@ -35,7 +35,9 @@ Artfully::Application.routes.draw do
   resources :kits
   resources :credit_cards, :except => :show
 
-  resources :people, :except => :destroy
+  resources :people, :except => :destroy do
+    resources :actions
+  end
 
   resources :events do
     resources :performances do

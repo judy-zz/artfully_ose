@@ -5,5 +5,13 @@
     -else
       &#10025;
   %td= l action.timestamp, :format => :short
-  %td= action.action_type.capitalize
+  -#%td= action.action_type.capitalize
+  -if action.action_type == "Hear"
+    %td= link_to action.action_type, edit_person_action_path(person, action)
+  -else
+    %td= action.action_type.capitalize
+  -unless action.action_subtype.nil?
+    %td= action.action_subtype
+  -else
+    %td
   %td= action.details
