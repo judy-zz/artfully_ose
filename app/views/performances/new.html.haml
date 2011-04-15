@@ -3,5 +3,5 @@
   #performance
     %h3 New Performance
     %ul
-      = render :partial => 'performances/form', :locals => { :parent_form => form, :target => @performance }
+      = render :partial => 'performances/form', :locals => { :performance_form => form, :target => @performance }
       %li= form.submit "Submit"

@@ -40,11 +40,9 @@ class PerformancesController < ApplicationController
     @performance.organization_id = current_user.current_organization.id
 
     if @performance.valid? && @performance.save
-      session[:performance] = nil
       flash[:notice] = "Performance created on #{l @performance.datetime.in_time_zone(@performance.time_zone), :format => :date_at_time}"
       redirect_to event_url(@performance.event)
     else
-      session[:performance] = @performance
       redirect_to event_url(@performance.event)
     end
   end

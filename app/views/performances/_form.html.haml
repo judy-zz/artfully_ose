@@ -1,10 +1,9 @@
-= parent_form.fields_for target do |performance_form|
-  %li
-    .label= performance_form.label :datetime, "Performace date/time"
-    .element
-      = performance_form.text_field :datetime, { :value => "#{l target.datetime, :format => :date_for_input}", :class=>'datepicker hasDatePicker'}
-      = performance_form.time_select :datetime, :value => target
-      = performance_form.hidden_field :time_zone, { :value => target.event.time_zone }
-  %li
-    .label= performance_form.label :chart_id, "Seating chart"
-    .element= performance_form.select :chart_id, options_from_collection_for_select(target.event.charts, "id", "name", target.chart_id.to_s )
+%li
+  .label= performance_form.label :datetime, "Performace date/time"
+  .element
+    = performance_form.text_field :datetime, { :value => "#{l target.datetime, :format => :date_for_input}", :class=>'datepicker hasDatePicker'}
+    = performance_form.time_select :datetime, :value => target
+    = performance_form.hidden_field :time_zone, { :value => target.event.time_zone }
+%li
+  .label= performance_form.label :chart_id, "Seating chart"
+  .element= performance_form.select :chart_id, options_from_collection_for_select(target.event.charts, "id", "name", target.chart_id.to_s )
