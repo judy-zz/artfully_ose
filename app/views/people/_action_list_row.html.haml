@@ -5,7 +5,12 @@
     -else
       &#10025;
   %td= l action.timestamp, :format => :short
-  -#%td= action.action_type.capitalize
+  -unless action.occurred_at.nil?
+    -#%td= l action.occurred_at, :format => :short
+    %td= l action.occurred_at.in_time_zone(current_user.current_organization.time_zone), :format => :short
+  -else
+    %td
+
   -if action.action_type == "Hear"
     %td= link_to action.action_type, edit_person_action_path(person, action)
   -else

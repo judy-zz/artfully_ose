@@ -72,12 +72,34 @@ class AthenaAction < AthenaResource::Base
     attributes['timestamp']
   end
 
-
   def hear_action_subtypes
     ["Email", "Phone Call", "Text"]
   end
 
+  def prepare_datetime(attributes, tz)
+    unless attributes.blank? || attributes['occurred_at'].blank?
+      temp_date_only = Date.strptime(attributes.delete('occurred_at'), "%m/%d/%Y")
+      hour = attributes['occurred_at(4i)']
+      minute = attributes['occurred_at(5i)']
+      Time.zone = tz
+      attributes['occurred_at'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
+    else
+      attributes['occurred_at'] = nil
+    end
+    #we can erase the datetime fields that came with the time select
+    clean_datetime_attributes attributes
+  end
+
   private
+
+    def clean_datetime_attributes(attributes)
+      attributes.delete('occurred_at(1i)')
+      attributes.delete('occurred_at(2i)')
+      attributes.delete('occurred_at(3i)')
+      attributes.delete('occurred_at(4i)')
+      attributes.delete('occurred_at(5i)')
+    end
+
     def find_person
       return if self.person_id.nil?
 
