@@ -6,5 +6,5 @@ Feature: Order deletion
     Given I have added 2 tickets to my order
     And I have added 1 donations to my order
     And I am on the store order page
-    When I follow "Clear Cart"
-    And I should see "You have 0 items in your cart."
+    When I follow "Clear My Cart"
+    And I should see "You have 0 items"

@@ -1,1 +1,2 @@
-.donation= "Donation for #{number_as_cents donation.amount}"
+%span.price= number_as_cents donation.amount
+%span.item= "Donation for #{donation.organization.name}"

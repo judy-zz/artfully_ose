@@ -1,17 +1,19 @@
--content_for :header do
-  %h1 Checkout
-
 = render "shared/error_messages.html", :target => @payment
 
-%ul.line-items
-  - current_order.purchasable_tickets.each do |item|
-    %li= render item
-  - current_order.donations.each do |donation|
-    %li= render donation
-  %li.total
-    = "Total: #{number_as_cents current_order.total}"
+- content_for :controls do
+  - unless current_order.empty?
+    #total
+      %span Your total is
+      .price= number_as_cents current_order.total
+    %ol#steps
+      %li Customer Information
+      %li Credit Card Information
+      %li Billing Address
+      %li Confirmation
+    #checkout-now.disabled
+    #clear-cart= link_to "Cancel Order", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure?' unless current_order.empty?
 
-= form_tag store_checkout_path do
+= form_tag store_checkout_path, :class => "sliding-wizard" do
   - if @needs_confirmation
     = hidden_field_tag :confirmation, 1
     = render :partial => 'athena_customers/athena_customer.html', :object => @payment.customer
@@ -19,5 +21,5 @@
     = render :partial => 'athena_addresses/athena_address.html', :object => @payment.billing_address
 
   = render :partial => 'athena_payments/form.html', :locals => {:payment => @payment}
-
-= link_to "Cancel Order", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure?'
+  = submit_tag "Purchase"
+= javascript_include_tag "sliding-wizard"

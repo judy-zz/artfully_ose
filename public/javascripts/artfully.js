@@ -10,7 +10,7 @@
 artfully.config = {
   base_uri: 'http://api.lvh.me:3000/',
   store_uri: 'http://localhost:3000/store/',
-  maxHeight: '400'
+  maxHeight: '350'
 };
 
 artfully.utils = (function(){

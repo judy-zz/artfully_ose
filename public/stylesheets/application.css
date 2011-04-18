@@ -576,6 +576,9 @@ form ul li {
     width: 75%;
     color: #999999; }
 
+.label.hidden {
+  display: none; }
+
 .element > *, .label > *, .label-and-element > * {
   display: block;
   font-family: "Arimo", sans-serif;
@@ -588,6 +591,13 @@ form ul li {
     height: 0;
     clear: both;
     visibility: hidden; }
+
+.double.element {
+  text-align: left; }
+  .double.element input {
+    width: 35%;
+    display: inline;
+    margin-right: 5%; }
 
 .table-controls {
   -moz-border-radius: 3px 3px 0 0;

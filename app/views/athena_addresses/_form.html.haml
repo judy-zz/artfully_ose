@@ -1,28 +1,28 @@
 = parent_form.fields_for address_type, target do |addr_form|
-  %p
-    = addr_form.label :first_name, "First Name"
-    = addr_form.text_field :first_name
-  %p
-    = addr_form.label :last_name, "Last Name"
-    = addr_form.text_field :last_name
-  %p
-    = addr_form.label :company, "Company"
-    = addr_form.text_field :company
-  %p
-    = addr_form.label :street_address1, "Street Address"
-    = addr_form.text_field :street_address1
-  %p
-    = addr_form.label :street_address2, "Street Address"
-    = addr_form.text_field :street_address2
-  %p
-    = addr_form.label :city, "City"
-    = addr_form.text_field :city
-  %p
-    = addr_form.label :state, "State"
-    = addr_form.text_field :state
-  %p
-    = addr_form.label :postal_code, "Postal Code"
-    = addr_form.text_field :postal_code
-  %p
-    = addr_form.label :country, "Country"
-    = addr_form.text_field :country
+  %ul
+    %li
+      .label= label_tag "", "First & Last Name"
+      .hidden.label= addr_form.label :first_name, "First Name"
+      .hidden.label= addr_form.label :last_name, "Last Name"
+      .double.element
+        = addr_form.text_field :first_name
+        = addr_form.text_field :last_name
+    %li
+      .label= addr_form.label :company, "Company"
+      .element= addr_form.text_field :company
+    %li
+      .label= addr_form.label :street_address1, "Street Address"
+      .element= addr_form.text_field :street_address1
+    %li
+      .label= label_tag "", "City & State"
+      .hidden.label= addr_form.label :city, "City"
+      .hidden.label= addr_form.label :state, "State"
+      .double.element
+        = addr_form.text_field :city
+        = addr_form.text_field :state
+    %li
+      .label= addr_form.label :postal_code, "Postal Code"
+      .element= addr_form.text_field :postal_code
+    %li
+      .label= addr_form.label :country, "Country"
+      .element= addr_form.text_field :country

@@ -1,7 +1,14 @@
-%ul.ticket-list
+- content_for :controls do
+  #total
+    %span Your total is
+    .price= number_as_cents current_order.total
+    %span= "You have #{pluralize(current_order.items.size, "item")}"
+  #checkout-now= link_to "Checkout Now", new_store_checkout_path unless current_order.items.empty?
+  #clear-cart= link_to "Clear My Cart", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure?' unless current_order.empty?
+
+%ul.item-list
   - current_order.items.each do |item|
     %li= render item
 - unless @donations.empty?
   - @donations.each do |donation|
     = render :partial => 'store/donations/form', :locals => { :target => donation }
-= link_to "Clear Cart", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure?' unless current_order.empty?

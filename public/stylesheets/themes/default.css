@@ -1,29 +1,351 @@
+@import url(../reset.css);
+.stackAuto {
+  width: auto; }
+
+.stack, form ul li .label-and-element, .stack1of2, .stack1of3, form ul li .label, .stack2of3, form ul li .element, .stack1of4, #sidebar, #controls, .stack3of4, #store, #cart, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .stackAuto {
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top; }
+
+.stack, form ul li .label-and-element {
+  width: 100%; }
+
+.stack1of2 {
+  width: 50%; }
+
+.stack1of3, form ul li .label {
+  width: 33.334%; }
+
+.stack2of3, form ul li .element {
+  width: 66.667%; }
+
+.stack1of4, #sidebar, #controls {
+  width: 25%; }
+
+.stack3of4, #store, #cart {
+  width: 75%; }
+
+.stack1of5 {
+  width: 20%; }
+
+.stack2of5 {
+  width: 40%; }
+
+.stack3of5 {
+  width: 60%; }
+
+.stack4of5 {
+  width: 80%; }
+
+.stack1of7 {
+  width: 14.285%; }
+
+body {
+  font-size: 11pt;
+  font-family: Arimo, sans-serif; }
+
+a {
+  color: #077083;
+  text-decoration: none; }
+
+h1, h2, h3, h4 {
+  font-family: "Raleway" !important;
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left; }
+  h1:after, h2:after, h3:after, h4:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+
+h1 {
+  font-size: 3.5em;
+  color: #077083; }
+
+h2 {
+  margin-bottom: 3em; }
+
+h3 {
+  font-size: 2em;
+  color: #f08204;
+  margin-bottom: 0.5em; }
+
+h4 {
+  color: #666666;
+  font-size: 1.25em;
+  margin-bottom: 0.5em; }
+
+p {
+  font-size: 0.9em;
+  margin-bottom: 1em;
+  color: #666666; }
+
+#content {
+  margin: 10px 2%;
+  width: 96%;
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top; }
+
+#sidebar {
+  position: relative; }
+  #sidebar > * {
+    margin: 10px;
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    #sidebar > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+
+#store {
+  position: relative; }
+  #store > * {
+    margin: 10px;
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    #store > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+
+#donation input[type="text"] {
+  width: 60%; }
+#donation input[type="submit"] {
+  border-left: none;
+  width: 40%;
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0; }
+
+.performance {
+  padding: 0.5em 0.25em;
+  margin: 0.5em 0;
+  color: #666666;
+  border-bottom: 1px solid #cccccc;
+  position: relative; }
+  .performance .ticket-search {
+    position: absolute;
+    right: 0.25em; }
+
+.sections li {
+  padding: 1em; }
+.sections .section-name {
+  font-family: "Raleway" !important;
+  color: #077083;
+  font-size: 1.25em;
+  line-height: 1.5em; }
+.sections .section-price {
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+  font-weight: bold;
+  background: #eeeeee;
+  padding: 0.5em;
+  margin-right: 1em;
+  float: left;
+  font-size: 0.8em; }
+.sections form {
+  margin: 1em 0; }
+
 #shopping-cart {
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:#555;
-  border-top:1px solid #aaa;
-}
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 1px solid #aaaaaa;
+  background-color: rgba(255, 255, 255, 0.9); }
+
 #shopping-cart-controls {
-  color:#fff;
-  padding:5px 5px 5px 27px;
-  cursor:pointer;
-}
+  color: white;
+  padding: 10px 5px 10px 27px;
+  cursor: pointer;
+  font-size: 0.9em; }
 
-#shopping-cart.shown #shopping-cart-controls{
-  background:#333 url('/images/icons/down_arrow.png') no-repeat 10px center;
-}
+#shopping-cart.shown #shopping-cart-controls {
+  background: #333333 url("/images/icons/down_arrow.png") no-repeat 10px center; }
+#shopping-cart.hidden #shopping-cart-controls {
+  background: #333333 url("/images/icons/up_arrow.png") no-repeat 10px center; }
 
-#shopping-cart.hidden #shopping-cart-controls{
-  background:#333 url('/images/icons/up_arrow.png') no-repeat 10px center;
-}
-
-#shopping-cart-controls .timer{
-  float:right;
-}
+#shopping-cart-controls .timer {
+  float: right; }
 
 iframe {
-  width:100%;
-}
+  width: 100%; }
+
+#cart, #controls {
+  position: relative; }
+  #cart > *, #controls > * {
+    margin: 10px;
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    #cart > *:after, #controls > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+  #cart > *, #controls > * {
+    margin-top: 0;
+    margin-bottom: 0; }
+
+#total {
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd; }
+
+#total span {
+  text-transform: uppercase;
+  font-size: 0.8em;
+  color: #cccccc; }
+
+#total .price {
+  color: #999999;
+  font-size: 2.5em; }
+
+#checkout-now {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd; }
+  #checkout-now a {
+    display: block;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    color: white;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+    background: #0a99b3;
+    background: -moz-linear-gradient(top, #0a99b3 14%, #077083 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #0a99b3), color-stop(100%, #077083));
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$finish',GradientType=0 );
+    border: 1px solid #065b6b;
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    line-height: 40px; }
+
+#checkout-now.disabled a {
+  background: #dddddd;
+  background: -moz-linear-gradient(top, #dddddd 14%, #cccccc 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #dddddd), color-stop(100%, #cccccc));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$finish',GradientType=0 );
+  border: 1px solid #cccccc;
+  cursor: default; }
+
+#clear-cart {
+  text-align: right;
+  font-size: 0.8em; }
+  #clear-cart a {
+    color: #999999; }
+
+.item-list li {
+  border-bottom: 1px solid #dddddd;
+  line-height: 2em; }
+  .item-list li .item {
+    color: #333333; }
+  .item-list li .price {
+    color: #666666;
+    float: right; }
+
+.sliding-wizard {
+  overflow: hidden;
+  padding: 10px 0 0; }
+  .sliding-wizard .next {
+    float: right; }
+
+#steps {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd; }
+  #steps li {
+    list-style-type: decimal;
+    margin-left: 2em;
+    font-size: 0.8em;
+    padding: 0.25em 0;
+    color: #666666; }
+    #steps li.active {
+      font-weight: bold; }
+
+.big-search {
+  margin-bottom: 3em; }
+  .big-search input[type='text'] {
+    width: 85%; }
+  .big-search input[type='submit'] {
+    width: 15%;
+    margin: 0;
+    border-left: none;
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0; }
+
+form ul li {
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top;
+  padding: 0.5em 0;
+  position: relative; }
+  form ul li input[type="submit"] {
+    float: left; }
+  form ul li .element input {
+    width: 75%; }
+  form ul li .label label {
+    font-family: "Raleway"; }
+  form ul li .label-and-element {
+    text-align: left; }
+    form ul li .label-and-element label, form ul li .label-and-element input {
+      display: inline; }
+  form ul li .description {
+    font-size: 0.8em;
+    margin: 0.5em 0;
+    width: 75%;
+    color: #999999; }
+
+.label.hidden {
+  display: none; }
+
+.element > *, .label > *, .label-and-element > * {
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left; }
+  .element > *:after, .label > *:after, .label-and-element > *:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+
+.double.element {
+  text-align: left; }
+  .double.element input {
+    width: 35%;
+    display: inline;
+    margin-right: 5%; }

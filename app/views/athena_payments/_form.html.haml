@@ -1,17 +1,17 @@
 = fields_for @payment do |payment_form|
-  #customer
-    %h3 Customer Information
-    = render "shared/error_messages.html", :target => @payment.customer
-    = render :partial => 'athena_customers/form.html', :locals => { :parent_form => payment_form, :target => @payment.customer }
+  .viewport
+    %ol
+      %li#customer
+        %h3 Customer Information
+        = render "shared/error_messages.html", :target => @payment.customer
+        = render :partial => 'athena_customers/form.html', :locals => { :parent_form => payment_form, :target => @payment.customer }
 
-  #credit_card
-    %h3 Credit Card Information
-    = render "shared/error_messages.html", :target => @payment.credit_card
-    = render :partial => 'athena_credit_cards/form.html', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
+      %li#credit_card
+        %h3 Credit Card Information
+        = render "shared/error_messages.html", :target => @payment.credit_card
+        = render :partial => 'athena_credit_cards/form.html', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
 
-  #billing_address
-    %h3 Billing Address
-    = render "shared/error_messages.html", :target => @payment.billing_address
-    = render :partial => 'athena_addresses/form.html', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
-
-  = payment_form.submit "Purchase"
+      %li#billing_address
+        %h3 Billing Address
+        = render "shared/error_messages.html", :target => @payment.billing_address
+        = render :partial => 'athena_addresses/form.html', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
