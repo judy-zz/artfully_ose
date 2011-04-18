@@ -16,7 +16,7 @@ class AthenaAction < AthenaResource::Base
     attribute 'creator_id',         :string
     attribute 'action_type',        :string
     attribute 'action_subtype',     :string
-    attribute 'action_time',        :string
+    attribute 'occurred_at',        :string
     attribute 'details',            :string
     attribute 'timestamp',          :string
     attribute 'starred',            :string

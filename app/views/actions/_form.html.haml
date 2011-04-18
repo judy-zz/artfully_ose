@@ -9,10 +9,10 @@
       .element= action_form.text_field :creator, :disabled => true
 
   %li
-    .label= action_form.label :action_time, "Action date/time"
+    .label= action_form.label :occurred_at, "Action date/time"
     .element
-      = action_form.text_field :action_time, { :value => "#{(l target.action_time, :format => :date_for_input) unless target.action_time.nil?}", :class=>'datepicker hasDatePicker'}
-      = action_form.time_select :action_time, :value => target
+      = action_form.text_field :occurred_at, { :value => "#{(l target.occurred_at, :format => :date_for_input) unless target.occurred_at.nil?}", :class=>'datepicker hasDatePicker'}
+      = action_form.time_select :occurred_at, :value => target
 
   -unless :timestamp
     %li
