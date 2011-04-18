@@ -1,6 +1,9 @@
 - content_for :header do
   %h1 Organization
 .context
+  %h2= "Name: #{@organization.name}"
+  %h2= "Time Zone: #{@organization.time_zone}"
+
   = link_to "Kits", kits_path
 
 .document

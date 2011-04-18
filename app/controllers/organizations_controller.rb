@@ -21,10 +21,12 @@ class OrganizationsController < ApplicationController
     end
 
     @organization = Organization.new
+    #@organization.time_zone
   end
 
   def create
-    @organization = Organization.new(params[:organization])
+    @organization = Organization.new(params[:organization][:organization])
+
     if @organization.save
       @organization.users << current_user
       redirect_to organizations_url, :notice => "#{@organization.name} has been created"

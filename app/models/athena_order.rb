@@ -113,7 +113,7 @@ class AthenaOrder < AthenaResource::Base
       action.organization_id = organization.id
       action.timestamp       = self.timestamp
       action.details         = "#{items.size} ticket(s) #{self.details}"
-      action.occurred_at      = action.timestamp
+      action.occurred_at     = action.timestamp
       action.action_subtype  = "Purchase"
 
       logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
@@ -131,7 +131,7 @@ class AthenaOrder < AthenaResource::Base
         action.timestamp       = self.timestamp
         action.details         = self.details
         action.action_subtype  = "Donation"
-        action.occurred_at      = action.timestamp
+        action.occurred_at     = action.timestamp
         action.save!
         action
       end

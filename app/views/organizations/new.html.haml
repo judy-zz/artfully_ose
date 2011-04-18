@@ -1,16 +1,13 @@
 - content_for :header do
   %h1 Organizations
 
-
 .context
 .document
   %h3 New Organization
-  = form_for @organization do |f|
+  
+  = form_for @organization, :url => organizations_path do |form|
     %ul
       %li
-        .label
-          = f.label :name
-        .element
-          = f.text_field :name
+        = render :partial => 'organizations/form', :locals=>{:parent_form => form, :target => @organization}
       %li
-        = f.submit "Create"
+        = form.submit "Create"
