@@ -11,7 +11,7 @@
       %li Billing Address
       %li Confirmation
     #checkout-now.disabled
-    #clear-cart= link_to "Cancel Order", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure?' unless current_order.empty?
+    #clear-cart= link_to "Back to Cart", store_order_path(current_order)
 
 = form_tag store_checkout_path, :class => "sliding-wizard" do
   - if @needs_confirmation
