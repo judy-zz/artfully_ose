@@ -54,14 +54,43 @@ $(document).ready(function(){
     $ol.animate({marginLeft: calculateMarginFor(pos) });
     if(pos == $panels.size() - 1) {
       $next.attr('disabled','disabled')
-//      $('.sliding-wizard :submit').show();
       $("#checkout-now").removeClass("disabled");
+      updateConfirmation();
     }
 
     $("#steps").children("li").removeClass('active');
     $("#steps").children("li").eq(pos).addClass('active');
-
   });
+
+  function updateConfirmation(){
+    $confirmation = $("#confirmation");
+
+    $(document.createElement('h3')).html("Confirmation").prependTo($confirmation);
+
+    $(document.createElement('h4')).html("Customer Information").appendTo($("#customer-confirmation"));
+    var creditCard = $("#customer").find("input:visible, select").serializeArray()
+    $.each(creditCard, function(i,field){
+      key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
+      value = field.value
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#customer-confirmation"))
+    });
+
+    $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
+    var creditCard = $("#credit_card").find("input:visible, select").serializeArray()
+    $.each(creditCard, function(i,field){
+      key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
+      value = field.value
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"))
+    });
+
+    $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
+    var creditCard = $("#billing_address").find("input:visible, select").serializeArray()
+    $.each(creditCard, function(i,field){
+      key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
+      value = field.value
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#billing_address-confirmation"))
+    });
+  }
 
   function calculateMarginFor(pos){
     return -(width() * pos);

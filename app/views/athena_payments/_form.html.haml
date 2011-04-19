@@ -15,3 +15,8 @@
         %h3 Billing Address
         = render "shared/error_messages.html", :target => @payment.billing_address
         = render :partial => 'athena_addresses/form.html', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
+
+      %li#confirmation
+        #customer-confirmation
+        #credit_card-confirmation
+        #billing_address-confirmation
