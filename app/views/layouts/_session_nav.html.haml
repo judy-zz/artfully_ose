@@ -1,5 +1,0 @@
-.userTab
-  .text
-    %strong= current_user.email
-    %span.organization= current_user.current_organization.name #if current_user.current_organization
-    = link_to "Sign out", destroy_user_session_path
