@@ -124,7 +124,7 @@ strong
 .detailed-list
   > li
     @include stack-content
-    margin: 10px 0
+    position: relative
     border-bottom: 1px solid $neutral-1
     color: $secondary
     padding: 10px
@@ -181,22 +181,22 @@ strong
 .controls
   position: absolute
   right: 0
-  top: 10px
+  top: 0
+  text-align: right
+  display: none
   li
-    margin-top: -4px
     display: inline-block
+    padding: 10px 0
     a
-      @include rounded-corners(4px, 4px, 4px, 4px)
+      font-weight: bold
       text-decoration: none
-      color: #666
-      font-size: .9em
-      background: rgba(255, 255, 255, 0.5)
-      padding: 4px
-      width: 16px
-      height: 16px
+      font-size: .8em
       display: inline-block
+      padding: .25em
+      color: #aaa
       &:hover
-        background: rgba(255, 255, 255, 0.9)
+        color: $compliment
+
 
 
 .calendar

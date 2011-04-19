@@ -268,7 +268,7 @@ strong {
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left;
-  margin: 10px 0;
+  position: relative;
   border-bottom: 1px solid #ced1cb;
   color: #594b43;
   padding: 10px; }
@@ -333,24 +333,21 @@ strong {
 .controls {
   position: absolute;
   right: 0;
-  top: 10px; }
+  top: 0;
+  text-align: right;
+  display: none; }
   .controls li {
-    margin-top: -4px;
-    display: inline-block; }
+    display: inline-block;
+    padding: 10px 0; }
     .controls li a {
-      -moz-border-radius: 4px 4px 4px 4px;
-      -webkit-border-radius: 4px 4px 4px 4px;
-      border-radius: 4px 4px 4px 4px;
+      font-weight: bold;
       text-decoration: none;
-      color: #666666;
-      font-size: 0.9em;
-      background: rgba(255, 255, 255, 0.5);
-      padding: 4px;
-      width: 16px;
-      height: 16px;
-      display: inline-block; }
+      font-size: 0.8em;
+      display: inline-block;
+      padding: 0.25em;
+      color: #aaaaaa; }
       .controls li a:hover {
-        background: rgba(255, 255, 255, 0.9); }
+        color: #077083; }
 
 .calendar {
   font-family: "Courier New", monospace;

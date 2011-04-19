@@ -12,7 +12,7 @@
 
 .document
   .call-to-action
-    = link_to "New Chart", new_chart_path, :title => "New Chart", :icon => "icons/light/Writing.png"
+    = button_to "New Chart", new_chart_path, :title => "New Chart", :method => :get
   %h3 Charts
   - if @charts.empty?
     %p You have not created any chart templates.
@@ -21,7 +21,7 @@
     - @charts.each do |chart|
       %li
         %h4= chart.name
-        %ul.details
-          %li= link_to "view", chart_path(chart) if can?(:view, chart)
-          %li= link_to "edit", edit_chart_path(chart) if can?(:edit, chart)
-          %li= link_to "delete", chart_path(chart), :method=>:delete if can?(:delete, chart)
+        %ul.controls
+          %li= link_to "View", chart_path(chart) if can?(:view, chart)
+          %li= link_to "Edit", edit_chart_path(chart) if can?(:edit, chart)
+          %li= link_to "Delete", chart_path(chart), :method=>:delete if can?(:delete, chart)

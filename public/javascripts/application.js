@@ -10,6 +10,12 @@ $(document).ready(function() {
     zebra($(this));
   });
 
+  $(".detailed-list li").hover(
+    function(){
+      $(this).find(".controls").fadeIn('fast'); },
+    function(){
+      $(this).find(".controls").fadeOut('fast'); });
+
   $(".close").click(function(){
     $(this).closest('.flash').remove();
   })
