@@ -18,7 +18,7 @@ form ul li
   .element
     @extend .stack2of3
     input
-      width: 75%
+      width: 100%
   .label
     @extend .stack1of3
     label
@@ -43,7 +43,12 @@ form ul li
 
 .double.element
   text-align: left
-  input
-    width: 35%
+  select
     display: inline
-    margin-right: 5%
+    margin-right: 1%
+  input
+    width: 49%
+    display: inline
+    margin-right: 2%
+    &:last-child
+      margin-right: 0

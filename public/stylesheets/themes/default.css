@@ -314,7 +314,7 @@ form ul li {
   form ul li input[type="submit"] {
     float: left; }
   form ul li .element input {
-    width: 75%; }
+    width: 100%; }
   form ul li .label label {
     font-family: "Raleway"; }
   form ul li .label-and-element {
@@ -345,7 +345,12 @@ form ul li {
 
 .double.element {
   text-align: left; }
-  .double.element input {
-    width: 35%;
+  .double.element select {
     display: inline;
-    margin-right: 5%; }
+    margin-right: 1%; }
+  .double.element input {
+    width: 49%;
+    display: inline;
+    margin-right: 2%; }
+    .double.element input:last-child {
+      margin-right: 0; }
