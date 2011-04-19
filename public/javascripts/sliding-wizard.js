@@ -1,106 +1,188 @@
+(function( $ ){
+  $.fn.proxySubmit = function($proxy) {
+    var $submit = this;
+    $submit.hide();
+    $proxy.click(function(){
+      if(!$proxy.hasClass('disabled')){
+        $submit.click();
+      }
+    });
+    return this;
+  };
+})( jQuery );
+
+(function( $ ){
+  $.fn.stepsFor = function($wizard) {
+    var $steps = this,
+        $children = $steps.children("li");
+
+    $children.removeClass('active');
+    $children.eq(pos).addClass('active');
+
+    $wizard.bind("onSlide", function(){
+      $children.removeClass('active');
+      $children.eq(pos).addClass('active');
+    });
+
+    return this;
+  };
+})( jQuery );
+
+
+
+
+var pos = 0;
 $(document).ready(function(){
-  var $container = $(".viewport")
-  var $panels = $(".viewport > ol > li");
 
-  var $ol = $container.find('ol');
-  $panels.css('float', 'left');
+  var $wizard, $viewport, $ol, $panels,
+      $next, $previous;
 
-  $(window).resize(function(){
-    $ol.width(($panels.size() + 1 ) * $container.width())
-    $panels.css('width', $container.width());
+  function init(){
+    $wizard = $(".sliding-wizard");
+    $viewport = $(".viewport");
+    $ol = $viewport.find('ol');
+    $panels = $(".viewport > ol > li");
+
+    setupSlider();
+  }
+
+  function setupSlider(){
+    $panels.css('float', 'left');
+
+    addNavigation();
+    addSubmitLink();
+    resizePanels();
+
+    $(window).resize(resizePanels);
+  }
+
+  function resizePanels(){
+    $ol.width(($panels.size() + 1 ) * $viewport.width());
+    $panels.css('width', $viewport.width());
     $ol.css('margin-left', calculateMarginFor(pos));
-  });
+  }
 
-  $ol.width(($panels.size() + 1 ) * $container.width())
-  $panels.css('width', $container.width());
+  function addNavigation(){
+    $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($(".sliding-wizard"));
+    $previous = $(document.createElement('input')).addClass('previous').attr({'type':'button','value':'\u2190 Previous'}).appendTo($(".sliding-wizard"));
+    $previous.attr('disabled','disabled');
+    $panels.last().bind("slideIn", function(){
+      disableButton($next);
+    });
 
-  $('.sliding-wizard :submit').hide();
-  $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($(".sliding-wizard"));
-  $previous = $(document.createElement('input')).addClass('previous').attr({'type':'button','value':'\u2190 Previous'}).appendTo($(".sliding-wizard"));
-  $previous.attr('disabled','disabled')
+    $panels.last().bind("slideOut", function(){
+      enableButton($next);
+    });
 
+    $panels.first().bind("slideIn", function(){
+      disableButton($previous);
+    });
 
-  $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
-  $("#checkout-now a").click(function(){
-    if(!$("#checkout-now").hasClass('disabled')){
-      $('.sliding-wizard :submit').click();
+    $panels.first().bind("slideOut", function(){
+      enableButton($previous);
+    });
+
+    $(".previous").click(function(){
+      if($(this).is(":enabled")){
+        slide("left");
+      }
+    });
+
+    $(".next").click(function(){
+      if($(this).is(":enabled")){
+        slide("right");
+      }
+    });
+  }
+
+  function addSubmitLink(){
+    $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
+  }
+
+  function slide(direction){
+    switch(direction){
+      case "left":
+        $panels.eq(pos).trigger("slideOut");
+        pos--;
+        $ol.animate({marginLeft: calculateMarginFor(pos) });
+        $panels.eq(pos).trigger("slideIn");
+        break;
+      case "right":
+        $panels.eq(pos).trigger("slideOut");
+        pos++;
+        $ol.animate({marginLeft: calculateMarginFor(pos) });
+        $panels.eq(pos).trigger("slideIn");
+        break;
+      default:
+        return;
     }
-  });
+    $wizard.trigger("onSlide");
+  }
 
-  var pos = 0;
+  function enableButton($btn){
+    $btn.removeAttr('disabled');
+  }
 
-  $("#steps").children("li").removeClass('active');
-  $("#steps").children("li").eq(pos).addClass('active');
-
-  $(".previous").click(function(){
-    $("#checkout-now").addClass('disabled')
-    $next.removeAttr('disabled');
-    if(pos == 0) { return; }
-    pos--;
-    $ol.animate({marginLeft: calculateMarginFor(pos) });
-    if(pos == 0) {
-      $previous.attr('disabled','disabled');
-    }
-
-    $("#steps").children("li").removeClass('active');
-    $("#steps").children("li").eq(pos).addClass('active');
-
-  });
-
-  $(".next").click(function(){
-    $previous.removeAttr('disabled');
-    if(pos == $panels.size() - 1) { return; }
-    pos++;
-    $ol.animate({marginLeft: calculateMarginFor(pos) });
-    if(pos == $panels.size() - 1) {
-      $next.attr('disabled','disabled')
-      $("#checkout-now").removeClass("disabled");
-      updateConfirmation();
-    }
-
-    $("#steps").children("li").removeClass('active');
-    $("#steps").children("li").eq(pos).addClass('active');
-  });
+  function disableButton($btn){
+    $btn.attr('disabled','disabled');
+  }
 
   function updateConfirmation(){
     $confirmation = $("#confirmation");
-
+    $confirmation.empty();
     $(document.createElement('h3')).html("Confirmation").prependTo($confirmation);
 
+    $(document.createElement('div')).attr('id','customer-confirmation').appendTo($confirmation);
+    $(document.createElement('div')).attr('id','credit_card-confirmation').appendTo($confirmation);
+    $(document.createElement('div')).attr('id','billing_address-confirmation').appendTo($confirmation);
+
+
     $(document.createElement('h4')).html("Customer Information").appendTo($("#customer-confirmation"));
-    var creditCard = $("#customer").find("input:visible, select").serializeArray()
-    $.each(creditCard, function(i,field){
+    var customer = $("#customer").find("input:visible, select").serializeArray();
+    $.each(customer, function(i,field){
       key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-      value = field.value
-      $(document.createElement('p')).html(key + ": " + value).appendTo($("#customer-confirmation"))
+      value = field.value;
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#customer-confirmation"));
     });
 
     $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
-    var creditCard = $("#credit_card").find("input:visible, select").serializeArray()
+    var creditCard = $("#credit_card").find("input:visible, select").serializeArray();
+
     $.each(creditCard, function(i,field){
       key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-      value = field.value
-      $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"))
+      value = field.value;
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
     });
 
     $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
-    var creditCard = $("#billing_address").find("input:visible, select").serializeArray()
-    $.each(creditCard, function(i,field){
+    var address = $("#billing_address").find("input:visible, select").serializeArray();
+    $.each(address, function(i,field){
       key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-      value = field.value
-      $(document.createElement('p')).html(key + ": " + value).appendTo($("#billing_address-confirmation"))
+      value = field.value;
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#billing_address-confirmation"));
     });
   }
 
   function calculateMarginFor(pos){
-    return -(width() * pos);
+    return -($viewport.width() * pos);
   }
 
-  function width(){
-    return $container.width();
+  function position(){
+    return pos;
   }
 
-  function height(){
-    $container.height();
-  }
+  init();
+
+  $("#steps").stepsFor($(".sliding-wizard"));
+
+  // Setup submit button
+  $('.sliding-wizard :submit').proxySubmit($("#checkout-now a"));
+  $panels.last().bind("slideIn", function(){
+    $("#checkout-now").removeClass("disabled");
+    updateConfirmation();
+  });
+
+  $panels.last().bind("slideOut", function(){
+    $("#checkout-now").addClass('disabled');
+  });
 });
