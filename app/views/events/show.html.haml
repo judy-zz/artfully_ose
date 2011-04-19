@@ -28,7 +28,13 @@
         .day
           .number= day
   %h3 Charts
-  = render :partial => 'events/chart_selector', :locals => { :event=> @event, :chart=>@chart, :charts => @charts }
+  = form_for @chart, :url => assign_chart_path(@event) do |form|
+    %ul
+      %li
+        .label= form.label :id, "Choose chart:"
+        .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
+    = form.submit "Submit"
+
   - @event.charts.each do |chart|
     %ul.detailed-list
       %li
