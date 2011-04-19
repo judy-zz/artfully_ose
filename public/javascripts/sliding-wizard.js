@@ -16,173 +16,174 @@
     var $steps = this,
         $children = $steps.children("li");
 
-    $children.removeClass('active');
-    $children.eq(pos).addClass('active');
-
-    $wizard.bind("onSlide", function(){
+    $wizard.bind("onSlide", function(event, position){
       $children.removeClass('active');
-      $children.eq(pos).addClass('active');
+      $children.eq(position).addClass('active');
     });
 
     return this;
   };
 })( jQuery );
 
+(function( $ ){
 
+  var $viewport, $ol, $panels, $wizard,
+      $next, $previous,
+      pos = 0;
 
+  var methods = {
+    init: function($wzrd){
+      $wizard = $wzrd;
+      $viewport = $(".viewport");
+      $ol = $viewport.find('ol');
+      $panels = $(".viewport > ol > li");
 
-var pos = 0;
-$(document).ready(function(){
+      methods.setupSlider();
+    },
+    setupSlider: function(){
+      $panels.css('float', 'left');
 
-  var $wizard, $viewport, $ol, $panels,
-      $next, $previous;
+      methods.addNavigation();
+      methods.addSubmitLink();
+      methods.resizePanels();
 
-  function init(){
-    $wizard = $(".sliding-wizard");
-    $viewport = $(".viewport");
-    $ol = $viewport.find('ol');
-    $panels = $(".viewport > ol > li");
+      $(window).resize(methods.resizePanels);
+    },
+    resizePanels: function(){
+      $ol.width(($panels.size() + 1 ) * $viewport.width());
+      $panels.css('width', $viewport.width());
+      $ol.css('margin-left', methods.calculateMarginFor(pos));
+    },
+    addNavigation: function(){
+      $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($wizard);
+      $previous = $(document.createElement('input')).addClass('previous').attr({'type':'button','value':'\u2190 Previous'}).appendTo($wizard);
+      $previous.attr('disabled','disabled');
 
-    setupSlider();
-  }
+      $wizard.bind("onLastSlideIn", function(){ methods.disableButton($next); });
+      $wizard.bind("onLastSlideOut", function(){ methods.enableButton($next); });
 
-  function setupSlider(){
-    $panels.css('float', 'left');
+      $wizard.bind("onFirstSlideIn", function(){ methods.disableButton($previous); });
+      $wizard.bind("onFirstSlideOut", function(){ methods.enableButton($previous); });
 
-    addNavigation();
-    addSubmitLink();
-    resizePanels();
+      $(".previous").click(function(){
+        if($(this).is(":enabled")){ methods.slide("left"); }
+      });
 
-    $(window).resize(resizePanels);
-  }
+      $(".next").click(function(){
+        if($(this).is(":enabled")){ methods.slide("right"); }
+      });
+    },
+    addSubmitLink: function(){
+      $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
+    },
+    slide: function(direction){
+      switch(direction){
+        case "left":
+          $panels.eq(pos).trigger("slideOut");
+          if(pos === $panels.length - 1){
+            $wizard.trigger("onLastSlideOut", [ pos ] );
+          }
 
-  function resizePanels(){
-    $ol.width(($panels.size() + 1 ) * $viewport.width());
-    $panels.css('width', $viewport.width());
-    $ol.css('margin-left', calculateMarginFor(pos));
-  }
+          pos--;
+          $ol.animate({marginLeft: methods.calculateMarginFor(pos) });
 
-  function addNavigation(){
-    $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($(".sliding-wizard"));
-    $previous = $(document.createElement('input')).addClass('previous').attr({'type':'button','value':'\u2190 Previous'}).appendTo($(".sliding-wizard"));
-    $previous.attr('disabled','disabled');
-    $panels.last().bind("slideIn", function(){
-      disableButton($next);
-    });
+          $panels.eq(pos).trigger("slideIn");
+          if(pos === 0){
+            $wizard.trigger("onFirstSlideIn", [ pos ] );
+          }
+          break;
+        case "right":
+          $panels.eq(pos).trigger("slideOut");
+          if(pos === 0){
+            $wizard.trigger("onFirstSlideOut", [ pos ] );
+          }
 
-    $panels.last().bind("slideOut", function(){
-      enableButton($next);
-    });
+          pos++;
+          $ol.animate({marginLeft: methods.calculateMarginFor(pos) });
 
-    $panels.first().bind("slideIn", function(){
-      disableButton($previous);
-    });
-
-    $panels.first().bind("slideOut", function(){
-      enableButton($previous);
-    });
-
-    $(".previous").click(function(){
-      if($(this).is(":enabled")){
-        slide("left");
+          $panels.eq(pos).trigger("slideIn");
+          if(pos === $panels.length - 1){
+            $wizard.trigger("onLastSlideIn", [ pos ] );
+          }
+          break;
+        default:
+          return;
       }
-    });
-
-    $(".next").click(function(){
-      if($(this).is(":enabled")){
-        slide("right");
-      }
-    });
-  }
-
-  function addSubmitLink(){
-    $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
-  }
-
-  function slide(direction){
-    switch(direction){
-      case "left":
-        $panels.eq(pos).trigger("slideOut");
-        pos--;
-        $ol.animate({marginLeft: calculateMarginFor(pos) });
-        $panels.eq(pos).trigger("slideIn");
-        break;
-      case "right":
-        $panels.eq(pos).trigger("slideOut");
-        pos++;
-        $ol.animate({marginLeft: calculateMarginFor(pos) });
-        $panels.eq(pos).trigger("slideIn");
-        break;
-      default:
-        return;
+      $wizard.trigger("onSlide", [ pos ] );
+    },
+    enableButton: function($btn){
+      $btn.removeAttr('disabled');
+    },
+    disableButton: function($btn){
+      $btn.attr('disabled','disabled');
+    },
+    calculateMarginFor: function(pos){
+      return -($viewport.width() * pos);
+    },
+    position: function(){
+      return pos;
     }
-    $wizard.trigger("onSlide");
-  }
 
-  function enableButton($btn){
-    $btn.removeAttr('disabled');
-  }
+  };
 
-  function disableButton($btn){
-    $btn.attr('disabled','disabled');
-  }
+  $.fn.slidingWizard = function() {
+    methods.init(this);
+    return this;
+  };
+})( jQuery );
 
-  function updateConfirmation(){
-    $confirmation = $("#confirmation");
-    $confirmation.empty();
-    $(document.createElement('h3')).html("Confirmation").prependTo($confirmation);
+$(document).ready(function(){
+  $wizard = $(".sliding-wizard");
+  $wizard.slidingWizard();
 
-    $(document.createElement('div')).attr('id','customer-confirmation').appendTo($confirmation);
-    $(document.createElement('div')).attr('id','credit_card-confirmation').appendTo($confirmation);
-    $(document.createElement('div')).attr('id','billing_address-confirmation').appendTo($confirmation);
+  $("#steps").stepsFor($wizard);
 
-
-    $(document.createElement('h4')).html("Customer Information").appendTo($("#customer-confirmation"));
-    var customer = $("#customer").find("input:visible, select").serializeArray();
-    $.each(customer, function(i,field){
-      key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-      value = field.value;
-      $(document.createElement('p')).html(key + ": " + value).appendTo($("#customer-confirmation"));
-    });
-
-    $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
-    var creditCard = $("#credit_card").find("input:visible, select").serializeArray();
-
-    $.each(creditCard, function(i,field){
-      key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-      value = field.value;
-      $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
-    });
-
-    $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
-    var address = $("#billing_address").find("input:visible, select").serializeArray();
-    $.each(address, function(i,field){
-      key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-      value = field.value;
-      $(document.createElement('p')).html(key + ": " + value).appendTo($("#billing_address-confirmation"));
-    });
-  }
-
-  function calculateMarginFor(pos){
-    return -($viewport.width() * pos);
-  }
-
-  function position(){
-    return pos;
-  }
-
-  init();
-
-  $("#steps").stepsFor($(".sliding-wizard"));
-
-  // Setup submit button
   $('.sliding-wizard :submit').proxySubmit($("#checkout-now a"));
-  $panels.last().bind("slideIn", function(){
+  $wizard.bind("onLastSlideIn", function(){
     $("#checkout-now").removeClass("disabled");
-    updateConfirmation();
   });
-
-  $panels.last().bind("slideOut", function(){
+  $wizard.bind("onLastSlideOut  ", function(){
     $("#checkout-now").addClass('disabled');
   });
+
+  $wizard.bind("onLastSlideIn", function(){
+    updateConfirmation();
+  });
 });
+
+// Tech Debt
+function updateConfirmation(){
+  $confirmation = $("#confirmation");
+  $confirmation.empty();
+  $(document.createElement('h3')).html("Confirmation").prependTo($confirmation);
+
+  $(document.createElement('div')).attr('id','customer-confirmation').appendTo($confirmation);
+  $(document.createElement('div')).attr('id','credit_card-confirmation').appendTo($confirmation);
+  $(document.createElement('div')).attr('id','billing_address-confirmation').appendTo($confirmation);
+
+
+  $(document.createElement('h4')).html("Customer Information").appendTo($("#customer-confirmation"));
+  var customer = $("#customer").find("input:visible, select").serializeArray();
+  $.each(customer, function(i,field){
+    key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
+    value = field.value;
+    $(document.createElement('p')).html(key + ": " + value).appendTo($("#customer-confirmation"));
+  });
+
+  $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
+  var creditCard = $("#credit_card").find("input:visible, select").serializeArray();
+
+  $.each(creditCard, function(i,field){
+    key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
+    value = field.value;
+    $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
+  });
+
+  $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
+  var address = $("#billing_address").find("input:visible, select").serializeArray();
+  $.each(address, function(i,field){
+    key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
+    value = field.value;
+    $(document.createElement('p')).html(key + ": " + value).appendTo($("#billing_address-confirmation"));
+  });
+}
