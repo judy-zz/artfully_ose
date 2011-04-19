@@ -296,6 +296,8 @@ iframe {
       height: 0;
       clear: both;
       visibility: hidden; }
+  #customer-confirmation > *, #credit_card-confirmation > *, #billing_address-confirmation > * {
+    margin: 0; }
 
 #steps {
   padding-bottom: 20px;
@@ -333,7 +335,7 @@ form ul li {
   form ul li input[type="submit"] {
     float: left; }
   form ul li .element input {
-    width: 100%; }
+    width: 98%; }
   form ul li .label label {
     font-family: "Raleway"; }
   form ul li .label-and-element {
@@ -368,7 +370,7 @@ form ul li {
     display: inline;
     margin-right: 1%; }
   .double.element input {
-    width: 49%;
+    width: 48%;
     display: inline;
     margin-right: 2%; }
     .double.element input:last-child {
