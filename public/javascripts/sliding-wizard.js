@@ -28,7 +28,7 @@
 (function( $ ){
 
   var $viewport, $ol, $panels, $wizard,
-      $next, $previous,
+      $next, $back,
       pos = 0;
 
   var methods = {
@@ -56,16 +56,16 @@
     },
     addNavigation: function(){
       $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($wizard);
-      $previous = $(document.createElement('input')).addClass('previous').attr({'type':'button','value':'\u2190 Previous'}).appendTo($wizard);
-      $previous.attr('disabled','disabled');
+      $back = $(document.createElement('input')).addClass('back').attr({'type':'button','value':'\u2190 Back'}).appendTo($wizard);
+      $back.attr('disabled','disabled');
 
       $wizard.bind("onLastSlideIn", function(){ methods.disableButton($next); });
       $wizard.bind("onLastSlideOut", function(){ methods.enableButton($next); });
 
-      $wizard.bind("onFirstSlideIn", function(){ methods.disableButton($previous); });
-      $wizard.bind("onFirstSlideOut", function(){ methods.enableButton($previous); });
+      $wizard.bind("onFirstSlideIn", function(){ methods.disableButton($back); });
+      $wizard.bind("onFirstSlideOut", function(){ methods.enableButton($back); });
 
-      $(".previous").click(function(){
+      $(".back").click(function(){
         if($(this).is(":enabled")){ methods.slide("left"); }
       });
 
