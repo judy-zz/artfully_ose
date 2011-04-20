@@ -26,6 +26,6 @@ Feature: Order creation
     Given I have added 2 tickets to my order
     And I am on the store order page
     When I fill in "Amount" with "5000"
-    And I press "Add Donation"
-    Then I should see "Donation for"
+    And I press "Make Donation"
+    Then I should see "Donation to"
     And I should see "$50"
