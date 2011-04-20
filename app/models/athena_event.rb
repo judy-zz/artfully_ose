@@ -26,6 +26,16 @@ class AthenaEvent < AthenaResource::Base
     @attributes['charts'] ||= charts
   end
 
+  def organization
+    @organization ||= Organization.find(organization_id)
+  end
+
+  def organization=(org)
+    raise TypeError, "Expecting an Organization" unless org.kind_of? Organization
+    org.save unless org.persisted?
+    @organization, self.organization_id = org, org.id
+  end
+
   def performances
     @attributes['performances'] ||= find_performances.sort_by { |performance| performance.datetime }
   end

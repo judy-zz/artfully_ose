@@ -42,4 +42,4 @@
         %ul.details
           %li= pluralize(chart.sections.size, "Section")
   %h3 Widget
-  %textarea= render :partial => 'widgets/event', :locals => { :event => @event }
+  %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }

@@ -1,0 +1,12 @@
+%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"}
+%script{:src => "#{root_url}javascripts/artfully.js"}
+
+:javascript
+  $(document).ready(function(){
+    artfully.configure({
+      base_uri: '#{root_url(:subdomain => "api")}',
+      store_uri: '#{root_url}store/',
+    });
+    #{render :partial => "widgets/event", :locals => { :event => event } unless event.nil? }
+    #{render :partial => "widgets/donation", :locals => { :organization => organization } unless organization.nil? }
+  });

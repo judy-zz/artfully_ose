@@ -1,8 +1,1 @@
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-<script src="<%= root_url %>javascripts/artfully.js"></script>
-
-<script>
-  $(document).ready(function(){
-    artfully.widgets.event().display(<%= event.id %>);
-  });
-</script>
+artfully.widgets.event().display(<%= event.id %>);
