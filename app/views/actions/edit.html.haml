@@ -8,6 +8,6 @@
   = form_for @action, :url => person_action_path(@person) do |form|
     %ul
       = render :partial => 'actions/form', :locals => { :parent_form => form, :target => @action }
-      %li= form.submit "Submit"
-
-  =button_to "Cancel", :back, :method => :get
+      %li
+        =form.submit "Submit"
+        =button_to "Cancel", :back, :method => :get
