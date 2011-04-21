@@ -15,6 +15,20 @@ module AthenaResource
       def parameterize(params = {})
         Hash[params.collect{|key, value| [key.camelize(:lower),value] }]
       end
+    
+      def method_missing(method_id, *arguments)
+        if match = /find_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
+          arg = arguments[0]
+          term = match[1]
+          if arguments[0].respond_to? ('id')
+            term  = term + 'Id'
+            arg = arguments[0]
+          end
+          find(:all, :params => { term => arg})
+        else
+          super
+        end
+      end
     end
 
     def create
