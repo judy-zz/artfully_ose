@@ -8,12 +8,15 @@ class ActionsController < ApplicationController
   def new
     @action = AthenaAction.new
     @person = AthenaPerson.find params[:person_id]
+
+    @action.creator = nil
   end
 
   def edit
     @action = AthenaAction.find params[:id]
     @person = AthenaPerson.find params[:person_id]
 
+    @action.creator = User.find( @action.creator_id ).email
     #strip time zone from time before displaying it
     #the correct time zone will be re-attached by the prepare_attr! method
     org = current_user.current_organization
