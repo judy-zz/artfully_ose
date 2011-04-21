@@ -22,9 +22,9 @@ module AthenaResource
           term = match[1]
           if arguments[0].respond_to? ('id')
             term  = term + 'Id'
-            arg = arguments[0]
+            arg = arguments[0].id
           end
-          find(:all, :params => { term => arg})
+          find(:all, :params => { term => arg })
         else
           super
         end
