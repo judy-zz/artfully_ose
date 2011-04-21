@@ -20,8 +20,11 @@ module AthenaResource
         if match = /find_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
           arg = arguments[0]
           term = match[1]
-          if arguments[0].respond_to? ('id')
-            term  = term + 'Id'
+          
+          #Can't use respond_to?('id') because 1.8 allows Object.id
+          #If they sent an AthenaResource::Base or ActiveRecord::Base
+          if( arguments[0].kind_of?(ActiveRecord::Base) || arguments[0].kind_of?(AthenaResource::Base) )
+            term  = term + 'Id' unless term.end_with? 'Id'
             arg = arguments[0].id
           end
           find(:all, :params => { term => arg })
