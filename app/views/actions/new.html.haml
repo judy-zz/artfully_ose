@@ -10,4 +10,4 @@
       = render :partial => 'actions/form', :locals => { :parent_form => form, :target => @action }
       %li= form.submit "Submit"
 
-  =link_to "Cancel", :back
+  =button_to "Cancel", :back, :method => :get

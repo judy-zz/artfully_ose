@@ -10,6 +10,7 @@ class ActionsController < ApplicationController
     @person = AthenaPerson.find params[:person_id]
 
     @action.creator = nil
+    @action.occurred_at = DateTime.now.in_time_zone(current_user.current_organization.time_zone)
   end
 
   def edit

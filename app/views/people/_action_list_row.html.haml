@@ -4,19 +4,15 @@
       &#10029;
     -else
       &#10025;
-  %td= l action.timestamp, :format => :short
   -unless action.occurred_at.nil?
-    -#%td= l action.occurred_at, :format => :short
     %td= l action.occurred_at.in_time_zone(current_user.current_organization.time_zone), :format => :short
   -else
     %td
 
-  -if action.action_type == "Hear"
-    %td= link_to action.action_type, edit_person_action_path(person, action)
-  -else
-    %td= action.action_type.capitalize
-  -unless action.action_subtype.nil?
-    %td= action.action_subtype
-  -else
-    %td
+  %td="#{action.action_type.capitalize} - #{action.action_subtype unless action.action_subtype.nil?}"
+
   %td= action.details
+
+  %td
+    -#=link_to "View", root_path
+    =link_to "Edit", edit_person_action_path(person, action) if action.action_type == "Hear"

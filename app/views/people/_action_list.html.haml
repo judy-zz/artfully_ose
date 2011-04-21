@@ -2,18 +2,21 @@
   %thead
     %tr
       %th.starred &#10029;
-      %th Date (timestamp)
       %th Date Occurred
       %th Type
-      %th SubType
       %th Details
+      %th
   %tbody
     -if person.actions.empty?
       %tr
         %td
         %td{:colspan=>5}
           No actions for this person
-    -person.starred_actions.each do |action|
-      =render :partial=>'action_list_row', :locals => { :person => person, :action => action }
-    -person.unstarred_actions.each do |action|
-      =render :partial=>'action_list_row', :locals => { :person => person, :action => action }
+    %ul.detailed-list#of_performances
+      -person.starred_actions.each do |action|
+        =render :partial=>'action_list_row', :locals => { :person => person, :action => action }
+
+      -person.unstarred_actions.each do |action|
+        =render :partial=>'action_list_row', :locals => { :person => person, :action => action }
+        %ul.controls
+          %li= link_to "View", root_path

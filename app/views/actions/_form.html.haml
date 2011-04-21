@@ -2,25 +2,21 @@
   %li
     .label= action_form.label :action_subtype, "Action Type"
     .element= action_form.select :action_subtype, options_for_select( target.hear_action_subtypes, target.action_subtype )
-
   -unless target.creator.nil?
     %li
       .label= action_form.label :creator, "Created By"
       .element= action_form.text_field :creator, :disabled => true
-
   %li
     .label= action_form.label :occurred_at, "Action date/time"
     .element
       = action_form.text_field :occurred_at, { :value => "#{(l target.occurred_at, :format => :date_for_input) unless target.occurred_at.nil?}", :class=>'datepicker hasDatePicker'}
       = action_form.time_select :occurred_at, :value => target
-
   -unless target.timestamp.nil?
     %li
       .label= action_form.label :timestamp, "Created On"
       .element= action_form.text_field :timestamp, { :value => "#{(l target.timestamp, :format => :long)}", :disabled => true }
-
   %li
     .label= action_form.label :details, "Details"
-    .element= action_form.text_area :details
+    .element= action_form.text_area :details, :size => "25x5"
 
 
