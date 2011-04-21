@@ -72,9 +72,18 @@ class AthenaAction < AthenaResource::Base
     attributes['timestamp']
   end
 
-
   def hear_action_subtypes
-    ["Email", "Phone Call", "Text"]
+    ["Email (sent)",
+      "Email (received)",
+      "Phone (initiated)",
+      "Phone (received)",
+      "Postal (sent)",
+      "Postal (received)",
+      "Meeting",
+      "Twitter",
+      "Facebook",
+      "Blog",
+      "Press"]
   end
 
   private

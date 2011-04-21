@@ -1,6 +1,6 @@
 = parent_form.fields_for target do |action_form|
   %li
-    .label= action_form.label :action_subtype, "Action SubType"
+    .label= action_form.label :action_subtype, "Action Type"
     .element= action_form.select :action_subtype, options_for_select( target.hear_action_subtypes, target.action_subtype )
 
   -unless :creator
