@@ -38,8 +38,7 @@ class KitsController < ApplicationController
     end
 
     def with_donation_kit_details
-      if params[:donation_type].blank?
-        flash[:info] = "Please select what kind of donations you would be accepting."
+      if params[:donation_type].blank?     
       else
         yield
       end

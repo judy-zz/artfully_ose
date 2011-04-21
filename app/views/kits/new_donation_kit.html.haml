@@ -1,27 +1,26 @@
 - content_for :header do
-  %h1 Donation Kit Details
+  %h1 Donations
 
 .context
-  %h3 Description
   %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
 
 .document
+  %h3 Lorem ipsum elit nisi eget
   .donation-section-wrapper
     .donation-section2.of2
-      %h4 Fractued Atlas Fiscal Sponsorship Donations
+      -#%h4 Fractued Atlas Fiscal Sponsorship Donations
       = form_for current_user, :url => new_donation_kit_path do |form|
         = hidden_field_tag :donation_type, "fafs"
-        = submit_tag "FAFS"
-      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. Congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+        = submit_tag "I have a fiscally sponsored project with Fractured Atlas"
+      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proinicus vehicula nisi eget lacus gravida at iaculis mi luct eget. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. Congue rhoncus neque, utic tincidunt quam sagittis eget. In hac habitasse platea dicta. Quisque non imperdiet magna.
 
     .donation-section1.of2
-      %h4 501c3 Donations
+      -#%h4 501c3 Donations
       = form_for current_user, :url => new_donation_kit_path do |form|
         = hidden_field_tag :donation_type, "501c3"
-        = submit_tag "501c3"
+        = submit_tag "I am an IRS approved charity"
       %p Suspendisse non euismod justo. Curabitur pharetra justo non lacus adipiscing eu mollis magna viverra. Fusce quam quam, interdum scelerisque sodales sit amet, mollis non urna. Sed elit urna, porttitor sed vestibulum non, interdum non nunc. Fusce a velit felis. Proin quis erat in erat pellentesque tempor.
  
-  %h4 None
-  =link_to "Cancel", :back
+  -#%h4 None
+  =button_to "I am none of these", :back
   %p Proin a lectus nisi. Aliquam volutpat malesuada eros, id scelerisque lacus varius a. Curabitur molestie quam at metus sollicitudin imperdiet. Cras dictum fermentum luctus. Pellentesque hendrerit metus nec lorem pulvinar nec malesuada mi pulvinar. 
-
