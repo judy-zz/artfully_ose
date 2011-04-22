@@ -351,18 +351,24 @@ form ul li {
 .label.hidden {
   display: none; }
 
-.element > *, .label > *, .label-and-element > * {
+.element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label {
   display: block;
   font-family: "Arimo", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left; }
-  .element > *:after, .label > *:after, .label-and-element > *:after {
+  .element > div:after, .element label:after, .label > div:after, .label label:after, .label-and-element > div:after, .label-and-element label:after {
     content: ".";
     display: block;
     height: 0;
     clear: both;
     visibility: hidden; }
+.element > input, .element select, .label > input, .label select, .label-and-element > input, .label-and-element select {
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left; }
 
 .double.element {
   text-align: left; }

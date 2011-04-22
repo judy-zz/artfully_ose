@@ -38,8 +38,10 @@ form ul li
   display: none
 
 .element, .label, .label-and-element
-  > *
+  > div, label
     @include stack-content
+  > input, select
+    @include stack-reset
 
 .double.element
   text-align: left

@@ -14,17 +14,20 @@
   vertical-align: top
 
 @mixin stack-content
-  display: block
-  font-family: "Arimo", sans-serif
-  letter-spacing: normal
-  word-spacing: normal
-  text-align: left
+  @include stack-reset
   &:after
     content: "."
     display: block
     height: 0
     clear: both
     visibility: hidden
+
+@mixin stack-reset
+  display: block
+  font-family: "Arimo", sans-serif
+  letter-spacing: normal
+  word-spacing: normal
+  text-align: left
 
 @mixin section
   position: relative
