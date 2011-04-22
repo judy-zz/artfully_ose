@@ -60,10 +60,12 @@ class AthenaEvent < AthenaResource::Base
     next_perf
   end
 
-  def to_widget_json(options = {})
-    performances and charts and charts.each { |chart| chart.sections }
-    performances.reject! { |performance| !performance.on_sale? }
-    to_json(options)
+  def as_widget_json(options = {})
+    as_json(options).merge!(:performances => upcoming_performances(:all).reject! { |performance| !performance.on_sale? })
+  end
+
+  def as_json(options = {})
+    super({ :methods => [ :performances, :charts ]}.merge(options))
   end
 
   def sorted_locales

@@ -81,7 +81,7 @@ describe AthenaEvent do
     it "should fetch the charts from ATHENA if not yet cached" do
       charts = (0..5).collect { Factory(:athena_chart) }
       subject.id = 1
-      FakeWeb.register_uri(:get, 'http://localhost/stage/charts.json?eventId=eq1', :status => 200, :body => charts.to_json)
+      FakeWeb.register_uri(:get, 'http://localhost/stage/charts.json?eventId=eq1', :status => 200, :body => charts.to_json({}))
       subject.charts.size.should eq charts.size
     end
 
@@ -90,7 +90,7 @@ describe AthenaEvent do
     end
   end
 
-  describe ".to_widget_json" do
+  describe "#as_widget_json" do
     subject { Factory(:athena_event_with_id) }
 
     it "should not include performances that are on sale" do
@@ -98,7 +98,7 @@ describe AthenaEvent do
       subject.performances.first.state = "on_sale"
       subject.stub(:charts).and_return([])
 
-      json = JSON.parse(subject.to_widget_json)
+      json = JSON.parse(subject.as_widget_json.to_json)
       json["performances"].length.should eq 1
     end
   end

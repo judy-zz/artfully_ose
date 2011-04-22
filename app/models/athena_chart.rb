@@ -15,6 +15,10 @@ class AthenaChart < AthenaResource::Base
     attribute 'organization_id', :string
   end
 
+  def as_json(options = {})
+    super({ :methods => [ :sections ]}.merge(options))
+  end
+
   def sections
     @attributes['sections'] ||= find_sections
   end
