@@ -265,7 +265,7 @@ artfully.models = (function(){
               obj = this,
               i;
 
-          $select = $(document.createElement('select')).attr({'name':'ticket_count','id':'ticket-count'}).appendTo($form);
+          $select = $(document.createElement('select')).attr({'name':'ticket_count'}).appendTo($form);
           $(document.createElement('option')).text("1 Ticket").attr('value', 1).appendTo($select);
           for(i = 2; i <= 10; i++){
             $(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
@@ -275,7 +275,7 @@ artfully.models = (function(){
 
           $form.submit(function(){
             var params = {
-              'limit': $('#ticket-count').val(),
+              'limit': $select.val(),
               'performance_id': $(this).closest('.performance').data('performance').id,
               'price': obj.price
             };
