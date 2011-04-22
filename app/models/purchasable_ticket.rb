@@ -34,8 +34,8 @@ class PurchasableTicket < ActiveRecord::Base
 
   def unlock
     begin
-      lock and lock.destroy
-    rescue ActiveResource::ResourceNotFound
+      lock.destroy unless lock.nil?
+    rescue ActiveResource::ResourceNotFound, ActiveResource::ServerError
     end
   end
 
