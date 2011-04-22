@@ -21,11 +21,19 @@ class KitsController < ApplicationController
 
   def new_donation_kit
     with_donation_kit_details do
-      with_donation_kit_details do
-        add_kit("DonationKit")
-      end
-      redirect_to kits_url
+#      with_donation_kit_details do
+#        #add_kit("DonationKit")
+#      end
+#      redirect_to kits_url
     end
+  end
+
+  def new_501c3_kit
+
+  end
+
+  def new_fafs_kit
+    
   end
 
   private
