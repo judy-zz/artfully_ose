@@ -43,6 +43,7 @@
 
 ::-moz-focus-inner {
   border: 0;
+  padding: 0;
 }
 
 input[type="search"]::-webkit-search-decoration {
@@ -93,13 +94,6 @@ button {
   *padding-bottom: 1px;
 }
 
-button[disabled],
-input[type="reset"][disabled],
-input[type="submit"][disabled],
-input[type="button"][disabled] {
-  color: #888;
-}
-
 textarea,
 select,
 input[type="date"],
@@ -143,30 +137,13 @@ input[type="week"] {
   Cannot stack with WebKit's.
 */
 input.placeholder_text,
-textarea.placeholder_text {
+textarea.placeholder_text,
+input:-moz-placeholder,
+textarea:-moz-placeholder {
   color: #888;
 }
 
 ::-webkit-input-placeholder {
-  color: #888;
-}
-
-textarea[disabled],
-select[disabled],
-input[type="date"][disabled],
-input[type="datetime"][disabled],
-input[type="datetime-local"][disabled],
-input[type="email"][disabled],
-input[type="month"][disabled],
-input[type="number"][disabled],
-input[type="password"][disabled],
-input[type="search"][disabled],
-input[type="tel"][disabled],
-input[type="text"][disabled],
-input[type="time"][disabled],
-input[type="url"][disabled],
-input[type="week"][disabled] {
-  background-color: #eee;
   color: #888;
 }
 
@@ -178,9 +155,9 @@ select:focus,
 select:active,
 textarea:focus,
 textarea:active {
-  -moz-box-shadow: #06f 0 0 3px;
-  -webkit-box-shadow: #06f 0 0 3px;
-  box-shadow: #06f 0 0 3px;
+  -moz-box-shadow: #06f 0 0 7px;
+  -webkit-box-shadow: #06f 0 0 7px;
+  box-shadow: #06f 0 0 7px;
 
   /* for Opera */
   z-index: 1;
@@ -197,6 +174,40 @@ input[type="checkbox"]:active {
   box-shadow: none;
 }
 
+select[disabled],
+textarea[disabled],
+input[type="date"][disabled],
+input[type="datetime"][disabled],
+input[type="datetime-local"][disabled],
+input[type="email"][disabled],
+input[type="month"][disabled],
+input[type="number"][disabled],
+input[type="password"][disabled],
+input[type="search"][disabled],
+input[type="tel"][disabled],
+input[type="text"][disabled],
+input[type="time"][disabled],
+input[type="url"][disabled],
+input[type="week"][disabled] {
+  background-color: #eee;
+}
+
+button[disabled],
+input[disabled],
+select[disabled],
+select[disabled] option,
+select[disabled] optgroup,
+textarea[disabled] {
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  color: #888;
+  cursor: default;
+}
+
 .is_webkit select {
   /* Tweaks for Safari + Chrome. */
   background-image: url(../images/select_arrow.gif);
@@ -206,11 +217,12 @@ input[type="checkbox"]:active {
 }
 
 textarea,
+select[size],
 select[multiple] {
   height: auto;
 }
 
-select[multiple],
+.is_webkit select[size],
 .is_webkit select[multiple] {
   background-image: none;
   padding: 0;
