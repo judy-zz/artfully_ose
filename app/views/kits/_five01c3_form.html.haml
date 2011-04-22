@@ -1,0 +1,8 @@
+= parent_form.fields_for target do |kit_form|
+  %li
+    .label= kit_form.label :taxable_organization_name, "Taxable Organization Name"
+    .element= kit_form.text_field :taxable_organization_name
+
+  %li
+    .label= kit_form.label :ein, "EIN"
+    .element= kit_form.text_field :ein

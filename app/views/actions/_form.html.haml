@@ -14,4 +14,4 @@
     .element= action_form.text_area :details, :size => "25x5"
 
   -unless target.timestamp.nil? or target.creator.nil?
-    %h4= "Action created by #{target.creator} on #{(l target.timestamp, :format => :long)} "
+    %h4= "Action created by #{target.creator} on #{(l target.timestamp, :format => :long)}"

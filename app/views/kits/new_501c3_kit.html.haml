@@ -1,2 +1,14 @@
 - content_for :header do
   %h1 New 501(c)(3)
+
+.context
+  %h3 Context
+  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+
+.document
+  = form_for @kit, :url => new_501c3_kit_path do |form|
+    %ul
+      = render :partial => 'kits/five01c3_form', :locals => { :parent_form => form, :target => @kit }
+      %li= form.submit "Save", :confirm=> "In order to activate this kit you still need to fax/email your Determination Letter from the IRS!"
+
+  =button_to "Cancel", :back, :method => :get
