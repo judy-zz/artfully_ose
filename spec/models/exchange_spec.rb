@@ -55,7 +55,7 @@ describe Exchange do
       end
 
       it "should return the items in the exchange" do
-        subject.items.each { |item| item.should_receive(:return_item).and_return(true) }
+        subject.items.each { |item| item.should_receive(:return!).and_return(true) }
         subject.submit
       end
     end

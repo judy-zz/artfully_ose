@@ -47,22 +47,26 @@ class AthenaItem < AthenaResource::Base
     item_type = itm.class
   end
 
-  def refund_item
-    new_attrs = attributes.reject { |key, value| %w( id ).include? key }
-    new_attrs.merge!({:state => "refunded"})
-    AthenaItem.new(new_attrs)
+  def dup!
+    AthenaItem.new(attributes.reject { |key, value| %w( id ).include? key } )
+  end
+
+  def refund!
+    update_attribute(:state, "refunded")
+  end
+
+  def to_refund
+    dup!.tap do |item|
+      item.price = item.price * -1
+    end
   end
 
   def returnable?
     !item.expired?
   end
 
-  def return_item
-    if returnable?
-      item.attributes.delete(:buyer_id)
-      item.on_sale
-      item.save!
-    end
+  def return!
+    item.return! if returnable?
   end
 
   def self.find_by_order(order)

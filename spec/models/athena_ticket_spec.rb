@@ -264,4 +264,18 @@ describe AthenaTicket do
       subject.buyer_id.should eq(2)
     end
   end
+
+  describe "return!" do
+    subject { Factory(:ticket_with_id, :performance => DateTime.now + 1.day, :buyer => Factory(:athena_person_with_id)) }
+    it "removes the buyer from the item" do
+      subject.stub(:save!)
+      subject.return!
+      subject.buyer_id.should be_nil
+    end
+
+    it "should put the ticket back on sale" do
+      subject.should_receive(:on_sale)
+      subject.return!
+    end
+  end
 end

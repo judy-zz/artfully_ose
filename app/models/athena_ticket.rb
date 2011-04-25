@@ -117,6 +117,12 @@ class AthenaTicket < AthenaResource::Base
     @buyer, self.buyer_id = person, person.id
   end
 
+  def return!
+    attributes.delete(:buyer_id)
+    on_sale
+    save!
+  end
+
   private
     def find_buyer
       return if self.buyer_id.nil?

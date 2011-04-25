@@ -45,40 +45,41 @@ describe AthenaItem do
     end
   end
 
-  describe "refund_item" do
+  describe "#dup!" do
     it "should create a duplicate item without the id" do
       old_attr = subject.attributes.dup
       old_attr.delete(:id)
 
-      new_attr = subject.refund_item.attributes
-      new_attr.delete(:state)
+      new_attr = subject.dup!.attributes
 
       old_attr.should eq new_attr
     end
   end
 
-  describe ".return_item" do
+  describe "#to_refund" do
+    it "operates on a duplicate item" do
+      subject.to_refund.id.should be_nil
+    end
+
+    it "returns an item with the refund price set" do
+      subject.to_refund.price.should eq subject.price * -1
+    end
+  end
+
+  describe "#return!" do
     describe "and tickets" do
       it "returns the ticket to inventory if it has not expired" do
         item = Factory(:ticket_with_id, :performance => DateTime.now + 1.day)
         subject.item = item
-        item.should_receive(:on_sale)
-        subject.return_item
+        item.should_receive(:return!)
+        subject.return!
       end
 
       it "should not return the ticket to inventory if it has expired" do
         item = Factory(:ticket_with_id, :performance => DateTime.now - 1.day)
         subject.item = item
-        item.should_not_receive(:on_sale)
-        subject.return_item
-      end
-
-      it "removes the buyer from the item" do
-        item = Factory(:ticket_with_id, :performance => DateTime.now + 1.day, :buyer => Factory(:athena_person_with_id))
-        item.stub(:save!)
-        subject.item = item
-        subject.return_item
-        subject.item.buyer_id.should be_nil
+        item.should_not_receive(:return!)
+        subject.return!
       end
     end
   end

@@ -39,7 +39,7 @@ class Exchange
   end
 
   def return_items
-    items.map(&:return_item)
+    items.map(&:return!)
   end
 
   def sell_new_items

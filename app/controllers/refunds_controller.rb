@@ -8,7 +8,7 @@ class RefundsController < ApplicationController
     refund.submit
 
     if refund.successful?
-      flash[:notice] = "Successfully refunded #{refund.items_refunded} tickets."
+      flash[:notice] = "Successfully refunded #{refund.items.size} tickets."
     else
       flash[:error] = "Unable to refund tickets."
     end

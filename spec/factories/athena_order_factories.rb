@@ -34,5 +34,6 @@ Factory.define :athena_item_with_id, :parent => :athena_item do |i|
   i.id Factory.next :athena_item_id
   i.after_build do |item|
     FakeWeb.register_uri(:get, "http://localhost/orders/items/#{item.id}.json", :body => item.encode)
+    FakeWeb.register_uri(:put, "http://localhost/orders/items/#{item.id}.json", :body => "")
   end
 end
