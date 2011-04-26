@@ -15,7 +15,6 @@ class OrdersController < ApplicationController
     @order = AthenaOrder.find(params[:id])
     authorize! :view, @order
 
-    @children = @order.children
     @person = AthenaPerson.find(@order.person_id)
 
     @total = 0

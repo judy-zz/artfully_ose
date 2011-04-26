@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe AthenaItem do
 
-  subject { Factory(:athena_item) }
+  subject { Factory(:athena_item_with_id) }
 
   %w( order_id item_type item_id price ).each do |attribute|
     it { should respond_to attribute }

@@ -74,6 +74,7 @@ class AthenaItem < AthenaResource::Base
   end
 
   def return!
+    update_attribute(:state, "returned")
     item.return! if returnable?
   end
 

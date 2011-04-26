@@ -15,7 +15,7 @@
         %tbody
           - order.all_items.each do |item|
             %tr{:id => "row_item_#{item.id}", :class => item.state }
-              %td.grouped-checkbox= check_box_tag :all, nil, false, :disabled => true
+              %td.grouped-checkbox= check_box_tag :items, nil, false, :disabled => true
               %td Ticket
               %td= link_to "#{item.item.event}", event_path(item.item.event_id)
               %td= number_as_cents item.price
