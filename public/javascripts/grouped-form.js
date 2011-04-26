@@ -28,11 +28,11 @@ $(document).ready(function(){
       return items.unique();
     },
 
-    generateCheckboxes: function(items){
-      $.each(items, function(index, id){
-        var target = $('#row_' + id + ' td:first-child'), $checkbox;
+    enableCheckboxes: function(items){
+      var $checkbox;
 
-        $checkbox = $("input:checkbox", target);
+      $.each(items, function(index, id){
+        $checkbox = $('#row_' + id + ' td:first-child input:checkbox')
         $checkbox.removeAttr('disabled');
 
         $checkbox.change(function(){
@@ -77,7 +77,7 @@ $(document).ready(function(){
   };
 
   methods.hideGroups();
-  methods.generateCheckboxes(methods.findItems());
+  methods.enableCheckboxes(methods.findItems());
   methods.generateControls();
 
 });

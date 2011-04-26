@@ -1,4 +1,5 @@
-= javascript_include_tag "grouped-form"
+- content_for :scripts do
+  = javascript_include_tag "grouped-form"
 
 - unless order.items.empty?
   = render :partial => 'refunds/grouped_form', :locals => { :order => order }
@@ -15,7 +16,7 @@
         %tbody
           - order.all_items.each do |item|
             %tr{:id => "row_item_#{item.id}", :class => item.state }
-              %td.grouped-checkbox= check_box_tag :items, nil, false, :disabled => true
+              %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
               %td Ticket
               %td= link_to "#{item.item.event}", event_path(item.item.event_id)
               %td= number_as_cents item.price
