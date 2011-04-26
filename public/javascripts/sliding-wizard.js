@@ -186,4 +186,6 @@ function updateConfirmation(){
     value = field.value;
     $(document.createElement('p')).html(key + ": " + value).appendTo($("#billing_address-confirmation"));
   });
+
+  $(document.createElement('input')).attr({'type':'hidden', 'name':'confirmation','value':'1'}).appendTo($("#billing_address-confirmation"));
 }
