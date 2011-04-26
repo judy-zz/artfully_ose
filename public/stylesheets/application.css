@@ -472,6 +472,9 @@ strong {
   width: 480px;
   margin: 0 auto; }
 
+.refunded {
+  text-decoration: line-through; }
+
 .changable-overlay {
   display: none;
   position: absolute;
@@ -536,6 +539,9 @@ strong {
         line-height: 1.5em; }
         #main-menu li ul li a:hover {
           color: #666666; }
+
+.grouped-checkbox {
+  width: 1em; }
 
 .big-search {
   margin-bottom: 3em; }

@@ -3,7 +3,7 @@
   = form_for :refund, :url => '/refunds' do |form|
     = hidden_field_tag :order_id, order.id
     %ul
-      - order.items.each do |item|
+      - order.refundable_items.each do |item|
         %li
           .label-and-element
             = check_box_tag "items[]", item.id, false, :id => "refund_item_#{item.id}", :class => "item_#{item.id}"

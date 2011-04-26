@@ -8,14 +8,14 @@
       %table.zebra
         %thead
           %tr
-            %th= check_box_tag :all, nil, false, :class=>'checkall'
+            %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall
             %th Type
             %th Description
             %th Price
         %tbody
-          - order.items.each do |item|
-            - ticket = AthenaTicket.find(item.item_id)
-            %tr{:class => "row_item_#{item.id}"}
+          - order.all_items.each do |item|
+            %tr{:id => "row_item_#{item.id}", :class => item.state }
+              %td.grouped-checkbox= check_box_tag :all, nil, false, :disabled => true
               %td Ticket
-              %td= link_to "#{ticket.event}", event_path(ticket.event_id)
+              %td= link_to "#{item.item.event}", event_path(item.item.event_id)
               %td= number_as_cents item.price

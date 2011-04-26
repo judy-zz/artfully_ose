@@ -312,6 +312,9 @@ iframe {
     #steps li.active {
       font-weight: bold; }
 
+.grouped-checkbox {
+  width: 1em; }
+
 .big-search {
   margin-bottom: 3em; }
   .big-search input[type='text'] {

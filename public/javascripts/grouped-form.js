@@ -30,14 +30,24 @@ $(document).ready(function(){
 
     generateCheckboxes: function(items){
       $.each(items, function(index, id){
-        var target = $('.row_' + id),
-            $td = $(document.createElement('td'));
+        var target = $('#row_' + id + ' td:first-child'), $checkbox;
 
-        $checkbox = $(document.createElement('input')).attr({'type':'checkbox'}).prependTo($td);
+        $checkbox = $("input:checkbox", target);
+        $checkbox.removeAttr('disabled');
+
         $checkbox.change(function(){
           $("." + id).attr("checked", $(this).is(":checked"));
+          $(".grouped-form").find("input:submit").each(function(){
+            var anyChecked = $(this).closest("form").find(":checkbox").is(":checked");
+            if(anyChecked){
+              $(this).removeAttr('disabled');
+              $(this).trigger('onEnable');
+            } else {
+              $(this).attr('disabled','disabled');
+              $(this).trigger('onDisable');
+            }
+          });
         });
-        $td.prependTo(target);
       });
     },
 
@@ -47,8 +57,16 @@ $(document).ready(function(){
 
       $(".grouped-form").find("input:submit").each(function(){
         var original = this,
-            button = $(document.createElement('input')).attr({'type':'button', 'value':$(this).attr('value')}),
+            button = $(document.createElement('input')).attr({'type':'button', 'value':$(this).attr('value'), 'disabled':'disabled'}),
             $li = $(document.createElement('li'));
+
+        $(original).attr({'disabled':'disabled'})
+                   .bind('onEnable', function(){
+                     button.removeAttr('disabled');
+                   })
+                   .bind('onDisable', function(){
+                     button.attr('disabled','disabled');
+                   });
 
         button.click(function(){ $(original).click(); });
         $li.append(button).appendTo(ul);

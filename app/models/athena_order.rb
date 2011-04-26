@@ -105,7 +105,23 @@ class AthenaOrder < AthenaResource::Base
     AthenaPayment.new(:transaction_id => transaction_id)
   end
 
+  def all_items
+    @all_items ||= merge_and_sort_items
+  end
+
+  def refundable_items
+    items.select(&:refundable?)
+  end
+
+  def exchangeable_items
+    items.select(&:exchangeable?)
+  end
+
   private
+    def merge_and_sort_items
+      items.concat(children.collect(&:items).flatten)
+    end
+
     def create_purchase_action
       action                 = AthenaPurchaseAction.new
       action.person          = person

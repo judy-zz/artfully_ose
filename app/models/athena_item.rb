@@ -51,13 +51,21 @@ class AthenaItem < AthenaResource::Base
     AthenaItem.new(attributes.reject { |key, value| %w( id ).include? key } )
   end
 
+  def refundable?
+    state == nil
+  end
+
+  def exchangeable?
+    state == nil and returnable?
+  end
+
   def refund!
     update_attribute(:state, "refunded")
   end
 
   def to_refund
     dup!.tap do |item|
-      item.price = item.price * -1
+      item.price = item.price.to_i * -1
     end
   end
 

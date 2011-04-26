@@ -56,6 +56,20 @@ describe AthenaItem do
     end
   end
 
+  describe "#refundable?" do
+    it "is not refundable if it has already been refunded" do
+      subject.state = "refunded"
+      subject.should_not be_refundable
+    end
+  end
+
+  describe "#exchangable?" do
+    it "is not exchangable if it has already been refunded" do
+      subject.state = "refunded"
+      subject.should_not be_exchangable
+    end
+  end
+
   describe "#to_refund" do
     it "operates on a duplicate item" do
       subject.to_refund.id.should be_nil
