@@ -19,10 +19,9 @@ class Checkout
 
   private
     def find_or_create_people_record
-      organization = order.organizations_from_tickets.first
-      
+      organization = order.organizations.first
       person = AthenaPerson.find_by_email_and_organization(payment.customer.email, organization)
-      
+
       if person.nil?
         params = {
           :first_name      => payment.customer.first_name,

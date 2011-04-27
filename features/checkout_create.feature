@@ -8,8 +8,17 @@ Feature: Order Checkout
     And I can save Orders in ATHENA
     And I can save purchase actions in ATHENA
 
-  Scenario: A user checks out without saving information
+  Scenario: A user checks out with tickets
     Given I have added 2 tickets to my order
+    And I am on the store order page
+    And I follow "Checkout Now"
+    When I enter my payment details
+    And I press "Purchase"
+    Then I should see "Thank you for your order!"
+    And an email confirmation for the order should have been sent
+
+  Scenario: A user checks out with a donation
+    Given I have added 1 donations to my order
     And I am on the store order page
     And I follow "Checkout Now"
     When I enter my payment details

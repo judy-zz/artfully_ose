@@ -117,6 +117,14 @@ class Order < ActiveRecord::Base
     end
   end
 
+  def organizations
+    (organizations_from_donations + organizations_from_tickets).uniq
+  end
+
+  def organizations_from_donations
+    donations.collect(&:organization)
+  end
+
   def organizations_from_tickets
     return @organizations unless @organizations.nil?
 

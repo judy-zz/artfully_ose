@@ -156,6 +156,23 @@ describe Order do
     end
   end
 
+  describe "organizations" do
+    it "includes the organizations for the included donations" do
+      donation = Factory(:donation)
+      subject.donations << donation
+      subject.organizations.should include donation.organization
+    end
+
+    it "includes the organizations for the included tickets" do
+      Factory(:lock)
+      ticket = Factory(:ticket_with_id)
+      organization = AthenaEvent.find(ticket.event_id).organization
+
+      subject.add_tickets([ticket])
+      subject.organizations.should include organization
+    end
+  end
+
   describe ".generate_donations" do
     let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }
 
