@@ -45,6 +45,7 @@
 
       methods.addNavigation();
       methods.addSubmitLink();
+      methods.captureTabs();
       methods.resizePanels();
 
       $(window).resize(methods.resizePanels);
@@ -73,38 +74,53 @@
         if($(this).is(":enabled")){ methods.slide("right"); }
       });
     },
+    captureTabs: function(){
+      $panels.find(".element:last input:last,select:last").bind('keydown', function(e){
+        if (e.keyCode == 9 && !e.shiftKey) {
+          methods.slide("right");
+          e.preventDefault();
+        }
+      });
+
+      $panels.find(".element:first input:first,select:first").bind('keydown', function(e){
+        if (e.keyCode == 9 && e.shiftKey) {
+          methods.slide("left");
+          e.preventDefault();
+        }
+      });
+
+      $panels.bind('slideIn', function(e){
+        $(this).find("input:first").focus();
+      });
+    },
     addSubmitLink: function(){
       $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
     },
     slide: function(direction){
       switch(direction){
         case "left":
+          if(pos == 0){ return; }
           $panels.eq(pos).trigger("slideOut");
-          if(pos === $panels.length - 1){
-            $wizard.trigger("onLastSlideOut", [ pos ] );
-          }
+          if(pos === $panels.length - 1){ $wizard.trigger("onLastSlideOut", [ pos ] ); }
 
           pos--;
-          $ol.animate({marginLeft: methods.calculateMarginFor(pos) });
 
-          $panels.eq(pos).trigger("slideIn");
-          if(pos === 0){
-            $wizard.trigger("onFirstSlideIn", [ pos ] );
-          }
+          $ol.animate({marginLeft: methods.calculateMarginFor(pos) }, 'fast', function(){
+            $panels.eq(pos).trigger("slideIn");
+            if(pos === 0){ $wizard.trigger("onFirstSlideIn", [ pos ] ); }
+          });
           break;
         case "right":
+          if(pos === $panels.length - 1) { return; }
           $panels.eq(pos).trigger("slideOut");
-          if(pos === 0){
-            $wizard.trigger("onFirstSlideOut", [ pos ] );
-          }
+          if(pos === 0){ $wizard.trigger("onFirstSlideOut", [ pos ] ); }
 
           pos++;
-          $ol.animate({marginLeft: methods.calculateMarginFor(pos) });
 
-          $panels.eq(pos).trigger("slideIn");
-          if(pos === $panels.length - 1){
-            $wizard.trigger("onLastSlideIn", [ pos ] );
-          }
+          $ol.animate({marginLeft: methods.calculateMarginFor(pos) }, 'fast', function(){
+            $panels.eq(pos).trigger("slideIn");
+            if(pos === $panels.length - 1){ $wizard.trigger("onLastSlideIn", [ pos ] ); }
+          });
           break;
         default:
           return;
