@@ -1,5 +1,5 @@
 %ul#main-menu
-  %li
+  %li{ :class => active?(:dashboard)}
     = link_to "Dashboard", root_path
     %ul
       %li= link_to "Credit Cards", credit_cards_path
@@ -11,14 +11,14 @@
       %li= link_to "Sign out", destroy_user_session_path
 
 
-  %li{ :class => current == :events && "active"}
+  %li{ :class => active?(:events)}
     = link_to "Events", events_path
     %ul
       %li= link_to "Chart Templates", charts_path
       %li= link_to "Reports", "#"
       %li= link_to "Configuration", "#"
 
-  %li{ :class => current == :people && "active"}
+  %li{ :class => active?(:people)}
     = link_to "People", people_path
     %ul
       %li
