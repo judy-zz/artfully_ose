@@ -1,5 +1,7 @@
-%h1 People
-%h2 Find and manage important relationships with people
+- in_section :people
+- content_for :header do
+  %h1 People
+  %h2 Find and manage important relationships with people
 
 .context
   = render :partial=>'person_summary_sidebar', :locals => { :person => @person }
@@ -12,7 +14,7 @@
   %br
   %br
 
-  #actions   
+  #actions
     .table-controls
       %input.filter{ :type => :text, :value => "Filter" }
     =render :partial=>'action_list', :locals => { :person => @person }

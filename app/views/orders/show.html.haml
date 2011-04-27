@@ -1,4 +1,6 @@
-%h1 Orders & Donations
+- in_section :people
+- content_for :header do
+  %h1 Orders & Donations
 
 .context
   = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }

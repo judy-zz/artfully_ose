@@ -1,10 +1,11 @@
+- in_section :dashboard
 - content_for :header do
   %h1 Organizations
 
 .context
 .document
   %h3 New Organization
-  
+
   = form_for @organization, :url => organizations_path do |form|
     %ul
       %li
