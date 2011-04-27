@@ -25,6 +25,7 @@ Artfully::Application.routes.draw do
       end
       resources :memberships
     end
+    resources :kits
   end
 
   devise_for :users

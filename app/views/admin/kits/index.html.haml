@@ -1,0 +1,27 @@
+- content_for :header do
+  %h1 Kits Administration
+
+.context
+
+.document
+  %h3 Donation Kits Awaiting Approval
+
+  #kits
+    .table-controls
+    %table.normal.fullwidth
+      %thead
+        %tr
+          %th Kit Creation
+          %th Org Name
+          %th Taxable Name
+          %th EIN
+          %th
+      %tbody
+        - @pending_kits.each do |kit|
+          -org = Organization.find(kit.organization.id)
+          %tr
+            %td= l kit.updated_at, :format => :short
+            %td= link_to org.name, admin_organization_path(org)
+            %td= org.taxable_organization_name unless org.taxable_organization_name.nil?
+            %td= org.ein unless org.ein.nil?
+            %td= link_to "Approve", activate_admin_organization_kit_path(org, kit), :method => :put
