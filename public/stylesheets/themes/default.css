@@ -128,6 +128,8 @@ p {
       height: 0;
       clear: both;
       visibility: hidden; }
+  #store #artfully-alert {
+    display: none; }
 
 #donation input[type="text"] {
   width: 60%; }
@@ -384,3 +386,54 @@ form ul li {
     margin-right: 2%; }
     .double.element input:last-child {
       margin-right: 0; }
+
+.flash {
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left;
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+  color: white;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+  padding: 1em;
+  margin-bottom: 1em;
+  line-height: 1.2em; }
+  .flash:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+  .flash .close {
+    margin-left: 1em;
+    float: right;
+    cursor: pointer; }
+  .flash p {
+    color: rgba(255, 255, 255, 0.97) !important; }
+  .flash ul li {
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    .flash ul li:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+
+.error, .warning {
+  background: #fb572c;
+  background: -moz-linear-gradient(top, #fb572c 0%, #f03504 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fb572c), color-stop(100%, #f03504));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$finish',GradientType=0 ); }
+
+.notice, .info, .success {
+  background: #0a99b3;
+  background: -moz-linear-gradient(top, #0a99b3 0%, #077083 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$finish',GradientType=0 ); }

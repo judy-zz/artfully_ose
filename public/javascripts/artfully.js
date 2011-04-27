@@ -5,6 +5,13 @@
   artfully.configure = function(obj){
     $.extend(artfully.config, obj);
   };
+
+  artfully.alert = function(msg){
+    $("#artfully-alert").fadeOut('fast',function(){
+      $(this).html(msg);
+      $(this).fadeIn('slow');
+    });
+  };
 }(this,document));
 
 artfully.config = {
@@ -281,10 +288,13 @@ artfully.models = (function(){
             };
 
             $.getJSON(artfully.utils.ticket_uri(params), function(data){
-              artfully.widgets.cart().add(data);
+              if(data.length > 0){
+                artfully.widgets.cart().add(data);
+                $('.sections').slideUp();
+              } else {
+                artfully.alert("Sorry! No tickets were available for purchase at this time.");
+              }
             });
-
-            $('.sections').slideUp();
 
             return false;
           });
