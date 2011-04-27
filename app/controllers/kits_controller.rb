@@ -30,16 +30,18 @@ class KitsController < ApplicationController
 
   def new_501c3_kit
     @kit = DonationKit.new
-    
-    unless params[:commit].nil?
-      @kit.taxable_organization_name = params[:donation_kit][:donation_kit][:taxable_organization_name]
-      @kit.ein = params[:donation_kit][:donation_kit][:ein]
-      @kit.type = "DonationKit"
+    @organization = Organization.find(current_user.current_organization.id)
 
-      current_user.current_organization.kits << @kit
+    unless params[:donation_kit].nil?
+      @organization.taxable_organization_name = params[:donation_kit][:organization][:taxable_organization_name]
+      @organization.ein = params[:donation_kit][:organization][:ein]
+      @organization.save
+
+      @kit.type = "DonationKit"
+      @organization.kits << @kit
+
       redirect_to kits_url
     end
-    #flash[:notice] = "#{@kit.id} ---------------  #{params}"
 
   end
 

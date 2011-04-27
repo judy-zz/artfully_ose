@@ -4,6 +4,9 @@
   %h2= "Name: #{@organization.name}"
   %h2= "Time Zone: #{@organization.time_zone}"
 
+  %h2= "Taxable Organization Name: #{@organization.taxable_organization_name}" unless @organization.taxable_organization_name.nil?
+  %h2= "EIN: #{@organization.ein}" unless @organization.ein.nil?
+
   = link_to "Kits", kits_path
 
 .document

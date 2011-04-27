@@ -8,7 +8,7 @@
 .document
   = form_for @kit, :url => new_501c3_kit_path do |form|
     %ul
-      = render :partial => 'kits/five01c3_form', :locals => { :parent_form => form, :target => @kit }
+      = render :partial => 'kits/five01c3_form', :locals => { :parent_form => form, :target => @organization }
       %li= form.submit "Save", :confirm=> "In order to activate this kit you still need to fax/email your Determination Letter from the IRS!"
 
   =button_to "Cancel", :back, :method => :get
