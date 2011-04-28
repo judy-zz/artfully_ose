@@ -18,7 +18,7 @@ class PerformancesController < ApplicationController
 
     @new_performance = @performance.dup!
     @new_performance.save
-    redirect_to event_url(@new_performance.event_id)
+    redirect_to event_performances_path(@performance.event)
   end
 
   def new
@@ -41,9 +41,9 @@ class PerformancesController < ApplicationController
 
     if @performance.valid? && @performance.save
       flash[:notice] = "Performance created on #{l @performance.datetime.in_time_zone(@performance.time_zone), :format => :date_at_time}"
-      redirect_to event_url(@performance.event)
+      redirect_to event_performances_path(@performance.event) 
     else
-      redirect_to event_url(@performance.event)
+      redirect_to event_performances_path(@performance.event) 
     end
   end
 
@@ -74,7 +74,7 @@ class PerformancesController < ApplicationController
     without_tickets do
       @performance.update_attributes(params[:athena_performance])
       if @performance.save
-        redirect_to event_url(@performance.event)
+        redirect_to event_performances_path(@performance.event)
       else
         render :template => 'performances/new'
       end
@@ -86,7 +86,7 @@ class PerformancesController < ApplicationController
     authorize! :destroy, @performance
 
     @performance.destroy
-    redirect_to event_url(@performance.event)
+    redirect_to event_performances_url(@performance.event)
   end
 
   def door_list
