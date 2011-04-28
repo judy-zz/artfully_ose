@@ -27,7 +27,7 @@ class PerformancesController < ApplicationController
 
     if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
-       redirect_to event_url(@event)
+       redirect_to event_path(@performance.event) 
     end
   end
 
@@ -86,7 +86,7 @@ class PerformancesController < ApplicationController
     authorize! :destroy, @performance
 
     @performance.destroy
-    redirect_to event_performances_url(@performance.event)
+    redirect_to event_url(@performance.event)
   end
 
   def door_list

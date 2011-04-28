@@ -2,8 +2,6 @@ When /^I delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|  FakeWeb.regi
   current_performances.delete_at(pos.to_i - 1)
   body = current_performances.collect { |p| p.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/stage/performances.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
-  FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json?performanceId=eq#{current_performances[pos.to_i - 1].id}", :body => "[#{body}]")
-  FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json?performanceId=eq#{current_performances[pos.to_i].id}", :body => "[#{body}]")
 
   within(:xpath, "(//ul[@id='of_performances']/li)[#{pos.to_i}]") do
     click_link "Delete"
