@@ -40,6 +40,8 @@ class KitsController < ApplicationController
       @kit.type = "DonationKit"
       @organization.kits << @kit
 
+      AdminMailer.donation_kit_notification(@kit).deliver
+
       redirect_to kits_url
     end
 

@@ -7,3 +7,7 @@ Then /^the donation kit for "([^"]*)" should be activated$/ do |name|
   organization = Organization.find_by_name(name)
   organization.kits.first.should be_activated
 end
+
+Then /^an email notification for the kit should have been sent$/ do
+  ActionMailer::Base.deliveries.should_not be_empty
+end

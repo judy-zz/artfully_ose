@@ -14,5 +14,4 @@ Feature: Donation Kit
     | Taxable Organization Name | Some Taxable Organization Name |
     | EIN                       | 987654321                      |
     And I press "Save"
-
     Then I should see "Pending"
