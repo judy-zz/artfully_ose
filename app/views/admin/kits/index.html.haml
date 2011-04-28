@@ -18,7 +18,7 @@
           %th
       %tbody
         - @pending_kits.each do |kit|
-          -org = Organization.find(kit.organization.id)
+          -org = kit.organization
           %tr
             %td= l kit.updated_at, :format => :short
             %td= link_to org.name, admin_organization_path(org)
