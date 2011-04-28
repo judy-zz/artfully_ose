@@ -1,3 +1,7 @@
+$(document).ready(function(){
+
+});
+
 (function(window, document, undefined){
   window.artfully = {};
   window.artfully.config = {};
@@ -289,6 +293,9 @@ artfully.models = (function(){
 
             $.getJSON(artfully.utils.ticket_uri(params), function(data){
               if(data.length > 0){
+                if(data.length < $select.val()){
+                  artfully.alert("Only " + data.length + " ticket(s) could be found for this performance.");
+                }
                 artfully.widgets.cart().add(data);
                 $('.sections').slideUp();
               } else {
@@ -365,7 +372,7 @@ artfully.models = (function(){
         render: function($t){
           var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart().$iframe.attr('name'), 'action':artfully.utils.order_uri()}),
               $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.organizationId }),
-              $amount = $(document.createElement('input')).attr({'type':'text', 'name':'donation[amount]'}),
+              $amount = $(document.createElement('input')).attr({'type':'text', 'name':'donation[amount]'}).addClass('currency'),
               $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Make Donation'});
 
           $form.submit(function(){
@@ -376,6 +383,13 @@ artfully.models = (function(){
                .append($producer)
                .append($submit)
                .appendTo($t);
+         $(".currency").maskMoney({showSymbol:true, symbolStay:true, symbol:"$"});
+         $(".currency").closest("form").submit(function(){
+           var input = $(this).find(".currency"),
+               cents = parseFloat(input.val().substr(1)) * 100,
+               hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
+           hiddenCurrency.val(cents);
+         });
         }
       };
     }
