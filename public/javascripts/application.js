@@ -39,7 +39,7 @@ $(document).ready(function() {
   $(".currency").maskMoney({showSymbol:true, symbolStay:true, symbol:"$"});
   $(".currency").closest("form").submit(function(){
     var input = $(this).find(".currency"),
-        cents = parseFloat(input.val().substr(1)) * 100,
+        cents = parseFloat(input.val().substr(1).replace(/,/,"")) * 100,
         hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
     hiddenCurrency.val(cents);
   });
