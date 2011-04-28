@@ -2,7 +2,6 @@ Feature: View the record for a person
   In order to view a history and perform actions
   a user wants to be able to view the details of a People record
 
-
   Scenario: A user views the Person Record for another user
     Given I am logged in
     And I am on the people page
