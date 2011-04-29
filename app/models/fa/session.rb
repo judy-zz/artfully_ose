@@ -15,7 +15,7 @@ class FA::Session < FA::Base
         self.id = id_from_response(response)
       end
       @authenticated = true
-      #reload
+      reload
     rescue ActiveResource::ForbiddenAccess => e
       @authenticated = false
     end

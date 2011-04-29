@@ -60,16 +60,33 @@ describe FA::User do
     end
   end
 
+  describe "password" do
+    it "hashes the password when loading it" do
+      subject.stub(:save)
+      subject.update_attributes({:password => "something"})
+      subject.password.should eq Digest::MD5.hexdigest("something")
+    end
+
+    it "hashes the password when assigned directly" do
+      subject.password = "something"
+      subject.password.should eq Digest::MD5.hexdigest("something")
+    end
+  end
+
   describe "#authenticate" do
+    before(:each) do
+      id = 1
+      body = { :session => { :user => { :membership_id => 1 } } }.to_xml
+      FakeWeb.register_uri(:get, "http://api.fracturedatlas.org/sessions/#{id}.xml", :body => body)
+      FakeWeb.register_uri(:post, "http://api.fracturedatlas.org/sessions.xml", :location => "http://api.fracturedatlas.org/sessions/#{id}.xml")
+    end
+
     it "returns false if the user is invalid" do
       subject.stub(:valid?).and_return(false)
       subject.authenticate.should be_false
     end
 
     context "with valid credentials" do
-      before(:each) do
-        FakeWeb.register_uri(:post, "http://api.fracturedatlas.org/sessions.xml", :body => "")
-      end
       specify { subject.authenticate.should be_true }
     end
 

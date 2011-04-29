@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
   end
 
   def current_organization
-    organizations.first || Organization.new
+    (memberships.any? and memberships.first.organization) || Organization.new
   end
 
   def customer
