@@ -10,6 +10,7 @@
   .h4="Your Kits"
   - if @activated_or_pending_kits.empty?
     %p="You have not activated any kits."
+    = link_to "Activate now", kits_path
   - else
     - @activated_or_pending_kits.each do |kit|
       %ul.kv
