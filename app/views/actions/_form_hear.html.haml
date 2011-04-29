@@ -1,0 +1,17 @@
+= parent_form.fields_for target do |action_form|
+  %li
+    .label= action_form.label :action_subtype, "Action Type"
+    .element= action_form.select :action_subtype, options_for_select( target.hear_action_subtypes, target.action_subtype )
+
+  %li
+    .label= action_form.label :occurred_at, "Action date/time"
+    .double.element
+      = action_form.text_field :occurred_at, { :value => "#{(l target.occurred_at, :format => :date_for_input) unless target.occurred_at.nil?}", :class=>'datepicker hasDatePicker'}
+      = action_form.time_select :occurred_at, :value => target
+
+  %li
+    .label= action_form.label :details, "Details"
+    .element= action_form.text_area :details, :size => "25x5"
+
+  -unless target.timestamp.nil? or target.creator.nil?
+    %h4= "Action created by #{target.creator} on #{(l target.timestamp, :format => :long)}"

@@ -20,6 +20,7 @@ class AthenaAction < AthenaResource::Base
     attribute 'details',            :string
     attribute 'timestamp',          :string
     attribute 'starred',            :string
+    attribute 'dollar_amount',      :string
   end
 
   def action_type(); @attributes['action_type']; end
@@ -84,6 +85,11 @@ class AthenaAction < AthenaResource::Base
       "Facebook",
       "Blog",
       "Press"]
+  end
+
+  def give_action_subtypes
+    [ "Cash",
+      "Check"]
   end
 
   def prepare_datetime(attributes, tz)

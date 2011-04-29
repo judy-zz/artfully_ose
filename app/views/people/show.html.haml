@@ -11,6 +11,9 @@
 
   .call-to-action
     =link_to "Log Action", new_person_action_path(@person)
+
+    =link_to "Log Hear Action", new_person_action_path(@person, "HEAR")
+    =link_to "Log Give Action", new_person_action_path(@person, "GIVE")
   %br
   %br
 

@@ -7,7 +7,11 @@
 .document
   = form_for @action, :url => person_action_path(@person) do |form|
     %ul
-      = render :partial => 'actions/form', :locals => { :parent_form => form, :target => @action }
+      -if request[:format] == "HEAR"
+        = render :partial => 'actions/form_hear', :locals => { :parent_form => form, :target => @action }
+      -elsif request[:format] == "GIVE"
+        = render :partial => 'actions/form_give', :locals => { :parent_form => form, :target => @action }
+
       %li= form.submit "Save"
 
   =button_to "Cancel", :back, :method => :get

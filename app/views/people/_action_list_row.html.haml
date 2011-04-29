@@ -14,5 +14,4 @@
   %td= action.details
 
   %td
-    -#=link_to "View", root_path
-    =link_to "Edit", edit_person_action_path(person, action) if action.action_type == "Hear"
+    =link_to "Edit", edit_person_action_path(person, "HEAR") if action.action_type == "Hear" #or action.action_type == "Give") unless action.creator_id.nil?
