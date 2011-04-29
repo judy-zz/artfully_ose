@@ -61,11 +61,11 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge!(:performances => upcoming_performances(:all).reject! { |performance| !performance.on_sale? })
+    as_json(options).merge('performances' => upcoming_performances(:all).select(&:on_sale?))
   end
 
   def as_json(options = {})
-    super({ :methods => [ :performances, :charts ]}.merge(options))
+    super({ :methods => [ 'performances', 'charts' ]}.merge(options))
   end
 
   def sorted_locales
