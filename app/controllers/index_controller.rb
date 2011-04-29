@@ -6,6 +6,7 @@ class IndexController < ApplicationController
   end
 
   def dashboard
+    
   end
 
 end

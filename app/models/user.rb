@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me
 
+  def is_in_organization?
+    organizations.any?
+  end
+
   def current_organization
     organizations.first || Organization.new
   end

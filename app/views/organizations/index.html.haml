@@ -5,8 +5,9 @@
 .context
 .document
   .call-to-action
-    = link_to "New Organization", new_organization_path
-  %h3 Organizations
+    - if !current_user.is_in_organization?
+      = link_to "New Organization", new_organization_path
+  %h3 My Organization
   #organizations
     .table-controls
     %table

@@ -5,13 +5,17 @@ class OrganizationsController < ApplicationController
   end
 
   def index
-    @organizations = current_user.organizations || []
+    if current_user.is_in_organization?
+      redirect_to organization_url(current_user.current_organization)
+    else
+      redirect_to new_organization_url
+    end
   end
 
   def show
     @organization = Organization.find(params[:id])
     authorize! :view, @organization
-    @kits = @organization.kits
+    @activated_or_pending_kits = @organization.kits.select{|kit| kit.pending? || kit.activated? }
   end
 
   def new
@@ -21,7 +25,6 @@ class OrganizationsController < ApplicationController
     end
 
     @organization = Organization.new
-    #@organization.time_zone
   end
 
   def create
