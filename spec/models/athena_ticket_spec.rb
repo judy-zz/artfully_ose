@@ -266,7 +266,7 @@ describe AthenaTicket do
   end
 
   describe "return!" do
-    subject { Factory(:ticket_with_id, :performance => DateTime.now + 1.day, :buyer => Factory(:athena_person_with_id)) }
+    subject { Factory(:ticket_with_id, :performance => DateTime.now + 1.day, :buyer => Factory(:athena_person_with_id), :state => :sold) }
     it "removes the buyer from the item" do
       subject.stub(:save!)
       subject.return!
@@ -274,8 +274,9 @@ describe AthenaTicket do
     end
 
     it "should put the ticket back on sale" do
-      subject.should_receive(:on_sale)
+      subject.stub(:save!)
       subject.return!
+      subject.state.should eq("on_sale")
     end
   end
 end

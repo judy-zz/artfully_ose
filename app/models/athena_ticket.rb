@@ -40,6 +40,11 @@ class AthenaTicket < AthenaResource::Base
     event :comp do
       transitions :from => [ :on_sale, :off_sale ], :to => :comped
     end
+
+    event :do_return do
+      transitions :from => [ :comped, :sold ], :to => :on_sale
+    end
+
   end
 
   def self.search(params)
@@ -119,8 +124,8 @@ class AthenaTicket < AthenaResource::Base
 
   def return!
     attributes.delete(:buyer_id)
-    on_sale
     save!
+    self.do_return!
   end
 
   private
