@@ -1,13 +1,22 @@
 - in_section :dashboard
 - content_for :header do
-  %h1 Organization
+  %h1=@organization.name
 .context
-  %h2= "Name: #{@organization.name}"
-  %h2= "Time Zone: #{@organization.time_zone}"
+  %h2=@organization.time_zone
 
   %h2= "Taxable Organization Name: #{@organization.taxable_organization_name}" unless @organization.taxable_organization_name.nil?
   %h2= "EIN: #{@organization.ein}" unless @organization.ein.nil?
 
-  = link_to "Kits", kits_path
+  .h4="Your Kits"
+  - if @activated_or_pending_kits.empty?
+    %p="You have not activated any kits."
+  - else
+    - @activated_or_pending_kits.each do |kit|
+      %ul.kv
+        %li
+          .key=kit.type
+          .value=kit.state.titleize
+          
+    = link_to "View all kits", kits_path
 
 .document

@@ -2,3 +2,12 @@
 
 - content_for :header do
   %h1 Dashboard
+
+.document
+  .p
+    - if current_user.is_in_organization?
+      You are a member of organization: 
+      =link_to current_user.current_organization.name, organization_path(current_user.current_organization)
+    - else
+      You are not in an organization yet.  Ask your organization administrator to add you, or 
+      =link_to "create your own", new_organization_path
