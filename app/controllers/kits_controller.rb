@@ -41,8 +41,8 @@ class KitsController < ApplicationController
       @organization.kits << @kit
 
       AdminMailer.donation_kit_notification(@kit).deliver
-
-      redirect_to kits_url
+      ProducerMailer.donation_kit_notification(@kit, current_user).deliver
+      redirect_to new_501c3_kit_confirmation_path
     end
   end
 
