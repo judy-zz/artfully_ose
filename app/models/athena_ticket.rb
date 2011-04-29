@@ -118,9 +118,14 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def return!
+    logger.debug("Returning ticket id ["+self.id+"]")
+    logger.debug("State is ["+self.state+"]")
     attributes.delete(:buyer_id)
+    logger.debug("Deleted buyer id")
     on_sale
+    logger.debug("Transitioned to on sale")
     save!
+    logger.debug("saved")
   end
 
   private
