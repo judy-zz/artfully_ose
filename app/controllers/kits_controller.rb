@@ -44,7 +44,9 @@ class KitsController < ApplicationController
 
       redirect_to kits_url
     end
+  end
 
+  def new_501c3_kit_confirmation
   end
 
   def new_fafs_kit  
