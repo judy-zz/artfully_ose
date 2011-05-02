@@ -202,6 +202,7 @@ artfully.widgets = (function(){
     function authorize(donation){
       $.getJSON(artfully.utils.donation_uri(donation.organizationId), function(data){
         if(data.authorized){
+          donation.type = data.type;
           donation.render($('#donation'));
         }
       });
@@ -369,15 +370,25 @@ artfully.models = (function(){
   donation = function(){
     if(modelCache.donation === undefined){
       modelCache.donation = {
+        message: function($key){
+          var messages = {
+            'regular': "This is the notice for regular donations.",
+            'sponsored': "This is the notice for fiscally sponsored programs."
+          };
+          return messages[$key] || "";
+        },
         render: function($t){
           var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart().$iframe.attr('name'), 'action':artfully.utils.order_uri()}),
               $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.organizationId }),
               $amount = $(document.createElement('input')).attr({'type':'text', 'name':'donation[amount]'}).addClass('currency'),
-              $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Make Donation'});
+              $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Make Donation'}),
+              $notice = $(document.createElement('p')).html(this.message(this.type));
 
           $form.submit(function(){
             artfully.widgets.cart().show();
           });
+
+          $notice.appendTo($t);
 
           $form.append($amount)
                .append($producer)

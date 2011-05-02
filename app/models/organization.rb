@@ -18,4 +18,17 @@ class Organization < ActiveRecord::Base
     !fa_member_id.blank?
   end
 
+  def authorization_hash
+    { :authorized => can?(:receive, Donation),
+      :type       => donation_type }
+  end
+
+  private
+
+  def donation_type
+    if can?(:receive, Donation)
+      :sponsored
+    end
+  end
+
 end

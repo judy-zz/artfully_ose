@@ -9,18 +9,6 @@ describe Organization do
 
   describe "ability" do
     it { should respond_to :ability }
-
-    it "should delegate can to it's ability" do
-      pending "ability caching disabled until it can be reloaded after kits"
-      subject.ability.should_receive(:can?).with(:do, :something)
-      subject.can? :do, :something
-    end
-
-    it "should delegate can to it's ability" do
-      pending "ability caching disabled until it can be reloaded after kits"
-      subject.ability.should_receive(:cannot?).with(:do, :something)
-      subject.cannot? :do, :something
-    end
   end
 
   describe ".owner" do
@@ -42,6 +30,33 @@ describe Organization do
       kit = Factory(:ticketing_kit, :state => :activated)
       kit.should_not_receive(:activate!)
       subject.kits << kit
+    end
+  end
+
+  describe "#authorization_hash" do
+    context "with a Donation Kit" do
+      before(:each) do
+        subject.kits << Factory(:donation_kit, :state => :activated)
+      end
+
+      it "sets authorized to true" do
+        subject.authorization_hash[:authorized].should be_true
+      end
+
+      it "sets type to sponsored when it is a fiscally sponsored project" do
+        subject.authorization_hash[:type].should eq :sponsored
+      end
+
+      it "sets type to regular when it is not a fiscally sponsored project" do
+        pending "Requires different types of donation kits"
+        subject.authorization_hash[:type].should eq :regular
+      end
+    end
+
+    context "without a Donation Kit" do
+      it "sets authorized to false" do
+        subject.authorization_hash[:authorized].should be_false
+      end
     end
   end
 
