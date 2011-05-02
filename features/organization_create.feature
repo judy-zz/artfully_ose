@@ -5,12 +5,11 @@ Feature: Organization Creation
   Scenario: A registered user creates an organization
     Given I am logged in
     And I click on "My Organization"
-    And I click on "New Organization"
-    When I fill in "Name" with "My Organization"
+    When I fill in "Organization Name" with "My Organization"
     And I press "Create"
-    Then I should see "My Organization has been created"
     And I should be a part of the organization "My Organization"
 
+    @wip
     Scenario: A registered user creates an organization
       Given I am logged in
       And I am part of an organization "Fractured Atlas"

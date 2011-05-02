@@ -6,12 +6,12 @@ Feature: Donation Kit
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
     And I am on the organizations page
-    When I click on "Fractured Atlas"
-    And I click on "Kits"
+    And I click on "Activate now"
     And I click on "Add Donation Kit"
     And I press "I am an IRS approved charity"
     When I fill in the following:
-    | Taxable Organization Name | Some Taxable Organization Name |
-    | EIN                       | 987654321                      |
+    | Legal Organization Name | Some Legal Organization Name |
+    | EIN                     | 987654321                    |
     And I press "Save"
+    And I press "Back to my kits"
     Then I should see "Pending"
