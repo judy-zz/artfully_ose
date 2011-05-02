@@ -49,7 +49,7 @@ class ActionsController < ApplicationController
     @action.subject_id = @person.id
     @action.timestamp = DateTime.now
 
-    flash[:alert] = "params #{@action.attributes}"
+    #flash[:alert] = "params #{@action.attributes}"
 
     if @action.save
       flash[:notice] = "Action logged successfully!"
@@ -62,9 +62,9 @@ class ActionsController < ApplicationController
 
   def update
     @person = AthenaPerson.find params[:person_id]
-
     act = params[:athena_action][:athena_action]
-        if "HEAR" == params[:action_type]
+
+    if "HEAR" == params[:action_type]
       @action = AthenaCommunicationAction.find params[:id]
     elsif "GIVE" == params[:action_type]
       @action = AthenaDonationAction.find params[:id]
@@ -77,7 +77,7 @@ class ActionsController < ApplicationController
     @action.action_subtype = act[:action_subtype]
     @action.details = act[:details]
 
-    flash[:alert] = "UPDATE: params #{params} action#{@action.attributes}"
+    #flash[:alert] = "UPDATE: params #{params} action#{@action.attributes}"
 
     if @action.save
       flash[:notice] = "Action updated successfully!"

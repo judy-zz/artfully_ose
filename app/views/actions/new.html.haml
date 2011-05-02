@@ -2,8 +2,6 @@
   %h1 New Action
 
 .context
-  %h2= "Request Parameters: #{request.parameters}"
-  %h2= "format : #{request[:format]}"
   = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }
 
 .document

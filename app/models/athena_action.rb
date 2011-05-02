@@ -74,7 +74,7 @@ class AthenaAction < AthenaResource::Base
   end
 
   def hear_action_subtypes
-    ["Email (sent)",
+    [ "Email (sent)",
       "Email (received)",
       "Phone (initiated)",
       "Phone (received)",
@@ -84,12 +84,13 @@ class AthenaAction < AthenaResource::Base
       "Twitter",
       "Facebook",
       "Blog",
-      "Press"]
+      "Press" ]
   end
 
   def give_action_subtypes
-    [ "Cash",
-      "Check"]
+    [ "Donation (Cash)",
+      "Donation (Check)",
+      "Donation (In-Kind)" ]
   end
 
   def prepare_datetime(attributes, tz)

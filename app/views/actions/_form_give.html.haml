@@ -4,8 +4,8 @@
     .element= action_form.select :action_subtype, options_for_select( target.give_action_subtypes, target.action_subtype )
 
   %li
-    .label= action_form.label :dollar_amount, "Amount"
-    .element= action_form.text_field :dollar_amount
+    .label= action_form.label :dollar_amount, "Dollar Value"
+    .element= action_form.text_field :dollar_amount, :class => :currency, :value => number_as_cents(target.dollar_amount)
 
   %li
     .label= action_form.label :occurred_at, "Action date/time"

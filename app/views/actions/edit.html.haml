@@ -5,13 +5,14 @@
   = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }
 
 .document
-  = form_for @action, :url => person_action_path(@person) do |form|
+  = form_for @action, :url => person_action_path(@person, @action) do |form|
     %ul
       -if request[:format] == "HEAR"
         = render :partial => 'actions/form_hear', :locals => { :parent_form => form, :target => @action }
       -elsif request[:format] == "GIVE"
         = render :partial => 'actions/form_give', :locals => { :parent_form => form, :target => @action }
 
+      = hidden_field_tag "action_type", request[:format]
       %li= form.submit "Save"
 
   =button_to "Cancel", :back, :method => :get
