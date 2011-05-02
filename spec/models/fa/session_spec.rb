@@ -37,8 +37,8 @@ describe FA::Session do
     it "includes a user node with the email and password set" do
       subject.stub(:reload).and_return
       subject.authenticate
-      expected_body = { :user => { :email => user.email, :password => user.password } }.to_xml(:root => :session)
-      FakeWeb.last_request.body.should eq expected_body
+      body = { 'session' => { 'user' => { 'email' => user.email, 'password' => user.password } } }
+      Hash.from_xml(FakeWeb.last_request.body).should eq body
     end
   end
 
