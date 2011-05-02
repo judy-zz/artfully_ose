@@ -11,7 +11,7 @@ Feature: Organization Membership Create
   Scenario: An admin adds a user to an organization
     Given I am logged in as an admin
     And I am on the admin root page
-    And I click on "Administer Organizations"
-    And I click on "Fractured Atlas"
+    And I follow "Administer Organizations"
+    And I follow "Fractured Atlas"
     When I click the link to remove "user@example.com"
     Then "user@example.com" should not be a part of "Fractured Atlas"

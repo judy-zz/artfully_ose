@@ -20,12 +20,12 @@ describe User do
 
     it "should not be active when suspended" do
       subject.suspend!
-      subject.should_not be_active
+      subject.should_not be_active_for_authentication
     end
 
     it "should be active when it is unsuspended" do
       subject.unsuspend!
-      subject.should be_active
+      subject.should be_active_for_authentication
     end
 
     it "should not remain suspended after unsuspension" do

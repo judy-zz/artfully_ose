@@ -35,7 +35,12 @@ Artfully::Application.routes.draw do
   match '/kits/new_501c3_kit' => 'kits#new_501c3_kit', :as => :new_501c3_kit
   match '/kits/new_501c3_kit_confirmation' => 'kits#new_501c3_kit_confirmation', :as => :new_501c3_kit_confirmation
 
-  resources :organizations
+  resources :organizations do
+    member do
+      post :connect
+    end
+  end
+
   resources :kits
   resources :credit_cards, :except => :show
 

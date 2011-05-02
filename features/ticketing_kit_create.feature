@@ -11,8 +11,8 @@ Feature: Ticketing Kit
     And I have 2 saved credit cards
     And I create a new organization called "Fractured Atlas"
     And I am on the organizations page
-    When I click on "Fractured Atlas"
-    And I click on "Ticketing Kit"
+    When I follow "Fractured Atlas"
+    And I follow "Ticketing Kit"
     Then I should see "Congratulations, you've activated the TicketingKit"
 
   @wip
@@ -20,6 +20,6 @@ Feature: Ticketing Kit
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
     And I am on the organizations page
-    When I click on "Fractured Atlas"
-    And I click on "Ticketing Kit"
+    When I follow "Fractured Atlas"
+    And I follow "Ticketing Kit"
     Then I should see "You need at least one credit card to activate this kit"

@@ -16,6 +16,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize! :view, @organization
     @activated_or_pending_kits = @organization.kits.select{|kit| kit.pending? || kit.activated? }
+    @fa_user = FA::User.new
   end
 
   def new
@@ -45,5 +46,21 @@ class OrganizationsController < ApplicationController
   end
 
   def destroy
+  end
+
+  def connect
+    @organization = Organization.find(params[:id])
+    authorize! :view, @organization
+    @activated_or_pending_kits = @organization.kits.select{|kit| kit.pending? || kit.activated? }
+    @fa_user = FA::User.new(params[:fa_user])
+
+    if @fa_user.authenticate
+      @organization.update_attribute(:fa_member_id, @fa_user.member_id)
+      flash[:notice] = "Successfully connected to Fractured Atlas!"
+      redirect_to @organization
+    else
+      flash[:error]= "Unable to connect to your Fractured Atlas account."
+      render :show
+    end
   end
 end

@@ -14,4 +14,8 @@ class Organization < ActiveRecord::Base
     OrganizationAbility.new(self)
   end
 
+  def connected?
+    !fa_member_id.blank?
+  end
+
 end

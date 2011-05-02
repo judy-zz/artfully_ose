@@ -4,20 +4,20 @@ Given /^I enter my payment details$/ do
   FakeWeb.register_uri(:post, "http://localhost/people/people.json", :body => person.encode)
   payment = Factory(:payment)
 
-  with_scope('#customer') do
+  with_scope('"#customer"') do
     fill_in("First Name",:with => payment.customer.first_name)
     fill_in("Last Name",:with => payment.customer.last_name)
     fill_in("Phone",:with => payment.customer.phone)
     fill_in("Email",:with => payment.customer.email)
   end
 
-  with_scope('#credit_card') do
+  with_scope('"#credit_card"') do
     fill_in("Cardholder Name",:with => payment.credit_card.cardholder_name)
     fill_in("Number",:with => payment.credit_card.card_number)
     fill_in("CVV",:with => payment.credit_card.cvv)
   end
 
-  with_scope('#billing_address') do
+  with_scope('"#billing_address"') do
     fill_in("Street Address",:with => payment.billing_address.street_address1)
     fill_in("City",:with => payment.billing_address.city)
     fill_in("State",:with => payment.billing_address.state)

@@ -48,3 +48,12 @@ Then /^"([^"]*)" should not be a part of "([^"]*)"$/ do |email, organization|
   organization = Organization.find_by_name(organization)
   Membership.find_by_user_id_and_organization_id(user.id, organization.id).should be_nil
 end
+
+Given /^my organization is connected to a Fractured Atlas membership$/ do
+  org = @current_user.current_organization
+  org.update_attribute(:fa_member_id, 1)
+end
+
+Then /^I my organization should have a Fractured Atlas membership$/ do
+  @current_user.current_organization.should_not be_nil
+end
