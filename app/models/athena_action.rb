@@ -32,6 +32,30 @@ class AthenaAction < AthenaResource::Base
     super(attributes)
   end
 
+  def self.create_of_type(type)
+    if "HEAR" == type
+      action = AthenaCommunicationAction.new
+    elsif "GIVE" == type
+      action = AthenaDonationAction.new
+    end
+    action
+  end
+
+  def set_params(params, person, curr_user)
+    self.prepare_datetime(params, curr_user.current_organization.time_zone)
+    self.creator_id = curr_user.id
+    self.organization_id = curr_user.current_organization.id
+
+    self.occurred_at = params[:occurred_at]
+    self.action_subtype = params[:action_subtype]
+    self.details = params[:details]
+
+    self.person = person
+    self.subject_id = person.id
+
+    self.timestamp = DateTime.now
+  end
+
   def starred?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? starred
   end

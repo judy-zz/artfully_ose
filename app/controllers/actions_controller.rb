@@ -29,27 +29,9 @@ class ActionsController < ApplicationController
 
   def create
     @person = AthenaPerson.find params[:person_id]
-    act = params[:athena_action][:athena_action]
 
-    if "HEAR" == params[:action_type]
-      @action = AthenaCommunicationAction.new
-    elsif "GIVE" == params[:action_type]
-      @action = AthenaDonationAction.new
-      @action.dollar_amount = act[:dollar_amount]
-    end
-
-    @action.prepare_datetime(act, current_user.current_organization.time_zone)
-    @action.occurred_at = act[:occurred_at]
-
-    @action.action_subtype = act[:action_subtype]
-    @action.details = act[:details]
-    @action.person = @person
-    @action.creator_id = current_user.id
-    @action.organization_id = current_user.current_organization.id
-    @action.subject_id = @person.id
-    @action.timestamp = DateTime.now
-
-    #flash[:alert] = "params #{@action.attributes}"
+    @action = AthenaAction.create_of_type(params[:action_type])
+    @action.set_params(params[:athena_action][:athena_action], @person, current_user)
 
     if @action.save
       flash[:notice] = "Action logged successfully!"
@@ -62,22 +44,9 @@ class ActionsController < ApplicationController
 
   def update
     @person = AthenaPerson.find params[:person_id]
-    act = params[:athena_action][:athena_action]
 
-    if "HEAR" == params[:action_type]
-      @action = AthenaCommunicationAction.find params[:id]
-    elsif "GIVE" == params[:action_type]
-      @action = AthenaDonationAction.find params[:id]
-      @action.dollar_amount = act[:dollar_amount]
-    end
-
-    @action.prepare_datetime(act, current_user.current_organization.time_zone)
-    @action.occurred_at = act[:occurred_at]
-
-    @action.action_subtype = act[:action_subtype]
-    @action.details = act[:details]
-
-    #flash[:alert] = "UPDATE: params #{params} action#{@action.attributes}"
+    @action = AthenaAction.find params[:id]
+    @action.set_params(params[:athena_action][:athena_action], @person, current_user)
 
     if @action.save
       flash[:notice] = "Action updated successfully!"
