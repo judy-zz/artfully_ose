@@ -8,8 +8,8 @@ Feature: Organization Membership Create
     And a user exists with an email of "user@example.com"
     And I am logged in as an admin
     And I am on the admin root page
-    And I click on "Administer Organizations"
-    And I click on "Fractured Atlas"
+    And I follow "Administer Organizations"
+    And I follow "Fractured Atlas"
 
   Scenario: An admin adds a user to an organization
     Given I fill in "Email" with "user@example.com"

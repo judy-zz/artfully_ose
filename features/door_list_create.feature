@@ -16,6 +16,6 @@ Feature: Door List Creation
     When I go to the events page
     And I view the 1st event
     And I view the 1st performance
-    And I click on "Door List"
+    And I follow "Door List"
     Then I should see "Joe Patron"
     And I should see "Bob Patron"

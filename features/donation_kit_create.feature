@@ -6,8 +6,8 @@ Feature: Donation Kit
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
     And I am on the organizations page
-    And I click on "Activate now"
-    And I click on "Add Donation Kit"
+    And I follow "Activate now"
+    And I follow "Add Donation Kit"
     And I press "I am an IRS approved charity"
     When I fill in the following:
     | Legal Organization Name | Some Legal Organization Name |

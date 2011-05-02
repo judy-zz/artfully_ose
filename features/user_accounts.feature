@@ -17,7 +17,7 @@ Feature: User accounts
 
   Scenario: A user sees the splash page and logs in
     Given I am on the root page
-    And I click on "Log in"
+    And I follow "Log in"
     And the following user exists:
       | email            | password |
       | user@example.com | changeme |

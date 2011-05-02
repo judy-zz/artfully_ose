@@ -6,9 +6,9 @@ Feature: Donation Kit Approval
     Given I am logged in as an admin
     And there is a pending donation kit application for "Fractured Atlas"
     And I am on the admin root page
-    And I click on "Administer Organizations"
-    When I click on "Fractured Atlas"
-    And I click on "Approve"
+    And I follow "Administer Organizations"
+    When I follow "Fractured Atlas"
+    And I follow "Approve"
     Then I should see "This kit has been activated"
     And the donation kit for "Fractured Atlas" should be activated
 
@@ -16,8 +16,8 @@ Feature: Donation Kit Approval
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
     And I am on the organizations page
-    When I click on "Activate now"
-    And I click on "Add Donation Kit"
+    When I follow "Activate now"
+    And I follow "Add Donation Kit"
     And I press "I am an IRS approved charity"
     When I fill in the following:
     | Legal Organization Name | Some Legal Organization Name |
