@@ -29,10 +29,15 @@ class ActionsController < ApplicationController
 
   def create
     @person = AthenaPerson.find params[:person_id]
-
-    #TODO: determine type of action to create based on action subtype
     act = params[:athena_action][:athena_action]
-    @action = AthenaCommunicationAction.new
+
+    if "HEAR" == params[:action_type]
+      @action = AthenaCommunicationAction.new
+    elsif "GIVE" == params[:action_type]
+      @action = AthenaDonationAction.new
+      @action.dollar_amount = act[:dollar_amount]
+    end
+
     @action.prepare_datetime(act, current_user.current_organization.time_zone)
     @action.occurred_at = act[:occurred_at]
 
@@ -57,10 +62,14 @@ class ActionsController < ApplicationController
 
   def update
     @person = AthenaPerson.find params[:person_id]
-
-    #TODO: determine type of action to create based on action subtype
     act = params[:athena_action][:athena_action]
-    @action = AthenaCommunicationAction.find params[:id]
+
+    if "HEAR" == params[:action_type]
+      @action = AthenaCommunicationAction.find params[:id]
+    elsif "GIVE" == params[:action_type]
+      @action = AthenaDonationAction.find params[:id]
+      @action.dollar_amount = act[:dollar_amount]
+    end
 
     @action.prepare_datetime(act, current_user.current_organization.time_zone)
     @action.occurred_at = act[:occurred_at]

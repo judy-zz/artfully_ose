@@ -20,6 +20,7 @@ class AthenaAction < AthenaResource::Base
     attribute 'details',            :string
     attribute 'timestamp',          :string
     attribute 'starred',            :string
+    attribute 'dollar_amount',      :string
   end
 
   def action_type(); @attributes['action_type']; end
@@ -73,7 +74,7 @@ class AthenaAction < AthenaResource::Base
   end
 
   def hear_action_subtypes
-    ["Email (sent)",
+    [ "Email (sent)",
       "Email (received)",
       "Phone (initiated)",
       "Phone (received)",
@@ -83,7 +84,13 @@ class AthenaAction < AthenaResource::Base
       "Twitter",
       "Facebook",
       "Blog",
-      "Press"]
+      "Press" ]
+  end
+
+  def give_action_subtypes
+    [ "Donation (Cash)",
+      "Donation (Check)",
+      "Donation (In-Kind)" ]
   end
 
   def prepare_datetime(attributes, tz)
