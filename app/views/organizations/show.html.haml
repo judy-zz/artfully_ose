@@ -4,7 +4,7 @@
 .context
   %h2=@organization.time_zone
 
-  %h2= "Taxable Organization Name: #{@organization.taxable_organization_name}" unless @organization.taxable_organization_name.nil?
+  %h2= "Legal Organization Name: #{@organization.legal_organization_name}" unless @organization.legal_organization_name.nil?
   %h2= "EIN: #{@organization.ein}" unless @organization.ein.nil?
 
   .h4="Your Kits"

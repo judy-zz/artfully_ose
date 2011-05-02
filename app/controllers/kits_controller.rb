@@ -33,7 +33,7 @@ class KitsController < ApplicationController
     @organization = Organization.find(current_user.current_organization.id)
 
     unless params[:donation_kit].nil?
-      @organization.taxable_organization_name = params[:donation_kit][:organization][:taxable_organization_name]
+      @organization.legal_organization_name = params[:donation_kit][:organization][:legal_organization_name]
       @organization.ein = params[:donation_kit][:organization][:ein]
       @organization.save
 
