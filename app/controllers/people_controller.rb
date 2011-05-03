@@ -5,8 +5,8 @@ class PeopleController < ApplicationController
   end
 
   rescue_from ActiveResource::ResourceInvalid do |exception|
-    flash[:alert] = "Please enter a first name, last name, or an email address."
-    redirect_to new_person_path
+    flash[:alert] = "A person record must have one of the following: a first name, a last name, or an email address."
+    redirect_to :back
   end
 
   def new
@@ -38,11 +38,11 @@ class PeopleController < ApplicationController
     authorize! :edit, @person
     person = params[:athena_person][:athena_person]
     
-    @person.first_name      = person[:first_name] unless person[:first_name].blank?
-    @person.last_name       = person[:last_name]  unless person[:last_name].blank?
-    @person.email           = person[:email]      unless person[:email].blank?
+    @person.first_name = person[:first_name] 
+    @person.last_name  = person[:last_name]  
+    @person.email      = person[:email]      
 
-    if @person.save
+    if @person.save!
       flash[:notice] = "Person updated successfully!"
     else
       flash[:notice] = "Person could not be updated"
