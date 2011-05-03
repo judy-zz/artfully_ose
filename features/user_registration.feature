@@ -5,6 +5,7 @@ Feature: User registration
   Background:
     Given I can save People to ATHENA
 
+  @wip
   Scenario: Register as a producer
     Given I am on the new user registration page
     When I fill in "Email" with "example@example.com"

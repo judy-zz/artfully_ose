@@ -81,7 +81,9 @@ Artfully::Application.routes.draw do
   match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
 
-  root :to => 'index#dashboard', :constraints => lambda {|r| r.env["warden"].authenticate? }
+  match '/dashboard' => 'index#dashboard', :as => :dashboard
+  root :to => 'admin/index#index', :constraints => lambda {|r| r.env["warden"].authenticate? }
+
   root :to => 'index#index'
 
 end

@@ -5,6 +5,7 @@ Feature: User accounts
   When visiting Artful.ly for the first time a user should be shown the splash page,
   then they should be able to log in and see the dashboard.
 
+  @wip
   Scenario: Sign in as a user
     Given I am on the new user session page
     And the following user exists:
