@@ -4,8 +4,7 @@ class AthenaPerson < AthenaResource::Base
   self.element_name = 'people'
   self.collection_name = 'people'
 
-  validates_presence_of :email
-  validates_presence_of :first_name, :last_name
+  validates_presence_of :person_info
   validates_presence_of :organization_id
 
   schema do
@@ -62,4 +61,9 @@ class AthenaPerson < AthenaResource::Base
     org.save unless org.persisted?
     @organization, self.organization_id = org, org.id
   end
+
+  def person_info
+    email or first_name or last_name
+  end
+
 end

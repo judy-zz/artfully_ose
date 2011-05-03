@@ -2,12 +2,12 @@
 = render :partial => "shared/headers/people"
 
 -content_for :header do
-  %h1 New Person
+  %h1 Edit Person
 
 .context
 
 .document
-  = form_for @person, :url => people_path do |form|
+  = form_for @person, :url => person_path(@person) do |form|
     %ul
       = render :partial => 'people/form', :locals => { :parent_form => form, :target => @person }
       %li= form.submit "Save"
