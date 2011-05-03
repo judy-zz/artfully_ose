@@ -6,7 +6,26 @@ describe AthenaPerson do
   it { should be_valid }
   it { should respond_to :email }
 
-  it "should not be valid without an email address" do
+  it "should be valid without an email address" do
+    subject.email = nil
+    subject.should be_valid
+  end
+
+  it "should be valid with only a last name" do
+    subject.email = nil
+    subject.first_name = nil
+    subject.should be_valid
+  end
+
+  it "should be valid with only an email address" do
+    subject.first_name = nil
+    subject.last_name = nil
+    subject.should be_valid
+  end
+
+  it "should not be valid without a first name, last name or email address" do
+    subject.first_name = nil
+    subject.last_name = nil
     subject.email = nil
     subject.should_not be_valid
   end
