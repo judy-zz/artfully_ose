@@ -3,6 +3,8 @@ class Kit < ActiveRecord::Base
   belongs_to :organization
   validates_presence_of :organization
 
+  scope :visible, where(Kit.arel_table[:state].eq("activated").or(Kit.arel_table[:state].eq('pending')))
+
   class_attribute :requires_approval, :ability_proc
 
   def self.acts_as_kit(options, &block)
@@ -37,6 +39,9 @@ class Kit < ActiveRecord::Base
     end
 
     check_requirements
+  end
+
+  class DuplicateError < StandardError
   end
 
   protected

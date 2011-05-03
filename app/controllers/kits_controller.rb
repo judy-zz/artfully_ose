@@ -1,6 +1,6 @@
 class KitsController < ApplicationController
   def index
-    @kits_hash = kits_to_hash(current_user.current_organization.kits)
+    @kits = current_user.current_organization.kits
   end
 
   def create
@@ -49,7 +49,7 @@ class KitsController < ApplicationController
   def new_501c3_kit_confirmation
   end
 
-  def new_fafs_kit  
+  def new_fafs_kit
   end
 
   private
@@ -62,7 +62,7 @@ class KitsController < ApplicationController
     end
 
     def with_donation_kit_details
-      if params[:donation_type].blank?     
+      if params[:donation_type].blank?
       else
         yield
       end
@@ -72,17 +72,8 @@ class KitsController < ApplicationController
       @kit = Kernel.const_get(type).new
       @kit.type = type
 
-      can_add_kit = true
-      current_user.current_organization.kits.each{ |kit|
-        if kit.type == @kit.type
-          can_add_kit = false
-          break
-        end
-      }
-
-      if can_add_kit
+      begin
         current_user.current_organization.kits << @kit
-
         if @kit.activated?
           flash[:notice] = "Congratulations, you've activated the #{@kit.type}"
         elsif @kit.pending?
@@ -90,17 +81,8 @@ class KitsController < ApplicationController
         else
           flash[:error] = @kit.errors[:requirements].join(", ")
         end
-
-      else
+      rescue Kit::DuplicateError
         flash[:error] = "You already have a #{@kit.type}"
       end
     end
-
-    def kits_to_hash(kits)
-      donation_kit = nil
-      ticketing_kit = nil
-      kits.each{|kit| if kit.type == "DonationKit"; donation_kit = kit end; if kit.type == "TicketingKit"; ticketing_kit = kit end}
-      kits_hash = {"DonationKit"=> donation_kit, "TicketingKit"=>ticketing_kit}
-    end
-
 end

@@ -1,7 +1,8 @@
 class Organization < ActiveRecord::Base
   has_many :memberships
   has_many :users, :through => :memberships
-  has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
+  has_many :kits, :before_add => :check_for_duplicates,
+                  :after_add => lambda { |u,k| k.activate! unless k.activated? }
 
   validates_presence_of :name
 
@@ -25,10 +26,13 @@ class Organization < ActiveRecord::Base
 
   private
 
+  def check_for_duplicates(kit)
+    raise Kit::DuplicateError if kits.where(:type => kit.type).any?
+  end
+
   def donation_type
     if can?(:receive, Donation)
       :sponsored
     end
   end
-
 end

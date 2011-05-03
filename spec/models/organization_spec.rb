@@ -20,6 +20,19 @@ describe Organization do
   end
 
   describe "kits" do
+    it "does not add a kit of the same type if one already exists" do
+      kit = TicketingKit.new(:state => :activated)
+      subject.kits << kit
+      lambda { subject.kits << kit }.should raise_error Kit::DuplicateError
+      subject.kits.should have(1).kit
+    end
+
+    it "does not raise an error if a different type of kit exists" do
+      subject.kits << TicketingKit.new(:state => :activated)
+      lambda { subject.kits << DonationKit.new(:state => :activated) }.should_not raise_error Kit::DuplicateError
+      subject.kits.should have(2).kits
+    end
+
     it "should attempt to activate the kit before saving" do
       kit = Factory(:ticketing_kit)
       kit.should_receive(:activate!)
@@ -59,5 +72,4 @@ describe Organization do
       end
     end
   end
-
 end

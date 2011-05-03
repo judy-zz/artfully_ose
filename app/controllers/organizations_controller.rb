@@ -15,7 +15,6 @@ class OrganizationsController < ApplicationController
   def show
     @organization = Organization.find(params[:id])
     authorize! :view, @organization
-    @activated_or_pending_kits = @organization.kits.select{|kit| kit.pending? || kit.activated? }
     @fa_user = FA::User.new
   end
 
@@ -51,7 +50,6 @@ class OrganizationsController < ApplicationController
   def connect
     @organization = Organization.find(params[:id])
     authorize! :view, @organization
-    @activated_or_pending_kits = @organization.kits.select{|kit| kit.pending? || kit.activated? }
     @fa_user = FA::User.new(params[:fa_user])
 
     if @fa_user.authenticate
