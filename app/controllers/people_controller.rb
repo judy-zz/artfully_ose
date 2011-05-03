@@ -5,7 +5,7 @@ class PeopleController < ApplicationController
   end
 
   rescue_from ActiveResource::ResourceInvalid do |exception|
-    flash[:alert] = "#{exception.message} Person records must have a first name, last name or email address to be saved. "
+    flash[:alert] = "Please enter a first name, last name, or an email address."
     redirect_to new_person_path
   end
 

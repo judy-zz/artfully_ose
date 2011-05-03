@@ -1,10 +1,8 @@
 - in_section :people
 = render :partial => "shared/headers/people"
 
--content_for :header do
-  %h1 New Person
-
 .context
+  %h3 New Person
 
 .document
   = form_for @person, :url => people_path do |form|
