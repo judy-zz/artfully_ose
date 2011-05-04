@@ -33,7 +33,9 @@ class Kit < ActiveRecord::Base
 
   def self.pad_with_new_kits(kits = [])
     types = kits.collect(&:type)
-    padding = subklasses.reject{ |klass| types.include? klass.to_s }.collect(&:new)
+    alternatives = kits.collect(&:alternatives).flatten.uniq
+
+    padding = subklasses.reject{ |klass| (types.include? klass.to_s) or (alternatives.include? klass) }.collect(&:new)
     kits + padding
   end
 

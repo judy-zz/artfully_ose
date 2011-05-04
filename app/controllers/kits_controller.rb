@@ -1,6 +1,6 @@
 class KitsController < ApplicationController
   def index
-    @kits = Kit.pad_with_new_kits(current_user.current_organization.kits)
+    @kits = current_user.current_organization.available_kits
   end
 
   def new

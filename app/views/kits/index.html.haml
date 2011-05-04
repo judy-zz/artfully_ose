@@ -14,13 +14,11 @@
       %thead
         %tr
           %th Name
-          %th Status
           %th Actions
       %tbody
         - @kits.each do |kit|
           %tr
             %td= kit.type.underscore.titleize
-            %td= kit.state.titleize
             -if kit.new?
               - if kit.has_alternatives?
                 %td= link_to "Activate #{kit.type.underscore.titleize}", alternatives_kits_path(:type => kit.type.underscore)

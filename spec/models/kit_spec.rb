@@ -14,6 +14,12 @@ describe Kit do
       padded = Kit.pad_with_new_kits(kits)
       padded.select{ |kit| kit.type == "TicketingKit" }.should have(1).kit
     end
+
+    it "does not create a new instance if the array has a kit listed as an alternative" do
+      kit = Factory(:regular_donation_kit)
+      padded = Kit.pad_with_new_kits(Array.wrap(kit))
+      padded.select{ |k| kit.alternatives.include? k.class }.should be_empty
+    end
   end
 
   describe "#alternatives" do
