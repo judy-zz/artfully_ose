@@ -1,8 +1,6 @@
 .context
 .document
   - if @kit.requirements_met?
-    %p
-      You meet the requirements for this kit.
-      = link_to "Activate #{@kit.type.underscore.titleize}", kits_path(:type => @kit.type.underscore), :method => :post
+    = render "#{@kit.type.underscore.pluralize}/activate"
   - else
-    %p You do not meet the requirements for this kit.
+    = render "#{@kit.type.underscore.pluralize}/requirements"

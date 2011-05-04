@@ -42,6 +42,24 @@ class OrganizationsController < ApplicationController
   end
 
   def update
+    @organization = Organization.find(params[:id])
+    authorize! :edit, @organization
+
+    if @organization.update_attributes(params[:organization])
+      flash[:notice] = "Successfully updated #{@organization.name}."
+      if params[:back]
+        redirect_to :back
+      else
+        redirect_to @organization
+      end
+    else
+      flash[:error]= "Failed to update #{@organization.name}."
+      if params[:back]
+        redirect_to :back
+      else
+        render :show
+      end
+    end
   end
 
   def destroy
@@ -55,10 +73,18 @@ class OrganizationsController < ApplicationController
     if @fa_user.authenticate
       @organization.update_attribute(:fa_member_id, @fa_user.member_id)
       flash[:notice] = "Successfully connected to Fractured Atlas!"
-      redirect_to @organization
+      if params[:back]
+        redirect_to :back
+      else
+        redirect_to @organization
+      end
     else
       flash[:error]= "Unable to connect to your Fractured Atlas account."
-      render :show
+      if params[:back]
+        redirect_to :back
+      else
+        render :show
+      end
     end
   end
 end

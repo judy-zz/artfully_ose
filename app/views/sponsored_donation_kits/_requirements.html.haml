@@ -1,0 +1,4 @@
+#requirements
+  %h3 Requirements
+  %p This kit requires that your organization is connected to a Fractured Atlas membership.
+  = render :partial => 'organizations/connection_form', :locals => { :organization => @kit.organization, :fa_user => FA::User.new, :back => true}

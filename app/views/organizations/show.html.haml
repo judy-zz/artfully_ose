@@ -16,19 +16,8 @@
       .value= @organization.time_zone
 
   - unless @organization.connected?
-    %h2 This organization has not been connected to a Fractured Atlas member.
     %h3 Connect to Fractured Atlas
-    = form_for @fa_user, :url => connect_organization_path(@organization) do |f|
-      %ul
-        %li
-          .label= f.label :email, "Account Email"
-          .element= f.text_field :email
-        %li
-          .label= f.label :password, "Account Password"
-          .element= f.password_field :password
-        = f.submit "Connect"
-  - else
-    %h2= "This organization has been connected to a Fractured Atlas membership."
+    = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
 
 .document
   %h3= "Kits"
