@@ -5,7 +5,6 @@ Feature: User accounts
   When visiting Artful.ly for the first time a user should be shown the splash page,
   then they should be able to log in and see the dashboard.
 
-  @wip
   Scenario: Sign in as a user
     Given I am on the new user session page
     And the following user exists:
@@ -14,7 +13,7 @@ Feature: User accounts
     When I fill in "Email" with "user@example.com"
     And I fill in "Password" with "changeme"
     And I press "Sign in"
-    Then I should see "Signed in successfully."
+    Then I should be on the dashboard page
 
   Scenario: A user sees the splash page and logs in
     Given I am on the root page
@@ -25,7 +24,7 @@ Feature: User accounts
     When I fill in "Email" with "user@example.com"
     And I fill in "Password" with "changeme"
     And I press "Sign in"
-    Then I should see "Dashboard"
+    Then I should be on the dashboard page
 
   Scenario: A user signs out
     Given I am logged in

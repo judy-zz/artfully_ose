@@ -5,12 +5,11 @@ Feature: User registration
   Background:
     Given I can save People to ATHENA
 
-  @wip
   Scenario: Register as a producer
     Given I am on the new user registration page
     When I fill in "Email" with "example@example.com"
     And I fill in "Password" with "password"
     And I fill in "Password confirmation" with "password"
     And I press "Sign up"
-    Then I should see "You have signed up successfully."
+    Then I should be on the dashboard page
 
