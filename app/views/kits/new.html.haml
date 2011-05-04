@@ -1,6 +1,6 @@
 .context
 .document
   - if @kit.requirements_met?
-    = render "#{@kit.type.underscore.pluralize}/activate"
+    = render :partial => "#{@kit.type.underscore.pluralize}/activate"
   - else
-    = render "#{@kit.type.underscore.pluralize}/requirements"
+    = render :partial => "#{@kit.type.underscore.pluralize}/requirements"

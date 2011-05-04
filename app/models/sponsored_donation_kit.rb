@@ -1,6 +1,7 @@
 class SponsoredDonationKit < Kit
   acts_as_kit :with_approval => true do
     activate_kit :if => :connected?
+    activate_kit :if => :exclusive?
 
     when_active do |organization|
       organization.can :receive, Donation
@@ -12,7 +13,13 @@ class SponsoredDonationKit < Kit
     organization.connected?
   end
 
+  def exclusive?
+    exclusive = !organization.kits.where(:type => alternatives.collect(&:to_s)).any?
+    errors.add(:requirements, "You have already activated a mutually exclusive kit.") unless exclusive
+    exclusive
+  end
+
   def alternatives
-    @alternatives = [ RegularDonationKit ]
+    @alternatives ||= [ RegularDonationKit ]
   end
 end

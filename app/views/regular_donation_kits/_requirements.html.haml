@@ -1,13 +1,17 @@
 #requirements
   %h3 Requirements
-  %p= "This kit requires you to fill out additional information about #{@kit.organization.name}."
-  = form_for @kit.organization do |form|
-    = hidden_field_tag :back, true
-    %ul
-      %li
-        .label= form.label :legal_organization_name, "Legal Organization Name"
-        .element= form.text_field :legal_organization_name
-      %li
-        .label= form.label :ein, "EIN"
-        .element= form.text_field :ein
-      %li= form.submit "Update #{@kit.organization.name}"
+  - @kit.errors[:requirements].each do |error|
+    %p= error
+
+  - unless @kit.organization.has_tax_info?
+    %p= "This kit requires you to fill out additional information about #{@kit.organization.name}."
+    = form_for @kit.organization do |form|
+      = hidden_field_tag :back, true
+      %ul
+        %li
+          .label= form.label :legal_organization_name, "Legal Organization Name"
+          .element= form.text_field :legal_organization_name
+        %li
+          .label= form.label :ein, "EIN"
+          .element= form.text_field :ein
+        %li= form.submit "Update #{@kit.organization.name}"
