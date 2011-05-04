@@ -82,7 +82,7 @@ Artfully::Application.routes.draw do
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard
-  root :to => 'admin/index#index', :constraints => lambda {|r| r.env["warden"].authenticate? }
+  root :to => 'index#login_success', :constraints => lambda {|r| r.env["warden"].authenticate? }
 
   root :to => 'index#index'
 
