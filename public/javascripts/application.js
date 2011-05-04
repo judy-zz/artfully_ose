@@ -36,7 +36,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $(".currency").maskMoney({showSymbol:true, symbolStay:true, symbol:"$"});
+  $(".currency").maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
   $(".currency").closest("form").submit(function(){
     var input = $(this).find(".currency"),
         cents = Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ),
