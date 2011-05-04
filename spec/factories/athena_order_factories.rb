@@ -11,6 +11,7 @@ Factory.define :athena_order, :default_strategy => :build do |o|
   o.organization { Factory(:organization) }
   o.customer { Factory(:customer_with_id) }
   o.transaction_id "j59qrb"
+  o.timestamp { DateTime.now }
   o.price 50
 end
 
