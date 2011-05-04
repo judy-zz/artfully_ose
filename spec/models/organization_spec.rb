@@ -19,6 +19,26 @@ describe Organization do
     end
   end
 
+  describe "#has_tax_info" do
+    it "returns true if both ein and legal organization name are not blank" do
+      subject.update_attributes({:ein => "111-4444", :legal_organization_name => "Some Org Name"})
+      subject.should have_tax_info
+    end
+
+    it "returns false if both ein and legal organization name are blank" do
+      subject.update_attributes({:ein => nil, :legal_organization_name => nil})
+      subject.should_not have_tax_info
+    end
+
+    it "returns true if either ein or legal organization name are blank" do
+      subject.update_attributes({:ein => "111-4444", :legal_organization_name => nil})
+      subject.should_not have_tax_info
+
+      subject.update_attributes({:ein => nil, :legal_organization_name => "Some Org Name"})
+      subject.should_not have_tax_info
+    end
+  end
+
   describe "kits" do
     it "does not add a kit of the same type if one already exists" do
       kit = TicketingKit.new(:state => :activated)
@@ -29,7 +49,7 @@ describe Organization do
 
     it "does not raise an error if a different type of kit exists" do
       subject.kits << TicketingKit.new(:state => :activated)
-      lambda { subject.kits << DonationKit.new(:state => :activated) }.should_not raise_error Kit::DuplicateError
+      lambda { subject.kits << RegularDonationKit.new(:state => :activated) }.should_not raise_error Kit::DuplicateError
       subject.kits.should have(2).kits
     end
 
@@ -49,7 +69,7 @@ describe Organization do
   describe "#authorization_hash" do
     context "with a Donation Kit" do
       before(:each) do
-        subject.kits << Factory(:donation_kit, :state => :activated)
+        subject.kits << Factory(:regular_donation_kit, :state => :activated)
       end
 
       it "sets authorized to true" do

@@ -1,4 +1,5 @@
 class Kit < ActiveRecord::Base
+
   include ActiveRecord::Transitions
   belongs_to :organization
   validates_presence_of :organization
@@ -26,8 +27,30 @@ class Kit < ActiveRecord::Base
     self.ability_proc = Proc.new(&block)
   end
 
+  def self.subklasses
+    @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit ].freeze
+  end
+
+  def self.pad_with_new_kits(kits = [])
+    types = kits.collect(&:type)
+    padding = subklasses.reject{ |klass| types.include? klass.to_s }.collect(&:new)
+    kits + padding
+  end
+
   def abilities
     activated? ? self.class.ability_proc : Proc.new {}
+  end
+
+  def has_alternatives?
+    alternatives.any?
+  end
+
+  def alternatives
+    []
+  end
+
+  def requirements_met?
+    check_requirements
   end
 
   def activatable?
@@ -82,7 +105,7 @@ class Kit < ActiveRecord::Base
     end
 
     def check_ifs
-      return true if self.class.requirements[:ifs].empty?
+      return true if self.class.requirements[:if].empty?
       self.class.requirements[:if].all? { |req| self.send(req) }
     end
 

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe DonationKit do
+describe RegularDonationKit do
 
-  subject { Factory(:donation_kit) }
+  subject { Factory(:regular_donation_kit) }
 
   describe "state machine" do
     it { should respond_to :cancel }
@@ -23,7 +23,7 @@ describe DonationKit do
   end
 
   describe "abilities" do
-    subject { Factory(:donation_kit, :state => "activated") }
+    subject { Factory(:regular_donation_kit, :state => "activated") }
 
     it "should return a block for the Ability to use" do
       subject.abilities.should be_a Proc

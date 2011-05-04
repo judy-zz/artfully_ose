@@ -3,9 +3,32 @@
   %h1 Kits
 
 .context
-  %h2 Explanation of Kits
+  %h3 Explanation of Kits
   %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
 
 .document
-  .call-to-action
-  = render :partial=>'kits/kits_table', :locals => { :kits_hash => @kits_hash }
+  %h3 Kits
+  #kits
+    .table-controls
+    %table
+      %thead
+        %tr
+          %th Name
+          %th Status
+          %th Actions
+      %tbody
+        - @kits.each do |kit|
+          %tr
+            %td= kit.type.underscore.titleize
+            %td= kit.state.titleize
+            -if kit.new?
+              - if kit.has_alternatives?
+                %td= link_to "Activate #{kit.type.underscore.titleize}", alternatives_kits_path(:type => kit.type.underscore)
+              - else
+                %td= link_to "Activate #{kit.type.underscore.titleize}", new_kit_path(:type => kit.type.underscore)
+            - elsif kit.pending?
+              %td= "Pending"
+            - elsif kit.activated?
+              %td= "Activated"
+            - elsif kit.cancelled?
+              %td= link_to "Reactivate #{kit.type.underscore.titleize}", kit_path(kit), :method => :put

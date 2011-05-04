@@ -15,6 +15,10 @@ class Organization < ActiveRecord::Base
     OrganizationAbility.new(self)
   end
 
+  def has_tax_info?
+    !(ein.blank? or legal_organization_name.blank?)
+  end
+
   def connected?
     !fa_member_id.blank?
   end

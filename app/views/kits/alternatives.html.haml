@@ -1,0 +1,5 @@
+.context
+.document
+  #alternatives
+    - @kits.each do |kit|
+      = render "#{kit.type.underscore.pluralize}/alternative"

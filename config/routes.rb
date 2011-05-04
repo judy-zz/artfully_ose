@@ -41,7 +41,10 @@ Artfully::Application.routes.draw do
     end
   end
 
-  resources :kits
+  resources :kits do
+    get :alternatives, :on => :collection
+  end
+
   resources :credit_cards, :except => :show
 
   resources :people, :except => :destroy do

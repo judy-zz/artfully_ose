@@ -1,14 +1,22 @@
 class KitsController < ApplicationController
   def index
-    @kits = current_user.current_organization.kits
+    @kits = Kit.pad_with_new_kits(current_user.current_organization.kits)
+  end
+
+  def new
+    @kit = Kernel.const_get(params[:type].camelize).new
+    @kit.organization_id = current_user.current_organization
+  end
+
+  def alternatives
+    @kit = Kernel.const_get(params[:type].camelize).new
+    @kits = @kit.alternatives.collect(&:new)
+    @kits << @kit
   end
 
   def create
-    @kit = Kernel.const_get(params[:type]).new
-    @kit.type = params[:type]
-
-    add_kit(params[:type])
-
+    @kit = Kernel.const_get(params[:type].camelize).new
+    add_kit(params[:type].camelize)
     redirect_to kits_url
   end
 
@@ -29,7 +37,7 @@ class KitsController < ApplicationController
   end
 
   def new_501c3_kit
-    @kit = DonationKit.new
+    @kit = RegularDonationKit.new
     @organization = Organization.find(current_user.current_organization.id)
 
     unless params[:donation_kit].nil?
