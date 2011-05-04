@@ -19,7 +19,9 @@
           .value=kit.state.titleize
 
     = link_to "View all kits", kits_path
+
   - unless @organization.connected?
+    %h2 This organization has not been connected to a Fractured Atlas member.
     %h3 Connect to Fractured Atlas
     = form_for @fa_user, :url => connect_organization_path(@organization) do |f|
       %ul
@@ -30,5 +32,7 @@
           .label= f.label :password, "Account Password"
           .element= f.password_field :password
         = f.submit "Connect"
+  - else
+    %h2= "This organization has been connected to a Fractured Atlas membership."
 
 .document
