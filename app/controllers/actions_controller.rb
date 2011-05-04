@@ -5,6 +5,16 @@ class ActionsController < ApplicationController
     redirect_to root_path
   end
 
+  rescue_from ActiveResource::ResourceInvalid do |exception|
+    flash[:alert] = "An action record must have a valid date"
+    redirect_to :back
+  end
+
+  rescue_from ArgumentError do |exception|
+    flash[:alert] = "An action record must have a valid date"
+    redirect_to :back
+  end
+
   def new
     @action = AthenaAction.new
     @person = AthenaPerson.find params[:person_id]
@@ -33,7 +43,7 @@ class ActionsController < ApplicationController
     @action = AthenaAction.create_of_type(params[:action_type])
     @action.set_params(params[:athena_action][:athena_action], @person, current_user)
 
-    if @action.save
+    if @action.save!
       flash[:notice] = "Action logged successfully!"
     else
       flash[:notice] = "Action could not be logged"
@@ -48,7 +58,7 @@ class ActionsController < ApplicationController
     @action = AthenaAction.find params[:id]
     @action.set_params(params[:athena_action][:athena_action], @person, current_user)
 
-    if @action.save
+    if @action.save!
       flash[:notice] = "Action updated successfully!"
     else
       flash[:notice] = "Action could not be updated"
