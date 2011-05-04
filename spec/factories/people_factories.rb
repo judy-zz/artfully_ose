@@ -27,9 +27,11 @@ end
 Factory.define :athena_purchase_action, :default_strategy => :build do |a|
   a.person { Factory(:athena_person_with_id) }
   a.subject { Factory(:athena_order_with_id) }
+  a.occurred_at { DateTime.now }
 end
 
 Factory.define :athena_donation_action, :default_strategy => :build do |a|
   a.person { Factory(:athena_person_with_id) }
   a.subject { Factory(:donation) }
+  a.occurred_at { DateTime.now }
 end

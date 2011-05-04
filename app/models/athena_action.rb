@@ -27,6 +27,7 @@ class AthenaAction < AthenaResource::Base
   def action_type=(action_type); ;end
 
   validates_presence_of :person_id, :subject_id
+  validates_presence_of :occurred_at
 
   def initialize(attributes = {})
     super(attributes)
