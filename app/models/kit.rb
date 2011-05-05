@@ -70,6 +70,8 @@ class Kit < ActiveRecord::Base
   end
 
   protected
+    def on_activation; end
+    def on_pending; end
 
   private
     def check_requirements
@@ -79,8 +81,8 @@ class Kit < ActiveRecord::Base
     def self.setup_state_machine
       state_machine do
         state :new
-        state :pending
-        state :activated
+        state :pending, :enter => :on_pending
+        state :activated, :enter => :on_activation
         state :cancelled
 
         event :activate do

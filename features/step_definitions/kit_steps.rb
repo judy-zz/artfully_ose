@@ -1,5 +1,6 @@
 Given /^there is a pending regular donation kit application for "([^"]*)"$/ do |name|
   organization = Factory(:organization, :name => name)
+  organization.users << Factory(:user)
   organization.update_attributes({:ein => "111-1234", :legal_organization_name => "Some Organization"})
   organization.kits << RegularDonationKit.new
 end
@@ -11,6 +12,7 @@ end
 
 Given /^there is a pending sponsored donation kit application for "([^"]*)"$/ do |name|
   organization = Factory(:organization, :name => name)
+  organization.users << Factory(:user)
   organization.update_attribute(:fa_member_id, 1)
   organization.kits << SponsoredDonationKit.new
 end

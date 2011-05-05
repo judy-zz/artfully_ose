@@ -22,4 +22,9 @@ class SponsoredDonationKit < Kit
   def alternatives
     @alternatives ||= [ RegularDonationKit ]
   end
+
+  def on_pending
+    AdminMailer.donation_kit_notification(self).deliver
+    ProducerMailer.donation_kit_notification(self, self.organization.owner).deliver
+  end
 end
