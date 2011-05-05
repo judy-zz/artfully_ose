@@ -7,3 +7,5 @@ db/schema.rb
 .DS_Store
 nbproject
 *.orig
+application.css
+default.css
