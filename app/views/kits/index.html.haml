@@ -19,14 +19,12 @@
         - @kits.each do |kit|
           %tr
             %td= kit.type.underscore.titleize
-            -if kit.new?
+            - if kit.new?
               - if kit.has_alternatives?
                 %td= link_to "Activate #{kit.type.underscore.titleize}", alternatives_kits_path(:type => kit.type.underscore)
               - else
                 %td= link_to "Activate #{kit.type.underscore.titleize}", new_kit_path(:type => kit.type.underscore)
-            - elsif kit.pending?
-              %td= "Pending"
-            - elsif kit.activated?
-              %td= "Activated"
             - elsif kit.cancelled?
               %td= link_to "Reactivate #{kit.type.underscore.titleize}", kit_path(kit), :method => :put
+            - else
+              %td= kit.state.titleize
