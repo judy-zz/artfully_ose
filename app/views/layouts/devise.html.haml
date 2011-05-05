@@ -27,4 +27,6 @@
     #large-header
       %img{ :src => '/images/logo.png' }
     #content
+      = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+      - flash.discard
       = yield
