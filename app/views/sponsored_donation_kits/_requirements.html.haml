@@ -1,7 +1,0 @@
-#requirements
-  %h3 Requirements
-  - @kit.errors[:requirements].each do |error|
-    %p= error
-
-  - unless @kit.organization.connected?
-    = render :partial => 'organizations/connection_form', :locals => { :organization => @kit.organization, :fa_user => FA::User.new, :back => true}

@@ -6,6 +6,11 @@ class KitsController < ApplicationController
   def new
     @kit = Kernel.const_get(params[:type].camelize).new
     @kit.organization_id = current_user.current_organization
+    if @kit.requirements_met?
+      render "#{@kit.type.underscore.pluralize}/activate"
+    else
+      render "#{@kit.type.underscore.pluralize}/requirements"
+    end
   end
 
   def alternatives
