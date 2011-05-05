@@ -84,16 +84,9 @@ strong
   @include section
   @extend .stack2of3
 
-.donation-section1
+.of2
   @include section
   @extend .stack1of2
-
-.donation-section2
-  @include section
-  @extend .stack1of2
-
-.donation-section-wrapper
-  @include stack-layout
 
 .drilldown.final
   @include section
@@ -317,6 +310,21 @@ strong
     &:hover
       color: white
       text-decoration: underline
+
+
+#alternatives
+  @include stack-layout
+
+.wizard-button
+  display: block
+  @include rounded-corners(2px, 2px, 2px, 2px)
+  @include inset-text
+  @include gradient($compliment_highlight, $compliment, 14%, 100%)
+  border: 1px solid $compliment_shadow
+  text-align: center
+  font-size: .9em
+  padding: 1em
+
 
 
 @import "main-menu"

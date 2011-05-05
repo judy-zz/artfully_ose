@@ -12,6 +12,7 @@ class KitsController < ApplicationController
     @kit = Kernel.const_get(params[:type].camelize).new
     @kits = @kit.alternatives.collect(&:new)
     @kits << @kit
+    render "#{@kit.type.underscore.pluralize}/alternatives"
   end
 
   def create

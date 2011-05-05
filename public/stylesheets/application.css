@@ -2,7 +2,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, form ul li .label-and-element, .stack1of2, .donation-section1, .donation-section2, .drilldown.final, .stack1of3, .context, .tip, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .drilldown, .stack3of4, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
+.stack, form ul li .label-and-element, .stack1of2, .of2, .drilldown.final, .stack1of3, .context, .tip, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .drilldown, .stack3of4, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .calendar > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -13,7 +13,7 @@
 .stack, form ul li .label-and-element {
   width: 100%; }
 
-.stack1of2, .donation-section1, .donation-section2, .drilldown.final {
+.stack1of2, .of2, .drilldown.final {
   width: 50%; }
 
 .stack1of3, .context, .tip, form ul li .label {
@@ -170,45 +170,21 @@ strong {
       clear: both;
       visibility: hidden; }
 
-.donation-section1 {
+.of2 {
   position: relative; }
-  .donation-section1 > * {
+  .of2 > * {
     margin: 10px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
-    .donation-section1 > *:after {
+    .of2 > *:after {
       content: ".";
       display: block;
       height: 0;
       clear: both;
       visibility: hidden; }
-
-.donation-section2 {
-  position: relative; }
-  .donation-section2 > * {
-    margin: 10px;
-    display: block;
-    font-family: "Arimo", sans-serif;
-    letter-spacing: normal;
-    word-spacing: normal;
-    text-align: left; }
-    .donation-section2 > *:after {
-      content: ".";
-      display: block;
-      height: 0;
-      clear: both;
-      visibility: hidden; }
-
-.donation-section-wrapper {
-  display: inline-block;
-  font-family: "Courier New", monospace;
-  letter-spacing: -0.65em;
-  word-spacing: -0.65em;
-  text-align: center;
-  vertical-align: top; }
 
 .drilldown.final {
   position: relative; }
@@ -489,6 +465,30 @@ strong {
     .changable-overlay a:hover {
       color: white;
       text-decoration: underline; }
+
+#alternatives {
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top; }
+
+.wizard-button {
+  display: block;
+  -moz-border-radius: 2px 2px 2px 2px;
+  -webkit-border-radius: 2px 2px 2px 2px;
+  border-radius: 2px 2px 2px 2px;
+  color: white;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+  background: #0a99b3;
+  background: -moz-linear-gradient(top, #0a99b3 14%, #077083 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #0a99b3), color-stop(100%, #077083));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$start', endColorstr='$finish',GradientType=0 );
+  border: 1px solid #065b6b;
+  text-align: center;
+  font-size: 0.9em;
+  padding: 1em; }
 
 #main-menu {
   width: 960px;
