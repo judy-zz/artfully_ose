@@ -23,7 +23,6 @@
   %h3= "Kits"
   - if @organization.kits.visible.empty?
     %p= "You have not activated any kits."
-    = link_to "Activate now", kits_path
   - else
     %ul.kv
       - @organization.kits.visible.each do |kit|
@@ -31,4 +30,4 @@
           .key= kit.type
           .value= kit.state.titleize
 
-    = link_to "View all kits", kits_path
+  = link_to "View all kits", kits_path

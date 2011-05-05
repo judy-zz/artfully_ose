@@ -57,3 +57,7 @@ end
 Then /^I my organization should have a Fractured Atlas membership$/ do
   @current_user.current_organization.should_not be_nil
 end
+
+Given /^my organization has tax information$/ do
+  @current_user.current_organization.update_attributes({:ein => "111-1234", :legal_organization_name => "Some Organization"})
+end

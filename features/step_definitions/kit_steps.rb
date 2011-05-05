@@ -1,13 +1,21 @@
-Given /^there is a pending donation kit application for "([^"]*)"$/ do |name|
+Given /^there is a pending regular donation kit application for "([^"]*)"$/ do |name|
   organization = Factory(:organization, :name => name)
-  organization.kits << DonationKit.new
+  organization.update_attributes({:ein => "111-1234", :legal_organization_name => "Some Organization"})
+  organization.kits << RegularDonationKit.new
 end
 
-Then /^the donation kit for "([^"]*)" should be activated$/ do |name|
+Then /^the regular donation kit for "([^"]*)" should be activated$/ do |name|
   organization = Organization.find_by_name(name)
   organization.kits.first.should be_activated
 end
 
-Then /^an email notification for the kit should have been sent$/ do
-  ActionMailer::Base.deliveries.should_not be_empty
+Given /^there is a pending sponsored donation kit application for "([^"]*)"$/ do |name|
+  organization = Factory(:organization, :name => name)
+  organization.update_attribute(:fa_member_id, 1)
+  organization.kits << SponsoredDonationKit.new
+end
+
+Then /^the regular sponsored kit for "([^"]*)" should be activated$/ do |name|
+  organization = Organization.find_by_name(name)
+  organization.kits.first.should be_activated
 end
