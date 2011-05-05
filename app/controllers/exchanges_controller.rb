@@ -15,11 +15,14 @@ class ExchangesController < ApplicationController
   def create
     order = AthenaOrder.find(params[:order_id])
     items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
-    tickets = params[:tickets].collect { |ticket_id| AthenaTicket.find(ticket_id) }
+    tickets = params[:tickets].collect { |ticket_id| AthenaTicket.find(ticket_id) } unless params[:tickets].nil?
 
     @exchange = Exchange.new(order, items, tickets)
 
-    if @exchange.valid?
+    if tickets.nil? 
+      flash[:error] = "Please select tickets to exchange."
+      redirect_to :back
+    elsif @exchange.valid?
       @exchange.submit
       redirect_to order_url(order), :notice => "Successfully exchanged #{self.class.helpers.pluralize(items.length, 'item')}"
     else
