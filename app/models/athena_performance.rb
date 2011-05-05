@@ -148,11 +148,15 @@ class AthenaPerformance < AthenaResource::Base
 
     def prepare_attr!(attributes)
       unless attributes.blank? || attributes['datetime'].blank?
-        temp_date_only = Date.strptime(attributes.delete('datetime'), "%m/%d/%Y")
-        hour = attributes['datetime(4i)']
-        minute = attributes['datetime(5i)']
-        Time.zone = time_zone
-        attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
+        begin
+          temp_date_only = Date.strptime(attributes.delete('datetime'), "%m/%d/%Y")
+          hour = attributes['datetime(4i)']
+          minute = attributes['datetime(5i)']
+          Time.zone = time_zone
+          attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
+        rescue ArgumentError # handles cases where user enters non-date
+          attributes['datetime'] = nil
+        end
       else
         attributes['datetime'] = nil
       end

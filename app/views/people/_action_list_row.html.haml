@@ -11,7 +11,7 @@
 
   %td="#{action.action_type.capitalize} - #{action.action_subtype unless action.action_subtype.nil?}"
 
-  %td= action.details
+  %td= truncate(action.details, :length =>50, :separator => ' ', :omission => '...')
 
   %td
     =link_to "Edit", edit_person_action_path(person, action, "HEAR") if action.action_type == "Hear"

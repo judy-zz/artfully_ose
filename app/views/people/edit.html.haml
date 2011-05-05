@@ -12,4 +12,4 @@
       = render :partial => 'people/form', :locals => { :parent_form => form, :target => @person }
       %li= form.submit "Save"
 
-  =button_to "Cancel", :back, :method => :get
+  =button_to "Cancel", person_path(@person), :method => :get

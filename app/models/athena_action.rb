@@ -5,6 +5,9 @@ class AthenaAction < AthenaResource::Base
   self.element_name = 'actions'
   self.collection_name = 'actions'
 
+  validates_presence_of :occurred_at
+  validates_presence_of :person_id, :subject_id
+
   #
   # Action types: give, go, do, get, join, hear
   #
@@ -25,9 +28,6 @@ class AthenaAction < AthenaResource::Base
 
   def action_type(); @attributes['action_type']; end
   def action_type=(action_type); ;end
-
-  validates_presence_of :person_id, :subject_id
-  validates_presence_of :occurred_at
 
   def initialize(attributes = {})
     super(attributes)
@@ -120,11 +120,15 @@ class AthenaAction < AthenaResource::Base
 
   def prepare_datetime(attributes, tz)
     unless attributes.blank? || attributes['occurred_at'].blank?
-      temp_date_only = Date.strptime(attributes.delete('occurred_at'), "%m/%d/%Y")
-      hour = attributes['occurred_at(4i)']
-      minute = attributes['occurred_at(5i)']
-      Time.zone = tz
-      attributes['occurred_at'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
+      begin
+        temp_date_only = Date.strptime(attributes.delete('occurred_at'), "%m/%d/%Y")
+        hour = attributes['occurred_at(4i)']
+        minute = attributes['occurred_at(5i)']
+        Time.zone = tz
+        attributes['occurred_at'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
+      rescue ArgumentError # handles cases where user enters non-date
+        attributes['occurred_at'] = nil
+      end
     else
       attributes['occurred_at'] = nil
     end
