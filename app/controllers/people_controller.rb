@@ -4,11 +4,6 @@ class PeopleController < ApplicationController
     redirect_to root_path
   end
 
-  rescue_from ActiveResource::ResourceInvalid do |exception|
-    flash[:alert] = "A person record must have one of the following: a first name, a last name, or an email address."
-    redirect_to :back
-  end
-
   def new
     authorize! :create, AthenaPerson
     @person = AthenaPerson.new
@@ -24,13 +19,13 @@ class PeopleController < ApplicationController
     @person.email           = person[:email]      unless person[:email].blank?
     @person.organization_id = current_user.current_organization.id
 
-    if @person.save!
-      flash[:notice] = "Person updated successfully!"
+    if @person.valid? && @person.save!
+      flash[:notice] = "Person created successfully!"
+      redirect_to person_url(@person)
     else
-      flash[:notice] = "Person could not be updated"
+      flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
+      redirect_to :back
     end
-
-    redirect_to person_url(@person) unless @person.id.nil?
   end
 
   def update
@@ -42,13 +37,13 @@ class PeopleController < ApplicationController
     @person.last_name  = person[:last_name]  
     @person.email      = person[:email]      
 
-    if @person.save!
+   if @person.valid? && @person.save!
       flash[:notice] = "Person updated successfully!"
+      redirect_to person_url(@person)
     else
-      flash[:notice] = "Person could not be updated"
+      flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
+      redirect_to :back
     end
-
-    redirect_to person_url(@person)
   end
 
   def index
