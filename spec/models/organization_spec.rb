@@ -67,22 +67,31 @@ describe Organization do
   end
 
   describe "#authorization_hash" do
-    context "with a Donation Kit" do
+    context "with a Regular Donation Kit" do
       before(:each) do
-        subject.kits << Factory(:regular_donation_kit, :state => :activated)
+        subject.kits << Factory.build(:regular_donation_kit, :state => :activated, :organization => subject)
       end
 
       it "sets authorized to true" do
         subject.authorization_hash[:authorized].should be_true
       end
 
-      it "sets type to sponsored when it is a fiscally sponsored project" do
-        subject.authorization_hash[:type].should eq :sponsored
+      it "sets type to regular when it is not a fiscally sponsored project" do
+        subject.authorization_hash[:type].should eq :regular
+      end
+    end
+
+    context "with a Sponsored Donation Kit" do
+      before(:each) do
+        subject.kits << Factory.build(:sponsored_donation_kit, :state => :activated, :organization => subject)
+      end
+
+      it "sets authorized to true" do
+        subject.authorization_hash[:authorized].should be_true
       end
 
       it "sets type to regular when it is not a fiscally sponsored project" do
-        pending "Requires different types of donation kits"
-        subject.authorization_hash[:type].should eq :regular
+        subject.authorization_hash[:type].should eq :sponsored
       end
     end
 

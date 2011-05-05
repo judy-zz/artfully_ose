@@ -39,8 +39,7 @@ class Organization < ActiveRecord::Base
   end
 
   def donation_type
-    if can?(:receive, Donation)
-      :sponsored
-    end
+    return :regular if kits.where(:type => "RegularDonationKit").any?
+    return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
   end
 end
