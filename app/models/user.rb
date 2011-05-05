@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
   def is_in_organization?
     organizations.any?
   end
+  
+  def is_admin?
+    has_role? :admin
+  end
 
   def current_organization
     (memberships.any? and memberships.first.organization) || Organization.new
