@@ -16,8 +16,11 @@
       .value= @organization.time_zone
 
   - unless @organization.connected?
+    %h2 This organization has not been connected to a Fractured Atlas member.
     %h3 Connect to Fractured Atlas
     = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
+  - else
+    %h2 This organization has been connected to a Fractured Atlas membership.
 
 .document
   %h3= "Kits"
