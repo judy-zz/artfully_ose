@@ -117,6 +117,10 @@ class AthenaOrder < AthenaResource::Base
     items.select(&:exchangeable?)
   end
 
+  def returnable_items
+    items.select { |i| i.returnable? and not i.refundable? }
+  end
+
   private
     def merge_and_sort_items
       items.concat(children.collect(&:items).flatten)

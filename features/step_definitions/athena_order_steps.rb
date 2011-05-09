@@ -24,6 +24,3 @@ Given /^there is an order with an ID of (\d+) with (\d+) comps$/ do |id, number_
   FakeWeb.register_uri(:any, "http://localhost/orders/orders/#{order.id}.json", :body => order.encode)
 end
 
-Then /^there should not be any tickets available to exchange$/ do
-  page.should have_no_xpath("(//div[@id='exchanges']/form/ul/li)")
-end
