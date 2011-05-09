@@ -1,7 +1,8 @@
 class Organization < ActiveRecord::Base
   has_many :memberships
   has_many :users, :through => :memberships
-  has_many :kits, :after_add => lambda { |u,k| k.activate! unless k.activated? }
+  has_many :kits, :before_add => :check_for_duplicates,
+                  :after_add => lambda { |u,k| k.activate! unless k.activated? }
 
   validates_presence_of :name
 
@@ -14,8 +15,16 @@ class Organization < ActiveRecord::Base
     OrganizationAbility.new(self)
   end
 
+  def has_tax_info?
+    !(ein.blank? or legal_organization_name.blank?)
+  end
+
   def connected?
     !fa_member_id.blank?
+  end
+
+  def available_kits
+    Kit.pad_with_new_kits(kits)
   end
 
   def authorization_hash
@@ -25,10 +34,12 @@ class Organization < ActiveRecord::Base
 
   private
 
-  def donation_type
-    if can?(:receive, Donation)
-      :sponsored
-    end
+  def check_for_duplicates(kit)
+    raise Kit::DuplicateError if kits.where(:type => kit.type).any?
   end
 
+  def donation_type
+    return :regular if kits.where(:type => "RegularDonationKit").any?
+    return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
+  end
 end

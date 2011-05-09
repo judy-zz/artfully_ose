@@ -1,7 +1,10 @@
 class Kit < ActiveRecord::Base
+
   include ActiveRecord::Transitions
   belongs_to :organization
   validates_presence_of :organization
+
+  scope :visible, where(Kit.arel_table[:state].eq("activated").or(Kit.arel_table[:state].eq('pending')))
 
   class_attribute :requires_approval, :ability_proc
 
@@ -24,8 +27,32 @@ class Kit < ActiveRecord::Base
     self.ability_proc = Proc.new(&block)
   end
 
+  def self.subklasses
+    @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit ].freeze
+  end
+
+  def self.pad_with_new_kits(kits = [])
+    types = kits.collect(&:type)
+    alternatives = kits.collect(&:alternatives).flatten.uniq
+
+    padding = subklasses.reject{ |klass| (types.include? klass.to_s) or (alternatives.include? klass) }.collect(&:new)
+    kits + padding
+  end
+
   def abilities
     activated? ? self.class.ability_proc : Proc.new {}
+  end
+
+  def has_alternatives?
+    alternatives.any?
+  end
+
+  def alternatives
+    []
+  end
+
+  def requirements_met?
+    check_requirements
   end
 
   def activatable?
@@ -39,7 +66,12 @@ class Kit < ActiveRecord::Base
     check_requirements
   end
 
+  class DuplicateError < StandardError
+  end
+
   protected
+    def on_activation; end
+    def on_pending; end
 
   private
     def check_requirements
@@ -49,8 +81,8 @@ class Kit < ActiveRecord::Base
     def self.setup_state_machine
       state_machine do
         state :new
-        state :pending
-        state :activated
+        state :pending, :enter => :on_pending
+        state :activated, :enter => :on_activation
         state :cancelled
 
         event :activate do
@@ -77,7 +109,7 @@ class Kit < ActiveRecord::Base
     end
 
     def check_ifs
-      return true if self.class.requirements[:ifs].empty?
+      return true if self.class.requirements[:if].empty?
       self.class.requirements[:if].all? { |req| self.send(req) }
     end
 

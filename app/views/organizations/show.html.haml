@@ -1,38 +1,33 @@
 - in_section :dashboard
 - content_for :header do
   %h1=@organization.name
+
 .context
-  %h2=@organization.time_zone
-
-  %h2= "Legal Organization Name: #{@organization.legal_organization_name}" unless @organization.legal_organization_name.nil?
-  %h2= "EIN: #{@organization.ein}" unless @organization.ein.nil?
-
-  .h4="Your Kits"
-  - if @activated_or_pending_kits.empty?
-    %p="You have not activated any kits."
-    = link_to "Activate now", kits_path
-  - else
-    - @activated_or_pending_kits.each do |kit|
-      %ul.kv
-        %li
-          .key=kit.type
-          .value=kit.state.titleize
-
-    = link_to "View all kits", kits_path
+  %h3 Details
+  %ul.kv
+    %li
+      .key Legal Name
+      .value= @organization.legal_organization_name
+    %li
+      .key EIN
+      .value= @organization.ein
+    %li
+      .key Time Zone
+      .value= @organization.time_zone
 
   - unless @organization.connected?
-    %h2 This organization has not been connected to a Fractured Atlas member.
     %h3 Connect to Fractured Atlas
-    = form_for @fa_user, :url => connect_organization_path(@organization) do |f|
-      %ul
-        %li
-          .label= f.label :email, "Account Email"
-          .element= f.text_field :email
-        %li
-          .label= f.label :password, "Account Password"
-          .element= f.password_field :password
-        = f.submit "Connect"
-  - else
-    %h2= "This organization has been connected to a Fractured Atlas membership."
+    = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
 
 .document
+  %h3= "Kits"
+  - if @organization.kits.visible.empty?
+    %p= "You have not activated any kits."
+  - else
+    %ul.kv
+      - @organization.kits.visible.each do |kit|
+        %li
+          .key= kit.type
+          .value= kit.state.titleize
+
+  = link_to "View all kits", kits_path

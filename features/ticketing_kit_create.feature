@@ -5,21 +5,20 @@ Feature: Ticketing Kit
   Background:
     Given I can save Credit Cards to ATHENA
 
-  @wip
   Scenario: A user activates the ticketing kit with a credit and organization
     Given I am logged in
     And I have 2 saved credit cards
     And I create a new organization called "Fractured Atlas"
-    And I am on the organizations page
-    When I follow "Fractured Atlas"
-    And I follow "Ticketing Kit"
+    When I follow "My Organization"
+    And I follow "View all kits"
+    And I follow "Activate Ticketing Kit"
+    And I follow "Activate Ticketing Kit"
     Then I should see "Congratulations, you've activated the TicketingKit"
 
-  @wip
   Scenario: A user activates the ticketing kit without a credit card
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
-    And I am on the organizations page
-    When I follow "Fractured Atlas"
-    And I follow "Ticketing Kit"
+    When I follow "My Organization"
+    And I follow "View all kits"
+    And I follow "Activate Ticketing Kit"
     Then I should see "You need at least one credit card to activate this kit"

@@ -30,18 +30,16 @@ Artfully::Application.routes.draw do
 
   devise_for :users
 
-  match '/kits/new_donation_kit' => 'kits#new_donation_kit', :as => :new_donation_kit
-  match '/kits/new_fafs_kit' => 'kits#new_fafs_kit', :as => :new_fafs_kit
-  match '/kits/new_501c3_kit' => 'kits#new_501c3_kit', :as => :new_501c3_kit
-  match '/kits/new_501c3_kit_confirmation' => 'kits#new_501c3_kit_confirmation', :as => :new_501c3_kit_confirmation
-
   resources :organizations do
     member do
       post :connect
     end
   end
 
-  resources :kits
+  resources :kits do
+    get :alternatives, :on => :collection
+  end
+
   resources :credit_cards, :except => :show
 
   resources :people, :except => :destroy do

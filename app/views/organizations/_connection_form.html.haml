@@ -1,0 +1,11 @@
+= form_for fa_user, :url => connect_organization_path(organization) do |form|
+  - back ||= false
+  = hidden_field_tag :back, true if back
+  %ul
+    %li
+      .label= form.label :email, "Account Email"
+      .element= form.text_field :email
+    %li
+      .label= form.label :password, "Account Password"
+      .element= form.password_field :password
+    %li= form.submit "Connect"

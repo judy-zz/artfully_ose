@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe DonationKit do
+describe SponsoredDonationKit do
 
-  subject { Factory(:donation_kit) }
+  subject { Factory(:sponsored_donation_kit) }
 
   describe "state machine" do
     it { should respond_to :cancel }
@@ -17,13 +17,14 @@ describe DonationKit do
 
   describe "approval" do
     it "should transition to pending on the first activation attempt" do
+      subject.organization.stub(:owner).and_return(Factory(:user))
       subject.activate!
       subject.should be_pending
     end
   end
 
   describe "abilities" do
-    subject { Factory(:donation_kit, :state => "activated") }
+    subject { Factory(:sponsored_donation_kit, :state => "activated") }
 
     it "should return a block for the Ability to use" do
       subject.abilities.should be_a Proc
@@ -33,6 +34,14 @@ describe DonationKit do
       organization = Factory(:organization)
       organization.kits << subject
       organization.should be_able_to :receive, Donation
+    end
+  end
+
+  describe "#on_pending" do
+    it "is called when the kit enters pending" do
+      subject.organization.stub(:owner).and_return(Factory(:user))
+      subject.should_receive(:on_pending)
+      subject.submit_for_approval
     end
   end
 end

@@ -32,10 +32,10 @@ class PeopleController < ApplicationController
     @person = AthenaPerson.find(params[:id])
     authorize! :edit, @person
     person = params[:athena_person][:athena_person]
-    
-    @person.first_name = person[:first_name] 
-    @person.last_name  = person[:last_name]  
-    @person.email      = person[:email]      
+
+    @person.first_name = person[:first_name]
+    @person.last_name  = person[:last_name]
+    @person.email      = person[:email]
 
    if @person.valid? && @person.save!
       flash[:notice] = "Person updated successfully!"

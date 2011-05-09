@@ -19,7 +19,40 @@ describe Organization do
     end
   end
 
+  describe "#has_tax_info" do
+    it "returns true if both ein and legal organization name are not blank" do
+      subject.update_attributes({:ein => "111-4444", :legal_organization_name => "Some Org Name"})
+      subject.should have_tax_info
+    end
+
+    it "returns false if both ein and legal organization name are blank" do
+      subject.update_attributes({:ein => nil, :legal_organization_name => nil})
+      subject.should_not have_tax_info
+    end
+
+    it "returns true if either ein or legal organization name are blank" do
+      subject.update_attributes({:ein => "111-4444", :legal_organization_name => nil})
+      subject.should_not have_tax_info
+
+      subject.update_attributes({:ein => nil, :legal_organization_name => "Some Org Name"})
+      subject.should_not have_tax_info
+    end
+  end
+
   describe "kits" do
+    it "does not add a kit of the same type if one already exists" do
+      kit = TicketingKit.new(:state => :activated)
+      subject.kits << kit
+      lambda { subject.kits << kit }.should raise_error Kit::DuplicateError
+      subject.kits.should have(1).kit
+    end
+
+    it "does not raise an error if a different type of kit exists" do
+      subject.kits << TicketingKit.new(:state => :activated)
+      lambda { subject.kits << RegularDonationKit.new(:state => :activated) }.should_not raise_error Kit::DuplicateError
+      subject.kits.should have(2).kits
+    end
+
     it "should attempt to activate the kit before saving" do
       kit = Factory(:ticketing_kit)
       kit.should_receive(:activate!)
@@ -34,22 +67,31 @@ describe Organization do
   end
 
   describe "#authorization_hash" do
-    context "with a Donation Kit" do
+    context "with a Regular Donation Kit" do
       before(:each) do
-        subject.kits << Factory(:donation_kit, :state => :activated)
+        subject.kits << Factory.build(:regular_donation_kit, :state => :activated, :organization => subject)
       end
 
       it "sets authorized to true" do
         subject.authorization_hash[:authorized].should be_true
       end
 
-      it "sets type to sponsored when it is a fiscally sponsored project" do
-        subject.authorization_hash[:type].should eq :sponsored
+      it "sets type to regular when it is not a fiscally sponsored project" do
+        subject.authorization_hash[:type].should eq :regular
+      end
+    end
+
+    context "with a Sponsored Donation Kit" do
+      before(:each) do
+        subject.kits << Factory.build(:sponsored_donation_kit, :state => :activated, :organization => subject)
+      end
+
+      it "sets authorized to true" do
+        subject.authorization_hash[:authorized].should be_true
       end
 
       it "sets type to regular when it is not a fiscally sponsored project" do
-        pending "Requires different types of donation kits"
-        subject.authorization_hash[:type].should eq :regular
+        subject.authorization_hash[:type].should eq :sponsored
       end
     end
 
@@ -59,5 +101,4 @@ describe Organization do
       end
     end
   end
-
 end

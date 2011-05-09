@@ -6,14 +6,7 @@ describe FA::Session do
 
   before(:each) do
     id = 1
-    body = { :session => { :user => { :membership_id => 1 } } }.to_xml
-    FakeWeb.register_uri(:get, "http://api.fracturedatlas.org/sessions/#{id}.xml", :body => body)
-    FakeWeb.register_uri(:post, "http://api.fracturedatlas.org/sessions.xml", :location => "http://api.fracturedatlas.org/sessions/#{id}.xml")
-  end
-
-  before(:each) do
-    id = 1
-    body = { :user => { :membership_id => 1 } }.to_xml
+    body = { :user => { :member_id => 1 } }.to_xml
     FakeWeb.register_uri(:get, "http://api.fracturedatlas.org/sessions/#{id}.xml", :body => body)
     FakeWeb.register_uri(:post, "http://api.fracturedatlas.org/sessions.xml", :location => "http://api.fracturedatlas.org/sessions/#{id}.xml")
   end
@@ -49,9 +42,9 @@ describe FA::Session do
         subject.should be_authenticated
       end
 
-      it "loads the membership_id into the associated user" do
+      it "loads the member_id into the associated user" do
         subject.authenticate
-        subject.user.membership_id.should eq 1
+        subject.user.member_id.should eq 1
       end
     end
 
