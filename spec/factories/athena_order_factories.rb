@@ -32,7 +32,18 @@ Factory.define :athena_item, :default_strategy => :build do |i|
 end
 
 Factory.define :athena_item_with_id, :parent => :athena_item do |i|
-  i.id Factory.next :athena_item_id
+  i.id { Factory.next :athena_item_id }
+  i.after_build do |item|
+    FakeWeb.register_uri(:get, "http://localhost/orders/items/#{item.id}.json", :body => item.encode)
+    FakeWeb.register_uri(:put, "http://localhost/orders/items/#{item.id}.json", :body => "")
+  end
+end
+
+Factory.define :athena_item_for_comped_ticket, :default_strategy => :build, :class => AthenaItem do |i|
+  i.id    { Factory.next(:athena_item_id)               }
+  i.order { Factory(:athena_order_with_id)              }
+  i.item  { Factory(:ticket_with_id, :state => :comped) }
+  i.price 1000
   i.after_build do |item|
     FakeWeb.register_uri(:get, "http://localhost/orders/items/#{item.id}.json", :body => item.encode)
     FakeWeb.register_uri(:put, "http://localhost/orders/items/#{item.id}.json", :body => "")

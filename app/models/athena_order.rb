@@ -147,6 +147,10 @@ class AthenaOrder < AthenaResource::Base
       result = "#{[tickets, donations].to_sentence}"
     end 
     result
+end
+
+  def returnable_items
+    items.select { |i| i.returnable? and not i.refundable? }
   end
 
   private

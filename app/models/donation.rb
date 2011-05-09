@@ -13,4 +13,15 @@ class Donation < ActiveRecord::Base
     false
   end
 
+  def refundable?
+    true
+  end
+
+  def exchangeable?
+    false
+  end
+
+  def returnable?
+    false
+  end
 end

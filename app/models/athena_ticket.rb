@@ -61,6 +61,18 @@ class AthenaTicket < AthenaResource::Base
     performance < DateTime.now
   end
 
+  def refundable?
+    sold?
+  end
+
+  def exchangeable?
+    !expired? and sold?
+  end
+
+  def returnable?
+    !expired?
+  end
+
   def take_off_sale
     begin
       off_sale!

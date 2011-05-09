@@ -4,6 +4,7 @@
 - unless order.all_tickets.empty?
   = render :partial => 'refunds/grouped_form', :locals => { :order => order }
   = render :partial => 'exchanges/grouped_form', :locals => { :order => order }
+  = render :partial => 'returns/grouped_form', :locals => { :order => order }
   #items.grouped-form-target
     = form_tag do
       %table.zebra

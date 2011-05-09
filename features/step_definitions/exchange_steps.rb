@@ -25,6 +25,10 @@ When /^I select the (\d+)(?:st|nd|rd|th) performance$/ do |pos|
   end
 end
 
+Then /^there should not be any tickets available to exchange$/ do
+  page.should have_no_xpath("(//div[@id='exchanges']/form/ul/li)")
+end
+
 When /^I check (\d+) tickets$/ do |num|
   num.to_i.times do |pos|
     within(:xpath, "(//ul[@id='ticket-drilldown']/li)[#{pos + 1}]") do
