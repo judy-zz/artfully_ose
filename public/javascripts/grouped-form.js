@@ -82,8 +82,7 @@ $(document).ready(function(){
           if(hiddenCheckboxes.length !== visibleCheckboxes.length){
             methods.displayError("Oops! Some of the items you have selected are not available for this operation.");
           } else {
-            alert("They match!");
-            //$(original).click();
+            $(original).click();
           }
         });
 
