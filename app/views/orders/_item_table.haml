@@ -17,6 +17,8 @@
           - order.all_items.each do |item|
             %tr{:id => "row_item_#{item.id}", :class => item.state }
               %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
-              %td Ticket
-              %td= link_to "#{item.item.event}", event_path(item.item.event_id)
+              %td= item.item_type.titleize.gsub(/Athena/,'')
+              %td
+                = link_to "#{item.item.event}", event_path(item.item.event_id) if item.item_type == "AthenaTicket"
+                = "Donation" if item.item_type == "Donation"
               %td= number_as_cents item.price

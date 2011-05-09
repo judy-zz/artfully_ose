@@ -8,4 +8,16 @@ class Donation < ActiveRecord::Base
   def price
     amount
   end
+
+  def refundable?
+    true
+  end
+
+  def exchangeable?
+    false
+  end
+
+  def returnable?
+    false
+  end
 end
