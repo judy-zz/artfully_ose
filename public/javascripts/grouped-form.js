@@ -51,6 +51,10 @@ $(document).ready(function(){
       });
     },
 
+    displayError: function(message){
+      $(document.createElement('div')).addClass('flash error').html(message).prependTo($(".grouped-form-target"));
+    },
+
     generateControls: function(){
       var controls = $(document.createElement('div')).addClass('table-controls'),
           ul =       $(document.createElement('ul')).appendTo(controls);
@@ -68,7 +72,21 @@ $(document).ready(function(){
                      button.attr('disabled','disabled');
                    });
 
-        button.click(function(){ $(original).click(); });
+        button.click(function(){
+          var hiddenCheckboxes = $(original).closest('form').find('input:checked'),
+              visibleCheckboxes = $(this).closest('form').find('tbody input:checked');
+
+          console.log(hiddenCheckboxes);
+          console.log(visibleCheckboxes);
+
+          if(hiddenCheckboxes.length !== visibleCheckboxes.length){
+            methods.displayError("Oops! Some of the items you have selected are not available for this operation.");
+          } else {
+            alert("They match!");
+            //$(original).click();
+          }
+        });
+
         $li.append(button).appendTo(ul);
       });
 
@@ -79,5 +97,4 @@ $(document).ready(function(){
   methods.hideGroups();
   methods.enableCheckboxes(methods.findItems());
   methods.generateControls();
-
 });
