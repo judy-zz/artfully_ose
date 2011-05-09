@@ -30,7 +30,6 @@ Feature: Exchange Tickets
   Scenario: A producer selects a comped ticket to exchange
     Given there is an order with an ID of 1 with 2 comps
     When I look up order 1
-    And show me the page
     Then there should not be any tickets available to exchange
 
   Scenario: A producer selects fewer tickets than required for an exchange.
