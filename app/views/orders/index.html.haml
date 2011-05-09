@@ -13,11 +13,17 @@
   %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
 
 .document
-  - unless @results.nil?
-    %h3 Results
-    - if @results.empty?
-      %p No orders matched your search.
-    - else
+  -if !params["search"].nil? && @results.empty? 
+    %p No orders matched your search.
+  -elsif @results.nil?
+    -#Case needed for Cucumber testing
+  -else
+    -if params["search"].nil? 
+      %h3 Recent Orders
+    -else
+      %h3 Search Results
+    #orders
+      .table-controls
       %table.zebra
         %thead
           %tr
@@ -30,10 +36,14 @@
         %tbody
           -@results.each do |order|
             %tr
-              %td=link_to  "#{order.id}", order_path(order)
+              %td=link_to "#{order.id}", order_path(order)
               %td= order.person.last_name
               %td= order.person.first_name
-              %td 00/00/0000
+              %td= l order.timestamp
               -if order.items.size > 0 and "AthenaTicket" == order.items.first.item_type
                 %td="#{AthenaTicket.find(order.items.first.item_id).event}"
-                %td="#{order.items.size} tickets"
+              -else
+                %td
+              %td="#{order.items_detail}"
+       
+

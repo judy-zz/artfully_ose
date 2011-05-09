@@ -5,7 +5,7 @@ class KitsController < ApplicationController
 
   def new
     @kit = Kernel.const_get(params[:type].camelize).new
-    @kit.organization_id = current_user.current_organization
+    @kit.organization = current_user.current_organization
     if @kit.requirements_met?
       render "#{@kit.type.underscore.pluralize}/activate"
     else

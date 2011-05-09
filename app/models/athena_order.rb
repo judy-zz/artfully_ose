@@ -109,12 +109,44 @@ class AthenaOrder < AthenaResource::Base
     @all_items ||= merge_and_sort_items
   end
 
+  def all_tickets
+    all_items.select{|item| item.item_type == "AthenaTicket" }
+  end
+
+  def all_donations
+    all_items.select{|item| item.item_type == "Donation" }
+  end
+
   def refundable_items
     items.select(&:refundable?)
   end
 
   def exchangeable_items
     items.select(&:exchangeable?)
+  end
+
+  def items_detail
+    num_tickets = 0
+    sum_donations = 0
+
+    all_items.each{ |item|
+      if item.attributes["item_type"] == "AthenaTicket"
+        num_tickets += 1
+      elsif item.attributes["item_type"] == "Donation"
+        sum_donations += item.price.to_i
+      end }
+    
+    tickets = "#{num_tickets} ticket(s)"
+    donations = "$#{sum_donations/100.00} donation"
+
+    if num_tickets == 0
+      result = "#{[donations].to_sentence}"
+    elsif sum_donations == 0.0
+      result = "#{[tickets].to_sentence}"
+    else
+      result = "#{[tickets, donations].to_sentence}"
+    end 
+    result
   end
 
   private

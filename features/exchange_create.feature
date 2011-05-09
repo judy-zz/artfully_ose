@@ -12,13 +12,14 @@ Feature: Exchange Tickets
     And I can save Orders in ATHENA
     And I can save purchase actions in ATHENA
 
+  @wip
   Scenario: A producer starts the exchange workflow by selecting tickets
     Given there is an order with an ID of 1 and 2 tickets
     And I look up order 1
     When I check the 1st ticket for an exchange
     And I press "Exchange"
     Then I should see "Exchanging 1 item"
-
+  @wip
   Scenario: A producer selects the tickets to exchange
     Given I have found 2 items to exchange
     When I select the 1st event
@@ -26,7 +27,7 @@ Feature: Exchange Tickets
     And I check 2 tickets
     And I press "Exchange these tickets"
     Then I should see "Successfully exchanged 2 items"
-
+  @wip
   Scenario:
     Given I have found 3 items to exchange
     When I select the 1st event

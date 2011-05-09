@@ -22,3 +22,4 @@
       .value #{@order.details}
 
   = render :partial=>'item_table', :locals => { :order => @order }
+  = render :partial=>'donation_table', :locals => { :order => @order }

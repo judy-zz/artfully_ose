@@ -8,4 +8,9 @@ class Donation < ActiveRecord::Base
   def price
     amount
   end
+
+  def expired?
+    false
+  end
+
 end

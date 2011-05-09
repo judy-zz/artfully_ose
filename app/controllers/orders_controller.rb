@@ -8,6 +8,8 @@ class OrdersController < ApplicationController
     if params[:search]
       @results = search(params[:search])
       redirect_to order_path(@results.id) if @results.is_a? AthenaOrder
+    else
+      @results = AthenaOrder.find(:all, :params =>{ :organizationId => "eq#{current_user.current_organization.id}"})
     end
   end
 
@@ -25,7 +27,8 @@ class OrdersController < ApplicationController
 
   def search(query)
     begin
-      orders = AthenaOrder.find(query)
+      orders = []
+      orders << AthenaOrder.find(query)
     rescue ActiveResource::ResourceNotFound
       ##TODO: Implement search by first name, last name, email, last four of CC number
       []
