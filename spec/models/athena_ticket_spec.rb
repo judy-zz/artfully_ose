@@ -78,7 +78,7 @@ describe AthenaTicket do
     end
   end
 
-  describe "searching"do
+  describe "searching" do
     it "by performance" do
       FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?|, :body => "[]")
       now = DateTime.now
@@ -262,6 +262,48 @@ describe AthenaTicket do
     it "should update the customer id when assigning a new customer record" do
       subject.buyer = Factory(:athena_person_with_id, :id => 2)
       subject.buyer_id.should eq(2)
+    end
+  end
+
+  describe "#returnable?" do
+    it "is returnable if it is not expired" do
+      subject.stub(:expired?).and_return(false)
+      subject.should be_returnable
+    end
+
+    it "is not returnable if it is expired" do
+      subject.stub(:expired?).and_return(true)
+      subject.should_not be_returnable
+    end
+  end
+
+  describe "#exchangeable?" do
+    it "is exchangeable if it is not expired and sold" do
+      subject.stub(:expired?).and_return(false)
+      subject.stub(:sold?).and_return(true)
+      subject.should be_exchangeable
+    end
+
+    it "is not exchangeable if it is expired" do
+      subject.stub(:expired?).and_return(true)
+      subject.should_not be_exchangeable
+    end
+
+    it "is not exchangeable if it is expired" do
+      subject.stub(:comped?).and_return(true)
+      subject.should_not be_exchangeable
+    end
+  end
+
+  describe "#refundable?" do
+    it "is refundable if it is sold" do
+      subject.stub(:sold?).and_return(true)
+      subject.should be_refundable
+    end
+
+    it "is not refundable if it is comped" do
+      subject.stub(:comped?).and_return(true)
+      subject.should_not be_refundable
     end
   end
 

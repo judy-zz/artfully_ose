@@ -43,8 +43,8 @@ class AthenaItem < AthenaResource::Base
   end
 
   def item=(itm)
-    @item, item_id = itm, itm.id
-    item_type = itm.class
+    @item, self.item_id = itm, itm.id
+    self.item_type = itm.class.to_s
   end
 
   def dup!
@@ -52,11 +52,15 @@ class AthenaItem < AthenaResource::Base
   end
 
   def refundable?
-    state == nil
+    (not modified?) and item.refundable?
   end
 
   def exchangeable?
-    state == nil and returnable?
+    (not modified?) and item.exchangeable?
+  end
+
+  def returnable?
+    (not modified?) and item.returnable?
   end
 
   def refund!
@@ -69,13 +73,9 @@ class AthenaItem < AthenaResource::Base
     end
   end
 
-  def returnable?
-    !item.expired?
-  end
-
   def return!
     update_attribute(:state, "returned")
-    item.return! if returnable?
+    item.return! if item.returnable?
   end
 
   def self.find_by_order(order)
@@ -84,6 +84,10 @@ class AthenaItem < AthenaResource::Base
   end
 
   private
+
+    def modified?
+      (state != nil)
+    end
 
     def find_item
       return if self.item_id.nil?

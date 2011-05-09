@@ -20,7 +20,7 @@ Factory.define :ticket, :class => AthenaTicket, :default_strategy => :build do |
   t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
   t.performance { DateTime.now + 1.month }
   # Debt: this does not need to be set by the factory
-  t.state "off_sale" 
+  t.state "off_sale"
   t.price "50.00"
 end
 
