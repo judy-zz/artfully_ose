@@ -17,13 +17,13 @@ Feature: Credit Card Creation
     Given I follow "New Credit Card"
     When I fill in valid credit card details
     And I press "Save Card"
-    Then I should see "There was a problem saving your customer information."
+    Then I should see "First name can't be blank"
 
   Scenario: A user fills out the customer information without any credit card information
     Given I follow "New Credit Card"
     When I fill in valid customer details
     And I press "Save Card"
-    Then I should see "There was a problem saving your customer information."
+    Then I should see "Cardholder name can't be blank"
 
   Scenario: A user creates a credit card with an existing customer record
     Given I have a customer record

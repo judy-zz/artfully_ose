@@ -26,7 +26,6 @@ class CreditCardsController < ApplicationController
       @credit_card.save
       redirect_to credit_cards_url, :notice => "Your card was saved."
     else
-      flash[:error] = "There was a problem saving your customer information."
       render :new and return
     end
   end

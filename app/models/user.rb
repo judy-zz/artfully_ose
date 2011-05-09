@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   delegate :credit_cards, :credit_cards=, :to => :customer
   alias delegated_credit_cards credit_cards
   def credit_cards
-    customer.nil?? [] : delegated_credit_cards
+    customer.nil? ? [] : delegated_credit_cards
   end
 
   private

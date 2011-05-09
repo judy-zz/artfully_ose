@@ -15,26 +15,29 @@ class AthenaCreditCard < AthenaResource::Base
   end
 
   validates_presence_of :expiration_date, :cardholder_name
+  validate :valid_luhn
+  validate :valid_cvv
 
-  validates_presence_of       :card_number, :if => Proc.new { |card| card.new_record? }
-  validates_numericality_of   :card_number, :if => Proc.new { |card| card.new_record? }
-  validate                    :valid_luhn,  :if => Proc.new { |card| card.new_record? }
-
-  validates_presence_of     :cvv, :if => Proc.new { |card| card.new_record? }
-  validates_numericality_of :cvv, :if => Proc.new { |card| card.new_record? }
-  validates_length_of       :cvv, :in => 3..4, :if => Proc.new { |card| card.new_record? }
-
+  def valid_cvv
+    errors.add(:cvv, " doesn't look like a valid cvv.") unless passes_cvv?(cvv)
+  end
 
   def valid_luhn
-    errors.add(:card_number, "This doesn't look like a valid credit card.") unless passes_luhn?(card_number)
+    errors.add(:card_number, " doesn't look like a valid credit card number.") unless passes_luhn?(card_number)
   end
 
   def passes_luhn?(num)
     odd = true
-    num.to_s.gsub(/\D/,'').reverse.split('').map(&:to_i).collect { |d|
+    num.to_s != "" &&
+      num.to_i.to_s == num &&
+      num.to_s.gsub(/\D/,'').reverse.split('').map(&:to_i).collect { |d|
       d *= 2 if odd = !odd
       d > 9 ? d - 9 : d
     }.sum % 10 == 0
+  end
+
+  def passes_cvv?(str)
+    (3..4) === str.length && str.to_i.to_s == str
   end
 
   def load(attributes = {})
