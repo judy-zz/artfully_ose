@@ -6,12 +6,7 @@ Given /^there is an order with an ID of (\d+) and (\d+) tickets$/ do |id, number
   FakeWeb.register_uri(:get, "http://localhost/orders/items.json?orderId=eq#{order.id}", :body => "[#{body}]")
 
   FakeWeb.register_uri(:any, "http://localhost/orders/orders/#{order.id}.json", :body => order.encode)
-end
-
-Given /^I look up order (\d+)$/ do |arg1|
-  Given %{I am on the orders page}
-  Given %{I fill in "search" with "1"}
-  Given %{I press "Search"}
+  visit order_path(id)
 end
 
 Given /^there is an order with an ID of (\d+) with (\d+) comps$/ do |id, number_of_tickets|
@@ -22,5 +17,6 @@ Given /^there is an order with an ID of (\d+) with (\d+) comps$/ do |id, number_
   FakeWeb.register_uri(:get, "http://localhost/orders/items.json?orderId=eq#{order.id}", :body => "[#{body}]")
 
   FakeWeb.register_uri(:any, "http://localhost/orders/orders/#{order.id}.json", :body => order.encode)
+  visit order_path(id)
 end
 

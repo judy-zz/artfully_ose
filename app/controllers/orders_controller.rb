@@ -9,7 +9,7 @@ class OrdersController < ApplicationController
       @results = search(params[:search])
       redirect_to order_path(@results.first.id) if @results.length == 1
     else
-      @results = AthenaOrder.find(:all, :params =>{ :organizationId => "eq#{current_user.current_organization.id}"})
+      @results = AthenaOrder.find(:all, :params => {:organizationId => "eq#{current_user.current_organization.id}"})
     end
   end
 

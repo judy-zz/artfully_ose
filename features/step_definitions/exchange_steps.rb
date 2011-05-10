@@ -6,7 +6,6 @@ end
 
 Given /^I have found (\d+) items to exchange$/ do |num|
   Given %{there is an order with an ID of 1 and #{num} tickets}
-  Given %{I look up order 1}
   num.to_i.times do |n|
     Given %{I check the #{n+1}th ticket for an exchange}
   end

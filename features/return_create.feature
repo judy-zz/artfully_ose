@@ -8,9 +8,6 @@ Feature: Return Tickets
     And I am logged in
     And I am part of an organization
     And there is an order with an ID of 1 with 2 comps
-    And I am on the orders page
-    And I fill in "search" with "1"
-    And I press "Search"
 
   Scenario: A producer returns a ticket
     Given I check the 1st ticket for a return
