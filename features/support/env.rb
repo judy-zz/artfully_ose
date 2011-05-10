@@ -29,6 +29,7 @@ Capybara.default_selector = :css
 # recommended as it will mask a lot of errors for you!
 #
 ActionController::Base.allow_rescue = false
+FakeWeb.allow_net_connect = false
 
 # Remove/comment out the lines below if your app doesn't have a database.
 # For some databases (like MongoDB and CouchDB) you may need to use :truncation instead.

@@ -9,11 +9,20 @@ Feature: Refund Tickets
     And I am logged in
     And I am part of an organization
     And there is an order with an ID of 1 and 2 tickets
-    And I am on the orders page
-    And I fill in "search" with "1"
-    #And I press "Search"
-  @wip
-  Scenario: A producer refunds a ticket
+
+  Scenario: A producer is presented with the option to refund with or without returning to inventory
     Given I check the 1st ticket for a refund
     When I press "Refund"
+    Then I should see "Refunding 1 item."
+
+  Scenario: A producer refunds and returns a ticket
+    Given I check the 1st ticket for a refund
+    When I press "Refund"
+    And I press "Refund and Return"
+    Then I should see "Successfully refunded and returned 1 tickets."
+
+  Scenario: A producer refunds a ticket without returning it to inventory
+    Given I check the 1st ticket for a refund
+    When I press "Refund"
+    And I press "Just Refund"
     Then I should see "Successfully refunded 1 tickets."

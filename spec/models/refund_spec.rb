@@ -8,8 +8,9 @@ describe Refund do
   describe "#submit" do
     before(:each) do
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/refund", :body => "{ success: true }")
+      subject.items.each { |i| i.stub(:return!) }
+      subject.items.each { |i| i.stub(:refund!) }
       subject.stub(:create_refund_order)
-      subject.stub(:update_original_order)
     end
 
     it "should attempt to refund the payment made for the order" do
@@ -34,8 +35,9 @@ describe Refund do
 
   describe "successful?" do
     before(:each) do
+      subject.items.each { |i| i.stub(:return!) }
+      subject.items.each { |i| i.stub(:refund!) }
       subject.stub(:create_refund_order)
-      subject.stub(:update_original_order)
     end
 
     it "should return false if it has not been submitted" do

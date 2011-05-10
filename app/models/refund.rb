@@ -6,10 +6,14 @@ class Refund
     self.items = items
   end
 
-  def submit
+  def submit(options = {})
+    should_return = options[:and_return] || false
+
     payment.refund!
+
     if @success = payment.refunded?
-      update_original_order
+      items.each(&:return!) if should_return
+      items.each(&:refund!)
       create_refund_order
     end
   end
@@ -28,10 +32,6 @@ class Refund
     @payment ||= order.payment.tap do |payment|
       payment.amount = refund_amount
     end
-  end
-
-  def update_original_order
-    items.each(&:refund!)
   end
 
   def create_refund_order
