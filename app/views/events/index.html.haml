@@ -14,7 +14,7 @@
           %ul.details
             %li= event.venue
             %li= event.producer
-
+    =will_paginate @results
 .document
   .call-to-action
     = button_to "New Event", new_event_path, :method => :get

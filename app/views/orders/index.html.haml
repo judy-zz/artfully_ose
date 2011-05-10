@@ -22,6 +22,7 @@
       %h3 Recent Orders
     -else
       %h3 Search Results
+
     #orders
       .table-controls
       %table.zebra
@@ -46,5 +47,5 @@
               -else
                 %td
               %td="#{order.items_detail}"
-       
+      =will_paginate @results
 

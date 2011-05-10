@@ -27,7 +27,7 @@ class EventsController < ApplicationController
   def index
     authorize! :view, AthenaEvent
     user = params[:user_id].blank?? current_user : User.find(params[:user_id])
-    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{user.current_organization.id}" })
+    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
   end
 
   def show

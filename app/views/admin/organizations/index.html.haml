@@ -19,3 +19,4 @@
             %td= l organization.created_at, :format => :short
             %td= organization.memberships.size
             %td= link_to organization.owner.email, admin_user_path(organization.owner) unless organization.owner.nil?
+    =will_paginate @organizations

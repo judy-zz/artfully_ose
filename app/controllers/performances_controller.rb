@@ -8,7 +8,7 @@ class PerformancesController < ApplicationController
   end
 
   def index
-    @performances = @event.performances
+    @performances = @event.performances.paginate(:page => params[:page], :per_page => 10)
     @performance = @event.next_perf
   end
 
@@ -50,9 +50,10 @@ class PerformancesController < ApplicationController
   def show
     @performance = AthenaPerformance.find(params[:id])
     authorize! :view, @performance
-
     @performance.datetime = @performance.datetime.in_time_zone(@event.time_zone)
+
     @performance.tickets = @performance.tickets
+    @tickets = @performance.tickets.paginate(:page => params[:page], :per_page => 25)
   end
 
   def edit

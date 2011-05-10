@@ -33,4 +33,4 @@
           %li= submit_tag "Delete"
           %li= submit_tag "Comp"
 
-      =render :partial => 'ticket_table', :locals => { :performance => @performance }
+      =render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }

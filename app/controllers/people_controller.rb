@@ -56,6 +56,7 @@ class PeopleController < ApplicationController
       end
     end
     @people << person unless person.nil?
+    @people = @people.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show

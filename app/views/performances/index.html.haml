@@ -22,3 +22,4 @@
             = render :partial => "stats", :locals => { :performance => performance }
       %li.new-item
         = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
+    =will_paginate @performances
