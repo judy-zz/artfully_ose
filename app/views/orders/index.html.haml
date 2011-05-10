@@ -41,7 +41,8 @@
               %td= order.person.first_name
               %td= l order.timestamp
               -if order.items.size > 0 and "AthenaTicket" == order.items.first.item_type
-                %td="#{AthenaTicket.find(order.items.first.item_id).event}"
+                -ticket = AthenaTicket.find(order.items.first.item_id)
+                %td=link_to "#{ticket.event}", event_path(ticket.event_id)
               -else
                 %td
               %td="#{order.items_detail}"

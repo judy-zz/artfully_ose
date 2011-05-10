@@ -20,6 +20,9 @@
     %li
       .key Details
       .value #{@order.details}
-
-  = render :partial=>'item_table', :locals => { :order => @order }
-  = render :partial=>'donation_table', :locals => { :order => @order }
+  -unless @order.all_tickets.blank?
+    %h3 Tickets
+    = render :partial=>'item_table', :locals => { :order => @order }
+  -unless @order.all_donations.blank?
+    %h3 Donations
+    = render :partial=>'donation_table', :locals => { :order => @order }
