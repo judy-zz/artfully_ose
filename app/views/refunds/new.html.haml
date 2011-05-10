@@ -1,0 +1,14 @@
+- in_section :people
+- content_for :header do
+  %h1 Orders & Donations
+
+.context
+  %p= "Refunding #{pluralize(params[:items].length, 'item')}."
+.document
+  = form_tag refunds_path do |form|
+    = hidden_field_tag :order_id, @order.id
+    - @items.each do |item|
+      = hidden_field_tag "items[]", item.id
+
+    = submit_tag "Refund and Return"
+    = submit_tag "Just Refund"

@@ -72,8 +72,8 @@ Artfully::Application.routes.draw do
   end
 
   resources :orders
-  resources :refunds, :only => :create
-  resources :exchanges
+  resources :refunds, :only => [ :new, :create ]
+  resources :exchanges, :only => [ :new, :create ]
   resources :returns, :only => :create
 
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
