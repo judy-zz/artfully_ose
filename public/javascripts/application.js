@@ -71,6 +71,10 @@ $(document).ready(function() {
   $(".zebra tbody").each(function(){
     zebra($(this));
   });
+  
+  $(".dropdown-controller").click(function() {
+    $('.dropdown').toggle();
+  });
 });
 
 function togglePrintPreview(){
