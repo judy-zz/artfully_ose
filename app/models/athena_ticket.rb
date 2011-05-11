@@ -138,8 +138,7 @@ class AthenaTicket < AthenaResource::Base
     logger.debug("Returning ticket id [#{self.id}]")
     logger.debug("State is [#{self.state}]")
     attributes.delete(:buyer_id)
-    save!
-    self.do_return!
+    do_return!
   end
 
   private
