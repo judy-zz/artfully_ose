@@ -111,10 +111,12 @@ class Order < ActiveRecord::Base
 
   def generate_donations
     organizations_from_tickets.collect do |organization|
-      donation = Donation.new
-      donation.organization = organization
-      donation
-    end
+      if organization.can?(:receive, Donation)
+        donation = Donation.new
+        donation.organization = organization
+        donation
+      end
+    end.compact
   end
 
   def organizations

@@ -181,8 +181,9 @@ describe Order do
         AthenaEvent.find(ticket.event_id)
       end
 
-      @organizations = @events.collect do |event|
-        Organization.find(event.organization_id)
+      @organizations = @events.collect(&:organization)
+      @organizations.each do |org|
+        org.kits << RegularDonationKit.new(:state => :activated)
       end
 
       FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => Factory(:lock).encode)

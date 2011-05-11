@@ -29,7 +29,7 @@ end
 
 Given /^I have added (\d+) tickets to my order$/ do |a_few|
   producer = Factory(:user)
-  producer.organizations << Factory(:organization)
+  producer.organizations << Factory(:organization_with_donations)
   event = Factory(:athena_event_with_id, :organization_id => producer.current_organization.id )
   tickets = a_few.to_i.times.collect { Factory(:ticket_with_id, :event_id => event.id) }
 
