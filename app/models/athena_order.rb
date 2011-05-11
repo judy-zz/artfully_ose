@@ -91,14 +91,8 @@ class AthenaOrder < AthenaResource::Base
     self.organization = org
   end
 
-  def for_items(itms)
-    logger.debug("for_items called with:")
-    logger.debug(itms)
-
-    itms.each do |item|
-      self.items << AthenaItem.new(:item_type => item.class.to_s, :item_id => item.id, :price => item.price)
-    end
-    logger.debug("End for_items")
+  def <<(itms)
+    self.items += Array.wrap(itms).collect { |item| AthenaItem.for(item) }
   end
 
   def payment
@@ -135,7 +129,7 @@ class AthenaOrder < AthenaResource::Base
       elsif item.attributes["item_type"] == "Donation"
         sum_donations += item.price.to_i
       end }
-    
+
     tickets = "#{num_tickets} ticket(s)"
     donations = "$#{sum_donations/100.00} donation"
 
@@ -145,7 +139,7 @@ class AthenaOrder < AthenaResource::Base
       result = "#{[tickets].to_sentence}"
     else
       result = "#{[tickets, donations].to_sentence}"
-    end 
+    end
     result
 end
 
@@ -190,14 +184,8 @@ end
     end
 
     def save_items
-      logger.debug("saving items for order: #{self.id}")
       items.each do |item|
         item.order = self
-        logger.debug("New item ------------------------------")
-        logger.debug(item)
-        logger.debug(item.valid?)
-        logger.debug(item.errors)
-
         item.save
       end
     end

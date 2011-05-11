@@ -112,7 +112,7 @@ describe AthenaTicket do
     end
   end
 
-  describe ".expired?" do
+  describe "#expired?" do
     it "should be expired if the performance time is in the past" do
       subject.performance = DateTime.now - 1.day
       subject.should be_expired
@@ -121,17 +121,6 @@ describe AthenaTicket do
     it "should not be expired if the performance time is in the future" do
       subject.performance = DateTime.now + 1.day
       subject.should_not be_expired
-    end
-  end
-
-  describe ".to_item" do
-    subject { Factory(:ticket_with_id) }
-    it "should be a PurchasableTicket" do
-      subject.to_item.should be_a PurchasableTicket
-    end
-
-    it "should be the right PurchasableTicket" do
-      subject.to_item.ticket_id.should eq subject.id.to_i
     end
   end
 

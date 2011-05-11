@@ -52,7 +52,7 @@ class Exchange
       exchange_order.person = order.person
       exchange_order.parent = order
       exchange_order.for_organization order.organization
-      exchange_order.for_items tickets
+      exchange_order << tickets
     end
 
     exchange_order.save!
