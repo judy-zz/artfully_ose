@@ -2,6 +2,7 @@ class SponsoredDonationKit < Kit
   acts_as_kit :with_approval => true do
     activate_kit :if => :connected?
     activate_kit :if => :exclusive?
+    activate_kit :if => :has_website?
 
     when_active do |organization|
       organization.can :receive, Donation
@@ -21,6 +22,11 @@ class SponsoredDonationKit < Kit
 
   def alternatives
     @alternatives ||= [ RegularDonationKit ]
+  end
+
+  def has_website?
+    errors.add(:requirements, "You need to specify a website for your organization.") unless !organization.website.blank?
+    !organization.website.blank?
   end
 
   def on_pending

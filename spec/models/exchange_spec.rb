@@ -33,7 +33,7 @@ describe Exchange do
     end
 
     it "should not be valid if any of the items are not returnable" do
-      subject.items.first.stub(:returnable?).and_return(false)
+      subject.items.first.stub(:exchangeable?).and_return(false)
       subject.should_not be_valid
     end
 
