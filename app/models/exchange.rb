@@ -6,7 +6,7 @@ class Exchange
   validates_presence_of :order
   validates_length_of :items,   :minimum => 1
   validates_length_of :tickets, :minimum => 1
-  validate :items_are_returnable
+  validate :items_are_exchangeable
   validate :tickets_match_items
   validate :tickets_are_available
   validate :tickets_belong_to_organization
@@ -17,8 +17,8 @@ class Exchange
     self.tickets =      tickets
   end
 
-  def items_are_returnable
-    errors.add(:items, "are not available to return") unless items.all?(&:returnable?)
+  def items_are_exchangeable
+    errors.add(:items, "are not available to exchange") unless items.all?(&:exchangeable?)
   end
 
   def tickets_match_items
