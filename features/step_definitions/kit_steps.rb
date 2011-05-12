@@ -14,6 +14,7 @@ Given /^there is a pending sponsored donation kit application for "([^"]*)"$/ do
   organization = Factory(:organization, :name => name)
   organization.users << Factory(:user)
   organization.update_attribute(:fa_member_id, 1)
+  organization.update_attribute(:website, "http://test.com")
   organization.kits << SponsoredDonationKit.new
 end
 
