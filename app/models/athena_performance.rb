@@ -98,10 +98,13 @@ class AthenaPerformance < AthenaResource::Base
     copy
   end
 
+  def add_performance_time_string
+    attributes['performance_time'] = I18n.l( attributes['datetime'].in_time_zone(time_zone), :format => :long_with_day)
+  end
+
   def datetime
-    Time.zone = time_zone
-    attributes['datetime'] = Time.zone.parse(attributes['datetime']) if attributes['datetime'].is_a? String
-    attributes['datetime']
+    attributes['datetime'] = attributes['datetime'].in_time_zone(time_zone)
+    return attributes['datetime']
   end
 
   def bulk_edit_tickets(ticket_ids, action)

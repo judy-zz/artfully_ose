@@ -4,7 +4,7 @@
   %ul.detailed-list#of_performances
     - upcoming.each do |performance|
       %li
-        %h4= link_to (l performance.datetime.in_time_zone(event.time_zone), :format => :short), event_performance_path(event, performance), :title => 'performance-datetime'
+        %h4= link_to (l performance.datetime, :format => :short), event_performance_path(event, performance), :title => 'performance-datetime'
         %ul.controls
           %li= link_to "View", event_performance_path(event, performance) if can?(:view, performance)
           %li= link_to "Edit", edit_event_performance_path(event, performance) if can?(:edit, performance)

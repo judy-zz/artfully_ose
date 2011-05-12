@@ -59,13 +59,6 @@ class PerformancesController < ApplicationController
   def edit
     @performance = AthenaPerformance.find(params[:id])
     authorize! :edit, @performance
-    #strip time zone from time before displaying it
-    #the correct time zone will be re-attached by the prepare_attr! method
-    @event = AthenaEvent.find(@performance.event_id)
-    @performance.datetime = @performance.datetime.in_time_zone(@performance.time_zone)
-    hour = @performance.datetime.hour
-    min = @performance.datetime.min
-    @performance.datetime = @performance.datetime.to_date.to_datetime.change(:hour=>hour, :min=>min)
   end
 
   def update

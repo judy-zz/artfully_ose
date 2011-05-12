@@ -1,5 +1,5 @@
 $(document).ready(function(){
-
+    
 });
 
 (function(window, document, undefined){
@@ -49,11 +49,6 @@ artfully.utils = (function(){
     return artfully.config.base_uri + 'organizations/' + id + '/authorization.jsonp?callback=?';
   }
 
-  function datestring(datetime){
-    datetime = new Date(datetime);
-    return datetime.toLocaleDateString() + " " + datetime.toLocaleTimeString();
-  }
-
   function keyOnId(list){
     var result = [];
     $.each(list, function(index, item){
@@ -84,7 +79,6 @@ artfully.utils = (function(){
     event_uri: event_uri,
     donation_uri: donation_uri,
     order_uri: order_uri,
-    datestring: datestring,
     keyOnId: keyOnId,
     modelize: modelize
   };
@@ -322,7 +316,7 @@ artfully.models = (function(){
 
           $(document.createElement('span'))
           .addClass('performance-datetime')
-          .text(artfully.utils.datestring(this.datetime))
+          .text(this.performance_time)
           .appendTo($t);
 
           $(document.createElement('a'))
@@ -379,7 +373,7 @@ artfully.models = (function(){
         },
         render: function($t){
           var $form = $(document.createElement('form')).attr({'method':'post','target':artfully.widgets.cart().$iframe.attr('name'), 'action':artfully.utils.order_uri()}),
-              $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.organizationId }),
+              $producer = $(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.organizationId}),
               $amount = $(document.createElement('input')).attr({'type':'text', 'name':'donation[amount]'}).addClass('currency'),
               $submit = $(document.createElement('input')).attr({'type':'submit', 'value':'Make Donation'}),
               $notice = $(document.createElement('p')).html(this.message(this.type));

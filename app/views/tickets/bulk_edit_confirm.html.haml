@@ -4,7 +4,7 @@
 
 .context
 .document
-  %p= "You are #{verbalize_action (@bulk_action)} #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime.in_time_zone(@performance.event.time_zone)} performance of #{@performance.event.name}"
+  %p= "You are #{verbalize_action (@bulk_action)} #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime } performance of #{@performance.event.name}"
 
   = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
     = hidden_field_tag :confirmed, :true

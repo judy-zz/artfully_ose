@@ -5,7 +5,7 @@
 
 .context
 .document
-  %p= "You are adding #{l @performance.datetime.in_time_zone(@performance.event.time_zone)} performance of #{@performance.event.name} to the widget."
+  %p= "You are adding #{l @performance.datetime} performance of #{@performance.event.name} to the widget."
 
   = form_for @performance, :url => put_on_sale_event_performance_path(@performance.event, @performance) do |form|
     = hidden_field_tag :confirm, :true
