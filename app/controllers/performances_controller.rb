@@ -40,7 +40,7 @@ class PerformancesController < ApplicationController
     @performance.organization_id = current_user.current_organization.id
 
     if @performance.valid? && @performance.save
-      flash[:notice] = "Performance created on #{l @performance.datetime.in_time_zone(@performance.time_zone), :format => :date_at_time}"
+      flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date_at_time}"
       redirect_to event_performances_path(@performance.event) 
     else
       redirect_to event_performances_path(@performance.event) 
@@ -50,7 +50,6 @@ class PerformancesController < ApplicationController
   def show
     @performance = AthenaPerformance.find(params[:id])
     authorize! :view, @performance
-    @performance.datetime = @performance.datetime.in_time_zone(@event.time_zone)
 
     @performance.tickets = @performance.tickets
     @tickets = @performance.tickets.paginate(:page => params[:page], :per_page => 25)

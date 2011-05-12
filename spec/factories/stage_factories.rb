@@ -61,7 +61,7 @@ Factory.define :athena_event_with_id, :parent => :athena_event do |e|
 end
 
 Factory.sequence :performance_datetime do |n|
-  (DateTime.now + n.days).xmlschema
+  (DateTime.now + n.days)
 end
 
 Factory.sequence :performance_id do |id|

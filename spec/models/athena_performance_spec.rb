@@ -12,8 +12,9 @@ describe AthenaPerformance do
   it { should respond_to :datetime }
 
   it "should accept a DateTime as datetime" do
-    subject.datetime = DateTime.now
-    subject.datetime.kind_of?(DateTime).should be_true
+    dt = DateTime.now
+    subject.datetime = dt
+    subject.datetime.to_datetime.utc.to_s.should == dt.utc.to_s
   end
 
   it "should parse the datetime attribute to a DateTime object" do
