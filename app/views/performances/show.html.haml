@@ -8,7 +8,6 @@
     %li= link_to "View all Performances", event_performances_path(@event)
 
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
-  = render :partial => "glance", :locals => { :event => @event }
 
 .document
   .call-to-action
@@ -19,7 +18,7 @@
       = link_to "Hide this Performance", take_off_sale_event_performance_path(@event, @performance), :method => :put
 
   %h3= l @performance.datetime, :format => :long_with_day
-  = render :partial => "stats", :locals => { :performance => @performance }
+  = render :partial => "glance", :locals => { :performance => @performance }
 
   %h3 Tickets
   - if @performance.pending?

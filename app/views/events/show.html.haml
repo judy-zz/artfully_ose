@@ -17,8 +17,6 @@
       .key Producer
       .value= @event.producer
 
-  = render :partial => "glance", :locals => { :event => @event }
-
 .document
   .call-to-action
     = button_to "New Performance", new_event_performance_path(@event), :method => :get
@@ -29,6 +27,7 @@
       %li
         .day
           .number= day
+  = render :partial => "glance", :locals => { :event => @event }
   %h3 Charts
   = form_for @chart, :url => assign_chart_path(@event) do |form|
     %ul
