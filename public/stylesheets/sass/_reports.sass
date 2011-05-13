@@ -1,10 +1,17 @@
+.reports
+  @include stack-list
+  margin: 0 !important
+  > li
+    @include section
+    @extend .stack1of2
+
 .report
   li
     font-weight: bold
     font-size: .8em
     color: $secondary
     text-align: right
-    margin: 1em 0
+    margin: .75em 0
   .stat
     float: left
     text-transform: uppercase
