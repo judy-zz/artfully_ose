@@ -69,7 +69,6 @@ class ChartsController < ApplicationController
         if num_paid_sections > 0
           flash[:alert] = "Cannot add chart with paid sections to a FREE event"
         else
-          flash[:alert] = "Has no paid sections, so it can be added to this FREE event"
           @chart.assign_to(@event)
         end
       end
