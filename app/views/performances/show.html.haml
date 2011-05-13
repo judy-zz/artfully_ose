@@ -8,6 +8,7 @@
     %li= link_to "View all Performances", event_performances_path(@event)
 
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
+  = render :partial => "glance", :locals => { :event => @event }
 
 .document
   .call-to-action
