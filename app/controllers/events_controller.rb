@@ -14,9 +14,10 @@ class EventsController < ApplicationController
     @event = AthenaEvent.new
     @event.update_attributes(params[:athena_event][:athena_event])
     @event.organization_id = current_user.current_organization.id
+    #@event.is_free = params[:athena_event][:athena_event][:is_free]
 
     if @event.save
-      flash[:notice] = "Your event has been created."
+      flash[:notice] = "Your event has been created. #{params}"
       redirect_to event_url(@event)
     else
       flash[:error] = "Your event has not been created."
@@ -50,6 +51,7 @@ class EventsController < ApplicationController
     authorize! :edit, @event
 
     @event.update_attributes(params[:athena_event][:athena_event])
+        #@event.is_free = params[:athena_event][:athena_event][:is_free]
     if @event.save
       flash[:notice] = "Your event has been updated."
       redirect_to event_url(@event)

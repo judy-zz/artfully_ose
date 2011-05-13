@@ -62,7 +62,17 @@ class ChartsController < ApplicationController
       flash[:error] = "Please create a chart to import to this event."
     else
       @chart = AthenaChart.find(params[:athena_chart][:id])
-      @chart.assign_to(@event)
+      unless "true" == @event.is_free
+        @chart.assign_to(@event)
+      else
+        num_paid_sections = @chart.sections.drop_while{|s| s.price.to_i == 0}.length
+        if num_paid_sections > 0
+          flash[:alert] = "Cannot add chart with paid sections to a FREE event"
+        else
+          flash[:alert] = "Has no paid sections, so it can be added to this FREE event"
+          @chart.assign_to(@event)
+        end
+      end
     end
     redirect_to event_url(@event)
   end

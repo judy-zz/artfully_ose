@@ -33,9 +33,9 @@
   = form_for @chart, :url => assign_chart_path(@event) do |form|
     %ul
       %li
-        .label= form.label :id, "Choose chart:"
+        .label= form.label :id, "Choose chart template:"
         .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
-    = form.submit "Submit"
+    = form.submit "Import"
 
   - @event.charts.each do |chart|
     %ul.detailed-list
