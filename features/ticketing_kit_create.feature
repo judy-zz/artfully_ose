@@ -12,8 +12,8 @@ Feature: Ticketing Kit
     When I follow "My Organization"
     And I follow "View all kits"
     And I follow "Activate Ticketing Kit"
-    And I follow "Activate Ticketing Kit"
-    Then I should see "Congratulations, you've activated the TicketingKit"
+    And I follow "Submit Activation Request"
+    Then I should see "Your request has been sent in for approval."
 
   Scenario: A user activates the ticketing kit without a credit card
     Given I am logged in

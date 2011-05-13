@@ -59,6 +59,7 @@ class Kit < ActiveRecord::Base
     return false if organization.nil?
 
     if needs_approval
+      check_requirements
       submit_for_approval!
       return false
     end

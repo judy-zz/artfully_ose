@@ -8,7 +8,6 @@ class Admin::KitsController < Admin::AdminController
 
   def index
     @pending_kits = Kit.where(:state => "pending")
-
   end
 
   private

@@ -22,3 +22,16 @@ Then /^the regular sponsored kit for "([^"]*)" should be activated$/ do |name|
   organization = Organization.find_by_name(name)
   organization.kits.first.should be_activated
 end
+
+Given /^there is a pending ticketing kit application for "([^"]*)"$/ do |name|
+  organization = Factory(:organization, :name => name)
+  user = Factory(:user)
+  user.customer = Factory(:customer_with_credit_cards)
+  organization.users << user
+  organization.kits << TicketingKit.new
+end
+
+Then /^the ticketing kit for "([^"]*)" should be activated$/ do |name|
+  organization = Organization.find_by_name(name)
+  organization.kits.where(:type => "TicketingKit").first.should be_activated
+end
