@@ -20,7 +20,6 @@ gem 'capistrano-ext'
 gem 'will_paginate', '~> 3.0.beta'
 
 group :test, :development do
-  gem 'metric_fu'
   gem "rspec-rails", ">= 2.1"
   gem 'shoulda'
   gem 'fakeweb'
