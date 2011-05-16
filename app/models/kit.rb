@@ -117,4 +117,5 @@ class Kit < ActiveRecord::Base
     def needs_approval
       self.class.requires_approval and new?
     end
+
 end
