@@ -17,7 +17,8 @@
           %th EIN
           %th
       %tbody
-        - @pending_kits.each do |kit|
+        -@pending_kits.each do |kit|
+        -org = kit.organization
           %tr
             %td= l kit.updated_at, :format => :short
             %td= link_to kit.organization.name, admin_organization_path(org)
