@@ -5,4 +5,5 @@
 .document
   %p
     You must fax your ACH information for this kit to be activated.
+    = button_to "Download ACH Authorization Form", :action=>'download_ach_authorization_form'
     = link_to "Submit Activation Request", kits_path(:type => @kit.type.underscore), :method => :post

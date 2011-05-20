@@ -33,6 +33,11 @@ class KitsController < ApplicationController
     redirect_to kits_url
   end
 
+  def download_ach_authorization_form
+    ach_form_name = "elephakitty"
+    send_file "public/forms/#{ach_form_name}.pdf", :type=>"application/pdf"
+  end
+
   private
     def check_activation
       if @kit.activated?
