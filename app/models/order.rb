@@ -75,10 +75,17 @@ class Order < ActiveRecord::Base
     @payment = payment
     options[:settle] = true if options[:settle].nil?
 
-    payment.authorize! ? approve! : reject!
-    if options[:settle] and approved?
-      payment.settle!
+    if payment.amount > 0
+      payment.authorize! ? approve! : reject!
+      if options[:settle] and approved?
+        payment.settle!
+      end
+    else
+      #options[:settle] = true # neccessary?
+      payment.transaction_id = nil
+      approve!
     end
+
   end
 
   def finish

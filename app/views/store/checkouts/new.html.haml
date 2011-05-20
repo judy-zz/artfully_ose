@@ -7,7 +7,8 @@
       .price= number_as_cents current_order.total
     %ol#steps
       %li Customer Information
-      %li Credit Card Information
+      -unless current_order.total.zero?
+        %li Credit Card Information
       %li Billing Address
       %li Confirmation
     #checkout-now.disabled
@@ -23,3 +24,4 @@
   = render :partial => 'athena_payments/form.html', :locals => {:payment => @payment}
   = submit_tag "Purchase"
 = javascript_include_tag "sliding-wizard"
+

@@ -4,7 +4,7 @@ class AthenaPayment < AthenaResource::Base
   self.collection_name = 'payments'
   self.element_name = 'payments'
 
-  validates_numericality_of :amount, :greater_than => 0
+  validates_numericality_of :amount, :greater_than_or_equal_to => 0
   validates_presence_of :billing_address, :credit_card
 
   validates_each :billing_address, :credit_card, :customer do |model, attr, value|

@@ -186,8 +186,10 @@ function updateConfirmation(){
     $(document.createElement('p')).html(key + ": " + value).appendTo($("#customer-confirmation"));
   });
 
-  $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
   var creditCard = $("#credit_card").find("input:visible, select").serializeArray();
+  if (creditCard.length > 0){
+      $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
+  }
 
   $.each(creditCard, function(i,field){
     key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');

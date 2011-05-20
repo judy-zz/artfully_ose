@@ -18,9 +18,15 @@ describe Checkout do
     subject.payment.amount.should eq order.total
   end
 
-  it "should not be valid without a payment" do
+  it "should not be valid without a payment if the order total > 0 (Not Free)" do
+    subject = Checkout.new(Factory(:order_with_items), payment)
     subject.payment = nil
     subject.should_not be_valid
+  end
+
+  it "should be valid without a payment if the order total is 0 (Free)" do
+    subject.payment = nil
+    subject.should be_valid
   end
 
   it "should not be valid without an order" do
@@ -28,9 +34,15 @@ describe Checkout do
     subject.should_not be_valid
   end
 
-  it "should not be valid if the payment is invalid" do
+  it "should not be valid if the payment is invalid and order total > 0 (Not Free)" do
+    subject = Checkout.new(Factory(:order_with_items), payment)
     subject.payment.stub(:valid?).and_return(false)
     subject.should_not be_valid
+  end
+
+  it "should be valid if the payment is invalid but the order total is 0 (Free)" do
+    subject.payment.stub(:valid?).and_return(false)
+    subject.should be_valid
   end
 
   describe "finish" do

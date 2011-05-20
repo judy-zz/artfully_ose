@@ -40,7 +40,10 @@
               %td=link_to "#{order.id}", order_path(order)
               %td= order.person.last_name
               %td= order.person.first_name
-              %td= l order.timestamp
+              -unless order.timestamp.nil?
+                %td= l order.timestamp
+              -else
+                %td
               -if order.items.size > 0 and "AthenaTicket" == order.items.first.item_type
                 -ticket = AthenaTicket.find(order.items.first.item_id)
                 %td=link_to "#{ticket.event}", event_path(ticket.event_id)

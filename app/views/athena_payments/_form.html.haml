@@ -2,14 +2,15 @@
   .viewport
     %ol
       %li#customer
-        %h3 Customer Information
+        %h3 Customer Information 
         = render "shared/error_messages.html", :target => @payment.customer
         = render :partial => 'athena_customers/form.html', :locals => { :parent_form => payment_form, :target => @payment.customer }
 
-      %li#credit_card
-        %h3 Credit Card Information
-        = render "shared/error_messages.html", :target => @payment.credit_card
-        = render :partial => 'athena_credit_cards/form.html', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
+      -unless @payment.amount.zero?
+        %li#credit_card
+          %h3 Credit Card Information
+          = render "shared/error_messages.html", :target => @payment.credit_card
+          = render :partial => 'athena_credit_cards/form.html', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
 
       %li#billing_address
         %h3 Billing Address
