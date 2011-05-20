@@ -4,7 +4,7 @@ class Admin::AdminController < ApplicationController
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
-    redirect_to root_path
+    redirect_to dashboard_path
   end
 
   private
