@@ -33,8 +33,8 @@ class KitsController < ApplicationController
     redirect_to kits_url
   end
 
-  def download_ach_authorization_form
-    ach_form_name = "elephakitty"
+  def download_ach_form
+    ach_form_name = "ach_authorization_form"
     send_file "public/forms/#{ach_form_name}.pdf", :type=>"application/pdf"
   end
 
