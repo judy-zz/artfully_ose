@@ -31,16 +31,27 @@ table
     color: #666
   th
     color: #666
-    background: #eee
-    text-align: left
+    @include gradient(#eee, #e0e0e0)
     font-weight: bold
     border: 1px solid #ccc
     border-top: none
 
+table.standalone
+  border: 1px solid #ccc
+
+td.numeric
+  width: auto
+  text-align: right
+
+tfoot tr
+  @include gradient(#eee, #e0e0e0)
+  font-weight: bold
+  border-top: 1px solid #ccc
+
 .zebra .even
   background: rgba(7, 112, 131, 0.1)
 
-.zebra tr td:nth-child(odd)
+.zebra tbody tr td:nth-child(odd)
   background: rgba(255,255,255,0.5)
 
 .filter
