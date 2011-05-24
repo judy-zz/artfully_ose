@@ -79,7 +79,6 @@ Artfully::Application.routes.draw do
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
   match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
-  match '/kits/download_ach_form' => 'kits#download_ach_form', :as => :download_ach_form
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard
   root :to => 'index#login_success', :constraints => lambda {|r| r.env["warden"].authenticate? }
