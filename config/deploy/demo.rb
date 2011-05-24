@@ -1,5 +1,4 @@
 set :deploy_to, "/var/www/artful.ly"
-set :user, "deploy"
 
 role :web, "184.73.209.105"                          # Your HTTP server, Apache/etc
 role :app, "184.73.209.105"                          # This may be the same as your `Web` server
