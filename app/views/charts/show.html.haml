@@ -2,6 +2,9 @@
 - content_for :header do
   %h1 Chart Templates
   %h2= @chart.name
+  %ul.from-here
+    %li= link_to "New Section", new_chart_section_path(@chart)
+
 
 .context
   %h3 Charts
@@ -17,8 +20,6 @@
           %li= pluralize(chart.sections.size, "Section")
 
 .document
-  .call-to-action
-    = button_to "New Section", new_chart_section_path(@chart), :method => :get
   %h3= "#{@chart.name} Sections"
   #chart_sections
     .table-controls

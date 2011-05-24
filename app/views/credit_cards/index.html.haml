@@ -1,11 +1,13 @@
 - in_section :dashboard
 - content_for :header do
   %h1 Credit Cards
+  /TODO
+  %h2 Missing subtitle
+  %ul.from-here
+    %li= link_to "New Credit Card", new_credit_card_path
 
 .context
 .document
-  .call-to-action
-    = link_to "New Credit Card", new_credit_card_path
   %h3 Saved Cards
   #credit_cards
     .table-controls
