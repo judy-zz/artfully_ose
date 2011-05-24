@@ -50,9 +50,9 @@ Artfully::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.tickets_site =       'http://localhost:8888/tix/'
-  config.payments_component = 'http://localhost:8888/payments/'
-  config.orders_component =   'http://localhost:8888/orders'
-  config.stage_site =         'http://localhost:8888/stage/'
-  config.people_site =        'http://localhost:8888/people/'
+  config.tickets_site =       'http://localhost:8080/tix/'
+  config.payments_component = 'http://localhost:8080/payments/'
+  config.orders_component =   'http://localhost:8080/orders'
+  config.stage_site =         'http://localhost:8080/stage/'
+  config.people_site =        'http://localhost:8080/people/'
 end

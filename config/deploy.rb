@@ -15,6 +15,7 @@ if !branch.nil?
    set :branch, branch
 else
    set :branch, "master"
+end
    
 #Some wonky sudo workaround
 default_run_options[:pty] = true
