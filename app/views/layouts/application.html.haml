@@ -34,7 +34,7 @@
 
     #content
       #page
-        = yield :header
+        #front-matter= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard
         = yield

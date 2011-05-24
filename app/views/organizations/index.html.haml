@@ -1,12 +1,13 @@
 - in_section :dashboard
 - content_for :header do
   %h1 Organizations
+  /TODO
+  %h2 Missing subtitle
+  %ul.from-here
+    %li= link_to "New Organization", new_organization_path if !current_user.is_in_organization?
 
 .context
 .document
-  .call-to-action
-    - if !current_user.is_in_organization?
-      = link_to "New Organization", new_organization_path
   %h3 My Organization
   #organizations
     .table-controls
