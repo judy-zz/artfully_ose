@@ -33,6 +33,7 @@ Artfully::Application.routes.draw do
   resources :organizations do
     member do
       post :connect
+      get :account_history
     end
   end
 
