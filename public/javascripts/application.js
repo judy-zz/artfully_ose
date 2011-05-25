@@ -12,9 +12,9 @@ $(document).ready(function() {
 
   $(".detailed-list li").hover(
     function(){
-      $(this).find(".controls").fadeIn('fast'); },
+      $(this).find(".controls").stop(false,true).fadeIn('fast'); },
     function(){
-      $(this).find(".controls").fadeOut('fast'); });
+      $(this).find(".controls").stop(false,true).fadeOut('fast'); });
 
   $(".close").click(function(){
     $(this).closest('.flash').remove();
