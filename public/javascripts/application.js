@@ -20,15 +20,10 @@ $(document).ready(function() {
     $(this).closest('.flash').remove();
   })
 
-  $("#header-controls").click(function(){
-    if($("#header-content").is(":visible")){
-      $("#header-controls > a").html("&#9660;");
-    } else {
-      $("#header-controls > a").html("&#9650;");
-    }
-
-    $("#header-content").slideToggle();
-  });
+  $("#main-menu").hover(
+    function(){ $("#main-menu li ul").stop().animate({height: '120px'}, 'fast') },
+    function(){ $("#main-menu li ul").stop().animate({height: '0px'}, 'fast') }
+  );
 
   $(".stats-controls").click(function(){
     $(this).parent("li").toggleClass("selected");
@@ -71,7 +66,7 @@ $(document).ready(function() {
   $(".zebra tbody").each(function(){
     zebra($(this));
   });
-  
+
   $(".dropdown-controller").click(function() {
     $('.dropdown').toggle();
   });
