@@ -9,6 +9,7 @@
 .document
   %h3 Kits
   #kits
+    %p= "Only the owner of this organization, #{current_user.current_organization.owner.email}, can make changes to kits." unless can? :manage, current_user.current_organization
     .table-controls
     %table
       %thead
@@ -19,12 +20,20 @@
         - @kits.each do |kit|
           %tr
             %td= kit.type.underscore.titleize
-            - if kit.new?
-              - if kit.has_alternatives?
-                %td= link_to "Activate #{kit.type.underscore.titleize}", alternatives_kits_path(:type => kit.type.underscore)
+            -if can? :manage, current_user.current_organization
+              - if kit.new?
+                - if kit.has_alternatives?
+                  %td= link_to "Activate #{kit.type.underscore.titleize}", alternatives_kits_path(:type => kit.type.underscore)
+                - else
+                  %td= link_to "Activate #{kit.type.underscore.titleize}", new_kit_path(:type => kit.type.underscore)
+              - elsif kit.cancelled?
+                %td= link_to "Reactivate #{kit.type.underscore.titleize}", kit_path(kit), :method => :put
               - else
-                %td= link_to "Activate #{kit.type.underscore.titleize}", new_kit_path(:type => kit.type.underscore)
-            - elsif kit.cancelled?
-              %td= link_to "Reactivate #{kit.type.underscore.titleize}", kit_path(kit), :method => :put
-            - else
-              %td= kit.state.titleize
+                %td= kit.state.titleize
+            -else
+              - if kit.new?
+                %td= "Not active"
+              - elsif kit.cancelled?
+                %td= "Cancelled"
+              - else
+                %td= kit.state.titleize
