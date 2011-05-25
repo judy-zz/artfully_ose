@@ -13,19 +13,18 @@
   %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
 
 .document
-  -if !params["search"].nil? && @results.empty? 
+  -if !params["search"].nil? && @results.empty?
     %p No orders matched your search.
   -elsif @results.nil?
     -#Case needed for Cucumber testing
   -else
-    -if params["search"].nil? 
+    -if params["search"].nil?
       %h3 Recent Orders
     -else
       %h3 Search Results
 
     #orders
-      .table-controls
-      %table.zebra
+      %table.standalone.zebra
         %thead
           %tr
             %th ID

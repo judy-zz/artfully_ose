@@ -4,6 +4,7 @@
 @import "mixins"
 
 body
+  background: #fefefe
   font:
     size: 11pt
     family: Arimo, sans-serif
@@ -11,16 +12,37 @@ a
   color: $compliment
   text-decoration: none
 
-h1, h2, h3, h4
+h1, h3, h4
   font-family: "Raleway" !important
   @include stack-content
 
 h1
-  font-size: 3.5em
+  font-size: 2.5em
   color: $compliment
+  border-bottom: 1px solid #eee
+  margin-bottom: 10px
 
 h2
+  float: left
+  color: #666
+  @include stack-content
+
+#front-matter
   margin-bottom: 3em
+  &:after
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    visibility: hidden
+
+.from-here
+  @include stack-content
+  font-size: .8em
+  text-align: right
+  li
+    display: inline
+    padding-left: 1em
 
 h3
   font-size: 2em
@@ -81,6 +103,7 @@ strong
   @extend .stack1of3
 
 .document
+  background: #fff
   @include section
   @extend .stack2of3
 
@@ -230,9 +253,6 @@ strong
       display: block
       font-weight: bold
       padding: .25em
-
-.call-to-action
-  float: right
 
 .stats-controls
   float: right

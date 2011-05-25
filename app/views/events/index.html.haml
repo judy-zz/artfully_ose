@@ -1,4 +1,10 @@
-= render :partial => "shared/headers/ticketing"
+- in_section :events
+- content_for :header do
+  %h1 Events
+  /TODO
+  %h2 Missing subtitle
+  %ul.from-here
+    %li= link_to "New Event", new_event_path
 
 .context
   %h3 Events
@@ -16,6 +22,34 @@
             %li= event.producer
     =will_paginate @results
 .document
-  .call-to-action
-    = button_to "New Event", new_event_path, :method => :get
-  %h3 Ticketing Dashboard
+  %h3 Today for Today
+  #today-for-today
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Event
+          %th Today
+          %th Last Week
+          %th Change
+      %tfoot
+        %tr
+          %td.main Total
+          %td.numeric 69
+          %td.numeric 29
+          %td.numeric +138%
+      %tbody
+        %tr
+          %td.main Event Number One
+          %td.numeric 11
+          %td.numeric 5
+          %td.numeric +120%
+        %tr
+          %td.main Event Two
+          %td.numeric 43
+          %td.numeric 0
+          %td.numeric
+        %tr
+          %td.main Event Number Three
+          %td.numeric 15
+          %td.numeric 24
+          %td.numeric -38%
