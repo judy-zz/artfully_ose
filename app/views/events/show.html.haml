@@ -19,6 +19,23 @@
       .key Producer
       .value= @event.producer
 
+  %h3 Charts
+  - @event.charts.each do |chart|
+    %ul.detailed-list
+      %li
+        %h4= chart.name
+        %ul.details
+          %li= pluralize(chart.sections.size, "Section")
+  %h4 Import a Chart
+  = form_for @chart, :url => assign_chart_path(@event) do |form|
+    %ul
+      %li
+        .label= form.label :id, "Chart"
+        .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
+    = form.submit "Import"
+
+
+
 .document
   %h3 This Week
   %ol.calendar.week
@@ -27,20 +44,6 @@
         .day
           .number= day
   = render :partial => "glance", :locals => { :event => @event }
-  %h3 Charts
-  = form_for @chart, :url => assign_chart_path(@event) do |form|
-    %ul
-      %li
-        .label= form.label :id, "Choose chart template:"
-        .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
-    = form.submit "Import"
-
-  - @event.charts.each do |chart|
-    %ul.detailed-list
-      %li
-        %h4= chart.name
-        %ul.details
-          %li= pluralize(chart.sections.size, "Section")
   %h3 Widget
   .code
     %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
