@@ -30,5 +30,7 @@
       %li
         %a{:href => "/orders"} Orders
 
-  - if can? :administrate, :all
-    %li= link_to "Administration", admin_root_path
+  %li
+    - if can? :administrate, :all
+      = link_to "Administration", admin_root_path
+      %ul
