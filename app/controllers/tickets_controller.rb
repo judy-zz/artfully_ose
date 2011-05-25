@@ -17,6 +17,8 @@ class TicketsController < ApplicationController
       with_person_search do
         render :comp_ticket_details and return
       end
+    elsif 'Change Price' == params[:commit]
+        render :set_new_price and return
     else
       with_confirmation do
         bulk_edit_tickets(@performance, @selected_tickets, params[:commit])
@@ -68,6 +70,10 @@ class TicketsController < ApplicationController
         comp_tickets(@athena_person, @performance, @selected_tickets, params[:reason_for_comp])
         redirect_to event_performance_url(@performance.event, @performance) and return
     end
+  end
+
+  def confirm_new_price
+    
   end
 
   private
