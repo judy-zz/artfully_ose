@@ -6,7 +6,6 @@
       %li= link_to "My Organization", organizations_path
       %li= link_to "Help", "#"
       %li= link_to "Sign Out", destroy_user_session_path
-      /%li= link_to "Credit Cards", credit_cards_path
 
   %li{ :class => active?(:events) }
     = link_to "Events", events_path
@@ -20,12 +19,18 @@
       %li= link_to "New Contact", new_person_path
       %li= link_to "Search", people_path
 
+  %li{ :class => active?(:reports) }
+    = link_to "Reports", "#"
+    %ul
+      %li= link_to "Statements", "#"
+      %li= link_to "Settlements", "#"
+
   %li{ :class => active?(:transactions) }
     = link_to "Transactions", orders_path
     %ul
-      %li= link_to "View Sales", "#"
-      %li= link_to "View Contributions", "#"
-      %li= link_to "Find Transaction", orders_path
+      %li= link_to "Sales", "#"
+      %li= link_to "Contributions", "#"
+      %li= link_to "Search", orders_path
 
   %li
     = link_to "Administration", admin_root_path if current_user.has_role? :admin
