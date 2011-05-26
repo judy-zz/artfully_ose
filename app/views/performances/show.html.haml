@@ -25,7 +25,7 @@
       .value= @event.producer
 
 .document
-  = render :partial => "glance", :locals => { :performance => @performance }
+  = render :partial => "glance", :locals => { :report => @performance.glance }
 
   %h3 Tickets
   - if @performance.pending?
