@@ -74,6 +74,10 @@ class AthenaEvent < AthenaResource::Base
     sorted_locales
   end
 
+  def glance
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id })
+  end
+
   #return valid US states for an event
   #would be be valid states, but states also refer to state machine
   #codes defined here: http://www.itl.nist.gov/fipspubs/fip5-2.htm

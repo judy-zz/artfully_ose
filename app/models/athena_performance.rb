@@ -119,7 +119,11 @@ class AthenaPerformance < AthenaResource::Base
         bulk_comp(ticket_ids)
     end
   end
-  
+
+  def glance
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id })
+  end
+
   #return accepted id's
   def bulk_comp_to(ids, buyer)
     tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.comp_to(buyer) }.compact
