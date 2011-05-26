@@ -26,3 +26,6 @@
       %li= link_to "View Sales", "#"
       %li= link_to "View Contributions", "#"
       %li= link_to "Find Transaction", orders_path
+
+  %li
+    = link_to "Administration", admin_root_path if current_user.has_role? :admin
