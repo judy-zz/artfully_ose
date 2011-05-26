@@ -3,8 +3,11 @@
   %h1 Chart Templates
 
 .context
+  %h3 New section
+  %h5=@chart.name
+  %p
+    = render :partial => 'sections/section_table', :locals => { :chart => @chart, :include_link => false }
 .document
-  %h3 New Section
   = render "shared/error_messages", :target => @section
   = form_for @section, :url => chart_sections_path(@chart, @section) do |form|
     %ul

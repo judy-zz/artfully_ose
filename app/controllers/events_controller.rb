@@ -15,7 +15,7 @@ class EventsController < ApplicationController
     begin
       authorize! :create, @event
     rescue CanCan::AccessDenied
-      flash[:error] = "Set your event freeee!!!!"
+      flash[:error] = "Please upgrade your account to create paid events."
       render :new and return
     end
 
