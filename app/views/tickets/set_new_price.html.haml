@@ -1,0 +1,18 @@
+- in_section :events
+- content_for :header do
+  %h1 Set new price
+
+.context
+.document
+  %p
+    = "These four tickets are currently priced at $10 each."
+  %p
+    = "New price per ticket:"
+    = text_field_tag "price", '', :size => 1
+  %p
+    =link_to "cancel"
+  %p
+  %p
+  %p
+  %p
+    =link_to "next", :confirm_new_price_performance_tickets
