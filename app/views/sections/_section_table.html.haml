@@ -1,0 +1,24 @@
+#chart_sections
+  %table.standalone
+    %thead
+      %tr
+        %th Name
+        %th Seats
+        %th Price
+        %th Actions
+    %tbody
+      - if chart.sections.empty?
+        %tr
+          %td{:colspan=>'4'}
+            There are no sections in this seat chart,
+            -if include_link
+              =link_to "create one now", new_chart_section_path(@chart)
+      -else 
+        - @chart.sections.each do |section|
+          %tr
+            %td= section.name
+            %td= "#{section.capacity} seats"
+            %td= number_as_cents section.price
+            %td
+              =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
+              =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)

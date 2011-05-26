@@ -10,7 +10,7 @@
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
 .document
-  = render :partial => "glance", :locals => { :event => @event }
+  = render :partial => "glance", :locals => { :report => @event.glance }
   %h3 All Performances
   #performances
     .table-controls

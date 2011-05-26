@@ -34,8 +34,6 @@
         .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
     = form.submit "Import"
 
-
-
 .document
   %h3 This Week
   %ol.calendar.week
@@ -43,7 +41,7 @@
       %li
         .day
           .number= day
-  = render :partial => "glance", :locals => { :event => @event }
+  = render :partial => "glance", :locals => { :report => @event.glance }
   %h3 Widget
   .code
     %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
