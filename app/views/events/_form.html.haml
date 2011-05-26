@@ -17,6 +17,12 @@
   %li
     .label= event_form.label :time_zone, "Time Zone"
     .element= event_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones
-  %li
-    .label=  event_form.label :is_free, "This is a free event"
-    .element= event_form.check_box( :is_free, {}, "true", "false" )
+  - if can? :create_paid_events, @event
+    %li
+      .label=  event_form.label :is_free, "This is a free event"
+      .element= event_form.check_box( :is_free, {}, "true", "false" )
+  - else
+    %li
+      .label=  event_form.label :is_free, "This is a free event"
+      .element= event_form.check_box( :is_free, {:disabled => 'disabled', :checked => 'checked'}, "true", "false" )
+      

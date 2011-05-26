@@ -5,7 +5,8 @@ class Ability
     user ||= User.new
 
     admin_abilities_for(user) if user.has_role? :admin
-    ticketing_abilities_for(user) if user.current_organization.can? :access, :ticketing
+    ticketing_abilities_for(user)
+    paid_ticketing_abilities_for(user) if user.current_organization.can? :access, :paid_ticketing
     person_abilities_for(user)
     order_ablilities_for(user)
     default_abilities_for(user)
@@ -39,16 +40,28 @@ class Ability
       user.current_organization.can? :manage, ticket
     end
 
+    #This is the ability that the controller uses to authorize creating/editing an event
     can :manage, AthenaEvent do |event|
-      user.current_organization.can? :manage, event
+      event.free? && (user.current_organization.can? :manage, event)
+    end
+    
+    can :create_paid_events, AthenaEvent do |event|
+      user.current_organization.can? :access, :paid_ticketing
     end
 
     can [ :manage, :put_on_sale, :take_off_sale, :duplicate ], AthenaPerformance do |performance|
       user.current_organization.can? :manage, performance
     end
-
+    
     can :manage, AthenaChart do |chart|
       user.current_organization.can? :manage, chart
+    end
+  end
+  
+  def paid_ticketing_abilities_for(user)
+    #This is the ability that the controller uses to authorize creating/editing an event
+    can :manage, AthenaEvent do |event|
+      user.current_organization.can? :manage, event
     end
   end
 

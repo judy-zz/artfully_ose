@@ -10,16 +10,19 @@ class EventsController < ApplicationController
   end
 
   def create
-    authorize! :create, AthenaEvent
-    @event = AthenaEvent.new
-    @event.update_attributes(params[:athena_event][:athena_event])
+    @event = AthenaEvent.new(params[:athena_event][:athena_event])
     @event.organization_id = current_user.current_organization.id
+    begin
+      authorize! :create, @event
+    rescue CanCan::AccessDenied
+      flash[:error] = "Set your event freeee!!!!"
+      render :new and return
+    end
 
     if @event.save
       flash[:notice] = "Your event has been created."
       redirect_to event_url(@event)
     else
-      flash[:error] = "Your event has not been created."
       render :new
     end
   end
@@ -38,8 +41,8 @@ class EventsController < ApplicationController
   end
 
   def new
-    authorize! :create, AthenaEvent
     @event = AthenaEvent.new
+    @event.producer = current_user.current_organization.name
   end
 
   def edit

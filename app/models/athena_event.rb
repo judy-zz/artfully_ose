@@ -73,6 +73,10 @@ class AthenaEvent < AthenaResource::Base
     sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
     sorted_locales
   end
+  
+  def free?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? is_free
+  end
 
   #return valid US states for an event
   #would be be valid states, but states also refer to state machine
