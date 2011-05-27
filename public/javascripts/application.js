@@ -21,7 +21,7 @@ $(document).ready(function() {
   })
 
   $("#main-menu").hover(
-    function(){ $("#main-menu li ul").stop().animate({height: '90px'}, 'fast') },
+    function(){ $("#main-menu li ul").stop().animate({height: '106px'}, 'fast') },
     function(){ $("#main-menu li ul").stop().animate({height: '0px'}, 'fast') }
   );
 
@@ -73,7 +73,7 @@ function activateControls() {
   });
 
   $(".tablesorter").tablesorter();
-  $(".datepicker" ).datepicker();	
+  $(".datepicker" ).datepicker();
 }
 
 function togglePrintPreview(){
