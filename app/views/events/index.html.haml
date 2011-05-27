@@ -6,7 +6,7 @@
   %ul.from-here
     %li= link_to "New Event", new_event_path
 
-.context
+.sideboard
   %h3 Events
   - unless @events.blank?
     %ul.detailed-list
@@ -21,4 +21,31 @@
             %li= event.venue
             %li= event.producer
     =will_paginate @results
-.document
+.dashboard
+  %h3 Dashboard
+  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+
+.sideboard
+  %h3 Overview
+  %ul
+    - @events.each do |event|
+      %li
+        %h4= event.name
+        %ul.report
+          %li
+            %span.stat Played
+            %span.current $17,352.63
+          %li
+            %span.stat Advance Sales
+            %span.current $11,568.42
+            %span.total &ndash; 686 tix
+
+          %li
+            %span.stat Wrapped Today
+            %span.current $260.55
+            %span.total &ndash; 68 tix
+
+          %li
+            %span.stat Wrapped This Week
+            %span.current $521.10
+            %span.total &ndash; 140 tix
