@@ -1,0 +1,22 @@
+%ul
+  - events.each do |event|
+    %li
+      %h4= event.name
+      %ul.report
+        %li
+          %span.stat Played
+          %span.current $17,352.63
+        %li
+          %span.stat Advance Sales
+          %span.current $11,568.42
+          %span.total &ndash; 686 tix
+
+        %li
+          %span.stat Wrapped Today
+          %span.current $260.55
+          %span.total &ndash; 68 tix
+
+        %li
+          %span.stat Wrapped This Week
+          %span.current $521.10
+          %span.total &ndash; 140 tix
