@@ -24,6 +24,12 @@ Factory.sequence :section_id do |n|
   n
 end
 
+Factory.define :athena_free_section, :class => AthenaSection, :default_strategy => :build do |section|
+  section.name 'Balcony'
+  section.capacity 5
+  section.price 0
+end
+
 Factory.define :athena_section, :class => AthenaSection, :default_strategy => :build do |section|
   section.name 'Balcony'
   section.capacity 5

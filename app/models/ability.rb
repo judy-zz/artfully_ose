@@ -5,7 +5,7 @@ class Ability
     user ||= User.new
 
     admin_abilities_for(user) if user.has_role? :admin
-    ticketing_abilities_for(user)
+    ticketing_abilities_for(user) if user.is_in_organization?
     paid_ticketing_abilities_for(user) if user.current_organization.can? :access, :paid_ticketing
     person_abilities_for(user)
     order_ablilities_for(user)
@@ -47,6 +47,10 @@ class Ability
     
     can :create_paid_events, AthenaEvent do |event|
       user.current_organization.can? :access, :paid_ticketing
+    end
+    
+    can :create_tickets, Array do |sections|
+      sections.select {|s| s.price.to_i > 0}.empty? || (user.current_organization.can? :access, :paid_ticketing)
     end
 
     can [ :manage, :put_on_sale, :take_off_sale, :duplicate ], AthenaPerformance do |performance|

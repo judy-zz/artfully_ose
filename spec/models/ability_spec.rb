@@ -8,7 +8,30 @@ describe Ability do
     it { should be_able_to(:administer, :all) }
   end
 
-  describe "users in an organization with access to ticketing" do
+
+  describe "Producers with free ticketing" do
+    let(:user) { Factory(:user) }
+    let(:organization) { Factory(:organization) }
+
+    subject do
+      user.organizations << organization
+      Ability.new(user)
+    end
+    
+    describe "and are creating tickets with priced sections" do
+      sections = Array.new
+      sections << Factory(:athena_section)
+      it { should_not be_able_to(:create_tickets, sections) }
+    end
+    
+    describe "and are creating tickets with free sections" do
+      sections = Array.new
+      sections << Factory(:athena_free_section)
+      it { should be_able_to(:create_tickets, sections) }
+    end
+  end
+
+  describe "Producers who have upgraded to paid ticketing" do
     let(:user) { Factory(:user) }
     let(:organization) { Factory(:organization_with_ticketing) }
 
@@ -59,23 +82,23 @@ describe Ability do
     end
   end
 
-  describe "Patrons" do
+  describe "Producers who are not in an organization" do
     let(:user) { Factory(:user) }
     subject { Ability.new(user) }
 
-    describe "and events" do
+    describe "working with events" do
       it { should_not be_able_to :create, AthenaEvent }
       it { should_not be_able_to :edit, AthenaEvent }
       it { should_not be_able_to :delete, AthenaEvent }
     end
 
-    describe "and performances" do
+    describe "working with performances" do
       it { should_not be_able_to :create, AthenaPerformance }
       it { should_not be_able_to :edit, AthenaPerformance }
       it { should_not be_able_to :delete, AthenaPerformance }
     end
 
-    describe "and charts" do
+    describe "working with charts" do
       it { should_not be_able_to :create, AthenaChart }
       it { should_not be_able_to :edit, AthenaChart }
       it { should_not be_able_to :delete, AthenaChart }

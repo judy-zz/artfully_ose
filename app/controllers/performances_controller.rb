@@ -120,7 +120,7 @@ class PerformancesController < ApplicationController
 
     AthenaTicketFactory.for_performance(@performance)
     @event = AthenaEvent.find(@performance.event_id)
-    @charts = AthenaChart.find_by_event(@event)
+    authorize! :create_tickets, @performance.chart.sections
     redirect_to event_performance_url(@event, @performance)
   end
 
