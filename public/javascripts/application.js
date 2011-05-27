@@ -61,6 +61,15 @@ $(document).ready(function() {
   $(".dropdown-controller").click(function() {
     $('.dropdown').toggle();
   });
+
+  $(".popup").dialog({ autoOpen: false, draggable:false, modal:true, width:600, height:400, title:"Log Action" })
+
+  $(".popup-link").bind("ajax:complete", function(et, e){
+    $(".popup").dialog( "open" );
+    $(".popup").html(e.responseText); 
+    activateControls();
+    return false;
+  });
 });
 
 function activateControls() {

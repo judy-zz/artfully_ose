@@ -30,15 +30,6 @@ $(document).ready(function() {
 	//and re-zebra the table
 	zebra(this_table)
   });
-  
-  $(".popup").dialog({ autoOpen: false, draggable:false, modal:true, width:600, height:400, title:"Log Action" })
-
-  $(".popup-link").bind("ajax:complete", function(et, e){
-    $(".popup").dialog( "open" );
-    $(".popup").html(e.responseText); 
-    activateControls();
-    return false;
-  });
 
   $(".relationship_starred").click(function() {
     star = $(this).html().trim()
