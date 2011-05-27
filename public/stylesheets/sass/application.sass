@@ -12,7 +12,7 @@ a
   color: $compliment
   text-decoration: none
 
-h1, h3, h4
+h1, h3
   font-family: "Raleway" !important
   @include stack-content
 
@@ -27,8 +27,18 @@ h2
   color: #666
   @include stack-content
 
+#page
+  position: relative
+
+#logo
+  position: absolute
+  top: -10px
+  right: 10px
+
+
 #front-matter
   margin-bottom: 3em
+  padding: 0 10px
   &:after
     content: "."
     display: block
@@ -47,12 +57,12 @@ h2
 h3
   font-size: 2em
   color: $primary
-  margin-bottom: .5em
+  margin-bottom: 10px
 
 h4
   color: #666
-  font-size: 1.25em
   margin-bottom: .5em
+  @include stack-content
 
 strong
   font-weight: bold
@@ -140,7 +150,8 @@ strong
     position: relative
     border-bottom: 1px solid $neutral-1
     color: $secondary
-    padding: 10px
+    padding-bottom: 10px
+    margin-bottom: 10px
     &.active
       background: #eee
   ul.details li
@@ -150,7 +161,6 @@ strong
     display:block
     font-size: .9em
   h4
-    font-size: 1.4em
     margin-bottom: 0
     a
       text-decoration: none

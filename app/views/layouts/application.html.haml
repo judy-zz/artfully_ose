@@ -24,8 +24,6 @@
 
     = csrf_meta_tag
   %body
-    #logo
-      %img{ :src => '/images/logo.png' }
     #header
       #current
         #current-user= current_user.email
@@ -34,6 +32,8 @@
 
     #content
       #page
+        #logo
+          %img{ :src => '/images/logo.png' }
         #front-matter= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard

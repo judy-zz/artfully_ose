@@ -1,8 +1,10 @@
 - in_section :events
 - content_for :header do
   %h1= link_to @event.name, event_path(@event)
-  /TODO
-  %h2 Missing subtitle
+  %h2
+    = @event.producer
+    &mdash;
+    = "#{@event.venue} #{@event.city}, #{@event.state}"
   %ul.from-here
     %li= link_to "New Performance", new_event_performance_path(@event)
     %li= link_to "All Performances", event_performances_path(@event)
@@ -10,14 +12,6 @@
 .context
   %h3 Upcoming Performances
   = render :partial => "performances/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
-
-  %ul.kv
-    %li
-      .key Venue
-      .value= "#{@event.venue} #{@event.city}, #{@event.state}"
-    %li
-      .key Producer
-      .value= @event.producer
 
   %h3 Charts
   - @event.charts.each do |chart|
@@ -35,13 +29,17 @@
     = form.submit "Import"
 
 .document
-  %h3 This Week
-  %ol.calendar.week
-    - (5..11).each do |day|
-      %li
-        .day
-          .number= day
-  = render :partial => "glance", :locals => { :report => @event.glance }
-  %h3 Widget
-  .code
-    %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
+  #this-week
+    %h3 This Week
+    %ol.calendar.week
+      - (5..11).each do |day|
+        %li
+          .day
+            .number= day
+
+  #glance= render :partial => "glance", :locals => { :report => @event.glance }
+
+  #widget
+    %h3 Widget
+    .code
+      %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
