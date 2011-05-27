@@ -31,16 +31,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $(".currency").maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
-  $(".currency").closest("form").submit(function(){
-    var input = $(this).find(".currency"),
-        cents = Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ),
-        hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
-    hiddenCurrency.val(cents);
-  });
-
-  $(".tablesorter").tablesorter();
-  $(".datepicker" ).datepicker();
+  activateControls();
 
   $(".new-performance-link").click(function() {
     $("#new-performance-row").show();
@@ -71,6 +62,19 @@ $(document).ready(function() {
     $('.dropdown').toggle();
   });
 });
+
+function activateControls() {
+  $(".currency").maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
+  $(".currency").closest("form").submit(function(){
+    var input = $(this).find(".currency"),
+        cents = Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ),
+        hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
+    hiddenCurrency.val(cents);
+  });
+
+  $(".tablesorter").tablesorter();
+  $(".datepicker" ).datepicker();	
+}
 
 function togglePrintPreview(){
     var screenStyles = $("link[rel='stylesheet'][media='screen']"),

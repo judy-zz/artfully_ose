@@ -31,6 +31,15 @@ $(document).ready(function() {
 	zebra(this_table)
   });
   
+  $(".action-form").dialog({ autoOpen: false, draggable:false, modal:true, width:600, height:400, title:"Log Action" })
+
+  $(".log-action-link").bind("ajax:complete", function(et, e){
+    $( ".action-form" ).dialog( "open" );
+    $(".action-form").html(e.responseText); 
+    activateControls();
+    return false;
+  });
+
   $(".relationship_starred").click(function() {
     star = $(this).html().trim()
     person_id = $(this).attr("id").split("_")[0]
