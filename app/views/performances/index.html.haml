@@ -1,12 +1,17 @@
-= render :partial => "shared/headers/ticketing"
+- in_section :events
+- content_for :header do
+  %h1= link_to @event.name, event_path(@event)
+  %h2
+    = @event.producer
+    &mdash;
+    = "#{@event.venue} #{@event.city}, #{@event.state}"
+  %ul.from-here
+    %li= link_to "New Performance", new_event_performance_path(@event)
+    %li= link_to "All Performances", event_performances_path(@event)
+
 
 .context
-  %h3= link_to @event.name, event_path(@event)
-
-  %ul.more
-    %li= link_to "New Performance", new_event_performance_path(@event)
-    %li= link_to "View all Performances", event_performances_path(@event)
-
+  %h3 Upcoming Performances
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
 .document
