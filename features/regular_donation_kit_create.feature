@@ -6,7 +6,6 @@ Feature: Regular Donation Kit
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
     When I follow "My Organization"
-    And I follow "View all kits"
 
   Scenario: The owner of an organization enables the Regular Donation Kit for her organization
     Given my organization has tax information

@@ -36,7 +36,7 @@ Artfully::Application.routes.draw do
     end
   end
 
-  resources :kits do
+  resources :kits, :except => :index do
     get :alternatives, :on => :collection
   end
 
