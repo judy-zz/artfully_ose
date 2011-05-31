@@ -149,15 +149,28 @@ class AthenaTicket < AthenaResource::Base
 
   def self.put_on_sale(tickets)
     return false if tickets.blank?
-    begin
-      tickets.map(&:on_sale)
+    attempt_transition(tickets, :on_sale) do
       patch(tickets, { :state => :on_sale })
-    rescue Transitions::InvalidTransition
-      false
+    end
+  end
+
+  def self.take_off_sale(tickets)
+    return false if tickets.blank?
+    attempt_transition(tickets, :off_sale) do
+      patch(tickets, { :state => :off_sale })
     end
   end
 
   private
+    def self.attempt_transition(tickets, state)
+      begin
+        tickets.map(&state)
+        yield
+      rescue Transitions::InvalidTransition
+        false
+      end
+    end
+
     def self.patch(tickets, attributes)
       response = connection.put("/tix/tickets/patch/#{tickets.collect(&:id).join(",")}", attributes.to_json, self.headers)
       format.decode(response.body).map{ |attributes| new(attributes) }

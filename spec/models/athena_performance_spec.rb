@@ -46,35 +46,43 @@ describe AthenaPerformance do
 
     before(:each) do
       subject.stub!(:tickets).and_return(tickets)
-      body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
-      FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
     end
 
-    it "should put tickets on sale" do
-      AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
-      subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+    describe "on sale" do
+      before(:each) do
+        body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      end
+
+      it "should put tickets on sale" do
+        AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+        subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+      end
+
+      it "fails by returning false if any of the tickets can not be put on sale" do
+        tickets.first.state = :on_sale
+        outcome = subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+        outcome.should be false
+      end
     end
 
-    it "fails by returning false if any of the tickets can not be put on sale" do
-      tickets.first.state = :on_sale
-      outcome = subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
-      outcome.should be false
-    end
+    describe "off sale" do
+      before(:each) do
+        tickets.each { |ticket| ticket.state = "on_sale" }
+        body = tickets.collect(&:encode).join(",").gsub(/on_sale/,'off_sale')
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      end
 
-    it "should take tickets off sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(true) }
-      subject.tickets.each { |ticket| ticket.should_receive(:take_off_sale) }
+      it "takes tickets off sale" do
+        AthenaTicket.should_receive(:take_off_sale).with(subject.tickets)
+        subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
+      end
 
-      subject.tickets.each { |ticket| ticket.on_sale = true }
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
-    end
-
-    it "should return the ids of ticket that were sold and therefore not taken off sale" do
-      subject.tickets.first.state = "sold"
-      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(!ticket.sold?) }
-
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
-      rejected_ids.first.should eq subject.tickets.first.id
+      it "fails by returning false if any of the tickets can not be taken off sale" do
+        tickets.first.state = :off_sale
+        outcome = subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
+        outcome.should be false
+      end
     end
 
     it "should delete tickets" do
