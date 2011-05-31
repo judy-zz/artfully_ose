@@ -61,6 +61,7 @@ Artfully::Application.routes.draw do
     resources :tickets, :only => [] do
       collection do
         put :on_sale
+        put :off_sale
         put :bulk_edit
         put :comp_details
         put :comp_confirm

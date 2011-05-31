@@ -133,15 +133,15 @@ class AthenaPerformance < AthenaResource::Base
     AthenaTicket.put_on_sale(tickets.select { |ticket| ids.include? ticket.id })
   end
 
+  def bulk_off_sale(ids)
+    AthenaTicket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
+  end
+
   private
 
     def find_tickets
       return [] if new_record?
       AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
-    end
-
-    def bulk_off_sale(ids)
-      AthenaTicket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
     end
 
     def bulk_delete(ids)
