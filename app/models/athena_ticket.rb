@@ -147,7 +147,22 @@ class AthenaTicket < AthenaResource::Base
     do_return!
   end
 
+  def self.put_on_sale(tickets)
+    return false if tickets.blank?
+    begin
+      tickets.map(&:on_sale)
+      patch(tickets, { :state => :on_sale })
+    rescue Transitions::InvalidTransition
+      false
+    end
+  end
+
   private
+    def self.patch(tickets, attributes)
+      response = connection.put("/tix/tickets/patch/#{tickets.collect(&:id).join(",")}", attributes.to_json, self.headers)
+      format.decode(response.body).map{ |attributes| new(attributes) }
+    end
+
     def find_buyer
       return if self.buyer_id.nil?
 

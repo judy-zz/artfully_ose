@@ -137,7 +137,7 @@ class AthenaPerformance < AthenaResource::Base
     end
 
     def bulk_on_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.put_on_sale }.compact
+      AthenaTicket.put_on_sale(tickets.select { |ticket| ids.include? ticket.id })
     end
 
     def bulk_off_sale(ids)

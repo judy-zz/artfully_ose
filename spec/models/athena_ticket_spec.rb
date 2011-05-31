@@ -371,4 +371,32 @@ describe AthenaTicket do
       subject.state.should eq("on_sale")
     end
   end
+
+  describe ".put_on_sale" do
+    let(:tickets) { 5.times.collect { Factory(:ticket_with_id, :state => :off_sale) } }
+
+    before(:each) do
+      body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
+      FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+    end
+
+    it "sends a request to patch the state of all tickets" do
+      AthenaTicket.put_on_sale(tickets)
+      FakeWeb.last_request.method.should == "PUT"
+      FakeWeb.last_request.body.should match /"state":"on_sale"/
+    end
+
+    it "does not issue the request if any of the tickets can not be put on sale" do
+      tickets.first.state = :on_sale
+      AthenaTicket.should_not_receive(:patch)
+      AthenaTicket.put_on_sale(tickets)
+    end
+
+    it "updates the attributes for each ticket" do
+      AthenaTicket.put_on_sale(tickets)
+      tickets.each do |ticket|
+        ticket.should be_on_sale
+      end
+    end
+  end
 end

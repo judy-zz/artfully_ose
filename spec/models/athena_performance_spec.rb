@@ -42,25 +42,23 @@ describe AthenaPerformance do
 
   describe "bulk edit tickets" do
     subject { Factory(:athena_performance_with_id) }
+    let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
 
     before(:each) do
-      tickets = 3.times.collect { Factory(:ticket_with_id) }
       subject.stub!(:tickets).and_return(tickets)
+      body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
+      FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
     end
 
     it "should put tickets on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
-      subject.tickets.each { |ticket| ticket.should_receive(:put_on_sale) }
-
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+      AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+      subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
     end
 
-    it "should return the ids of the tickets that were not put on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
-      subject.tickets.first.stub(:put_on_sale).and_return(false)
-
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
-      rejected_ids.first.should eq subject.tickets.first.id
+    it "fails by returning false if any of the tickets can not be put on sale" do
+      tickets.first.state = :on_sale
+      outcome = subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+      outcome.should be false
     end
 
     it "should take tickets off sale" do

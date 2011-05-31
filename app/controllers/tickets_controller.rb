@@ -73,7 +73,7 @@ class TicketsController < ApplicationController
   end
 
   def confirm_new_price
-    
+
   end
 
   private
@@ -113,27 +113,21 @@ class TicketsController < ApplicationController
     end
 
     def bulk_edit_tickets(performance, ticket_ids, action)
-      rejected_ids = performance.bulk_edit_tickets(ticket_ids, action)
-      edited_tickets = ticket_ids.size - rejected_ids.size
+      edited_tickets = performance.bulk_edit_tickets(ticket_ids, action)
 
-      case action
-      when "Put on Sale"
-        @msg = "Put #{to_plural(edited_tickets, 'ticket')} on sale. "
-      when 'Take off Sale'
-        @msg = "Took #{to_plural(edited_tickets, 'ticket')} off sale. "
-      when 'Delete'
-        @msg = "Deleted #{to_plural(edited_tickets, 'ticket')}. "
+      if edited_tickets
+        case action
+        when "Put on Sale"
+          flash[:notice] = "Put #{to_plural(edited_tickets.size, 'ticket')} on sale. "
+        when 'Take off Sale'
+          flash[:notice] = "Took #{to_plural(edited_tickets.size, 'ticket')} off sale. "
+        when 'Delete'
+          flash[:notice] = "Deleted #{to_plural(edited_tickets.size, 'ticket')}. "
+        else
+          flash[:notice] = "Please select an action."
+        end
       else
-        @msg = "Please select an action. "
-      end
-
-      if rejected_ids.size > 0
-        @msg += "#{to_plural(rejected_ids.size, 'ticket')} could not be edited.
-                Tickets that have been sold or comped can't be put on or taken off sale.
-                A ticket that is already on sale or off sale can't be put on or off sale again."
-        flash[:alert] = @msg
-      else
-        flash[:notice] = @msg
+        flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
       end
     end
 
@@ -153,7 +147,7 @@ class TicketsController < ApplicationController
       if 0 < comped_tickets.size
         order.save
       end
-      
+
       num_rejected_tickets = ticket_ids.size - comped_ids.size
       @msg = "Comped #{to_plural(comped_ids.size, 'ticket')}. "
       if num_rejected_tickets > 0
