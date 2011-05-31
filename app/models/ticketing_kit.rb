@@ -4,7 +4,7 @@ class TicketingKit < Kit
     activate_kit :unless => :no_owner?
 
     when_active do |organization|
-      organization.can :access, :ticketing
+      organization.can :access, :paid_ticketing
     end
   end
 

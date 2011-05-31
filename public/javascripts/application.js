@@ -12,23 +12,18 @@ $(document).ready(function() {
 
   $(".detailed-list li").hover(
     function(){
-      $(this).find(".controls").fadeIn('fast'); },
+      $(this).find(".controls").stop(false,true).fadeIn('fast'); },
     function(){
-      $(this).find(".controls").fadeOut('fast'); });
+      $(this).find(".controls").stop(false,true).fadeOut('fast'); });
 
   $(".close").click(function(){
     $(this).closest('.flash').remove();
   })
 
-  $("#header-controls").click(function(){
-    if($("#header-content").is(":visible")){
-      $("#header-controls > a").html("&#9660;");
-    } else {
-      $("#header-controls > a").html("&#9650;");
-    }
-
-    $("#header-content").slideToggle();
-  });
+  $("#main-menu").hover(
+    function(){ $("#main-menu li ul").stop().animate({height: '106px'}, 'fast') },
+    function(){ $("#main-menu li ul").stop().animate({height: '0px'}, 'fast') }
+  );
 
   $(".stats-controls").click(function(){
     $(this).parent("li").toggleClass("selected");
@@ -36,16 +31,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $(".currency").maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
-  $(".currency").closest("form").submit(function(){
-    var input = $(this).find(".currency"),
-        cents = Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ),
-        hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
-    hiddenCurrency.val(cents);
-  });
-
-  $(".tablesorter").tablesorter();
-  $(".datepicker" ).datepicker();
+  activateControls();
 
   $(".new-performance-link").click(function() {
     $("#new-performance-row").show();
@@ -71,11 +57,33 @@ $(document).ready(function() {
   $(".zebra tbody").each(function(){
     zebra($(this));
   });
-  
+
   $(".dropdown-controller").click(function() {
     $('.dropdown').toggle();
   });
+
+  $(".popup").dialog({ autoOpen: false, draggable:false, modal:true, width:600, height:400, title:"Log Action" })
+
+  $(".popup-link").bind("ajax:complete", function(et, e){
+    $(".popup").dialog( "open" );
+    $(".popup").html(e.responseText); 
+    activateControls();
+    return false;
+  });
 });
+
+function activateControls() {
+  $(".currency").maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
+  $(".currency").closest("form").submit(function(){
+    var input = $(this).find(".currency"),
+        cents = Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ),
+        hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
+    hiddenCurrency.val(cents);
+  });
+
+  $(".tablesorter").tablesorter();
+  $(".datepicker" ).datepicker();
+}
 
 function togglePrintPreview(){
     var screenStyles = $("link[rel='stylesheet'][media='screen']"),

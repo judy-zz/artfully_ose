@@ -2,6 +2,9 @@
 - content_for :header do
   %h1 Chart Templates
   %h2= @chart.name
+  %ul.from-here
+    %li= link_to "New Section", new_chart_section_path(@chart)
+
 
 .context
   %h3 Charts
@@ -17,25 +20,6 @@
           %li= pluralize(chart.sections.size, "Section")
 
 .document
-  .call-to-action
-    = button_to "New Section", new_chart_section_path(@chart), :method => :get
   %h3= "#{@chart.name} Sections"
-  #chart_sections
-    .table-controls
-    %table.normal
-      %thead
-        %tr
-          %th Name
-          %th Seats
-          %th Price
-          %th Actions
-      %tbody
-        - @chart.sections.each do |section|
-          %tr
-            %td= section.name
-            %td= "#{section.capacity} seats"
-            %td= number_as_cents section.price
-            %td
-              =table_icon_link_to :edit, edit_chart_section_path(@chart, section) if can?(:edit, @chart)
-              =table_icon_link_to :delete, chart_section_path(@chart, section), :confirm => "Are you sure?", :method=>:delete if can?(:delete, @chart)
+  = render :partial => 'sections/section_table', :locals => { :chart => @chart, :include_link => true }
 

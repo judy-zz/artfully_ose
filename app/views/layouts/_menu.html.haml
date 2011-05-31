@@ -1,34 +1,36 @@
 %ul#main-menu
-  %li{ :class => active?(:dashboard)}
+  %li{ :class => active?(:dashboard) }
     = link_to "Dashboard", dashboard_path
     %ul
-      %li= link_to "Credit Cards", credit_cards_path
+      %li= link_to "My Account", "#"
       %li= link_to "My Organization", organizations_path
-      %li
-        %a{:href => "#"} Configuration
-      %li
-        %a{:href => "#"} Help
-      %li= link_to "Sign out", destroy_user_session_path
+      %li= link_to "Help", "#"
+      %li= link_to "Sign Out", destroy_user_session_path
 
-
-  %li{ :class => active?(:events)}
+  %li{ :class => active?(:events) }
     = link_to "Events", events_path
     %ul
-      %li= link_to "Chart Templates", charts_path
-      %li= link_to "Reports", "#"
-      %li= link_to "Configuration", "#"
+      %li= link_to "New Event", new_event_path
+      %li= link_to "Seat Charts", charts_path
 
-  %li{ :class => active?(:people)}
+  %li{ :class => active?(:people) }
     = link_to "People", people_path
     %ul
-      %li
-        %a{:href => "/people/new"} New Person
-      %li
-        %a{:href => "/people"} Search
-      %li
-        %a{:href => "#"} Donations
-      %li
-        %a{:href => "/orders"} Orders
+      %li= link_to "New Contact", new_person_path
+      %li= link_to "Search", people_path
 
-  - if can? :administrate, :all
-    %li= link_to "Administration", admin_root_path
+  %li{ :class => active?(:reports) }
+    = link_to "Reports", "#"
+    %ul
+      %li= link_to "Statements", "#"
+      %li= link_to "Settlements", "#"
+
+  %li{ :class => active?(:transactions) }
+    = link_to "Transactions", orders_path
+    %ul
+      %li= link_to "Sales", "#"
+      %li= link_to "Contributions", "#"
+      %li= link_to "Search", orders_path
+
+  %li
+    = link_to "Administration", admin_root_path if current_user.has_role? :admin

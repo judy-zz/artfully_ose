@@ -1,24 +1,31 @@
-= render :partial => "shared/headers/ticketing"
+- in_section :events
+- content_for :header do
+  %h1= link_to @event.name, event_path(@event)
+  %h2= l @performance.datetime, :format => :long_with_day
+  %ul.from-here
+    %li= link_to "New Performance", new_event_performance_path(@event)
+    %li= link_to "All Performances", event_performances_path(@event)
+    %li= link_to "Door List", door_list_event_performance_path(@event,@performance)
+    - if not @performance.on_sale?
+      %li= link_to "Show this Performance", put_on_sale_event_performance_path(@event, @performance), :method => :put
+    - else
+      %li= link_to "Hide this Performance", take_off_sale_event_performance_path(@event, @performance), :method => :put
+
 
 .context
-  %h3= link_to @event.name, event_path(@event)
-
-  %ul.more
-    %li= link_to "New Performance", new_event_performance_path(@event)
-    %li= link_to "View all Performances", event_performances_path(@event)
-
+  %h3 Upcoming Performances
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
-.document
-  .call-to-action
-    = link_to "Door List", door_list_event_performance_path(@event,@performance)
-    - if not @performance.on_sale?
-      = link_to "Show this Performance", put_on_sale_event_performance_path(@event, @performance), :method => :put
-    - else
-      = link_to "Hide this Performance", take_off_sale_event_performance_path(@event, @performance), :method => :put
+  %ul.kv
+    %li
+      .key Venue
+      .value= "#{@event.venue} #{@event.city}, #{@event.state}"
+    %li
+      .key Producer
+      .value= @event.producer
 
-  %h3= l @performance.datetime, :format => :long_with_day
-  = render :partial => "glance", :locals => { :performance => @performance }
+.document
+  = render :partial => "glance", :locals => { :report => @performance.glance }
 
   %h3 Tickets
   - if @performance.pending?
@@ -32,5 +39,6 @@
           %li= submit_tag "Take off Sale"
           %li= submit_tag "Delete"
           %li= submit_tag "Comp"
+          %li= submit_tag "Change Price"
 
       =render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }

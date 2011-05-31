@@ -24,6 +24,12 @@ Factory.sequence :section_id do |n|
   n
 end
 
+Factory.define :athena_free_section, :class => AthenaSection, :default_strategy => :build do |section|
+  section.name 'Balcony'
+  section.capacity 5
+  section.price 0
+end
+
 Factory.define :athena_section, :class => AthenaSection, :default_strategy => :build do |section|
   section.name 'Balcony'
   section.capacity 5
@@ -57,6 +63,8 @@ Factory.define :athena_event_with_id, :parent => :athena_event do |e|
   e.after_build do |event|
     FakeWeb.register_uri(:post, "http://localhost/stage/events.json", :body => event.encode)
     FakeWeb.register_uri(:any, "http://localhost/stage/events/#{event.id}.json", :body => event.encode)
+    body = '{"performancesOnSale":40,"revenue":{"advanceSales":{"gross":300.0,"net":270.0},"soldToday":{"gross":90.0,"net":81.0},"potentialRemaining":{"gross":2885.74,"net":2558.33},"originalPotential":{"gross":29635.55,"net":19885.02},"totalSales":{"gross":9959.99,"net":4562.25},"totalPlayed":{"gross":4500.44,"net":4000.8}},"tickets":{"sold":{"gross":100,"comped":20},"soldToday":{"gross":10,"comped":0},"played":{"gross":9},"available":65}}'
+    FakeWeb.register_uri(:get, "http://localhost/reports/glance/.json?eventId=#{event.id}", :body => body)
   end
 end
 
@@ -77,5 +85,7 @@ Factory.define :athena_performance_with_id, :parent => :athena_performance do |p
   p.id { Factory.next :performance_id }
   p.after_build do |performance|
     FakeWeb.register_uri(:any, "http://localhost/stage/performances/#{performance.id}.json", :body => performance.encode)
+    body = '{"revenue":{"advanceSales":{"gross":300.0,"net":270.0},"soldToday":{"gross":90.0,"net":81.0},"potentialRemaining":{"gross":2885.74,"net":2558.33},"originalPotential":{"gross":29635.55,"net":19885.02},"totalSales":{"gross":9959.99,"net":4562.25}},"tickets":{"sold":{"gross":100,"comped":20},"soldToday":{"gross":10,"comped":0},"available":65}}'
+    FakeWeb.register_uri(:get, "http://localhost/reports/glance/.json?performanceId=#{performance.id}", :body => body)
   end
 end

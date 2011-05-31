@@ -1,21 +1,19 @@
-= render :partial => "shared/headers/ticketing"
+- in_section :events
+- content_for :header do
+  %h1 Events
+  /TODO
+  %h2 Missing subtitle
+  %ul.from-here
+    %li= link_to "New Event", new_event_path
 
-.context
+.sideboard
   %h3 Events
-  - unless @events.blank?
-    %ul.detailed-list
-      - @events.each do |event|
-        %li
-          %h4= link_to event.name, event_path(event), :title => 'event-name'
-          %ul.controls
-            %li= link_to "View", event_path(event) if can?(:view, event)
-            %li= link_to "Edit", edit_event_path(event) if can?(:edit, event)
-            %li= link_to "Delete", event_path(event), :method => :delete, :confirm => "Are you sure?" if can?(:delete, event)
-          %ul.details-long
-            %li= event.venue
-            %li= event.producer
-    =will_paginate @results
-.document
-  .call-to-action
-    = button_to "New Event", new_event_path, :method => :get
-  %h3 Ticketing Dashboard
+  = render :partial => 'list', :locals => { :events => @events } unless @events.blank?
+
+.dashboard
+  %h3 Dashboard
+  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+
+.sideboard
+  %h3 Overview
+  = render :partial => 'glances', :locals => { :events => @events } unless @events.blank?

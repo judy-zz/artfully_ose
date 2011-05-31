@@ -1,13 +1,7 @@
 class KitsController < ApplicationController
-
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to dashboard_path, :alert => exception.message
-  end
-
-  def index
-    authorize! :view, current_user.current_organization
-    @kits = current_user.current_organization.available_kits
   end
 
   def new
@@ -33,7 +27,7 @@ class KitsController < ApplicationController
     authorize! :edit, current_user.current_organization
     @kit = Kernel.const_get(params[:type].camelize).new
     add_kit(params[:type].camelize)
-    redirect_to kits_url
+    redirect_to @kit.organization
   end
 
   def update
@@ -41,7 +35,7 @@ class KitsController < ApplicationController
     @kit = Kit.find(params[:id])
     @kit.activate!
     check_activation
-    redirect_to kits_url
+    redirect_to @kit.organization
   end
 
   private

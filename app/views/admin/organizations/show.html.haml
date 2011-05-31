@@ -6,12 +6,20 @@
   = form_tag admin_organization_memberships_path(@organization.id), :action => "create" do
     %ul
       %li
-        .label
-          = label_tag :user_email, "Email"
-        .element
-          = text_field_tag :user_email
+        .label=   label_tag :user_email, "Email"
+        .element= text_field_tag :user_email
       %li
         = submit_tag "Add"
+
+  = form_for @organization, :method => "put"  do |f|
+    %ul
+      %li
+        .label=   label :ach_on_file, "ACH on file"
+        .element= f.check_box( :ach_on_file, {}, "true", "false" )
+      %li
+        = hidden_field_tag "back", true
+      %li
+        = f.submit "Update"
 
 .document
   %h3 Current Members

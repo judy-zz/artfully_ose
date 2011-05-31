@@ -28,14 +28,36 @@
     %h2 This organization has been connected to a Fractured Atlas membership.
 
 .document
-  %h3= "Kits"
-  - if @organization.kits.visible.empty?
-    %p= "You have not activated any kits."
-  - else
-    %ul.kv
-      - @organization.kits.visible.each do |kit|
-        %li
-          .key= kit.type
-          .value= kit.state.titleize
-
-  = link_to "View all kits", kits_path
+  %h3 Kits
+  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+  %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits." unless can? :manage, current_user.current_organization
+  #kits
+    %table.standalone
+      %thead
+        %tr
+          %th Name
+          -if can? :manage, current_user.current_organization
+            %th Actions
+          -else
+            %th State
+      %tbody
+        - @kits.each do |kit|
+          %tr
+            %td= kit.type.underscore.titleize
+            -if can? :manage, current_user.current_organization
+              - if kit.new?
+                - if kit.has_alternatives?
+                  %td= link_to "Activate #{kit.type.underscore.titleize}", alternatives_kits_path(:type => kit.type.underscore)
+                - else
+                  %td= link_to "Activate #{kit.type.underscore.titleize}", new_kit_path(:type => kit.type.underscore)
+              - elsif kit.cancelled?
+                %td= link_to "Reactivate #{kit.type.underscore.titleize}", kit_path(kit), :method => :put
+              - else
+                %td= kit.state.titleize
+            -else
+              - if kit.new?
+                %td= "Not active"
+              - elsif kit.cancelled?
+                %td= "Cancelled"
+              - else
+                %td= kit.state.titleize

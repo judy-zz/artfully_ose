@@ -1,10 +1,3 @@
-- in_section :people
--content_for :header do
-  %h1 New Action
-
-.context
-  = render :partial=>'people/person_summary_sidebar', :locals => { :person => @person }
-
 .document
   = form_for @action, :url => person_actions_path do |form|
     %ul
@@ -15,5 +8,3 @@
 
       = hidden_field_tag "action_type", request[:format]
       %li= form.submit "Save #{request[:format]} action"
-
-  =button_to "Cancel", :back, :method => :get

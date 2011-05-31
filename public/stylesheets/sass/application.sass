@@ -4,6 +4,7 @@
 @import "mixins"
 
 body
+  background: #fefefe
   font:
     size: 11pt
     family: Arimo, sans-serif
@@ -11,26 +12,57 @@ a
   color: $compliment
   text-decoration: none
 
-h1, h2, h3, h4
+h1, h3
   font-family: "Raleway" !important
   @include stack-content
 
 h1
-  font-size: 3.5em
+  font-size: 2.5em
   color: $compliment
+  border-bottom: 1px solid #eee
+  margin-bottom: 10px
 
 h2
+  float: left
+  color: #666
+  @include stack-content
+
+#page
+  position: relative
+
+#logo
+  position: absolute
+  top: -10px
+  right: 10px
+
+
+#front-matter
   margin-bottom: 3em
+  padding: 0 10px
+  &:after
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    visibility: hidden
+
+.from-here
+  @include stack-content
+  font-size: .8em
+  text-align: right
+  li
+    display: inline
+    padding-left: 1em
 
 h3
   font-size: 2em
   color: $primary
-  margin-bottom: .5em
+  margin-bottom: 10px
 
 h4
   color: #666
-  font-size: 1.25em
   margin-bottom: .5em
+  @include stack-content
 
 strong
   font-weight: bold
@@ -43,31 +75,20 @@ strong
   text-align: center
   img
 
-#header
-  @include shadow(#ddd)
-  border-bottom: 1px solid #ccc
-  background: #eee
-  position: relative
-
-#logo
-  margin: 0 auto
-  width: 960px
-  img
-    background: #e0e0e0
-    float: right
-    padding: 25px 25px 15px
-
-#header-controls a
-  display: block
-  text-decoration: none
-  text-align: center
-  color: #aaa
-  border-top: 1px solid #e0e0e0
-  padding: 5px 0
-  font-size: .5em
+#current
+  float: right
+  margin: 12px 10px 0 0
+  font-size: .9em
+  div
+    float: left
+    padding: 0 5px
+  #current-user
+    color: #888
+  #current-org
+    border-left: 1px solid #888
 
 #content
-  margin: 25px 2%
+  margin: 100px 2%
   width: 96%
   @include stack-layout
   p
@@ -80,7 +101,16 @@ strong
   @include section
   @extend .stack1of3
 
+.dashboard
+  @include section
+  @extend .stack1of2
+
+.sideboard
+  @include section
+  @extend .stack1of4
+
 .document
+  background: #fff
   @include section
   @extend .stack2of3
 
@@ -120,7 +150,8 @@ strong
     position: relative
     border-bottom: 1px solid $neutral-1
     color: $secondary
-    padding: 10px
+    padding-bottom: 10px
+    margin-bottom: 10px
     &.active
       background: #eee
   ul.details li
@@ -130,7 +161,6 @@ strong
     display:block
     font-size: .9em
   h4
-    font-size: 1.4em
     margin-bottom: 0
     a
       text-decoration: none
@@ -173,6 +203,8 @@ strong
     right: 0
     top: 0
 
+.ui-dialog
+  background: none no-repeat scroll 0 0 $compliment
 
 .controls
   position: absolute
@@ -182,7 +214,6 @@ strong
   display: none
   li
     display: inline-block
-    padding: 10px 0
     a
       font-weight: bold
       text-decoration: none
@@ -230,9 +261,6 @@ strong
       display: block
       font-weight: bold
       padding: .25em
-
-.call-to-action
-  float: right
 
 .stats-controls
   float: right
@@ -327,6 +355,9 @@ strong
   text-align: center
   font-size: .9em
   padding: 1em
+
+.dropdown-container
+  text-align: right
 
 .dropdown
   position: absolute

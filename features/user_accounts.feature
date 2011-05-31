@@ -29,6 +29,6 @@ Feature: User accounts
   Scenario: A user signs out
     Given I am logged in
     And I am on the root page
-    When I follow "Sign out"
+    When I follow "Sign Out"
     Then I should be on the new user session page
 

@@ -1,0 +1,14 @@
+- in_section :events
+- content_for :header do
+  %h1 Confirm Price Change
+
+.context
+.document
+  %p
+    = "Are you sure you want to change the price of 4 tickets"
+    = " from their current price of $10 to $15"
+    = " for the June 06, 2011 06:06 am performance"
+    = " of Some Generic Placeholder event?"
+    -#= "#{params}"
+
+  =link_to "confirm", event_performance_path(AthenaPerformance.find(params["performance_id"]).event, params["performance_id"])

@@ -37,7 +37,7 @@ Artfully::Application.routes.draw do
     end
   end
 
-  resources :kits do
+  resources :kits, :except => :index do
     get :alternatives, :on => :collection
   end
 
@@ -64,6 +64,8 @@ Artfully::Application.routes.draw do
         put :bulk_edit
         put :comp_details
         put :comp_confirm
+        put :set_new_price
+        get :confirm_new_price
       end
     end
   end

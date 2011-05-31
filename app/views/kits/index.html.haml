@@ -10,8 +10,7 @@
   %h3 Kits
   #kits
     %p= "Only the owner of this organization, #{current_user.current_organization.owner.email}, can make changes to kits." unless can? :manage, current_user.current_organization
-    .table-controls
-    %table
+    %table.standalone
       %thead
         %tr
           %th Name

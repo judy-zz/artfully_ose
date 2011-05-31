@@ -5,7 +5,7 @@
 
   %li
     .label= action_form.label :occurred_at, "Action date/time"
-    .double.element
+    .double.element.date_field
       = action_form.text_field :occurred_at, { :value => "#{(l target.occurred_at, :format => :date_for_input) unless target.occurred_at.nil?}", :class=>'datepicker hasDatePicker'}
       = action_form.time_select :occurred_at, :value => target
 

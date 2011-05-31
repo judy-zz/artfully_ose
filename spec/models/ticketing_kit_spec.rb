@@ -64,7 +64,7 @@ describe TicketingKit do
     it "should grant the organization the ability to receive donations" do
       organization = Factory(:organization)
       organization.kits << subject
-      organization.should be_able_to :access, :ticketing
+      organization.should be_able_to :access, :paid_ticketing
     end
   end
 end

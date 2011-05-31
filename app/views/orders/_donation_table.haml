@@ -5,8 +5,7 @@
   -# ToDo: Add controls for refunding donations
   #donations
     = form_tag do
-      .table-controls
-      %table.zebra
+      %table.standalone.zebra
         %thead
           %tr
             %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall

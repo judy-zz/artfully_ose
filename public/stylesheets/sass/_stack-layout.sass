@@ -29,19 +29,19 @@
   word-spacing: normal
   text-align: left
 
-@mixin section
+@mixin section($gutter: 10px)
   position: relative
   > *
-    margin: 10px
+    margin: $gutter
     @include stack-content
 
 
 .stackAuto
   width: auto
 //  .stackContent
-//    text-align: center
+//    text-align: center{ :class => active?(:people) }
 
-.stack, .stack1of2, .stack1of3, .stack2of3, .stack1of4, .stack3of4, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of7, .stackAuto
+.stack, .stack1of2, .stack1of3, .stack2of3, .stack1of4, .stack3of4, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of6, .stack1of7, .stackAuto
   @include stack-layout
 
 .stack
@@ -73,6 +73,9 @@
 
 .stack4of5
   width: 80%
+
+.stack1of6
+  width: 16.667%
 
 .stack1of7
   width: 14.285%

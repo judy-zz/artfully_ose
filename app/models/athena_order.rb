@@ -153,6 +153,11 @@ end
     items.select { |i| i.returnable? and not i.refundable? }
   end
 
+  def timestamp
+    attributes['timestamp'] = attributes['timestamp'].in_time_zone(Organization.find(organization_id).time_zone)
+    return attributes['timestamp']
+  end
+
   private
     def merge_and_sort_items
       items.concat(children.collect(&:items).flatten)
@@ -244,4 +249,5 @@ end
         @attributes['timestamp'] = DateTime.now
       end
     end
+
 end

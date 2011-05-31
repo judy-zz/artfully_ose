@@ -1,44 +1,44 @@
+#header
+  left: 0
+  right: 0
+  position: fixed
+  z-index: 999
+  background: #eee
+  border-bottom: 1px solid #ccc
+  @include shadow(#ccc)
+
 #main-menu
-  width: 960px
-  margin: 0 auto
+  width: 75%
+  overflow: hidden
+  @include stack-list
   > li
-    /* --- IE7 Hacks
-    zoom: 1
-    *display: inline
-    /* --- IE7 Hacks
-    display: inline-block
-    vertical-align: top
-    width: 160px
-    height: 125px
-    padding: 25px 5px
+    @extend .stack1of6
     > a
+      @include stack-content
+      padding: 10px 0
+      text-indent: 15px
       display: block
       color: #666
-      font-size: 1.2em
-      line-height: 1.5em
       text-decoration: none
   li
     &.active
-      background: #eaeaea
-      border-left: 1px solid #e0e0e0
-      border-right: 1px solid #e0e0e0
-      > a
-        @include rounded-corners(2px, 2px, 2px, 2px)
+      @include gradient($primary_highlight, $primary, 14%, 100%)
+      a
         @include inset-text
-        @include gradient($primary_highlight, $primary, 14%, 100%)
-        border: 1px solid $primary_shadow
-        padding-left: 8px
-        padding-right: 8px
-      ul
-        padding: 0 8px
     ul
-      width: 160px
-      li
-        font-size: .9em
-        a
-          color: #888
-          display: block
-          text-decoration: none
-          line-height: 1.5em
-          &:hover
-            color: #666
+      @include stack-content
+      height: 0
+    ul li
+      text-indent: 10px
+      font-size: .9em
+      a
+        color: #888
+        display: block
+        text-decoration: none
+        line-height: 1.5em
+        margin: 0 5px
+        padding: 2px 0
+        &:hover
+          box-shadow: inset -1px 1px 3px rgba(0, 0, 0, 0.1)
+          @include rounded-corners(4px, 4px, 4px, 4px)
+          background: rgba(0, 0, 0, 0.1)
