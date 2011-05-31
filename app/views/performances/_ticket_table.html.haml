@@ -1,15 +1,28 @@
-%table#ticket-table.zebra
-  %thead
-    %tr
-      %th=check_box_tag :all, nil, false, :class=>'checkall'
-      %th Section
-      %th Price
-      %th Status
+- content_for :scripts do
+  = javascript_include_tag "grouped-form"
 
-  -tickets.each do |ticket|
-    %tr
-      %td= check_box_tag "selected_tickets[]", ticket.id
-      %td= ticket.section
-      %td= number_as_cents ticket.price
-      %td= ticket_status(ticket)
-=will_paginate tickets
+= render :partial => 'tickets/on_sale_form', :locals => { :performance => @performance, :tickets => @tickets }
+
+#tickets.grouped-form-target
+  = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
+    .table-controls
+      %ul.bulk-actions
+        %li= submit_tag "Take off Sale"
+        %li= submit_tag "Delete"
+        %li= submit_tag "Comp"
+        %li= submit_tag "Change Price"
+    %table#ticket-table.zebra
+      %thead
+        %tr
+          %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall
+          %th Section
+          %th Price
+          %th Status
+
+      - tickets.each do |ticket|
+        %tr{:id => "row_item_#{ticket.id}", :class => ticket.state }
+          %td.grouped-checkbox= check_box_tag "item_#{ticket.id}", ticket.id, false, :disabled => true
+          %td= ticket.section
+          %td= number_as_cents ticket.price
+          %td= ticket_status(ticket)
+    = will_paginate tickets

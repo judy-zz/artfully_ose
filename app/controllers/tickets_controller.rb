@@ -5,6 +5,20 @@ class TicketsController < ApplicationController
     redirect_to dashboard_path
   end
 
+  def on_sale
+    authorize! :bulk_edit, AthenaTicket
+    with_confirmation do
+      @performance = AthenaPerformance.find(params[:performance_id])
+      @selected_tickets = params[:selected_tickets]
+      if @performance.bulk_on_sale(@selected_tickets)
+        flash[:notice] = "Put #{to_plural(@selected_tickets.size, 'ticket')} on sale. "
+      else
+        flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
+      end
+      redirect_to event_performance_url(@performance.event, @performance) and return
+    end
+  end
+
   def bulk_edit
     authorize! :bulk_edit, AthenaTicket
     @performance = AthenaPerformance.find(params[:performance_id])
