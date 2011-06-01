@@ -121,7 +121,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id })
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id, :organizationId => self.organization_id })
   end
 
   #return accepted id's
@@ -129,27 +129,25 @@ class AthenaPerformance < AthenaResource::Base
     tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.comp_to(buyer) }.compact
   end
 
-  private
+  def bulk_on_sale(ids)
+    AthenaTicket.put_on_sale(tickets.select { |ticket| ids.include? ticket.id })
+  end
 
+  def bulk_off_sale(ids)
+    AthenaTicket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
+  end
+
+  def bulk_delete(ids)
+    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.destroy }.compact
+  end
+
+  private
     def find_tickets
       return [] if new_record?
       AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
     end
 
-    def bulk_on_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.put_on_sale }.compact
-    end
-
-    def bulk_off_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.take_off_sale }.compact
-    end
-
-    def bulk_delete(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact
-    end
-
     def bulk_comp(ids)
-      #TODO: Implement comp
       tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
     end
 

@@ -32,13 +32,4 @@
     %p You have not created tickets for this event.
     %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance)
   - else
-    = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
-      .table-controls
-        %ul.bulk-actions
-          %li= submit_tag "Put on Sale"
-          %li= submit_tag "Take off Sale"
-          %li= submit_tag "Delete"
-          %li= submit_tag "Comp"
-          %li= submit_tag "Change Price"
-
-      =render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }
+    = render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }

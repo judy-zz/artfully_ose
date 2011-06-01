@@ -6,16 +6,17 @@
 .document
   %p
     = "Are you sure you want to comp #{pluralize(@selected_tickets.size, 'ticket')}"
-    = " to \"#{@athena_person.first_name} #{@athena_person.last_name}\""
+    = " to \"#{@comp.recipient.first_name} #{@comp.recipient.last_name}\""
     = " for the #{l @performance.datetime, :format=> :date_at_time} performance"
     = " of #{@performance.event.name}?"
-  %p= "Reason for comp is: #{@reason_for_comp}"
-  = form_for @performance, :url => comp_confirm_performance_tickets_path(@performance) do |form|
+  %p= "Reason for comp is: #{@comp.reason}"
+  = form_for @comp do |form|
     = hidden_field_tag :confirmed, :true
+    = hidden_field_tag :performance_id, @performance.id
     - @selected_tickets.each do |st|
       =hidden_field_tag "selected_tickets[]", st
-    = hidden_field_tag :person_id, @athena_person.id
-    = hidden_field_tag :reason_for_comp, @reason_for_comp
+    = hidden_field_tag :person_id, @comp.recipient.id
+    = hidden_field_tag :reason_for_comp, @comp.reason
     %p If this is correct, please click confirm it by clicking
     = submit_tag "Confirm"
 

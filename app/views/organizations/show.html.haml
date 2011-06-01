@@ -16,9 +16,7 @@
       .value= @organization.time_zone
     %li
       .key Account Balance
-      .value= "#{number_as_cents @organization.account_balance}"
-    %li
-      =link_to "Account History", account_history_organization_path
+      .value= "#{number_to_currency @organization.account_balance}"
 
   - unless @organization.connected?
     %h2 This organization has not been connected to a Fractured Atlas member.

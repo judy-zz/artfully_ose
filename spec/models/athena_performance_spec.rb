@@ -42,56 +42,64 @@ describe AthenaPerformance do
 
   describe "bulk edit tickets" do
     subject { Factory(:athena_performance_with_id) }
+    let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
 
     before(:each) do
-      tickets = 3.times.collect { Factory(:ticket_with_id) }
       subject.stub!(:tickets).and_return(tickets)
     end
 
-    it "should put tickets on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
-      subject.tickets.each { |ticket| ticket.should_receive(:put_on_sale) }
+    describe "on sale" do
+      before(:each) do
+        body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      end
 
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+      it "should put tickets on sale" do
+        AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+        subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+      end
+
+      it "fails by returning false if any of the tickets can not be put on sale" do
+        tickets.first.state = :on_sale
+        outcome = subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+        outcome.should be false
+      end
     end
 
-    it "should return the ids of the tickets that were not put on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
-      subject.tickets.first.stub(:put_on_sale).and_return(false)
+    describe "off sale" do
+      before(:each) do
+        tickets.each { |ticket| ticket.state = "on_sale" }
+        body = tickets.collect(&:encode).join(",").gsub(/on_sale/,'off_sale')
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      end
 
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
-      rejected_ids.first.should eq subject.tickets.first.id
+      it "takes tickets off sale" do
+        AthenaTicket.should_receive(:take_off_sale).with(subject.tickets)
+        subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
+      end
+
+      it "fails by returning false if any of the tickets can not be taken off sale" do
+        tickets.first.state = :off_sale
+        outcome = subject.bulk_edit_tickets(tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
+        outcome.should be false
+      end
     end
 
-    it "should take tickets off sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(true) }
-      subject.tickets.each { |ticket| ticket.should_receive(:take_off_sale) }
+    describe "delete" do
+      it "should delete tickets" do
+        subject.tickets.each { |ticket| ticket.stub!(:destroy) }
+        subject.tickets.each { |ticket| ticket.should_receive(:destroy) }
 
-      subject.tickets.each { |ticket| ticket.on_sale = true }
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
-    end
+        subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
+      end
 
-    it "should return the ids of ticket that were sold and therefore not taken off sale" do
-      subject.tickets.first.state = "sold"
-      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(!ticket.sold?) }
+      it "should return the ids of tickets that were destroyed" do
+        subject.tickets.first.state = "sold"
+        subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
 
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
-      rejected_ids.first.should eq subject.tickets.first.id
-    end
-
-    it "should delete tickets" do
-      subject.tickets.each { |ticket| ticket.stub!(:destroy) }
-      subject.tickets.each { |ticket| ticket.should_receive(:destroy) }
-
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
-    end
-
-    it "should return the ids of tickets that were sold and therefore not destroyed" do
-      subject.tickets.first.state = "sold"
-      subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
-
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
-      rejected_ids.first.should eq subject.tickets.first.id
+        rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
+        rejected_ids.should eq subject.tickets.from(1).collect(&:id)
+      end
     end
   end
 

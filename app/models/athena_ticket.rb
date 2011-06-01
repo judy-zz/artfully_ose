@@ -89,18 +89,22 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
-  def sell_to(buyer)
+  def sell_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
+      self.sold_price = self.price
+      self.sold_at = time
       self.sell!
     rescue Transitions::InvalidTransition
       return false
     end
   end
 
-  def comp_to(buyer)
+  def comp_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
+      self.sold_price = 0
+      self.sold_at = time
       self.comp!
     rescue Transitions::InvalidTransition
       return false
@@ -137,11 +141,41 @@ class AthenaTicket < AthenaResource::Base
   def return!
     logger.debug("Returning ticket id [#{self.id}]")
     logger.debug("State is [#{self.state}]")
+    self.sold_price = 0
+    self.sold_at = nil
     attributes.delete(:buyer_id)
     do_return!
   end
 
+  def self.put_on_sale(tickets)
+    return false if tickets.blank?
+    attempt_transition(tickets, :on_sale) do
+      patch(tickets, { :state => :on_sale })
+    end
+  end
+
+  def self.take_off_sale(tickets)
+    return false if tickets.blank?
+    attempt_transition(tickets, :off_sale) do
+      patch(tickets, { :state => :off_sale })
+    end
+  end
+
   private
+    def self.attempt_transition(tickets, state)
+      begin
+        tickets.map(&state)
+        yield
+      rescue Transitions::InvalidTransition
+        false
+      end
+    end
+
+    def self.patch(tickets, attributes)
+      response = connection.put("/tix/tickets/patch/#{tickets.collect(&:id).join(",")}", attributes.to_json, self.headers)
+      format.decode(response.body).map{ |attributes| new(attributes) }
+    end
+
     def find_buyer
       return if self.buyer_id.nil?
 

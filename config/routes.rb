@@ -33,7 +33,6 @@ Artfully::Application.routes.draw do
   resources :organizations do
     member do
       post :connect
-      get :account_history
     end
   end
 
@@ -61,13 +60,18 @@ Artfully::Application.routes.draw do
   resources :performances, :only => [] do
     resources :tickets, :only => [] do
       collection do
+        delete :delete
+        put :on_sale
+        put :off_sale
         put :bulk_edit
-        put :comp_details
-        put :comp_confirm
-        put :update_prices
+        put :update_prices #maybe redundant
+        put :set_new_price #maybe redundant
+        get :confirm_new_price
       end
     end
   end
+
+  resources :comps, :only => [ :new, :create ]
 
   resources :charts do
     resources :sections

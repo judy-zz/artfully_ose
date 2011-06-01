@@ -67,7 +67,7 @@ describe Exchange do
       end
 
       it "should sell each new ticket to the person associated with the order" do
-        subject.tickets.each { |ticket| ticket.should_receive(:sell_to).with(subject.order.person) }
+        subject.tickets.each { |ticket| ticket.should_receive(:sell_to) }
         subject.submit
       end
 
