@@ -1,0 +1,10 @@
+%h3 Find Recipient
+= form_tag new_comp_path, :method => :get do
+  = hidden_field_tag :performance_id, @performance.id
+  - @selected_tickets.each do |st|
+    = hidden_field_tag "selected_tickets[]", st
+  %ul
+    %li
+      .label= label_tag :email, "Email"
+      .element= text_field_tag :email
+  = submit_tag "Search"

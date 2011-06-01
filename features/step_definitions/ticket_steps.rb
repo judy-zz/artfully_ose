@@ -55,7 +55,7 @@ Then /^the (\d+)(?:st|nd|rd|th) ticket should be on sale$/ do |pos|
   end
 end
 
-Given /^I check the (\d+)st ticket to take off sale$/ do |pos|
+Given /^I check the (\d+)(?:st|nd|rd|th) ticket to take off sale$/ do |pos|
   within(:xpath, "(//div[@id='off-sale']/form/ul/li)[#{pos.to_i}]") do
     check("selected_tickets[]")
   end

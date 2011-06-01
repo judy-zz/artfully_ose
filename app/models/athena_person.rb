@@ -27,6 +27,11 @@ class AthenaPerson < AthenaResource::Base
     find(:first, :params => { :organizationId => "eq#{organization.id}"})
   end
 
+  def self.find_or_new_by_email(email, organization)
+    return if email.blank?
+    find_by_email_and_organization(email, organization) || new(:email => email)
+  end
+
   def organization
     @organization ||= Organization.find(organization_id)
   end
@@ -39,11 +44,11 @@ class AthenaPerson < AthenaResource::Base
   def starred_actions
     actions.select { |action| action.starred? }
   end
-  
+
   def unstarred_actions
     actions.select { |action| action.unstarred? }
-  end  
-  
+  end
+
   def relationships
     @relationships ||= AthenaRelationship.find_by_person(self)
   end

@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   layout :specify_layout
 
   protected
+    def to_plural(variable, word)
+      self.class.helpers.pluralize(variable, word)
+    end
+
     def specify_layout
       params[:controller].start_with?("devise") ? 'devise' : 'application'
     end

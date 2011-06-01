@@ -63,13 +63,15 @@ Artfully::Application.routes.draw do
         put :on_sale
         put :off_sale
         put :bulk_edit
-        put :comp_details
-        put :comp_confirm
+        # put :comp_details
+        # put :comp_confirm
         put :set_new_price
         get :confirm_new_price
       end
     end
   end
+
+  resources :comps, :only => [ :new, :create ]
 
   resources :charts do
     resources :sections
