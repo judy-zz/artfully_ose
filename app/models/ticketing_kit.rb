@@ -17,4 +17,5 @@ class TicketingKit < Kit
     errors.add(:requirements, "You need to be part of an organization to activate this kit.") if organization.owner.nil?
     organization.owner.nil?
   end
+
 end

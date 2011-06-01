@@ -22,7 +22,11 @@ class Ability
     end
 
     can :manage, Organization do |organization|
-      user.current_organization.can? :manage, organization
+      user.current_organization.can?( :manage, organization ) && (user == organization.owner)
+    end
+
+    can :view, Organization do |organization|
+      user.current_organization.can?( :view, organization )
     end
 
     can :manage, AthenaCreditCard do |card|

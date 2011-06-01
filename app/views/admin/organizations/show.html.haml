@@ -10,15 +10,16 @@
         .element= text_field_tag :user_email
       %li
         = submit_tag "Add"
-  = form_tag admin_organizations_path(@organization.id) do
+
+  = form_for @organization, :method => "put"  do |f|
     %ul
       %li
         .label=   label :ach_on_file, "ACH on file"
-        .element= check_box_tag(:ach_on_file)
+        .element= f.check_box( :ach_on_file, {}, "true", "false" )
       %li
         = hidden_field_tag "back", true
       %li
-        = submit_tag "Update"
+        = f.submit "Update"
 
 .document
   %h3 Current Members
