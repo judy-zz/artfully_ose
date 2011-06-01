@@ -91,14 +91,4 @@ class OrganizationsController < ApplicationController
     end
   end
   
-  def account_history
-    @transactions = [
-      {:date=>"5/20/2011", :amount=>"-$100.00", :description=>"Donation Disbursal", :account_balance=>"$86.00" },
-      {:date=>"5/18/2011", :amount=>"$186.00", :description=>"FAFS Donation", :account_balance=>"$186.00" },
-      {:date=>"5/15/2011", :amount=>"-$500.00", :description=>"Deposit to Checking Account", :account_balance=>"$0.00" },
-      {:date=>"5/9/2011",  :amount=>"$250.00", :description=>"Earned", :account_balance=>"$600.00" },
-      {:date=>"5/8/2011",  :amount=>"$150.00", :description=>"Earned", :account_balance=>"$350.00" },
-      {:date=>"5/7/2011",  :amount=>"$200.00", :description=>"Earned", :account_balance=>"$200.00" },       
-    ].paginate(:page => params[:page], :per_page => 5)
-  end
 end
