@@ -4,11 +4,33 @@
 
 .context
 .document
-  %p
-    = "Are you sure you want to change the price of 4 tickets"
-    = " from their current price of $10 to $15"
-    = " for the June 06, 2011 06:06 am performance"
-    = " of Some Generic Placeholder event?"
-    -#= "#{params}"
+  #section
+  %ul.kv
+    -@grouped_tickets.each do |section|
+      %li
+        %p
+          %ul.kv
+          -section.each do |section_name, prices|
+            %h2= section_name
+            -prices.each do |price_group|
+              -price_group.each do |price|
+                %li
+                  %p
+                    %h2= "#{pluralize price[1], "ticket"} at #{number_as_cents price[0]} would change to #{number_as_cents @price}"
 
-  =link_to "confirm", event_performance_path(AthenaPerformance.find(params["performance_id"]).event, params["performance_id"])
+  %p
+    = "Are you sure you want to change the price of these tickets from their current price to #{number_as_cents @price} for the #{l @performance.datetime} performance of #{@performance.event.name}?"
+
+  =form_tag update_prices_performance_tickets_path, :method=>:put do
+    = hidden_field_tag :confirmed, :true
+    = hidden_field_tag :price, @price
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    = submit_tag "Confirm"
+  %p
+    = "Params: #{params}"
+  %p
+    = "Selected-Tickets: #{@selected_tickets}"
+  %p
+    = "Grouped-Tickets: #{@grouped_tickets}"
+ 

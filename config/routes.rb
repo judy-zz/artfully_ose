@@ -64,8 +64,7 @@ Artfully::Application.routes.draw do
         put :bulk_edit
         put :comp_details
         put :comp_confirm
-        put :set_new_price
-        get :confirm_new_price
+        put :update_prices
       end
     end
   end

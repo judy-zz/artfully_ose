@@ -18,7 +18,7 @@ class TicketsController < ApplicationController
         render :comp_ticket_details and return
       end
     elsif 'Change Price' == params[:commit]
-        render :set_new_price and return
+        enter_new_price
     else
       with_confirmation do
         bulk_edit_tickets(@performance, @selected_tickets, params[:commit])
@@ -72,8 +72,26 @@ class TicketsController < ApplicationController
     end
   end
 
-  def confirm_new_price
-    
+  def enter_new_price
+    @selected_tickets = params[:selected_tickets]
+    tix = @selected_tickets.collect{|id| AthenaTicket.find( id )}
+    @grouped_tickets = tix.group_by(&:section).collect{|s| {s[0] => s[1].group_by(&:price).collect{|p| {p.first => p.second.count} } } }
+    render 'tickets/set_new_price'
+  end
+
+  def update_prices
+    @grouped_tickets = params[:grouped_tickets]
+
+    with_confirmation_price_change do
+      flash[:notice] = "Repriced: #{params[:selected_tickets]} to #{params[:price]}"
+      @selected_tickets = params[:selected_tickets]
+
+      #TODO: Update prices
+      #reprice_tickets
+
+      @performance = AthenaPerformance.find(params[:performance_id])
+      redirect_to event_performance_url(@performance.event, @performance) and return
+    end
   end
 
   private
@@ -161,6 +179,26 @@ class TicketsController < ApplicationController
         flash[:alert] = @msg
       else
         flash[:notice] = @msg
+      end
+    end
+
+    def with_confirmation_price_change
+      @selected_tickets = params[:selected_tickets]
+
+      if params[:confirmed].blank?
+        @price = params[:price]
+        #@bulk_action = params[:commit]
+        
+        #TODO: This is rebuilding a list of tickets by hitting ATHENA a second time, needs to be refactored
+        #(b/c passing around complex nested arrays/hashes via params is also painful)
+        tix = @selected_tickets.collect{|id| AthenaTicket.find( id )}
+        @grouped_tickets = tix.group_by(&:section).collect{|s| {s[0] => s[1].group_by(&:price).collect{|p| {p.first => p.second.count} } } }
+
+        @performance = AthenaPerformance.find(params[:performance_id])
+        flash[:info] = "Please confirm your changes before we save them."
+        render 'tickets/confirm_new_price' and return
+      else
+        yield
       end
     end
 

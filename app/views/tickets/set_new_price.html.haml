@@ -5,14 +5,30 @@
 .context
 .document
   %p
-    = "These four tickets are currently priced at $10 each."
+    = "You have selected the following #{pluralize @selected_tickets.count, "tickets"} to reprice:"
+
+  #section
+  %ul.kv
+    -@grouped_tickets.each do |section|
+      %li
+        %p
+          %ul.kv
+          -section.each do |section_name, prices|
+            %h2= section_name
+            -prices.each do |price_group|
+              -price_group.each do |price|
+                %li
+                  %p
+                    %h2= "#{pluralize price[1], "ticket"} at #{number_as_cents price[0]} each"
+
+  #form
+  =form_tag update_prices_performance_tickets_path, :method => :put do
+    %ul
+      %li
+        .label= label_tag :price, "Price"
+        .element= text_field_tag :price, '', :class => :currency, :size => 1
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    = submit_tag "Submit"
   %p
-    = "New price per ticket:"
-    = text_field_tag "price", '', :size => 1
-  %p
-    =link_to "cancel"
-  %p
-  %p
-  %p
-  %p
-    =link_to "next", :confirm_new_price_performance_tickets
+    =link_to "cancel", :back
