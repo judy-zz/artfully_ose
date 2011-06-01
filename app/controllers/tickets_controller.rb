@@ -62,7 +62,7 @@ class TicketsController < ApplicationController
         @bulk_action = params[:commit]
         @performance = AthenaPerformance.find(params[:performance_id])
         flash[:info] = "Please confirm your changes before we save them."
-        render 'tickets/' + params[:action] + '_confirm' and return
+        render "tickets/#{params[:action]}/confirm" and return
       else
         yield
       end
