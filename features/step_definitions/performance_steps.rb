@@ -9,6 +9,7 @@ When /^I delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|  FakeWeb.regi
 end
 
 When /^I view the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
+  @performance = current_performances[pos.to_i - 1]
   within(:xpath, "(//ul[@id='of_performances']/li)[#{pos.to_i}]") do
     click_link "performance-datetime"
   end
