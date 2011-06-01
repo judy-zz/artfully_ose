@@ -79,7 +79,7 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id })
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization.id })
   end
 
   #return valid US states for an event

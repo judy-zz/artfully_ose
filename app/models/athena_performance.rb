@@ -121,7 +121,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id })
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id, :organizationId => self.organization_id })
   end
 
   #return accepted id's

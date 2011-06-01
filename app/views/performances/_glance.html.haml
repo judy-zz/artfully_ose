@@ -8,23 +8,19 @@
       %ul.report
         %li
           %span.stat Sold Today
-          %span.current= number_to_currency(report.revenue.sold_today.net)
-          %span.total= "/ #{number_to_currency(report.revenue.sold_today.gross)}"
+          %span.current= number_as_cents(report.revenue.sold_today.gross)
 
         %li
           %span.stat Potential Remaining
-          %span.current= number_to_currency(report.revenue.potential_remaining.net)
-          %span.total= "/ #{number_to_currency(report.revenue.potential_remaining.gross)}"
+          %span.current= number_as_cents(report.revenue.potential_remaining.gross)
 
         %li
           %span.stat Original Potential
-          %span.current= number_to_currency(report.revenue.original_potential.net)
-          %span.total= "/ #{number_to_currency(report.revenue.original_potential.gross)}"
+          %span.current= number_as_cents(report.revenue.original_potential.gross)
 
         %li
           %span.stat Total Sales
-          %span.current= number_to_currency(report.revenue.total_sales.net)
-          %span.total= "/ #{number_to_currency(report.revenue.total_sales.gross)}"
+          %span.current= number_as_cents(report.revenue.total_sales.gross)
     %li
       %h4 Tickets
       %ul.report

@@ -89,19 +89,15 @@ class Order < ActiveRecord::Base
   end
 
   def finish
-    logger.debug("FINISHING ORDER")
-
+    order_timestamp = Time.now
+    purchasable_tickets.map { |ticket| ticket.sell_to(person, order_timestamp) }
     organizations_from_tickets.each do |organization|
-      logger.debug("This order is for organization [" + organization.id.to_s + "]")
       order = AthenaOrder.new.tap do |order|
         order.for_organization organization
-        # logger.debug("Calling for_items with these tickets:")
-        # logger.debug(tickets)
-
+        order.timestamp = order_timestamp
         #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
         order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
 
-        #logger.debug("Calling for_items with donations")
         order.for_items donations.select { |donation| donation.organization == organization }
         order.person = person
         order.transaction_id = @payment.transaction_id
@@ -113,7 +109,6 @@ class Order < ActiveRecord::Base
     end
 
     OrderMailer.confirmation_for(self).deliver
-    purchasable_tickets.map { |ticket| ticket.sell_to(person) }
   end
 
   def generate_donations

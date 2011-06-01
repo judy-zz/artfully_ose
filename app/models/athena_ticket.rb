@@ -89,18 +89,22 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
-  def sell_to(buyer)
+  def sell_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
+      self.sold_price = self.price
+      self.sold_at = time
       self.sell!
     rescue Transitions::InvalidTransition
       return false
     end
   end
 
-  def comp_to(buyer)
+  def comp_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
+      self.sold_price = 0
+      self.sold_at = time
       self.comp!
     rescue Transitions::InvalidTransition
       return false
@@ -137,6 +141,8 @@ class AthenaTicket < AthenaResource::Base
   def return!
     logger.debug("Returning ticket id [#{self.id}]")
     logger.debug("State is [#{self.state}]")
+    self.sold_price = 0
+    self.sold_at = nil
     attributes.delete(:buyer_id)
     do_return!
   end

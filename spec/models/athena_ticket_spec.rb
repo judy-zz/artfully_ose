@@ -12,6 +12,8 @@ describe AthenaTicket do
     it { should respond_to :performance_id }
     it { should respond_to :price }
     it { should respond_to :buyer_id }
+    it { should respond_to :sold_at }
+    it { should respond_to :sold_price }
   end
 
   describe "#find" do
@@ -202,6 +204,26 @@ describe AthenaTicket do
     let (:buyer) { Factory(:athena_person_with_id) }
     subject { Factory(:ticket_with_id, :state=>"on_sale") }
 
+    it "should default to current time if time is not provided" do
+      subject.stub!(:save!)
+      subject.sell_to(buyer)  
+      subject.sold_at.should_not eq nil    
+    end
+
+    it "should set sold_at to the time provided" do
+      subject.stub!(:save!)
+      when_it_got_sold = Time.now
+      sleep 1
+      subject.sell_to(buyer, when_it_got_sold)  
+      subject.sold_at.should eq when_it_got_sold    
+    end
+
+    it "should set sold_price to price" do
+      subject.stub!(:save!)
+      subject.sell_to(buyer)  
+      subject.sold_price.should eq subject.price  
+    end
+
     it "should mark the ticket as sold" do
       subject.stub!(:save!)
       subject.sell_to(buyer)
@@ -229,6 +251,26 @@ describe AthenaTicket do
       subject.stub!(:save!)
       subject.comp_to(buyer)
       subject.state.should == "comped"
+    end
+
+    it "should default to current time if time is not provided" do
+      subject.stub!(:save!)
+      subject.comp_to(buyer)  
+      subject.sold_at.should_not eq nil    
+    end
+
+    it "should set the sold_price to 0" do
+      subject.stub!(:save!)
+      subject.comp_to(buyer)  
+      subject.sold_price.should eq 0    
+    end
+    
+    it "should set sold_at to the time provided" do
+      subject.stub!(:save!)
+      when_it_got_sold = Time.now
+      sleep 1
+      subject.comp_to(buyer, when_it_got_sold)  
+      subject.sold_at.should eq when_it_got_sold    
     end
 
     it "should save the updated ticket" do
@@ -313,6 +355,14 @@ describe AthenaTicket do
       subject.stub(:save!)
       subject.return!
       subject.buyer_id.should be_nil
+    end
+
+    it "should kill the sold price and sold time" do
+      subject.stub(:save!)
+      subject.return!
+      subject.sold_at.should be_nil
+      subject.sold_price.should eq 0
+      subject.state.should eq("on_sale")
     end
 
     it "should put the ticket back on sale" do
