@@ -85,19 +85,21 @@ describe AthenaPerformance do
       end
     end
 
-    it "should delete tickets" do
-      subject.tickets.each { |ticket| ticket.stub!(:destroy) }
-      subject.tickets.each { |ticket| ticket.should_receive(:destroy) }
+    describe "delete" do
+      it "should delete tickets" do
+        subject.tickets.each { |ticket| ticket.stub!(:destroy) }
+        subject.tickets.each { |ticket| ticket.should_receive(:destroy) }
 
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
-    end
+        subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
+      end
 
-    it "should return the ids of tickets that were sold and therefore not destroyed" do
-      subject.tickets.first.state = "sold"
-      subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
+      it "should return the ids of tickets that were destroyed" do
+        subject.tickets.first.state = "sold"
+        subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
 
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
-      rejected_ids.first.should eq subject.tickets.first.id
+        rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
+        rejected_ids.should eq subject.tickets.from(1).collect(&:id)
+      end
     end
   end
 

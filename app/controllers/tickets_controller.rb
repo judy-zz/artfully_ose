@@ -33,6 +33,17 @@ class TicketsController < ApplicationController
     end
   end
 
+  def delete
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @selected_tickets = params[:selected_tickets]
+    if @performance.bulk_delete(@selected_tickets)
+      flash[:notice] = "Deleted #{to_plural(@selected_tickets.size, 'ticket')}. "
+    else
+      flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
+    end
+    redirect_to event_performance_url(@performance.event, @performance)
+  end
+
   def bulk_edit
     authorize! :bulk_edit, AthenaTicket
     @performance = AthenaPerformance.find(params[:performance_id])
@@ -65,25 +76,6 @@ class TicketsController < ApplicationController
         render "tickets/#{params[:action]}/confirm" and return
       else
         yield
-      end
-    end
-
-    def bulk_edit_tickets(performance, ticket_ids, action)
-      edited_tickets = performance.bulk_edit_tickets(ticket_ids, action)
-
-      if edited_tickets
-        case action
-        when "Put on Sale"
-          flash[:notice] = "Put #{to_plural(edited_tickets.size, 'ticket')} on sale. "
-        when 'Take off Sale'
-          flash[:notice] = "Took #{to_plural(edited_tickets.size, 'ticket')} off sale. "
-        when 'Delete'
-          flash[:notice] = "Deleted #{to_plural(edited_tickets.size, 'ticket')}. "
-        else
-          flash[:notice] = "Please select an action."
-        end
-      else
-        flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
       end
     end
 end

@@ -137,19 +137,17 @@ class AthenaPerformance < AthenaResource::Base
     AthenaTicket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
   end
 
-  private
+  def bulk_delete(ids)
+    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.destroy }.compact
+  end
 
+  private
     def find_tickets
       return [] if new_record?
       AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
     end
 
-    def bulk_delete(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact
-    end
-
     def bulk_comp(ids)
-      #TODO: Implement comp
       tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
     end
 

@@ -3,13 +3,13 @@
 
 = render :partial => 'tickets/on_sale/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
 = render :partial => 'tickets/off_sale/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
+= render :partial => 'tickets/delete/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
 = render :partial => 'comps/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
 
 #tickets.grouped-form-target
   = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
     .table-controls
       %ul.bulk-actions
-        %li= submit_tag "Delete"
         %li= submit_tag "Change Price"
     %table#ticket-table.zebra
       %thead
