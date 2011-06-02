@@ -6,40 +6,34 @@
     %li
       %h4 Revenue
       %ul.report
-        %li
-          %span.stat Advance Sales
-          %span.current= number_to_currency(report.revenue.advance_sales.net)
-          %span.total= "/ #{number_to_currency(report.revenue.advance_sales.gross)}"
-
-        %li
-          %span.stat Sold Today
-          %span.current= number_to_currency(report.revenue.sold_today.net)
-          %span.total= "/ #{number_to_currency(report.revenue.sold_today.gross)}"
-
-        %li
-          %span.stat Potential Remaining
-          %span.current= number_to_currency(report.revenue.potential_remaining.net)
-          %span.total= "/ #{number_to_currency(report.revenue.potential_remaining.gross)}"
-
-        %li
-          %span.stat Original Potential
-          %span.current= number_to_currency(report.revenue.original_potential.net)
-          %span.total= "/ #{number_to_currency(report.revenue.original_potential.gross)}"
 
         %li
           %span.stat Total Sales
-          %span.current= number_to_currency(report.revenue.total_sales.net)
-          %span.total= "/ #{number_to_currency(report.revenue.total_sales.gross)}"
+          %span.current= number_as_cents(report.revenue.total_sales.gross)
+
+        %li
+          %span.stat Sold Today
+          %span.current= number_as_cents(report.revenue.sold_today.gross)
+        %li
+          %span.stat Advance Sales
+          %span.current= number_as_cents(report.revenue.advance_sales.gross)
 
         %li
           %span.stat Total Played
-          %span.current= number_to_currency(report.revenue.total_played.net)
-          %span.total= "/ #{number_to_currency(report.revenue.advance_sales.gross)}"
+          %span.current= number_as_cents(report.revenue.total_played.gross)
+
+        %li
+          %span.stat Potential Remaining
+          %span.current= number_as_cents(report.revenue.potential_remaining.gross)
+
+        %li
+          %span.stat Original Potential
+          %span.current= number_as_cents(report.revenue.original_potential.gross)
     %li
       %h4 Tickets
       %ul.report
         %li
-          %span.stat Remaining
+          %span.stat On Sale
           %span.current= report.tickets.available
         %li
           %span.stat Sold
@@ -52,3 +46,4 @@
         %li
           %span.stat Total Played
           %span.current= report.tickets.played.gross
+          %span.alternative= "(#{report.tickets.played.comped} Comped)"

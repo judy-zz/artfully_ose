@@ -7,25 +7,22 @@
       %h4 Revenue
       %ul.report
         %li
+          %span.stat Total Sales
+          %span.current= number_as_cents(report.revenue.total_sales.gross)
+        %li
           %span.stat Sold Today
           %span.current= number_as_cents(report.revenue.sold_today.gross)
-
         %li
           %span.stat Potential Remaining
           %span.current= number_as_cents(report.revenue.potential_remaining.gross)
-
         %li
           %span.stat Original Potential
           %span.current= number_as_cents(report.revenue.original_potential.gross)
-
-        %li
-          %span.stat Total Sales
-          %span.current= number_as_cents(report.revenue.total_sales.gross)
     %li
       %h4 Tickets
       %ul.report
         %li
-          %span.stat Remaining
+          %span.stat On Sale
           %span.current= report.tickets.available
         %li
           %span.stat Sold

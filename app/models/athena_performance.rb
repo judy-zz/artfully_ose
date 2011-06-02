@@ -8,9 +8,6 @@ class AthenaPerformance < AthenaResource::Base
 
   validates_presence_of :datetime
 
-  PUT_ON_SALE = 'Put on Sale'
-  TAKE_OFF_SALE = 'Take off Sale'
-  DELETE = 'Delete'
   COMP = 'Comp'
 
   schema do
@@ -109,12 +106,6 @@ class AthenaPerformance < AthenaResource::Base
 
   def bulk_edit_tickets(ticket_ids, action)
     case action
-      when PUT_ON_SALE
-        bulk_on_sale(ticket_ids)
-      when TAKE_OFF_SALE
-        bulk_off_sale(ticket_ids)
-      when DELETE
-        bulk_delete(ticket_ids)
       when COMP
         bulk_comp(ticket_ids)
     end
