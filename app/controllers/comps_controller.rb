@@ -15,8 +15,14 @@ class CompsController < ApplicationController
     @comp.reason = params[:comp_reason]
 
     with_confirmation_comp do
-      comp_tickets(@comp.recipient, @performance, @selected_tickets, @comp.reason)
-      redirect_to event_performance_url(@performance.event, @performance) and return
+      @comp.submit(current_user)
+      if @comp.uncomped_count > 0
+        flash[:alert] = "Comped #{to_plural(@comp.comped_count, 'ticket')}. #{to_plural(@comp.uncomped_count, 'ticket')} could not be comped."
+      else
+        flash[:notice] = "Comped #{to_plural(@comp.comped_count, 'ticket')}."
+      end
+
+      redirect_to event_performance_url(@performance.event, @performance)
     end
   end
 
@@ -41,33 +47,6 @@ class CompsController < ApplicationController
       rec.save!
     else
       AthenaPerson.find_or_new_by_email(params[:email], current_user.current_organization)
-    end
-  end
-
-  def comp_tickets(person, performance, ticket_ids, reason_for_comp)
-    comped_ids = performance.bulk_comp_to(ticket_ids, person)
-    comped_tickets = comped_ids.collect{|id| AthenaTicket.find(id)}
-
-    order = AthenaOrder.new.tap do |order|
-      order.for_organization Organization.find(performance.event.organization_id)
-      order.for_items comped_tickets
-      order.person = person
-      order.organization = current_user.current_organization
-      order.details = "Comped by: #{current_user.email} Reason: #{reason_for_comp}"
-      order.transaction_id = nil
-    end
-
-    if 0 < comped_tickets.size
-      order.save
-    end
-
-    num_rejected_tickets = ticket_ids.size - comped_ids.size
-    @msg = "Comped #{to_plural(comped_ids.size, 'ticket')}. "
-    if num_rejected_tickets > 0
-      @msg += "#{to_plural(num_rejected_tickets, 'ticket')} could not be comped. "
-      flash[:alert] = @msg
-    else
-      flash[:notice] = @msg
     end
   end
 end
