@@ -170,6 +170,10 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
+  def repriceable?
+    not committed?
+  end
+
   private
     def self.attempt_transition(tickets, state)
       begin
