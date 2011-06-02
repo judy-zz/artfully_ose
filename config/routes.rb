@@ -64,9 +64,8 @@ Artfully::Application.routes.draw do
         put :on_sale
         put :off_sale
         put :bulk_edit
-        put :update_prices #maybe redundant
-        put :set_new_price #maybe redundant
-        get :confirm_new_price
+        put :update_prices 
+        put :set_new_price 
       end
     end
   end

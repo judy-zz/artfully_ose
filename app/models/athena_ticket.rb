@@ -111,6 +111,15 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
+  def update_price(new_price)
+    unless self.committed? or new_price.to_i < 0
+      self.price = new_price
+      self.save!
+    else
+      return false
+    end
+  end
+
   def lockable?
     true
   end

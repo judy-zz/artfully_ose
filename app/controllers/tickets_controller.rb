@@ -52,8 +52,8 @@ class TicketsController < ApplicationController
     if @selected_tickets.nil?
       flash[:error] = "No tickets were selected"
       redirect_to event_performance_url(@performance.event, @performance) and return
-    elsif 'Change Price' == params[:commit]
-        render :set_new_price and return
+    elsif 'Update Price' == params[:commit]
+        set_new_price
     else
       with_confirmation do
         bulk_edit_tickets(@performance, @selected_tickets, params[:commit])
@@ -62,24 +62,33 @@ class TicketsController < ApplicationController
     end
   end
 
-  def enter_new_price
-    @selected_tickets = params[:selected_tickets]
-    tix = @selected_tickets.collect{|id| AthenaTicket.find( id )}
-    @grouped_tickets = tix.group_by(&:section).collect{|s| {s[0] => s[1].group_by(&:price).collect{|p| {p.first => p.second.count} } } }
-    render 'tickets/set_new_price'
+  def set_new_price
+    @performance = AthenaPerformance.find(params[:performance_id])
+    unless @performance.event.is_free == "true"
+      @selected_tickets = params[:selected_tickets]
+      tix = @selected_tickets.collect{|id| AthenaTicket.find( id )}
+      @grouped_tickets = tix.group_by(&:section).collect{|s| {s[0] => s[1].group_by(&:price).collect{|p| {p.first => p.second.count} } } }
+      render 'tickets/set_new_price' and return
+    else
+      flash[:alert] = "You cannot change the ticket prices of a free event."
+      redirect_to event_performance_url(@performance.event, @performance) and return
+    end
   end
 
   def update_prices
     @grouped_tickets = params[:grouped_tickets]
 
     with_confirmation_price_change do
-      flash[:notice] = "Repriced: #{params[:selected_tickets]} to #{params[:price]}"
       @selected_tickets = params[:selected_tickets]
-
-      #TODO: Update prices
-      #reprice_tickets
-
+      @price = params[:price]
       @performance = AthenaPerformance.find(params[:performance_id])
+      
+      if @performance.bulk_update_price(@selected_tickets, @price)
+        flash[:notice] = "Updated the price of #{to_plural(@selected_tickets.size, 'ticket')}. "
+      else
+        flash[:error] = "Tickets that have been sold or comped can't be given a new price."
+      end
+
       redirect_to event_performance_url(@performance.event, @performance) and return
     end
   end
@@ -92,6 +101,25 @@ class TicketsController < ApplicationController
         @performance = AthenaPerformance.find(params[:performance_id])
         flash[:info] = "Please confirm your changes before we save them."
         render "tickets/#{params[:action]}/confirm" and return
+      else
+        yield
+      end
+    end
+
+    def with_confirmation_price_change
+      @selected_tickets = params[:selected_tickets]
+
+      if params[:confirmed].blank?
+        @price = params[:price]
+
+        #TODO: This is rebuilding a list of tickets by hitting ATHENA a second time, needs to be refactored
+        #(temporary fix b/c passing around complex nested arrays/hashes via params is also painful)
+        tix = @selected_tickets.collect{|id| AthenaTicket.find( id )}
+        @grouped_tickets = tix.group_by(&:section).collect{|s| {s[0] => s[1].group_by(&:price).collect{|p| {p.first => p.second.count} } } }
+
+        @performance = AthenaPerformance.find(params[:performance_id])
+        flash[:info] = "Please confirm your changes before we save them."
+        render 'tickets/confirm_new_price' and return
       else
         yield
       end

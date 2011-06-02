@@ -28,9 +28,4 @@
       = hidden_field_tag "selected_tickets[]", st
     = submit_tag "Confirm"
   %p
-    = "Params: #{params}"
-  %p
-    = "Selected-Tickets: #{@selected_tickets}"
-  %p
-    = "Grouped-Tickets: #{@grouped_tickets}"
- 
+    =link_to "Cancel", event_performance_path(@performance.event, @performance)
