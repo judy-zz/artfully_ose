@@ -159,4 +159,14 @@ describe AthenaPerformance do
   it "should raise a TypeError for invalid event assignment" do
     lambda { subject.chart = "Not an Event" }.should raise_error(TypeError)
   end
+
+  describe ".in_range" do
+    it "composes a GET request for a given set of Time objects" do
+      start = Time.now.beginning_of_day
+      stop = start.end_of_day
+      FakeWeb.register_uri(:get, "http://localhost/stage/performances.json?datetime=gt#{start.xmlschema}&datetime=lt#{stop.xmlschema}", :body => "[]")
+      AthenaPerformance.in_range(start, stop)
+      FakeWeb.last_request.path.should match(/datetime=gt#{start.xmlschema}&datetime=lt#{stop.xmlschema}/)
+    end
+  end
 end

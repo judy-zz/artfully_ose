@@ -54,6 +54,12 @@ class AthenaPerformance < AthenaResource::Base
     @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
   end
 
+  def self.in_range(start, stop)
+    start = "gt#{start.xmlschema}"
+    stop = "lt#{stop.xmlschema}"
+    instantiate_collection(connection.get("/stage/performances.json?datetime=#{start}&datetime=#{stop}", self.headers))
+  end
+
   def chart
     if chart_id.blank?
       return nil
