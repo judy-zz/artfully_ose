@@ -9,7 +9,6 @@ class CompsController < ApplicationController
   def create
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
-    recipient = AthenaPerson.find(params[:person_id]) unless params[:person_id].blank?
 
     @comp = Comp.new(@performance, @selected_tickets, recipient)
     @comp.reason = params[:comp_reason]
@@ -28,8 +27,6 @@ class CompsController < ApplicationController
 
   def with_confirmation_comp
     if params[:confirmed].blank?
-      @selected_tickets = params[:selected_tickets]
-      @performance = AthenaPerformance.find(params[:performance_id])
       flash[:info] = "Please confirm your changes before we save them."
       render 'comp_confirm' and return
     else
@@ -40,11 +37,14 @@ class CompsController < ApplicationController
   private
 
   def recipient
+    logger.info("Uhhh....")
     if params[:person_id]
       AthenaPerson.find(params[:person_id])
     elsif params[:comp] and params[:comp][:athena_person]
       rec = AthenaPerson.new(params[:comp][:athena_person].merge({:organization_id => current_user.current_organization.id}))
       rec.save!
+      logger.debug(rec)
+      rec
     else
       AthenaPerson.find_or_new_by_email(params[:email], current_user.current_organization)
     end
