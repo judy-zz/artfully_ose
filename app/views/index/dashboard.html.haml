@@ -14,13 +14,26 @@
       =link_to "create your own", new_organization_path
 
 .dashboard
-  %h3 Events
-  = render :partial => 'events/list', :locals => { :events => @events } unless @events.blank?
+  #events
+    %h3 Events
+    - if @events.blank?
+      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+      = link_to "Create your first Event", events_path, :class => :cta
+    - else
+      = render :partial => 'events/list', :locals => { :events => @events }
 
-  %h3 People
-  = render :partial => 'people/list', :locals => { :people => @people } unless @people.blank?
+  #people
+    %h3 People
+    - if @people.blank?
+      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+      = link_to "Add a Contact", new_person_path, :class => :cta
+    - else
+      = render :partial => 'people/list', :locals => { :people => @people }
 
 
 .sideboard
   %h3 Overview
-  = render :partial => 'events/glances', :locals => { :events => @events } unless @events.blank?
+  - if @events.blank?
+    %p You don't have any events yet!
+  - else
+    = render :partial => 'events/glances', :locals => { :events => @events } unless @events.blank?

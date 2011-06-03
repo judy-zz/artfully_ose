@@ -375,6 +375,18 @@ strong
     padding: 5px 5px 5px 10px
     border-bottom: 1px solid gray
 
+.cta
+  @include rounded-corners(2px, 2px, 2px, 2px)
+  @include inset-text
+  text-align: center
+  width: 25%
+  @include gradient($compliment_highlight, $compliment, 14%, 100%)
+  border: 1px solid $compliment_shadow
+  font-size: .8em
+  font-weight: bold
+  padding: 10px
+  float: right
+
 @import "main-menu"
 @import "forms"
 @import "tables"
