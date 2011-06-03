@@ -9,7 +9,6 @@ Feature: Door List Creation
     And the 1st performance has had tickets created
     And the 1st performance is on sale
 
-
   Scenario: A producer views the door list for a performance
     Given a user@example.com named "Joe Patron" buys 2 tickets from the 1st performance
     And a user@example.com named "Bob Patron" buys 3 tickets from the 1st performance
