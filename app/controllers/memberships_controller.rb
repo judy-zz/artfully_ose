@@ -1,9 +1,5 @@
-class Admin::MembershipsController < Admin::AdminController
-  def index
-  end
-
-  def show
-  end
+class MembershipsController < ActionController::Base
+  protect_from_forgery
 
   def new
     @organization = Organization.find(params[:organization_id])
@@ -11,27 +7,29 @@ class Admin::MembershipsController < Admin::AdminController
 
   def create
     @organization = Organization.find(params[:organization_id])
-    authorize! :create, Membership
+    authorize! :manage, @organization
 
     with_user do |user|
       build_membership(user, @organization) or build_errors(user, @organization)
     end
 
-    redirect_to admin_organization_url(@organization)
-  end
-
-  def edit
-  end
-
-  def update
+    if current_user.is_admin?
+      redirect_to admin_organization_url(@organization) and return
+    else
+      redirect_to organization_url(@organization) and return
+    end
   end
 
   def destroy
     @organization = Organization.find(params[:organization_id])
     @mship = Membership.find(params[:id])
-    authorize! :destroy, @mship
+    authorize! :manage, @organization
     @mship.destroy
-    redirect_to admin_organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
+    if current_user.is_admin?
+      redirect_to admin_organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
+    else
+      redirect_to organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
+    end
   end
 
   private
@@ -52,7 +50,7 @@ class Admin::MembershipsController < Admin::AdminController
 
     def build_errors(user, organization)
       if user.organizations.first == organization
-        flash[:alert] = "#{user.email} is already a member, and was not added a second time."
+        flash[:alert] = "#{user.email} is already a member of this organization."
       else
         flash[:error] = "User #{params[:user_email]} is already a member of #{user.organizations.first.name} and cannot be a member of multiple organizations."
       end

@@ -31,6 +31,7 @@ Artfully::Application.routes.draw do
   devise_for :users
 
   resources :organizations do
+    resources :memberships
     member do
       post :connect
     end
