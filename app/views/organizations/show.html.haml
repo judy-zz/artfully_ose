@@ -64,10 +64,10 @@
       %li
         %h4= "#{user.email}"
         %ul.details
-          -if can? :manage, current_user.current_organization
-            %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :method => :delete
-          -elsif user == current_user.current_organization.owner
+          -if user == current_user.current_organization.owner
             %li Organization administrator
+          -elsif can? :manage, current_user.current_organization
+            %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :method => :delete
   -if can? :manage, current_user.current_organization
     %h3 Add User
     = form_tag organization_memberships_path(@organization.id), :action => "create" do
