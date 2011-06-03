@@ -19,15 +19,15 @@ describe TicketingKit do
   end
 
   describe "requirements" do
-    it "should not transition to activated if the organization owner does not have a credit card" do
+    it "should transition to activated if the organization owner does not have a credit card" do
       subject.organization.owner.stub!(:credit_cards).and_return([])
-      subject.requirements_met?.should be_false
+      subject.requirements_met?.should be_true
     end
 
-    it "should add an error message to requirements if the user does not have a credit card" do
+    it "shouldnot  add an error message to requirements if the user does not have a credit card" do
       subject.organization.owner.stub!(:credit_cards).and_return([])
-      subject.requirements_met?.should be_false
-      subject.errors.should have(1).error
+      subject.requirements_met?.should be_true
+      subject.errors.should have(0).error
     end
 
     it "should be activatable with credit cards and an organization" do
