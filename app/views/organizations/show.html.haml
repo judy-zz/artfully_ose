@@ -5,18 +5,17 @@
 .context
   %h3 Details
   %ul.kv
-    %li
-      .key Legal Name
-      .value= @organization.legal_organization_name
-    %li
-      .key EIN
-      .value= @organization.ein
+    -unless @organization.legal_organization_name.blank?
+      %li
+        .key Legal Name
+        .value= @organization.legal_organization_name
+    -unless @organization.ein.blank?
+      %li
+        .key EIN
+        .value= @organization.ein
     %li
       .key Time Zone
       .value= @organization.time_zone
-    %li
-      .key Account Balance
-      .value= "#{number_to_currency @organization.account_balance}"
 
   - unless @organization.connected?
     %h2 This organization has not been connected to a Fractured Atlas member.
