@@ -36,7 +36,7 @@ class MembershipsController < ActionController::Base
 
     def build_membership(user, organization)
       membership = Membership.find_by_user_id_and_organization_id(user.id, organization.id)
-      return false unless membership.nil? or !user.memberships.any?
+      return false unless membership.nil? and !user.memberships.any?
 
       @membership = organization.memberships.build(:user => user)
       if @membership.save
@@ -52,7 +52,7 @@ class MembershipsController < ActionController::Base
       if user.organizations.first == organization
         flash[:alert] = "#{user.email} is already a member of this organization."
       else
-        flash[:error] = "User #{params[:user_email]} is already a member of #{user.organizations.first.name} and cannot be a member of multiple organizations."
+        flash[:error] = "User #{params[:user_email]} is already a member of another organization."
       end
     end
 
