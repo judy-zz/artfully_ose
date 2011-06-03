@@ -25,7 +25,7 @@ class MembershipsController < ActionController::Base
     @mship = Membership.find(params[:id])
     authorize! :manage, @organization
     @mship.destroy
-    if user.is_admin?
+    if current_user.is_admin?
       redirect_to admin_organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
     else
       redirect_to organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
