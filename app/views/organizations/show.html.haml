@@ -65,7 +65,7 @@
         %h4= "#{user.email}"
         %ul.details
           -if can? :manage, current_user.current_organization
-            %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :confirm => "Are you sure?", :method => :delete
+            %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :method => :delete
           -elsif user == current_user.current_organization.owner
             %li Organization administrator
   -if can? :manage, current_user.current_organization

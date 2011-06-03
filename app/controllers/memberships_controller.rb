@@ -50,7 +50,7 @@ class MembershipsController < ActionController::Base
 
     def build_errors(user, organization)
       if user.organizations.first == organization
-        flash[:alert] = "#{user.email} is already a member, and was not added a second time."
+        flash[:alert] = "#{user.email} is already a member of this organization."
       else
         flash[:error] = "User #{params[:user_email]} is already a member of #{user.organizations.first.name} and cannot be a member of multiple organizations."
       end
