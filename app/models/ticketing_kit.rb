@@ -1,6 +1,5 @@
 class TicketingKit < Kit
   acts_as_kit :with_approval => true do
-    activate_kit :unless => :no_cards?
     activate_kit :unless => :no_owner?
 
     when_active do |organization|
