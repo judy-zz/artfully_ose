@@ -13,7 +13,11 @@ class MembershipsController < ActionController::Base
       build_membership(user, @organization) or build_errors(user, @organization)
     end
 
-    redirect_to admin_organization_url(@organization)
+    if current_user.is_admin?
+      redirect_to admin_organization_url(@organization) and return
+    else
+      redirect_to organization_url(@organization) and return
+    end
   end
 
   def destroy
@@ -21,7 +25,11 @@ class MembershipsController < ActionController::Base
     @mship = Membership.find(params[:id])
     authorize! :manage, @organization
     @mship.destroy
-    redirect_to admin_organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
+    if user.is_admin?
+      redirect_to admin_organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
+    else
+      redirect_to organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
+    end
   end
 
   private
