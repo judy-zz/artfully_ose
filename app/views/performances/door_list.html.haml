@@ -1,13 +1,13 @@
 - in_section :events
 - content_for :header do
-  /%h1
-  %h2= "Door List for \"#{@performance.event.name}\" on #{l @performance.datetime, :format => :long_with_day} at #{@performance.event.venue}"
+  %h1 Tickets & Events
+  %h2= "Door List for #{l @performance.datetime, :format => :long_with_day} performance of #{@performance.event.name} at #{@performance.event.venue}"
 
-.context
-  %h3 Print Preview
-  = link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
+  %ul.from-here
+    %li= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
+
 .document
-  %h3 Tickets
+  %h3= "Tickets (as of #{l @current_time})"
   - unless @door_list.items.empty?
     #door-list
       %table#door-list.tablesorter.standalone

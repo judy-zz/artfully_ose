@@ -1,60 +1,60 @@
-html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,
-blockquote,pre,address,code,del,dfn,em,img,q,
-dl,dt,dd,ol,ul,li,
-table,caption,tbody,tfoot,thead,tr,th,td,br,fieldset,textarea{}
-h3,h4,h5,h6,hr,p,ul,ol,dl,pre,address,table,form{margin:0 0 20px}
-p,h1, h2, h3, h4, h5, h6, ul.check_list, ul.arrowlist{padding-left:2px;}
-strong, b{font-weight:bold;}
+@import url(reset.css);
 
 #header {
   display:none;
+}
+
+#content{
+  position: absolute;
+  top: -90px;
+}
+
+#page {
+  position: absolute;
+}
+
+#logo {
+  position: relative;
+  top: 0px;
+  right: 0px; }
+
+.button_link {
+  position:absolute;
+  top: 0px;
+  right: 10px;
+}
+
+.document {
+  width: 100%;
+  top: -45px;
 }
 
 body {
   font-family: Georgia, serif;
 }
 
-h1, h2, h3 {
+h1 {
+    display:none;
+}
+
+h2, h3, h4, h5, h6 {
+  color: black;
   font-family: "Raleway", sans-serif;
   font-weight:normal;
 }
+
 table {
   width: 100%;
+  position: relative;
+  top: 0px;
 }
 
 table thead th {
   background: white;
   text-transform:uppercase;
-  font-size:10px;
   font-weight:normal;
   border-bottom:1px solid #ccc;
 
-}
-
-table thead th:hover {
-}
-
-table tbody {
-  background:white;
-}
-
-table tbody tr.odd td {
-  background:white;
-}
-table tbody tr.selected td {
-  background:white;
-}
-
-table tbody tr.tablePage td {
-  background:white;
-}
-
-table th {
-  text-align: left;
-}
-table tbody td {
-  font-size:11px;
-  vertical-align:middle;
 }
 
 a:link, a:visited {
@@ -62,25 +62,6 @@ a:link, a:visited {
    background: transparent;
 
    text-decoration: underline;
-   font-size: 12pt;
+   font-size: 10pt;
    font-weight: normal;
    }
-
-.context {
-  position:absolute;
-  top: 1em;
-  right: 1em;
-}
-
-/* DEBT: This doesn't seem to be working yet. Check it out when we clean up the print stylesheet*/
-#document a:link:after, #content a:visited:after {
-   content: " (" attr(href) ") ";
-   font-size: 12pt;
-   }
-#document a[href^="/"]:after {
-   content: " (http://www.artful.ly" attr(href) ") ";
-   }
-
-/***************************************************************************/
-
-

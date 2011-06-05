@@ -85,6 +85,7 @@ class PerformancesController < ApplicationController
   def door_list
     @performance = AthenaPerformance.find(params[:id])
     authorize! :view, @performance
+    @current_time = DateTime.now.in_time_zone(@performance.event.time_zone)
     @door_list = DoorList.new(@performance)
   end
 
