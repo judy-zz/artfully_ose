@@ -1,7 +1,7 @@
 - in_section :events
 - content_for :header do
-  %h1 Ticketing &amp; Events
-  %h2= "Door List for #{l @performance.datetime, :format => :long_with_day}"
+  /%h1
+  %h2= "Door List for \"#{@performance.event.name}\" on #{l @performance.datetime, :format => :long_with_day} at #{@performance.event.venue}"
 
 .context
   %h3 Print Preview
@@ -13,13 +13,17 @@
       %table#door-list.tablesorter.standalone
         %thead
           %tr
+            %th
             %th Buyer
             %th Email
-            %th Ticket
+            %th Section
+            %th Price
         %tbody
           - @door_list.items.each do |item|
             %tr
-              %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
+              %td= "☐"
+              %td= "#{item.buyer.last_name}, #{item.buyer.first_name}"
               %td= item.buyer.email
+              %td= item.ticket.section
               %td= number_as_cents(item.ticket.price)
 
