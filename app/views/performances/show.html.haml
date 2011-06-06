@@ -33,3 +33,13 @@
     %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance)
   - else
     = render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }
+
+:javascript
+  $(document).ready(function() {
+    $('#ticket-table').dataTable({
+      "sScrollY": "500px",
+      "iDisplayLength": 50,
+      "bPaginate": true,
+      "bJQueryUI": true,
+    });
+  } );
