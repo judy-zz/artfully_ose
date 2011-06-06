@@ -67,7 +67,8 @@ class TicketsController < ApplicationController
     unless @performance.event.is_free == "true"
       @selected_tickets = params[:selected_tickets]
       tix = @selected_tickets.collect{|id| AthenaTicket.find( id )}
-      @grouped_tickets = tix.group_by(&:section).collect{|s| {s[0] => s[1].group_by(&:price).collect{|p| {p.first => p.second.count} } } }
+      sections = tix.group_by(&:section)
+      @grouped_tickets = Hash[ sections.collect{ |name, tix| [name, tix.group_by(&:price)] } ]
       render 'tickets/set_new_price' and return
     else
       flash[:alert] = "You cannot change the ticket prices of a free event."
@@ -115,8 +116,8 @@ class TicketsController < ApplicationController
         #TODO: This is rebuilding a list of tickets by hitting ATHENA a second time, needs to be refactored
         #(temporary fix b/c passing around complex nested arrays/hashes via params is also painful)
         tix = @selected_tickets.collect{|id| AthenaTicket.find( id )}
-        @grouped_tickets = tix.group_by(&:section).collect{|s| {s[0] => s[1].group_by(&:price).collect{|p| {p.first => p.second.count} } } }
-
+        sections = tix.group_by(&:section)
+        @grouped_tickets = Hash[ sections.collect{ |name, tix| [name, tix.group_by(&:price)] } ]
         @performance = AthenaPerformance.find(params[:performance_id])
         flash[:info] = "Please confirm your changes before we save them."
         render 'tickets/confirm_new_price' and return
