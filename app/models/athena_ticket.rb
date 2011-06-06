@@ -111,6 +111,15 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
+  def update_price(new_price)
+    unless self.committed? or new_price.to_i < 0
+      self.price = new_price
+      self.save!
+    else
+      return false
+    end
+  end
+
   def lockable?
     true
   end
@@ -159,6 +168,10 @@ class AthenaTicket < AthenaResource::Base
     attempt_transition(tickets, :off_sale) do
       patch(tickets, { :state => :off_sale })
     end
+  end
+
+  def repriceable?
+    not committed?
   end
 
   private
