@@ -5,11 +5,13 @@
       %ul.report
         %li
           %span.stat Total Played
-          %span.current= number_as_cents(event.glance.revenue.total_played.gross)
+          %span.current $260.55
+          / %span.current= number_as_cents(event.glance.revenue.total_played.gross)
 
         %li
           %span.stat Advance Sales
-          %span.current= number_as_cents(event.glance.revenue.advance_sales.gross)
+          %span.current $142.00
+          / %span.current= number_as_cents(event.glance.revenue.advance_sales.gross)
 
         / %li
         /   %span.stat Wrapped Today
