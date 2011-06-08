@@ -33,7 +33,7 @@ class Comp
 
   def create_order(comped_tickets, benefactor)
     order = AthenaOrder.new.tap do |order|
-      order.for_items comped_tickets
+      order << comped_tickets
       order.person = recipient
       order.organization = benefactor.current_organization
       order.details = "Comped by: #{benefactor.email} Reason: #{reason}"

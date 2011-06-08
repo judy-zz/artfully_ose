@@ -83,7 +83,7 @@ class TicketsController < ApplicationController
       @selected_tickets = params[:selected_tickets]
       @price = params[:price]
       @performance = AthenaPerformance.find(params[:performance_id])
-      
+
       if @performance.bulk_update_price(@selected_tickets, @price)
         flash[:notice] = "Updated the price of #{to_plural(@selected_tickets.size, 'ticket')}. "
       else
@@ -125,5 +125,4 @@ class TicketsController < ApplicationController
         yield
       end
     end
-
 end

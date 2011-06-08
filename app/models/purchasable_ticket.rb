@@ -8,6 +8,10 @@ class PurchasableTicket < ActiveRecord::Base
   delegate :sell_to, :to => :ticket
   delegate :sold?, :to => :ticket
 
+  def self.for(ticket)
+    new { |this| this.ticket = ticket }
+  end
+
   def price
     ticket.price.to_i
   end

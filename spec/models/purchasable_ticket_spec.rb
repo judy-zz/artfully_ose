@@ -7,6 +7,17 @@ describe PurchasableTicket do
   it { should respond_to :price }
   it { should respond_to :item_id }
 
+  describe ".for" do
+    let(:ticket) { Factory(:ticket_with_id) }
+    subject { PurchasableTicket.for(ticket) }
+
+    it { should be_a PurchasableTicket }
+
+    it "references the ticket passed in" do
+      subject.ticket.should eq ticket
+    end
+  end
+
   describe "ticket" do
     it { should respond_to :ticket }
     it { should respond_to :ticket_id }

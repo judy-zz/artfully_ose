@@ -128,12 +128,6 @@ class AthenaTicket < AthenaResource::Base
     sold? or comped?
   end
 
-  def to_item
-    pt = PurchasableTicket.new
-    pt.ticket = self
-    pt
-  end
-
   def destroy
     super unless sold? or comped?
   end

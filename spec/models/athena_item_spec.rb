@@ -26,6 +26,17 @@ describe AthenaItem do
     end
   end
 
+  describe ".for" do
+    let(:item) { Factory(:ticket_with_id) }
+    subject { AthenaItem.for(item) }
+
+    it { should be_an AthenaItem }
+
+    it "references the item passed in" do
+      subject.item.should eq item
+    end
+  end
+
   describe "#item" do
     it "should find the item using item_type and item_id" do
       subject.item_type = "AthenaTicket"
@@ -42,6 +53,26 @@ describe AthenaItem do
     it "should return nil if an invalid item type is specified" do
       subject.item_type = "SomethingElse"
       subject.item.should be_nil
+    end
+  end
+
+  describe "#item=" do
+    let(:item) { Factory(:ticket_with_id) }
+
+    before(:each) do
+      subject.item = item
+    end
+
+    it "sets the item_id to the item.id" do
+      subject.item_id = item.id
+    end
+
+    it "sets the item_type to the item class" do
+      subject.item_type = item.class.to_s
+    end
+
+    it "sets the price to the price of the item" do
+      subject.price = item.price
     end
   end
 
