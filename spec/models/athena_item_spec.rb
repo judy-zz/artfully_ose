@@ -4,13 +4,13 @@ describe AthenaItem do
 
   subject { Factory(:athena_item_with_id) }
 
-  %w( order_id item_type item_id price ).each do |attribute|
+  %w( order_id product_type product_id price ).each do |attribute|
     it { should respond_to attribute }
     it { should respond_to attribute + "=" }
   end
 
-  it "should not be valid with an invalid item type" do
-    subject.item_type = "SomethingElse"
+  it "should not be valid with an invalid product type" do
+    subject.product_type = "SomethingElse"
     subject.should_not be_valid
   end
 
@@ -27,52 +27,49 @@ describe AthenaItem do
   end
 
   describe ".for" do
-    let(:item) { Factory(:ticket_with_id) }
-    subject { AthenaItem.for(item) }
+    let(:product) { Factory(:ticket_with_id) }
+    subject { AthenaItem.for(product) }
 
     it { should be_an AthenaItem }
 
-    it "references the item passed in" do
-      subject.item.should eq item
+    it "references the product passed in" do
+      subject.product.should eq product
     end
   end
 
-  describe "#item" do
-    it "should find the item using item_type and item_id" do
-      subject.item_type = "AthenaTicket"
-      subject.item_id = 1
+  describe "#product" do
+    it "should find the product using product_type and product_id" do
+      subject.instance_variable_set(:@product, nil)
+      subject.product_type = "AthenaTicket"
+      subject.product_id = 1
       AthenaTicket.should_receive(:find).with(1)
-      subject.item
+      subject.product
 
-      subject.item_type = "Donation"
-      subject.item_id = 1
+      subject.instance_variable_set(:@product, nil)
+      subject.product_type = "Donation"
+      subject.product_id = 1
       Donation.should_receive(:find).with(1)
-      subject.item
-    end
-
-    it "should return nil if an invalid item type is specified" do
-      subject.item_type = "SomethingElse"
-      subject.item.should be_nil
+      subject.product
     end
   end
 
-  describe "#item=" do
-    let(:item) { Factory(:ticket_with_id) }
+  describe "#product=" do
+    let(:product) { Factory(:ticket_with_id) }
 
     before(:each) do
-      subject.item = item
+      subject.product = product
     end
 
-    it "sets the item_id to the item.id" do
-      subject.item_id = item.id
+    it "sets the product_id to the product.id" do
+      subject.product_id = product.id
     end
 
-    it "sets the item_type to the item class" do
-      subject.item_type = item.class.to_s
+    it "sets the product_type to the product class" do
+      subject.product_type = product.class.to_s
     end
 
-    it "sets the price to the price of the item" do
-      subject.price = item.price
+    it "sets the price to the price of the product" do
+      subject.price = product.price
     end
   end
 
@@ -96,13 +93,13 @@ describe AthenaItem do
     end
 
     context "when not yet modified" do
-      it "relies on the item" do
+      it "relies on the product" do
         subject.stub(:modified?).and_return(false)
 
-        subject.item.stub(:refundable?).and_return(true)
+        subject.product.stub(:refundable?).and_return(true)
         subject.should be_refundable
 
-        subject.item.stub(:refundable?).and_return(false)
+        subject.product.stub(:refundable?).and_return(false)
         subject.should_not be_refundable
       end
     end
@@ -117,13 +114,13 @@ describe AthenaItem do
     end
 
     context "when not yet modified" do
-      it "relies on the item" do
+      it "relies on the product" do
         subject.stub(:modified?).and_return(false)
 
-        subject.item.stub(:exchangeable?).and_return(true)
+        subject.product.stub(:exchangeable?).and_return(true)
         subject.should be_exchangeable
 
-        subject.item.stub(:exchangeable?).and_return(false)
+        subject.product.stub(:exchangeable?).and_return(false)
         subject.should_not be_exchangeable
       end
     end
@@ -138,13 +135,13 @@ describe AthenaItem do
     end
 
     context "when not yet modified" do
-      it "relies on the item" do
+      it "relies on the product" do
         subject.stub(:modified?).and_return(false)
 
-        subject.item.stub(:returnable?).and_return(true)
+        subject.product.stub(:returnable?).and_return(true)
         subject.should be_returnable
 
-        subject.item.stub(:returnable?).and_return(false)
+        subject.product.stub(:returnable?).and_return(false)
         subject.should_not be_returnable
       end
     end
@@ -162,15 +159,15 @@ describe AthenaItem do
 
   describe "#return!" do
     context "with tickets" do
-      it "returns the item to inventory if it is returnable" do
-        subject.item.stub(:returnable?).and_return(true)
-        subject.item.should_receive(:return!)
+      it "returns the product to inventory if it is returnable" do
+        subject.product.stub(:returnable?).and_return(true)
+        subject.product.should_receive(:return!)
         subject.return!
       end
 
-      it "does not return the item if it is not returnble" do
-        subject.item.stub(:returnable?).and_return(false)
-        subject.item.should_not_receive(:return!)
+      it "does not return the product if it is not returnble" do
+        subject.product.stub(:returnable?).and_return(false)
+        subject.product.should_not_receive(:return!)
         subject.return!
       end
     end

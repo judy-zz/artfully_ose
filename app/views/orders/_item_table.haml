@@ -20,6 +20,6 @@
             %tr{:id => "row_item_#{item.id}", :class => item.state }
               %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
               %td Ticket
-              %td= link_to "#{item.item.event}", event_path(item.item.event_id)
-              %td= link_to "#{l item.item.performance}", event_performance_path(item.item.event_id, item.item.performance_id)
+              %td= link_to "#{item.product.event}", event_path(item.product.event_id)
+              %td= link_to "#{l item.product.performance}", event_performance_path(item.product.event_id, item.product.performance_id)
               %td= number_as_cents item.price

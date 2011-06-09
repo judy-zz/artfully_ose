@@ -148,16 +148,16 @@ describe AthenaOrder do
     end
 
     it "should create an item that references each ticket" do
-      subject.items.select { |item| item.item_type == "AthenaTicket" }.size.should eq tickets.size
-      subject.items.select { |item| item.item_type == "AthenaTicket" }.each do |item|
-        tickets.collect(&:id).should include item.item_id
+      subject.items.select { |item| item.product_type == "AthenaTicket" }.size.should eq tickets.size
+      subject.items.select { |item| item.product_type == "AthenaTicket" }.each do |item|
+        tickets.collect(&:id).should include item.product_id
       end
     end
 
     it "should create an item that references each donation" do
-      subject.items.select { |item| item.item_type == "Donation" }.size.should eq donations.size
-      subject.items.select { |item| item.item_type == "Donation" }.each do |item|
-        donations.collect(&:id).should include item.item_id
+      subject.items.select { |item| item.product_type == "Donation" }.size.should eq donations.size
+      subject.items.select { |item| item.product_type == "Donation" }.each do |item|
+        donations.collect(&:id).should include item.product_id
       end
     end
 

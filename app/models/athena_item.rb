@@ -6,21 +6,21 @@ class AthenaItem < AthenaResource::Base
 
   schema do
     attribute 'order_id',   :integer
-    attribute 'item_type',  :string
-    attribute 'item_id',    :string
+    attribute 'product_type',  :string
+    attribute 'product_id',    :string
     attribute 'price',      :integer
     attribute 'state',      :string
   end
 
-  validates_presence_of :order_id, :item_type, :item_id, :price
-  validates_inclusion_of :item_type, :in => %( AthenaTicket Donation )
-  validate :item_type_exists
+  validates_presence_of :order_id, :product_type, :product_id, :price
+  validates_inclusion_of :product_type, :in => %( AthenaTicket Donation )
+  validate :product_type_exists
 
-  def item_type_exists
+  def product_type_exists
     begin
-      Kernel.const_get(item_type)
+      Kernel.const_get(product_type)
     rescue NameError
-      errors.add(:item_type, "is not a valid type") unless valid_type
+      errors.add(:product_type, "is not a valid type") unless valid_type
     end
   end
 
@@ -38,35 +38,35 @@ class AthenaItem < AthenaResource::Base
     @order, self.order_id = order, order.id
   end
 
-  def self.for(item)
-    new.tap { |this| this.item = item }
+  def self.for(prod)
+    new.tap { |this| this.product = prod }
   end
 
-  def item
-    @item ||= find_item
+  def product
+    @product ||= find_product
   end
 
-  def item=(itm)
-    @item           = itm
-    self.item_id    = itm.id
-    self.price      = itm.price
-    self.item_type  = itm.class.to_s
+  def product=(prod)
+    @product          = prod
+    self.product_id   = prod.id
+    self.product_type = prod.class.to_s
+    self.price        = prod.price
   end
 
   def dup!
-    AthenaItem.new(attributes.reject { |key, value| %w( id ).include? key } )
+    self.class.new(attributes.reject { |key, value| %w( id ).include? key } )
   end
 
   def refundable?
-    (not modified?) and item.refundable?
+    (not modified?) and product.refundable?
   end
 
   def exchangeable?
-    (not modified?) and item.exchangeable?
+    (not modified?) and product.exchangeable?
   end
 
   def returnable?
-    (not modified?) and item.returnable?
+    (not modified?) and product.returnable?
   end
 
   def refund!
@@ -81,30 +81,34 @@ class AthenaItem < AthenaResource::Base
 
   def return!
     update_attribute(:state, "returned")
-    item.return! if item.returnable?
+    product.return! if product.returnable?
   end
 
   def self.find_by_order(order)
     return [] unless order.id?
-    AthenaItem.find(:all, :params => {:orderId => "eq#{order.id}"} )
+    items = AthenaItem.find(:all, :params => {:orderId => "eq#{order.id}"} )
+    items.each do |item|
+      item.order = order
+    end
+    items
   end
 
   private
 
     def modified?
-      (state != nil)
+      !state.blank?
     end
 
-    def find_item
-      return if self.item_id.nil?
+    def find_product
+      return if self.product_id.nil?
 
       begin
-        klass = Kernel.const_get(item_type)
-        klass.find(item_id)
+        klass = Kernel.const_get(product_type)
+        klass.find(product_id)
       rescue NameError
         return nil
       rescue ActiveResource::ResourceNotFound
-        update_attribute!(:item_id, nil)
+        update_attribute!(:product_id, nil)
         return nil
       end
     end

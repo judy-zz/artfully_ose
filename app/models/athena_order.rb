@@ -91,8 +91,8 @@ class AthenaOrder < AthenaResource::Base
     self.organization = org
   end
 
-  def <<(itms)
-    self.items += Array.wrap(itms).collect { |item| AthenaItem.for(item) }
+  def <<(products)
+    self.items += Array.wrap(products).collect { |product| AthenaItem.for(product) }
   end
 
   def payment
@@ -104,11 +104,11 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def all_tickets
-    all_items.select{|item| item.item_type == "AthenaTicket" }
+    all_items.select{|item| item.product_type == "AthenaTicket" }
   end
 
   def all_donations
-    all_items.select{|item| item.item_type == "Donation" }
+    all_items.select{|item| item.product_type == "Donation" }
   end
 
   def refundable_items
@@ -120,18 +120,30 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def items_detail
-    result = []
+    num_tickets = 0
+    sum_donations = 0
 
-    if sum_donations > 0.0
-      result << donation_details
-    end    
-    if num_tickets > 0
-      result << ticket_details
+    all_items.each{ |item|
+      if item.attributes["product_type"] == "AthenaTicket"
+        num_tickets += 1
+      elsif item.attributes["product_type"] == "Donation"
+        sum_donations += item.price.to_i
+      end }
+
+    tickets = "#{num_tickets} ticket(s)"
+    donations = "$#{sum_donations/100.00} donation"
+
+    if num_tickets == 0
+      result = "#{[donations].to_sentence}"
+    elsif sum_donations == 0.0
+      result = "#{[tickets].to_sentence}"
+    else
+      result = "#{[tickets, donations].to_sentence}"
     end
 
     result.to_sentence
   end
-  
+
   def num_tickets
     all_tickets.size
   end
@@ -169,10 +181,10 @@ class AthenaOrder < AthenaResource::Base
         action.subject         = self
         action.organization_id = organization.id
         action.timestamp       = self.timestamp
-        action.details         = ticket_details 
+        action.details         = ticket_details
         action.occurred_at     = action.timestamp
         action.action_subtype  = "Purchase"
-     
+
         logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
         logger.debug("Action: #{action.attributes}")
         action.save!
@@ -181,16 +193,16 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def create_donation_actions
-      items.select { |item| item.item_type == "Donation" }.collect do |item|
+      items.select { |item| item.product_type == "Donation" }.collect do |item|
         action                 = AthenaDonationAction.new
         action.person          = person
-        action.subject         = Donation.find(item.item_id)
+        action.subject         = item.product
         action.organization_id = organization.id
         action.timestamp       = self.timestamp
         action.details         = ticket_details
         action.occurred_at     = action.timestamp
         action.action_subtype  = "Donation"
-  
+
         logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
         logger.debug("Action: #{action.attributes}")
         action.save!
