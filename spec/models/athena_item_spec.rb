@@ -55,21 +55,51 @@ describe AthenaItem do
 
   describe "#product=" do
     let(:product) { Factory(:ticket_with_id) }
-
-    before(:each) do
-      subject.product = product
-    end
+    before(:each) { subject.product = product }
 
     it "sets the product_id to the product.id" do
-      subject.product_id = product.id
+      subject.product_id.should eq product.id
     end
 
     it "sets the product_type to the product class" do
-      subject.product_type = product.class.to_s
+      subject.product_type.should eq product.class.to_s
     end
 
-    it "sets the price to the price of the product" do
-      subject.price = product.price
+    context "a ticket" do
+      let(:ticket) { Factory(:ticket_with_id) }
+      before(:each) { subject.product = ticket }
+
+      it "sets the price to the price of the ticket" do
+        subject.price.should eq ticket.price
+      end
+
+      it "sets the realized price to the price of the ticket less $2 dollars (200)" do
+        subject.realized_price.should eq (ticket.price - 200)
+      end
+
+      it "sets the net to 3.5% of the realized price" do
+        realized = (ticket.price - 200)
+        net = (realized - (0.035 * realized)).floor
+        subject.net.should eq net
+      end
+    end
+
+    context "a donation" do
+      let(:donation) { Factory(:donation) }
+      before(:each) { subject.product = donation }
+
+      it "sets the price to the price of the donation" do
+        subject.price.should eq donation.price
+      end
+
+      it "sets the realized price to the price of the donation" do
+        subject.realized_price.should eq donation.price
+      end
+
+      it "sets the net to 3.5% of the realized price" do
+        net = (donation.price - (0.035 * donation.price)).floor
+        subject.net.should eq net
+      end
     end
   end
 

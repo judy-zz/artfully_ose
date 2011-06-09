@@ -19,15 +19,13 @@ Factory.define :ticket, :class => AthenaTicket, :default_strategy => :build do |
   t.event { Faker::Lorem.words(2).join(" ") }
   t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
   t.performance { DateTime.now + 1.month }
-  # Debt: this does not need to be set by the factory
-  t.state "off_sale"
-  t.price "50.00"
-  t.sold_price "50.00"
-  t.sold_at Time.now
+  t.price "5000"
 end
 
 Factory.define :sold_ticket, :parent => :ticket do |t|
   t.state "sold"
+  t.sold_price "5000"
+  t.sold_at Time.now
 end
 
 Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build do |t|

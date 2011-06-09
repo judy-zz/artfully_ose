@@ -17,6 +17,8 @@ class AthenaTicket < AthenaResource::Base
     attribute 'price',          :integer
     attribute 'buyer_id',       :integer
     attribute 'state',          :string
+    attribute 'sold_price',     :integer
+    attribute 'sold_at',        :string
   end
 
   state_machine do
@@ -55,6 +57,18 @@ class AthenaTicket < AthenaResource::Base
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
     AthenaTicket.find(:all, :params => parameterize(terms)) unless terms.empty?
+  end
+
+  def price
+    super.to_i
+  end
+
+  def sold_price
+    super.to_i
+  end
+
+  def self.fee
+    200 # $2.00 fee
   end
 
   def expired?

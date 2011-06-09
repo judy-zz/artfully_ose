@@ -5,14 +5,18 @@ class AthenaItem < AthenaResource::Base
   self.collection_name = 'items'
 
   schema do
-    attribute 'order_id',   :integer
-    attribute 'product_type',  :string
-    attribute 'product_id',    :string
-    attribute 'price',      :integer
-    attribute 'state',      :string
+    attribute 'order_id',       :integer
+    attribute 'product_type',   :string
+    attribute 'product_id',     :string
+
+    attribute 'state',          :string
+
+    attribute 'price',          :integer
+    attribute 'realized_price', :integer
+    attribute 'net',            :integer
   end
 
-  validates_presence_of :order_id, :product_type, :product_id, :price
+  validates_presence_of :order_id, :product_type, :product_id, :price, :realized_price, :net
   validates_inclusion_of :product_type, :in => %( AthenaTicket Donation )
   validate :product_type_exists
 
@@ -47,10 +51,14 @@ class AthenaItem < AthenaResource::Base
   end
 
   def product=(prod)
-    @product          = prod
-    self.product_id   = prod.id
-    self.product_type = prod.class.to_s
-    self.price        = prod.price
+    self.price          = prod.price
+    self.realized_price = prod.price - prod.class.fee
+    self.net            = (self.realized_price - (self.realized_price * 0.035)).floor
+
+    self.product_id     = prod.id
+    self.product_type   = prod.class.to_s
+
+    @product            = prod
   end
 
   def dup!
@@ -94,6 +102,9 @@ class AthenaItem < AthenaResource::Base
   end
 
   private
+
+    def set_prices(prod)
+    end
 
     def modified?
       !state.blank?

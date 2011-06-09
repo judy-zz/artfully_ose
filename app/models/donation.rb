@@ -9,6 +9,10 @@ class Donation < ActiveRecord::Base
     amount
   end
 
+  def self.fee
+    0 # $0 fee
+  end
+
   def expired?
     false
   end
