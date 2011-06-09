@@ -120,10 +120,6 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
-  def lockable?
-    true
-  end
-
   def committed?
     sold? or comped?
   end
