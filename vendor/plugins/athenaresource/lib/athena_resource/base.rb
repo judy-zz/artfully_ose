@@ -17,7 +17,7 @@ module AthenaResource
       end
       
       def search_index(search_query, organization)
-        unless search_query.nil?
+        unless search_query.blank?
           search_query.concat(' AND ')
         end
         
