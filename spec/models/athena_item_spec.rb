@@ -69,6 +69,10 @@ describe AthenaItem do
       let(:ticket) { Factory(:ticket_with_id) }
       before(:each) { subject.product = ticket }
 
+      it "sets the performance_id to the tickets performance id" do
+        subject.performance_id.should eq ticket.performance_id
+      end
+
       it "sets the price to the price of the ticket" do
         subject.price.should eq ticket.price
       end

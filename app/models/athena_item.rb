@@ -8,6 +8,7 @@ class AthenaItem < AthenaResource::Base
     attribute 'order_id',       :integer
     attribute 'product_type',   :string
     attribute 'product_id',     :string
+    attribute 'performance_id', :string
 
     attribute 'state',          :string
 
@@ -50,15 +51,11 @@ class AthenaItem < AthenaResource::Base
     @product ||= find_product
   end
 
-  def product=(prod)
-    self.price          = prod.price
-    self.realized_price = prod.price - prod.class.fee
-    self.net            = (self.realized_price - (self.realized_price * 0.035)).floor
-
-    self.product_id     = prod.id
-    self.product_type   = prod.class.to_s
-
-    @product            = prod
+  def product=(product)
+    set_product_details_from product
+    set_prices_from product
+    set_performance_from product if product.respond_to? :performance_id
+    @product = product
   end
 
   def dup!
@@ -103,7 +100,19 @@ class AthenaItem < AthenaResource::Base
 
   private
 
-    def set_prices(prod)
+    def set_product_details_from(prod)
+      self.product_id = prod.id
+      self.product_type = prod.class.to_s
+    end
+
+    def set_prices_from(prod)
+      self.price          = prod.price
+      self.realized_price = prod.price - prod.class.fee
+      self.net            = (self.realized_price - (self.realized_price * 0.035)).floor
+    end
+
+    def set_performance_from(prod)
+      self.performance_id = prod.performance_id
     end
 
     def modified?
