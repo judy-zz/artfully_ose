@@ -48,15 +48,10 @@ class PeopleController < ApplicationController
 
   def index
     @people = []
-    if params[:email]
-      begin
-        person = AthenaPerson.find_by_email_and_organization(params[:email], current_user.current_organization)
-      rescue
-        flash[:error] = "No results found."
-      end
+    unless params[:search].blank? 
+      @people = AthenaPerson.search_index(params[:search], current_user.current_organization)
+      @people = @people.paginate(:page => params[:page], :per_page => 10)
     end
-    @people << person unless person.nil?
-    @people = @people.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show

@@ -15,6 +15,15 @@ module AthenaResource
       def parameterize(params = {})
         Hash[params.collect{|key, value| [key.camelize(:lower),value] }]
       end
+      
+      def search_index(search_query, organization)
+        unless search_query.nil?
+          search_query.concat(' AND ')
+        end
+        
+        search_query.concat("organizationId:").concat("#{organization.id}")
+        find(:all, :params => { '_q' => search_query})
+      end
     
       def method_missing(method_id, *arguments)
         if match = /find_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
