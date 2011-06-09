@@ -2,17 +2,23 @@ require 'spec_helper'
 
 describe Settlement do
   subject { Settlement.new }
-  let(:jobs) do
-    {
-      :monday     => Time.now.beginning_of_week          + 2.hours, # Monday 2AM
-      :tuesday    => Time.now.beginning_of_week + 1.day  + 2.hours, # Tuesday 2AM
-      :wednesday  => Time.now.beginning_of_week + 2.days + 2.hours, # Wednesday 2AM
-      :thursday   => Time.now.beginning_of_week + 3.days + 2.hours, # Thursday 2AM
-      :friday     => Time.now.beginning_of_week + 4.days + 2.hours  # Friday 2AM
-    }
+
+  describe "#submit" do
+    # subject.settle(performance, producer)
+    # subject.settle(donation, producer)
   end
 
   describe "#range_for" do
+    let(:jobs) do
+      {
+        :monday     => Time.now.beginning_of_week          + 2.hours, # Monday 2AM
+        :tuesday    => Time.now.beginning_of_week + 1.day  + 2.hours, # Tuesday 2AM
+        :wednesday  => Time.now.beginning_of_week + 2.days + 2.hours, # Wednesday 2AM
+        :thursday   => Time.now.beginning_of_week + 3.days + 2.hours, # Thursday 2AM
+        :friday     => Time.now.beginning_of_week + 4.days + 2.hours  # Friday 2AM
+      }
+    end
+
     it "determines 48 business hours before the beginning of the day; " do
       target = jobs[:thursday].beginning_of_day - 1.week
       Settlement.range_for(jobs[:tuesday]).should eq [ target, target.end_of_day ]
