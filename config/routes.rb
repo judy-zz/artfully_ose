@@ -66,7 +66,7 @@ Artfully::Application.routes.draw do
         put :off_sale
         put :bulk_edit
         put :update_prices 
-        put :set_new_price 
+        get :set_new_price
       end
     end
   end
