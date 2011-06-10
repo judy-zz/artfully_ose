@@ -7,7 +7,7 @@
   - else
     %p 
       :erb
-        You may create events with free tickets right away, or you can <%=link_to "upgrade your account", kits_path %> to start selling tickets to lorem ipsum whatever blah 
+        You may create events with free tickets right away, or you can <%=link_to "upgrade your account", organization_path(current_user.current_organization) %> to start selling tickets to lorem ipsum whatever blah 
   
 .document
   = render "shared/error_messages", :target => @event

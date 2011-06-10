@@ -1,10 +1,5 @@
 class PeopleController < ApplicationController
   respond_to :html, :json
-  
-  rescue_from CanCan::AccessDenied do |exception|
-    flash[:alert] = exception.message
-    redirect_to root_path
-  end
 
   def new
     authorize! :create, AthenaPerson
@@ -49,6 +44,7 @@ class PeopleController < ApplicationController
   end
 
   def index
+    authorize! :manage, AthenaPerson
     @people = []
     if is_search(params) 
       @people = AthenaPerson.search_index(params[:search], current_user.current_organization)

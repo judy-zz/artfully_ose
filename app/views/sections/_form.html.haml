@@ -23,4 +23,4 @@
         = section_form.hidden_field :price, :value => 0
         .description 
           :erb
-            <%=link_to "Upgrade your account", kits_path %> to create prices on your tickets.
+            <%=link_to "Upgrade your account", organization_path(current_user.current_organization) %> to create prices on your tickets.

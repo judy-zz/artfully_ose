@@ -3,6 +3,16 @@ class ApplicationController < ActionController::Base
 
   before_filter :authenticate_user!
   layout :specify_layout
+  
+  rescue_from CanCan::AccessDenied do |exception|
+    if current_user.is_in_organization?
+      flash[:alert] = "Sorry, we coudln't find that page!"
+      redirect_to dashboard_path
+    else
+      flash[:notice] = "Wait, we need some more information from you first!"
+      redirect_to new_organization_path
+    end
+  end
 
   protected
     def to_plural(variable, word)

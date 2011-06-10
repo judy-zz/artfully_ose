@@ -4,11 +4,6 @@ class EventsController < ApplicationController
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy ]
   before_filter :upcoming_performances, :only => :show
 
-  rescue_from CanCan::AccessDenied do |exception|
-    flash[:alert] = exception.message
-    redirect_to dashboard_path, :alert => exception.message
-  end
-
   def create
     @event = AthenaEvent.new(params[:athena_event][:athena_event])
     @event.organization_id = current_user.current_organization.id
@@ -42,6 +37,7 @@ class EventsController < ApplicationController
 
   def new
     @event = AthenaEvent.new
+    authorize! :new, @event
     @event.producer = current_user.current_organization.name
   end
 

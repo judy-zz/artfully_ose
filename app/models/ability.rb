@@ -7,8 +7,8 @@ class Ability
     admin_abilities_for(user) if user.has_role? :admin
     ticketing_abilities_for(user) if user.is_in_organization?
     paid_ticketing_abilities_for(user) if user.current_organization.can? :access, :paid_ticketing
-    person_abilities_for(user)
-    order_ablilities_for(user)
+    person_abilities_for(user) if user.is_in_organization?
+    order_ablilities_for(user) if user.is_in_organization?
     default_abilities_for(user)
   end
 
@@ -48,6 +48,10 @@ class Ability
     can :manage, AthenaEvent do |event|
       event.free? && (user.current_organization.can? :manage, event)
     end
+
+    can :new, AthenaEvent do |event|
+      user.is_in_organization?
+    end
     
     can :create_paid_events, AthenaEvent do |event|
       user.current_organization.can? :access, :paid_ticketing
@@ -81,7 +85,7 @@ class Ability
 
   def person_abilities_for(user)
     can :manage, AthenaPerson do |person|
-      user.current_organization.can? :manage, person
+      (user.current_organization.can? :manage, person)
     end
   end
 

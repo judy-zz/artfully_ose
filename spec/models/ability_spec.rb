@@ -18,6 +18,11 @@ describe Ability do
       Ability.new(user)
     end
     
+    #this is for events_controller.new, not .create
+    describe "who are creating an event" do
+      it { should be_able_to(:new, AthenaEvent) }
+    end
+    
     describe "and are creating tickets with priced sections" do
       sections = Array.new
       sections << Factory(:athena_section)
