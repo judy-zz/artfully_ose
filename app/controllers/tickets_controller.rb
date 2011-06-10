@@ -76,7 +76,7 @@ class TicketsController < ApplicationController
     end
   end
 
-  def update_prices
+  def change_prices
     @grouped_tickets = params[:grouped_tickets]
 
     with_confirmation_price_change do
@@ -84,7 +84,7 @@ class TicketsController < ApplicationController
       @price = params[:price]
       @performance = AthenaPerformance.find(params[:performance_id])
       
-      if @performance.bulk_update_price(@selected_tickets, @price)
+      if @performance.bulk_change_price(@selected_tickets, @price)
         flash[:notice] = "Updated the price of #{to_plural(@selected_tickets.size, 'ticket')}. "
       else
         flash[:error] = "Tickets that have been sold or comped can't be given a new price."

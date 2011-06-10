@@ -6,6 +6,6 @@
       - tickets.each do |ticket|
         %li
           .label-and-element
-            = check_box_tag "selected_tickets[]", ticket.id, false, :id => "update_price_ticket_#{ticket.id}", :class => "item_#{ticket.id}"
+            = check_box_tag "selected_tickets[]", ticket.id, false, :id => "change_price_ticket_#{ticket.id}", :class => "item_#{ticket.id}"
             = label_tag "item_#{ticket.id}", ticket.id
-    = submit_tag "Update Price"
+    = submit_tag "Change Price"

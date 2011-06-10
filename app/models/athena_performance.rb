@@ -132,8 +132,8 @@ class AthenaPerformance < AthenaResource::Base
     tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.destroy }.compact
   end
 
-  def bulk_update_price(ids, price)
-    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.update_price(price) }.compact
+  def bulk_change_price(ids, price)
+    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.change_price(price) }.compact
   end
 
   private
