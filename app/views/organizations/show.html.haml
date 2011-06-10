@@ -49,6 +49,15 @@
                   %td= link_to "Activate #{kit.type.underscore.titleize}", new_kit_path(:type => kit.type.underscore)
               - elsif kit.cancelled?
                 %td= link_to "Reactivate #{kit.type.underscore.titleize}", kit_path(kit), :method => :put
+              - elsif kit.pending?
+                %td
+                  = "#{kit.state.titleize}."
+                  -if not current_user.current_organization.ach_on_file?
+                    = "We haven't processed your ACH authorization form"
+                    = link_to "(download)", "/forms/artfully_etf_sign_up.pdf"
+                    = ". If you have not already done so, please submit this form and a voided check by email to support@fracturedatlas.org or by fax to (212) 277-8025, ATTN: Artful.ly."
+                  -else
+                    = " Your ACH information has been processed."
               - else
                 %td= kit.state.titleize
             -else
