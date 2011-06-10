@@ -73,7 +73,20 @@ $(document).ready(function() {
   
   $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
       $(".super-search-results").html(data.responseText);
-  });
+  });    
+  
+  $('#ticket-table').dataTable({
+        "iDisplayLength": 100,
+        "bPaginate": true,
+        "bJQueryUI": true,
+        "sDom": '<"H"lfip>t<"F"ip>',
+        "aoColumns": [
+            null,
+            null,
+            {"sType": "currency"},
+            null
+            ]
+    });
 });
 
 function activateControls() {
@@ -101,17 +114,3 @@ function togglePrintPreview(){
       printStyles.attr("media","all");
   }
 }
-
-$(document).ready(function() {
-    $('#ticket-table').dataTable({
-        "iDisplayLength": 50,
-        "bPaginate": true,
-        "bJQueryUI": true,
-        "aoColumns": [
-            null,
-            null,
-            {"sType": "currency"},
-            null
-            ]
-    });
-} );
