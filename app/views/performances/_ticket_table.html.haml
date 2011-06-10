@@ -9,8 +9,6 @@
 
 #tickets.grouped-form-target
   = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
-    .table-controls
-      %ul.bulk-actions
     %table#ticket-table.zebra
       %thead
         %tr
