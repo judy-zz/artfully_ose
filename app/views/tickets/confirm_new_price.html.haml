@@ -19,7 +19,7 @@
   %p
     = "Are you sure you want to change the price of these tickets from their current price to #{number_as_cents @price} for the #{l @performance.datetime} performance of #{@performance.event.name}?"
 
-  =form_tag update_prices_performance_tickets_path, :method=>:put do
+  =form_tag change_prices_performance_tickets_path, :method=>:put do
     = hidden_field_tag :confirmed, :true
     = hidden_field_tag :price, @price
     - @selected_tickets.each do |st|

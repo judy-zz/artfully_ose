@@ -101,3 +101,17 @@ function togglePrintPreview(){
       printStyles.attr("media","all");
   }
 }
+
+$(document).ready(function() {
+    $('#ticket-table').dataTable({
+        "iDisplayLength": 50,
+        "bPaginate": true,
+        "bJQueryUI": true,
+        "aoColumns": [
+            null,
+            null,
+            {"sType": "currency"},
+            null
+            ]
+    });
+} );

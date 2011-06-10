@@ -1,0 +1,11 @@
+#update-price.grouped-form
+  %h3 Update Price
+  = form_tag set_new_price_performance_tickets_path(@performance), :method => :get do |form|
+    = hidden_field_tag :performance_id, performance.id
+    %ul
+      - tickets.each do |ticket|
+        %li
+          .label-and-element
+            = check_box_tag "selected_tickets[]", ticket.id, false, :id => "change_price_ticket_#{ticket.id}", :class => "item_#{ticket.id}"
+            = label_tag "item_#{ticket.id}", ticket.id
+    = submit_tag "Change Price"
