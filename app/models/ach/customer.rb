@@ -1,4 +1,6 @@
 class ACH::Customer
+  include ACH::Serialization
+
   attr_accessor :id, :name, :address, :city, :state, :zip, :phone
 
   MAPPING = {
@@ -10,8 +12,4 @@ class ACH::Customer
     :zip      => "Customer_Zip",
     :phone    => "Customer_Phone"
   }.freeze
-
-  def serialize
-    MAPPING.collect{ |method, key| "#{key}=#{send(method)}" }.join("&")
-  end
 end

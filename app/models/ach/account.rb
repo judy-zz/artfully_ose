@@ -1,4 +1,6 @@
 class ACH::Account
+  include ACH::Serialization
+
   attr_accessor :routing_number, :number, :type
 
   MAPPING = {
@@ -6,8 +8,4 @@ class ACH::Account
     :number         => "Customer_Bank_Account",
     :type           => "Account_Type"
   }.freeze
-
-  def serialize
-    MAPPING.collect{ |method, key| "#{key}=#{send(method)}" }.join("&")
-  end
 end

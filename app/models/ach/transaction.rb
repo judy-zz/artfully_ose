@@ -1,4 +1,6 @@
 class ACH::Transaction
+  include ACH::Serialization
+
   attr_accessor :login_id, :key, :type, :effective_date, :amount, :check_number, :memo, :secc_type
 
   MAPPING = {
@@ -9,14 +11,16 @@ class ACH::Transaction
     :amount         => "Amount_per_Transaction",
     :check_number   => "Check_No",
     :memo           => "Memo",
-    :secc_type      => "SECCType"
+    :secc_type      => "SECCType",
+    :frequency      => "Frequency",
+    :count          => "Number_of_Payments"
   }.freeze
 
-  def serialize
-    (MAPPING.collect{ |method, key| "#{key}=#{send(method)}" } + constant_parameters).join("&")
+  def frequency
+    "Once"
   end
 
-  def constant_parameters
-    [ "Frequency=Once", "Number_of_Payments=1" ]
+  def count
+    "1"
   end
 end
