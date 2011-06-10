@@ -122,7 +122,7 @@ describe AthenaOrder do
 
     it "should generate a valid donation action for each donation" do
       donations = 2.times.collect { Factory(:donation) }
-      subject.for_items(donations)
+      subject << donations
       actions = subject.send(:create_donation_actions)
       actions.should have(2).donation_actions
       actions.each do |action|
@@ -140,8 +140,8 @@ describe AthenaOrder do
     subject do
       AthenaOrder.new.tap do |order|
         order.for_organization organization
-        order.for_items tickets
-        order.for_items donations
+        order << tickets
+        order << donations
       end
     end
 

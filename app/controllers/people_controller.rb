@@ -1,4 +1,6 @@
 class PeopleController < ApplicationController
+  respond_to :html, :json
+  
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to root_path
@@ -48,15 +50,17 @@ class PeopleController < ApplicationController
 
   def index
     @people = []
-    if params[:email]
-      begin
-        person = AthenaPerson.find_by_email_and_organization(params[:email], current_user.current_organization)
-      rescue
-        flash[:error] = "No results found."
+    if is_search(params) 
+      @people = AthenaPerson.search_index(params[:search], current_user.current_organization)
+      @people = @people.paginate(:page => params[:page], :per_page => 10)
+      respond_with do |format|
+        if request.xhr?
+          format.html do
+            render :partial => 'list', :layout => false, :locals => { :people => @people }
+          end
+        end
       end
     end
-    @people << person unless person.nil?
-    @people = @people.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
@@ -85,5 +89,10 @@ class PeopleController < ApplicationController
     @person = AthenaPerson.find(params[:id])
     authorize! :edit, @person
   end
+
+  private 
+    def is_search(params)
+      !params[:commit].nil? && params[:commit].eql?('Search')
+    end
 
 end

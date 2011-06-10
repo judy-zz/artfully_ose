@@ -70,6 +70,10 @@ $(document).ready(function() {
     activateControls();
     return false;
   });
+  
+  $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
+      $(".super-search-results").html(data.responseText);
+  });
 });
 
 function activateControls() {

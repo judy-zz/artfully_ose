@@ -4,19 +4,21 @@
       %h4= event.name
       %ul.report
         %li
-          %span.stat Played
-          %span.current $17,352.63
+          %span.stat Total Played
+          %span.current $260.55
+          / %span.current= number_as_cents(event.glance.revenue.total_played.gross)
+
         %li
           %span.stat Advance Sales
-          %span.current $11,568.42
-          %span.total &ndash; 686 tix
+          %span.current $142.00
+          / %span.current= number_as_cents(event.glance.revenue.advance_sales.gross)
 
-        %li
-          %span.stat Wrapped Today
-          %span.current $260.55
-          %span.total &ndash; 68 tix
-
-        %li
-          %span.stat Wrapped This Week
-          %span.current $521.10
-          %span.total &ndash; 140 tix
+        / %li
+        /   %span.stat Wrapped Today
+        /   %span.current $260.55
+        /   %span.total &ndash; 68 tix
+        /
+        / %li
+        /   %span.stat Wrapped This Week
+        /   %span.current $521.10
+        /   %span.total &ndash; 140 tix

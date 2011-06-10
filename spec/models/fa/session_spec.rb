@@ -7,8 +7,8 @@ describe FA::Session do
   before(:each) do
     id = 1
     body = { :user => { :member_id => 1 } }.to_xml
-    FakeWeb.register_uri(:get, "http://api.fracturedatlas.org/sessions/#{id}.xml", :body => body)
-    FakeWeb.register_uri(:post, "http://api.fracturedatlas.org/sessions.xml", :location => "http://api.fracturedatlas.org/sessions/#{id}.xml")
+    FakeWeb.register_uri(:get, "http://staging.api.fracturedatlas.org/sessions/#{id}.xml", :body => body)
+    FakeWeb.register_uri(:post, "http://staging.api.fracturedatlas.org/sessions.xml", :location => "http://staging.api.fracturedatlas.org/sessions/#{id}.xml")
   end
 
   describe ".authenticate" do
@@ -50,7 +50,7 @@ describe FA::Session do
 
     context "with invalid credentials" do
       it "is not authenticated" do
-        FakeWeb.register_uri(:post, "http://api.fracturedatlas.org/sessions.xml", :status => 403)
+        FakeWeb.register_uri(:post, "http://staging.api.fracturedatlas.org/sessions.xml", :status => 403)
         subject.authenticate
         should_not be_authenticated
       end

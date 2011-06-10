@@ -54,7 +54,7 @@ class Exchange
       exchange_order.parent = order
       exchange_order.timestamp = time
       exchange_order.for_organization order.organization
-      exchange_order.for_items tickets
+      exchange_order << tickets
     end
 
     exchange_order.save!

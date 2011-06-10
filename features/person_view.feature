@@ -7,13 +7,13 @@ Feature: View the record for a person
     And I am on the people page
     And I am part of an organization
     And an athena person exists with an email of "person@example.com" for my organization
-    When I fill in "email" with "person@example.com"
+    When I fill in "search" with "person@example.com"
     And I press "Search"
     Then I should see "person@example.com"
 
   Scenario: A user attempts to view a Person Record for a non-existent user
     Given I am logged in
     And I am on the people page
-    When I fill in "email" with "doesnotexist@example.com"
+    When I fill in "search" with "doesnotexist@example.com"
     And I press "Search"
     Then I should see "No results found."

@@ -38,13 +38,19 @@ class AthenaItem < AthenaResource::Base
     @order, self.order_id = order, order.id
   end
 
+  def self.for(item)
+    new.tap { |this| this.item = item }
+  end
+
   def item
     @item ||= find_item
   end
 
   def item=(itm)
-    @item, self.item_id = itm, itm.id
-    self.item_type = itm.class.to_s
+    @item           = itm
+    self.item_id    = itm.id
+    self.price      = itm.price
+    self.item_type  = itm.class.to_s
   end
 
   def dup!

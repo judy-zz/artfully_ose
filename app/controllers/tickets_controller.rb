@@ -125,5 +125,4 @@ class TicketsController < ApplicationController
         yield
       end
     end
-
 end
