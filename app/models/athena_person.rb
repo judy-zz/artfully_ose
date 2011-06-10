@@ -18,6 +18,11 @@ class AthenaPerson < AthenaResource::Base
   def user
     @user ||= User.find_by_athena_id(id)
   end
+  
+  #TODO: This isn't actually recent, but that's an Athena problem, not an artfully problem
+  def self.recent(organization)
+    search_index(nil, organization)
+  end
 
   def self.find_by_email_and_organization(email, organization)
     find(:first, :params => { :email => "eq#{email}", :organizationId => "eq#{organization.id}"})

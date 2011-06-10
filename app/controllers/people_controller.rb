@@ -52,7 +52,6 @@ class PeopleController < ApplicationController
     @people = []
     if is_search(params) 
       @people = AthenaPerson.search_index(params[:search], current_user.current_organization)
-      @people = @people.paginate(:page => params[:page], :per_page => 10)
       respond_with do |format|
         if request.xhr?
           format.html do
@@ -60,7 +59,10 @@ class PeopleController < ApplicationController
           end
         end
       end
+    else
+      @people = AthenaPerson.recent(current_user.current_organization)
     end
+    @people = @people.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show

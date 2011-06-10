@@ -16,13 +16,15 @@ module AthenaResource
         Hash[params.collect{|key, value| [key.camelize(:lower),value] }]
       end
       
-      def search_index(search_query, organization)
-        unless search_query.blank?
+      def search_index(search_query, organization, limit=10)
+        if search_query.blank?
+          search_query = ''
+        else
           search_query.concat(' AND ')
         end
         
         search_query.concat("organizationId:").concat("#{organization.id}")
-        find(:all, :params => { '_q' => search_query})
+        find(:all, :params => { '_q' => search_query, '_limit' => limit})
       end
     
       def method_missing(method_id, *arguments)
