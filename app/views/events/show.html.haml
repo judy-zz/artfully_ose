@@ -31,11 +31,7 @@
 .document
   #this-week
     %h3 This Week
-    %ol.calendar.week
-      - (5..11).each do |day|
-        %li
-          .day
-            .number= day
+    #calendar
 
   #glance= render :partial => "glance", :locals => { :report => @event.glance }
 
@@ -43,3 +39,14 @@
     %h3 Widget
     .code
       %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
+      
+:erb
+  <script>
+  $(document).ready(function() {  
+    $('#calendar').fullCalendar({
+      height: 150,
+      events: '/events/<%=@event.id%>.json'
+    });
+    $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
+  });
+  </script>

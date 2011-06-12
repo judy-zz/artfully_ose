@@ -1,4 +1,5 @@
 class EventsController < ApplicationController
+  respond_to :html, :json
   before_filter :authenticate_user!
 
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy ]
@@ -33,6 +34,14 @@ class EventsController < ApplicationController
     @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
     @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @chart = AthenaChart.new
+
+    respond_to do |format|
+      format.json do
+        render :json => @event.as_full_calendar_json.to_json
+      end
+      format.html 
+    end
+
   end
 
   def new

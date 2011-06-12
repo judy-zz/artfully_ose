@@ -64,6 +64,19 @@ class AthenaEvent < AthenaResource::Base
   def as_widget_json(options = {})
     as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:on_sale?))
   end
+  
+  def as_full_calendar_json
+    perfs = []
+    performances.each do |p|
+      phash = {}
+      phash['title'] = ''
+      phash['start'] = p.datetime
+      phash['allDay'] = false
+      phash['color'] = '#034754'
+      perfs << phash
+    end
+    perfs
+  end
 
   def as_json(options = {})
     super({ :methods => [ 'performances', 'charts' ]}.merge(options))
