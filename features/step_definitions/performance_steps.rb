@@ -80,6 +80,7 @@ end
 When /^I confirm comp$/ do
   customer = Factory(:athena_person_with_id)
   ticket = Factory(:ticket_with_id)
+  FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?parentId=1", :body=>"")
 
   body1 = '{"subjectId":"1","personId":"1","actionType":"purchase","id":"1"}'
   FakeWeb.register_uri(:post, "http://localhost/orders/orders.json", :body => "#{body1}")

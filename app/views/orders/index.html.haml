@@ -48,6 +48,10 @@
                 %td=link_to "#{ticket.event}", event_path(ticket.event_id)
               -else
                 %td
-              %td="#{order.items_detail}"
+              -details = []
+              -details << pluralize(order.num_tickets, "ticket") unless order.num_tickets <= 0
+              -details << " #{number_as_cents(order.sum_donations)} donation" unless order.sum_donations <= 0.0
+              %td= details.compact.to_sentence
+              
       =will_paginate @results
 

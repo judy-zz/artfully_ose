@@ -93,7 +93,8 @@ class Order < ActiveRecord::Base
     order_timestamp = Time.now
     purchasable_tickets.map { |ticket| ticket.sell_to(person, order_timestamp) }
 
-    organizations_from_tickets.each do |organization|
+    organizations.each do |organization|
+      logger.debug("INSIDE organizations.each do |organization|, organization: #{organization}")
       order = AthenaOrder.new.tap do |order|
         order.organization    = organization
         order.timestamp       = order_timestamp

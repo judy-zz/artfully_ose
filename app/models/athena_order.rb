@@ -120,28 +120,33 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def items_detail
-    num_tickets = 0
-    sum_donations = 0
+    result = []
 
-    all_items.each{ |item|
-      if item.attributes["item_type"] == "AthenaTicket"
-        num_tickets += 1
-      elsif item.attributes["item_type"] == "Donation"
-        sum_donations += item.price.to_i
-      end }
-
-    tickets = "#{num_tickets} ticket(s)"
-    donations = "$#{sum_donations/100.00} donation"
-
-    if num_tickets == 0
-      result = "#{[donations].to_sentence}"
-    elsif sum_donations == 0.0
-      result = "#{[tickets].to_sentence}"
-    else
-      result = "#{[tickets, donations].to_sentence}"
+    if sum_donations > 0.0
+      result << donation_details
+    end    
+    if num_tickets > 0
+      result << ticket_details
     end
-    result
-end
+
+    result.to_sentence
+  end
+  
+  def num_tickets
+    all_tickets.size
+  end
+
+  def sum_donations
+    all_donations.collect{|item| item.price.to_i}.sum
+  end
+
+  def ticket_details
+    "#{num_tickets} ticket(s)"
+  end
+
+  def donation_details
+    "$#{sum_donations/100.00} donation"
+  end
 
   def returnable_items
     items.select { |i| i.returnable? and not i.refundable? }
@@ -158,19 +163,21 @@ end
     end
 
     def create_purchase_action
-      action                 = AthenaPurchaseAction.new
-      action.person          = person
-      action.subject         = self
-      action.organization_id = organization.id
-      action.timestamp       = self.timestamp
-      action.details         = "#{items.size} ticket(s) #{self.details}"
-      action.occurred_at     = action.timestamp
-      action.action_subtype  = "Purchase"
-
-      logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
-      logger.debug("Action: #{action.attributes}")
-      action.save!
-      action
+      unless all_tickets.empty?
+        action                 = AthenaPurchaseAction.new
+        action.person          = person
+        action.subject         = self
+        action.organization_id = organization.id
+        action.timestamp       = self.timestamp
+        action.details         = ticket_details 
+        action.occurred_at     = action.timestamp
+        action.action_subtype  = "Purchase"
+     
+        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
+        logger.debug("Action: #{action.attributes}")
+        action.save!
+        action
+      end
     end
 
     def create_donation_actions
@@ -180,9 +187,12 @@ end
         action.subject         = Donation.find(item.item_id)
         action.organization_id = organization.id
         action.timestamp       = self.timestamp
-        action.details         = self.details
-        action.action_subtype  = "Donation"
+        action.details         = ticket_details
         action.occurred_at     = action.timestamp
+        action.action_subtype  = "Donation"
+  
+        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
+        logger.debug("Action: #{action.attributes}")
         action.save!
         action
       end

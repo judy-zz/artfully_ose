@@ -114,12 +114,6 @@ describe AthenaOrder do
       subject.save
     end
 
-    it "should generate a valid purchase action" do
-      subject.save
-      action = subject.send(:create_purchase_action)
-      action.should be_valid
-    end
-
     it "should generate a valid donation action for each donation" do
       donations = 2.times.collect { Factory(:donation) }
       subject << donations
