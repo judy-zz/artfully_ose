@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
       @results = search(params[:search]).paginate(:page => params[:page], :per_page => 25)
       redirect_to order_path(@results.first.id) if @results.length == 1
     else
-      @results = AthenaOrder.find(:all, :params =>{ :organizationId => "eq#{current_user.current_organization.id}"}).paginate(:page => params[:page], :per_page => 10)
+      @results = AthenaOrder.find(:all, :params =>{ :organizationId => "eq#{current_user.current_organization.id}"}).sort{|a,b| a.timestamp <=> b.timestamp }.reverse.paginate(:page => params[:page], :per_page => 10)
     end
   end
 
