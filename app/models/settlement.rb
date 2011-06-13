@@ -1,4 +1,8 @@
 class Settlement
+  def initialize(item)
+    @transaction = Transaction.new
+  end
+
   def self.range_for(now)
     start = start_from(now.beginning_of_day)
     stop  = offset_from(start)

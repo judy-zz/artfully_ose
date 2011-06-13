@@ -4,6 +4,6 @@ module ACH::Serialization
   end
 
   def serialize
-    serializable_hash.collect{ |key, value| "#{key}=#{value}" }.join("&")
+    serializable_hash.to_query
   end
 end

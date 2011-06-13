@@ -23,7 +23,11 @@ describe ACH::Account do
       subject.number          = "3215240125"
       subject.type            = "Business Checking"
 
-      subject.serialize.should == "Customer_Bank_ID=111111118&Customer_Bank_Account=3215240125&Account_Type=Business Checking"
+      subject.serialize.should == {
+        "Customer_Bank_ID"      => "111111118",
+        "Customer_Bank_Account" => "3215240125",
+        "Account_Type"          => "Business Checking"
+      }.to_query
     end
   end
 end

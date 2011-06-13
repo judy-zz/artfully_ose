@@ -3,9 +3,14 @@ require 'spec_helper'
 describe Settlement do
   subject { Settlement.new }
 
-  describe "#submit" do
-    # subject.settle(performance, producer)
-    # subject.settle(donation, producer)
+  describe ".new" do
+    # subject.settle(performance)
+    context "for a performance" do
+      it "" do
+      end
+    end
+
+    # subject.settle(donation)
   end
 
   describe "#range_for" do

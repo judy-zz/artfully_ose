@@ -1,11 +1,18 @@
 class ACH::Transaction
   include ACH::Serialization
 
-  attr_accessor :login_id, :key, :type, :effective_date, :amount, :check_number, :memo, :secc_type
+  attr_accessor :effective_date, :amount, :check_number, :memo, :secc_type
+
+  def initialize(amount, memo)
+    self.amount         = "%0.2f" % (amount / 100.00)
+    self.memo           = memo
+    self.effective_date = DateTime.now.strftime("%m/%d/%y")
+    # TODO: Check number?
+    self.check_number   = "Check_No"
+    self.secc_type      = "SECCType"
+  end
 
   MAPPING = {
-    :login_id       => "Login_ID",
-    :key            => "Transaction_Key",
     :type           => "Transaction_Type",
     :effective_date => "Effective_Date",
     :amount         => "Amount_per_Transaction",
@@ -15,6 +22,10 @@ class ACH::Transaction
     :frequency      => "Frequency",
     :count          => "Number_of_Payments"
   }.freeze
+
+  def type
+    "Credit"
+  end
 
   def frequency
     "Once"

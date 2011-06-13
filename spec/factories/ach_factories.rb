@@ -13,14 +13,3 @@ Factory.define(:ach_customer, :default_strategy => :build, :class => ACH::Custom
   customer.zip      "21046"
   customer.phone    "123-789-4568"
 end
-
-Factory.define(:ach_transaction, :default_strategy => :build, :class => ACH::Transaction) do |transaction|
-  transaction.login_id       "eFco0UJyK8Tm"
-  transaction.key            "7002b9ca57d92a41"
-  transaction.type           "Debit"
-  transaction.effective_date "01/01/2010"
-  transaction.amount         "1.23"
-  transaction.check_number   "8714"
-  transaction.memo           "Memo!"
-  transaction.secc_type      "CCD"
-end

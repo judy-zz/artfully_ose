@@ -35,7 +35,15 @@ describe ACH::Customer do
       subject.zip     = "21046"
       subject.phone   = "123-789-4568"
 
-      subject.serialize.should == "Customer_ID=someCustID&Customer_Name=John Doe&Customer_Address=1234 Main St&Customer_City=Columbia&Customer_State=MD&Customer_Zip=21046&Customer_Phone=123-789-4568"
+      subject.serialize.should == {
+        "Customer_ID"       => "someCustID",
+        "Customer_Name"     => "John Doe",
+        "Customer_Address"  => "1234 Main St",
+        "Customer_City"     => "Columbia",
+        "Customer_State"    => "MD",
+        "Customer_Zip"      => "21046",
+        "Customer_Phone"    => "123-789-4568"
+      }.to_query
     end
   end
 end
