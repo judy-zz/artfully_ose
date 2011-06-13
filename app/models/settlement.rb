@@ -1,6 +1,10 @@
 class Settlement
   def initialize(item)
-    @transaction = Transaction.new
+    @request = ACH::Request.for(item.settlement_amount, item.settlement_recipient)
+  end
+
+  def submit
+    @request.submit
   end
 
   def self.range_for(now)
