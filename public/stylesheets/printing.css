@@ -1,36 +1,29 @@
 @import url(reset.css);
 
 #header {
-  display:none;
+    display:none;
 }
 
 #content{
-  position: absolute;
-  top: -90px;
 }
 
 #page {
-  position: absolute;
 }
 
 #logo {
-  position: relative;
-  top: 0px;
-  right: 0px; }
+    position: relative;
+    top: 0px;
+    right: 0px; }
 
 .button_link {
-  position:absolute;
-  top: 0px;
-  right: 10px;
 }
 
 .document {
-  width: 100%;
-  top: -45px;
+    width: 100%;
 }
 
 body {
-  font-family: Georgia, serif;
+    font-family: Georgia, serif;
 }
 
 h1 {
@@ -38,30 +31,28 @@ h1 {
 }
 
 h2, h3, h4, h5, h6 {
-  color: black;
-  font-family: "Raleway", sans-serif;
-  font-weight:normal;
+    color: black;
+    font-family: "Raleway", sans-serif;
+    font-weight:normal;
 }
 
 table {
-  width: 100%;
-  position: relative;
-  top: 0px;
+    width: 100%;
+    position: relative;
+    top: 0px;
 }
 
 table thead th {
-  background: white;
-  text-transform:uppercase;
-  font-weight:normal;
-  border-bottom:1px solid #ccc;
-
+    background: white;
+    text-transform:uppercase;
+    font-weight:normal;
+    border-bottom:1px solid #ccc;
 }
 
 a:link, a:visited {
-   color: #520;
-   background: transparent;
-
-   text-decoration: underline;
-   font-size: 10pt;
-   font-weight: normal;
-   }
+    color: #520;
+    background: transparent;
+    text-decoration: underline;
+    font-size: 10pt;
+    font-weight: normal;
+}
