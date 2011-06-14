@@ -12,17 +12,17 @@ $(document).ready(function() {
 
   $(".detailed-list li").hover(
     function(){
-      $(this).find(".controls").stop(false,true).fadeIn('fast'); },
+      $(this).find(".controls").stop(false,true).fadeIn('fast');},
     function(){
-      $(this).find(".controls").stop(false,true).fadeOut('fast'); });
+      $(this).find(".controls").stop(false,true).fadeOut('fast');});
 
   $(".close").click(function(){
     $(this).closest('.flash').remove();
   })
 
   $("#main-menu").hover(
-    function(){ $("#main-menu li ul").stop().animate({height: '106px'}, 'fast') },
-    function(){ $("#main-menu li ul").stop().animate({height: '0px'}, 'fast') }
+    function(){$("#main-menu li ul").stop().animate({height: '106px'}, 'fast')},
+    function(){$("#main-menu li ul").stop().animate({height: '0px'}, 'fast')}
   );
 
   $(".stats-controls").click(function(){
@@ -62,7 +62,7 @@ $(document).ready(function() {
     $('.dropdown').toggle();
   });
 
-  $(".popup").dialog({ autoOpen: false, draggable:false, modal:true, width:600, height:400, title:"Log Action" })
+  $(".popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, height:400, title:"Log Action"})
 
   $(".popup-link").bind("ajax:complete", function(et, e){
     $(".popup").dialog( "open" );
@@ -75,18 +75,6 @@ $(document).ready(function() {
       $(".super-search-results").html(data.responseText);
   });    
   
-  $('#ticket-table').dataTable({
-        "iDisplayLength": 100,
-        "bPaginate": true,
-        "bJQueryUI": true,
-        "sDom": '<"H"lfip>t<"F"ip>',
-        "aoColumns": [
-            null,
-            null,
-            {"sType": "currency"},
-            null
-            ]
-    });
 });
 
 function activateControls() {
@@ -114,3 +102,20 @@ function togglePrintPreview(){
       printStyles.attr("media","all");
   }
 }
+
+$(document).bind('grouped-form-ready', function(){
+    $('#ticket-table').dataTable({
+        "iDisplayLength": 100,
+        "bPaginate": true,
+        "bJQueryUI": true,
+        "sDom": '<"H"lfip>t<"F"ip>',
+        "aoColumns": [
+        null,
+        null,
+        {
+            "sType": "currency"
+        },
+        null
+        ]
+    });
+});

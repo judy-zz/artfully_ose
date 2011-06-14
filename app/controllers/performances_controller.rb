@@ -52,7 +52,7 @@ class PerformancesController < ApplicationController
     authorize! :view, @performance
 
     @performance.tickets = @performance.tickets
-    @tickets = @performance.tickets.paginate(:page => params[:page], :per_page => 25)
+    @tickets = @performance.tickets
   end
 
   def edit
