@@ -7,37 +7,17 @@ describe ACH::Request do
   subject { ACH::Request.new(transaction, customer, account) }
 
   describe ".for" do
-    let(:recipient) do
-      mock(:bank_account).tap do |ba|
-        ba.stub(:customer_information).and_return({
-          :id      => 1,
-          :name    => "Joe Smith",
-          :address => "1 Westward Way",
-          :city    => "New York",
-          :state   => "NY",
-          :zip     => "12345",
-          :phone   => "1231231234"
-        })
-
-        ba.stub(:account_information).and_return({
-          :routing_number => "123412345",
-          :number         => "78907890789",
-          :type           => "Checking"
-        })
-      end
-    end
+    let(:recipient) { Factory(:bank_account) }
 
     it "creates a new request with the amount set" do
       ACH::Request.for(2500, recipient).transaction.amount.should eq "25.00"
     end
 
     it "uses the recipient to set up the customer" do
-      recipient.should_receive(:customer_information)
       ACH::Request.for(2500, recipient).transaction.amount.should eq "25.00"
     end
 
     it "uses the account information to set up the account" do
-      recipient.should_receive(:account_information)
       ACH::Request.for(2500, recipient).transaction.amount.should eq "25.00"
     end
   end

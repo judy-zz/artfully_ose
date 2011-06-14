@@ -4,7 +4,6 @@ class ACH::Customer
   attr_accessor :id, :name, :address, :city, :state, :zip, :phone
 
   def initialize(attributes = {})
-    # TODO: Use organization to set this information
     self.id      = attributes[:id]
     self.name    = attributes[:name]
     self.address = attributes[:address]

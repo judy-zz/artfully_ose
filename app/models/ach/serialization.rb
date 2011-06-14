@@ -1,6 +1,6 @@
 module ACH::Serialization
   def serializable_hash
-    Hash[self.class::MAPPING.collect{ |method, key| [key, send(method)] }]
+    Hash[self.class::MAPPING.collect{ |method, key| [key, send(method).to_s] }]
   end
 
   def serialize

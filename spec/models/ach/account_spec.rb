@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ACH::Account do
-  subject { ACH::Account.new }
+  subject { Factory(:ach_account) }
 
   describe "serializable_hash" do
     it "returns the key-value pairs for the remote attributes and our values" do

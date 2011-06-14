@@ -23,19 +23,17 @@ describe ACH::Transaction do
     it "returns the key-value pairs for the remote attributes and our values" do
       subject.effective_date = "01/01/2010"
       subject.amount         = "1.23"
-      subject.check_number   = "8714"
       subject.memo           = "Memo!"
-      subject.secc_type      = "CCD"
 
       subject.serializable_hash.should <=> {
         "Transaction_Type"        => "Credit",
         "Effective_Date"          => "01/01/2010",
         "Amount_per_Transaction"  => "1.23",
-        "Check_No"                => "8714",
+        "Check_No"                => "",
+        "SECCType"                => "PPD",
         "Memo"                    => "Memo!",
         "Frequency"               => "Once",
-        "Number_of_Payments"      => "1",
-        "SECCType"                => "CCD"
+        "Number_of_Payments"      => "1"
       }
     end
   end
@@ -44,19 +42,17 @@ describe ACH::Transaction do
     it "serializes attributes into an HTTP query string" do
       subject.effective_date = "01/01/2010"
       subject.amount         = "1.23"
-      subject.check_number   = "8714"
       subject.memo           = "Memo!"
-      subject.secc_type      = "CCD"
 
       subject.serialize.should == {
         "Transaction_Type"        => "Credit",
         "Effective_Date"          => "01/01/2010",
         "Amount_per_Transaction"  => "1.23",
-        "Check_No"                => "8714",
+        "Check_No"                => "",
+        "SECCType"                => "PPD",
         "Memo"                    => "Memo!",
         "Frequency"               => "Once",
-        "Number_of_Payments"      => "1",
-        "SECCType"                => "CCD"
+        "Number_of_Payments"      => "1"
       }.to_query
     end
   end

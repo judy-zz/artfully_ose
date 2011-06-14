@@ -1,25 +1,7 @@
 require 'spec_helper'
 
 describe Settlement do
-  let(:recipient) do
-    mock(:bank_account).tap do |ba|
-      ba.stub(:customer_information).and_return({
-        :id      => 1,
-        :name    => "Joe Smith",
-        :address => "1 Westward Way",
-        :city    => "New York",
-        :state   => "NY",
-        :zip     => "12345",
-        :phone   => "1231231234"
-      })
-
-      ba.stub(:account_information).and_return({
-        :routing_number => "123412345",
-        :number         => "78907890789",
-        :type           => "Checking"
-      })
-    end
-  end
+  let(:recipient) { Factory(:bank_account) }
 
   let(:item) do
     mock(:item).tap do |item|
