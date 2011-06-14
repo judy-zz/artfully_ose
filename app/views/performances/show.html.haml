@@ -29,7 +29,10 @@
 
   %h3 Tickets
   - if @performance.pending?
-    %p You have not created tickets for this event.
-    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance)
+    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance), :class => 'cta-left'
+    %p You have not created tickets for this event.  Press the blue button above to create tickets using the following seat chart:
+    %h5=@performance.chart.name
+    %p
+      = render :partial => 'sections/section_table', :locals => { :chart => @performance.chart, :include_link => false }
   - else
     = render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }
