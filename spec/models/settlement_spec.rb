@@ -1,15 +1,19 @@
 require 'spec_helper'
 
 describe Settlement do
-  let(:recipient) { Factory(:bank_account) }
-
-  let(:item) do
-    mock(:item).tap do |item|
-      item.stub(:settlement_amount).and_return(2500)
-      item.stub(:settlement_recipient).and_return(recipient)
+  let(:items) do
+    10.times.collect do
+      mock(:item).tap { |item| item.stub(:net).and_return(1000) }
     end
   end
-  subject { Settlement.new(item) }
+
+  let(:bank_account) { Factory(:bank_account) }
+  subject { Settlement.new(items, bank_account) }
+
+  it "sums the net from the items" do
+    ACH::Request.should_receive(:for).with(10000, bank_account)
+    Settlement.new(items, bank_account)
+  end
 
   describe "#submit" do
     it "submits the request to the ACH API" do

@@ -142,6 +142,10 @@ class AthenaPerformance < AthenaResource::Base
     tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.change_price(price) }.compact
   end
 
+  def settleables
+    AthenaItem.find_by_performance_id(self.id).reject(&:modified?)
+  end
+
   private
     def find_tickets
       return [] if new_record?

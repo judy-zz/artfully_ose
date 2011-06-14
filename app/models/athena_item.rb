@@ -89,6 +89,10 @@ class AthenaItem < AthenaResource::Base
     product.return! if product.returnable?
   end
 
+  def modified?
+    !state.blank?
+  end
+
   def self.find_by_order(order)
     return [] unless order.id?
     items = AthenaItem.find(:all, :params => {:orderId => "eq#{order.id}"} )
@@ -113,10 +117,6 @@ class AthenaItem < AthenaResource::Base
 
     def set_performance_from(prod)
       self.performance_id = prod.performance_id
-    end
-
-    def modified?
-      !state.blank?
     end
 
     def find_product

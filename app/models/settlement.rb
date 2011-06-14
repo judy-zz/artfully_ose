@@ -1,10 +1,12 @@
 class Settlement
-  def initialize(item)
-    @request = ACH::Request.for(item.settlement_amount, item.settlement_recipient)
+  def initialize(items, bank_account)
+    @items = Array.wrap(items)
+    @request = ACH::Request.for(@items.sum(&:net), bank_account)
   end
 
   def submit
     @request.submit
+    # TODO: Mark items as settled.
   end
 
   def self.range_for(now)
