@@ -1,5 +1,6 @@
 class Organization < ActiveRecord::Base
   has_many :memberships
+  has_one  :bank_account
   has_many :users, :through => :memberships
   has_many :kits, :before_add => :check_for_duplicates,
                   :after_add => lambda { |u,k| k.activate! unless k.activated? }
