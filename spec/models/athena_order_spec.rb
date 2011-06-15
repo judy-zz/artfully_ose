@@ -160,6 +160,15 @@ describe AthenaOrder do
         donations.collect(&:id).should include item.product_id
       end
     end
+  end
 
+  describe ".in_range" do
+    it "composes a GET request for a given set of Time objects" do
+      start = Time.now.beginning_of_day
+      stop = start.end_of_day
+      FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?timestamp=gt#{start.xmlschema}&timestamp=lt#{stop.xmlschema}", :body => "[]")
+      AthenaOrder.in_range(start, stop)
+      FakeWeb.last_request.path.should eq "/orders/orders.json?timestamp=gt#{start.xmlschema}&timestamp=lt#{stop.xmlschema}"
+    end
   end
 end

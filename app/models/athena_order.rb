@@ -99,6 +99,12 @@ class AthenaOrder < AthenaResource::Base
     AthenaPayment.new(:transaction_id => transaction_id)
   end
 
+  def self.in_range(start, stop)
+    start = "gt#{start.xmlschema}"
+    stop = "lt#{stop.xmlschema}"
+    instantiate_collection(connection.get("/orders/orders.json?timestamp=#{start}&timestamp=#{stop}", self.headers))
+  end
+
   def all_items
     @all_items ||= merge_and_sort_items
   end
