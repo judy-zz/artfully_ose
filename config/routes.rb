@@ -77,7 +77,11 @@ Artfully::Application.routes.draw do
     resources :sections
   end
 
-  resources :orders
+  resources :orders do
+    collection do
+      get :contributions
+    end
+  end
   resources :refunds, :only => [ :new, :create ]
   resources :exchanges, :only => [ :new, :create ]
   resources :returns, :only => :create

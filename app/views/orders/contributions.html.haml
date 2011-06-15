@@ -1,0 +1,28 @@
+- in_section :people
+- content_for :header do
+  %h1 Contributions
+  %h2 Donations & Grants
+
+.context
+  %p Lorem Ipsum
+  /%p = #{@orders_with_donations}
+.document
+  %h3 Donations
+  - unless @orders_with_donations.empty?
+    #donations
+      %table.standalone.zebra
+        %thead
+          %tr
+            %th Item
+            %th Person
+            %th Amount
+            %th Order
+        %tbody
+          - @orders_with_donations.each do |order|
+            -order.items.each do |item|
+              -if item.item_type == "Donation"
+                %tr
+                  %td= item.id
+                  %td= link_to "#{order.person.first_name}, #{order.person.first_name}", person_path(order.person)
+                  %td= number_as_cents item.price
+                  %td= link_to "#{order.id}", order_path(order)
