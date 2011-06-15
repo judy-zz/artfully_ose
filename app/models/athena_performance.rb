@@ -38,6 +38,10 @@ class AthenaPerformance < AthenaResource::Base
     end
   end
 
+  def organization
+    @organization ||= Organization.find(organization_id)
+  end
+
   def gross_potential
     @gross_potential ||= tickets.inject(0) { |sum, ticket| sum += ticket.price.to_i }
   end

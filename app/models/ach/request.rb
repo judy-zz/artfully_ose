@@ -1,9 +1,10 @@
-class ACH::Request < ActiveResource::Base
-  self.site = "https://demo.firstach.com/https/TransRequest.asp"
+class ACH::Request
+  include HTTParty
+  base_uri "https://demo.firstach.com/"
 
   CREDENTIALS = {
-    "Login_ID"        => :loginid,
-    "Transaction_Key" => :somekey,
+    "Login_ID"        => :xPCTyjcQ0KlG,
+    "Transaction_Key" => :d38a1b4afaf5230c,
   }.freeze
 
   attr_reader :transaction, :customer, :account
@@ -22,13 +23,12 @@ class ACH::Request < ActiveResource::Base
     super()
   end
 
-  def serialize
-    CREDENTIALS.merge(all_hashes).to_query
+  def query
+    CREDENTIALS.merge(all_hashes)
   end
 
   def submit
-    path = "#{self.class.site}?#{self.serialize}"
-    connection.get(path, self.class.headers)
+    self.class.get("/https/TransRequest.asp", :query => query)
   end
 
   private

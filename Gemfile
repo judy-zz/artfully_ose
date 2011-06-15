@@ -8,6 +8,7 @@ gem 'devise'
 gem 'cancan'
 gem 'role_model'
 gem 'escape_utils'
+gem 'httparty'
 gem 'validates_timeliness'
 gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'transitions',

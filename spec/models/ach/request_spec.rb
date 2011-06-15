@@ -30,11 +30,10 @@ describe ACH::Request do
     end
   end
 
-  describe "#serialize" do
+  describe "#query" do
     it "should join the seralized hashes from transaction, customer, account" do
       query_hashes = [ transaction, customer, account ].collect(&:serializable_hash).reduce(:merge)
-      query_string = ACH::Request::CREDENTIALS.merge(query_hashes).to_query
-      subject.serialize.should eq query_string
+      subject.query.should eq ACH::Request::CREDENTIALS.merge(query_hashes)
     end
   end
 
@@ -42,7 +41,6 @@ describe ACH::Request do
     it "submits a GET request to First ACH" do
       FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "")
       subject.submit
-      FakeWeb.last_request.path.should match %r|https://demo.firstach.com/https/TransRequest.asp?.*|
       FakeWeb.last_request.method.should == "GET"
     end
   end

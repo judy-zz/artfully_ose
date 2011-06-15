@@ -79,6 +79,7 @@ end
 Factory.define :athena_performance, :default_strategy => :build do |p|
   p.datetime { Factory.next :performance_datetime }
   p.event { Factory(:athena_event_with_id) }
+  p.organization_id { Factory(:organization).id }
 end
 
 Factory.define :athena_performance_with_id, :parent => :athena_performance do |p|
