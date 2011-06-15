@@ -181,7 +181,7 @@ describe AthenaPerformance do
       stop = start.end_of_day
       FakeWeb.register_uri(:get, "http://localhost/stage/performances.json?datetime=gt#{start.xmlschema}&datetime=lt#{stop.xmlschema}", :body => "[]")
       AthenaPerformance.in_range(start, stop)
-      FakeWeb.last_request.path.should match(/datetime=gt#{start.xmlschema}&datetime=lt#{stop.xmlschema}/)
+      FakeWeb.last_request.path.should eq "/stage/performances.json?datetime=gt#{start.xmlschema}&datetime=lt#{stop.xmlschema}"
     end
   end
 end
