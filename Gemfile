@@ -9,6 +9,7 @@ gem 'cancan'
 gem 'role_model'
 gem 'escape_utils'
 gem 'httparty'
+gem 'whenever'
 gem 'validates_timeliness'
 gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'transitions',
