@@ -1,10 +1,10 @@
 class ACH::Request
   include HTTParty
-  base_uri "https://demo.firstach.com/"
+  base_uri ACH::CONFIG['base_uri']
 
   CREDENTIALS = {
-    "Login_ID"        => :xPCTyjcQ0KlG,
-    "Transaction_Key" => :d38a1b4afaf5230c,
+    "Login_ID"        => ACH::CONFIG['login_id'],
+    "Transaction_Key" => ACH::CONFIG['transaction_key'],
   }.freeze
 
   attr_reader :transaction, :customer, :account
