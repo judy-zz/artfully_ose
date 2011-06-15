@@ -28,7 +28,7 @@ class Settlement
 
     def offset_from(start)
       stop = start + 1.day
-      stop += 2.days if stop.saturday?
+      stop += 2.days if stop.wday == 6
 
       end_of_day_before(stop)
     end
@@ -38,7 +38,7 @@ class Settlement
     end
 
     def weekend?(day)
-      day.saturday? or day.sunday?
+      [ 0, 6 ].include?(day.wday)
     end
 
     def weekend_offset(day)
