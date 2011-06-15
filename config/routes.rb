@@ -77,6 +77,8 @@ Artfully::Application.routes.draw do
     resources :sections
   end
 
+  resources :help, :only => [ :index ]
+
   resources :orders
   resources :refunds, :only => [ :new, :create ]
   resources :exchanges, :only => [ :new, :create ]
