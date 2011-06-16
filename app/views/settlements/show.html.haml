@@ -1,0 +1,96 @@
+- in_section :reports
+- content_for :header do
+  %h1= l(Date.today, :format => :long)
+  %h2 View settlements for performances and donations
+
+.overview
+  #overview
+  %h3 Overview
+  %ul.kv
+    %li
+      .key Paid To
+      .value Justin L Karr
+    %li
+      .key Account
+      .value Chase Manhattan
+    %li
+      .key Total Paid
+      .value $33,961.28
+    %li
+      .key Total Tickets
+      .value $25,181.68
+    %li
+      .key Total Donations
+      .value 8,779.60
+
+.document
+  #tickets
+    %h3 Tickets
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Tickets
+          %th Performance
+          %th Tickets Sold
+          %th Gross Revenue
+          %th Net Revenue
+      %tbody
+        - 4.times do
+          %tr
+            %td Comely and the Critter
+            %td 5/27/11 8:00PM
+            %td 101
+            %td $3,030.00
+            %td $2,923.95
+      %tfoot
+        %tr
+          %td Total
+          %td
+          %td 546
+          %td $26,095.00
+          %td $25,181.68
+
+  #donations
+    %h3 Donations
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Donations
+          %th Period
+          %th Gross Revenue
+          %th Net Revenue
+      %tbody
+        - 10.times do
+          %tr
+            %td Unsolicited
+            %td= l(Date.today - 2.days, :format => :long)
+            %td $100
+            %td $94.57
+      %tfoot
+        %tr
+          %td Total
+          %td 10
+          %td $1000
+          %td $9457
+
+  #deductions
+    %h3 Deductions
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Deductions
+          %th Units
+          %th Rate
+          %th Total
+      %tbody
+        %tr
+          %td Credit Card Processing
+          %td 26,095.00
+          %td 3.5%
+          %td 913.33
+      %tfoot
+        %tr
+          %td Total
+          %td
+          %td
+          %td 1,473.73
