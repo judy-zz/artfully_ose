@@ -20,9 +20,9 @@
         %tbody
           - @orders_with_donations.each do |order|
             -order.items.each do |item|
-              -if item.item_type == "Donation"
+              -if item.product_type == "Donation"
                 %tr
                   %td= item.id
-                  %td= link_to "#{order.person.first_name}, #{order.person.first_name}", person_path(order.person)
+                  %td= link_to "#{order.person.last_name}, #{order.person.first_name}", person_path(order.person)
                   %td= number_as_cents item.price
                   %td= link_to "#{order.id}", order_path(order)
