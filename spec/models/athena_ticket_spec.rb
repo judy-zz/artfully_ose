@@ -80,36 +80,36 @@ describe AthenaTicket do
     end
   end
 
-  describe "searching" do
+  describe "available tickets" do
     it "by performance" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?|, :body => "[]")
       now = DateTime.now
       params = { "performance" => "eq#{now.as_json}" }
-      AthenaTicket.search(params)
+      AthenaTicket.available(params)
       FakeWeb.last_request.path.should match %r|performance=eq#{CGI::escape now.as_json}|
 
     end
 
     it "should add _limit to the query string when included in the arguments" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?_limit=10|, :body => "[]")
-      params = { "limit" => "10" }
-      AthenaTicket.search(params)
-      FakeWeb.last_request.path.should match "_limit=10"
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?_limit=4|, :body => "[]")
+      params = { "limit" => "4" }
+      AthenaTicket.available(params)
+      FakeWeb.last_request.path.should match "_limit=4"
     end
 
     it "should default to searching for tickets marked as on sale" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?|, :body => "[]")
-      AthenaTicket.search({})
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?|, :body => "[]")
+      AthenaTicket.available({})
       FakeWeb.last_request.path.should match "state=on_sale"
     end
 
     it "should raise an error if an unknown attribute is used" do
-      lambda { AthenaTicket.search({:foo => "bar"}) }.should raise_error(ArgumentError)
+      lambda { AthenaTicket.available({:foo => "bar"}) }.should raise_error(ArgumentError)
     end
 
     it "should camelize the keys for the search terms" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets.json\?|, :body => "[]")
-      AthenaTicket.search({:performance_id => 1})
+      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?|, :body => "[]")
+      AthenaTicket.available({:performance_id => 1})
       FakeWeb.last_request.path.should match "performanceId"
     end
   end
