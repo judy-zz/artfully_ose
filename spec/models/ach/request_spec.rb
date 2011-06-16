@@ -10,15 +10,15 @@ describe ACH::Request do
     let(:recipient) { Factory(:bank_account) }
 
     it "creates a new request with the amount set" do
-      ACH::Request.for(2500, recipient).transaction.amount.should eq "25.00"
+      ACH::Request.for(2500, recipient, "memo").transaction.amount.should eq "25.00"
     end
 
     it "uses the recipient to set up the customer" do
-      ACH::Request.for(2500, recipient).transaction.amount.should eq "25.00"
+      ACH::Request.for(2500, recipient, "memo").transaction.amount.should eq "25.00"
     end
 
     it "uses the account information to set up the account" do
-      ACH::Request.for(2500, recipient).transaction.amount.should eq "25.00"
+      ACH::Request.for(2500, recipient, "memo").transaction.amount.should eq "25.00"
     end
   end
 

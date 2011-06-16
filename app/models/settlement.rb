@@ -1,7 +1,8 @@
 class Settlement
   def initialize(items, bank_account)
     @items = Array.wrap(items)
-    @request = ACH::Request.for(@items.sum(&:net), bank_account)
+    @memo = "Lorem Ipsum memo"
+    @request = ACH::Request.for(@items.sum(&:net), bank_account, @memo)
   end
 
   def submit

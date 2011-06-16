@@ -9,8 +9,8 @@ class ACH::Request
 
   attr_reader :transaction, :customer, :account
 
-  def self.for(amount, recipient)
-    transaction = ACH::Transaction.new(amount, "")
+  def self.for(amount, recipient, memo)
+    transaction = ACH::Transaction.new(amount, memo)
     customer    = ACH::Customer.new(recipient.customer_information)
     account     = ACH::Account.new(recipient.account_information)
     new(transaction, customer, account)

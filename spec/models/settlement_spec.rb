@@ -11,7 +11,7 @@ describe Settlement do
   subject { Settlement.new(items, bank_account) }
 
   it "sums the net from the items" do
-    ACH::Request.should_receive(:for).with(10000, bank_account)
+    ACH::Request.should_receive(:for).with(10000, bank_account, "Lorem Ipsum memo")
     Settlement.new(items, bank_account)
   end
 
