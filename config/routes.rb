@@ -41,6 +41,8 @@ Artfully::Application.routes.draw do
     get :alternatives, :on => :collection
   end
 
+  resources :settlements, :only => [ :index, :show ]
+
   resources :credit_cards, :except => :show
 
   resources :people, :except => :destroy do
@@ -71,8 +73,6 @@ Artfully::Application.routes.draw do
     end
   end
 
-  resources :comps, :only => [ :new, :create ]
-
   resources :charts do
     resources :sections
   end
@@ -83,6 +83,7 @@ Artfully::Application.routes.draw do
   resources :refunds, :only => [ :new, :create ]
   resources :exchanges, :only => [ :new, :create ]
   resources :returns, :only => :create
+  resources :comps, :only => [ :new, :create ]
 
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
   match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance

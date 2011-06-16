@@ -1,0 +1,15 @@
+- in_section :reports
+- content_for :header do
+  %h1 Settlement Reports
+  %h2 View settlements for performances and donations
+
+
+.document
+  %h3 View Settlements
+  %ul
+    %li= link_to "Thursday, June 16th, 2011", settlement_path("2011-06-16T10:44:39-04:00")
+.context
+  %h3 Settlement Schedule
+  %p Settlement happens 2 business days after the performance plays or the donation occurs.
+  %p For example, let's say that you had a performance on Monday night, you would receive |
+      settlement for that on Thursday.                                                    |

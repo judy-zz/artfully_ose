@@ -23,7 +23,7 @@
     = link_to "Reports", "#"
     %ul
       %li= link_to "Statements", "#"
-      %li= link_to "Settlements", "#"
+      %li= link_to "Settlements", settlements_url
 
   %li{ :class => active?(:transactions) }
     = link_to "Transactions", orders_path

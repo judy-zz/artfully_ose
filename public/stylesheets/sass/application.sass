@@ -97,7 +97,11 @@ strong
     margin: 1em inherit
     color: #666
 
-.context, .tip
+.spread
+  @include section
+  @extend .stack
+
+.context, .tip, .overview
   @include section
   @extend .stack1of3
 
@@ -386,14 +390,14 @@ strong
   font-weight: bold
   padding: 10px
   float: right
-  
+
 .cta-left
   @extend .cta
   float: left
 
 ul.prices li div
   text-indent: 1em
-  
+
 #calendar
   table
     border: 0px
