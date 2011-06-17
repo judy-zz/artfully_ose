@@ -27,6 +27,11 @@ module AthenaResource
         find(:all, :params => { '_q' => search_query, '_limit' => limit})
       end
     
+    #
+    # This method will translate find_by_some_id into ...?some_id=9 which is probably fail in ATHENA
+    # Please call witht he unconventional find_by_someId unil it gets fixed
+    # TODO: fix it
+    #
       def method_missing(method_id, *arguments)
         if match = /find_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
           arg = arguments[0]
