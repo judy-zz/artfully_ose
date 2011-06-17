@@ -18,8 +18,23 @@ class OrdersController < ApplicationController
   end
 
   def contributions
-    authorize! :manage, AthenaOrder
-    @orders_with_donations = AthenaOrder.find(:all, :params =>{ :organizationId => "eq#{current_user.current_organization.id}"}).select{|order| not order.items.select{|item| item.product_type == "Donation" }.empty?}
+    authorize! :view, AthenaOrder
+    begin
+      unless params[:commit].blank?
+        Time.zone = current_user.current_organization.time_zone
+        @start = Time.zone.parse(Date.strptime(params[:start], "%m/%d/%Y").to_s)
+        @stop  = Time.zone.parse(Date.strptime(params[:stop] , "%m/%d/%Y").to_s).end_of_day
+      else
+        @start = DateTime.now.beginning_of_month
+        @stop  = DateTime.now.end_of_day
+      end
+      orders_in_range = AthenaOrder.in_range(@start, @stop, current_user.current_organization.id)
+      @orders_with_donations = orders_in_range.select{|order| not order.items.select{|item| item.product_type == "Donation" }.empty?}
+      @orders_with_donations = @orders_with_donations.sort{|a,b| b.timestamp <=> a.timestamp }.paginate(:page => params[:page], :per_page => 25)
+    rescue ArgumentError
+      flash[:alert] = "One or both of the dates entered are invalid."
+      redirect_to :back
+    end
   end
 
   private

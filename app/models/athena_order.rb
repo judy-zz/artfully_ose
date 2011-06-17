@@ -99,10 +99,13 @@ class AthenaOrder < AthenaResource::Base
     AthenaPayment.new(:transaction_id => transaction_id)
   end
 
-  def self.in_range(start, stop)
+  def self.in_range(start, stop, org_id=nil)
     start = "gt#{start.xmlschema}"
     stop = "lt#{stop.xmlschema}"
-    instantiate_collection(connection.get("/orders/orders.json?timestamp=#{start}&timestamp=#{stop}", self.headers))
+
+    org_query = "organizationId=eq#{org_id}&" unless org_id.nil?
+
+    instantiate_collection(connection.get("/orders/orders.json?#{org_query}timestamp=#{start}&timestamp=#{stop}", self.headers))
   end
 
   def all_items
