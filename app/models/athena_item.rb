@@ -9,6 +9,7 @@ class AthenaItem < AthenaResource::Base
     attribute 'product_type',   :string
     attribute 'product_id',     :string
     attribute 'performance_id', :string
+    attribute 'settlement_id',  :string
 
     attribute 'state',          :string
 

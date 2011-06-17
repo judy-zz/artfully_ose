@@ -1,13 +1,53 @@
-class Settlement
-  def initialize(items, bank_account)
-    @items = Array.wrap(items)
-    @memo = "Lorem Ipsum memo"
-    @request = ACH::Request.for(@items.sum(&:net), bank_account, @memo)
+class Settlement < AthenaResource::Base
+  self.site = Artfully::Application.config.orders_component
+  self.headers["User-agent"] = "artful.ly"
+  self.element_name = 'settlements'
+  self.collection_name = 'settlements'
+
+  schema do
+    attribute :id,              :string
+    attribute :transaction_id,  :string
+    attribute :created_at,      :string
+
+    attribute :gross,           :integer
+    attribute :net,             :integer
+    attribute :items_count,     :integer
   end
 
-  def submit
-    @request.submit
-    # TODO: Mark items as settled.
+  def initialize(*)
+    super
+    self.created_at = Time.now
+  end
+
+  def items
+    @items ||= find_items
+  end
+
+  def items=(items)
+    @items = items
+  end
+
+  def self.submit(items, bank_account)
+    items = Array.wrap(items)
+    memo = "Lorem Ipsum memo"
+    transaction_id = send_request(items, bank_account, memo)
+
+    for_items(items) do |settlement|
+      settlement.transaction_id = transaction_id
+      settlement.save!
+    end
+  end
+
+  def self.for_items(items)
+    new.tap do |settlement|
+      settlement.items          = items
+      settlement.gross          = items.sum(&:price)
+      settlement.realized_gross = items.sum(&:realized_price)
+      settlement.net            = items.sum(&:net)
+      settlement.items_count    = items.size
+
+      yield(settlement) if block_given?
+    end
   end
 
   def self.range_for(now)
@@ -45,5 +85,15 @@ class Settlement
     def weekend_offset(day)
       weekend?(day) ? 2.days : 0
     end
+  end
+
+  def find_items
+    return [] if new_record?
+    items ||= AthenaItem.find_by_settlement(self)
+  end
+
+  def self.send_request(items, bank_account, memo)
+    request = ACH::Request.for(items.sum(&:net), bank_account, memo)
+    request.submit
   end
 end

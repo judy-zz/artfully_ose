@@ -48,3 +48,15 @@ Factory.define :athena_item_for_comped_ticket, :default_strategy => :build, :cla
     FakeWeb.register_uri(:put, "http://localhost/orders/items/#{item.id}.json", :body => "")
   end
 end
+
+Factory.sequence(:settlement_id) do |n|
+  n.to_s
+end
+
+Factory.define(:settlement, :default_strategy => :build) do |s|
+  s.transaction_id "1231234"
+end
+
+Factory.define(:settlement_with_id, :parent => :settlement) do |s|
+  s.id { Factory.next(:settlement_id) }
+end

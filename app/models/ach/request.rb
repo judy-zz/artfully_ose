@@ -28,7 +28,8 @@ class ACH::Request
   end
 
   def submit
-    self.class.get("/https/TransRequest.asp", :query => query)
+    response = self.class.get("/https/TransRequest.asp", :query => query)
+    response.body
   end
 
   private
