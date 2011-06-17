@@ -208,7 +208,7 @@ class AthenaOrder < AthenaResource::Base
         action.subject         = item.product
         action.organization_id = organization.id
         action.timestamp       = self.timestamp
-        action.details         = ticket_details
+        action.details         = donation_details
         action.occurred_at     = action.timestamp
         action.action_subtype  = "Donation"
 
