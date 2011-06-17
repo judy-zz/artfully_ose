@@ -14,6 +14,7 @@ describe Settlement do
 
   describe ".submit" do
     before(:each) do
+      AthenaItem.stub(:settle).and_return(items)
       FakeWeb.register_uri(:post, "http://localhost/orders/settlements.json", :body => "")
       ACH::Request.stub(:for).and_return(mock(:request, :submit => "011231234"))
     end
@@ -31,6 +32,11 @@ describe Settlement do
     it "returns a settlement instance with the transaction_id set from the ACH request" do
       settlement = Settlement.submit(items, bank_account)
       settlement.transaction_id.should eq "011231234"
+    end
+
+    it "updates the items with the new settlement ID" do
+      AthenaItem.should_receive(:settle)
+      Settlement.submit(items, bank_account)
     end
   end
 

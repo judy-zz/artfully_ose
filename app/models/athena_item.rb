@@ -103,7 +103,17 @@ class AthenaItem < AthenaResource::Base
     items
   end
 
+  def self.settle(items, settlement)
+    return if items.blank?
+    patch(items, { :settlementId => settlement.id })
+  end
+
   private
+
+    def self.patch(items, attributes)
+      response = connection.put("/orders/items/patch/#{items.collect(&:id).join(",")}", attributes.to_json, self.headers)
+      format.decode(response.body).map{ |attributes| new(attributes) }
+    end
 
     def set_product_details_from(prod)
       self.product_id = prod.id

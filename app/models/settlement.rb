@@ -35,6 +35,7 @@ class Settlement < AthenaResource::Base
     for_items(items) do |settlement|
       settlement.transaction_id = transaction_id
       settlement.save!
+      AthenaItem.settle(items)
     end
   end
 
