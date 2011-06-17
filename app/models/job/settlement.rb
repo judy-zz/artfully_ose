@@ -14,11 +14,12 @@ class Job::Settlement
     end
 
     def settle_donations_in(range)
-      AthenaOrder.in_range(range).each do |order|
-        order.all_donations.each do |donation|
-          settlement = Settlement.new(donation, donation.order.organization.bank_account)
-          settlement.submit
-        end
+      AthenaOrder.in_range(range).group_by(&:organization_id).each do |organization_id, order_set|
+        donations = order_set.collect(&:all_donations).flatten
+        organization = order_set.first.organization
+
+        settlement = Settlement.new(donations, organization.bank_account)
+        settlement.submit
       end
     end
   end

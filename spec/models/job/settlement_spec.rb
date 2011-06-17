@@ -29,22 +29,29 @@ describe Job::Settlement do
   end
 
   describe ".settle_donations_in" do
-    let(:order) { Factory(:athena_order_with_id)  }
-    let(:donations) { 3.times.collect{ Factory(:athena_item_with_id, :product_type => "Donation")}}
-    let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
+    let(:orders) { 2.times.collect { Factory(:athena_order_with_id) } }
+
+    let(:donations_for_first_org)   { 2.times.collect{ Factory(:athena_item_with_id, :product_type => "Donation")}}
+    let(:donations_for_second_org)  { 2.times.collect{ Factory(:athena_item_with_id, :product_type => "Donation")}}
+
+    let(:organizations) { 2.times.collect { Factory(:organization, :bank_account => Factory(:bank_account)) } }
     let(:settlement) { mock(:settlement, :submit => nil) }
 
     before(:each) do
-      donations.each { |donation| donation.stub(:order).and_return(order) }
-      order.stub(:organization).and_return(organization)
-      order.stub(:all_donations).and_return(donations)
-      AthenaOrder.stub(:in_range).and_return([order])
+      donations_for_first_org.each { |donation| donation.stub(:order).and_return(orders.first) }
+      orders.first.stub(:organization).and_return(organizations.first)
+      orders.first.stub(:all_donations).and_return(donations_for_first_org)
+
+      donations_for_second_org.each { |donation| donation.stub(:order).and_return(orders.second) }
+      orders.second.stub(:organization).and_return(organizations.second)
+      orders.second.stub(:all_donations).and_return(donations_for_second_org)
+
+      AthenaOrder.stub(:in_range).and_return(orders)
     end
 
-    it "creates and submit a Settlement for each donation" do
-      donations.each do |donation|
-        Settlement.should_receive(:new).with(donation, organization.bank_account).and_return(settlement)
-      end
+    it "creates and submit a Settlement for each organization for all donations" do
+      Settlement.should_receive(:new).with(donations_for_first_org, organizations.first.bank_account).and_return(settlement)
+      Settlement.should_receive(:new).with(donations_for_second_org, organizations.second.bank_account).and_return(settlement)
       Job::Settlement.settle_donations_in(Settlement.range_for(DateTime.now))
     end
   end

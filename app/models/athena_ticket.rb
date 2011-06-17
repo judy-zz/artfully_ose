@@ -49,14 +49,18 @@ class AthenaTicket < AthenaResource::Base
 
   end
 
-  def self.search(params)
+  def self.available(params)
     terms = params.dup.with_indifferent_access
-    limit = terms.delete(:limit) || 10
+    limit = terms.delete(:limit) || 4
     raise ArgumentError unless terms.all? { |key, value| known_attributes.include? key }
 
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
-    AthenaTicket.find(:all, :params => parameterize(terms)) unless terms.empty?
+    
+    #TODO: Couldn't get self.site to parse and give up the path.
+    available_endpoint = '/tix/' + self.collection_name + '/available'
+    
+    AthenaTicket.find(:all, :from => available_endpoint, :params => parameterize(terms)) unless terms.empty?
   end
 
   def price

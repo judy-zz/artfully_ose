@@ -2,23 +2,41 @@ require 'spec_helper'
 
 describe Settlement do
   let(:items) do
-    10.times.collect do
-      mock(:item).tap { |item| item.stub(:net).and_return(1000) }
-    end
+    10.times.collect { mock(:item, {:price => 1200, :realized_price => 1000, :net => 965 }) }
   end
 
   let(:bank_account) { Factory(:bank_account) }
-  subject { Settlement.new(items, bank_account) }
+  subject { Settlement.new }
 
-  it "sums the net from the items" do
-    ACH::Request.should_receive(:for).with(10000, bank_account, "Lorem Ipsum memo")
-    Settlement.new(items, bank_account)
+  it "should set the created_at time when initialized" do
+    subject.created_at.should_not be_nil
   end
 
-  describe "#submit" do
+  describe ".submit" do
+    before(:each) do
+      AthenaItem.stub(:settle).and_return(items)
+      FakeWeb.register_uri(:post, "http://localhost/orders/settlements.json", :body => "")
+      ACH::Request.stub(:for).and_return(mock(:request, :submit => "011231234"))
+    end
+
+    it "sums the net from the items" do
+      ACH::Request.should_receive(:for).with(9650, bank_account, "Lorem Ipsum memo").and_return(mock(:request, :submit => "011231234"))
+      Settlement.submit(items, bank_account)
+    end
+
     it "submits the request to the ACH API" do
-      subject.instance_variable_get(:@request).should_receive(:submit).and_return(true)
-      subject.submit
+      Settlement.should_receive(:send_request).with(items, bank_account, "Lorem Ipsum memo")
+      Settlement.submit(items, bank_account)
+    end
+
+    it "returns a settlement instance with the transaction_id set from the ACH request" do
+      settlement = Settlement.submit(items, bank_account)
+      settlement.transaction_id.should eq "011231234"
+    end
+
+    it "updates the items with the new settlement ID" do
+      AthenaItem.should_receive(:settle)
+      Settlement.submit(items, bank_account)
     end
   end
 
@@ -51,6 +69,32 @@ describe Settlement do
       friday = jobs[:friday].beginning_of_day - 1.week
       sunday = friday + 2.days
       Settlement.range_for(jobs[:wednesday]).should eq [ friday, sunday.end_of_day ]
+    end
+  end
+
+  describe "#items" do
+    it "should fetch items from ATHENA" do
+      FakeWeb.register_uri(:get, "http://localhost/orders/items.json?settlementId=1", :body => "")
+      subject.items
+    end
+  end
+
+  describe ".for_items" do
+    subject { Settlement.for_items(items)}
+    it "creates a new settlement instance with the gross calculated from the items" do
+      subject.gross.should eq items.sum(&:price)
+    end
+
+    it "creates a new settlement instance with the realized gross calculated from the items" do
+      subject.realized_gross.should eq items.sum(&:realized_price)
+    end
+
+    it "creates a new settlement instance with the net calculated from the items" do
+      subject.net.should eq items.sum(&:net)
+    end
+
+    it "creates a new settlement instance with the items count set to the total number of settled items" do
+      subject.items_count.should eq items.size
     end
   end
 end

@@ -9,6 +9,7 @@ class AthenaItem < AthenaResource::Base
     attribute 'product_type',   :string
     attribute 'product_id',     :string
     attribute 'performance_id', :string
+    attribute 'settlement_id',  :string
 
     attribute 'state',          :string
 
@@ -102,7 +103,17 @@ class AthenaItem < AthenaResource::Base
     items
   end
 
+  def self.settle(items, settlement)
+    return if items.blank?
+    patch(items, { :settlementId => settlement.id })
+  end
+
   private
+
+    def self.patch(items, attributes)
+      response = connection.put("/orders/items/patch/#{items.collect(&:id).join(",")}", attributes.to_json, self.headers)
+      format.decode(response.body).map{ |attributes| new(attributes) }
+    end
 
     def set_product_details_from(prod)
       self.product_id = prod.id
