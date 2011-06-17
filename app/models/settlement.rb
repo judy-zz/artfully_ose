@@ -29,7 +29,7 @@ class Settlement < AthenaResource::Base
 
   def self.submit(items, bank_account)
     items = Array.wrap(items)
-    memo = "Lorem Ipsum memo"
+    memo = "Artful.ly Settlement #{Date.today}"
     transaction_id = send_request(items, bank_account, memo)
 
     for_items(items) do |settlement|

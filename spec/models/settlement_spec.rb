@@ -20,12 +20,12 @@ describe Settlement do
     end
 
     it "sums the net from the items" do
-      ACH::Request.should_receive(:for).with(9650, bank_account, "Lorem Ipsum memo").and_return(mock(:request, :submit => "011231234"))
+      ACH::Request.should_receive(:for).with(9650, bank_account, "Artful.ly Settlement #{Date.today}").and_return(mock(:request, :submit => "011231234"))
       Settlement.submit(items, bank_account)
     end
 
     it "submits the request to the ACH API" do
-      Settlement.should_receive(:send_request).with(items, bank_account, "Lorem Ipsum memo")
+      Settlement.should_receive(:send_request).with(items, bank_account, "Artful.ly Settlement #{Date.today}")
       Settlement.submit(items, bank_account)
     end
 
