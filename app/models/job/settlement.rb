@@ -8,8 +8,7 @@ class Job::Settlement
 
     def settle_performances_in(range)
       AthenaPerformance.in_range(range[0], range[1]).each do |performance|
-        settlement = Settlement.new(performance.settleables, performance.organization.bank_account)
-        settlement.submit
+        Settlement.submit(performance.settleables, performance.organization.bank_account)
       end
     end
 
@@ -18,8 +17,7 @@ class Job::Settlement
         donations = order_set.collect(&:all_donations).flatten
         organization = order_set.first.organization
 
-        settlement = Settlement.new(donations, organization.bank_account)
-        settlement.submit
+        Settlement.submit(donations, organization.bank_account)
       end
     end
   end

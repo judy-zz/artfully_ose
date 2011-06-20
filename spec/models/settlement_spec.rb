@@ -38,6 +38,12 @@ describe Settlement do
       AthenaItem.should_receive(:settle)
       Settlement.submit(items, bank_account)
     end
+
+    it "does not send a request if there are no items to settle" do
+      Settlement.should_not_receive(:send_request)
+      Settlement.submit([], bank_account)
+      Settlement.submit(nil, bank_account)
+    end
   end
 
   describe "#range_for" do

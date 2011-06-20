@@ -10,6 +10,7 @@ class Settlement < AthenaResource::Base
     attribute :created_at,      :string
 
     attribute :gross,           :integer
+    attribute :realized_gross,  :integer
     attribute :net,             :integer
     attribute :items_count,     :integer
   end
@@ -29,6 +30,7 @@ class Settlement < AthenaResource::Base
 
   def self.submit(items, bank_account)
     items = Array.wrap(items)
+    return if items.empty?
     memo = "Artful.ly Settlement #{Date.today}"
     transaction_id = send_request(items, bank_account, memo)
 
