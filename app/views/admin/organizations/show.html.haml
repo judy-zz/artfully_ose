@@ -42,5 +42,44 @@
           %h4= kit.type
           %ul.details
             %li= link_to "Approve", activate_admin_organization_kit_path(@organization,kit), :method => :put if kit.pending?
+  %h3 Bank Account
+  - if @organization.bank_account.nil?
+    = link_to "Add a Bank Account", new_admin_organization_bank_account_path(@organization)
+  - else
+    %ul.kv
+      %li
+        .key Routing Number
+        .value= @organization.bank_account.routing_number
 
+      %li
+        .key Number
+        .value= @organization.bank_account.number
 
+      %li
+        .key Account Type
+        .value= @organization.bank_account.account_type
+
+      %li
+        .key Name
+        .value= @organization.bank_account.name
+
+      %li
+        .key Address
+        .value= @organization.bank_account.address
+
+      %li
+        .key City
+        .value= @organization.bank_account.city
+
+      %li
+        .key State
+        .value= @organization.bank_account.state
+
+      %li
+        .key Zip
+        .value= @organization.bank_account.zip
+
+      %li
+        .key Phone
+        .value= @organization.bank_account.phone
+    = link_to "Edit Bank Account", edit_admin_organization_bank_account_path(@organization)

@@ -24,6 +24,7 @@ Artfully::Application.routes.draw do
         put :activate, :on => :member
       end
       resources :memberships
+      resource  :bank_account, :except => :show
     end
     resources :kits
   end

@@ -1,0 +1,41 @@
+= render "shared/error_messages", :target => bank_account
+= form_for bank_account, :url => admin_organization_bank_account_path(organization) do |form|
+  %ul
+    %li
+      .label= form.label :routing_number
+      .element= form.text_field :routing_number
+
+    %li
+      .label= form.label :number
+      .element= form.text_field :number
+
+    %li
+      .label= form.label :account_type
+      .element= form.text_field :account_type
+
+    %li
+      .label= form.label :name
+      .element= form.text_field :name
+
+    %li
+      .label= form.label :address
+      .element= form.text_field :address
+
+    %li
+      .label= form.label :city
+      .element= form.text_field :city
+
+    %li
+      .label= form.label :state
+      .element= form.text_field :state
+
+    %li
+      .label= form.label :zip
+      .element= form.text_field :zip
+
+    %li
+      .label= form.label :phone
+      .element= form.text_field :phone
+
+    %li
+      = form.submit submit
