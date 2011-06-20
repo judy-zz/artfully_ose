@@ -3,6 +3,8 @@ module ACH
     include HTTParty
     base_uri ACH::CONFIG['base_uri']
 
+    require 'ach/exceptions'
+
     CREDENTIALS = {
       "Login_ID"        => ACH::CONFIG['login_id'],
       "Transaction_Key" => ACH::CONFIG['transaction_key'],
