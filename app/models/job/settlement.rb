@@ -7,12 +7,14 @@ class Job::Settlement
     end
 
     def settle_performances_in(range)
+      logger.info "Settling performances..."
       AthenaPerformance.in_range(range[0], range[1]).each do |performance|
         Settlement.submit(performance.settleables, performance.organization.bank_account)
       end
     end
 
     def settle_donations_in(range)
+      logger.info "Settling donations..."
       AthenaOrder.in_range(range[0], range[1]).group_by(&:organization_id).each do |organization_id, order_set|
         donations = order_set.collect(&:all_donations).flatten
         organization = order_set.first.organization

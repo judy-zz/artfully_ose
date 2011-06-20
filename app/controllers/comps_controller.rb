@@ -37,13 +37,11 @@ class CompsController < ApplicationController
   private
 
   def recipient
-    logger.info("Uhhh....")
     if params[:person_id]
       AthenaPerson.find(params[:person_id])
     elsif params[:comp] and params[:comp][:athena_person]
       rec = AthenaPerson.new(params[:comp][:athena_person].merge({:organization_id => current_user.current_organization.id}))
       rec.save!
-      logger.debug(rec)
       rec
     else
       AthenaPerson.find_or_new_by_email(params[:email], current_user.current_organization)
