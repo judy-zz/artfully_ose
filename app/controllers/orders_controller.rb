@@ -20,13 +20,13 @@ class OrdersController < ApplicationController
   def contributions
     authorize! :view, AthenaOrder
     begin
+      Time.zone = current_user.current_organization.time_zone
       unless params[:commit].blank?
-        Time.zone = current_user.current_organization.time_zone
         @start = Time.zone.parse(Date.strptime(params[:start], "%m/%d/%Y").to_s)
         @stop  = Time.zone.parse(Date.strptime(params[:stop] , "%m/%d/%Y").to_s).end_of_day
       else
-        @start = DateTime.now.beginning_of_month
-        @stop  = DateTime.now.end_of_day
+        @start = DateTime.now.in_time_zone(Time.zone).beginning_of_month
+        @stop  = DateTime.now.in_time_zone(Time.zone).end_of_day
       end
       orders_in_range = AthenaOrder.in_range(@start, @stop, current_user.current_organization.id)
       @orders_with_donations = orders_in_range.select{|order| not order.items.select{|item| item.product_type == "Donation" }.empty?}
