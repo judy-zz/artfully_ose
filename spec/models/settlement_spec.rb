@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Settlement do
   let(:items) do
-    10.times.collect { mock(:item, {:price => 1200, :realized_price => 1000, :net => 965 }) }
+    10.times.collect { |id| mock(:item, {:price => 1200, :realized_price => 1000, :net => 965, :id => id }) }
   end
 
   let(:bank_account) { Factory(:bank_account) }
@@ -16,7 +16,7 @@ describe Settlement do
     before(:each) do
       AthenaItem.stub(:settle).and_return(items)
       FakeWeb.register_uri(:post, "http://localhost/orders/settlements.json", :body => "")
-      ACH::Request.stub(:for).and_return(mock(:request, :submit => "011231234"))
+      ACH::Request.stub(:for).and_return(mock(:request, :submit => "1231234"))
     end
 
     it "sums the net from the items" do
@@ -31,7 +31,7 @@ describe Settlement do
 
     it "returns a settlement instance with the transaction_id set from the ACH request" do
       settlement = Settlement.submit(items, bank_account)
-      settlement.transaction_id.should eq "011231234"
+      settlement.transaction_id.should eq "1231234"
     end
 
     it "updates the items with the new settlement ID" do
@@ -43,6 +43,12 @@ describe Settlement do
       Settlement.should_not_receive(:send_request)
       Settlement.submit([], bank_account)
       Settlement.submit(nil, bank_account)
+    end
+
+    it "does not mark the items if the ACH request fails" do
+      Settlement.stub(:send_request).and_raise(ACH::ClientError.new("02"))
+      Settlement.should_not_receive(:for_items)
+      Settlement.submit(items, bank_account)
     end
   end
 

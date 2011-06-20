@@ -39,9 +39,21 @@ describe ACH::Request do
 
   describe "#submit" do
     it "submits a GET request to First ACH" do
-      FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "")
+      FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "101234567")
       subject.submit
       FakeWeb.last_request.method.should == "GET"
+    end
+
+    it "returns the transaction id from the api" do
+      FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "101234567")
+      subject.submit.should eq "1234567"
+    end
+
+    it "raises an exception for failing conditions" do
+      %w( 02 03 04 05 06 07 08 09 10 11 12 13 14 ).each do |body|
+        FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => body)
+        lambda { subject.submit }.should raise_error(ACH::ClientError)
+      end
     end
   end
 end

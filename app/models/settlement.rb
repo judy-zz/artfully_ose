@@ -30,15 +30,20 @@ class Settlement < AthenaResource::Base
 
   def self.submit(items, bank_account)
     items = Array.wrap(items)
-    return if items.empty?
+    return if items.empty? or bank_account.nil?
     memo = "Artful.ly Settlement #{Date.today}"
-    transaction_id = send_request(items, bank_account, memo)
 
-    for_items(items) do |settlement|
-      settlement.transaction_id = transaction_id
-      settlement.save!
-      AthenaItem.settle(items, settlement)
+    begin
+      transaction_id = send_request(items, bank_account, memo)
+      for_items(items) do |settlement|
+        settlement.transaction_id = transaction_id
+        settlement.save!
+        AthenaItem.settle(items, settlement)
+      end
+    rescue ACH::ClientError => e
+      logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
     end
+
   end
 
   def self.for_items(items)

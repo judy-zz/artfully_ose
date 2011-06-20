@@ -29,7 +29,21 @@ class ACH::Request
 
   def submit
     response = self.class.get("/https/TransRequest.asp", :query => query)
-    response.body
+
+    case response.body
+    when /^10\d{7}/
+      response.body.gsub(/^10/, "")
+    when "02"
+      raise ACH::BadRequest.new(response.body)
+    when "03"
+      raise ACH::MissingData.new(response.body)
+    when /^(0[4-9]|1[1-4])/
+      raise ACH::InvalidRequest.new(response.body)
+    when "10"
+      raise ACH::DuplicateRequest.new(response.body)
+    else
+      raise ACH::ClientError.new(response.body)
+    end
   end
 
   private
