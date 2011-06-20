@@ -22,7 +22,7 @@ describe Job::Settlement do
 
     it "creates and submit a Settlement for each performance" do
       performances.each do |performance|
-        Settlement.should_receive(:new).with(performance.settleables, organization.bank_account).and_return(settlement)
+        Settlement.should_receive(:submit).with(performance.settleables, organization.bank_account).and_return(settlement)
       end
       Job::Settlement.settle_performances_in(Settlement.range_for(DateTime.now))
     end
@@ -50,8 +50,8 @@ describe Job::Settlement do
     end
 
     it "creates and submit a Settlement for each organization for all donations" do
-      Settlement.should_receive(:new).with(donations_for_first_org, organizations.first.bank_account).and_return(settlement)
-      Settlement.should_receive(:new).with(donations_for_second_org, organizations.second.bank_account).and_return(settlement)
+      Settlement.should_receive(:submit).with(donations_for_first_org, organizations.first.bank_account).and_return(settlement)
+      Settlement.should_receive(:submit).with(donations_for_second_org, organizations.second.bank_account).and_return(settlement)
       Job::Settlement.settle_donations_in(Settlement.range_for(DateTime.now))
     end
   end

@@ -191,6 +191,12 @@ describe AthenaItem do
       FakeWeb.last_request.path.should match /#{items.collect(&:id).join(',')}/
       FakeWeb.last_request.body.should match /#{settlement.id}/
     end
+
+    it "updates the state of each item to settled" do
+      FakeWeb.register_uri(:put, "http://localhost/orders/items/patch/#{items.collect(&:id).join(',')}", :body => "[]")
+      AthenaItem.settle(items, settlement)
+      FakeWeb.last_request.body.should match /"state":"settled"/
+    end
   end
 
   describe "#to_refund" do

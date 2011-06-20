@@ -105,7 +105,7 @@ class AthenaItem < AthenaResource::Base
 
   def self.settle(items, settlement)
     return if items.blank?
-    patch(items, { :settlementId => settlement.id })
+    patch(items, { :settlementId => settlement.id, :state => :settled })
   end
 
   private
