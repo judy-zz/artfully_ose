@@ -19,7 +19,7 @@ class Job::Settlement < Job::Base
       logger.info "Settling donations..."
       AthenaOrder.in_range(range[0], range[1]).group_by(&:organization_id).each do |organization_id, order_set|
         logger.info "Settling donations for #{Organization.find(organization_id).name}"
-        donations = order_set.collect(&:all_donations).flatten
+        donations = order_set.collect(&:settleable_donations).flatten
         organization = order_set.first.organization
 
         logger.error "#{organization.name} does not have a bank account." if organization.bank_account.nil?

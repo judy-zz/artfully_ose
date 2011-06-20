@@ -120,6 +120,10 @@ class AthenaOrder < AthenaResource::Base
     all_items.select{|item| item.product_type == "Donation" }
   end
 
+  def settleable_donations
+    all_donations.reject(&:modified?)
+  end
+
   def refundable_items
     items.select(&:refundable?)
   end
