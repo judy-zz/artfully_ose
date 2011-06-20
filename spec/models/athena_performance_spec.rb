@@ -173,6 +173,12 @@ describe AthenaPerformance do
       AthenaItem.stub(:find_by_performanceId).and_return(items)
       subject.settleables.should have(9).items
     end
+
+    it "rejects line items that have been settled already" do
+      items.first.state = "settled"
+      AthenaItem.stub(:find_by_performanceId).and_return(items)
+      subject.settleables.should have(9).items
+    end
   end
 
   describe ".in_range" do
