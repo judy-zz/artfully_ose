@@ -16,7 +16,7 @@ describe BankAccount do
   describe "#account_information" do
     let(:account_information) { subject.account_information }
     it "creates a hash with the customer's bank account information" do
-      [:routing_number, :number, :type].each do |attribute|
+      [:routing_number, :number, :account_type].each do |attribute|
         account_information[attribute].should eq subject.send(attribute)
       end
     end

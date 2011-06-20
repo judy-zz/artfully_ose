@@ -1,25 +1,24 @@
-- content_for :scripts do
-  = javascript_include_tag "grouped-form"
-
-- unless order.all_tickets.empty?
-  = render :partial => 'refunds/grouped_form', :locals => { :order => order }
-  = render :partial => 'exchanges/grouped_form', :locals => { :order => order }
-  = render :partial => 'returns/grouped_form', :locals => { :order => order }
-  #items.grouped-form-target
-    = form_tag do
-      %table.zebra
-        %thead
-          %tr
-            %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall
-            %th Type
-            %th Event
-            %th Performance
-            %th Price
-        %tbody
-          - order.all_tickets.each do |item|
-            %tr{:id => "row_item_#{item.id}", :class => item.state }
-              %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
-              %td Ticket
-              %td= link_to "#{item.product.event}", event_path(item.product.event_id)
-              %td= link_to "#{l item.product.performance}", event_performance_path(item.product.event_id, item.product.performance_id)
-              %td= number_as_cents item.price
+#items.grouped-form-target
+  = form_tag do
+    %table.zebra
+      %thead
+        %tr
+          %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall
+          %th Type
+          %th Price
+      %tbody
+        - order.all_items.each do |item|
+          %tr{:id => "row_item_#{item.id}", :class => item.state }
+            %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
+            %td
+              - if item.product.kind_of? AthenaTicket
+                %span Ticket
+                %span
+                  (
+                  = link_to "#{item.product.event}", event_path(item.product.event_id)
+                  ,
+                  = link_to "#{l item.product.performance}", event_performance_path(item.product.event_id, item.product.performance_id)
+                  )
+              - if item.product.kind_of? Donation
+                %span Donation
+            %td= number_as_cents item.price

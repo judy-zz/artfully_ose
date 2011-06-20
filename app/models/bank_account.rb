@@ -1,14 +1,14 @@
 class BankAccount < ActiveRecord::Base
   belongs_to :organization
 
-  validates_presence_of :routing_number, :number, :type
+  validates_presence_of :routing_number, :number, :account_type
   validates_presence_of :name, :address, :city, :state, :zip, :phone
 
   def account_information
     {
       :routing_number => routing_number,
       :number         => number,
-      :type           => type
+      :account_type           => account_type
     }
   end
 

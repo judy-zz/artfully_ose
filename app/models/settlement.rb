@@ -37,16 +37,16 @@ class Settlement < AthenaResource::Base
     for_items(items) do |settlement|
       settlement.transaction_id = transaction_id
       settlement.save!
-      AthenaItem.settle(items)
+      AthenaItem.settle(items, settlement)
     end
   end
 
   def self.for_items(items)
     new.tap do |settlement|
       settlement.items          = items
-      settlement.gross          = items.sum(&:price)
-      settlement.realized_gross = items.sum(&:realized_price)
-      settlement.net            = items.sum(&:net)
+      settlement.gross          = items.sum { |i| i.price.to_i }
+      settlement.realized_gross = items.sum { |i| i.realized_price.to_i }
+      settlement.net            = items.sum { |i| i.net.to_i }
       settlement.items_count    = items.size
 
       yield(settlement) if block_given?
@@ -96,7 +96,7 @@ class Settlement < AthenaResource::Base
   end
 
   def self.send_request(items, bank_account, memo)
-    request = ACH::Request.for(items.sum(&:net), bank_account, memo)
+    request = ACH::Request.for(items.sum{ |i| i.net.to_i }, bank_account, memo)
     request.submit
   end
 end

@@ -1,15 +1,17 @@
-production:
-  base_uri: https://www.firstach.com/
-  login_id: xPCTyjcQ0KlG
-  transaction_key: d38a1b4afaf5230c
-
-test:
-  base_uri: https://demo.firstach.com/
+---
+demo:
+  base_uri: "https://demo.firstach.com/"
   login_id: testLogin
   transaction_key: testKey
-
 development:
-  <<: *test
-
-demo:
-  <<: *test
+  base_uri: "https://demo.firstach.com/"
+  login_id: testLogin
+  transaction_key: testKey
+production:
+  base_uri: "https://www.firstach.com/"
+  login_id: xPCTyjcQ0KlG
+  transaction_key: d38a1b4afaf5230c
+test:
+  base_uri: "https://demo.firstach.com/"
+  login_id: testLogin
+  transaction_key: testKey

@@ -6,7 +6,7 @@ class ACH::Account
   def initialize(attributes = {})
     self.routing_number = attributes[:routing_number]
     self.number         = attributes[:number]
-    self.type           = attributes[:type]
+    self.type           = attributes[:account_type]
   end
 
   MAPPING = {

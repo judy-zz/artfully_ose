@@ -1,4 +1,4 @@
-- in_section :people
+- in_section :transactions
 - content_for :header do
   %h1 Orders & Donations
 
@@ -19,9 +19,14 @@
     %li
       .key Details
       .value #{@order.details}
-  -unless @order.all_tickets.blank?
-    %h3 Tickets
+
+  - content_for :scripts do
+    = javascript_include_tag "grouped-form"
+
+  - unless @order.all_items.empty?
+    = render :partial => 'refunds/grouped_form', :locals => { :order => @order }
+    = render :partial => 'exchanges/grouped_form', :locals => { :order => @order }
+    = render :partial => 'returns/grouped_form', :locals => { :order => @order }
+
+    %h3 Items
     = render :partial=>'item_table', :locals => { :order => @order }
-  -unless @order.all_donations.blank?
-    %h3 Donations
-    = render :partial=>'donation_table', :locals => { :order => @order }
