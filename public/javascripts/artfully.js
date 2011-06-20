@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    
+
 });
 
 (function(window, document, undefined){
@@ -287,7 +287,7 @@ artfully.models = (function(){
             };
 
             $.getJSON(artfully.utils.ticket_uri(params), function(data){
-              if(data.length > 0){
+              if(data !== null && data.length > 0){
                 if(data.length < $select.val()){
                   artfully.alert("Only " + data.length + " ticket(s) could be found for this performance.");
                 }
