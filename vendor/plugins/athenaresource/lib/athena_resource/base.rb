@@ -28,21 +28,27 @@ module AthenaResource
       end
     
     #
-    # This method will translate find_by_some_id into ...?some_id=9 which is probably fail in ATHENA
-    # Please call witht he unconventional find_by_someId unil it gets fixed
-    # TODO: fix it
+    # This method will translate find_by_some_object_id into ...?someObjectId=9
+    # when passed either someObject or someObject.id
     #
       def method_missing(method_id, *arguments)
         if match = /find_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
           arg = arguments[0]
           term = match[1]
-          
+
+          #Handles case where someObject is passed in, turning it into ...?someObjectId=9
           #Can't use respond_to?('id') because 1.8 allows Object.id
           #If they sent an AthenaResource::Base or ActiveRecord::Base
           if( arguments[0].kind_of?(ActiveRecord::Base) || arguments[0].kind_of?(AthenaResource::Base) )
             term  = term + 'Id' unless term.end_with? 'Id'
             arg = arguments[0].id
           end
+
+          #Handles case where someObject.id is passed, turning it into ...?someObjectId=9
+          if( term.end_with? '_id' )
+            term["_id"] = "Id"
+          end
+
           find(:all, :params => { term => arg })
         else
           super
