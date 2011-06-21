@@ -9,6 +9,14 @@ class ChartsController < ApplicationController
     @chart = AthenaChart.new
   end
 
+  def copy
+    @source_chart = AthenaChart.find(params[:chart_id])
+    authorize! :view, AthenaChart
+    @chart = @source_chart.copy!
+    @chart.save
+    redirect_to chart_url(@chart) and return
+  end
+
   def create
     @chart = AthenaChart.new
     @chart.update_attributes(params[:athena_chart][:athena_chart])

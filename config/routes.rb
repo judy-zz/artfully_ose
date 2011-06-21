@@ -75,6 +75,7 @@ Artfully::Application.routes.draw do
   end
 
   resources :charts do
+    get :copy
     resources :sections
   end
 
