@@ -29,7 +29,7 @@ module AthenaResource
 
       # This method will translate find_by_some_object_id into ...?someObjectId=9
       def method_missing(method_id, *arguments)
-        if method_id =~ /find_by_(\w+)/
+        if method_id.to_s =~ /find_by_(\w+)/
           arg = arguments[0]
           term = $1.camelcase(:lower)
 
