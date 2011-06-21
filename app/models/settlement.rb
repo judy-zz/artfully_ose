@@ -97,7 +97,7 @@ class Settlement < AthenaResource::Base
 
   def find_items
     return [] if new_record?
-    items ||= AthenaItem.find_by_settlement(self)
+    items ||= AthenaItem.find_by_settlement_id(self.id)
   end
 
   def self.send_request(items, bank_account, memo)

@@ -66,11 +66,11 @@ class AthenaChart < AthenaResource::Base
   end
 
   def self.find_by_event(event)
-    self.find(:all, :params => { :eventId => "eq#{event.id}" })
+    self.find_by_event_id(event.id)
   end
 
   def self.find_by_organization(organization)
-    self.find(:all, :params => { :organizationId => "eq#{organization.id}" })
+    self.find_by_organization_id(organization.id)
   end
 
   def self.find_templates_by_organization(organization)

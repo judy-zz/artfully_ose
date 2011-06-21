@@ -147,7 +147,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def settleables
-    AthenaItem.find_by_performanceId(self.id).reject(&:modified?)
+    AthenaItem.find_by_performance_id(self.id).reject(&:modified?)
   end
 
   private

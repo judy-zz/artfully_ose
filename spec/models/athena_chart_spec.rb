@@ -30,14 +30,14 @@ describe AthenaChart do
 
   it "should get charts for an event" do
     @event = Factory(:athena_event_with_id)
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?eventId=eq#{@event.id}", :body => "[#{subject.encode}]" )
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?eventId=#{@event.id}", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_event(@event)
     subject.should eq @charts.first
   end
 
   it "should get charts for an organization" do
     organization = Factory(:organization)
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?organizationId=eq#{organization.id}", :body => "[#{subject.encode}]" )
+    FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?organizationId=#{organization.id}", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_organization(organization)
   end
 

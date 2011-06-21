@@ -96,11 +96,10 @@ class AthenaItem < AthenaResource::Base
 
   def self.find_by_order(order)
     return [] unless order.id?
-    items = AthenaItem.find(:all, :params => {:orderId => "eq#{order.id}"} )
-    items.each do |item|
-      item.order = order
+
+    self.find_by_order_id(order.id).tap do |items|
+      items.each { |item| item.order = order }
     end
-    items
   end
 
   def self.settle(items, settlement)
