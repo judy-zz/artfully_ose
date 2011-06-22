@@ -20,11 +20,6 @@
     = javascript_include_tag "rails"
     = yield :scripts
 
-    /[if IE 8]
-      /= stylesheet_link_tag "ie/IEFix"
-    /[if IE 7]
-      /= stylesheet_link_tag "ie/IEFix"
-
     = csrf_meta_tag
   %body
     #header
@@ -41,3 +36,6 @@
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard
         = yield
+    #footer
+      = link_to "Privacy Policy", page_path("privacy")
+      = link_to "Term of Use", page_path("tou")
