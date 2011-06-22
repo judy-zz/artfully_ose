@@ -39,13 +39,13 @@ describe ACH::Request do
 
   describe "#submit" do
     it "submits a GET request to First ACH" do
-      FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "101234567")
+      FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "011234567")
       subject.submit
       FakeWeb.last_request.method.should == "GET"
     end
 
     it "returns the transaction id from the api" do
-      FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "101234567")
+      FakeWeb.register_uri(:get, %r|https://demo.firstach.com/https/TransRequest\.asp?.*|, :body => "011234567")
       subject.submit.should eq "1234567"
     end
 

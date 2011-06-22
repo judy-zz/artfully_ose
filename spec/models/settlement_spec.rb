@@ -6,6 +6,7 @@ describe Settlement do
   end
 
   let(:bank_account) { Factory(:bank_account) }
+  let(:organization) { Factory(:organization_with_id) }
   subject { Settlement.new }
 
   it "should set the created_at time when initialized" do
@@ -21,12 +22,12 @@ describe Settlement do
 
     it "sums the net from the items" do
       ACH::Request.should_receive(:for).with(9650, bank_account, "Artful.ly Settlement #{Date.today}").and_return(mock(:request, :submit => "011231234"))
-      Settlement.submit(items, bank_account)
+      Settlement.submit(organization.id, items, bank_account)
     end
 
     it "submits the request to the ACH API" do
       Settlement.should_receive(:send_request).with(items, bank_account, "Artful.ly Settlement #{Date.today}")
-      Settlement.submit(items, bank_account)
+      Settlement.submit(organization.id, items, bank_account)
     end
 
     it "returns a settlement instance with the transaction_id set from the ACH request" do
@@ -36,19 +37,19 @@ describe Settlement do
 
     it "updates the items with the new settlement ID" do
       AthenaItem.should_receive(:settle)
-      Settlement.submit(items, bank_account)
+      Settlement.submit(organization.id, items, bank_account)
     end
 
     it "does not send a request if there are no items to settle" do
       Settlement.should_not_receive(:send_request)
-      Settlement.submit([], bank_account)
-      Settlement.submit(nil, bank_account)
+      Settlement.submit(organization.id, [], bank_account)
+      Settlement.submit(organization.id, nil, bank_account)
     end
 
     it "does not mark the items if the ACH request fails" do
       Settlement.stub(:send_request).and_raise(ACH::ClientError.new("02"))
       Settlement.should_not_receive(:for_items)
-      Settlement.submit(items, bank_account)
+      Settlement.submit(organization.id, items, bank_account)
     end
   end
 
