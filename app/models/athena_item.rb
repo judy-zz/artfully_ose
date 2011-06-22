@@ -103,7 +103,12 @@ class AthenaItem < AthenaResource::Base
   end
 
   def self.settle(items, settlement)
-    return if items.blank?
+    if items.blank?
+      logger.debug("AthenaItem.settle: No items to settle, returning")
+      return
+    end
+    
+    logger.debug("Settling items #{items.collect(&:id).join(',')}")
     patch(items, { :settlementId => settlement.id, :state => :settled })
   end
 

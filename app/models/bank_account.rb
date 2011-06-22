@@ -3,7 +3,7 @@ class BankAccount < ActiveRecord::Base
 
   validates :account_type,    :presence => true, :inclusion => { :in => [ "Business Checking", "Personal Checking", "Personal Savings"] }
   validates :routing_number,  :presence => true, :length => { :is => 9 }
-  validates :number,          :presence => true, :length => { :is => 20 }
+  validates :number,          :presence => true, :length => { :minimum => 10 }
 
   validates :name,    :presence => true, :length => { :maximum => 50 }
   validates :address, :presence => true, :length => { :maximum => 100 }

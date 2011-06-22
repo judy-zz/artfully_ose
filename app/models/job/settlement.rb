@@ -11,7 +11,7 @@ class Job::Settlement < Job::Base
       AthenaPerformance.in_range(range[0], range[1]).each do |performance|
         logger.info "Settling #{performance.event.name}, #{performance.datetime}"
         logger.error "#{performance.organization.name} does not have a bank account." if performance.organization.bank_account.nil?
-        Settlement.submit(performance.settleables, performance.organization.bank_account)
+        Settlement.submit(performance.organization.id, performance.settleables, performance.organization.bank_account)
       end
     end
 
@@ -23,7 +23,7 @@ class Job::Settlement < Job::Base
         organization = order_set.first.organization
 
         logger.error "#{organization.name} does not have a bank account." if organization.bank_account.nil?
-        Settlement.submit(donations, organization.bank_account)
+        Settlement.submit(organization.id, donations, organization.bank_account)
       end
     end
   end

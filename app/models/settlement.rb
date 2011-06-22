@@ -17,7 +17,7 @@ class Settlement < AthenaResource::Base
 
   def initialize(*)
     super
-    self.created_at = Time.now
+    self.created_at ||= Time.now
   end
 
   def items
@@ -28,17 +28,28 @@ class Settlement < AthenaResource::Base
     @items = items
   end
 
-  def self.submit(items, bank_account)
+  def self.submit(organization_id, items, bank_account)
     items = Array.wrap(items)
-    return if items.empty? or bank_account.nil?
+    if items.empty? or bank_account.nil?
+      logger.error("There are either no items for this settlement or the bank account is nil")
+      return
+    end
     memo = "Artful.ly Settlement #{Date.today}"
 
     begin
+      logger.debug("Submitting ACH request")
       transaction_id = send_request(items, bank_account, memo)
+      logger.debug("ACH accept, transation id #{transaction_id}")
       for_items(items) do |settlement|
         settlement.transaction_id = transaction_id
+        settlement.organization_id = organization_id
+        settlement.performance_id = items.first.performance_id
+        logger.debug("Saving settlememt")
         settlement.save!
+        logger.debug("Settlement saved [#{settlement.id}]")
+        logger.debug("Settling items")
         AthenaItem.settle(items, settlement)
+        logger.debug("Done settling items")
       end
     rescue ACH::ClientError => e
       logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
