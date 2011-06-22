@@ -1,7 +1,3 @@
-$(document).ready(function(){
-
-});
-
 (function(window, document, undefined){
   window.artfully = {};
   window.artfully.config = {};
