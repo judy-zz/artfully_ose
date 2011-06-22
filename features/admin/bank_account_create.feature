@@ -5,7 +5,7 @@ Feature: Bank Account Creation
   Background:
     Given I am logged in as an admin
     And an organization exists with an name of "Fractured Atlas"
-    And I follow "Administer Organizations"
+    And I follow "Organizations"
     And I follow "Fractured Atlas"
 
 

@@ -6,7 +6,7 @@ Feature: Bank Account Creation
     Given I am logged in as an admin
     And an organization exists with an name of "Fractured Atlas"
     And the organization "Fractured Atlas" has a bank account
-    And I follow "Administer Organizations"
+    And I follow "Organizations"
     And I follow "Fractured Atlas"
 
   Scenario: An admin edits the bank account for an organization

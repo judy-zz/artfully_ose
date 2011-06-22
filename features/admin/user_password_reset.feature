@@ -6,7 +6,7 @@ Feature: Admin Password Reset
   Scenario: An admin send's password reset instructions to a user
     Given I am logged in as an admin
     And I follow "Administration"
-    And I follow "Administer Users"
+    And I follow "Users"
     And a user exists with an email of "user@example.com"
     And I fill in "Email" with "user@example.com"
     And I press "Search"

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Settlement do
   let(:items) do
-    10.times.collect { |id| mock(:item, {:price => 1200, :realized_price => 1000, :net => 965, :id => id }) }
+    10.times.collect { |id| mock(:item, {:price => 1200, :realized_price => 1000, :net => 965, :id => id, :performance_id => 1 }) }
   end
 
   let(:bank_account) { Factory(:bank_account) }
@@ -31,7 +31,7 @@ describe Settlement do
     end
 
     it "returns a settlement instance with the transaction_id set from the ACH request" do
-      settlement = Settlement.submit(items, bank_account)
+      settlement = Settlement.submit(organization.id, items, bank_account)
       settlement.transaction_id.should eq "1231234"
     end
 

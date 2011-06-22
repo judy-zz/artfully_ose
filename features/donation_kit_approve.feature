@@ -6,7 +6,7 @@ Feature: Donation Kit Approval
     Given I am logged in as an admin
     And there is a pending regular donation kit application for "Fractured Atlas"
     And I am on the admin root page
-    And I follow "Administer Organizations"
+    And I follow "Organizations"
     When I follow "Fractured Atlas"
     And I follow "Approve"
     Then I should see "This kit has been activated"
@@ -16,7 +16,7 @@ Feature: Donation Kit Approval
     Given I am logged in as an admin
     And there is a pending sponsored donation kit application for "Fractured Atlas"
     And I am on the admin root page
-    And I follow "Administer Organizations"
+    And I follow "Organizations"
     When I follow "Fractured Atlas"
     And I follow "Approve"
     Then I should see "This kit has been activated"
