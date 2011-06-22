@@ -28,5 +28,5 @@
         %ul.controls
           %li= link_to "View", chart_path(chart) if can?(:view, chart)
           %li= link_to "Edit", edit_chart_path(chart) if can?(:edit, chart)
-          %li= link_to "Copy", chart_copy_path(chart) if can?(:view, chart)
+          %li= link_to "Copy", charts_path(:chart_id => chart.id), :method => :post if can?(:view, chart)
           %li= link_to "Delete", chart_path(chart), :method=>:delete if can?(:delete, chart)

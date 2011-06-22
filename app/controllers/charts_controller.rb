@@ -9,24 +9,11 @@ class ChartsController < ApplicationController
     @chart = AthenaChart.new
   end
 
-  def copy
-    @source_chart = AthenaChart.find(params[:chart_id])
-    authorize! :view, AthenaChart
-    @chart = @source_chart.copy!
-    @chart.save
-    redirect_to chart_url(@chart) and return
-  end
-
   def create
-    @chart = AthenaChart.new
-    @chart.update_attributes(params[:athena_chart][:athena_chart])
-    @chart.organization_id = current_user.current_organization.id
-    @chart.isTemplate = true
-
-    if @chart.save
-      redirect_to chart_url(@chart)
+    if params[:chart_id].blank?
+      new_chart(params)
     else
-      render :new
+      copy_chart(params)
     end
   end
 
@@ -78,5 +65,28 @@ class ChartsController < ApplicationController
       end
     end
     redirect_to event_url(@event)
+  end
+
+  private
+
+  def new_chart(params)
+    @chart = AthenaChart.new
+    @chart.update_attributes(params[:athena_chart][:athena_chart])
+    @chart.organization_id = current_user.current_organization.id
+    @chart.isTemplate = true
+
+    if @chart.save
+      redirect_to chart_url(@chart)
+    else
+      render :new
+    end
+  end
+
+  def copy_chart(params)
+    @source_chart = AthenaChart.find(params[:chart_id])
+    authorize! :view, AthenaChart
+    @chart = @source_chart.copy!
+    @chart.save
+    redirect_to chart_url(@chart)
   end
 end
