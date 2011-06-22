@@ -19,6 +19,7 @@ Artfully::Application.routes.draw do
   namespace :admin do
     root :to => "index#index"
     resources :users
+    resources :settlements
     resources :organizations do
       resources :kits do
         put :activate, :on => :member
