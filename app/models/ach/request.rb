@@ -31,11 +31,13 @@ module ACH
     end
 
     def submit
+      Rails.logger.debug("Submitting ACH")
+      Rails.logger.debug(query)
       response = self.class.get("/https/TransRequest.asp", :query => query)
 
       case response.body
-      when /^10\d{7}/
-        response.body.gsub(/^10/, "")
+      when /^01\d{7}/
+        response.body.gsub(/^01/, "")
       when "02"
         raise ACH::BadRequest.new(response.body)
       when "03"
