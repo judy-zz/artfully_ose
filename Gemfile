@@ -21,6 +21,7 @@ gem 'jquery-rails', '>= 0.2.6'
 gem 'capistrano'
 gem 'capistrano-ext'
 gem 'will_paginate', '~> 3.0.beta'
+gem 'exceptional'
 
 group :test, :development do
   gem "rspec-rails", ">= 2.1"
