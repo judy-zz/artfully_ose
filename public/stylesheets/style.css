@@ -197,7 +197,7 @@ header nav {
     .ie header nav p { display: inline; }
   header nav p, header nav a { padding: 5px 10px; }
   header nav a {
-    width: 50px;
+    width: 75px;
     color: #fff !important;
     display: inline-block;
     background-color: #fb9b2c;
