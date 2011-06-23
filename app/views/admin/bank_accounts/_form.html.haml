@@ -11,8 +11,7 @@
 
     %li
       .label= form.label :account_type
-      .element= form.text_field :account_type
-
+      .element= form.select :account_type, options_for_select( bank_account.account_types, bank_account.account_type )
     %li
       .label= form.label :name
       .element= form.text_field :name

@@ -14,13 +14,13 @@ Feature: Bank Account Creation
     When I fill in the following:
       | Routing number | 111111118            |
       | Number         | 32152401253215240125 |
-      | Account type   | Personal Checking    |
       | Name           | Joe Smith            |
       | Address        | 248 W 35th St        |
       | City           | New York             |
       | State          | NY                   |
       | Zip            | 12345                |
       | Phone          | 123-789-4568         |
+    And I select "Personal Checking" from "Account type"
     And I press "Update"
     Then I should see "111111118"
     And I should see "32152401253215240125"

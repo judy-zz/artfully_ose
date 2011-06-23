@@ -14,7 +14,6 @@ Feature: Bank Account Creation
     When I fill in the following:
       | Routing number | 111111118            |
       | Number         | 32152401253215240125 |
-      | Account type   | Personal Checking    |
       | Name           | Joe Smith            |
       | Address        | 248 W 35th St        |
       | City           | New York             |
