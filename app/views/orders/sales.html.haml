@@ -7,7 +7,7 @@
   %p Select a date range to find tickets
   #tickets-search
     %ul.kv
-      =form_tag contributions_orders_path, :method=>:get do
+      =form_tag sales_orders_path, :method => :get do
         %li
           .key= label_tag :start_date
           .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
