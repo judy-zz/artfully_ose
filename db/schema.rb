@@ -66,7 +66,6 @@ ActiveRecord::Schema.define(:version => 20110613201820) do
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "ach_on_file",             :default => false
   end
 
   create_table "purchasable_tickets", :force => true do |t|

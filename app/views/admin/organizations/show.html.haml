@@ -11,16 +11,6 @@
       %li
         = submit_tag "Add"
 
-  = form_for @organization, :method => "put"  do |f|
-    %ul
-      %li
-        .label=   label :ach_on_file, "ACH on file"
-        .element= f.check_box( :ach_on_file, {}, "true", "false" )
-      %li
-        = hidden_field_tag "back", true
-      %li
-        = f.submit "Update"
-
 .document
   %h3 Members (#{@organization.users.size})
   %ul.detailed-list#memberships
