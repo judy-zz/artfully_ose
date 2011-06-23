@@ -7,6 +7,8 @@ class Settlement < AthenaResource::Base
   schema do
     attribute :id,              :string
     attribute :transaction_id,  :string
+    attribute :organization_id, :string
+    attribute :performance_id,  :string
     attribute :created_at,      :string
 
     attribute :gross,           :integer

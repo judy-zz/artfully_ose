@@ -59,4 +59,7 @@ end
 
 Factory.define(:settlement_with_id, :parent => :settlement) do |s|
   s.id { Factory.next(:settlement_id) }
+  s.after_build do |settlement|
+    FakeWeb.register_uri(:get, "http://localhost/order/settlements/#{settlement.id}.json", :body => settlement.encode)
+  end
 end

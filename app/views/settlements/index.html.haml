@@ -6,8 +6,32 @@
 
 .document
   %h3 View Settlements
-  %ul
-    %li= link_to "Thursday, June 16th, 2011", settlement_path("2011-06-16T10:44:39-04:00")
+  #settlements
+    - if @settlements.empty?
+      %p You have not received any settlements yet.
+    - else
+      %table.standalone.zebra
+        %thead
+          %tr
+            %th ID
+            %th Performance ID
+            %th Date
+            %th Transaction ID
+            %th Gross
+            %th Realized
+            %th Net
+        %tbody
+          - @settlements.each do |settlement|
+            %tr
+              %td= settlement.id
+              %td= settlement.performance_id
+              %td= l settlement.created_at, :format => :date
+              %td= settlement.transaction_id
+              %td= number_as_cents(settlement.gross)
+              %td= number_as_cents(settlement.realized_gross)
+              %td= number_as_cents(settlement.net)
+      = will_paginate @settlements
+
 .context
   %h3 Settlement Schedule
   %p Settlement happens 2 business days after the performance plays or the donation occurs.
