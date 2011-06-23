@@ -84,6 +84,7 @@ Artfully::Application.routes.draw do
   resources :orders do
     collection do
       get :contributions
+      get :sales
     end
   end
   resources :refunds, :only => [ :new, :create ]
