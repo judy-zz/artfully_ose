@@ -1,9 +1,10 @@
 class CreatePurchasableTicket < ActiveRecord::Migration
   def self.up
     create_table :purchasable_tickets do |t|
-      t.timestamps
       t.references :order
       t.references :ticket
+      t.string :lock_id
+      t.timestamps
     end
   end
 

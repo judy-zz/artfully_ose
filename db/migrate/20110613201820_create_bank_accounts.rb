@@ -4,7 +4,7 @@ class CreateBankAccounts < ActiveRecord::Migration
       # ACH Account
       t.string :routing_number
       t.string :number
-      t.string :type
+      t.string :account_type
 
       # ACH Customer
       t.string :name

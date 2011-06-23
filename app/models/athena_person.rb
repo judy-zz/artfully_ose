@@ -15,10 +15,6 @@ class AthenaPerson < AthenaResource::Base
     attribute 'organization_id',:integer
   end
 
-  def user
-    @user ||= User.find_by_athena_id(id)
-  end
-
   #TODO: This isn't actually recent, but that's an Athena problem, not an artfully problem
   def self.recent(organization)
     search_index(nil, organization)
