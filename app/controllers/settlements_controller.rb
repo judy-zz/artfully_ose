@@ -4,5 +4,6 @@ class SettlementsController < ApplicationController
   end
 
   def show
+    @settlement = Settlement.find(params[:id])
   end
 end

@@ -107,7 +107,7 @@ class AthenaItem < AthenaResource::Base
       logger.debug("AthenaItem.settle: No items to settle, returning")
       return
     end
-    
+
     logger.debug("Settling items #{items.collect(&:id).join(',')}")
     patch(items, { :settlementId => settlement.id, :state => :settled })
   end
@@ -143,7 +143,6 @@ class AthenaItem < AthenaResource::Base
       rescue NameError
         return nil
       rescue ActiveResource::ResourceNotFound
-        update_attribute!(:product_id, nil)
         return nil
       end
     end

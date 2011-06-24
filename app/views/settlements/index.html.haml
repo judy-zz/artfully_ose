@@ -23,7 +23,7 @@
         %tbody
           - @settlements.each do |settlement|
             %tr
-              %td= settlement.id
+              %td= link_to settlement.id, settlement_path(settlement)
               %td= settlement.performance_id
               %td= l settlement.created_at, :format => :date
               %td= settlement.transaction_id
