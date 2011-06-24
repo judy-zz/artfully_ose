@@ -56,10 +56,10 @@ class AthenaTicket < AthenaResource::Base
 
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
-    
+
     #TODO: Couldn't get self.site to parse and give up the path.
     available_endpoint = '/tix/' + self.collection_name + '/available'
-    
+
     AthenaTicket.find(:all, :from => available_endpoint, :params => parameterize(terms)) unless terms.empty?
   end
 
@@ -159,7 +159,7 @@ class AthenaTicket < AthenaResource::Base
     logger.debug("Returning ticket id [#{self.id}]")
     logger.debug("State is [#{self.state}]")
     self.sold_price = 0
-    self.sold_at = nil
+    attributes.delete('sold_at')
     attributes.delete(:buyer_id)
     do_return!
   end
