@@ -60,7 +60,7 @@ class AthenaItem < AthenaResource::Base
   end
 
   def dup!
-    self.class.new(attributes.reject { |key, value| %w( id ).include? key } )
+    self.class.new(attributes.reject { |key, value| %w( id state ).include? key } )
   end
 
   def refundable?
@@ -82,6 +82,7 @@ class AthenaItem < AthenaResource::Base
   def to_refund
     dup!.tap do |item|
       item.price = item.price.to_i * -1
+      item.state = "refund"
     end
   end
 
