@@ -27,7 +27,7 @@ class PerformancesController < ApplicationController
 
     if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
-       redirect_to event_path(@performance.event) 
+       redirect_to event_path(@performance.event)
     end
   end
 
@@ -41,9 +41,9 @@ class PerformancesController < ApplicationController
 
     if @performance.valid? && @performance.save
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date_at_time}"
-      redirect_to event_performances_path(@performance.event) 
+      redirect_to event_performances_path(@performance.event)
     else
-      redirect_to event_performances_path(@performance.event) 
+      redirect_to event_performances_path(@performance.event)
     end
   end
 
@@ -89,8 +89,8 @@ class PerformancesController < ApplicationController
     @door_list = DoorList.new(@performance)
   end
 
-  def put_on_sale
-    @performance = AthenaPerformance.find(params[:id])
+  def on_sale
+    @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :put_on_sale, @performance
 
     if @performance.tickets.empty?
@@ -105,8 +105,8 @@ class PerformancesController < ApplicationController
     end
   end
 
-  def take_off_sale
-    @performance = AthenaPerformance.find(params[:id])
+  def off_sale
+    @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :take_off_sale, @performance
     with_confirmation do
       @performance.take_off_sale!
@@ -136,7 +136,6 @@ class PerformancesController < ApplicationController
 
     def with_confirmation
       if params[:confirm].nil?
-        flash[:info] = "Please confirm your changes before we save them."
         render params[:action] + '_confirm' and return
       else
         yield

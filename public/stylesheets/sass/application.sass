@@ -177,11 +177,16 @@ strong
 .performance-list
   color: $secondary
   border: 1px solid #ccc
-  border-top: none
   > li
     position: relative
+    border-bottom: 1px solid #ccc
     display: block
-    padding: 10px
+    padding: 5px
+    text-align: right
+    form
+      display: inline
+    h6
+      float: left
   > li.even
     background: #eee
   .status
@@ -192,6 +197,15 @@ strong
     @include shadow(#ddd)
     h6
       font-weight: bold
+
+input.mini
+  font-size: .75em
+  @include rounded-corners(2px,2px,2px,2px)
+  padding: 2px 5px 3px
+  &.half
+    width: 6%
+  &.full
+    width: 12%
 
 .people-list
   li
@@ -401,7 +415,7 @@ strong
 .cta-left
   @extend .cta
   float: left
-  
+
 .cta-left-125
   @extend .cta-left
   width: 125px

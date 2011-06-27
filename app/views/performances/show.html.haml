@@ -7,10 +7,15 @@
     %li= link_to "All Performances", event_performances_path(@event)
     %li= link_to "Door List", door_list_event_performance_path(@event,@performance)
     - if not @performance.on_sale?
-      %li= link_to "Show this Performance", put_on_sale_event_performance_path(@event, @performance), :method => :put
+      %li
+        = form_tag on_sale_event_performances_path(@performance.event) do |form|
+          = hidden_field_tag :performance_id, @performance.id
+          = submit_tag "Show this Performance"
     - else
-      %li= link_to "Hide this Performance", take_off_sale_event_performance_path(@event, @performance), :method => :put
-
+      %li
+        = form_tag off_sale_event_performances_path(@performance.event) do |form|
+          = hidden_field_tag :performance_id, @performance.id
+          = submit_tag "Hide this Performance"
 
 .context
   %h3 Upcoming Performances

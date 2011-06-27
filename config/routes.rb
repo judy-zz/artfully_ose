@@ -57,8 +57,10 @@ Artfully::Application.routes.draw do
       member do
         get :door_list
         post :duplicate
-        put :put_on_sale
-        put :take_off_sale
+      end
+      collection do
+        post :on_sale
+        post :off_sale
       end
     end
   end
