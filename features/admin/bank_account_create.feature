@@ -17,9 +17,9 @@ Feature: Bank Account Creation
       | Name           | Joe Smith            |
       | Address        | 248 W 35th St        |
       | City           | New York             |
-      | State          | NY                   |
       | Zip            | 12345                |
       | Phone          | 123-789-4568         |
+    And I select "NY" from "State"
     And I press "Create"
     Then I should see "Added a bank account to Fractured Atlas"
     And the organization "Fractured Atlas" should have a bank account

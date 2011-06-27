@@ -17,9 +17,9 @@ Feature: Bank Account Creation
       | Name           | Joe Smith            |
       | Address        | 248 W 35th St        |
       | City           | New York             |
-      | State          | NY                   |
       | Zip            | 12345                |
       | Phone          | 123-789-4568         |
+    And I select "NY" from "State"
     And I select "Personal Checking" from "Account type"
     And I press "Update"
     Then I should see "111111118"
