@@ -6,7 +6,6 @@
 
 = form_tag visible_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited hidden" do
   = hidden_field_tag :performance_id, performance.id
-  = hidden_field_tag :confirm, :true
   = submit_tag "Show", :class => [ :mini, :half ]
   .confirmation.dialog
     %p= "You are showing the #{l @performance.datetime} performance of #{@performance.event.name}."
@@ -14,7 +13,6 @@
 
 = form_tag hidden_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited visible", :id => "performance_#{performance.id}" do
   = hidden_field_tag :performance_id, performance.id
-  = hidden_field_tag :confirm, :true
   = submit_tag "Hide", :class => [ :mini, :half ]
   .confirmation.dialog
     %p= "You are hiding the #{l @performance.datetime} performance of #{@performance.event.name}."

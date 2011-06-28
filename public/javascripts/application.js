@@ -78,6 +78,7 @@ $(document).ready(function() {
   $("form.sprited input:submit").live("click", function(event){
     var $dialog = $(".confirmation.dialog"),
         $submit =     $(this)
+        $confirmation = $(document.createElement('input')).attr({type: 'hidden', name:'confirm', value: 'true'});
 
     $dialog.dialog({
       autoOpen: false,
@@ -85,7 +86,9 @@ $(document).ready(function() {
       buttons: {
         Ok: function(){
           $dialog.dialog("close")
+          $submit.closest('form').append($confirmation);
           $submit.closest('form').submit();
+          $confirmation.remove();
           $submit.attr('disabled','disabled');
         },
         Cancel: function(){
