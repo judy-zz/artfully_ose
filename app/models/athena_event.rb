@@ -62,9 +62,9 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:on_sale?))
+    as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:visible?))
   end
-  
+
   def as_full_calendar_json
     perfs = []
     performances.each do |p|
@@ -86,7 +86,7 @@ class AthenaEvent < AthenaResource::Base
     sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
     sorted_locales
   end
-  
+
   def free?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? is_free
   end

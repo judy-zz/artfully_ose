@@ -25,17 +25,17 @@ describe AthenaPerformance do
     subject { Factory(:athena_performance_with_id, :state => "built" ) }
 
     it "should mark the performance as on sale" do
-      subject.put_on_sale!
-      subject.should be_on_sale
+      subject.show!
+      subject.should be_visible
     end
   end
 
   describe "take off sale" do
-    subject { Factory(:athena_performance_with_id, :state => "on_sale" ) }
+    subject { Factory(:athena_performance_with_id, :state => "visible" ) }
 
     it "should mark the performance as off sale" do
-      subject.take_off_sale
-      subject.should_not be_on_sale!
+      subject.hide!
+      subject.should_not be_hidden!
     end
   end
 

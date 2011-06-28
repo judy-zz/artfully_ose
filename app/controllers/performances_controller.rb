@@ -89,9 +89,9 @@ class PerformancesController < ApplicationController
     @door_list = DoorList.new(@performance)
   end
 
-  def on_sale
+  def visible
     @performance = AthenaPerformance.find(params[:performance_id])
-    authorize! :put_on_sale, @performance
+    authorize! :show, @performance
 
     if @performance.tickets.empty?
       flash[:error] = 'Please create tickets for this performance before putting it on sale'
@@ -99,7 +99,7 @@ class PerformancesController < ApplicationController
     end
 
     with_confirmation do
-      @performance.put_on_sale!
+      @performance.show!
       respond_to do |format|
         format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now visible.' }
         format.json { render :json => @performance.as_json }
@@ -107,12 +107,12 @@ class PerformancesController < ApplicationController
     end
   end
 
-  def off_sale
+  def hidden
     @performance = AthenaPerformance.find(params[:performance_id])
-    authorize! :take_off_sale, @performance
+    authorize! :hide, @performance
 
     with_confirmation do
-      @performance.take_off_sale!
+      @performance.hide!
       respond_to do |format|
         format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now hidden.' }
         format.json { render :json => @performance.as_json }

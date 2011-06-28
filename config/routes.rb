@@ -59,8 +59,8 @@ Artfully::Application.routes.draw do
         post :duplicate
       end
       collection do
-        post :on_sale
-        post :off_sale
+        post :visible
+        post :hidden
       end
     end
   end

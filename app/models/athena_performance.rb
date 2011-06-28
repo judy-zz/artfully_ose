@@ -22,19 +22,19 @@ class AthenaPerformance < AthenaResource::Base
   state_machine do
     state :pending
     state :built
-    state :on_sale
-    state :off_sale
+    state :visible
+    state :hidden
 
     event :build do
       transitions :from => :pending, :to => :built
     end
 
-    event :put_on_sale do
-      transitions :from => [ :built, :off_sale ], :to => :on_sale
+    event :show do
+      transitions :from => [ :built, :hidden ], :to => :visible
     end
 
-    event :take_off_sale do
-      transitions :from => :on_sale, :to => :off_sale
+    event :hide do
+      transitions :from => :visible, :to => :hidden
     end
   end
 
@@ -86,7 +86,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def has_door_list?
-    on_sale? or off_sale?
+    visible? or hidden?
   end
 
   def time_zone
