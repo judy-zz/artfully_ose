@@ -1,4 +1,5 @@
-= form_tag create_tickets_for_performance_path(performance), :class => "sprited pending" do
+= form_tag built_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited pending" do
+  = hidden_field_tag :performance_id, performance.id
   = submit_tag "Create Tickets", :class => [ :mini, :full ]
 
 = form_tag event_performance_path(@event, performance), :class => "sprited built" do

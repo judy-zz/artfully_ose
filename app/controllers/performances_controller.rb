@@ -120,14 +120,18 @@ class PerformancesController < ApplicationController
     end
   end
 
-  def createtickets
-    @performance = AthenaPerformance.find(params[:id])
+  def built
+    @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :edit, @performance
 
     AthenaTicketFactory.for_performance(@performance)
     @event = AthenaEvent.find(@performance.event_id)
     authorize! :create_tickets, @performance.chart.sections
-    redirect_to event_performance_url(@event, @performance)
+
+    respond_to do |format|
+      format.html { redirect_to event_performance_url(@event, @performance) }
+      format.json { render :json => @performance.as_json }
+    end
   end
 
   private

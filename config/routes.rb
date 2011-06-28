@@ -59,6 +59,7 @@ Artfully::Application.routes.draw do
         post :duplicate
       end
       collection do
+        post :built
         post :visible
         post :hidden
       end
@@ -96,7 +97,6 @@ Artfully::Application.routes.draw do
   resources :comps, :only => [ :new, :create ]
 
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
-  match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard

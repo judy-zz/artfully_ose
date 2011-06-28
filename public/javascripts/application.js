@@ -76,28 +76,32 @@ $(document).ready(function() {
   });
 
   $("form.sprited input:submit").live("click", function(event){
-    var $dialog = $(".confirmation.dialog"),
-        $submit =     $(this)
-        $confirmation = $(document.createElement('input')).attr({type: 'hidden', name:'confirm', value: 'true'});
+    var $dialog = $(this).siblings(".confirmation.dialog");
+    $(this).attr('disabled','disabled');
 
-    $dialog.dialog({
-      autoOpen: false,
-      modal: true,
-      buttons: {
-        Ok: function(){
-          $dialog.dialog("close")
-          $submit.closest('form').append($confirmation);
-          $submit.closest('form').submit();
-          $confirmation.remove();
-          $submit.attr('disabled','disabled');
-        },
-        Cancel: function(){
-          $dialog.dialog("close")
+    if($dialog.length !== 0){
+      var $submit =     $(this)
+          $confirmation = $(document.createElement('input')).attr({type: 'hidden', name:'confirm', value: 'true'});
+
+      $dialog.dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+          Ok: function(){
+            $dialog.dialog("close")
+            $submit.closest('form').append($confirmation);
+            $submit.closest('form').submit();
+            $confirmation.remove();
+          },
+          Cancel: function(){
+            $submit.removeAttr('disabled');
+            $dialog.dialog("close")
+          }
         }
-      }
-    });
-    $dialog.dialog("open");
-    return false;
+      });
+      $dialog.dialog("open");
+      return false;
+    }
   });
 
   $("form.sprited").live("ajax:success", function(xhr, performance){
