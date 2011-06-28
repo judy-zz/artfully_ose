@@ -75,8 +75,26 @@ $(document).ready(function() {
       $(".super-search-results").html(data.responseText);
   });
 
-  $("form.sprited input:submit").live("click", function(){
-    $(this).attr('disabled','disabled');
+  $("form.sprited input:submit").live("click", function(event){
+    var $dialog = $(".confirmation.dialog"),
+        $submit =     $(this)
+
+    $dialog.dialog({
+      autoOpen: false,
+      modal: true,
+      buttons: {
+        Ok: function(){
+          $dialog.dialog("close")
+          $submit.closest('form').submit();
+          $submit.attr('disabled','disabled');
+        },
+        Cancel: function(){
+          $dialog.dialog("close")
+        }
+      }
+    });
+    $dialog.dialog("open");
+    return false;
   });
 
   $("form.sprited").live("ajax:success", function(xhr, performance){
