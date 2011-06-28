@@ -100,18 +100,23 @@ class PerformancesController < ApplicationController
 
     with_confirmation do
       @performance.put_on_sale!
-      flash[:notice] = 'Your performance is on sale in the widget!'
-      redirect_to event_performance_url(@performance.event, @performance) and return
+      respond_to do |format|
+        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now visible.' }
+        format.json { render :json => @performance.as_json }
+      end
     end
   end
 
   def off_sale
     @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :take_off_sale, @performance
+
     with_confirmation do
       @performance.take_off_sale!
-      flash[:notice] = 'Your performance has been taken off sale from the widget!'
-      redirect_to event_performance_url(@performance.event, @performance) and return
+      respond_to do |format|
+        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now hidden.' }
+        format.json { render :json => @performance.as_json }
+      end
     end
   end
 

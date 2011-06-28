@@ -1,0 +1,16 @@
+= form_tag create_tickets_for_performance_path(performance), :class => "sprited pending" do
+  = submit_tag "Create Tickets", :class => [ :mini, :full ]
+
+= form_tag event_performance_path(@event, performance), :class => "sprited built" do
+  = submit_tag "Put On Sale", :class => [ :mini, :full ]
+
+= form_tag on_sale_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited off_sale" do
+  = hidden_field_tag :performance_id, performance.id
+  = hidden_field_tag :confirm, :true
+  = submit_tag "Show", :class => [ :mini, :half ]
+
+
+= form_tag off_sale_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited on_sale" do
+  = hidden_field_tag :performance_id, performance.id
+  = hidden_field_tag :confirm, :true
+  = submit_tag "Hide", :class => [ :mini, :half ]

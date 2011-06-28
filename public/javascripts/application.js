@@ -66,15 +66,19 @@ $(document).ready(function() {
 
   $(".popup-link").bind("ajax:complete", function(et, e){
     $(".popup").dialog( "open" );
-    $(".popup").html(e.responseText); 
+    $(".popup").html(e.responseText);
     activateControls();
     return false;
   });
-  
+
   $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
       $(".super-search-results").html(data.responseText);
-  });    
-  
+  });
+
+  $("form.sprited").live("ajax:success", function(xhr, performance){
+    $(this).closest("li").attr("class", performance.state)
+  });
+
 });
 
 function activateControls() {

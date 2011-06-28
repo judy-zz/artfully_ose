@@ -20,25 +20,9 @@
   #performances
     %ul.performance-list
       - @performances.each do |performance|
-        %li
+        %li{ :class => performance.state }
           %h6= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
-          - if performance.pending?
-            = form_tag create_tickets_for_performance_path(performance) do
-              = submit_tag "Create Tickets", :class => [ :mini, :full ]
-          - if performance.built?
-            = form_tag event_performance_path(@event, performance) do
-              = submit_tag "Put On Sale", :class => [ :mini, :full ]
-          - if performance.off_sale?
-            = form_tag on_sale_event_performances_path(performance.event) do
-              = hidden_field_tag :performance_id, performance.id
-              = submit_tag "Show", :class => [ :mini, :half ]
-          - if performance.on_sale?
-            = form_tag off_sale_event_performances_path(performance.event) do
-              = hidden_field_tag :performance_id, performance.id
-              = submit_tag "Hide", :class => [ :mini, :half ]
-          / = link_to "&#9660;".html_safe, "#"
-          / .hidden-stats
-          /   = render :partial => "stats", :locals => { :performance => performance }
+          = render :partial => "controls", :locals => { :performance => performance }
       %li.new-item
         = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
     = will_paginate @performances
