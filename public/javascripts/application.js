@@ -75,7 +75,12 @@ $(document).ready(function() {
       $(".super-search-results").html(data.responseText);
   });
 
+  $("form.sprited input:submit").live("click", function(){
+    $(this).attr('disabled','disabled');
+  });
+
   $("form.sprited").live("ajax:success", function(xhr, performance){
+    $(this).find(":submit").removeAttr('disabled');
     $(this).closest("li").attr("class", performance.state)
   });
 
