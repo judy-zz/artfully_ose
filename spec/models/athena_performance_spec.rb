@@ -21,7 +21,7 @@ describe AthenaPerformance do
     subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end
 
-  describe "put on sale" do
+  describe "#show" do
     subject { Factory(:athena_performance_with_id, :state => "built" ) }
 
     it "should mark the performance as on sale" do
@@ -30,7 +30,7 @@ describe AthenaPerformance do
     end
   end
 
-  describe "take off sale" do
+  describe "#hide" do
     subject { Factory(:athena_performance_with_id, :state => "visible" ) }
 
     it "should mark the performance as off sale" do
@@ -38,7 +38,6 @@ describe AthenaPerformance do
       subject.should_not be_hidden!
     end
   end
-
 
   describe "bulk edit tickets" do
     subject { Factory(:athena_performance_with_id) }
@@ -52,6 +51,11 @@ describe AthenaPerformance do
       before(:each) do
         body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
         FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      end
+
+      it "puts all tickets on sale when :all is specified" do
+        AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+        subject.bulk_on_sale(:all)
       end
 
       it "should put tickets on sale" do

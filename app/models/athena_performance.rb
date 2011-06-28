@@ -114,13 +114,6 @@ class AthenaPerformance < AthenaResource::Base
     return attributes['datetime']
   end
 
-  def bulk_edit_tickets(ticket_ids, action)
-    case action
-      when COMP
-        bulk_comp(ticket_ids)
-    end
-  end
-
   def glance
     @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id, :organizationId => self.organization_id })
   end
@@ -131,7 +124,8 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def bulk_on_sale(ids)
-    AthenaTicket.put_on_sale(tickets.select { |ticket| ids.include? ticket.id })
+    targets = (ids == :all) ? tickets : tickets.select { |t| ids.include? t.id }
+    AthenaTicket.put_on_sale(targets)
   end
 
   def bulk_off_sale(ids)

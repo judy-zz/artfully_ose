@@ -134,6 +134,25 @@ class PerformancesController < ApplicationController
     end
   end
 
+  def on_sale
+    authorize! :bulk_edit, AthenaTicket
+    with_confirmation do
+      @performance = AthenaPerformance.find(params[:performance_id])
+
+      if @performance.bulk_on_sale(:all)
+        @performance.show!
+        flash[:notice] = "Put all tickets on sale."
+      else
+        flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
+      end
+
+      respond_to do |format|
+        format.html { redirect_to event_performance_url(@performance.event, @performance) }
+        format.json { render :json => @performance.as_json }
+      end
+    end
+  end
+
   private
     def find_event
       @event = AthenaEvent.find(params[:event_id])

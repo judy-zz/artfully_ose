@@ -60,6 +60,7 @@ Artfully::Application.routes.draw do
       end
       collection do
         post :built
+        post :on_sale
         post :visible
         post :hidden
       end
