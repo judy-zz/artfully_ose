@@ -44,6 +44,7 @@ Artfully::Application.routes.draw do
   end
 
   resources :settlements, :only => [ :index, :show ]
+  resources :statements, :only => [ :index, :show ]
 
   resources :credit_cards, :except => :show
 
