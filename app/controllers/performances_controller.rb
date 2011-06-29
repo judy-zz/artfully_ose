@@ -94,8 +94,16 @@ class PerformancesController < ApplicationController
     authorize! :show, @performance
 
     if @performance.tickets.empty?
-      flash[:error] = 'Please create tickets for this performance before putting it on sale'
-      redirect_to event_performance_url(@performance.event, @performance) and return
+      respond_to do |format|
+        format.html do
+          flash[:error] = 'Please create tickets for this performance before putting it on sale'
+          redirect_to event_performance_url(@performance.event, @performance)
+        end
+
+        format.json { render :json => { :errors => ['Please create tickets for this performance before putting it on sale'] } }
+      end
+
+      return
     end
 
     with_confirmation do
@@ -141,14 +149,26 @@ class PerformancesController < ApplicationController
 
       if @performance.bulk_on_sale(:all)
         @performance.publish!
-        flash[:notice] = "Put all tickets on sale."
+        notice = "Put all tickets on sale."
       else
-        flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
+        error = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
       end
 
       respond_to do |format|
-        format.html { redirect_to event_performance_url(@performance.event, @performance) }
-        format.json { render :json => @performance.as_json }
+        format.html do
+          flash[:notice] = notice
+          flash[:error] = error
+          redirect_to event_performance_url(@performance.event, @performance)
+        end
+
+        format.json do
+          if error.blank?
+            render :json => @performance.as_json
+          else
+            render :json => { :errors => [ error ] }, :status => 409
+          end
+        end
+
       end
     end
   end
@@ -166,6 +186,7 @@ class PerformancesController < ApplicationController
       if params[:confirm].nil?
         respond_to do |format|
           format.html { render params[:action] + '_confirm' and return }
+          format.json { render :json => { :errors => [ "Confirmation is required before you can proceed." ] }, :status => 400 }
         end
       else
         yield

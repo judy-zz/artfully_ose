@@ -76,7 +76,7 @@ $(document).ready(function() {
   });
 
   $("form.sprited input:submit").live("click", function(event){
-    var $dialog = $(this).siblings(".confirmation.dialog");
+    var $dialog = $(this).siblings(".confirmation.dialog").clone();
     $(this).attr('disabled','disabled');
 
     if($dialog.length !== 0){
@@ -107,6 +107,18 @@ $(document).ready(function() {
   $("form.sprited").live("ajax:success", function(xhr, performance){
     $(this).find(":submit").removeAttr('disabled');
     $(this).closest("li").attr("class", performance.state)
+  });
+
+  $("form.sprited").live("ajax:error", function(xhr, status, error){
+    $(this).find(":submit").removeAttr('disabled');
+    data = eval("(" + status.responseText + ")");
+    console.log(data.errors)
+    for(var i = 0; i < data.errors.length; i++){
+      $.gritter.add({
+        title: "Oops!",
+        text: data.errors[i]
+      });
+    }
   });
 
 });
