@@ -18,7 +18,7 @@
     %h3 Events
     - if @events.blank?
       %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
-      = link_to "Create your first Event", events_path, :class => :cta
+      = link_to "Create your first Event", new_event_path, :class => :cta
     - else
       = render :partial => 'events/list', :locals => { :events => @events }
 
