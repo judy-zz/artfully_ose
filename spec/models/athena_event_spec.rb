@@ -95,7 +95,7 @@ describe AthenaEvent do
 
     it "should not include performances that are on sale" do
       subject.performances = 2.times.collect { Factory(:athena_performance_with_id) }
-      subject.performances.first.state = "visible"
+      subject.performances.first.state = "published"
       subject.stub(:charts).and_return([])
 
       json = JSON.parse(subject.as_widget_json.to_json)

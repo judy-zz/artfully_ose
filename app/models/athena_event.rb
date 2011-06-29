@@ -62,7 +62,7 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:visible?))
+    as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:published?))
   end
 
   def as_full_calendar_json

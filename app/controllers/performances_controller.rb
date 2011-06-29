@@ -89,7 +89,7 @@ class PerformancesController < ApplicationController
     @door_list = DoorList.new(@performance)
   end
 
-  def visible
+  def published
     @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :show, @performance
 
@@ -99,22 +99,22 @@ class PerformancesController < ApplicationController
     end
 
     with_confirmation do
-      @performance.show!
+      @performance.publish!
       respond_to do |format|
-        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now visible.' }
+        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now published.' }
         format.json { render :json => @performance.as_json }
       end
     end
   end
 
-  def hidden
+  def unpublished
     @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :hide, @performance
 
     with_confirmation do
-      @performance.hide!
+      @performance.unpublish!
       respond_to do |format|
-        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now hidden.' }
+        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now unpublished.' }
         format.json { render :json => @performance.as_json }
       end
     end
@@ -140,7 +140,7 @@ class PerformancesController < ApplicationController
       @performance = AthenaPerformance.find(params[:performance_id])
 
       if @performance.bulk_on_sale(:all)
-        @performance.show!
+        @performance.publish!
         flash[:notice] = "Put all tickets on sale."
       else
         flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
@@ -164,7 +164,9 @@ class PerformancesController < ApplicationController
 
     def with_confirmation
       if params[:confirm].nil?
-        render params[:action] + '_confirm' and return
+        respond_to do |format|
+          format.html { render params[:action] + '_confirm' and return }
+        end
       else
         yield
       end

@@ -22,19 +22,19 @@ class AthenaPerformance < AthenaResource::Base
   state_machine do
     state :pending
     state :built
-    state :visible
-    state :hidden
+    state :published
+    state :unpublished
 
     event :build do
       transitions :from => :pending, :to => :built
     end
 
-    event :show do
-      transitions :from => [ :built, :hidden ], :to => :visible
+    event :publish do
+      transitions :from => [ :built, :unpublished ], :to => :published
     end
 
-    event :hide do
-      transitions :from => :visible, :to => :hidden
+    event :unpublish do
+      transitions :from => :published, :to => :unpublished
     end
   end
 
@@ -86,7 +86,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def has_door_list?
-    visible? or hidden?
+    published? or unpublished?
   end
 
   def time_zone

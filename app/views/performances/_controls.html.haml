@@ -9,15 +9,15 @@
     %p= "You are about to put all tickets for the #{l @performance.datetime} performance of #{@performance.event.name} on sale and make it public."
 
 
-= form_tag visible_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited built hidden" do
+= form_tag published_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited built unpublished" do
   = hidden_field_tag :performance_id, performance.id
-  = submit_tag "Show", :class => [ :mini, :half ]
+  = submit_tag "Publish", :class => [ :mini, :half ]
   .confirmation.dialog
-    %p= "You are showing the #{l @performance.datetime} performance of #{@performance.event.name}."
+    %p= "You are publishing the #{l @performance.datetime} performance of #{@performance.event.name}."
 
 
-= form_tag hidden_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited visible", :id => "performance_#{performance.id}" do
+= form_tag unpublished_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited published", :id => "performance_#{performance.id}" do
   = hidden_field_tag :performance_id, performance.id
-  = submit_tag "Hide", :class => [ :mini, :half ]
+  = submit_tag "Unpublish", :class => [ :mini, :half ]
   .confirmation.dialog
-    %p= "You are hiding the #{l @performance.datetime} performance of #{@performance.event.name}."
+    %p= "You are unpublishing the #{l @performance.datetime} performance of #{@performance.event.name}."

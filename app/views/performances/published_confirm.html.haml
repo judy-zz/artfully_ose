@@ -8,11 +8,11 @@
   %h4= l(@performance.datetime)
   %p= "You are showing the #{l @performance.datetime} performance of #{@performance.event.name}."
 
-  = form_tag visible_event_performances_path(@performance.event) do |form|
+  = form_tag published_event_performances_path(@performance.event) do |form|
     = hidden_field_tag :confirm, :true
     = hidden_field_tag :performance_id, @performance.id
     %p If this is correct, please click confirm it by clicking
-    = submit_tag "Show"
+    = submit_tag "Publish"
 
   %p
     If this is not correct,

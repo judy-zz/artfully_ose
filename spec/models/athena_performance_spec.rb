@@ -21,21 +21,21 @@ describe AthenaPerformance do
     subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end
 
-  describe "#show" do
+  describe "#publish" do
     subject { Factory(:athena_performance_with_id, :state => "built" ) }
 
     it "should mark the performance as on sale" do
-      subject.show!
-      subject.should be_visible
+      subject.publish!
+      subject.should be_published
     end
   end
 
-  describe "#hide" do
-    subject { Factory(:athena_performance_with_id, :state => "visible" ) }
+  describe "#unpublish" do
+    subject { Factory(:athena_performance_with_id, :state => "published" ) }
 
     it "should mark the performance as off sale" do
-      subject.hide!
-      subject.should_not be_hidden!
+      subject.unpublish!
+      subject.should be_unpublished
     end
   end
 
