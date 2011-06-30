@@ -1,6 +1,6 @@
 #deletes.grouped-form
   %h3 Delete
-  = form_tag delete_performance_tickets_path(@performance), :method => :delete do |form|
+  = form_tag delete_performance_tickets_path(@performance), :method => :delete do
     = hidden_field_tag :performance_id, performance.id
     %ul
       - tickets.each do |ticket|

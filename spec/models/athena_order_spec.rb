@@ -166,9 +166,9 @@ describe AthenaOrder do
     it "composes a GET request for a given set of Time objects" do
       start = Time.now.beginning_of_day
       stop = start.end_of_day
-      FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?timestamp=gt#{start.xmlschema}&timestamp=lt#{stop.xmlschema}", :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
       AthenaOrder.in_range(start, stop)
-      FakeWeb.last_request.path.should eq "/orders/orders.json?timestamp=gt#{start.xmlschema}&timestamp=lt#{stop.xmlschema}"
+      FakeWeb.last_request.path.should eq "/orders/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
     end
   end
 end

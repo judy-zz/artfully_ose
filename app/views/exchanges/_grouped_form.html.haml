@@ -1,6 +1,6 @@
 #exchanges.grouped-form
   %h3 Exchanges
-  = form_tag new_exchange_path, :method => :get do |form|
+  = form_tag new_exchange_path, :method => :get do
     = hidden_field_tag :order_id, order.id
     %ul
       - order.exchangeable_items.each do |item|

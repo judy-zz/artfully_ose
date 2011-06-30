@@ -1,6 +1,6 @@
 #on-sale.grouped-form
   %h3 Put on Sale
-  = form_tag on_sale_performance_tickets_path(performance), :method => :put do |form|
+  = form_tag on_sale_performance_tickets_path(performance), :method => :put do
     = hidden_field_tag :performance_id, performance.id
     %ul
       - tickets.each do |ticket|

@@ -6,7 +6,7 @@
 .document
   %p= "You are about to take #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime } performance of #{@performance.event.name} off sale."
 
-  = form_tag off_sale_performance_tickets_path(@performance), :method => :put do |form|
+  = form_tag off_sale_performance_tickets_path(@performance), :method => :put do
     = hidden_field_tag :confirmed, :true
     - @selected_tickets.each do |st|
       = hidden_field_tag "selected_tickets[]", st

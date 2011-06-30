@@ -189,9 +189,9 @@ describe AthenaPerformance do
     it "composes a GET request for a given set of Time objects" do
       start = Time.now.beginning_of_day
       stop = start.end_of_day
-      FakeWeb.register_uri(:get, "http://localhost/stage/performances.json?datetime=gt#{start.xmlschema}&datetime=lt#{stop.xmlschema}", :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/stage/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
       AthenaPerformance.in_range(start, stop)
-      FakeWeb.last_request.path.should eq "/stage/performances.json?datetime=gt#{start.xmlschema}&datetime=lt#{stop.xmlschema}"
+      FakeWeb.last_request.path.should eq "/stage/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
     end
   end
 end

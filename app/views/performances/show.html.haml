@@ -8,7 +8,7 @@
     %li= link_to "Door List", door_list_event_performance_path(@event,@performance)
     - if not @performance.published?
       %li
-        = form_tag published_event_performances_path(@performance.event) do |form|
+        = form_tag published_event_performances_path(@performance.event) do
           = hidden_field_tag :performance_id, @performance.id
           = submit_tag "Publish"
     - else
