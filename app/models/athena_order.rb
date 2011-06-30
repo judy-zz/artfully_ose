@@ -105,7 +105,7 @@ class AthenaOrder < AthenaResource::Base
 
     org_query = "organizationId=eq#{org_id}&" unless org_id.nil?
 
-    instantiate_collection(connection.get("/orders/orders.json?#{org_query}timestamp=#{start}&timestamp=#{stop}", self.headers))
+    instantiate_collection(query("#{org_query}timestamp=#{start}&timestamp=#{stop}"))
   end
 
   def all_items

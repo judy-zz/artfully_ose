@@ -61,7 +61,7 @@ class AthenaPerformance < AthenaResource::Base
   def self.in_range(start, stop)
     start = "gt#{start.xmlschema}"
     stop = "lt#{stop.xmlschema}"
-    instantiate_collection(connection.get("/stage/performances.json?datetime=#{start}&datetime=#{stop}", self.headers))
+    instantiate_collection(query("datetime=#{start}&datetime=#{stop}"))
   end
 
   def chart
