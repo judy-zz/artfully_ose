@@ -5,6 +5,7 @@ class Admin::OrganizationsController < Admin::AdminController
 
   def show
     @organization = Organization.find(params[:id])
+    @events = AthenaEvent.find_by_organization_id(@organization.id)
     @users = User.all
   end
 

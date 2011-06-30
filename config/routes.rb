@@ -21,9 +21,15 @@ Artfully::Application.routes.draw do
     resources :users
     resources :settlements
     resources :organizations do
+
+      resources :events, :only => :show do
+        resources :performances, :only => :show
+      end
+
       resources :kits do
         put :activate, :on => :member
       end
+
       resources :memberships
       resource  :bank_account, :except => :show
     end

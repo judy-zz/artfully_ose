@@ -63,6 +63,18 @@ class AthenaTicket < AthenaResource::Base
     AthenaTicket.find(:all, :from => available_endpoint, :params => parameterize(terms)) unless terms.empty?
   end
 
+  def items
+    @items ||= AthenaItem.find_by_product(self)
+  end
+
+  def settlement_id
+    settled_item.settlement_id unless settled_item.nil?
+  end
+
+  def settled_item
+    @settled_item ||= items.select(&:settled?).first
+  end
+
   def price
     super.to_i
   end

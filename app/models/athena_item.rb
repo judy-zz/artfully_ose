@@ -48,6 +48,10 @@ class AthenaItem < AthenaResource::Base
     new.tap { |this| this.product = prod }
   end
 
+  def self.find_by_product(product)
+    find(:all, :params => { :productType => product.class.to_s, :productId => product.id })
+  end
+
   def product
     @product ||= find_product
   end
@@ -93,6 +97,10 @@ class AthenaItem < AthenaResource::Base
 
   def modified?
     !state.blank?
+  end
+
+  def settled?
+    state == "settled"
   end
 
   def self.find_by_order(order)

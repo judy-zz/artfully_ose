@@ -73,3 +73,8 @@
         .key Phone
         .value= @organization.bank_account.phone
     = link_to "Edit Bank Account", edit_admin_organization_bank_account_path(@organization)
+
+  %h3 Events
+  %ul
+    - @events.each do |event|
+      %li= link_to event.name, admin_organization_event_path(@organization, event)
