@@ -22,19 +22,19 @@ class AthenaPerformance < AthenaResource::Base
   state_machine do
     state :pending
     state :built
-    state :on_sale
-    state :off_sale
+    state :published
+    state :unpublished
 
     event :build do
       transitions :from => :pending, :to => :built
     end
 
-    event :put_on_sale do
-      transitions :from => [ :built, :off_sale ], :to => :on_sale
+    event :publish do
+      transitions :from => [ :built, :unpublished ], :to => :published
     end
 
-    event :take_off_sale do
-      transitions :from => :on_sale, :to => :off_sale
+    event :unpublish do
+      transitions :from => :published, :to => :unpublished
     end
   end
 
@@ -86,7 +86,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def has_door_list?
-    on_sale? or off_sale?
+    published? or unpublished?
   end
 
   def time_zone
@@ -114,13 +114,6 @@ class AthenaPerformance < AthenaResource::Base
     return attributes['datetime']
   end
 
-  def bulk_edit_tickets(ticket_ids, action)
-    case action
-      when COMP
-        bulk_comp(ticket_ids)
-    end
-  end
-
   def glance
     @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id, :organizationId => self.organization_id })
   end
@@ -131,7 +124,8 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def bulk_on_sale(ids)
-    AthenaTicket.put_on_sale(tickets.select { |ticket| ids.include? ticket.id })
+    targets = (ids == :all) ? tickets : tickets.select { |t| ids.include? t.id }
+    AthenaTicket.put_on_sale(targets)
   end
 
   def bulk_off_sale(ids)

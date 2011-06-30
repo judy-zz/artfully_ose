@@ -66,15 +66,61 @@ $(document).ready(function() {
 
   $(".popup-link").bind("ajax:complete", function(et, e){
     $(".popup").dialog( "open" );
-    $(".popup").html(e.responseText); 
+    $(".popup").html(e.responseText);
     activateControls();
     return false;
   });
-  
+
   $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
       $(".super-search-results").html(data.responseText);
-  });    
-  
+  });
+
+  $("form.sprited input:submit").live("click", function(event){
+    var $dialog = $(this).siblings(".confirmation.dialog").clone();
+    $(this).attr('disabled','disabled');
+
+    if($dialog.length !== 0){
+      var $submit =     $(this)
+          $confirmation = $(document.createElement('input')).attr({type: 'hidden', name:'confirm', value: 'true'});
+
+      $dialog.dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+          Ok: function(){
+            $dialog.dialog("close")
+            $submit.closest('form').append($confirmation);
+            $submit.closest('form').submit();
+            $confirmation.remove();
+          },
+          Cancel: function(){
+            $submit.removeAttr('disabled');
+            $dialog.dialog("close")
+          }
+        }
+      });
+      $dialog.dialog("open");
+      return false;
+    }
+  });
+
+  $("form.sprited").live("ajax:success", function(xhr, performance){
+    $(this).find(":submit").removeAttr('disabled');
+    $(this).closest("li").attr("class", performance.state)
+  });
+
+  $("form.sprited").live("ajax:error", function(xhr, status, error){
+    $(this).find(":submit").removeAttr('disabled');
+    data = eval("(" + status.responseText + ")");
+    console.log(data.errors)
+    for(var i = 0; i < data.errors.length; i++){
+      $.gritter.add({
+        title: "Oops!",
+        text: data.errors[i]
+      });
+    }
+  });
+
 });
 
 function activateControls() {

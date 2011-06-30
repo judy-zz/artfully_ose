@@ -1,6 +1,5 @@
 module ApplicationHelper
   include LinkHelper
-  include BulkEditHelper
   include TicketTableHelper
 
   def contextual_menu(&block)

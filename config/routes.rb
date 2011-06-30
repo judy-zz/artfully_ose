@@ -57,8 +57,12 @@ Artfully::Application.routes.draw do
       member do
         get :door_list
         post :duplicate
-        put :put_on_sale
-        put :take_off_sale
+      end
+      collection do
+        post :built
+        post :on_sale
+        post :published
+        post :unpublished
       end
     end
   end
@@ -94,7 +98,6 @@ Artfully::Application.routes.draw do
   resources :comps, :only => [ :new, :create ]
 
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
-  match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard

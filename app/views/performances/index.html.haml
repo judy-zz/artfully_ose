@@ -18,14 +18,16 @@
   = render :partial => "glance", :locals => { :report => @event.glance }
   %h3 All Performances
   #performances
-    .table-controls
     %ul.performance-list
       - @performances.each do |performance|
-        %li
-          %span.stats-controls= link_to "(more)", "#"
+        %li{ :class => performance.state }
           %h6= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
-          .hidden-stats
-            = render :partial => "stats", :locals => { :performance => performance }
+          .list-glance
+            %span= "sold (#{performance.glance.tickets.sold.gross}/#{performance.glance.tickets.available}),"
+            %span= "comped (#{performance.glance.tickets.sold.comped}),"
+            %span= "gross (#{number_as_cents(performance.glance.revenue.total_sales.gross)})"
+
+          = render :partial => "controls", :locals => { :performance => performance }
       %li.new-item
         = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
-    =will_paginate @performances
+    = will_paginate @performances

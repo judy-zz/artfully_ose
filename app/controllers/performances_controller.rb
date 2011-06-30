@@ -27,7 +27,7 @@ class PerformancesController < ApplicationController
 
     if @event.charts.empty?
        flash[:error] = "Please import a chart to this event before creating a new performance."
-       redirect_to event_path(@performance.event) 
+       redirect_to event_path(@performance.event)
     end
   end
 
@@ -41,9 +41,9 @@ class PerformancesController < ApplicationController
 
     if @performance.valid? && @performance.save
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date_at_time}"
-      redirect_to event_performances_path(@performance.event) 
+      redirect_to event_performances_path(@performance.event)
     else
-      redirect_to event_performances_path(@performance.event) 
+      redirect_to event_performances_path(@performance.event)
     end
   end
 
@@ -89,40 +89,88 @@ class PerformancesController < ApplicationController
     @door_list = DoorList.new(@performance)
   end
 
-  def put_on_sale
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :put_on_sale, @performance
+  def published
+    @performance = AthenaPerformance.find(params[:performance_id])
+    authorize! :show, @performance
 
     if @performance.tickets.empty?
-      flash[:error] = 'Please create tickets for this performance before putting it on sale'
-      redirect_to event_performance_url(@performance.event, @performance) and return
+      respond_to do |format|
+        format.html do
+          flash[:error] = 'Please create tickets for this performance before putting it on sale'
+          redirect_to event_performance_url(@performance.event, @performance)
+        end
+
+        format.json { render :json => { :errors => ['Please create tickets for this performance before putting it on sale'] } }
+      end
+
+      return
     end
 
     with_confirmation do
-      @performance.put_on_sale!
-      flash[:notice] = 'Your performance is on sale in the widget!'
-      redirect_to event_performance_url(@performance.event, @performance) and return
+      @performance.publish!
+      respond_to do |format|
+        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now published.' }
+        format.json { render :json => @performance.as_json }
+      end
     end
   end
 
-  def take_off_sale
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :take_off_sale, @performance
+  def unpublished
+    @performance = AthenaPerformance.find(params[:performance_id])
+    authorize! :hide, @performance
+
     with_confirmation do
-      @performance.take_off_sale!
-      flash[:notice] = 'Your performance has been taken off sale from the widget!'
-      redirect_to event_performance_url(@performance.event, @performance) and return
+      @performance.unpublish!
+      respond_to do |format|
+        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now unpublished.' }
+        format.json { render :json => @performance.as_json }
+      end
     end
   end
 
-  def createtickets
-    @performance = AthenaPerformance.find(params[:id])
+  def built
+    @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :edit, @performance
 
     AthenaTicketFactory.for_performance(@performance)
     @event = AthenaEvent.find(@performance.event_id)
     authorize! :create_tickets, @performance.chart.sections
-    redirect_to event_performance_url(@event, @performance)
+
+    respond_to do |format|
+      format.html { redirect_to event_performance_url(@event, @performance) }
+      format.json { render :json => @performance.as_json }
+    end
+  end
+
+  def on_sale
+    authorize! :bulk_edit, AthenaTicket
+    with_confirmation do
+      @performance = AthenaPerformance.find(params[:performance_id])
+
+      if @performance.bulk_on_sale(:all)
+        @performance.publish!
+        notice = "Put all tickets on sale."
+      else
+        error = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
+      end
+
+      respond_to do |format|
+        format.html do
+          flash[:notice] = notice
+          flash[:error] = error
+          redirect_to event_performance_url(@performance.event, @performance)
+        end
+
+        format.json do
+          if error.blank?
+            render :json => @performance.as_json
+          else
+            render :json => { :errors => [ error ] }, :status => 409
+          end
+        end
+
+      end
+    end
   end
 
   private
@@ -136,8 +184,10 @@ class PerformancesController < ApplicationController
 
     def with_confirmation
       if params[:confirm].nil?
-        flash[:info] = "Please confirm your changes before we save them."
-        render params[:action] + '_confirm' and return
+        respond_to do |format|
+          format.html { render params[:action] + '_confirm' and return }
+          format.json { render :json => { :errors => [ "Confirmation is required before you can proceed." ] }, :status => 400 }
+        end
       else
         yield
       end

@@ -13,8 +13,8 @@ class Ability
   end
 
   def default_abilities_for(user)
-    cannot [ :edit, :destroy ], AthenaPerformance, :on_sale? => true
-    cannot [ :edit, :destroy ], AthenaPerformance, :off_sale? => true
+    cannot [ :edit, :destroy ], AthenaPerformance, :visible? => true
+    cannot [ :edit, :destroy ], AthenaPerformance, :hidden? => true
     cannot [ :edit, :destroy ], AthenaPerformance, :built? => true
 
     cannot :destroy, AthenaEvent do |event|
@@ -52,24 +52,24 @@ class Ability
     can :new, AthenaEvent do |event|
       user.is_in_organization?
     end
-    
+
     can :create_paid_events, AthenaEvent do |event|
       user.current_organization.can? :access, :paid_ticketing
     end
-    
+
     can :create_tickets, Array do |sections|
       sections.select {|s| s.price.to_i > 0}.empty? || (user.current_organization.can? :access, :paid_ticketing)
     end
 
-    can [ :manage, :put_on_sale, :take_off_sale, :duplicate ], AthenaPerformance do |performance|
+    can [ :manage, :show, :hide, :duplicate ], AthenaPerformance do |performance|
       user.current_organization.can? :manage, performance
     end
-    
+
     can :manage, AthenaChart do |chart|
       user.current_organization.can? :manage, chart
     end
   end
-  
+
   def paid_ticketing_abilities_for(user)
     #This is the ability that the controller uses to authorize creating/editing an event
     can :manage, AthenaEvent do |event|
