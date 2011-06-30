@@ -111,7 +111,7 @@ $(document).ready(function() {
 
   $("form.sprited").live("ajax:success", function(xhr, performance){
     $(this).find(":submit").removeAttr('disabled');
-    $(this).closest("li").attr("class", performance.state)
+    $(this).closest("tr").attr("class", performance.state)
   });
 
   $("form.sprited").live("ajax:error", function(xhr, status, error){

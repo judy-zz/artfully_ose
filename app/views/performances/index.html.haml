@@ -18,16 +18,22 @@
   = render :partial => "glance", :locals => { :report => @event.glance }
   %h3 All Performances
   #performances
-    %ul.performance-list
-      - @performances.each do |performance|
-        %li{ :class => performance.state }
-          %h6= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
-          .list-glance
-            %span= "sold (#{performance.glance.tickets.sold.gross}/#{performance.glance.tickets.available}),"
-            %span= "comped (#{performance.glance.tickets.sold.comped}),"
-            %span= "gross (#{number_as_cents(performance.glance.revenue.total_sales.gross)})"
-
-          = render :partial => "controls", :locals => { :performance => performance }
-      %li.new-item
-        = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Performance
+          %th Available
+          %th Sold
+          %th Comped
+          %th Gross
+          %th Actions
+      %tbody
+        - @performances.each do |performance|
+          %tr{ :class => performance.state }
+            %td= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
+            %td= performance.glance.tickets.available
+            %td= performance.glance.tickets.sold.gross
+            %td= performance.glance.tickets.sold.comped
+            %td= number_as_cents(performance.glance.revenue.total_sales.gross)
+            %td= render :partial => "controls", :locals => { :performance => performance }
     = will_paginate @performances
