@@ -1,7 +1,14 @@
 - content_for :header do
   %h1= l(@performance.datetime)
 
-.spread
+.context
+  %h3 Settlement
+  - if @performance.settleables.any?
+    %p= link_to "Run Settlement", new_admin_settlement_path(:performance_id => @performance.id)
+  - else
+    %p There are no items due for settlement.
+
+.document
   %h3 Tickets
   %table.zebra.standalone
     %thead

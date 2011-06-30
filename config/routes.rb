@@ -19,7 +19,7 @@ Artfully::Application.routes.draw do
   namespace :admin do
     root :to => "index#index"
     resources :users
-    resources :settlements
+    resources :settlements, :only => [ :index, :new, :create ]
     resources :organizations do
 
       resources :events, :only => :show do

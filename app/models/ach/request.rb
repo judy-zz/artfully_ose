@@ -1,13 +1,13 @@
 module ACH
   class Request
     include HTTParty
-    base_uri ACH::CONFIG['base_uri']
+    base_uri ACH_CONFIG['base_uri']
 
     require 'ach/exceptions'
 
     CREDENTIALS = {
-      "Login_ID"        => ACH::CONFIG['login_id'],
-      "Transaction_Key" => ACH::CONFIG['transaction_key'],
+      "Login_ID"        => ACH_CONFIG['login_id'],
+      "Transaction_Key" => ACH_CONFIG['transaction_key'],
     }.freeze
 
     attr_reader :transaction, :customer, :account
