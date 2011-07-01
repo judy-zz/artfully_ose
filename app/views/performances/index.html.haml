@@ -25,7 +25,6 @@
           %th Available
           %th Sold
           %th Comped
-          %th Gross
           %th Actions
       %tbody
         - @performances.each do |performance|
@@ -34,6 +33,5 @@
             %td= performance.glance.tickets.available
             %td= performance.glance.tickets.sold.gross
             %td= performance.glance.tickets.sold.comped
-            %td= number_as_cents(performance.glance.revenue.total_sales.gross)
             %td= render :partial => "controls", :locals => { :performance => performance }
     = will_paginate @performances
