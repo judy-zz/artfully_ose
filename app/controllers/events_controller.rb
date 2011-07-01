@@ -25,8 +25,7 @@ class EventsController < ApplicationController
 
   def index
     authorize! :view, AthenaEvent
-    user = params[:user_id].blank?? current_user : User.find(params[:user_id])
-    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
+    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
@@ -39,7 +38,7 @@ class EventsController < ApplicationController
       format.json do
         render :json => @event.as_full_calendar_json.to_json
       end
-      format.html 
+      format.html
     end
 
   end
