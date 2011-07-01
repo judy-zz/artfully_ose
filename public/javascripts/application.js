@@ -75,13 +75,18 @@ $(document).ready(function() {
       $(".super-search-results").html(data.responseText);
   });
 
+  $("form.sprited").live("ajax:before", function(){
+    $(this).find("input:submit").attr('disabled','disabled');
+  });
+
   $("form.sprited input:submit").live("click", function(event){
-    var $dialog = $(this).siblings(".confirmation.dialog").clone();
-    $(this).attr('disabled','disabled');
+    var $dialog = $(this).siblings(".confirmation.dialog").clone(),
+        $submit = $(this);
+
+    console.log($dialog);
 
     if($dialog.length !== 0){
-      var $submit =     $(this)
-          $confirmation = $(document.createElement('input')).attr({type: 'hidden', name:'confirm', value: 'true'});
+      var $confirmation = $(document.createElement('input')).attr({type: 'hidden', name:'confirm', value: 'true'});
 
       $dialog.dialog({
         autoOpen: false,
