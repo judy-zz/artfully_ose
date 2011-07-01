@@ -15,101 +15,88 @@
           .key= label_tag :end_date
           .value= text_field_tag :stop, "#{l DateTime.civil(2011, 06, 25), :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
         = submit_tag "Get Statement"
-  = render :partial => 'statements_menu'
+  = render :partial => "played_performances", :locals => { :event => @event, :played => @played }
 
 .document
-  %h3 Statement Report: Comely and the Critter
-  %h4 Revenue
-  #statement_table
-    %table.standalone
-      %thead
-        %tr
-          %th{:style=>'width:200px'} Performance
-          %th{:style=>'width:100px'} Tickets Sold
-          %th{:style=>'width:100px'} Comps
-          %th{:style=>'width:100px'} Potential
-          %th{:style=>'width:100px'} Gross Revenue
-          %th{:style=>'width:100px'} Net Revenue
-      %tbody
-        %tr
-          %td
-            Fri 06/23/2010 12:00pm
-          %td
-            63
-          %td
-            10
-          %td
-            $1,400.00
-          %td
-            %strong
-              $1,160.99
-          %td
-            $998.77
-  %h4 Expenses
-  #statement_table
-    %table.standalone
-      %thead
-        %tr
-          %th{:style=>'width:200px'}
-          %th{:style=>'width:100px'} Units
-          %th{:style=>'width:100px'} Rate
-          %th{:style=>'width:100px'}
-          %th{:style=>'width:100px'} Expense
-          %th{:style=>'width:100px'}
-      %tbody
-        %tr
-          %td
-            Ticket processing
-          %td
-            63
-          %td
-            $2.00
-          %td
-          %td
-            $126.00
-          %td
-        %tr
-          %td
-            Credit card processing
-          %td
-            $1034.99
-          %td
-            3.5%
-          %td
-          %td
-            $36.22
-          %td
-        %tr
-          %td
-            %strong
-              TOTAL
-          %td
-          %td
-          %td
-          %td
-            %strong
-              $162.22
-          %td
-  %h4 Tickets
-  #statement_table
-    %table.standalone
-      %thead
-        %tr
-          %th{:style=>'width:200px'} Performance
-          %th{:style=>'width:100px'} Tickets
-          %th{:style=>'width:100px'} General Adm.
-          %th{:style=>'width:100px'} VIP
-          %th{:style=>'width:100px'} Comp
-      %tbody
-        %tr
-          %td
-            Fri 06/23/2010 12:00pm
-          %td
-            100
-          %td
-            45/50
-          %td
-            18/50
-          %td
-            10
+  -if @statement.nil?
+    %p
+      Please select a performance or a date range
+  -else
+    %h3="Statement Report: #{@event.name}"
+    %h4 Revenue
+    #statement_table
+      %table.standalone
+        %thead
+          %tr
+            %th{:style=>'width:200px'} Performance
+            %th{:style=>'width:100px'} Tickets Sold
+            %th{:style=>'width:100px'} Comps
+            %th{:style=>'width:100px'} Potential
+            %th{:style=>'width:100px'} Gross Revenue
+            %th{:style=>'width:100px'} Net Revenue
+        %tbody
+          - @statement.sales.performances.each do |row|
+            %tr
+              %td=l row.datetime, :format => :long_with_day
+              %td=row.tickets_sold
+              %td=row.tickets_comped
+              %td=number_as_cents row.potential_revenue
+              %td
+                %strong
+                  =number_as_cents row.gross_revenue
+              %td=number_as_cents row.net_revenue
+    %h4 Expenses
+    #statement_table
+      %table.standalone
+        %thead
+          %tr
+            %th{:style=>'width:200px'}
+            %th{:style=>'width:100px'} Units
+            %th{:style=>'width:100px'} Rate
+            %th{:style=>'width:100px'}
+            %th{:style=>'width:100px'} Expense
+            %th{:style=>'width:100px'}
+        %tbody
+          - @statement.expenses.expenses.each do |row|
+            %tr
+              %td
+                =row.description
+              %td=row.units
+              %td=row.rate
+              %td
+              %td=number_as_cents row.expense
+              %td
+          %tr
+            %td
+              %strong
+                =@statement.expenses.total.description
+            %td
+            %td
+            %td
+            %td
+              %strong
+                =number_as_cents @statement.expenses.total.expense
+            %td
+    %h4 Tickets
+    #statement_table
+      %table.standalone
+        %thead
+          %tr
+            %th{:style=>'width:200px'} Performance
+            %th{:style=>'width:100px'} Tickets
+            %th{:style=>'width:100px'} General Adm.
+            %th{:style=>'width:100px'} VIP
+            %th{:style=>'width:100px'} Comp
+        %tbody
+          %tr
+            %td
+              Fri 06/23/2010 12:00pm
+            %td
+              100
+            %td
+              45/50
+            %td
+              18/50
+            %td
+              10
   

@@ -48,6 +48,13 @@ class AthenaEvent < AthenaResource::Base
     upcoming.take(limit)
   end
 
+  def played_performances(limit = 5)
+    Time.zone = time_zone
+    played = performances.select { |performance| performance.datetime < DateTime.now.beginning_of_day }
+    return played if limit == :all
+    played.take(limit)
+  end
+
   def performances=(performances)
     raise TypeError, "Expecting an Array" unless performances.kind_of? Array
     @attributes['performances'] = performances
