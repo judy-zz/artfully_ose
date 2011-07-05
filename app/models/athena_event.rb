@@ -90,8 +90,7 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def sorted_locales
-    sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
-    sorted_locales
+    @sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
   end
 
   def free?

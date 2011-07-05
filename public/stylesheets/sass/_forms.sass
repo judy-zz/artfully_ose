@@ -22,6 +22,9 @@ form ul li
     @extend .stack2of3
     input
       width: 98%
+    input[type="checkbox"]
+      width: auto
+
   .label
     @extend .stack1of3
     label
@@ -58,10 +61,32 @@ form ul li
     &:last-child
       margin-right: 0
 
+.paired.element
+  input
+    width: 75%
+  input[type=submit]
+    width: auto
+    float: right
+
+
+.single_field
+  .label
+    @extend .stack1of5
+  .element
+    @extend .stack3of5
+    input
+      width: 100%
+  .submit
+    @extend .stack1of5
+    input
+      width: 100%
+      border-left: none
+      @include rounded-corners(0, 4px, 4px, 0)
+
 .code textarea
   height: 16em
-  
-      
+
+
 .date_field
   input
     width: 100px

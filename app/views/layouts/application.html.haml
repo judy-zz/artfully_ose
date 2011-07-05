@@ -30,13 +30,14 @@
       = render :partial => 'layouts/menu'
 
     #content
+      #logo
+        %img{ :src => '/images/logo.png' }
       #page
-        #logo
-          %img{ :src => '/images/logo.png' }
         #front-matter= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard
         = yield
     #footer
+      = link_to "Administration", admin_root_path if current_user.has_role? :admin
       = link_to "Privacy Policy", page_path("privacy")
       = link_to "Terms of Use", page_path("tou")

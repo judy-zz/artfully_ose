@@ -25,7 +25,7 @@ Feature: Order creation
   Scenario: The user@example.com added tickets to the order and then wants to include a donation
     Given I have added 2 tickets to my order
     And I am on the store order page
-    When I fill in "Amount" with "5000"
+    When I fill in "Add a Donation" with "5000"
     And I press "Make Donation"
     Then I should see "Donation to"
     And I should see "$50"

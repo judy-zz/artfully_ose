@@ -92,15 +92,15 @@ $(document).ready(function() {
         autoOpen: false,
         modal: true,
         buttons: {
+          Cancel: function(){
+            $submit.removeAttr('disabled');
+            $dialog.dialog("close")
+          },
           Ok: function(){
             $dialog.dialog("close")
             $submit.closest('form').append($confirmation);
             $submit.closest('form').submit();
             $confirmation.remove();
-          },
-          Cancel: function(){
-            $submit.removeAttr('disabled');
-            $dialog.dialog("close")
           }
         }
       });
