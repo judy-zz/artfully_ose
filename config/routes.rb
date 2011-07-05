@@ -105,6 +105,11 @@ Artfully::Application.routes.draw do
 
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
+  match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
+  match '/statements/events/:event_id' => 'statements#index', :as => :event_statements, :via => "get"
+  match '/statements/performances/:performance_id' => 'statements#show', :as => :performance_statement, :via => "get"
+  
+  
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard
   root :to => 'index#login_success', :constraints => lambda {|r| r.env["warden"].authenticate? }

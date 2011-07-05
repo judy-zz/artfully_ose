@@ -14,9 +14,9 @@ class StatementsController < ApplicationController
 
   def show
     #TODO: cancan?
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = AthenaPerformance.find(params[:performance_id])
     @event = @performance.event
     @played = @event.played_performances
-    @statement = AthenaStatement.for_performance(params[:id])
+    @statement = AthenaStatement.for_performance(params[:performance_id])
   end
 end
