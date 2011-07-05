@@ -38,5 +38,6 @@
         - flash.discard
         = yield
     #footer
+      = link_to "Administration", admin_root_path if current_user.has_role? :admin
       = link_to "Privacy Policy", page_path("privacy")
       = link_to "Terms of Use", page_path("tou")

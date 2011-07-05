@@ -31,6 +31,3 @@
       %li= link_to "Sales", sales_orders_path
       %li= link_to "Contributions", contributions_orders_path
       %li= link_to "Search", orders_path
-
-  %li
-    = link_to "Administration", admin_root_path if current_user.has_role? :admin
