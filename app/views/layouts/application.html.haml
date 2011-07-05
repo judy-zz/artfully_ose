@@ -30,9 +30,9 @@
       = render :partial => 'layouts/menu'
 
     #content
+      #logo
+        %img{ :src => '/images/logo.png' }
       #page
-        #logo
-          %img{ :src => '/images/logo.png' }
         #front-matter= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard
