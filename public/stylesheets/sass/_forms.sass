@@ -65,6 +65,21 @@ form ul li
     width: auto
     float: right
 
+
+.single_field
+  .label
+    @extend .stack1of5
+  .element
+    @extend .stack3of5
+    input
+      width: 100%
+  .submit
+    @extend .stack1of5
+    input
+      width: 100%
+      border-left: none
+      @include rounded-corners(0, 4px, 4px, 0)
+
 .code textarea
   height: 16em
 
