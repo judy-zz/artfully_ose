@@ -34,4 +34,6 @@
             %td= performance.glance.tickets.sold.gross
             %td= performance.glance.tickets.sold.comped
             %td= render :partial => "controls", :locals => { :performance => performance }
+        %tr
+          = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
     = will_paginate @performances
