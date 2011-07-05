@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
 
   has_many :memberships
   has_many :organizations, :through => :memberships
+  validates_acceptance_of :user_agreement
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -20,7 +21,7 @@ class User < ActiveRecord::Base
   end
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :user_agreement
 
   def is_in_organization?
     organizations.any?
