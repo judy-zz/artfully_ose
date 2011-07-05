@@ -9,3 +9,4 @@ nbproject
 application.css
 default.css
 *.*~
+config/database.yml
