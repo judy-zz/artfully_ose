@@ -16,4 +16,4 @@
     %ul.detailed-list
       - @events.each do |event|
         %li
-          %h4= link_to event.name, statement_path(4), :title => 'event-name'
+          %h4= link_to event.name, event_statements_path(event), :title => 'event-name'
