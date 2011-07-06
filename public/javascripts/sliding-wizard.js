@@ -191,11 +191,18 @@ function updateConfirmation(){
       $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
   }
 
+  var expiration = [];
   $.each(creditCard, function(i,field){
     key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
     value = field.value;
-    $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
+    if(!key.match(/(\di)/)){
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
+    } else {
+      expiration.push(value);
+    }
   });
+
+ $(document.createElement('p')).html("Expiration: " + expiration[0] + "/" + expiration[1]).appendTo($("#credit_card-confirmation"));
 
   $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
   var address = $("#billing_address").find("input:visible, select").serializeArray();
