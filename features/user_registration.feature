@@ -9,7 +9,7 @@ Feature: User registration
     Given I am on the new user registration page
     When I fill in "Email" with "example@example.com"
     And I fill in "Password" with "password"
-    And I fill in "Password confirmation" with "password"
+    And I fill in "Retype Password" with "password"
     And I check "user_user_agreement"
     And I press "Sign up"
     Then I should be on the dashboard page
@@ -18,6 +18,6 @@ Feature: User registration
     Given I am on the new user registration page
     When I fill in "Email" with "example@example.com"
     And I fill in "Password" with "password"
-    And I fill in "Password confirmation" with "password"
+    And I fill in "Retype Password" with "password"
     And I press "Sign up"
     Then I should see "User agreement must be accepted"
