@@ -17,6 +17,6 @@ class StatementsController < ApplicationController
     @performance = AthenaPerformance.find(params[:performance_id])
     @event = @performance.event
     @played = @event.played_performances
-    @statement = AthenaStatement.for_performance(params[:performance_id])
+    @statement = AthenaStatement.for_performance(params[:performance_id], current_user.current_organization)
   end
 end
