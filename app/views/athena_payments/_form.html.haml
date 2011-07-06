@@ -18,3 +18,10 @@
         = render :partial => 'athena_addresses/form.html', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
 
       %li#confirmation
+
+        %ul
+          %li
+            .label= payment_form.label :user_agreement, "User Agreement"
+            .element
+              = payment_form.check_box :user_agreement
+              .description= "I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", page_path("user_agreement"), :target => "_blank"}".html_safe

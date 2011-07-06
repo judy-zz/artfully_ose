@@ -170,8 +170,13 @@ $(document).ready(function(){
 // Tech Debt
 function updateConfirmation(){
   $confirmation = $("#confirmation");
-  $confirmation.empty();
-  $(document.createElement('h3')).html("Confirmation").prependTo($confirmation);
+
+  $("#confirmation-title").remove();
+  $("#customer-confirmation").remove();
+  $("#credit_card-confirmation").remove();
+  $("#billing_address-confirmation").remove();
+
+  $(document.createElement('h3')).attr('id','confirmation-title').html("Confirmation").prependTo($confirmation);
 
   $(document.createElement('div')).attr('id','customer-confirmation').appendTo($confirmation);
   $(document.createElement('div')).attr('id','credit_card-confirmation').appendTo($confirmation);

@@ -12,7 +12,8 @@ Feature: Order Checkout
     Given I have added 2 tickets to my order
     And I am on the store order page
     And I follow "Checkout Now"
-    When I enter my payment details
+    When I check "athena_payment_user_agreement"
+    And I enter my payment details
     And I press "Purchase"
     Then I should see "Thank you for your order!"
     And an email confirmation for the order should have been sent
@@ -21,7 +22,17 @@ Feature: Order Checkout
     Given I have added 1 donations to my order
     And I am on the store order page
     And I follow "Checkout Now"
-    When I enter my payment details
+    When I check "athena_payment_user_agreement"
+    And I enter my payment details
     And I press "Purchase"
     Then I should see "Thank you for your order!"
     And an email confirmation for the order should have been sent
+
+  Scenario: A user attempts to check out without agreeing to the user agreement
+    Given I have added 2 tickets to my order
+    And I am on the store order page
+    And I follow "Checkout Now"
+    And I enter my payment details
+    And I press "Purchase"
+    Then I should see "User agreement must be accepted"
+
