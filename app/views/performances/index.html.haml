@@ -30,9 +30,9 @@
         - @performances.each do |performance|
           %tr{ :class => performance.state }
             %td= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
-            %td= performance.glance.tickets.available
-            %td= performance.glance.tickets.sold.gross
-            %td= performance.glance.tickets.sold.comped
+            %td.available= performance.glance.tickets.available
+            %td.gross= performance.glance.tickets.sold.gross
+            %td.comped= performance.glance.tickets.sold.comped
             %td= render :partial => "controls", :locals => { :performance => performance }
         %tr
           = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }

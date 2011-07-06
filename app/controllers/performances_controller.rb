@@ -110,7 +110,7 @@ class PerformancesController < ApplicationController
       @performance.publish!
       respond_to do |format|
         format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now published.' }
-        format.json { render :json => @performance.as_json }
+        format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
       end
     end
   end
@@ -123,7 +123,7 @@ class PerformancesController < ApplicationController
       @performance.unpublish!
       respond_to do |format|
         format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now unpublished.' }
-        format.json { render :json => @performance.as_json }
+        format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
       end
     end
   end
@@ -138,7 +138,7 @@ class PerformancesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to event_performance_url(@event, @performance) }
-      format.json { render :json => @performance.as_json }
+      format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
     end
   end
 
@@ -163,7 +163,7 @@ class PerformancesController < ApplicationController
 
         format.json do
           if error.blank?
-            render :json => @performance.as_json
+            render :json => @performance.as_json.merge('glance' => @performance.glance.as_json)
           else
             render :json => { :errors => [ error ] }, :status => 409
           end
