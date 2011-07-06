@@ -1,5 +1,6 @@
 class PerformancesController < ApplicationController
-  before_filter :find_event, :only => [ :index, :show ]
+  before_filter :find_event, :only => [ :index, :show, :new ]
+  before_filter :check_for_charts, :only => [ :index, :new ]
   before_filter :upcoming_performances, :only => [ :index, :show ]
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -22,13 +23,7 @@ class PerformancesController < ApplicationController
   end
 
   def new
-    @event = AthenaEvent.find(params[:event_id])
     @performance = @event.next_perf
-
-    if @event.charts.empty?
-       flash[:error] = "Please import a chart to this event before creating a new performance."
-       redirect_to event_path(@performance.event)
-    end
   end
 
   def create
@@ -110,7 +105,7 @@ class PerformancesController < ApplicationController
       @performance.publish!
       respond_to do |format|
         format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now published.' }
-        format.json { render :json => @performance.as_json }
+        format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
       end
     end
   end
@@ -123,7 +118,7 @@ class PerformancesController < ApplicationController
       @performance.unpublish!
       respond_to do |format|
         format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now unpublished.' }
-        format.json { render :json => @performance.as_json }
+        format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
       end
     end
   end
@@ -138,7 +133,7 @@ class PerformancesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to event_performance_url(@event, @performance) }
-      format.json { render :json => @performance.as_json }
+      format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
     end
   end
 
@@ -163,7 +158,7 @@ class PerformancesController < ApplicationController
 
         format.json do
           if error.blank?
-            render :json => @performance.as_json
+            render :json => @performance.as_json.merge('glance' => @performance.glance.as_json)
           else
             render :json => { :errors => [ error ] }, :status => 409
           end
@@ -201,4 +196,12 @@ class PerformancesController < ApplicationController
         yield
       end
     end
+
+    def check_for_charts
+      if @event.charts.empty?
+         flash[:error] = "Please import a chart to this event before working with performances."
+         redirect_to event_path(@event)
+      end
+    end
+
 end

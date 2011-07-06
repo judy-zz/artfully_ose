@@ -24,9 +24,6 @@
     = csrf_meta_tag
   %body
     #header
-      #current
-        #current-user= current_user.email
-        #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
       = render :partial => 'layouts/menu'
 
     #content
@@ -38,6 +35,10 @@
         - flash.discard
         = yield
     #footer
-      = link_to "Administration", admin_root_path if current_user.has_role? :admin
-      = link_to "Privacy Policy", page_path("privacy")
-      = link_to "Terms of Use", page_path("tou")
+      #current
+        #current-user= current_user.email
+        #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
+        - if current_user.has_role? :admin
+          #administration= link_to "Administration", admin_root_path
+
+

@@ -3,7 +3,6 @@
     = link_to "Dashboard", dashboard_path
     %ul
       %li= link_to "My Organization", organizations_path
-      %li= link_to "Help", help_index_path
       %li= link_to "Sign Out", destroy_user_session_path
 
   %li{ :class => active?(:events) }
@@ -30,3 +29,10 @@
       %li= link_to "Sales", sales_orders_path
       %li= link_to "Contributions", contributions_orders_path
       %li= link_to "Search", orders_path
+  %li
+  %li{ :class => :help }
+    = link_to "Help", help_index_path
+    %ul
+      %li= link_to "Privacy Policy", page_path("privacy")
+      %li= link_to "Terms of Use", page_path("tou")
+      %li= link_to "User Agreement", page_path("user_agreement")
