@@ -1,5 +1,6 @@
 class PerformancesController < ApplicationController
-  before_filter :find_event, :only => [ :index, :show ]
+  before_filter :find_event, :only => [ :index, :show, :new ]
+  before_filter :check_for_charts, :only => [ :index, :new ]
   before_filter :upcoming_performances, :only => [ :index, :show ]
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -22,13 +23,7 @@ class PerformancesController < ApplicationController
   end
 
   def new
-    @event = AthenaEvent.find(params[:event_id])
     @performance = @event.next_perf
-
-    if @event.charts.empty?
-       flash[:error] = "Please import a chart to this event before creating a new performance."
-       redirect_to event_path(@performance.event)
-    end
   end
 
   def create
@@ -201,4 +196,12 @@ class PerformancesController < ApplicationController
         yield
       end
     end
+
+    def check_for_charts
+      if @event.charts.empty?
+         flash[:error] = "Please import a chart to this event before working with performances."
+         redirect_to event_path(@event)
+      end
+    end
+
 end
