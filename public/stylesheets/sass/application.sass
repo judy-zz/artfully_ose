@@ -67,8 +67,6 @@ strong
   text-align: center
 
 #current
-  float: right
-  margin: 12px 10px 0 0
   font-size: .9em
   div
     float: left
@@ -77,6 +75,13 @@ strong
     color: #888
   #current-org
     border-left: 1px solid #888
+  #administration
+    border-left: 1px solid #888
+    a
+      color: #666
+      font-weight: bold
+      text-transform: uppercase
+      font-size: .8em
 
 #content
   margin: 0 auto
@@ -405,12 +410,7 @@ ul.prices li div
   padding: 5px
   background: #ccc
   text-align: right
-  padding-left: 10px
   @include rounded-corners(4px, 0, 0, 0)
-  a
-    font-size: .8em
-    color: #333
-    margin: 0 10px 0 0
 
 @import "main-menu"
 @import "forms"

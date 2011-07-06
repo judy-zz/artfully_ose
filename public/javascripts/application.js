@@ -21,7 +21,7 @@ $(document).ready(function() {
   })
 
   $("#main-menu").hover(
-    function(){$("#main-menu li ul").stop().animate({height: '106px'}, 'fast')},
+    function(){$("#main-menu li ul").stop().animate({height: '80px'}, 'fast')},
     function(){$("#main-menu li ul").stop().animate({height: '0px'}, 'fast')}
   );
 
