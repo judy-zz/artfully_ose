@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   has_many :memberships
   has_many :organizations, :through => :memberships
-  validates_acceptance_of :user_agreement
+  validates_acceptance_of :user_agreement, :message => "Please accept the User Agreement"
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable

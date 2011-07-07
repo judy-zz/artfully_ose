@@ -114,11 +114,11 @@ class AthenaItem < AthenaResource::Base
   end
 
   def modified?
-    !state == "purchased"
+    !state.eql? "purchased"
   end
 
   def settled?
-    state == "settled"
+    state.eql? "settled"
   end
 
   def self.find_by_order(order)
