@@ -49,6 +49,7 @@ class Exchange
   end
 
   def create_athena_order(time=Time.now)
+    RAILS_DEFAULT_LOGGER.debug("CREATING EXCHANGE ORDER")
     exchange_order = AthenaOrder.new.tap do |exchange_order|
       exchange_order.person = order.person
       exchange_order.parent = order
@@ -56,6 +57,7 @@ class Exchange
       exchange_order.for_organization order.organization
       exchange_order << tickets
     end
+    RAILS_DEFAULT_LOGGER.debug("RECORDING EXCHANGE")
     exchange_order.record_exchange!
     exchange_order.save!
   end

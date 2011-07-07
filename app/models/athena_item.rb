@@ -95,11 +95,18 @@ class AthenaItem < AthenaResource::Base
   end
   
   def to_exchange!
-    price = 0
-    realized_price = 0
-    net = 0
-    state = "exchangee"
+    self.price = 0
+    self.realized_price = 0
+    self.net = 0
+    self.state = "exchangee"
   end  
+  
+  def to_comp!
+    self.price = 0
+    self.realized_price = 0
+    self.net = 0
+    self.state = "comped"
+  end
 
   def return!
     update_attribute(:state, "returned")
