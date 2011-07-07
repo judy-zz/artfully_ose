@@ -1,7 +1,6 @@
 # Used for artful.ly orders (and not for checkout in the api/widget)
 class AthenaOrder < AthenaResource::Base
   self.site = Artfully::Application.config.orders_component
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'orders'
   self.collection_name = 'orders'
 

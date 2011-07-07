@@ -1,7 +1,5 @@
 class AthenaAction < AthenaResource::Base
-
   self.site = Artfully::Application.config.people_site
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'actions'
   self.collection_name = 'actions'
 
@@ -28,10 +26,6 @@ class AthenaAction < AthenaResource::Base
 
   def action_type(); @attributes['action_type']; end
   def action_type=(action_type); ;end
-
-  def initialize(attributes = {})
-    super(attributes)
-  end
 
   def self.create_of_type(type)
     if "HEAR" == type

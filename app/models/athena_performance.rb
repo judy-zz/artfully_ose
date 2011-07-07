@@ -2,7 +2,6 @@ class AthenaPerformance < AthenaResource::Base
   include ActiveResource::Transitions
 
   self.site = Artfully::Application.config.stage_site
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'performances'
   self.collection_name = 'performances'
 

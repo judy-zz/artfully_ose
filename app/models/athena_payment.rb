@@ -1,6 +1,5 @@
 class AthenaPayment < AthenaResource::Base
   self.site = Artfully::Application.config.payments_component
-  self.headers["User-agent"] = "artful.ly"
   self.collection_name = 'payments'
   self.element_name = 'payments'
 

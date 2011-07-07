@@ -1,7 +1,6 @@
 class AthenaTicketFactory < AthenaResource::Base
   self.site = Artfully::Application.config.tickets_site
   self.prefix = "/tix/meta/"
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'ticketfactory'
   self.collection_name = 'ticketfactory'
 

@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-
   include RoleModel
   # Always append new roles if you add more.
   roles :admin
@@ -26,7 +25,7 @@ class User < ActiveRecord::Base
   def is_in_organization?
     organizations.any?
   end
-  
+
   def is_admin?
     has_role? :admin
   end

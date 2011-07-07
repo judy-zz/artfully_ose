@@ -2,7 +2,6 @@ require 'athena_resource/formats'
 
 module AthenaResource
   class Base < ActiveResource::Base
-
     # Enable ActiveModel callbacks for models
     extend ActiveModel::Callbacks
     define_model_callbacks :create, :save, :validation
@@ -30,12 +29,12 @@ module AthenaResource
       #Can be used when searching for a range because you can't dupe keys in a hash
       #For example: datetime=lt2011-03-02&datetime=gt2010-05-05
       def query(query_str)
-        
+
         #Neither CGI::Escape nor URI.escape worked here
         #CGI::escape escaped everything and ATHENA threw 400
         #URI.escape failed to change the + to %2B which is really the only thing I wanted it to do
-        query_str.gsub!(/\+/,'%2B') 
-        
+        query_str.gsub!(/\+/,'%2B')
+
         connection.get(self.collection_path + "?" + query_str, self.headers)
       end
 
@@ -75,5 +74,7 @@ module AthenaResource
       return self.class.format.encode(attrs, options) if self.class.format.respond_to? :encode
       super(options)
     end
+
+    include Headers
   end
 end

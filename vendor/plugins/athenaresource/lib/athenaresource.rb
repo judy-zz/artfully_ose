@@ -6,6 +6,7 @@ module AthenaResource
 
   extend ActiveSupport::Autoload
   autoload :Base
+  autoload :Headers
 end
 
 
