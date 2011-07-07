@@ -2,7 +2,6 @@ require 'ach/exceptions'
 
 class Settlement < AthenaResource::Base
   self.site = Artfully::Application.config.orders_component
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'settlements'
   self.collection_name = 'settlements'
 

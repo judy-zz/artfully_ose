@@ -2,7 +2,6 @@ class AthenaTicket < AthenaResource::Base
   include ActiveResource::Transitions
 
   self.site = Artfully::Application.config.tickets_site
-  self.headers["User-agent"] = "artful.ly"
   self.collection_name = 'tickets'
   self.element_name = 'tickets'
 

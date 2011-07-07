@@ -1,6 +1,5 @@
 class AthenaSection < AthenaResource::Base
   self.site = Artfully::Application.config.stage_site
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'sections'
   self.collection_name = 'sections'
 

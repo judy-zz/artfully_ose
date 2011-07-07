@@ -1,6 +1,6 @@
 class Kit < ActiveRecord::Base
-
   include ActiveRecord::Transitions
+
   belongs_to :organization
   validates_presence_of :organization
 

@@ -1,10 +1,9 @@
 - in_section :people
-= render :partial => "shared/headers/people"
+- content_for :header do
+  %h1 New Contact
 
-.context
-  %h3 New Person
-
-.document
+.spread
+  %h3 Contact Details
   = form_for @person, :url => people_path do |form|
     %ul
       = render :partial => 'people/form', :locals => { :parent_form => form, :target => @person }
