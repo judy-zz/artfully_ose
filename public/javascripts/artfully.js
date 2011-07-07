@@ -136,7 +136,7 @@ artfully.widgets = (function(){
         this.$cart = $("<div id='shopping-cart' class='hidden' />");
 
         this.$controls = $("<div id='shopping-cart-controls' />").appendTo(this.$cart);
-        $("<span class='timer' />").text("(Countdown)").appendTo(this.$controls);
+        // $("<span class='timer' />").text("(Countdown)").appendTo(this.$controls);
         $("<span class='cart-name' />").text("Shopping Cart").appendTo(this.$controls);
 
         this.$iframe = $("<iframe name='shopping-cart-iframe' />")
