@@ -25,7 +25,7 @@ describe Checkout do
   end
 
   it "should be valid without a payment if the order total is 0 (Free)" do
-    subject.payment = nil
+    subject.payment.credit_card = nil
     subject.should be_valid
   end
 
@@ -40,9 +40,9 @@ describe Checkout do
     subject.should_not be_valid
   end
 
-  it "should be valid if the payment is invalid but the order total is 0 (Free)" do
+  it "should not be valid if the payment is invalid but the order total is 0 (Free)" do
     subject.payment.stub(:valid?).and_return(false)
-    subject.should be_valid
+    subject.should_not be_valid
   end
 
   describe "finish" do

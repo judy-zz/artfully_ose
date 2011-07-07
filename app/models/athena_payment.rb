@@ -6,10 +6,21 @@ class AthenaPayment < AthenaResource::Base
 
   validates_acceptance_of :user_agreement
   validates_numericality_of :amount, :greater_than_or_equal_to => 0
-  validates_presence_of :billing_address, :credit_card
+  validates_presence_of :billing_address
 
-  validates_each :billing_address, :credit_card, :customer do |model, attr, value|
+  validates_each :billing_address, :customer do |model, attr, value|
     model.errors.add(attr, "is invalid") unless model.send(attr).valid?
+  end
+
+  with_options :if => :credit_card_required? do |payment|
+    payment.validates_presence_of :credit_card
+    payment.validates_each :credit_card do |model, attr, value|
+      model.errors.add(attr, "is invalid") unless model.send(attr).valid?
+    end
+  end
+
+  def credit_card_required?
+    amount.to_i > 0
   end
 
   schema do

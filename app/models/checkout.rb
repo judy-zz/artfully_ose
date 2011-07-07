@@ -8,8 +8,8 @@ class Checkout
   end
 
   def valid?
-    if order.nil? or order.total == 0
-      return !!order
+    if order.nil? 
+      return !!order 
     else
       return (!!order and !!payment and payment.valid?)
     end
