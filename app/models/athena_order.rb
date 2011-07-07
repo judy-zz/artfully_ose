@@ -98,6 +98,12 @@ class AthenaOrder < AthenaResource::Base
   def payment
     AthenaPayment.new(:transaction_id => transaction_id)
   end
+  
+  def record_exchange!
+    items.each do |item|
+      item.to_exchange!
+    end
+  end
 
   def self.in_range(start, stop, org_id=nil)
     start = "gt#{start.xmlschema}"

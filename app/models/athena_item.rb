@@ -60,6 +60,8 @@ class AthenaItem < AthenaResource::Base
     set_product_details_from product
     set_prices_from product
     set_performance_from product if product.respond_to? :performance_id
+    self.state = "purchased"
+    puts self.state
     @product = product
   end
 
@@ -86,9 +88,18 @@ class AthenaItem < AthenaResource::Base
   def to_refund
     dup!.tap do |item|
       item.price = item.price.to_i * -1
+      item.realized_price = item.realized_price.to_i * -1
+      item.net = item.net.to_i * -1
       item.state = "refund"
     end
   end
+  
+  def to_exchange!
+    price = 0
+    realized_price = 0
+    net = 0
+    state = "exchangee"
+  end  
 
   def return!
     update_attribute(:state, "returned")
@@ -96,7 +107,7 @@ class AthenaItem < AthenaResource::Base
   end
 
   def modified?
-    !state.blank?
+    !state == "purchased"
   end
 
   def settled?

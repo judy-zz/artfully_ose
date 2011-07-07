@@ -44,7 +44,7 @@ class Exchange
 
   def sell_new_items
     exchange_order_timestamp = Time.now
-    tickets.each { |ticket| ticket.sell_to(order.person, exchange_order_timestamp) }
+    tickets.each { |ticket| ticket.exchange_to(order.person, exchange_order_timestamp) }
     create_athena_order(exchange_order_timestamp)
   end
 
@@ -56,7 +56,7 @@ class Exchange
       exchange_order.for_organization order.organization
       exchange_order << tickets
     end
-
+    exchange_order.record_exchange!
     exchange_order.save!
   end
 end
