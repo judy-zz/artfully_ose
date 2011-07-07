@@ -4,6 +4,7 @@ class CompsController < ApplicationController
     @selected_tickets = params[:selected_tickets]
 
     @comp = Comp.new(@performance, @selected_tickets, recipient)
+    @recipients = recipients || []
   end
 
   def create
@@ -37,15 +38,11 @@ class CompsController < ApplicationController
 
   private
 
+  def recipients
+    AthenaPerson.search_index(params[:email], current_user.current_organization) unless params[:email].blank?
+  end
+
   def recipient
-    if params[:person_id]
-      AthenaPerson.find(params[:person_id])
-    elsif params[:comp] and params[:comp][:athena_person]
-      rec = AthenaPerson.new(params[:comp][:athena_person].merge({:organization_id => current_user.current_organization.id}))
-      rec.save!
-      rec
-    else
-      AthenaPerson.find_or_new_by_email(params[:email], current_user.current_organization)
-    end
+    AthenaPerson.find(params[:person_id]) if params[:person_id]
   end
 end

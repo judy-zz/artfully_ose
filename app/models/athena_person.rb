@@ -28,11 +28,6 @@ class AthenaPerson < AthenaResource::Base
     find_by_organization_id(organization.id)
   end
 
-  def self.find_or_new_by_email(email, organization)
-    return if email.blank?
-    find_by_email_and_organization(email, organization) || new(:email => email)
-  end
-
   def organization
     @organization ||= Organization.find(organization_id)
   end

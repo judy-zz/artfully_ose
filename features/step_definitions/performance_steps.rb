@@ -72,6 +72,7 @@ end
 When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
   fname, lname = name.split(" ")
   customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
+  FakeWeb.register_uri(:get, %r|http://localhost/people/people\.json?.*_q.*|, :body => "[#{customer.encode}]")
 
   When %{I fill in "Email" with "#{email}"}
   And %{I press "Search"}

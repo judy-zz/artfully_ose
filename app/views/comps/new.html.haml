@@ -5,7 +5,7 @@
 = render "shared/error_messages", :target => @event
 
 .context
-  - unless @comp.recipient.blank? or @comp.recipient.new?
+  - if @comp.has_recipient?
     %h4 Recipient
     %ul.kv
       %li
@@ -19,22 +19,18 @@
         .value= @comp.recipient.email
 
 .document
-  - if not @comp.has_recipient?
+  - unless @comp.has_recipient?
     = render :partial => 'find_person'
   - if @comp.has_recipient?
     = form_for @comp do |form|
       = hidden_field_tag :performance_id, @performance.id
+      = hidden_field_tag :person_id, @comp.recipient.id
       - @selected_tickets.each do |st|
-        = hidden_field_tag "selected_tickets[]", st
+        = hidden_field_tag("selected_tickets[]", st)
       %ul
-        - if @comp.recipient.persisted?
-          = hidden_field_tag :person_id, @comp.recipient.id
-        - else
-          = render :partial => 'new_person_form', :locals => { :parent_form => form, :target => @comp.recipient }
         %li
           .label= label_tag :comp_reason, "Reason for Comp"
           .element= text_field_tag :comp_reason
         %li= submit_tag "Submit"
-    %p
-    <a href=javascript:history.back()> Search for a different Person Record </a>
+    %p= link_to "Search for a different Person Record", "javascript:history.back()"
 
