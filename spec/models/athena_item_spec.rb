@@ -76,9 +76,13 @@ describe AthenaItem do
       it "sets the price to the price of the ticket" do
         subject.price.should eq ticket.price
       end
+      
+      it "sets itself to purchased" do
+        subject.state.should eq "purchased"
+      end
 
       it "sets the realized price to the price of the ticket less $2 dollars (200)" do
-        subject.realized_price.should eq (ticket.price - 200)
+        subject.realized_price.should eq(ticket.price - 200)
       end
 
       it "sets the net to 3.5% of the realized price" do
@@ -108,9 +112,10 @@ describe AthenaItem do
   end
 
   describe "#dup!" do
-    it "should create a duplicate item without the id" do
+    it "should create a duplicate item without the id and state" do
       old_attr = subject.attributes.dup
       old_attr.delete(:id)
+      old_attr.delete(:state)
 
       new_attr = subject.dup!.attributes
 
@@ -206,6 +211,8 @@ describe AthenaItem do
 
     it "returns an item with the refund price set" do
       subject.to_refund.price.should eq subject.price * -1
+      subject.to_refund.realized_price.should eq subject.realized_price * -1
+      subject.to_refund.net.should eq subject.net * -1
     end
   end
 

@@ -130,6 +130,17 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
+  def exchange_to(buyer, time=Time.now)
+    begin
+      self.buyer = buyer
+      self.sold_price = 0
+      self.sold_at = time
+      self.sell!
+    rescue Transitions::InvalidTransition
+      return false
+    end
+  end
+
   def comp_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
