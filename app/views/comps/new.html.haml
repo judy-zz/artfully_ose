@@ -5,32 +5,28 @@
 = render "shared/error_messages", :target => @event
 
 .context
-  - if @comp.has_recipient?
-    %h4 Recipient
-    %ul.kv
-      %li
-        .key First Name
-        .value= @comp.recipient.first_name
-      %li
-        .key Last Name
-        .value= @comp.recipient.last_name
-      %li
-        .key Email Address
-        .value= @comp.recipient.email
+  %h4 Recipient
+  %ul.kv
+    %li
+      .key First Name
+      .value= @comp.recipient.first_name
+    %li
+      .key Last Name
+      .value= @comp.recipient.last_name
+    %li
+      .key Email Address
+      .value= @comp.recipient.email
 
 .document
-  - unless @comp.has_recipient?
-    = render :partial => 'find_person'
-  - if @comp.has_recipient?
-    = form_for @comp do |form|
-      = hidden_field_tag :performance_id, @performance.id
-      = hidden_field_tag :person_id, @comp.recipient.id
-      - @selected_tickets.each do |st|
-        = hidden_field_tag("selected_tickets[]", st)
-      %ul
-        %li
-          .label= label_tag :comp_reason, "Reason for Comp"
-          .element= text_field_tag :comp_reason
-        %li= submit_tag "Submit"
-    %p= link_to "Search for a different Person Record", "javascript:history.back()"
+  = form_for @comp do |form|
+    = hidden_field_tag :performance_id, @performance.id
+    = hidden_field_tag :person_id, @comp.recipient.id
+    - @selected_tickets.each do |st|
+      = hidden_field_tag("selected_tickets[]", st)
+    %ul
+      %li
+        .label= label_tag :comp_reason, "Reason for Comp"
+        .element= text_field_tag :comp_reason
+      %li= submit_tag "Submit"
+  %p= link_to "Search for a different Person Record", "javascript:history.back()"
 

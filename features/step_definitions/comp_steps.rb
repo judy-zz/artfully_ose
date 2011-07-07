@@ -3,3 +3,9 @@ Given /^I check the (\d+)(?:st|nd|rd|th) ticket for a comp$/ do |pos|
     check("selected_tickets[]")
   end
 end
+
+When /^I select the first person$/ do
+  within(".wizard-list") do
+    click_button("Select")
+  end
+end

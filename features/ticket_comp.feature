@@ -16,7 +16,7 @@ Feature: Ticket Comp
     And I check the 1st ticket for a comp
     And I press "Comp"
     And I search for the patron named "Joe Producer" email "joe.producer@example.com"
-    And I press "Select"
+    And I select the first person
     And I fill in "comp_reason" with "Dull and Generic Reason"
     And I press "Submit"
     And I confirm comp

@@ -5,6 +5,11 @@ class CompsController < ApplicationController
 
     @comp = Comp.new(@performance, @selected_tickets, recipient)
     @recipients = recipients || []
+    if @comp.has_recipient?
+      render :new
+    else
+      render :find_person
+    end
   end
 
   def create
@@ -39,7 +44,7 @@ class CompsController < ApplicationController
   private
 
   def recipients
-    AthenaPerson.search_index(params[:email], current_user.current_organization) unless params[:email].blank?
+    AthenaPerson.search_index(params[:terms], current_user.current_organization) unless params[:terms].blank?
   end
 
   def recipient
