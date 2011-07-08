@@ -6,6 +6,9 @@ module AthenaResource
     extend ActiveModel::Callbacks
     define_model_callbacks :create, :save, :validation
 
+    self.user = Artfully::Application.config.athena_resource_user if Artfully::Application.config.athena_resource_user
+    self.password = Artfully::Application.config.athena_resource_password if Artfully::Application.config.athena_resource_password
+
     class << self
       def format
         read_inheritable_attribute(:format) || AthenaResource::Formats::AthenaFormat
