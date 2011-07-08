@@ -59,5 +59,5 @@ Artfully::Application.configure do
 
   config.athena_resource_user = 'demo'
   config.athena_resource_password = 'LiberateTheArts!'
-  config.athena_resource_auth_type = :digest
+  config.athena_resource_auth_type = 'digest'
 end

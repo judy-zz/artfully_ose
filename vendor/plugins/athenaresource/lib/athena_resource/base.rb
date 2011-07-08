@@ -6,10 +6,22 @@ module AthenaResource
     extend ActiveModel::Callbacks
     define_model_callbacks :create, :save, :validation
 
-    self.user = Artfully::Application.config.athena_resource_user if Artfully::Application.config.athena_resource_user
-    self.password = Artfully::Application.config.athena_resource_password if Artfully::Application.config.athena_resource_password
+    self.user = Artfully::Application.config.athena_resource_user
+    self.password = Artfully::Application.config.athena_resource_password
+    self.auth_type = Artfully::Application.config.athena_resource_auth_type
 
     class << self
+
+      def auth_type
+        # Not using superclass_delegating_reader. See +site+ for explanation
+        if defined?(@auth_type)
+          @auth_type
+        elsif superclass != Object && superclass.auth_type
+          superclass.auth_type.dup.freeze
+        end
+      end
+
+
       def format
         read_inheritable_attribute(:format) || AthenaResource::Formats::AthenaFormat
       end
