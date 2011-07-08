@@ -54,7 +54,7 @@ Artfully::Application.configure do
   config.people_site = 'http://localhost:8080/people/'
   config.reports_site = 'http://localhost:8080/reports/'
 
-  config.athena_resource_user = ''
-  config.athena_resource_password = ''
-  config.athena_resource_auth_type = ''
+  config.athena_resource_user = nil
+  config.athena_resource_password = nil
+  config.athena_resource_auth_type = nil
 end
