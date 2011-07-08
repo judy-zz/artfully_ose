@@ -207,7 +207,9 @@ function updateConfirmation(){
     }
   });
 
- $(document.createElement('p')).html("Expiration: " + expiration[0] + "/" + expiration[1]).appendTo($("#credit_card-confirmation"));
+  if(expiration.length > 0){
+    $(document.createElement('p')).html("Expiration: " + expiration[0] + "/" + expiration[1]).appendTo($("#credit_card-confirmation"));
+  }
 
   $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
   var address = $("#billing_address").find("input:visible, select").serializeArray();
