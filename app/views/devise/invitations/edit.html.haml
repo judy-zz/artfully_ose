@@ -1,0 +1,15 @@
+- content_for :header do
+  %h2 Set your Password
+
+= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => { :method => :put } do |f|
+  = devise_error_messages!
+  = f.hidden_field :invitation_token
+  %ul
+    %li
+      .label= f.label :password
+      .element= f.password_field :password
+    %li
+      .label= f.label :password_confirmation, "Retype Password"
+      .element= f.password_field :password_confirmation
+
+  = f.submit "Sign Up"
