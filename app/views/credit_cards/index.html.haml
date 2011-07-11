@@ -22,6 +22,6 @@
             %td= credit_card.card_number
             %td= credit_card.expiration_date.strftime "%m/%Y"
             %td
-              = table_icon_link_to :edit, edit_credit_card_path(credit_card)
-              = table_icon_link_to :delete, credit_card_path(credit_card), :method => :delete, :confirm => 'Are you sure?'
+              = link_to "Edit", edit_credit_card_path(credit_card)
+              = link_to "Delete", credit_card_path(credit_card), :method => :delete, :confirm => 'Are you sure?'
 
