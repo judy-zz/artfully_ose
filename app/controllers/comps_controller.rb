@@ -8,6 +8,7 @@ class CompsController < ApplicationController
     if @comp.has_recipient?
       render :new
     else
+      flash[:error] = "No people were found when searching for \"#{params[:terms]}\"." if !params[:terms].blank? and @recipients.empty?
       render :find_person
     end
   end
@@ -44,7 +45,7 @@ class CompsController < ApplicationController
   private
 
   def recipients
-    AthenaPerson.search_index(params[:terms], current_user.current_organization) unless params[:terms].blank?
+    AthenaPerson.search_index(params[:terms].dup, current_user.current_organization) unless params[:terms].blank?
   end
 
   def recipient
