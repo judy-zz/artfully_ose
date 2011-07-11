@@ -76,9 +76,6 @@ $(document).ready(function(){
           var hiddenCheckboxes = $(original).closest('form').find('input:checked'),
               visibleCheckboxes = $(this).closest('form').find('tbody input:checked');
 
-          console.log(hiddenCheckboxes);
-          console.log(visibleCheckboxes);
-
           if(hiddenCheckboxes.length !== visibleCheckboxes.length){
             methods.displayError("Oops! Some of the items you have selected are not available for this operation.");
           } else {
