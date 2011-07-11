@@ -10,16 +10,15 @@
 .document
   %h3 Actions
 
-  .call-to-action
+  .call-to-action.dropdown-container
     %a.dropdown-controller{:href=>'#'}
       Log Action
     %ul.dropdown
-      %li=link_to "Hear", new_person_action_path(@person, "HEAR")
-      %li=link_to "Give", new_person_action_path(@person, "GIVE")
-  %br
-  %br
-
+      %li=link_to "Hear", new_person_action_path(@person, "HEAR"), :class => "popup-link", :remote => true
+      %li=link_to "Give", new_person_action_path(@person, "GIVE"), :class => "popup-link", :remote => true
   #actions
     .table-controls
       %input.filter{ :type => :text, :value => "Filter" }
     =render :partial=>'action_list', :locals => { :person => @person }
+    
+  .popup

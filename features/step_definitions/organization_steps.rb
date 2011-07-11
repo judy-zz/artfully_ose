@@ -33,7 +33,7 @@ end
 
 When /^I click the link to remove "([^"]*)"$/ do |email|
   within(:xpath, "//ul/li[contains(.,'#{email}')]") do
-    click_link "Remove from organization"
+    click_link "Remove"
   end
 end
 

@@ -13,9 +13,10 @@ Feature: Ticket Comp
     When I go to the events page
     And I view the 1st event
     And I view the 1st performance
-    And I check "selected_tickets_"
+    And I check the 1st ticket for a comp
     And I press "Comp"
     And I search for the patron named "Joe Producer" email "joe.producer@example.com"
+    And I select the first person
     And I fill in "comp_reason" with "Dull and Generic Reason"
     And I press "Submit"
     And I confirm comp

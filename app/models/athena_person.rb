@@ -1,6 +1,5 @@
 class AthenaPerson < AthenaResource::Base
   self.site = Artfully::Application.config.people_site
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'people'
   self.collection_name = 'people'
 
@@ -15,8 +14,9 @@ class AthenaPerson < AthenaResource::Base
     attribute 'organization_id',:integer
   end
 
-  def user
-    @user ||= User.find_by_athena_id(id)
+  #TODO: This isn't actually recent, but that's an Athena problem, not an artfully problem
+  def self.recent(organization)
+    search_index(nil, organization)
   end
 
   def self.find_by_email_and_organization(email, organization)
@@ -24,7 +24,7 @@ class AthenaPerson < AthenaResource::Base
   end
 
   def self.find_by_organization(organization)
-    find(:first, :params => { :organizationId => "eq#{organization.id}"})
+    find_by_organization_id(organization.id)
   end
 
   def organization
@@ -39,11 +39,11 @@ class AthenaPerson < AthenaResource::Base
   def starred_actions
     actions.select { |action| action.starred? }
   end
-  
+
   def unstarred_actions
     actions.select { |action| action.unstarred? }
-  end  
-  
+  end
+
   def relationships
     @relationships ||= AthenaRelationship.find_by_person(self)
   end

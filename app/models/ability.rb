@@ -5,15 +5,16 @@ class Ability
     user ||= User.new
 
     admin_abilities_for(user) if user.has_role? :admin
-    ticketing_abilities_for(user) if user.current_organization.can? :access, :ticketing
-    person_abilities_for(user)
-    order_ablilities_for(user)
+    ticketing_abilities_for(user) if user.is_in_organization?
+    paid_ticketing_abilities_for(user) if user.current_organization.can? :access, :paid_ticketing
+    person_abilities_for(user) if user.is_in_organization?
+    order_ablilities_for(user) if user.is_in_organization?
     default_abilities_for(user)
   end
 
   def default_abilities_for(user)
-    cannot [ :edit, :destroy ], AthenaPerformance, :on_sale? => true
-    cannot [ :edit, :destroy ], AthenaPerformance, :off_sale? => true
+    cannot [ :edit, :destroy ], AthenaPerformance, :visible? => true
+    cannot [ :edit, :destroy ], AthenaPerformance, :hidden? => true
     cannot [ :edit, :destroy ], AthenaPerformance, :built? => true
 
     cannot :destroy, AthenaEvent do |event|
@@ -21,7 +22,11 @@ class Ability
     end
 
     can :manage, Organization do |organization|
-      user.current_organization.can? :manage, organization
+      user.current_organization.can?( :manage, organization ) && (user == organization.owner)
+    end
+
+    can :view, Organization do |organization|
+      user.current_organization.can?( :view, organization )
     end
 
     can :manage, AthenaCreditCard do |card|
@@ -39,16 +44,36 @@ class Ability
       user.current_organization.can? :manage, ticket
     end
 
+    #This is the ability that the controller uses to authorize creating/editing an event
     can :manage, AthenaEvent do |event|
-      user.current_organization.can? :manage, event
+      event.free? && (user.current_organization.can? :manage, event)
     end
 
-    can [ :manage, :put_on_sale, :take_off_sale, :duplicate ], AthenaPerformance do |performance|
+    can :new, AthenaEvent do |event|
+      user.is_in_organization?
+    end
+
+    can :create_paid_events, AthenaEvent do |event|
+      user.current_organization.can? :access, :paid_ticketing
+    end
+
+    can :create_tickets, Array do |sections|
+      sections.select {|s| s.price.to_i > 0}.empty? || (user.current_organization.can? :access, :paid_ticketing)
+    end
+
+    can [ :manage, :show, :hide, :duplicate ], AthenaPerformance do |performance|
       user.current_organization.can? :manage, performance
     end
 
     can :manage, AthenaChart do |chart|
       user.current_organization.can? :manage, chart
+    end
+  end
+
+  def paid_ticketing_abilities_for(user)
+    #This is the ability that the controller uses to authorize creating/editing an event
+    can :manage, AthenaEvent do |event|
+      user.current_organization.can? :manage, event
     end
   end
 
@@ -60,7 +85,7 @@ class Ability
 
   def person_abilities_for(user)
     can :manage, AthenaPerson do |person|
-      user.current_organization.can? :manage, person
+      (user.current_organization.can? :manage, person)
     end
   end
 

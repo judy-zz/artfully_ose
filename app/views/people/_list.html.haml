@@ -1,0 +1,7 @@
+%ul.people-list
+  - if people.empty?
+    %p No results found
+  - people.each do |person|
+    %li
+      %h4.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
+      .email= person.email

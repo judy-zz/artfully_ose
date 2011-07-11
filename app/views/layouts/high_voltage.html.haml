@@ -1,0 +1,17 @@
+!!!
+%html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
+  %head
+    %title= "#{yield :title} : Artful.ly"
+    %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
+
+    = stylesheet_link_tag "application"
+    = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
+    = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
+
+
+  %body
+    #large-header
+      = link_to image_tag("/images/logo.png"), root_path
+    #content
+      = yield :header
+      = yield

@@ -1,7 +1,3 @@
-$(document).ready(function(){
-    
-});
-
 (function(window, document, undefined){
   window.artfully = {};
   window.artfully.config = {};
@@ -140,7 +136,7 @@ artfully.widgets = (function(){
         this.$cart = $("<div id='shopping-cart' class='hidden' />");
 
         this.$controls = $("<div id='shopping-cart-controls' />").appendTo(this.$cart);
-        $("<span class='timer' />").text("(Countdown)").appendTo(this.$controls);
+        // $("<span class='timer' />").text("(Countdown)").appendTo(this.$controls);
         $("<span class='cart-name' />").text("Shopping Cart").appendTo(this.$controls);
 
         this.$iframe = $("<iframe name='shopping-cart-iframe' />")
@@ -287,7 +283,7 @@ artfully.models = (function(){
             };
 
             $.getJSON(artfully.utils.ticket_uri(params), function(data){
-              if(data.length > 0){
+              if(data !== null && data.length > 0){
                 if(data.length < $select.val()){
                   artfully.alert("Only " + data.length + " ticket(s) could be found for this performance.");
                 }

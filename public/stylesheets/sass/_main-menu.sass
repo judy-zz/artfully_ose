@@ -7,17 +7,11 @@
   border-bottom: 1px solid #ccc
   @include shadow(#ccc)
 
-#logo
-  position: absolute
-  right: 15px
-  top: 75px
-
 #main-menu
-  width: 75%
   overflow: hidden
   @include stack-list
   > li
-    @extend .stack1of6
+    @extend .stack1of7
     > a
       @include stack-content
       padding: 10px 0
@@ -42,6 +36,8 @@
         text-decoration: none
         line-height: 1.5em
         margin: 0 5px
+        padding: 2px 0
         &:hover
+          box-shadow: inset -1px 1px 3px rgba(0, 0, 0, 0.1)
           @include rounded-corners(4px, 4px, 4px, 4px)
           background: rgba(0, 0, 0, 0.1)

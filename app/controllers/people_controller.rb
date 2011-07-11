@@ -1,8 +1,5 @@
 class PeopleController < ApplicationController
-  rescue_from CanCan::AccessDenied do |exception|
-    flash[:alert] = exception.message
-    redirect_to root_path
-  end
+  respond_to :html, :json
 
   def new
     authorize! :create, AthenaPerson
@@ -20,11 +17,27 @@ class PeopleController < ApplicationController
     @person.organization_id = current_user.current_organization.id
 
     if @person.valid? && @person.save!
-      flash[:notice] = "Person created successfully!"
-      redirect_to person_url(@person)
+      respond_to do |format|
+        format.html do
+          flash[:notice] = "Person created successfully!"
+          redirect_to person_url(@person)
+        end
+
+        format.json do
+          render :json => @person.as_json
+        end
+      end
     else
-      flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
-      redirect_to :back
+      respond_to do |format|
+        format.html do
+          flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
+          redirect_to :back
+        end
+
+        format.json do
+          render :json => @person.as_json.merge(:errors => @person.errors.full_messages), :status => 400
+        end
+      end
     end
   end
 
@@ -47,15 +60,20 @@ class PeopleController < ApplicationController
   end
 
   def index
+    authorize! :manage, AthenaPerson
     @people = []
-    if params[:email]
-      begin
-        person = AthenaPerson.find_by_email_and_organization(params[:email], current_user.current_organization)
-      rescue
-        flash[:error] = "No results found."
+    if is_search(params)
+      @people = AthenaPerson.search_index(params[:search], current_user.current_organization)
+      respond_with do |format|
+        if request.xhr?
+          format.html do
+            render :partial => 'list', :layout => false, :locals => { :people => @people }
+          end
+        end
       end
+    else
+      @people = AthenaPerson.recent(current_user.current_organization)
     end
-    @people << person unless person.nil?
     @people = @people.paginate(:page => params[:page], :per_page => 10)
   end
 
@@ -85,5 +103,10 @@ class PeopleController < ApplicationController
     @person = AthenaPerson.find(params[:id])
     authorize! :edit, @person
   end
+
+  private
+    def is_search(params)
+      !params[:commit].nil? && params[:commit].eql?('Search')
+    end
 
 end

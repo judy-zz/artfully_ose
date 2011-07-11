@@ -19,19 +19,20 @@ Factory.define :ticket, :class => AthenaTicket, :default_strategy => :build do |
   t.event { Faker::Lorem.words(2).join(" ") }
   t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
   t.performance { DateTime.now + 1.month }
-  # Debt: this does not need to be set by the factory
-  t.state "off_sale"
-  t.price "50.00"
+  t.price "5000"
 end
 
 Factory.define :sold_ticket, :parent => :ticket do |t|
   t.state "sold"
+  t.sold_price "5000"
+  t.sold_at Time.now
 end
 
 Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build do |t|
   t.id { Factory.next :ticket_id }
   t.event_id { Factory(:athena_event_with_id).id }
   t.performance_id { Factory(:athena_performance_with_id).id }
+  t.price "3000"
   t.after_build do |ticket|
     FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
     FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)

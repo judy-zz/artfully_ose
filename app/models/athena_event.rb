@@ -1,6 +1,5 @@
 class AthenaEvent < AthenaResource::Base
   self.site = Artfully::Application.config.stage_site
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'events'
   self.collection_name = 'events'
 
@@ -48,6 +47,13 @@ class AthenaEvent < AthenaResource::Base
     upcoming.take(limit)
   end
 
+  def played_performances(limit = 5)
+    Time.zone = time_zone
+    played = performances.select { |performance| performance.datetime < DateTime.now.beginning_of_day }
+    return played if limit == :all
+    played.take(limit)
+  end
+
   def performances=(performances)
     raise TypeError, "Expecting an Array" unless performances.kind_of? Array
     @attributes['performances'] = performances
@@ -62,7 +68,20 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:on_sale?))
+    as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:published?))
+  end
+
+  def as_full_calendar_json
+    perfs = []
+    performances.each do |p|
+      phash = {}
+      phash['title'] = ''
+      phash['start'] = p.datetime
+      phash['allDay'] = false
+      phash['color'] = '#034754'
+      perfs << phash
+    end
+    perfs
   end
 
   def as_json(options = {})
@@ -70,8 +89,15 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def sorted_locales
-    sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
-    sorted_locales
+    @sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
+  end
+
+  def free?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? is_free
+  end
+
+  def glance
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization.id })
   end
 
   #return valid US states for an event

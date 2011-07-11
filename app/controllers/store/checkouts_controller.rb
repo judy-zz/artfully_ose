@@ -13,6 +13,8 @@ class Store::CheckoutsController < Store::StoreController
     end
 
     @payment = AthenaPayment.new(params[:athena_payment])
+    #The user_agreement parameter doesn't get set automatically, not sure why
+    @payment.user_agreement = params[:athena_payment][:user_agreement]
     @checkout = Checkout.new(current_order, @payment)
 
     unless @checkout.valid?

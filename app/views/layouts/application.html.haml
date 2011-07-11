@@ -4,37 +4,41 @@
     %title= "#{yield :title} : Artful.ly"
     %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
 
+    = stylesheet_link_tag "formalize", "jquery/jquery.gritter.css", "jquery/jquery.ui.css", "fullcalendar", :media => :screen
     = stylesheet_link_tag "application"
-    = stylesheet_link_tag "formalize", "jquery/jquery.ui.css", :media => :screen
     = stylesheet_link_tag "printing", :media => :print
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"
     = javascript_include_tag "jquery/jquery-ui-1.8.5.custom.min.js","jquery/jquery.tablesorter.min.js","jquery/jquery.easy-tooltip.js", "jquery/jquery.mask-money.js"
     = javascript_include_tag "jquery/jquery.formalize.js"
+    = javascript_include_tag "jquery/jquery.gritter.min.js"
+    = javascript_include_tag "jquery/jquery.dataTables.min.js"
+    = javascript_include_tag "jquery/dataTables.currencySorter.js"
+    = javascript_include_tag "fullcalendar.min.js"
     = javascript_include_tag "application"
     = javascript_include_tag "people"
-    = javascript_include_tag "rails"
+    = javascript_include_tag "jquery_ujs"
     = yield :scripts
-
-    /[if IE 8]
-      /= stylesheet_link_tag "ie/IEFix"
-    /[if IE 7]
-      /= stylesheet_link_tag "ie/IEFix"
 
     = csrf_meta_tag
   %body
-    #logo
-      %img{ :src => '/images/logo.png' }
     #header
-      #current
-        #current-user= current_user.email
-        #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
       = render :partial => 'layouts/menu'
 
     #content
+      #logo
+        %img{ :src => '/images/logo.png' }
       #page
         #front-matter= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard
         = yield
+    #footer
+      #current
+        #current-user= current_user.email
+        #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
+        - if current_user.has_role? :admin
+          #administration= link_to "Administration", admin_root_path
+
+

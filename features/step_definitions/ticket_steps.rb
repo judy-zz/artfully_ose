@@ -39,3 +39,35 @@ Given /^I have found the following tickets by searching for$/ do |table|
   FakeWeb.register_uri(:get, %r|http://localhost/tix/meta/locks/.*\.json|, :body => Factory(:lock, :tickets => ids).encode)
 end
 
+Given /^I check the (\d+)(?:st|nd|rd|th) ticket to put on sale$/ do |pos|
+  within(:xpath, "(//div[@id='on-sale']/form/ul/li)[#{pos.to_i}]") do
+    check("selected_tickets[]")
+  end
+  FakeWeb.register_uri(:put, %r|http://localhost/tix/tickets/patch/.*|, :body => "[]")
+  @performance.tickets[pos.to_i - 1].state = "on_sale"
+  body = @performance.tickets.collect { |t| t.encode }.join(",")
+  FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json?performanceId=eq#{@performance.id}", :body => "[#{body}]")
+end
+
+Then /^the (\d+)(?:st|nd|rd|th) ticket should be on sale$/ do |pos|
+  within(:xpath, "//table/tbody/tr[#{pos.to_i}]") do
+    Then %Q{I should see "On Sale"}
+  end
+end
+
+Given /^I check the (\d+)(?:st|nd|rd|th) ticket to take off sale$/ do |pos|
+  within(:xpath, "(//div[@id='off-sale']/form/ul/li)[#{pos.to_i}]") do
+    check("selected_tickets[]")
+  end
+  FakeWeb.register_uri(:put, %r|http://localhost/tix/tickets/patch/.*|, :body => "[]")
+  @performance.tickets[pos.to_i - 1].state = "off_sale"
+  body = @performance.tickets.collect { |t| t.encode }.join(",")
+  FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json?performanceId=eq#{@performance.id}", :body => "[#{body}]")
+
+end
+
+Then /^the (\d+)st ticket should be off sale$/ do |pos|
+  within(:xpath, "//table/tbody/tr[#{pos.to_i}]") do
+    Then %Q{I should see "Off Sale"}
+  end
+end

@@ -1,0 +1,25 @@
+- content_for :header do
+  %h1 New Settlement
+
+.context
+  %h3 Submit Request
+  = form_tag admin_settlements_path do
+    = hidden_field_tag :performance_id, @performance.id
+    = submit_tag "Request Settlement"
+
+.document
+  %h3 Settle Performance
+  - if @performance.settleables.any?
+    %ul
+      %table.zebra.standalone
+        %thead
+          %tr
+            %th Event
+            %th Performance
+            %th Price
+        %tbody
+          - @performance.settleables.each do |item|
+            %tr
+              %td= link_to "#{item.product.event}", event_path(item.product.event_id)
+              %td= link_to "#{l item.product.performance}", event_performance_path(item.product.event_id, item.product.performance_id)
+              %td= number_as_cents item.price

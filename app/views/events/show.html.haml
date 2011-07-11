@@ -1,8 +1,10 @@
 - in_section :events
 - content_for :header do
   %h1= link_to @event.name, event_path(@event)
-  /TODO
-  %h2 Missing subtitle
+  %h2
+    = @event.producer
+    &mdash;
+    = "#{@event.venue} #{@event.city}, #{@event.state}"
   %ul.from-here
     %li= link_to "New Performance", new_event_performance_path(@event)
     %li= link_to "All Performances", event_performances_path(@event)
@@ -11,14 +13,6 @@
   %h3 Upcoming Performances
   = render :partial => "performances/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
-  %ul.kv
-    %li
-      .key Venue
-      .value= "#{@event.venue} #{@event.city}, #{@event.state}"
-    %li
-      .key Producer
-      .value= @event.producer
-
   %h3 Charts
   - @event.charts.each do |chart|
     %ul.detailed-list
@@ -26,24 +20,37 @@
         %h4= chart.name
         %ul.details
           %li= pluralize(chart.sections.size, "Section")
-  %h4 Import a Chart
-  = form_for @chart, :url => assign_chart_path(@event) do |form|
-    %ul
-      %li
-        .label= form.label :id, "Chart"
-        .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
-    = form.submit "Import"
-
-
+  - if @charts.empty?
+    %p Before creating performances, you'll need to create a seat chart and import it
+    = link_to "Create a chart", new_chart_path, :class => 'cta-left-125'
+  - else
+    %h4 Import a Chart
+    = form_for @chart, :url => assign_chart_path(@event) do |form|
+      %ul
+        %li
+          .label= form.label :id, "Chart"
+          .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
+      = form.submit "Import"
 
 .document
-  %h3 This Week
-  %ol.calendar.week
-    - (5..11).each do |day|
-      %li
-        .day
-          .number= day
-  = render :partial => "glance", :locals => { :event => @event }
-  %h3 Widget
-  .code
-    %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
+  #this-week
+    %h3 This Week
+    #calendar
+
+  #glance= render :partial => "glance", :locals => { :report => @event.glance }
+
+  #widget
+    %h3 Widget
+    .code
+      %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
+      
+:erb
+  <script>
+  $(document).ready(function() {  
+    $('#calendar').fullCalendar({
+      height: 150,
+      events: '/events/<%=@event.id%>.json'
+    });
+    $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
+  });
+  </script>

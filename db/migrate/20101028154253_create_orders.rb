@@ -2,10 +2,8 @@ class CreateOrders < ActiveRecord::Migration
   def self.up
     create_table :orders do |t|
       t.string :state
-
-      t.references :user
       t.string :transaction_id
-
+      t.belongs_to :person
       t.timestamps
     end
   end

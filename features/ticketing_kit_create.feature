@@ -10,7 +10,6 @@ Feature: Ticketing Kit
     And I have 2 saved credit cards
     And I create a new organization called "Fractured Atlas"
     When I follow "My Organization"
-    And I follow "View all kits"
     And I follow "Activate Ticketing Kit"
     And I press "Submit Activation Request"
     Then I should see "Your request has been sent in for approval."
@@ -19,6 +18,6 @@ Feature: Ticketing Kit
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
     When I follow "My Organization"
-    And I follow "View all kits"
     And I follow "Activate Ticketing Kit"
-    Then I should see "You need at least one credit card to activate this kit"
+    And I press "Submit Activation Request"
+    Then I should see "Your request has been sent in for approval."

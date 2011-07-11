@@ -15,7 +15,9 @@ class OrganizationsController < ApplicationController
   def show
     @organization = Organization.find(params[:id])
     authorize! :view, @organization
+
     @fa_user = FA::User.new
+    @kits = @organization.available_kits
   end
 
   def new
@@ -69,6 +71,7 @@ class OrganizationsController < ApplicationController
     @organization = Organization.find(params[:id])
     authorize! :view, @organization
     @fa_user = FA::User.new(params[:fa_user])
+    @kits = @organization.available_kits
 
     if @fa_user.authenticate
       @organization.update_attribute(:fa_member_id, @fa_user.member_id)
@@ -87,4 +90,5 @@ class OrganizationsController < ApplicationController
       end
     end
   end
+  
 end

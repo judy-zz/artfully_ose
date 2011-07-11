@@ -30,7 +30,7 @@ $(document).ready(function() {
 	//and re-zebra the table
 	zebra(this_table)
   });
-  
+
   $(".relationship_starred").click(function() {
     star = $(this).html().trim()
     person_id = $(this).attr("id").split("_")[0]

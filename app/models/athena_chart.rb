@@ -1,6 +1,5 @@
 class AthenaChart < AthenaResource::Base
   self.site = Artfully::Application.config.stage_site
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'charts'
   self.collection_name = 'charts'
 
@@ -28,6 +27,17 @@ class AthenaChart < AthenaResource::Base
     @attributes['sections'] = sections
   end
 
+  #copy is when they're editing charts and want to create a copy of this char tto modify further (weekday and weekend charts)
+  #This method will copy chart.is_template
+  def copy!
+    copy = AthenaChart.new(self.attributes.reject { |key, value| key == 'id' })
+    copy.name = copy.name + ' (Copy)'
+    copy.sections = self.sections.collect { |section| section.dup! }
+    copy
+  end
+
+  #dup is used when importing a chart to an event
+  #This method will set chart.is_template to false
   def dup!
     copy = AthenaChart.new(self.attributes.reject { |key, value| key == 'id' })
     copy.is_template = false
@@ -66,11 +76,11 @@ class AthenaChart < AthenaResource::Base
   end
 
   def self.find_by_event(event)
-    self.find(:all, :params => { :eventId => "eq#{event.id}" })
+    find_by_event_id(event.id)
   end
 
   def self.find_by_organization(organization)
-    self.find(:all, :params => { :organizationId => "eq#{organization.id}" })
+    find_by_organization_id(organization.id)
   end
 
   def self.find_templates_by_organization(organization)

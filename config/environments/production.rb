@@ -52,4 +52,9 @@ Artfully::Application.configure do
   config.orders_component = 'http://localhost:8080/orders'
   config.stage_site = 'http://localhost:8080/stage/'
   config.people_site = 'http://localhost:8080/people/'
+  config.reports_site = 'http://localhost:8080/reports/'
+
+  config.athena_resource_user = nil
+  config.athena_resource_password = nil
+  config.athena_resource_auth_type = nil
 end

@@ -11,6 +11,7 @@ class ActionsController < ApplicationController
 
     @action.creator = nil
     @action.occurred_at = DateTime.now.in_time_zone(current_user.current_organization.time_zone)
+    render :layout => false
   end
 
   def edit

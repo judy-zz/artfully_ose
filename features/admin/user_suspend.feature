@@ -6,7 +6,7 @@ Feature: User suspension
     Given I am logged in as an admin
     And I am on the admin root page
     And a user exists with an email of "user@example.com"
-    When I follow "Administer Users"
+    When I follow "Users"
     And I fill in "Email" with "user@example.com"
     And I press "Search"
     Then I should see "user@example.com"

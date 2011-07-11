@@ -24,6 +24,12 @@ Factory.sequence :section_id do |n|
   n
 end
 
+Factory.define :athena_free_section, :class => AthenaSection, :default_strategy => :build do |section|
+  section.name 'Balcony'
+  section.capacity 5
+  section.price 0
+end
+
 Factory.define :athena_section, :class => AthenaSection, :default_strategy => :build do |section|
   section.name 'Balcony'
   section.capacity 5
@@ -57,6 +63,8 @@ Factory.define :athena_event_with_id, :parent => :athena_event do |e|
   e.after_build do |event|
     FakeWeb.register_uri(:post, "http://localhost/stage/events.json", :body => event.encode)
     FakeWeb.register_uri(:any, "http://localhost/stage/events/#{event.id}.json", :body => event.encode)
+    body = '{"performancesOnSale":2,"revenue":{"advanceSales":{"gross":0.0,"net":0.0},"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":62500.0,"net":0.0},"originalPotential":{"gross":62500.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0},"totalPlayed":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"played":{"gross":0,"comped":0},"available":0}}'
+    FakeWeb.register_uri(:get, %r|http://localhost/reports/glance/\.json\?.*eventId=.*|, :body => body)
   end
 end
 
@@ -71,11 +79,14 @@ end
 Factory.define :athena_performance, :default_strategy => :build do |p|
   p.datetime { Factory.next :performance_datetime }
   p.event { Factory(:athena_event_with_id) }
+  p.organization_id { Factory(:organization).id }
 end
 
 Factory.define :athena_performance_with_id, :parent => :athena_performance do |p|
   p.id { Factory.next :performance_id }
   p.after_build do |performance|
     FakeWeb.register_uri(:any, "http://localhost/stage/performances/#{performance.id}.json", :body => performance.encode)
+    body= '{"revenue":{"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":0.0,"net":0.0},"originalPotential":{"gross":0.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"available":0}}'
+    FakeWeb.register_uri(:get, %r|http://localhost/reports/glance/\.json\?.*performanceId=.*|, :body => body)
   end
 end

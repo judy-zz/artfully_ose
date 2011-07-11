@@ -3,13 +3,13 @@ Thanks for your order! Here's what you purchased:
 <% unless @order.tickets.empty? %>
   Tickets
   <% @order.tickets.each do |ticket| %>
-    - <%= "#{ticket.event} at #{l ticket.performance, :format => :short}, $#{ticket.price}" %>
+    - <%= "#{ticket.event} at #{l ticket.performance, :format => :short}, $#{ticket.price/100.00}" %>
   <% end %>
 <% end %>
 
 <% unless @order.donations.empty? %>
   Donations
   <% @order.donations.each do |donation| %>
-    - <% "Donation to #{donation.organization.name}, $#{donation.amount}" %>
+    - <%= "$#{donation.amount/100.00} donation to #{donation.organization.name}" %>
   <% end %>
 <% end %>

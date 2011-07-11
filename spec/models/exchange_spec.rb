@@ -67,12 +67,12 @@ describe Exchange do
       end
 
       it "should sell each new ticket to the person associated with the order" do
-        subject.tickets.each { |ticket| ticket.should_receive(:sell_to).with(subject.order.person) }
+        subject.tickets.each { |ticket| ticket.should_receive(:exchange_to) }
         subject.submit
       end
 
       it "should create an exchange order if all of the tickets are sold successfully" do
-        subject.tickets.each { |ticket| ticket.stub(:sell_to).and_return(true) }
+        subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
         subject.should_receive(:create_athena_order)
         subject.submit
       end

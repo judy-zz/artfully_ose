@@ -1,5 +1,11 @@
-= form_for target, :url => store_order_url do |f|
-  = f.label :amount
-  = f.text_field :amount, :class => :currency
-  = hidden_field_tag "donation[organization_id]", target.organization.id
-  = f.submit "Make Donation"
+.upsell
+  = form_for target, :url => store_order_url do |f|
+    = hidden_field_tag "donation[organization_id]", target.organization.id
+    %ul
+      %li
+        .label= f.label :amount, "Add a Donation"
+        .paired.element
+          = f.submit "Make Donation"
+          = f.text_field :amount, :class => :currency
+          .description= "Help support #{target.organization.name} by making adding a donation to your order."
+

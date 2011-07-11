@@ -1,0 +1,18 @@
+- in_section :events
+- content_for :header do
+  %h1 Take off Sale
+
+.context
+.document
+  %p= "You are about to take #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime } performance of #{@performance.event.name} off sale."
+
+  = form_tag off_sale_performance_tickets_path(@performance), :method => :put do
+    = hidden_field_tag :confirmed, :true
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    %p If this is correct, please click confirm it by clicking
+    = submit_tag "Take off Sale"
+
+  %p
+    If this is not correct,
+    = link_to "cancel this action and return to the performance page", event_performance_url(@performance.event, @performance)

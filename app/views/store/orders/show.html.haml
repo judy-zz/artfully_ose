@@ -9,6 +9,7 @@
 %ul.item-list
   - current_order.items.each do |item|
     %li= render item
+
 - unless @donations.empty?
   - @donations.each do |donation|
     = render :partial => 'store/donations/form', :locals => { :target => donation }

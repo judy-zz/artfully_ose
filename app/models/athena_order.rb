@@ -1,7 +1,6 @@
 # Used for artful.ly orders (and not for checkout in the api/widget)
 class AthenaOrder < AthenaResource::Base
   self.site = Artfully::Application.config.orders_component
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'orders'
   self.collection_name = 'orders'
 
@@ -91,18 +90,27 @@ class AthenaOrder < AthenaResource::Base
     self.organization = org
   end
 
-  def for_items(itms)
-    logger.debug("for_items called with:")
-    logger.debug(itms)
-
-    itms.each do |item|
-      self.items << AthenaItem.new(:item_type => item.class.to_s, :item_id => item.id, :price => item.price)
-    end
-    logger.debug("End for_items")
+  def <<(products)
+    self.items += Array.wrap(products).collect { |product| AthenaItem.for(product) }
   end
 
   def payment
     AthenaPayment.new(:transaction_id => transaction_id)
+  end
+  
+  def record_exchange!
+    items.each do |item|
+      item.to_exchange!
+    end
+  end
+
+  def self.in_range(start, stop, org_id=nil)
+    start = "gt#{start.xmlschema}"
+    stop = "lt#{stop.xmlschema}"
+
+    org_query = "organizationId=eq#{org_id}&" unless org_id.nil?
+
+    instantiate_collection(query("#{org_query}timestamp=#{start}&timestamp=#{stop}"))
   end
 
   def all_items
@@ -110,11 +118,15 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def all_tickets
-    all_items.select{|item| item.item_type == "AthenaTicket" }
+    all_items.select{|item| item.product_type == "AthenaTicket" }
   end
 
   def all_donations
-    all_items.select{|item| item.item_type == "Donation" }
+    all_items.select{|item| item.product_type == "Donation" }
+  end
+
+  def settleable_donations
+    all_donations.reject(&:modified?)
   end
 
   def refundable_items
@@ -130,12 +142,12 @@ class AthenaOrder < AthenaResource::Base
     sum_donations = 0
 
     all_items.each{ |item|
-      if item.attributes["item_type"] == "AthenaTicket"
+      if item.attributes["product_type"] == "AthenaTicket"
         num_tickets += 1
-      elsif item.attributes["item_type"] == "Donation"
+      elsif item.attributes["product_type"] == "Donation"
         sum_donations += item.price.to_i
       end }
-    
+
     tickets = "#{num_tickets} ticket(s)"
     donations = "$#{sum_donations/100.00} donation"
 
@@ -145,9 +157,26 @@ class AthenaOrder < AthenaResource::Base
       result = "#{[tickets].to_sentence}"
     else
       result = "#{[tickets, donations].to_sentence}"
-    end 
-    result
-end
+    end
+
+    result.to_sentence
+  end
+
+  def num_tickets
+    all_tickets.size
+  end
+
+  def sum_donations
+    all_donations.collect{|item| item.price.to_i}.sum
+  end
+
+  def ticket_details
+    "#{num_tickets} ticket(s)"
+  end
+
+  def donation_details
+    "$#{sum_donations/100.00} donation"
+  end
 
   def returnable_items
     items.select { |i| i.returnable? and not i.refundable? }
@@ -164,45 +193,44 @@ end
     end
 
     def create_purchase_action
-      action                 = AthenaPurchaseAction.new
-      action.person          = person
-      action.subject         = self
-      action.organization_id = organization.id
-      action.timestamp       = self.timestamp
-      action.details         = "#{items.size} ticket(s) #{self.details}"
-      action.occurred_at     = action.timestamp
-      action.action_subtype  = "Purchase"
+      unless all_tickets.empty?
+        action                 = AthenaPurchaseAction.new
+        action.person          = person
+        action.subject         = self
+        action.organization_id = organization.id
+        action.timestamp       = self.timestamp
+        action.details         = ticket_details
+        action.occurred_at     = action.timestamp
+        action.action_subtype  = "Purchase"
 
-      logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
-      logger.debug("Action: #{action.attributes}")
-      action.save!
-      action
+        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
+        logger.debug("Action: #{action.attributes}")
+        action.save!
+        action
+      end
     end
 
     def create_donation_actions
-      items.select { |item| item.item_type == "Donation" }.collect do |item|
+      items.select { |item| item.product_type == "Donation" }.collect do |item|
         action                 = AthenaDonationAction.new
         action.person          = person
-        action.subject         = Donation.find(item.item_id)
+        action.subject         = item.product
         action.organization_id = organization.id
         action.timestamp       = self.timestamp
-        action.details         = self.details
-        action.action_subtype  = "Donation"
+        action.details         = donation_details
         action.occurred_at     = action.timestamp
+        action.action_subtype  = "Donation"
+
+        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
+        logger.debug("Action: #{action.attributes}")
         action.save!
         action
       end
     end
 
     def save_items
-      logger.debug("saving items for order: #{self.id}")
       items.each do |item|
         item.order = self
-        logger.debug("New item ------------------------------")
-        logger.debug(item)
-        logger.debug(item.valid?)
-        logger.debug(item.errors)
-
         item.save
       end
     end

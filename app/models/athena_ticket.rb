@@ -2,7 +2,6 @@ class AthenaTicket < AthenaResource::Base
   include ActiveResource::Transitions
 
   self.site = Artfully::Application.config.tickets_site
-  self.headers["User-agent"] = "artful.ly"
   self.collection_name = 'tickets'
   self.element_name = 'tickets'
 
@@ -17,6 +16,8 @@ class AthenaTicket < AthenaResource::Base
     attribute 'price',          :integer
     attribute 'buyer_id',       :integer
     attribute 'state',          :string
+    attribute 'sold_price',     :integer
+    attribute 'sold_at',        :string
   end
 
   state_machine do
@@ -47,14 +48,42 @@ class AthenaTicket < AthenaResource::Base
 
   end
 
-  def self.search(params)
+  def self.available(params)
     terms = params.dup.with_indifferent_access
-    limit = terms.delete(:limit) || 10
+    limit = terms.delete(:limit) || 4
     raise ArgumentError unless terms.all? { |key, value| known_attributes.include? key }
 
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
-    AthenaTicket.find(:all, :params => parameterize(terms)) unless terms.empty?
+
+    #TODO: Couldn't get self.site to parse and give up the path.
+    available_endpoint = '/tix/' + self.collection_name + '/available'
+
+    AthenaTicket.find(:all, :from => available_endpoint, :params => parameterize(terms)) unless terms.empty?
+  end
+
+  def items
+    @items ||= AthenaItem.find_by_product(self)
+  end
+
+  def settlement_id
+    settled_item.settlement_id unless settled_item.nil?
+  end
+
+  def settled_item
+    @settled_item ||= items.select(&:settled?).first
+  end
+
+  def price
+    super.to_i
+  end
+
+  def sold_price
+    super.to_i
+  end
+
+  def self.fee
+    200 # $2.00 fee
   end
 
   def expired?
@@ -89,36 +118,50 @@ class AthenaTicket < AthenaResource::Base
     end
   end
 
-  def sell_to(buyer)
+  def sell_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
+      self.sold_price = self.price
+      self.sold_at = time
       self.sell!
     rescue Transitions::InvalidTransition
       return false
     end
   end
 
-  def comp_to(buyer)
+  def exchange_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
+      self.sold_price = 0
+      self.sold_at = time
+      self.sell!
+    rescue Transitions::InvalidTransition
+      return false
+    end
+  end
+
+  def comp_to(buyer, time=Time.now)
+    begin
+      self.buyer = buyer
+      self.sold_price = 0
+      self.sold_at = time
       self.comp!
     rescue Transitions::InvalidTransition
       return false
     end
   end
 
-  def lockable?
-    true
+  def change_price(new_price)
+    unless self.committed? or new_price.to_i < 0
+      self.price = new_price
+      self.save!
+    else
+      return false
+    end
   end
 
   def committed?
     sold? or comped?
-  end
-
-  def to_item
-    pt = PurchasableTicket.new
-    pt.ticket = self
-    pt
   end
 
   def destroy
@@ -137,11 +180,45 @@ class AthenaTicket < AthenaResource::Base
   def return!
     logger.debug("Returning ticket id [#{self.id}]")
     logger.debug("State is [#{self.state}]")
+    self.sold_price = 0
+    attributes.delete('sold_at')
     attributes.delete(:buyer_id)
     do_return!
   end
 
+  def self.put_on_sale(tickets)
+    return false if tickets.blank?
+    attempt_transition(tickets, :on_sale) do
+      patch(tickets, { :state => :on_sale })
+    end
+  end
+
+  def self.take_off_sale(tickets)
+    return false if tickets.blank?
+    attempt_transition(tickets, :off_sale) do
+      patch(tickets, { :state => :off_sale })
+    end
+  end
+
+  def repriceable?
+    not committed?
+  end
+
   private
+    def self.attempt_transition(tickets, state)
+      begin
+        tickets.map(&state)
+        yield
+      rescue Transitions::InvalidTransition
+        false
+      end
+    end
+
+    def self.patch(tickets, attributes)
+      response = connection.put("/tix/tickets/patch/#{tickets.collect(&:id).join(",")}", attributes.to_json, self.headers)
+      format.decode(response.body).map{ |attributes| new(attributes) }
+    end
+
     def find_buyer
       return if self.buyer_id.nil?
 

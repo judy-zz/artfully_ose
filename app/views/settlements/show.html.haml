@@ -1,0 +1,43 @@
+- in_section :reports
+- content_for :header do
+  %h1= "##{@settlement.id}"
+  %h2= "Settled on #{l(@settlement.created_at, :format => :date)}"
+
+.overview
+  #overview
+  %h3 Overview
+  %ul.kv
+    %li
+      .key Gross
+      .value= number_as_cents(@settlement.gross)
+    %li
+      .key Realized
+      .value= number_as_cents(@settlement.realized_gross)
+    %li
+      .key Net
+      .value= number_as_cents(@settlement.net)
+
+.document
+  #items
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Order ID
+          %th Type
+          %th Price
+      %tbody
+        - @settlement.items.each do |item|
+          %tr
+            %td=link_to "#{item.order.id}", order_path(item.order)
+            %td
+              - if item.product.kind_of? AthenaTicket
+                %span Ticket
+                %span
+                  (
+                  = link_to "#{item.product.event}", event_path(item.product.event_id)
+                  ,
+                  = link_to "#{l item.product.performance}", event_performance_path(item.product.event_id, item.product.performance_id)
+                  )
+              - if item.product.kind_of? Donation
+                %span Donation
+            %td= number_as_cents item.price

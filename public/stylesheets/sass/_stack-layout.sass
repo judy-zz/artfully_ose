@@ -29,10 +29,10 @@
   word-spacing: normal
   text-align: left
 
-@mixin section
+@mixin section($gutter: 10px)
   position: relative
   > *
-    margin: 10px
+    margin: $gutter
     @include stack-content
 
 

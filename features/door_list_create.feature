@@ -9,7 +9,6 @@ Feature: Door List Creation
     And the 1st performance has had tickets created
     And the 1st performance is on sale
 
-
   Scenario: A producer views the door list for a performance
     Given a user@example.com named "Joe Patron" buys 2 tickets from the 1st performance
     And a user@example.com named "Bob Patron" buys 3 tickets from the 1st performance
@@ -17,5 +16,5 @@ Feature: Door List Creation
     And I view the 1st event
     And I view the 1st performance
     And I follow "Door List"
-    Then I should see "Joe Patron"
-    And I should see "Bob Patron"
+    Then I should see "Patron, Joe"
+    And I should see "Patron, Bob"

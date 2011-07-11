@@ -9,6 +9,7 @@ When /^I delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|  FakeWeb.regi
 end
 
 When /^I view the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
+  @performance = current_performances[pos.to_i - 1]
   within(:xpath, "(//ul[@id='of_performances']/li)[#{pos.to_i}]") do
     click_link "performance-datetime"
   end
@@ -71,14 +72,16 @@ end
 When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
   fname, lname = name.split(" ")
   customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
+  FakeWeb.register_uri(:get, %r|http://localhost/people/people\.json?.*_q.*|, :body => "[#{customer.encode}]")
 
-  When %{I fill in "Email" with "#{email}"}
+  When %{I fill in "Search" with "#{email}"}
   And %{I press "Search"}
 end
 
 When /^I confirm comp$/ do
   customer = Factory(:athena_person_with_id)
   ticket = Factory(:ticket_with_id)
+  FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?parentId=1", :body=>"")
 
   body1 = '{"subjectId":"1","personId":"1","actionType":"purchase","id":"1"}'
   FakeWeb.register_uri(:post, "http://localhost/orders/orders.json", :body => "#{body1}")

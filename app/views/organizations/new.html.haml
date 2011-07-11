@@ -3,8 +3,15 @@
   %h1 Organizations
 
 .context
+  %h3 About
+  %p
+    Before using Artful.ly, you need to be a member of an organization.  
+  %p
+    <strong>If you want to join an existing organization, contact the administrator of that organization so they can add you.</strong>
+  %p
+    If you want to start your own organization, fill out the details on the right and click "Create"
 .document
-  %h3 New Organization
+  %h3 Create your own
 
   = form_for @organization, :url => organizations_path do |form|
     %ul

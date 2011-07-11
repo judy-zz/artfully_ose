@@ -4,7 +4,7 @@
   %ul.ticket-list
     - @order.tickets.each do |ticket|
       %li
-        %span.price= "$#{ticket.price}"
+        %span.price= "$#{ticket.price/100.00}"
         %span.name= "#{ticket.event} at #{l ticket.performance, :format => :short}"
 
 - unless @order.donations.empty?
@@ -12,6 +12,6 @@
   %ul.donation-list
     - @order.donations.each do |donation|
       %li
-        %span.price= "$#{donation.amount}"
+        %span.price= "$#{donation.amount/100.00}"
         %span.name= "Donation to #{donation.organization.name}"
 

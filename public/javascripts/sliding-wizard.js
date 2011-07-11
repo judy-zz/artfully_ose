@@ -170,8 +170,13 @@ $(document).ready(function(){
 // Tech Debt
 function updateConfirmation(){
   $confirmation = $("#confirmation");
-  $confirmation.empty();
-  $(document.createElement('h3')).html("Confirmation").prependTo($confirmation);
+
+  $("#confirmation-title").remove();
+  $("#customer-confirmation").remove();
+  $("#credit_card-confirmation").remove();
+  $("#billing_address-confirmation").remove();
+
+  $(document.createElement('h3')).attr('id','confirmation-title').html("Confirmation").prependTo($confirmation);
 
   $(document.createElement('div')).attr('id','customer-confirmation').appendTo($confirmation);
   $(document.createElement('div')).attr('id','credit_card-confirmation').appendTo($confirmation);
@@ -191,11 +196,20 @@ function updateConfirmation(){
       $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
   }
 
+  var expiration = [];
   $.each(creditCard, function(i,field){
     key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
     value = field.value;
-    $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
+    if(!key.match(/(\di)/)){
+      $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
+    } else {
+      expiration.push(value);
+    }
   });
+
+  if(expiration.length > 0){
+    $(document.createElement('p')).html("Expiration: " + expiration[0] + "/" + expiration[1]).appendTo($("#credit_card-confirmation"));
+  }
 
   $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
   var address = $("#billing_address").find("input:visible, select").serializeArray();

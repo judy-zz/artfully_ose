@@ -3,7 +3,7 @@ class CreateKits < ActiveRecord::Migration
     create_table :kits do |t|
       t.string :state
       t.string :type
-      t.references :user
+      t.belongs_to :organization
       t.timestamps
     end
   end

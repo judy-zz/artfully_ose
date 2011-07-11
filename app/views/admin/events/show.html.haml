@@ -1,0 +1,8 @@
+- content_for :header do
+  %h1= @event.name
+  %h2 Administration
+
+.spread
+  %ul
+    - @event.performances.each do |performance|
+      %li= link_to l(performance.datetime), admin_organization_event_performance_path(@event.organization_id, @event, performance)

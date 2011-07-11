@@ -45,10 +45,11 @@ class Order < ActiveRecord::Base
     purchasable_tickets.collect(&:ticket)
   end
 
-  def add_tickets(line_items)
-    line_items = line_items.collect { |i| i.to_item }
-    lock_lockables(line_items.select { |i| i.lockable? })
-    purchasable_tickets << line_items
+  def add_tickets(tkts)
+    ptkts = tkts.collect { |ticket| PurchasableTicket.for(ticket) }
+    lock_lockables(ptkts)
+
+    purchasable_tickets << ptkts
   end
 
   def lock_lockables(line_items)
@@ -89,31 +90,25 @@ class Order < ActiveRecord::Base
   end
 
   def finish
-    logger.debug("FINISHING ORDER")
+    order_timestamp = Time.now
+    purchasable_tickets.map { |ticket| ticket.sell_to(person, order_timestamp) }
 
-    organizations_from_tickets.each do |organization|
-      logger.debug("This order is for organization [" + organization.id.to_s + "]")
+    organizations.each do |organization|
+      logger.debug("INSIDE organizations.each do |organization|, organization: #{organization}")
       order = AthenaOrder.new.tap do |order|
-        order.for_organization organization
-        # logger.debug("Calling for_items with these tickets:")
-        # logger.debug(tickets)
+        order.organization    = organization
+        order.timestamp       = order_timestamp
+        order.person          = person
+        order.transaction_id  = @payment.transaction_id
 
         #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
-        order.for_items tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
-
-        #logger.debug("Calling for_items with donations")
-        order.for_items donations.select { |donation| donation.organization == organization }
-        order.person = person
-        order.transaction_id = @payment.transaction_id
+        order << tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
+        order << donations
       end
-      logger.debug(order.valid?)
-      logger.debug(order)
-
       order.save!
     end
 
     OrderMailer.confirmation_for(self).deliver
-    purchasable_tickets.map { |ticket| ticket.sell_to(person) }
   end
 
   def generate_donations

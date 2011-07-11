@@ -26,8 +26,7 @@ end
 
 Factory.define :athena_item, :default_strategy => :build do |i|
   i.order { Factory(:athena_order_with_id) }
-  i.item_type "AthenaTicket"
-  i.item_id { Factory(:sold_ticket_with_id).id }
+  i.product { Factory(:sold_ticket_with_id) }
   i.price 1000
 end
 
@@ -42,10 +41,25 @@ end
 Factory.define :athena_item_for_comped_ticket, :default_strategy => :build, :class => AthenaItem do |i|
   i.id    { Factory.next(:athena_item_id)               }
   i.order { Factory(:athena_order_with_id)              }
-  i.item  { Factory(:ticket_with_id, :state => :comped) }
+  i.product  { Factory(:ticket_with_id, :state => :comped) }
   i.price 1000
   i.after_build do |item|
     FakeWeb.register_uri(:get, "http://localhost/orders/items/#{item.id}.json", :body => item.encode)
     FakeWeb.register_uri(:put, "http://localhost/orders/items/#{item.id}.json", :body => "")
+  end
+end
+
+Factory.sequence(:settlement_id) do |n|
+  n.to_s
+end
+
+Factory.define(:settlement, :default_strategy => :build) do |s|
+  s.transaction_id "1231234"
+end
+
+Factory.define(:settlement_with_id, :parent => :settlement) do |s|
+  s.id { Factory.next(:settlement_id) }
+  s.after_build do |settlement|
+    FakeWeb.register_uri(:get, "http://localhost/order/settlements/#{settlement.id}.json", :body => settlement.encode)
   end
 end

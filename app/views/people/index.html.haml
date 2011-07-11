@@ -1,21 +1,18 @@
 - in_section :people
 = render :partial => "shared/headers/people"
 
-%form.big-search
-  = form_tag people_path, :method => :get do
-    = text_field_tag :email
-    = submit_tag "Search"
+
+= form_tag people_path, {:method => :get, :remote => true, :class => 'big-search super-search'} do
+  = text_field_tag :search
+  = submit_tag "Search"
 
 .tip
   %h3 Tips
   %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
 
 .document
-  - unless @people.empty?
-    %h3 Results
-    %ul.people-list
-      - @people.each do |person|
-        %li
-          %h4.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
-          .email= person.email
-    =will_paginate @people
+  %h3 Results
+  .super-search-results
+    - unless @people.empty?
+      = render :partial => 'list', :locals => { :people => @people } unless @people.empty?
+      = will_paginate @people

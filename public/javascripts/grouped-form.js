@@ -96,4 +96,5 @@ $(document).ready(function(){
   methods.hideGroups();
   methods.enableCheckboxes(methods.findItems());
   methods.generateControls();
+  $(document).trigger('grouped-form-ready');
 });

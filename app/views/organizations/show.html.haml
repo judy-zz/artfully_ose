@@ -5,35 +5,37 @@
 .context
   %h3 Details
   %ul.kv
-    %li
-      .key Legal Name
-      .value= @organization.legal_organization_name
-    %li
-      .key EIN
-      .value= @organization.ein
+    - unless @organization.legal_organization_name.blank?
+      %li
+        .key Legal Name
+        .value= @organization.legal_organization_name
+    - unless @organization.ein.blank?
+      %li
+        .key EIN
+        .value= @organization.ein
     %li
       .key Time Zone
       .value= @organization.time_zone
-    %li
-      .key Account Balance
-      .value= "#{number_to_currency @organization.account_balance}"
 
   - unless @organization.connected?
-    %h2 This organization has not been connected to a Fractured Atlas member.
     %h3 Connect to Fractured Atlas
+    %p This organization has not been connected to a Fractured Atlas member.
     = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
   - else
-    %h2 This organization has been connected to a Fractured Atlas membership.
+    %p This organization has been connected to a Fractured Atlas membership.
 
 .document
-  %h3= "Kits"
-  - if @organization.kits.visible.empty?
-    %p= "You have not activated any kits."
-  - else
-    %ul.kv
-      - @organization.kits.visible.each do |kit|
-        %li
-          .key= kit.type
-          .value= kit.state.titleize
+  #memberships
+    %h3 Members (#{@organization.users.size})
+    = render :partial => "memberships/list", :locals => { :organization => @organization }
+    - if can? :manage, current_user.current_organization
+      %h3 Add User
+      = form_tag organization_memberships_path(@organization.id), :action => "create", :class => :single_field do
+        .stack
+          .label= label_tag :user_email, "Email"
+          .element= text_field_tag :user_email
+          .submit= submit_tag "Add"
 
-  = link_to "View all kits", kits_path
+  %h3 Kits
+  %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits." unless can? :manage, current_user.current_organization
+  = render :partial => "kits/list", :locals => { :kits => @kits }

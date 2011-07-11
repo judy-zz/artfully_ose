@@ -4,6 +4,7 @@ module AthenaHelpers
     FakeWeb.register_uri(:post, "http://localhost/stage/events.json", :body => current_event.encode)
     FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?organizationId=eq#{current_event.organization_id}&isTemplate=eqtrue", :body => "[]")
     FakeWeb.register_uri(:get, "http://localhost/stage/events.json?organizationId=eq#{current_event.organization_id}", :body => "[#{current_event.encode}]")
+    FakeWeb.register_uri(:get, "http://localhost/reports/glance/.json?eventId=eq#{current_event.id}&organizationId=eq#{current_event.organization_id}", :body => nil)
   end
 
   def event_from_table_row(attributes)

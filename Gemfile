@@ -2,12 +2,16 @@ source 'http://rubygems.org'
 
 gem 'rails'
 gem 'sqlite3-ruby', :require => 'sqlite3'
+gem 'mysql2', '< 0.3'
 gem 'haml'
 gem 'sass'
 gem 'devise'
 gem 'cancan'
 gem 'role_model'
 gem 'escape_utils'
+gem 'httparty'
+gem 'high_voltage'
+gem 'whenever'
 gem 'validates_timeliness'
 gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'transitions',
@@ -18,6 +22,7 @@ gem 'jquery-rails', '>= 0.2.6'
 gem 'capistrano'
 gem 'capistrano-ext'
 gem 'will_paginate', '~> 3.0.beta'
+gem 'exceptional'
 
 group :test, :development do
   gem "rspec-rails", ">= 2.1"

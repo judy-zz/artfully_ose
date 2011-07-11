@@ -19,11 +19,19 @@ Artfully::Application.routes.draw do
   namespace :admin do
     root :to => "index#index"
     resources :users
+    resources :settlements, :only => [ :index, :new, :create ]
     resources :organizations do
+
+      resources :events, :only => :show do
+        resources :performances, :only => :show
+      end
+
       resources :kits do
         put :activate, :on => :member
       end
+
       resources :memberships
+      resource  :bank_account, :except => :show
     end
     resources :kits
   end
@@ -31,14 +39,18 @@ Artfully::Application.routes.draw do
   devise_for :users
 
   resources :organizations do
+    resources :memberships
     member do
       post :connect
     end
   end
 
-  resources :kits do
+  resources :kits, :except => :index do
     get :alternatives, :on => :collection
   end
+
+  resources :settlements, :only => [ :index, :show ]
+  resources :statements, :only => [ :index, :show ]
 
   resources :credit_cards, :except => :show
 
@@ -51,8 +63,12 @@ Artfully::Application.routes.draw do
       member do
         get :door_list
         post :duplicate
-        put :put_on_sale
-        put :take_off_sale
+      end
+      collection do
+        post :built
+        post :on_sale
+        post :published
+        post :unpublished
       end
     end
   end
@@ -60,11 +76,12 @@ Artfully::Application.routes.draw do
   resources :performances, :only => [] do
     resources :tickets, :only => [] do
       collection do
+        delete :delete
+        put :on_sale
+        put :off_sale
         put :bulk_edit
-        put :comp_details
-        put :comp_confirm
-        put :set_new_price
-        get :confirm_new_price
+        put :change_prices
+        get :set_new_price
       end
     end
   end
@@ -73,14 +90,25 @@ Artfully::Application.routes.draw do
     resources :sections
   end
 
-  resources :orders
+  resources :help, :only => [ :index ]
+
+  resources :orders do
+    collection do
+      get :contributions
+      get :sales
+    end
+  end
   resources :refunds, :only => [ :new, :create ]
   resources :exchanges, :only => [ :new, :create ]
   resources :returns, :only => :create
+  resources :comps, :only => [ :new, :create ]
+  resources :pages
 
   match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
-  match '/performances/:id/createtickets/' => 'performances#createtickets', :as => :create_tickets_for_performance
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
+  match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
+  match '/statements/events/:event_id' => 'statements#index', :as => :event_statements, :via => "get"
+  match '/statements/performances/:performance_id' => 'statements#show', :as => :performance_statement, :via => "get"
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard
   root :to => 'index#login_success', :constraints => lambda {|r| r.env["warden"].authenticate? }

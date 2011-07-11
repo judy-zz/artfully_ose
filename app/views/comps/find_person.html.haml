@@ -1,0 +1,45 @@
+- in_section :events
+- content_for :header do
+  %h1 Comp Tickets
+
+- content_for :scripts do
+  = javascript_include_tag "comps"
+
+.context
+  %h3 New Recipient
+  = form_for AthenaPerson.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
+    %ul
+      = render :partial => 'people/form', :locals => { :parent_form => form, :target => AthenaPerson.new }
+      %li= form.submit "Save"
+  .hidden-target
+    %span.name
+    = form_tag new_comp_path, :method => :get do
+      = hidden_field_tag :performance_id, @performance.id
+      = hidden_field_tag :person_id, nil
+      - @selected_tickets.each do |st|
+        = hidden_field_tag("selected_tickets[]", st)
+      = submit_tag "Select", :class => :mini
+
+.document
+  %h3 Find Recipient
+  %ul.wizard-list
+    - @recipients.each do |recipient|
+      %li
+        %span.name= "#{recipient.first_name} #{recipient.last_name} (#{recipient.email})"
+        = form_tag new_comp_path, :method => :get do
+          = hidden_field_tag :performance_id, @performance.id
+          = hidden_field_tag :person_id, recipient.id
+          - @selected_tickets.each do |st|
+            = hidden_field_tag("selected_tickets[]", st)
+          = submit_tag "Select", :class => :mini
+
+
+  = form_tag new_comp_path, :method => :get do
+    = hidden_field_tag :performance_id, @performance.id
+    - @selected_tickets.each do |st|
+      = hidden_field_tag "selected_tickets[]", st
+    %ul
+      %li
+        .label= label_tag :terms, "Search"
+        .element= text_field_tag :terms
+    = submit_tag "Search"

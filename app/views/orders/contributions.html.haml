@@ -1,0 +1,44 @@
+- in_section :people
+- content_for :header do
+  %h1 Contributions
+  %h2 Donations & Grants
+
+.context
+  %p Select a date range to find donations
+  #donations-search
+    %ul.kv
+      =form_tag contributions_orders_path, :method=>:get do
+        %li
+          .key= label_tag :start_date
+          .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+        %li
+          .key= label_tag :end_date
+          .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+        = submit_tag "Search"
+
+.document
+  %h3 Donations
+  - unless @orders_with_donations.empty?
+    %h4= "From #{l @start} to #{l @stop}"
+    #donations
+      %table.standalone.zebra
+        %thead
+          %tr
+            %th Item
+            %th Timestamp
+            %th Person
+            %th Amount
+            %th Order
+        %tbody
+          - @orders_with_donations.each do |order|
+            -order.items.each do |item|
+              -if item.product_type == "Donation"
+                %tr
+                  %td= item.id
+                  %td= l order.timestamp
+                  %td= link_to "#{order.person.last_name}, #{order.person.first_name}", person_path(order.person)
+                  %td= number_as_cents item.price
+                  %td= link_to "#{order.id}", order_path(order)
+      =will_paginate @orders_with_donations
+  -else
+    %h4= "No donations found between #{l @start} and #{l @stop}"

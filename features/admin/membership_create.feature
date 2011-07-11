@@ -8,7 +8,7 @@ Feature: Organization Membership Create
     And a user exists with an email of "user@example.com"
     And I am logged in as an admin
     And I am on the admin root page
-    And I follow "Administer Organizations"
+    And I follow "Organizations"
     And I follow "Fractured Atlas"
 
   Scenario: An admin adds a user to an organization
@@ -25,4 +25,5 @@ Feature: Organization Membership Create
     Given "user@example.com" is part of "Fractured Atlas"
     And I fill in "Email" with "user@example.com"
     When I press "Add"
-    Then I should see "user@example.com is already a member, and was not added a second time."
+    Then I should see "user@example.com is already a member of this organization."
+

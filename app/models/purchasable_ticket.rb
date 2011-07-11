@@ -4,9 +4,12 @@ class PurchasableTicket < ActiveRecord::Base
 
   before_destroy :unlock, :unless => lambda { |p| p.sold? }
 
-  delegate :lockable?, :to => :ticket
   delegate :sell_to, :to => :ticket
   delegate :sold?, :to => :ticket
+
+  def self.for(ticket)
+    new { |this| this.ticket = ticket }
+  end
 
   def price
     ticket.price.to_i

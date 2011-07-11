@@ -1,33 +1,31 @@
 class EventsController < ApplicationController
+  respond_to :html, :json
   before_filter :authenticate_user!
 
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy ]
   before_filter :upcoming_performances, :only => :show
 
-  rescue_from CanCan::AccessDenied do |exception|
-    flash[:alert] = exception.message
-    redirect_to dashboard_path, :alert => exception.message
-  end
-
   def create
-    authorize! :create, AthenaEvent
-    @event = AthenaEvent.new
-    @event.update_attributes(params[:athena_event][:athena_event])
+    @event = AthenaEvent.new(params[:athena_event][:athena_event])
     @event.organization_id = current_user.current_organization.id
+    begin
+      authorize! :create, @event
+    rescue CanCan::AccessDenied
+      flash[:error] = "Please upgrade your account to create paid events."
+      render :new and return
+    end
 
     if @event.save
       flash[:notice] = "Your event has been created."
       redirect_to event_url(@event)
     else
-      flash[:error] = "Your event has not been created."
       render :new
     end
   end
 
   def index
     authorize! :view, AthenaEvent
-    user = params[:user_id].blank?? current_user : User.find(params[:user_id])
-    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
+    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
@@ -35,11 +33,20 @@ class EventsController < ApplicationController
     @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
     @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @chart = AthenaChart.new
+
+    respond_to do |format|
+      format.json do
+        render :json => @event.as_full_calendar_json.to_json
+      end
+      format.html
+    end
+
   end
 
   def new
-    authorize! :create, AthenaEvent
     @event = AthenaEvent.new
+    authorize! :new, @event
+    @event.producer = current_user.current_organization.name
   end
 
   def edit

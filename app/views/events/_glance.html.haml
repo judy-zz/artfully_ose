@@ -1,57 +1,50 @@
 %h3 At a Glance
+- if report.nil?
+  %p Report not yet available.
+- else
+  %ul#event.reports
+    %li
+      %h4 Revenue
+      %ul.report
 
-%ul#event.reports
-  %li
-    %h4 Revenue
-    %ul.report
-      %li
-        %span.stat Advance Sales
-        %span.current $11,568.42
-        %span.total / $13,320
+        %li
+          %span.stat Total Sales
+          %span.current= number_as_cents(report.revenue.total_sales.gross)
 
-      %li
-        %span.stat Sold Today
-        %span.current $260.55
-        %span.total / $300
+        %li
+          %span.stat Sold Today
+          %span.current= number_as_cents(report.revenue.sold_today.gross)
 
-      %li
-        %span.stat Potential Remaining
-        %span.current $3,560.85
-        %span.total / $4,100
+        %li
+          %span.stat Advance Sales
+          %span.current= number_as_cents(report.revenue.advance_sales.gross)
 
-      %li
-        %span.stat Original Potential
-        %span.current $15,476.67
-        %span.total / $17,820
+        %li
+          %span.stat Total Played
+          %span.current= number_as_cents(report.revenue.total_played.gross)
 
-      %li
-        %span.stat Total Sales
-        %span.current $28,921.05
-        %span.total / $33,300
+        %li
+          %span.stat Potential Remaining
+          %span.current= number_as_cents(report.revenue.potential_remaining.gross)
 
-      %li
-        %span.stat Total Played
-        %span.current $17,352.63
-        %span.total / $19,980
-  %li
-    %h4 Tickets
-    %ul.report
-      %li
-        %span.stat Remaining
-        %span.current 205
-      %li
-        %span.stat Sold
-        %span.current 686
-        %span.alternative (20 Comped)
-      %li
-        %span.stat Sold Today
-        %span.current 68
-        %span.alternative (4 Comped)
-      %li
-        %span.stat Total Sold
-        %span.current 1773
-        %span.alternative (108 Comped)
-      %li
-        %span.stat Total Played
-        %span.current 1087
-        %span.alternative (88 Comped)
+        %li
+          %span.stat Original Potential
+          %span.current= number_as_cents(report.revenue.original_potential.gross)
+    %li
+      %h4 Tickets
+      %ul.report
+        %li
+          %span.stat On Sale
+          %span.current= report.tickets.available
+        %li
+          %span.stat Sold
+          %span.current= report.tickets.sold.gross
+          %span.alternative= "(#{report.tickets.sold.comped} Comped)"
+        %li
+          %span.stat Sold Today
+          %span.current= report.tickets.sold_today.gross
+          %span.alternative= "(#{report.tickets.sold_today.comped} Comped)"
+        %li
+          %span.stat Total Played
+          %span.current= report.tickets.played.gross
+          %span.alternative= "(#{report.tickets.played.comped} Comped)"

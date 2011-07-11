@@ -1,0 +1,32 @@
+- content_for :header do
+  %h1 Settlements
+
+.context
+
+.document
+  %h3 Settlements
+
+  #kits
+    %table.standalone
+      %thead
+        %tr
+          %th ID
+          %th organization ID
+          %th performance ID
+          %th Date
+          %th Transaction ID
+          %th Gross
+          %th Realized
+          %th Net
+      %tbody
+        -@settlements.each do |settlement|
+          %tr
+            %td= settlement.id
+            %td= link_to settlement.organization_id, admin_organization_path(settlement.organization_id)
+            %td= settlement.performance_id
+            %td= l settlement.created_at, :format => :short
+            %td= settlement.transaction_id
+            %td= number_as_cents(settlement.gross)
+            %td= number_as_cents(settlement.realized_gross)
+            %td= number_as_cents(settlement.net)
+    =will_paginate @orders_with_donations

@@ -24,13 +24,14 @@ class ExchangesController < ApplicationController
     order = AthenaOrder.find(params[:order_id])
     items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
     tickets = params[:tickets].collect { |ticket_id| AthenaTicket.find(ticket_id) } unless params[:tickets].nil?
-
+    logger.debug("Beginning exchange")
     @exchange = Exchange.new(order, items, tickets)
 
     if tickets.nil?
       flash[:error] = "Please select tickets to exchange."
       redirect_to :back
     elsif @exchange.valid?
+      logger.debug("Submitting exchange")
       @exchange.submit
       redirect_to order_url(order), :notice => "Successfully exchanged #{self.class.helpers.pluralize(items.length, 'item')}"
     else

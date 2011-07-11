@@ -6,11 +6,16 @@
     %li= link_to "New Performance", new_event_performance_path(@event)
     %li= link_to "All Performances", event_performances_path(@event)
     %li= link_to "Door List", door_list_event_performance_path(@event,@performance)
-    - if not @performance.on_sale?
-      %li= link_to "Show this Performance", put_on_sale_event_performance_path(@event, @performance), :method => :put
+    - if not @performance.published?
+      %li
+        = form_tag published_event_performances_path(@performance.event) do
+          = hidden_field_tag :performance_id, @performance.id
+          = submit_tag "Publish"
     - else
-      %li= link_to "Hide this Performance", take_off_sale_event_performance_path(@event, @performance), :method => :put
-
+      %li
+        = form_tag unpublished_event_performances_path(@performance.event) do |form|
+          = hidden_field_tag :performance_id, @performance.id
+          = submit_tag "Unpublish"
 
 .context
   %h3 Upcoming Performances
@@ -25,20 +30,16 @@
       .value= @event.producer
 
 .document
-  = render :partial => "glance", :locals => { :performance => @performance }
+  = render :partial => "glance", :locals => { :report => @performance.glance }
 
   %h3 Tickets
   - if @performance.pending?
-    %p You have not created tickets for this event.
-    %p= link_to "Create tickets now", create_tickets_for_performance_path(@performance)
-  - else
-    = form_for @performance, :url => bulk_edit_performance_tickets_path(@performance), :method => :put do |form|
-      .table-controls
-        %ul.bulk-actions
-          %li= submit_tag "Put on Sale"
-          %li= submit_tag "Take off Sale"
-          %li= submit_tag "Delete"
-          %li= submit_tag "Comp"
-          %li= submit_tag "Change Price"
+    = form_tag built_event_performances_path(@performance.event) do
+      = hidden_field_tag :performance_id, @performance.id
+      = submit_tag "Create Tickets"
 
-      =render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }
+    %p You have not created tickets for this event.  Create tickets using the following seat chart:
+    %h5=@performance.chart.name
+    %p= render :partial => 'sections/section_table', :locals => { :chart => @performance.chart, :include_link => false }
+  - else
+    = render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }

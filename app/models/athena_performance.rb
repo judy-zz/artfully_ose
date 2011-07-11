@@ -2,15 +2,11 @@ class AthenaPerformance < AthenaResource::Base
   include ActiveResource::Transitions
 
   self.site = Artfully::Application.config.stage_site
-  self.headers["User-agent"] = "artful.ly"
   self.element_name = 'performances'
   self.collection_name = 'performances'
 
   validates_presence_of :datetime
 
-  PUT_ON_SALE = 'Put on Sale'
-  TAKE_OFF_SALE = 'Take off Sale'
-  DELETE = 'Delete'
   COMP = 'Comp'
 
   schema do
@@ -25,20 +21,24 @@ class AthenaPerformance < AthenaResource::Base
   state_machine do
     state :pending
     state :built
-    state :on_sale
-    state :off_sale
+    state :published
+    state :unpublished
 
     event :build do
       transitions :from => :pending, :to => :built
     end
 
-    event :put_on_sale do
-      transitions :from => [ :built, :off_sale ], :to => :on_sale
+    event :publish do
+      transitions :from => [ :built, :unpublished ], :to => :published
     end
 
-    event :take_off_sale do
-      transitions :from => :on_sale, :to => :off_sale
+    event :unpublish do
+      transitions :from => :published, :to => :unpublished
     end
+  end
+
+  def organization
+    @organization ||= Organization.find(organization_id)
   end
 
   def gross_potential
@@ -55,6 +55,12 @@ class AthenaPerformance < AthenaResource::Base
 
   def tickets_sold
     @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
+  end
+
+  def self.in_range(start, stop)
+    start = "gt#{start.xmlschema}"
+    stop = "lt#{stop.xmlschema}"
+    instantiate_collection(query("datetime=#{start}&datetime=#{stop}"))
   end
 
   def chart
@@ -79,7 +85,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def has_door_list?
-    on_sale? or off_sale?
+    published? or unpublished?
   end
 
   def time_zone
@@ -107,45 +113,43 @@ class AthenaPerformance < AthenaResource::Base
     return attributes['datetime']
   end
 
-  def bulk_edit_tickets(ticket_ids, action)
-    case action
-      when PUT_ON_SALE
-        bulk_on_sale(ticket_ids)
-      when TAKE_OFF_SALE
-        bulk_off_sale(ticket_ids)
-      when DELETE
-        bulk_delete(ticket_ids)
-      when COMP
-        bulk_comp(ticket_ids)
-    end
+  def glance
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id, :organizationId => self.organization_id })
   end
-  
+
   #return accepted id's
   def bulk_comp_to(ids, buyer)
     tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.comp_to(buyer) }.compact
   end
 
-  private
+  def bulk_on_sale(ids)
+    targets = (ids == :all) ? tickets : tickets.select { |t| ids.include? t.id }
+    AthenaTicket.put_on_sale(targets)
+  end
 
+  def bulk_off_sale(ids)
+    AthenaTicket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
+  end
+
+  def bulk_delete(ids)
+    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.destroy }.compact
+  end
+
+  def bulk_change_price(ids, price)
+    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.change_price(price) }.compact
+  end
+
+  def settleables
+    AthenaItem.find_by_performance_id(self.id).reject(&:modified?)
+  end
+
+  private
     def find_tickets
       return [] if new_record?
       AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
     end
 
-    def bulk_on_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.put_on_sale }.compact
-    end
-
-    def bulk_off_sale(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.take_off_sale }.compact
-    end
-
-    def bulk_delete(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.destroy }.compact
-    end
-
     def bulk_comp(ids)
-      #TODO: Implement comp
       tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
     end
 

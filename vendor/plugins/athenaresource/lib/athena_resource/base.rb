@@ -2,10 +2,22 @@ require 'athena_resource/formats'
 
 module AthenaResource
   class Base < ActiveResource::Base
-
     # Enable ActiveModel callbacks for models
     extend ActiveModel::Callbacks
     define_model_callbacks :create, :save, :validation
+
+    def self.auth_type
+      # Not using superclass_delegating_reader. See +site+ for explanation
+      if defined?(@auth_type)
+        @auth_type
+      elsif superclass != Object && superclass.auth_type
+        superclass.auth_type
+      end
+    end
+
+    self.user = Artfully::Application.config.athena_resource_user if Artfully::Application.config.athena_resource_user
+    self.password = Artfully::Application.config.athena_resource_password if Artfully::Application.config.athena_resource_password
+    self.auth_type = Artfully::Application.config.athena_resource_auth_type if Artfully::Application.config.athena_resource_auth_type
 
     class << self
       def format
@@ -15,18 +27,36 @@ module AthenaResource
       def parameterize(params = {})
         Hash[params.collect{|key, value| [key.camelize(:lower),value] }]
       end
-    
+
+      def search_index(search_query, organization, limit=10)
+        if search_query.blank?
+          search_query = ''
+        else
+          search_query.concat(' AND ')
+        end
+
+        search_query.concat("organizationId:").concat("#{organization.id}")
+        find(:all, :params => { '_q' => search_query, '_limit' => limit})
+      end
+
+      #Can be used when searching for a range because you can't dupe keys in a hash
+      #For example: datetime=lt2011-03-02&datetime=gt2010-05-05
+      def query(query_str)
+
+        #Neither CGI::Escape nor URI.escape worked here
+        #CGI::escape escaped everything and ATHENA threw 400
+        #URI.escape failed to change the + to %2B which is really the only thing I wanted it to do
+        query_str.gsub!(/\+/,'%2B')
+
+        connection.get(self.collection_path + "?" + query_str, self.headers)
+      end
+
+      # This method will translate find_by_some_object_id into ...?someObjectId=9
       def method_missing(method_id, *arguments)
-        if match = /find_by_([_a-zA-Z]\w*)/.match(method_id.to_s)
+        if method_id.to_s =~ /find_by_(\w+)/
           arg = arguments[0]
-          term = match[1]
-          
-          #Can't use respond_to?('id') because 1.8 allows Object.id
-          #If they sent an AthenaResource::Base or ActiveRecord::Base
-          if( arguments[0].kind_of?(ActiveRecord::Base) || arguments[0].kind_of?(AthenaResource::Base) )
-            term  = term + 'Id' unless term.end_with? 'Id'
-            arg = arguments[0].id
-          end
+          term = $1.camelcase(:lower)
+
           find(:all, :params => { term => arg })
         else
           super
@@ -57,5 +87,7 @@ module AthenaResource
       return self.class.format.encode(attrs, options) if self.class.format.respond_to? :encode
       super(options)
     end
+
+    include Headers
   end
 end

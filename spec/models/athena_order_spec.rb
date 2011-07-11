@@ -99,7 +99,7 @@ describe AthenaOrder do
   describe "#save" do
     before(:each) do
       FakeWeb.register_uri(:post, "http://localhost/people/actions.json", :body => Factory(:athena_purchase_action).encode)
-      FakeWeb.register_uri(:get, "http://localhost/orders/items.json?orderId=eq1", :body=>"")
+      FakeWeb.register_uri(:get, "http://localhost/orders/items.json?orderId=1", :body=>"")
     end
 
     it "should save the items after saving the order" do
@@ -114,15 +114,9 @@ describe AthenaOrder do
       subject.save
     end
 
-    it "should generate a valid purchase action" do
-      subject.save
-      action = subject.send(:create_purchase_action)
-      action.should be_valid
-    end
-
     it "should generate a valid donation action for each donation" do
       donations = 2.times.collect { Factory(:donation) }
-      subject.for_items(donations)
+      subject << donations
       actions = subject.send(:create_donation_actions)
       actions.should have(2).donation_actions
       actions.each do |action|
@@ -140,8 +134,8 @@ describe AthenaOrder do
     subject do
       AthenaOrder.new.tap do |order|
         order.for_organization organization
-        order.for_items tickets
-        order.for_items donations
+        order << tickets
+        order << donations
       end
     end
 
@@ -154,18 +148,27 @@ describe AthenaOrder do
     end
 
     it "should create an item that references each ticket" do
-      subject.items.select { |item| item.item_type == "AthenaTicket" }.size.should eq tickets.size
-      subject.items.select { |item| item.item_type == "AthenaTicket" }.each do |item|
-        tickets.collect(&:id).should include item.item_id
+      subject.items.select { |item| item.product_type == "AthenaTicket" }.size.should eq tickets.size
+      subject.items.select { |item| item.product_type == "AthenaTicket" }.each do |item|
+        tickets.collect(&:id).should include item.product_id
       end
     end
 
     it "should create an item that references each donation" do
-      subject.items.select { |item| item.item_type == "Donation" }.size.should eq donations.size
-      subject.items.select { |item| item.item_type == "Donation" }.each do |item|
-        donations.collect(&:id).should include item.item_id
+      subject.items.select { |item| item.product_type == "Donation" }.size.should eq donations.size
+      subject.items.select { |item| item.product_type == "Donation" }.each do |item|
+        donations.collect(&:id).should include item.product_id
       end
     end
+  end
 
+  describe ".in_range" do
+    it "composes a GET request for a given set of Time objects" do
+      start = Time.now.beginning_of_day
+      stop = start.end_of_day
+      FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
+      AthenaOrder.in_range(start, stop)
+      FakeWeb.last_request.path.should eq "/orders/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
+    end
   end
 end

@@ -8,18 +8,28 @@
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"
     = javascript_include_tag "jquery/jquery.mask-money.js"
     = javascript_include_tag "jquery/jquery.formalize.js"
-    = javascript_include_tag "rails"
+    = javascript_include_tag "jquery_ujs"
 
     = csrf_meta_tag
 
   %body
-  #content
-    #page
-      #cart
-        = yield :header
-        = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
-        - flash.discard
-        = yield
-      #controls
-        = yield :controls
+    #content
+      #page
+        #cart
+          = yield :header
+          = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+          - flash.discard
+          = yield
+        #controls
+          = yield :controls
 
+    :javascript
+      $("document").ready(function(){
+        $(".currency").maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
+        $(".currency").closest("form").submit(function(){
+          var input = $(this).find(".currency"),
+              cents = Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ),
+              hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
+          hiddenCurrency.val(cents);
+        });
+      });

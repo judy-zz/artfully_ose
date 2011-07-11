@@ -1,0 +1,7 @@
+- if played.empty?
+  %p There are no played performances.
+- else
+  %ul.detailed-list#of_performances
+    - played.each do |performance|
+      %li
+        %h4= link_to (l performance.datetime, :format => :short), performance_statement_path(performance), :title => 'performance-datetime'

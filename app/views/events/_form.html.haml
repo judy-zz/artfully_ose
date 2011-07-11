@@ -7,7 +7,9 @@
     .element= event_form.text_field :venue
   %li
     .label= event_form.label :producer, "Producer"
-    .element= event_form.text_field :producer
+    .element
+      = event_form.text_field :producer
+      .description Defaults to your organization's name
   %li
     .label= event_form.label :city, "City"
     .element= event_form.text_field :city
@@ -16,7 +18,12 @@
     .element= event_form.select :state, options_for_select( target.sorted_locales, target.state )
   %li
     .label= event_form.label :time_zone, "Time Zone"
-    .element= event_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones
-  %li
-    .label=  event_form.label :is_free, "This is a free event"
-    .element= event_form.check_box( :is_free, {}, "true", "false" )
+    .element= event_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)"
+  - if can? :create_paid_events, @event
+    %li
+      .label=  event_form.label :is_free, "This is a free event"
+      .element= event_form.check_box( :is_free, {}, "true", "false" )
+  - else
+    %li
+      .label=  event_form.label :is_free, "This is a free event"
+      .element= event_form.check_box( :is_free, {:disabled => 'disabled', :checked => 'checked'}, "true", "false" )

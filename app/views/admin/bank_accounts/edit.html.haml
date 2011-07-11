@@ -1,0 +1,6 @@
+- content_for :header do
+  %h1= "Bank Account for #{@organization.name}"
+
+.tips
+.document
+  = render :partial => 'form', :locals => { :bank_account => @bank_account, :organization => @organization, :submit => "Update" }

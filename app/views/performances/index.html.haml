@@ -1,26 +1,39 @@
-= render :partial => "shared/headers/ticketing"
+- in_section :events
+- content_for :header do
+  %h1= link_to @event.name, event_path(@event)
+  %h2
+    = @event.producer
+    &mdash;
+    = "#{@event.venue} #{@event.city}, #{@event.state}"
+  %ul.from-here
+    %li= link_to "New Performance", new_event_performance_path(@event)
+    %li= link_to "All Performances", event_performances_path(@event)
+
 
 .context
-  %h3= link_to @event.name, event_path(@event)
-
-  %ul.more
-    %li= link_to "New Performance", new_event_performance_path(@event)
-    %li= link_to "View all Performances", event_performances_path(@event)
-
+  %h3 Upcoming Performances
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
 .document
-  = render :partial => "glance", :locals => { :event => @event }
+  = render :partial => "glance", :locals => { :report => @event.glance }
   %h3 All Performances
   #performances
-    .table-controls
-    %ul.performance-list
-      - @performances.each do |performance|
-        %li
-          %span.stats-controls= link_to "(more)", "#"
-          %h6= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
-          .hidden-stats
-            = render :partial => "stats", :locals => { :performance => performance }
-      %li.new-item
-        = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
-    =will_paginate @performances
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Performance
+          %th Available
+          %th Sold
+          %th Comped
+          %th Actions
+      %tbody
+        - @performances.each do |performance|
+          %tr{ :class => performance.state }
+            %td= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
+            %td.available= performance.glance.tickets.available
+            %td.gross= performance.glance.tickets.sold.gross
+            %td.comped= performance.glance.tickets.sold.comped
+            %td= render :partial => "controls", :locals => { :performance => performance }
+        %tr
+          = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
+    = will_paginate @performances

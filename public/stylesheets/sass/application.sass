@@ -12,7 +12,7 @@ a
   color: $compliment
   text-decoration: none
 
-h1, h3, h4
+h1, h3
   font-family: "Raleway" !important
   @include stack-content
 
@@ -27,8 +27,10 @@ h2
   color: #666
   @include stack-content
 
+
 #front-matter
   margin-bottom: 3em
+  padding: 0 10px
   &:after
     content: "."
     display: block
@@ -47,12 +49,12 @@ h2
 h3
   font-size: 2em
   color: $primary
-  margin-bottom: .5em
+  margin-bottom: 10px
 
 h4
   color: #666
-  font-size: 1.25em
   margin-bottom: .5em
+  @include stack-content
 
 strong
   font-weight: bold
@@ -63,11 +65,8 @@ strong
   @include shadow(#ddd)
   padding: 75px 0
   text-align: center
-  img
 
 #current
-  float: right
-  margin: 12px 10px 0 0
   font-size: .9em
   div
     float: left
@@ -76,20 +75,47 @@ strong
     color: #888
   #current-org
     border-left: 1px solid #888
+  #administration
+    border-left: 1px solid #888
+    a
+      color: #666
+      font-weight: bold
+      text-transform: uppercase
+      font-size: .8em
 
 #content
-  margin: 100px 2%
-  width: 96%
-  @include stack-layout
+  margin: 0 auto
+  max-width: 1260px
+  padding: 80px 10px
+  position: relative
   p
     font-size: .9em
     line-height: 1.5em
     margin: 1em inherit
     color: #666
+  #logo
+    position: absolute
+    right: 20px
+    margin-top: -10px
+  #page
+    @include stack-layout
+    width: 100%
 
-.context, .tip
+.spread
+  @include section
+  @extend .stack
+
+.context, .tip, .overview
   @include section
   @extend .stack1of3
+
+.dashboard
+  @include section
+  @extend .stack1of2
+
+.sideboard
+  @include section
+  @extend .stack1of4
 
 .document
   background: #fff
@@ -99,6 +125,10 @@ strong
 .of2
   @include section
   @extend .stack1of2
+
+.of3
+  @include section
+  @extend .stack1of3
 
 .drilldown.final
   @include section
@@ -132,7 +162,8 @@ strong
     position: relative
     border-bottom: 1px solid $neutral-1
     color: $secondary
-    padding: 10px
+    padding-bottom: 10px
+    margin-bottom: 10px
     &.active
       background: #eee
   ul.details li
@@ -142,34 +173,28 @@ strong
     display:block
     font-size: .9em
   h4
-    font-size: 1.4em
     margin-bottom: 0
     a
       text-decoration: none
       color: inherit
 
+.wizard-list li
+  border-bottom: 1px solid $neutral-1
+  color: $secondary
+  padding-bottom: 10px
+  margin-bottom: 10px
+  text-align: right
+  span
+    float: left
+
 .order-list ul li
   display: block
   font-size: .9em
 
-.performance-list
-  color: $secondary
-  border: 1px solid #ccc
-  border-top: none
-  > li
-    position: relative
-    display: block
-    padding: 10px
-  > li.even
-    background: #eee
-  .status
-    font-size: .9em
-  h6
-    display: inline
-  .selected
-    @include shadow(#ddd)
-    h6
-      font-weight: bold
+input.mini
+  font-size: .75em
+  @include rounded-corners(2px,2px,2px,2px)
+  padding: 2px 5px 3px
 
 .people-list
   li
@@ -185,6 +210,8 @@ strong
     right: 0
     top: 0
 
+.ui-dialog
+  background: none no-repeat scroll 0 0 $compliment
 
 .controls
   position: absolute
@@ -194,16 +221,15 @@ strong
   display: none
   li
     display: inline-block
-    padding: 10px 0
-    a
+    a, span
       font-weight: bold
       text-decoration: none
       font-size: .8em
       display: inline-block
       padding: .25em
       color: #aaa
-      &:hover
-        color: $compliment
+    a:hover
+      color: $compliment
 
 
 
@@ -323,9 +349,16 @@ strong
       color: white
       text-decoration: underline
 
-
 #alternatives
   @include stack-layout
+
+.bulleted
+  list-style-type: disc
+  margin-left: 2em
+  color: #666
+  font-size: .9em
+  li
+    line-height: 1.3em
 
 .wizard-button
   display: block
@@ -336,6 +369,9 @@ strong
   text-align: center
   font-size: .9em
   padding: 1em
+
+.dropdown-container
+  text-align: right
 
 .dropdown
   position: absolute
@@ -353,8 +389,46 @@ strong
     padding: 5px 5px 5px 10px
     border-bottom: 1px solid gray
 
+.cta
+  @include rounded-corners(2px, 2px, 2px, 2px)
+  @include inset-text
+  text-align: center
+  width: 25%
+  @include gradient($compliment_highlight, $compliment, 14%, 100%)
+  border: 1px solid $compliment_shadow
+  font-size: .8em
+  font-weight: bold
+  padding: 10px
+  float: right
+
+.cta-left
+  @extend .cta
+  float: left
+
+.cta-left-125
+  @extend .cta-left
+  width: 125px
+
+ul.prices li div
+  text-indent: 1em
+
+#calendar
+  table
+    border: 0px
+
+#footer
+  position: fixed
+  bottom: 0
+  right: 0
+  padding: 5px
+  background: #ccc
+  text-align: right
+  @include rounded-corners(4px, 0, 0, 0)
+
 @import "main-menu"
 @import "forms"
 @import "tables"
 @import "flash"
 @import "reports"
+@import "data-tables"
+@import "performances"

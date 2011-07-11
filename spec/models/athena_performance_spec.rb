@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AthenaPerformance do
-  subject { Factory(:athena_performance) }
+  subject { Factory(:athena_performance_with_id) }
 
   it { should be_valid }
 
@@ -21,77 +21,89 @@ describe AthenaPerformance do
     subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end
 
-  describe "put on sale" do
+  describe "#publish" do
     subject { Factory(:athena_performance_with_id, :state => "built" ) }
 
     it "should mark the performance as on sale" do
-      subject.put_on_sale!
-      subject.should be_on_sale
+      subject.publish!
+      subject.should be_published
     end
   end
 
-  describe "take off sale" do
-    subject { Factory(:athena_performance_with_id, :state => "on_sale" ) }
+  describe "#unpublish" do
+    subject { Factory(:athena_performance_with_id, :state => "published" ) }
 
     it "should mark the performance as off sale" do
-      subject.take_off_sale
-      subject.should_not be_on_sale!
+      subject.unpublish!
+      subject.should be_unpublished
     end
   end
-
 
   describe "bulk edit tickets" do
     subject { Factory(:athena_performance_with_id) }
+    let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
 
     before(:each) do
-      tickets = 3.times.collect { Factory(:ticket_with_id) }
       subject.stub!(:tickets).and_return(tickets)
     end
 
-    it "should put tickets on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
-      subject.tickets.each { |ticket| ticket.should_receive(:put_on_sale) }
+    describe "#bulk_on_sale" do
+      before(:each) do
+        body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      end
 
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
+      it "puts all tickets on sale when :all is specified" do
+        AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+        subject.bulk_on_sale(:all)
+      end
+
+      it "should put tickets on sale" do
+        AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+        subject.bulk_on_sale(tickets.collect(&:id))
+      end
+
+      it "fails by returning false if any of the tickets can not be put on sale" do
+        tickets.first.state = :on_sale
+        outcome = subject.bulk_on_sale(tickets.collect(&:id))
+        outcome.should be false
+      end
     end
 
-    it "should return the ids of the tickets that were not put on sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:put_on_sale).and_return(true) }
-      subject.tickets.first.stub(:put_on_sale).and_return(false)
+    describe "bulk_off_sale" do
+      before(:each) do
+        tickets.each { |ticket| ticket.state = "on_sale" }
+        body = tickets.collect(&:encode).join(",").gsub(/on_sale/,'off_sale')
+        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      end
 
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::PUT_ON_SALE)
-      rejected_ids.first.should eq subject.tickets.first.id
+      it "takes tickets off sale" do
+        AthenaTicket.should_receive(:take_off_sale).with(subject.tickets)
+        subject.bulk_off_sale(tickets.collect(&:id))
+      end
+
+      it "fails by returning false if any of the tickets can not be taken off sale" do
+        tickets.first.state = :off_sale
+        outcome = subject.bulk_off_sale(tickets.collect(&:id))
+        outcome.should be false
+      end
     end
 
-    it "should take tickets off sale" do
-      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(true) }
-      subject.tickets.each { |ticket| ticket.should_receive(:take_off_sale) }
+    describe "bulk_delete" do
+      it "should delete tickets" do
+        subject.tickets.each { |ticket| ticket.stub!(:destroy) }
+        subject.tickets.each { |ticket| ticket.should_receive(:destroy) }
 
-      subject.tickets.each { |ticket| ticket.on_sale = true }
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
-    end
+        subject.bulk_delete(subject.tickets.collect(&:id))
+      end
 
-    it "should return the ids of ticket that were sold and therefore not taken off sale" do
-      subject.tickets.first.state = "sold"
-      subject.tickets.each { |ticket| ticket.stub!(:take_off_sale).and_return(!ticket.sold?) }
+      it "should return the ids of tickets that were destroyed" do
+        subject.tickets.first.state = "sold"
+        subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
 
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::TAKE_OFF_SALE)
-      rejected_ids.first.should eq subject.tickets.first.id
-    end
-
-    it "should delete tickets" do
-      subject.tickets.each { |ticket| ticket.stub!(:destroy) }
-      subject.tickets.each { |ticket| ticket.should_receive(:destroy) }
-
-      subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
-    end
-
-    it "should return the ids of tickets that were sold and therefore not destroyed" do
-      subject.tickets.first.state = "sold"
-      subject.tickets.each { |ticket| ticket.stub!(:destroy).and_return(!ticket.sold?) }
-
-      rejected_ids = subject.bulk_edit_tickets(subject.tickets.collect(&:id), AthenaPerformance::DELETE)
-      rejected_ids.first.should eq subject.tickets.first.id
+        rejected_ids = subject.bulk_delete(subject.tickets.collect(&:id))
+        rejected_ids.should eq subject.tickets.from(1).collect(&:id)
+      end
     end
   end
 
@@ -150,5 +162,36 @@ describe AthenaPerformance do
 
   it "should raise a TypeError for invalid event assignment" do
     lambda { subject.chart = "Not an Event" }.should raise_error(TypeError)
+  end
+
+  describe "#settleables" do
+    let(:items) { 10.times.collect{ Factory(:athena_item, :performance_id => subject.id) } }
+
+    it "finds the settleable line items for the performance" do
+      AthenaItem.stub(:find_by_performance_id).and_return(items)
+      subject.settleables.should eq items
+    end
+
+    it "rejects line items that have been modified in some way" do
+      items.first.state = "returned"
+      AthenaItem.stub(:find_by_performance_id).and_return(items)
+      subject.settleables.should have(9).items
+    end
+
+    it "rejects line items that have been settled already" do
+      items.first.state = "settled"
+      AthenaItem.stub(:find_by_performance_id).and_return(items)
+      subject.settleables.should have(9).items
+    end
+  end
+
+  describe ".in_range" do
+    it "composes a GET request for a given set of Time objects" do
+      start = Time.now.beginning_of_day
+      stop = start.end_of_day
+      FakeWeb.register_uri(:get, "http://localhost/stage/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
+      AthenaPerformance.in_range(start, stop)
+      FakeWeb.last_request.path.should eq "/stage/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
+    end
   end
 end
