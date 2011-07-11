@@ -25,6 +25,7 @@ class ApplicationController < ActionController::Base
 
     def authenticate_inviter!
       authorize! :adminster, :all
+      super
     end
 
   private
