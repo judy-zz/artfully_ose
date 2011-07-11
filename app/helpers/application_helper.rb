@@ -1,6 +1,5 @@
 module ApplicationHelper
   include LinkHelper
-  include TicketTableHelper
 
   def contextual_menu(&block)
     menu = ContextualMenu.new(self)

@@ -5,7 +5,6 @@
 = render :partial => 'tickets/off_sale/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
 = render :partial => 'tickets/delete/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
 = render :partial => 'comps/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
-= render :partial => 'tickets/change_price/grouped_form', :locals => { :performance => @performance, :tickets => @tickets.select(&:repriceable?) }
 
 #tickets.grouped-form-target
   = form_tag do
@@ -22,4 +21,4 @@
             %td.grouped-checkbox= check_box_tag "item_#{ticket.id}", ticket.id, false, :disabled => true
             %td= ticket.section
             %td= number_as_cents ticket.price
-            %td= ticket_status(ticket)
+            %td= ticket.state.titleize
