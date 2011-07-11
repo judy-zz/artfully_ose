@@ -2,6 +2,7 @@
   %h1 User Administration
 
 .context
+  = link_to "Invite User", new_user_invitation_path
 .document
   = form_tag admin_users_path, :method => :get do
     %ul
