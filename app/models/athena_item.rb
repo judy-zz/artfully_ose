@@ -60,7 +60,6 @@ class AthenaItem < AthenaResource::Base
     set_prices_from product
     set_performance_from product if product.respond_to? :performance_id
     self.state = "purchased"
-    puts self.state
     @product = product
   end
 
@@ -92,14 +91,14 @@ class AthenaItem < AthenaResource::Base
       item.state = "refund"
     end
   end
-  
+
   def to_exchange!
     self.price = 0
     self.realized_price = 0
     self.net = 0
     self.state = "exchangee"
-  end  
-  
+  end
+
   def to_comp!
     self.price = 0
     self.realized_price = 0
