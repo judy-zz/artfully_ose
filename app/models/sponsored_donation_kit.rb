@@ -1,8 +1,8 @@
 class SponsoredDonationKit < Kit
   acts_as_kit :with_approval => true do
-    activate_kit :if => :connected?
-    activate_kit :if => :exclusive?
-    activate_kit :if => :has_website?
+    activate :if => :connected?
+    activate :if => :exclusive?
+    activate :if => :has_website?
 
     when_active do |organization|
       organization.can :receive, Donation

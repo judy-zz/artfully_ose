@@ -1,7 +1,7 @@
 class TicketingKit < Kit
   acts_as_kit :with_approval => true do
-    activate_kit :unless => :no_owner?
-    activate_kit :unless => :no_bank_account?
+    activate :unless => :no_owner?
+    approve :unless => :no_bank_account?
 
     when_active do |organization|
       organization.can :access, :paid_ticketing

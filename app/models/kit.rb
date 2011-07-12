@@ -14,13 +14,22 @@ class Kit < ActiveRecord::Base
     class_eval(&block)
   end
 
-  def self.activate_kit(options)
-    requirements[:unless] << options.delete(:unless) if options.has_key?(:unless)
-    requirements[:if] << options.delete(:if) if options.has_key?(:if)
+  def self.activate(options)
+    activation_requirements[:unless] << options.delete(:unless) if options.has_key?(:unless)
+    activation_requirements[:if] << options.delete(:if) if options.has_key?(:if)
   end
 
-  def self.requirements
+  def self.approve(options)
+    approval_requirements[:unless] << options.delete(:unless) if options.has_key?(:unless)
+    approval_requirements[:if] << options.delete(:if) if options.has_key?(:if)
+  end
+
+  def self.activation_requirements
     @requirements ||= Hash.new { |h,k|  h[k] = [] }
+  end
+
+  def self.approval_requirements
+    @approval_requirements ||= Hash.new { |h,k|  h[k] = [] }
   end
 
   def self.when_active(&block)
@@ -58,13 +67,17 @@ class Kit < ActiveRecord::Base
   def activatable?
     return false if organization.nil?
 
-    if needs_approval
+    if needs_approval?
       check_requirements
       submit_for_approval!
       return false
     end
 
     check_requirements
+  end
+
+  def approvable?
+    check_approval
   end
 
   class DuplicateError < StandardError
@@ -76,7 +89,11 @@ class Kit < ActiveRecord::Base
 
   private
     def check_requirements
-      check_unlesses and check_ifs
+      check_unlesses(self.class.activation_requirements[:unless]) and check_ifs(self.class.activation_requirements[:if])
+    end
+
+    def check_approval
+      check_unlesses(self.class.approval_requirements[:unless]) and check_ifs(self.class.approval_requirements[:if])
     end
 
     def self.setup_state_machine
@@ -88,6 +105,10 @@ class Kit < ActiveRecord::Base
 
         event :activate do
           transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
+        end
+
+        event :approve do
+          transitions :from => :pending, :to => :activated, :guard => :approvable?
         end
 
         event :cancel do
@@ -104,17 +125,17 @@ class Kit < ActiveRecord::Base
       end
     end
 
-    def check_unlesses
-      return true if self.class.requirements[:unless].empty?
-      self.class.requirements[:unless].all? { |req| !self.send(req) }
+    def check_unlesses(unlesses)
+      return true if unlesses.empty?
+      unlesses.all? { |req| !self.send(req) }
     end
 
-    def check_ifs
-      return true if self.class.requirements[:if].empty?
-      self.class.requirements[:if].all? { |req| self.send(req) }
+    def check_ifs(ifs)
+      return true if ifs.empty?
+      ifs.all? { |req| self.send(req) }
     end
 
-    def needs_approval
+    def needs_approval?
       self.class.requires_approval and new?
     end
 
