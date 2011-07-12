@@ -19,5 +19,6 @@ Feature: Ticket Comp
     And I select the first person
     And I fill in "comp_reason" with "Dull and Generic Reason"
     And I press "Submit"
+    And I should see "Dull and Generic Reason"
     And I confirm comp
     Then I should see "Comped"
