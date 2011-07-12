@@ -32,6 +32,11 @@ class Ability
     can :manage, AthenaCreditCard do |card|
       user.credit_cards.any?{|c| c.id == card.id}
     end
+
+    can :view, Settlement do |settlement|
+      user.is_in_organization?
+    end
+
   end
 
   def admin_abilities_for(user)
