@@ -1,4 +1,4 @@
-- in_section :people
+- in_section :transactions
 - content_for :header do
   %h1 Orders & Donations
   %h2 Find and manage orders and donations
@@ -52,6 +52,6 @@
               -details << pluralize(order.num_tickets, "ticket") unless order.num_tickets <= 0
               -details << " #{number_as_cents(order.sum_donations)} donation" unless order.sum_donations <= 0.0
               %td= details.compact.to_sentence
-              
+
       =will_paginate @results
 

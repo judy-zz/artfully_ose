@@ -78,7 +78,7 @@ class AthenaEvent < AthenaResource::Base
       phash['title'] = ''
       phash['start'] = p.datetime
       phash['allDay'] = false
-      phash['color'] = '#034754'
+      phash['color'] = '#077083'
       perfs << phash
     end
     perfs

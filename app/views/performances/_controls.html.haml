@@ -1,3 +1,6 @@
+- content_for :scripts do
+  = javascript_include_tag "performances"
+
 = form_tag built_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited pending" do
   = hidden_field_tag :performance_id, performance.id
   = submit_tag "Create Tickets", :class => [ :mini, :full ]
