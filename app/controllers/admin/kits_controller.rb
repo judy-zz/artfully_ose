@@ -1,7 +1,7 @@
 class Admin::KitsController < Admin::AdminController
   def activate
     @kit = Kit.find(params[:id])
-    @kit.activate!
+    @kit.approve!
     check_activation
     redirect_to :back
   end

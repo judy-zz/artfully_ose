@@ -1,7 +1,7 @@
 class RegularDonationKit < Kit
   acts_as_kit :with_approval => true do
-    activate_kit :if => :has_tax_info?
-    activate_kit :if => :exclusive?
+    activate :if => :has_tax_info?
+    activate :if => :exclusive?
 
     when_active do |organization|
       organization.can :receive, Donation
