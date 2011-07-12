@@ -88,91 +88,12 @@ class AthenaEvent < AthenaResource::Base
     super({ :methods => [ 'performances', 'charts' ]}.merge(options))
   end
 
-  def sorted_locales
-    @sorted_locales ||= valid_locales.sort{|a, b| a <=> b}
-  end
-
   def free?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? is_free
   end
 
   def glance
     @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization.id })
-  end
-
-  #return valid US states for an event
-  #would be be valid states, but states also refer to state machine
-  #codes defined here: http://www.itl.nist.gov/fipspubs/fip5-2.htm
-  def valid_locales
-    { "Alabama"=>"AL",
-      "Alaska"=>"AK",
-      "American Samoa"=>"AS",
-      "Arizona"=>"AZ",
-      "Arkansas"=>"AR",
-      "California"=>"CA",
-      "Colorado"=>"CO",
-      "Connecticut"=>"CT",
-      "Delaware"=>"DE",
-      "District of Columbia"=>"DC",
-      "Florida"=>"FL",
-      "Georgia"=>"GA",
-      "Guam"=>"GU",
-      "Hawaii"=>"HI",
-      "Idaho"=>"ID",
-      "Illinois"=>"IL",
-      "Indiana"=>"IN",
-      "Iowa"=>"IA",
-      "Kansas"=>"KS",
-      "Kentucky"=>"KY",
-      "Louisiana"=>"LA",
-      "Maine"=>"ME",
-      "Marshall Islands"=>"MH",
-      "Maryland"=>"MD",
-      "Massachusetts"=>"MA",
-      "Michigan"=>"MI",
-      "Micronesia"=>"FM",
-      "Minnesota"=>"MN",
-      "Mississippi"=>"MS",
-      "Missouri"=>"MO",
-      "Montana"=>"MT",
-      "Nebraska"=>"NE",
-      "Nevada"=>"NV",
-      "New Hampshire"=>"NH",
-      "New Jersey"=>"NJ",
-      "New Mexico"=>"NM",
-      "New York"=>"NY",
-      "North Carolina"=>"NC",
-      "North Dakota"=>"ND",
-      "Ohio"=>"OH",
-      "Oklahoma"=>"OK",
-      "Oregon"=>"OR",
-      "Palau"=>"PW",
-      "Pennsylvania"=>"PA",
-      "Rhode Island"=>"RI",
-      "Puerto Rico"=>"PR",
-      "South Carolina"=>"SC",
-      "South Dakota"=>"SD",
-      "Tennessee"=>"TN",
-      "Texas"=>"TX",
-      "Utah"=>"UT",
-      "Vermont"=>"VT",
-      "Virgin Islands"=>"VI",
-      "Virginia"=>"VA",
-      "Washington"=>"WA",
-      "Wisconsin"=>"WI",
-      "West Virginia"=>"WV",
-      "Wyoming"=>"WY"}
-  end
-
-  def us_time_zones
-    [ "Hawaii",
-      "Alaska",
-      "Pacific Time (US & Canada)",
-      "Arizona",
-      "Mountain Time (US & Canada)",
-      "Central Time (US & Canada)",
-      "Eastern Time (US & Canada)",
-      "Indiana (East)" ]
   end
 
   private

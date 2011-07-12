@@ -11,6 +11,14 @@ module ApplicationHelper
     number_to_currency(cents.to_i / 100.00)
   end
 
+  def sorted_us_state_names
+    @sorted_us_states ||= us_states.sort{|a, b| a <=> b}
+  end
+
+  def sorted_us_state_abbreviations
+    @sorted_us_states ||= us_states.invert.keys.sort{|a, b| a <=> b}
+  end
+
   def us_states
     {
       "Alabama"              =>"AL",

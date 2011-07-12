@@ -26,7 +26,7 @@
 
     %li
       .label= form.label :state
-      .element= form.select :state, options_for_select(us_states.values)
+      .element= form.select :state, options_for_select(sorted_us_state_abbreviations, bank_account.state)
 
     %li
       .label= form.label :zip

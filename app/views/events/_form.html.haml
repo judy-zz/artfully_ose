@@ -15,7 +15,7 @@
     .element= event_form.text_field :city
   %li
     .label= event_form.label :state, "State"
-    .element= event_form.select :state, options_for_select( target.sorted_locales, target.state )
+    .element= event_form.select :state, options_for_select( sorted_us_state_names, target.state )
   %li
     .label= event_form.label :time_zone, "Time Zone"
     .element= event_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)"
