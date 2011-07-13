@@ -6,7 +6,6 @@
       %li
         %h4= link_to event.name, event_path(event), :title => 'event-name'
         %ul.controls
-          %li= link_to "View", event_path(event) if can?(:view, event)
           %li= link_to "Edit", edit_event_path(event) if can?(:edit, event)
           %li= link_to "Delete", event_path(event), :method => :delete, :confirm => "Are you sure?" if can?(:destroy, event)
         %ul.details-long
