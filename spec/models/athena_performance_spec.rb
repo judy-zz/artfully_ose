@@ -164,6 +164,15 @@ describe AthenaPerformance do
     lambda { subject.chart = "Not an Event" }.should raise_error(TypeError)
   end
 
+  describe "#live?" do
+    [ :built, :published, :unpublished ].each do |state|
+      it "is considered live when it is #{state}" do
+        subject.stub("#{state}?").and_return(true)
+        subject.should be_live
+      end
+    end
+  end
+
   describe "#settleables" do
     let(:items) { 10.times.collect{ Factory(:athena_item, :performance_id => subject.id) } }
 

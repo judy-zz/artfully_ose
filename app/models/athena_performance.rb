@@ -143,6 +143,10 @@ class AthenaPerformance < AthenaResource::Base
     AthenaItem.find_by_performance_id(self.id).reject(&:modified?)
   end
 
+  def live?
+    built? or published? or unpublished?
+  end
+
   private
     def find_tickets
       return [] if new_record?

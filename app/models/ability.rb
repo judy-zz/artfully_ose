@@ -13,9 +13,7 @@ class Ability
   end
 
   def default_abilities_for(user)
-    cannot [ :edit, :destroy ], AthenaPerformance, :visible? => true
-    cannot [ :edit, :destroy ], AthenaPerformance, :hidden? => true
-    cannot [ :edit, :destroy ], AthenaPerformance, :built? => true
+    cannot [ :edit, :destroy ], AthenaPerformance, :live? => true
 
     cannot :destroy, AthenaEvent do |event|
       event.performances.any?{ |performance| cannot? :destroy, performance }

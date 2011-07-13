@@ -17,18 +17,18 @@ describe Ability do
       user.organizations << organization
       Ability.new(user)
     end
-    
+
     #this is for events_controller.new, not .create
     describe "who are creating an event" do
       it { should be_able_to(:new, AthenaEvent) }
     end
-    
+
     describe "and are creating tickets with priced sections" do
       sections = Array.new
       sections << Factory(:athena_section)
       it { should_not be_able_to(:create_tickets, sections) }
     end
-    
+
     describe "and are creating tickets with free sections" do
       sections = Array.new
       sections << Factory(:athena_free_section)
@@ -52,7 +52,7 @@ describe Ability do
       it { should_not be_able_to(:manage, Factory(:athena_event, :organization_id => organization.id + 1)) }
 
       it "should not be able to delete an event where the performances cannot be deleted also" do
-        performances = 3.times.collect { Factory(:athena_performance, :organization_id => organization.id, :state => "built") }
+        performances = 3.times.collect { mock(:performance, :live? => true) }
         event = Factory(:athena_event, :organization_id => organization.id, :performances => performances)
         subject.should_not be_able_to(:destroy, event)
       end
