@@ -6,6 +6,7 @@
       if(!$proxy.hasClass('disabled')){
         $submit.click();
       }
+      return false;
     });
     return this;
   };
@@ -93,7 +94,7 @@
           });
         },
         addSubmitLink: function(){
-          $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
+          $(document.createElement('a')).attr({'href':'#'}).addClass('disabled').html("Complete Purchase").appendTo("#checkout-now.disabled");
         },
         slide: function(direction){
           switch(direction){
