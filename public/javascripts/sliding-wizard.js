@@ -9,7 +9,7 @@
     });
     return this;
   };
-})( jQuery );
+}( jQuery ));
 
 (function( $ ){
   $.fn.stepsFor = function($wizard) {
@@ -23,130 +23,129 @@
 
     return this;
   };
-})( jQuery );
+}( jQuery ));
 
 (function( $ ){
 
   var $viewport, $ol, $panels, $wizard,
       $next, $back,
-      pos = 0;
+      pos = 0,
+      methods = {
+        init: function($wzrd){
+          $wizard = $wzrd;
+          $viewport = $(".viewport");
+          $ol = $viewport.find('ol');
+          $panels = $(".viewport > ol > li");
 
-  var methods = {
-    init: function($wzrd){
-      $wizard = $wzrd;
-      $viewport = $(".viewport");
-      $ol = $viewport.find('ol');
-      $panels = $(".viewport > ol > li");
+          methods.setupSlider();
+        },
+        setupSlider: function(){
+          $panels.css('float', 'left');
 
-      methods.setupSlider();
-    },
-    setupSlider: function(){
-      $panels.css('float', 'left');
+          methods.addNavigation();
+          methods.addSubmitLink();
+          methods.captureTabs();
+          methods.resizePanels();
 
-      methods.addNavigation();
-      methods.addSubmitLink();
-      methods.captureTabs();
-      methods.resizePanels();
+          $(window).resize(methods.resizePanels);
+        },
+        resizePanels: function(){
+          $ol.width(($panels.size() + 1 ) * $viewport.width());
+          $panels.css('width', $viewport.width());
+          $ol.css('margin-left', methods.calculateMarginFor(pos));
+        },
+        addNavigation: function(){
+          $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($wizard);
+          $back = $(document.createElement('input')).addClass('back').attr({'type':'button','value':'\u2190 Back'}).appendTo($wizard);
+          $back.attr('disabled','disabled');
 
-      $(window).resize(methods.resizePanels);
-    },
-    resizePanels: function(){
-      $ol.width(($panels.size() + 1 ) * $viewport.width());
-      $panels.css('width', $viewport.width());
-      $ol.css('margin-left', methods.calculateMarginFor(pos));
-    },
-    addNavigation: function(){
-      $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($wizard);
-      $back = $(document.createElement('input')).addClass('back').attr({'type':'button','value':'\u2190 Back'}).appendTo($wizard);
-      $back.attr('disabled','disabled');
+          $wizard.bind("onLastSlideIn", function(){ methods.disableButton($next); });
+          $wizard.bind("onLastSlideOut", function(){ methods.enableButton($next); });
 
-      $wizard.bind("onLastSlideIn", function(){ methods.disableButton($next); });
-      $wizard.bind("onLastSlideOut", function(){ methods.enableButton($next); });
+          $wizard.bind("onFirstSlideIn", function(){ methods.disableButton($back); });
+          $wizard.bind("onFirstSlideOut", function(){ methods.enableButton($back); });
 
-      $wizard.bind("onFirstSlideIn", function(){ methods.disableButton($back); });
-      $wizard.bind("onFirstSlideOut", function(){ methods.enableButton($back); });
-
-      $(".back").click(function(){
-        if($(this).is(":enabled")){ methods.slide("left"); }
-      });
-
-      $(".next").click(function(){
-        if($(this).is(":enabled")){ methods.slide("right"); }
-      });
-    },
-    captureTabs: function(){
-      $panels.find(".element:last input:last,select:last").bind('keydown', function(e){
-        if (e.keyCode == 9 && !e.shiftKey) {
-          methods.slide("right");
-          e.preventDefault();
-        }
-      });
-
-      $panels.find(".element:first input:first,select:first").bind('keydown', function(e){
-        if (e.keyCode == 9 && e.shiftKey) {
-          methods.slide("left");
-          e.preventDefault();
-        }
-      });
-
-      $panels.bind('slideIn', function(e){
-        $(this).find("input:first").focus();
-      });
-    },
-    addSubmitLink: function(){
-      $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
-    },
-    slide: function(direction){
-      switch(direction){
-        case "left":
-          if(pos == 0){ return; }
-          $panels.eq(pos).trigger("slideOut");
-          if(pos === $panels.length - 1){ $wizard.trigger("onLastSlideOut", [ pos ] ); }
-
-          pos--;
-
-          $ol.animate({marginLeft: methods.calculateMarginFor(pos) }, 'fast', function(){
-            $panels.eq(pos).trigger("slideIn");
-            if(pos === 0){ $wizard.trigger("onFirstSlideIn", [ pos ] ); }
+          $(".back").click(function(){
+            if($(this).is(":enabled")){ methods.slide("left"); }
           });
-          break;
-        case "right":
-          if(pos === $panels.length - 1) { return; }
-          $panels.eq(pos).trigger("slideOut");
-          if(pos === 0){ $wizard.trigger("onFirstSlideOut", [ pos ] ); }
 
-          pos++;
-
-          $ol.animate({marginLeft: methods.calculateMarginFor(pos) }, 'fast', function(){
-            $panels.eq(pos).trigger("slideIn");
-            if(pos === $panels.length - 1){ $wizard.trigger("onLastSlideIn", [ pos ] ); }
+          $(".next").click(function(){
+            if($(this).is(":enabled")){ methods.slide("right"); }
           });
-          break;
-        default:
-          return;
-      }
-      $wizard.trigger("onSlide", [ pos ] );
-    },
-    enableButton: function($btn){
-      $btn.removeAttr('disabled');
-    },
-    disableButton: function($btn){
-      $btn.attr('disabled','disabled');
-    },
-    calculateMarginFor: function(pos){
-      return -($viewport.width() * pos);
-    },
-    position: function(){
-      return pos;
-    }
+        },
+        captureTabs: function(){
+          $panels.find(".element:last input:last,select:last").bind('keydown', function(e){
+            if (e.keyCode === 9 && !e.shiftKey) {
+              methods.slide("right");
+              e.preventDefault();
+            }
+          });
 
-  };
+          $panels.find(".element:first input:first,select:first").bind('keydown', function(e){
+            if (e.keyCode === 9 && e.shiftKey) {
+              methods.slide("left");
+              e.preventDefault();
+            }
+          });
+
+          $panels.bind('slideIn', function(e){
+            $(this).find("input:first").focus();
+          });
+        },
+        addSubmitLink: function(){
+          $(document.createElement('a')).attr({'href':'#'}).html("Complete Purchase").appendTo("#checkout-now.disabled");
+        },
+        slide: function(direction){
+          switch(direction){
+            case "left":
+              if(pos === 0){ return; }
+              $panels.eq(pos).trigger("slideOut");
+              if(pos === $panels.length - 1){ $wizard.trigger("onLastSlideOut", [ pos ] ); }
+
+              pos--;
+
+              $ol.animate({marginLeft: methods.calculateMarginFor(pos) }, 'fast', function(){
+                $panels.eq(pos).trigger("slideIn");
+                if(pos === 0){ $wizard.trigger("onFirstSlideIn", [ pos ] ); }
+              });
+              break;
+            case "right":
+              if(pos === $panels.length - 1) { return; }
+              $panels.eq(pos).trigger("slideOut");
+              if(pos === 0){ $wizard.trigger("onFirstSlideOut", [ pos ] ); }
+
+              pos++;
+
+              $ol.animate({marginLeft: methods.calculateMarginFor(pos) }, 'fast', function(){
+                $panels.eq(pos).trigger("slideIn");
+                if(pos === $panels.length - 1){ $wizard.trigger("onLastSlideIn", [ pos ] ); }
+              });
+              break;
+            default:
+              return;
+          }
+          $wizard.trigger("onSlide", [ pos ] );
+        },
+        enableButton: function($btn){
+          $btn.removeAttr('disabled');
+        },
+        disableButton: function($btn){
+          $btn.attr('disabled','disabled');
+        },
+        calculateMarginFor: function(pos){
+          return -($viewport.width() * pos);
+        },
+        position: function(){
+          return pos;
+        }
+
+      };
 
   $.fn.slidingWizard = function() {
     methods.init(this);
     return this;
   };
-})( jQuery );
+}( jQuery ));
 
 $(document).ready(function(){
   $wizard = $(".sliding-wizard");
