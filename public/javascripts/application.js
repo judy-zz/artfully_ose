@@ -77,12 +77,19 @@ $(document).ready(function() {
 });
 
 function activateControls() {
-  $(".currency").maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
-  $(".currency").closest("form").submit(function(){
-    var input = $(this).find(".currency"),
-        cents = Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ),
-        hiddenCurrency = input.clone().attr({type:"hidden"}).appendTo(this);
-    hiddenCurrency.val(cents);
+  $(".currency").each(function(index, element){
+    var name = $(this).attr('name'),
+        input = $(this),
+        form = $(this).closest('form'),
+        hiddenCurrency = $(document.createElement('input'));
+
+    input.maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
+    input.attr({"id":"old_" + name, "name":"old_" + name});
+    hiddenCurrency.attr({'name': name, 'type': 'hidden'}).appendTo(form);
+
+    form.submit(function(){
+      hiddenCurrency.val(Math.round( parseFloat(input.val().substr(1).replace(/,/,"")) * 100 ));
+    });
   });
 
   $(".tablesorter").tablesorter();
