@@ -45,10 +45,9 @@ $(document).ready(function() {
 
   $(".checkall").click(function(){
     var isChecked = $(this).is(":checked")
-    $(this).closest('form').find("input[type='checkbox']").each(function(){
-      if(isChecked != $(this).is(":checked")){
-        $(this).click();
-      }
+    $(this).closest('form').find("input[type='checkbox']").each(function(index, element){
+      element.checked = isChecked;
+      $(element).change();
     });
   });
 
