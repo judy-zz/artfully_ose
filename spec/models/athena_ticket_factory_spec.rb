@@ -4,7 +4,7 @@ describe AthenaTicketFactory do
   before(:each) do
     @performance = Factory(:athena_performance_with_id)
     @performance.stub(:build!)
-    FakeWeb.register_uri(:put, "http://localhost/tix/meta/ticketfactory/#{@performance.id}.json", :body => @performance.encode )
+    FakeWeb.register_uri(:put, "http://localhost/tix/ticketfactory/#{@performance.id}.json", :body => @performance.encode )
   end
 
   it "should create tickets when given a performance" do
