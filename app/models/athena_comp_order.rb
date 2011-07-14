@@ -7,12 +7,16 @@ class AthenaCompOrder < AthenaOrder
   def initialize(attributes = {})
     super(attributes)
   end
-  
+
+  def ticket_details
+    "#{num_tickets} ticket(s) comped"
+  end
+
   def <<(products)
     self.items += Array.wrap(products).collect { |product| AthenaItem.for(product) }
     self.items.each do |item|
       item.to_comp!
     end
   end
-  
+
 end
