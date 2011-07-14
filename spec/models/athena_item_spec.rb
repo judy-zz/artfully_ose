@@ -76,7 +76,7 @@ describe AthenaItem do
       it "sets the price to the price of the ticket" do
         subject.price.should eq ticket.price
       end
-      
+
       it "sets itself to purchased" do
         subject.state.should eq "purchased"
       end
@@ -182,6 +182,15 @@ describe AthenaItem do
 
         subject.product.stub(:returnable?).and_return(false)
         subject.should_not be_returnable
+      end
+    end
+  end
+
+  describe "#modified?" do
+    %w( purchased comped ).each do |state|
+      it "is not considered modified it is #{state}" do
+        subject.state = state
+        subject.should_not be_modified
       end
     end
   end
