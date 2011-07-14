@@ -20,13 +20,26 @@ class ApplicationController < ActionController::Base
     end
 
     def specify_layout
-      params[:controller].start_with?("devise") ? 'devise' : 'application'
+      (public_controller? or public_action?) ? 'devise' : 'application'
+    end
+
+    def authenticate_inviter!
+      authorize! :adminster, :all
+      super
     end
 
   private
     # Overwriting the sign_out redirect path method
     def after_sign_out_path_for(resource_or_scope)
       new_user_session_path
+    end
+
+    def public_controller?
+      %w( devise/sessions devise/registrations ).include?(params[:controller])
+    end
+
+    def public_action?
+      params[:controller] == "devise/invitations" and params[:action] == "edit"
     end
 
 end
