@@ -2,6 +2,7 @@ class RegularDonationKit < Kit
   acts_as_kit :with_approval => true do
     activate :if => :has_tax_info?
     activate :if => :exclusive?
+    approve :unless => :no_bank_account?
 
     when_active do |organization|
       organization.can :receive, Donation
@@ -17,6 +18,11 @@ class RegularDonationKit < Kit
     exclusive = !organization.kits.where(:type => alternatives.collect(&:to_s)).any?
     errors.add(:requirements, "You have already activated a mutually exclusive kit.") unless exclusive
     exclusive
+  end
+
+  def no_bank_account?
+    errors.add(:requirements, "Your organization needs bank account information first.") if organization.bank_account.nil?
+    organization.bank_account.nil?
   end
 
   def alternatives
