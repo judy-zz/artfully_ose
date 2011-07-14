@@ -156,10 +156,10 @@ $(document).ready(function(){
 
   $('.sliding-wizard :submit').proxySubmit($("#checkout-now a"));
   $wizard.bind("onLastSlideIn", function(){
-    $("#checkout-now").removeClass("disabled");
+    $("#checkout-now, #checkout-now a").removeClass("disabled");
   });
   $wizard.bind("onLastSlideOut  ", function(){
-    $("#checkout-now").addClass('disabled');
+    $("#checkout-now, #checkout-now a").addClass('disabled');
   });
 
   $wizard.bind("onLastSlideIn", function(){
