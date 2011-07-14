@@ -41,9 +41,9 @@ describe User do
     it { should respond_to(:customer) }
 
     it "should fetch the remote customer record" do
-      @customer = Factory(:customer, :id => 1)
+      @customer = Factory(:customer_with_id)
       subject.customer_id = @customer.id
-      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :body => @customer.encode)
+      FakeWeb.register_uri(:get, "http://localhost/athena/payments/customers/#{@customer.id}.json", :body => @customer.encode)
       subject.customer.should eq(@customer)
     end
 
@@ -59,7 +59,7 @@ describe User do
 
     it "should set the customer id to nil if the remote resource no longer has it" do
       subject.customer_id = 1
-      FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :status => 404)
+      FakeWeb.register_uri(:get, "http://localhost/athena/payments/customers/1.json", :status => 404)
       subject.customer.should be_nil
     end
   end

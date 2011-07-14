@@ -34,12 +34,12 @@ Artfully::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 
-  config.tickets_site = 'http://localhost/tix/'
-  config.payments_component = 'http://localhost/payments/'
-  config.orders_component = 'http://localhost/orders'
-  config.stage_site = 'http://localhost/stage/'
-  config.people_site = 'http://localhost/people/'
-  config.reports_site = 'http://localhost/reports/'
+  config.tickets_site = 'http://localhost/athena/'
+  config.payments_component = 'http://localhost/athena/payments/'
+  config.orders_component = 'http://localhost/athena/'
+  config.stage_site = 'http://localhost/athena/'
+  config.people_site = 'http://localhost/athena/'
+  config.reports_site = 'http://localhost/athena/reports/'
 
   config.athena_resource_user = nil
   config.athena_resource_password = nil

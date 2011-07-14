@@ -50,7 +50,7 @@ describe AthenaPerformance do
     describe "#bulk_on_sale" do
       before(:each) do
         body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+        FakeWeb.register_uri(:put, "http://localhost/athena/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
       end
 
       it "puts all tickets on sale when :all is specified" do
@@ -74,7 +74,7 @@ describe AthenaPerformance do
       before(:each) do
         tickets.each { |ticket| ticket.state = "on_sale" }
         body = tickets.collect(&:encode).join(",").gsub(/on_sale/,'off_sale')
-        FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+        FakeWeb.register_uri(:put, "http://localhost/athena/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
       end
 
       it "takes tickets off sale" do
@@ -198,9 +198,9 @@ describe AthenaPerformance do
     it "composes a GET request for a given set of Time objects" do
       start = Time.now.beginning_of_day
       stop = start.end_of_day
-      FakeWeb.register_uri(:get, "http://localhost/stage/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
       AthenaPerformance.in_range(start, stop)
-      FakeWeb.last_request.path.should eq "/stage/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
+      FakeWeb.last_request.path.should eq "/athena/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
     end
   end
 end

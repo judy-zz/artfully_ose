@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AthenaGlanceReport do
   before(:each) do
     body = '{"performancesOnSale":40,"revenue":{"advanceSales":{"gross":300.0,"net":270.0},"soldToday":{"gross":90.0,"net":81.0},"potentialRemaining":{"gross":2885.74,"net":2558.33},"originalPotential":{"gross":29635.55,"net":19885.02},"totalSales":{"gross":9959.99,"net":4562.25},"totalPlayed":{"gross":4500.44,"net":4000.8}},"tickets":{"sold":{"gross":100,"comped":20},"soldToday":{"gross":10,"comped":0},"played":{"gross":9},"available":65}}'
-    FakeWeb.register_uri(:get, "http://localhost/reports/glance/.json?eventId=1", :body => body)
+    FakeWeb.register_uri(:get, "http://localhost/athena/reports/glance/.json?eventId=1", :body => body)
   end
 
   subject { AthenaGlanceReport.find(nil, :params => { :eventId => 1 } ) }

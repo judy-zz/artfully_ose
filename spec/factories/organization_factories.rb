@@ -1,7 +1,7 @@
 Factory.define :organization do |o|
   o.name { Faker::Company.name }
   o.after_create do |organization|
-    FakeWeb.register_uri(:get, "http://localhost/stage/events.json?organizationId=#{organization.id}", :body => "[]")
+    FakeWeb.register_uri(:get, "http://localhost/athena/events.json?organizationId=#{organization.id}", :body => "[]")
   end
 end
 

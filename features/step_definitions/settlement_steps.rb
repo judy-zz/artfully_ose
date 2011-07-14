@@ -2,7 +2,7 @@ Given /^there are (\d+) settlements for "([^"]*)"$/ do |number, organization_nam
   organization = Organization.find_by_name(organization_name)
   settlements = number.to_i.times.collect { Factory(:settlement_with_id, :organization_id => organization.id) }
   body = settlements.collect(&:encode).join(",")
-  FakeWeb.register_uri(:get, "http://localhost/orders/settlements.json?organizationId=#{organization.id}", :body => "[#{body}]")
+  FakeWeb.register_uri(:get, "http://localhost/athena/settlements.json?organizationId=#{organization.id}", :body => "[#{body}]")
 end
 
 Then /^I should see (\d+) settlements$/ do |count|

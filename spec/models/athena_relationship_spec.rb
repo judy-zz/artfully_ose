@@ -6,9 +6,9 @@ describe AthenaRelationship do
 
   describe "as a remote resource" do
     it "should use the prefix /people/meta" do
-      FakeWeb.register_uri(:get, "http://localhost/people/relationships.json", :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/athena/relationships.json", :body => "[]")
       AthenaRelationship.all
-      FakeWeb.last_request.path.should == "/people/relationships.json"
+      FakeWeb.last_request.path.should == "/athena/relationships.json"
     end
   end
 
@@ -63,15 +63,15 @@ describe AthenaRelationship do
   describe "#find_by_person" do
     it "should request the relationships based on the person's id" do
       person = Factory(:athena_person_with_id)
-      FakeWeb.register_uri(:get, "http://localhost/people/meta/relationships/people/#{person.id}.json", :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/athena/relationships/people/#{person.id}.json", :body => "[]")
       AthenaRelationship.find_by_person(person)
-      FakeWeb.last_request.path.should eq "/people/meta/relationships/people/#{person.id}.json"
+      FakeWeb.last_request.path.should eq "/athena/relationships/people/#{person.id}.json"
     end
 
     it "should request the relationships when only given an id" do
-      FakeWeb.register_uri(:get, "http://localhost/people/meta/relationships/people/1.json", :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/athena/relationships/people/1.json", :body => "[]")
       AthenaRelationship.find_by_person(1)
-      FakeWeb.last_request.path.should eq "/people/meta/relationships/people/1.json"
+      FakeWeb.last_request.path.should eq "/athena/relationships/people/1.json"
     end
   end
 

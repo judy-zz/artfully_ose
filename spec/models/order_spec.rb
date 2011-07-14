@@ -23,7 +23,7 @@ describe Order do
     it "should return the tickets added via add_tickets" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
       subject.tickets.should eq tickets
     end
@@ -31,7 +31,7 @@ describe Order do
     it "should have PurchasableTickets when a tickets are added to the order" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
       subject.items.each do |item|
         item.should be_a PurchasableTicket
@@ -41,7 +41,7 @@ describe Order do
     it "should have the right PurchasableTickets when tickets are added to the order" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
       subject.items.each do |item|
         tickets.should include(item.ticket)
@@ -59,7 +59,7 @@ describe Order do
     it "should lock the first lockable item when it is added" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
       subject.items.first.should be_locked
     end
@@ -67,7 +67,7 @@ describe Order do
     it "should collect and lock the lockable items when they are added" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
       lock = subject.items.first.lock
       subject.items.each do | item |
@@ -79,8 +79,8 @@ describe Order do
     it "should remove items that are no longer locked" do
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:expired_lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
-      FakeWeb.register_uri(:delete, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:delete, "http://localhost/athena/locks/#{lock.id}.json", :status => 200)
       subject.add_tickets tickets
       order = Order.find(subject.id)
       order.items.should be_empty
@@ -89,7 +89,7 @@ describe Order do
 
   describe "and Payments" do
     it "should sum up the price of the tickets via total" do
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => Factory(:lock).encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => Factory(:lock).encode)
       subject.add_tickets 2.times.collect { Factory(:ticket_with_id, :price => "100") }
       subject.total.should eq 200
     end
@@ -100,42 +100,42 @@ describe Order do
       end
 
       it "should submit the Payment to ATHENA when the payment is confirmed by the user" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
+        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
         subject.pay_with(@payment, :settle => false)
         FakeWeb.last_request.method.should == "POST"
-        FakeWeb.last_request.path.should == '/payments/transactions/authorize'
+        FakeWeb.last_request.path.should == '/athena/payments/transactions/authorize'
       end
 
       it "should transition to approved when the payment is approved" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
+        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
         subject.pay_with(@payment, :settle => false)
         subject.state.should == "approved"
       end
 
       it "should tranisition to rejected when the Payment is rejected" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":false}')
+        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success":false}')
         subject.pay_with(@payment, :settle => false)
         subject.state.should == "rejected"
       end
 
       it "should settle immediately when an authorized payment is submitted" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true}')
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/settle', :status => 200, :body => '{ "success": true}')
+        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success": true}')
+        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/settle', :status => 200, :body => '{ "success": true}')
         subject.pay_with(@payment)
         FakeWeb.last_request.method.should == "POST"
-        FakeWeb.last_request.path.should == '/payments/transactions/settle'
+        FakeWeb.last_request.path.should == '/athena/payments/transactions/settle'
       end
     end
   end
 
   describe ".finish" do
     before :each do
-      FakeWeb.register_uri(:post, "http://localhost/orders/orders.json", :body => Factory(:athena_order_with_id).encode)
-      FakeWeb.register_uri(:post, "http://localhost/orders/items.json", :body => Factory(:athena_item).encode)
-      FakeWeb.register_uri(:post, "http://localhost/people/actions.json", :body => Factory(:athena_purchase_action).encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/orders.json", :body => Factory(:athena_order_with_id).encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/items.json", :body => Factory(:athena_item).encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/actions.json", :body => Factory(:athena_purchase_action).encode)
       tickets = 2.times.collect { Factory(:ticket_with_id) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
       subject.items.each { |item| item.stub!(:sell_to) }
       subject.items.each { |item| item.stub!(:sold?).and_return(true) }
@@ -150,7 +150,7 @@ describe Order do
 
     it "should mark each item as sold" do
       item = Factory(:athena_item)
-      FakeWeb.register_uri(:get, %r|http://localhost/orders/items.json\?orderId=eq|, :status => 200, :body => "[#{item.encode}]")
+      FakeWeb.register_uri(:get, %r|http://localhost/athena/items.json\?orderId=eq|, :status => 200, :body => "[#{item.encode}]")
       subject.items.each { |item| item.should_receive(:sell_to) }
       subject.finish
     end
@@ -186,7 +186,7 @@ describe Order do
         org.kits << RegularDonationKit.new(:state => :activated)
       end
 
-      FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => Factory(:lock).encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => Factory(:lock).encode)
     end
 
     it "should return a donation for the producer of a single ticket in the order" do

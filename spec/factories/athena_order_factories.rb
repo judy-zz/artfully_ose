@@ -18,9 +18,9 @@ end
 Factory.define :athena_order_with_id, :parent => :athena_order do |o|
   o.id Factory.next :athena_order_id
   o.after_build do |order|
-    FakeWeb.register_uri(:post, "http://localhost/orders/orders.json", :body => order.encode)
-    FakeWeb.register_uri(:any, "http://localhost/orders/orders/#{order.id}.json", :body => order.encode)
-    FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?parentId=#{order.id}", :body => "[]")
+    FakeWeb.register_uri(:post, "http://localhost/athena/orders.json", :body => order.encode)
+    FakeWeb.register_uri(:any, "http://localhost/athena/orders/#{order.id}.json", :body => order.encode)
+    FakeWeb.register_uri(:get, "http://localhost/athena/orders.json?parentId=#{order.id}", :body => "[]")
   end
 end
 
@@ -33,8 +33,8 @@ end
 Factory.define :athena_item_with_id, :parent => :athena_item do |i|
   i.id { Factory.next :athena_item_id }
   i.after_build do |item|
-    FakeWeb.register_uri(:get, "http://localhost/orders/items/#{item.id}.json", :body => item.encode)
-    FakeWeb.register_uri(:put, "http://localhost/orders/items/#{item.id}.json", :body => "")
+    FakeWeb.register_uri(:get, "http://localhost/athena/items/#{item.id}.json", :body => item.encode)
+    FakeWeb.register_uri(:put, "http://localhost/athena/items/#{item.id}.json", :body => "")
   end
 end
 
@@ -44,8 +44,8 @@ Factory.define :athena_item_for_comped_ticket, :default_strategy => :build, :cla
   i.product  { Factory(:ticket_with_id, :state => :comped) }
   i.price 1000
   i.after_build do |item|
-    FakeWeb.register_uri(:get, "http://localhost/orders/items/#{item.id}.json", :body => item.encode)
-    FakeWeb.register_uri(:put, "http://localhost/orders/items/#{item.id}.json", :body => "")
+    FakeWeb.register_uri(:get, "http://localhost/athena/items/#{item.id}.json", :body => item.encode)
+    FakeWeb.register_uri(:put, "http://localhost/athena/items/#{item.id}.json", :body => "")
   end
 end
 

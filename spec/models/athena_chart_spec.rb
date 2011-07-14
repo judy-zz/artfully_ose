@@ -30,20 +30,20 @@ describe AthenaChart do
 
   it "should get charts for an event" do
     @event = Factory(:athena_event_with_id)
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?eventId=#{@event.id}", :body => "[#{subject.encode}]" )
+    FakeWeb.register_uri(:get, "http://localhost/athena/charts.json?eventId=#{@event.id}", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_event(@event)
     subject.should eq @charts.first
   end
 
   it "should get charts for an organization" do
     organization = Factory(:organization)
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?organizationId=#{organization.id}", :body => "[#{subject.encode}]" )
+    FakeWeb.register_uri(:get, "http://localhost/athena/charts.json?organizationId=#{organization.id}", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_organization(organization)
   end
 
   it "should get templates for an organization" do
     organization = Factory(:organization)
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts.json?organizationId=eq#{organization.id}&isTemplate=eqtrue", :body => "[#{subject.encode}]" )
+    FakeWeb.register_uri(:get, "http://localhost/athena/charts.json?organizationId=eq#{organization.id}&isTemplate=eqtrue", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_templates_by_organization(organization)
   end
 
@@ -97,8 +97,8 @@ describe AthenaChart do
     end
 
     it "should assign a duplicate chart to the event" do
-      FakeWeb.register_uri(:post, "http://localhost/stage/sections.json", :status => 200, :body => Factory(:athena_section_with_id).encode)
-      FakeWeb.register_uri(:post, "http://localhost/stage/charts.json", :status => 200, :body => Factory(:athena_chart).encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/sections.json", :status => 200, :body => Factory(:athena_section_with_id).encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/charts.json", :status => 200, :body => Factory(:athena_chart).encode)
       subject.assign_to(@event)
     end
 

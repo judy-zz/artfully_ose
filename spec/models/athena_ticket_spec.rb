@@ -26,18 +26,18 @@ describe AthenaTicket do
     end
 
     it "should raise ForbiddenAccess when attempting to fetch all tickets" do
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json", :status => "403")
+      FakeWeb.register_uri(:get, "http://localhost/athena/tickets.json", :status => "403")
       lambda { AthenaTicket.all }.should raise_error(ActiveResource::ForbiddenAccess)
     end
 
     it "should raise ResourceNotFound for invalid IDs" do
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets/0.json", :status => ["404", "Not Found"])
+      FakeWeb.register_uri(:get, "http://localhost/athena/tickets/0.json", :status => ["404", "Not Found"])
       lambda { AthenaTicket.find(0) }.should raise_error(ActiveResource::ResourceNotFound)
     end
 
     it "should generate a query string for a single parameter search" do
       @ticket = Factory(:ticket, :price => 50)
-      FakeWeb.register_uri(:get, "http://localhost/tix/tickets.json?price=eq50", :body => "[#{@ticket.encode}]" )
+      FakeWeb.register_uri(:get, "http://localhost/athena/tickets.json?price=eq50", :body => "[#{@ticket.encode}]" )
       @tickets = AthenaTicket.find(:all, :params => {:price => "eq50"})
       @tickets.map { |ticket| ticket.price.should == 50 }
     end
@@ -47,11 +47,11 @@ describe AthenaTicket do
     subject { Factory(:ticket_with_id) }
 
     it "should issue a DELETE when destroying a ticket" do
-      FakeWeb.register_uri(:delete, "http://localhost/tix/tickets/#{subject.id}.json", :status => "204")
+      FakeWeb.register_uri(:delete, "http://localhost/athena/tickets/#{subject.id}.json", :status => "204")
       subject.destroy
 
       FakeWeb.last_request.method.should == "DELETE"
-      FakeWeb.last_request.path.should == "/tix/tickets/#{subject.id}.json"
+      FakeWeb.last_request.path.should == "/athena/tickets/#{subject.id}.json"
     end
 
     it "should not delete a ticket that has been marked as sold" do
@@ -64,25 +64,25 @@ describe AthenaTicket do
   describe ".save" do
     it "should issue a PUT when updating a ticket" do
       @ticket = Factory(:ticket_with_id)
-      FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{@ticket.id}.json", :body => @ticket.encode)
+      FakeWeb.register_uri(:put, "http://localhost/athena/tickets/#{@ticket.id}.json", :body => @ticket.encode)
       @ticket.save
 
       FakeWeb.last_request.method.should == "PUT"
-      FakeWeb.last_request.path.should == "/tix/tickets/#{@ticket.id}.json"
+      FakeWeb.last_request.path.should == "/athena/tickets/#{@ticket.id}.json"
     end
 
     it "should issue a POST when creating a new AthenaTicket" do
-      FakeWeb.register_uri(:post, "http://localhost/tix/tickets.json", :body => "{}")
+      FakeWeb.register_uri(:post, "http://localhost/athena/tickets.json", :body => "{}")
       @ticket = Factory.create(:ticket)
 
       FakeWeb.last_request.method.should == "POST"
-      FakeWeb.last_request.path.should == "/tix/tickets.json"
+      FakeWeb.last_request.path.should == "/athena/tickets.json"
     end
   end
 
   describe "available tickets" do
     it "by performance" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/athena/tickets/available\.json\?.*|, :body => "[]")
       now = DateTime.now
       params = { "performance" => "eq#{now.as_json}" }
       AthenaTicket.available(params)
@@ -91,14 +91,14 @@ describe AthenaTicket do
     end
 
     it "should add _limit to the query string when included in the arguments" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?_limit=4|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/athena/tickets/available\.json\?_limit=4.*|, :body => "[]")
       params = { "limit" => "4" }
       AthenaTicket.available(params)
       FakeWeb.last_request.path.should match "_limit=4"
     end
 
     it "should default to searching for tickets marked as on sale" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/athena/tickets/available\.json\?.*|, :body => "[]")
       AthenaTicket.available({})
       FakeWeb.last_request.path.should match "state=on_sale"
     end
@@ -108,7 +108,7 @@ describe AthenaTicket do
     end
 
     it "should camelize the keys for the search terms" do
-      FakeWeb.register_uri(:get, %r|http://localhost/tix/tickets/available\?|, :body => "[]")
+      FakeWeb.register_uri(:get, %r|http://localhost/athena/tickets/available\.json\?.*|, :body => "[]")
       AthenaTicket.available({:performance_id => 1})
       FakeWeb.last_request.path.should match "performanceId"
     end
@@ -195,22 +195,22 @@ describe AthenaTicket do
 
     it "should default to current time if time is not provided" do
       subject.stub!(:save!)
-      subject.sell_to(buyer)  
-      subject.sold_at.should_not eq nil    
+      subject.sell_to(buyer)
+      subject.sold_at.should_not eq nil
     end
 
     it "should set sold_at to the time provided" do
       subject.stub!(:save!)
       when_it_got_sold = Time.now
       sleep 1
-      subject.sell_to(buyer, when_it_got_sold)  
-      subject.sold_at.should eq when_it_got_sold    
+      subject.sell_to(buyer, when_it_got_sold)
+      subject.sold_at.should eq when_it_got_sold
     end
 
     it "should set sold_price to price" do
       subject.stub!(:save!)
-      subject.sell_to(buyer)  
-      subject.sold_price.should eq subject.price  
+      subject.sell_to(buyer)
+      subject.sold_price.should eq subject.price
     end
 
     it "should mark the ticket as sold" do
@@ -244,22 +244,22 @@ describe AthenaTicket do
 
     it "should default to current time if time is not provided" do
       subject.stub!(:save!)
-      subject.comp_to(buyer)  
-      subject.sold_at.should_not eq nil    
+      subject.comp_to(buyer)
+      subject.sold_at.should_not eq nil
     end
 
     it "should set the sold_price to 0" do
       subject.stub!(:save!)
-      subject.comp_to(buyer)  
-      subject.sold_price.should eq 0    
+      subject.comp_to(buyer)
+      subject.sold_price.should eq 0
     end
-    
+
     it "should set sold_at to the time provided" do
       subject.stub!(:save!)
       when_it_got_sold = Time.now
       sleep 1
-      subject.comp_to(buyer, when_it_got_sold)  
-      subject.sold_at.should eq when_it_got_sold    
+      subject.comp_to(buyer, when_it_got_sold)
+      subject.sold_at.should eq when_it_got_sold
     end
 
     it "should save the updated ticket" do
@@ -366,7 +366,7 @@ describe AthenaTicket do
 
     before(:each) do
       body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
-      FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      FakeWeb.register_uri(:put, "http://localhost/athena/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
     end
 
     it "sends a request to patch the state of all tickets" do
@@ -394,7 +394,7 @@ describe AthenaTicket do
 
     before(:each) do
       body = tickets.collect(&:encode).join(",").gsub(/on_sale/,'off_sale')
-      FakeWeb.register_uri(:put, "http://localhost/tix/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
+      FakeWeb.register_uri(:put, "http://localhost/athena/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
     end
 
     it "sends a request to patch the state of all tickets" do

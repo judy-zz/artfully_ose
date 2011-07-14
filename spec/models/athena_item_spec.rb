@@ -190,7 +190,7 @@ describe AthenaItem do
     let(:settlement) { Factory(:settlement_with_id) }
     let(:items) { 3.times.collect { Factory(:athena_item_with_id) } }
     it "marks all items as settled" do
-      FakeWeb.register_uri(:put, "http://localhost/orders/items/patch/#{items.collect(&:id).join(',')}", :body => "[]")
+      FakeWeb.register_uri(:put, "http://localhost/athena/items/patch/#{items.collect(&:id).join(',')}", :body => "[]")
       AthenaItem.settle(items, settlement)
       FakeWeb.last_request.method.should eq "PUT"
       FakeWeb.last_request.path.should match /#{items.collect(&:id).join(',')}/
@@ -198,7 +198,7 @@ describe AthenaItem do
     end
 
     it "updates the state of each item to settled" do
-      FakeWeb.register_uri(:put, "http://localhost/orders/items/patch/#{items.collect(&:id).join(',')}", :body => "[]")
+      FakeWeb.register_uri(:put, "http://localhost/athena/items/patch/#{items.collect(&:id).join(',')}", :body => "[]")
       AthenaItem.settle(items, settlement)
       FakeWeb.last_request.body.should match /"state":"settled"/
     end

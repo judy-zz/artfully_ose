@@ -16,7 +16,7 @@ describe Settlement do
   describe ".submit" do
     before(:each) do
       AthenaItem.stub(:settle).and_return(items)
-      FakeWeb.register_uri(:post, "http://localhost/orders/settlements.json", :body => "")
+      FakeWeb.register_uri(:post, "http://localhost/athena/settlements.json", :body => "")
       ACH::Request.stub(:for).and_return(mock(:request, :submit => "1231234"))
     end
 
@@ -87,7 +87,7 @@ describe Settlement do
 
   describe "#items" do
     it "should fetch items from ATHENA" do
-      FakeWeb.register_uri(:get, "http://localhost/orders/items.json?settlementId=1", :body => "")
+      FakeWeb.register_uri(:get, "http://localhost/athena/items.json?settlementId=1", :body => "")
       subject.items
     end
   end

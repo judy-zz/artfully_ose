@@ -98,12 +98,12 @@ describe AthenaOrder do
 
   describe "#save" do
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/people/actions.json", :body => Factory(:athena_purchase_action).encode)
-      FakeWeb.register_uri(:get, "http://localhost/orders/items.json?orderId=1", :body=>"")
+      FakeWeb.register_uri(:post, "http://localhost/athena/actions.json", :body => Factory(:athena_purchase_action).encode)
+      FakeWeb.register_uri(:get, "http://localhost/athena/items.json?orderId=1", :body=>"")
     end
 
     it "should save the items after saving the order" do
-      FakeWeb.register_uri(:post, "http://localhost/orders/items.json", :body=>"")
+      FakeWeb.register_uri(:post, "http://localhost/athena/items.json", :body=>"")
       items = 2.times.collect { Factory(:athena_item) }
       subject.stub(:items).and_return(items)
       subject.save
@@ -140,7 +140,7 @@ describe AthenaOrder do
     end
 
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/orders/orders.json", :body => subject.encode)
+      FakeWeb.register_uri(:post, "http://localhost/athena/orders.json", :body => subject.encode)
     end
 
     it "should assign the organization to the order" do
@@ -166,9 +166,9 @@ describe AthenaOrder do
     it "composes a GET request for a given set of Time objects" do
       start = Time.now.beginning_of_day
       stop = start.end_of_day
-      FakeWeb.register_uri(:get, "http://localhost/orders/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
+      FakeWeb.register_uri(:get, "http://localhost/athena/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
       AthenaOrder.in_range(start, stop)
-      FakeWeb.last_request.path.should eq "/orders/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
+      FakeWeb.last_request.path.should eq "/athena/orders.json?timestamp=gt#{start.xmlschema.gsub(/\+/,'%2B')}&timestamp=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
     end
   end
 end

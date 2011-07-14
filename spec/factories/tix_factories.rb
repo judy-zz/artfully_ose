@@ -2,8 +2,9 @@ Factory.define :lock, :class => AthenaLock, :default_strategy => :build do |t|
   t.id { UUID.new.generate }
   t.lock_expires { DateTime.now + 1.hour }
   t.after_build do |lock|
-    FakeWeb.register_uri(:get, "http://localhost/tix/meta/locks/#{lock.id}.json", :status => 200, :body => lock.encode)
-    FakeWeb.register_uri(:post, "http://localhost/tix/meta/locks.json", :status => 200, :body => lock.encode)
+    FakeWeb.register_uri(:get, "http://localhost/athena/locks/#{lock.id}.json", :status => 200, :body => lock.encode)
+    FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
+    FakeWeb.register_uri(:delete, "http://localhost/athena/locks/#{lock.id}.json", :status => 204, :body => "")
   end
 end
 
@@ -34,8 +35,8 @@ Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build 
   t.performance_id { Factory(:athena_performance_with_id).id }
   t.price "3000"
   t.after_build do |ticket|
-    FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
-    FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
+    FakeWeb.register_uri(:get, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
+    FakeWeb.register_uri(:put, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
   end
 end
 
@@ -44,7 +45,7 @@ Factory.define :sold_ticket_with_id, :parent => :sold_ticket, :default_strategy 
   t.event_id { Factory(:athena_event_with_id).id }
   t.performance_id { Factory(:athena_performance_with_id).id }
   t.after_build do |ticket|
-    FakeWeb.register_uri(:get, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
-    FakeWeb.register_uri(:put, "http://localhost/tix/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
+    FakeWeb.register_uri(:get, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
+    FakeWeb.register_uri(:put, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
   end
 end

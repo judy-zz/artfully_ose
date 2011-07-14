@@ -1,7 +1,7 @@
 class AthenaLock < AthenaResource::Base
   headers['X-ATHENA-Key'] = 'artful.ly'
 
-  self.site = Artfully::Application.config.tickets_site + "meta/"
+  self.site = Artfully::Application.config.tickets_site
   self.collection_name = 'locks'
   self.element_name = 'locks'
 

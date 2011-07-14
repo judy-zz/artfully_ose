@@ -17,7 +17,7 @@ Given /^I have (\d+) saved credit cards$/ do |quantity|
   @customer.credit_cards = cards
   @current_user.customer = @customer
   @current_user.save
-  FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
+  FakeWeb.register_uri(:get, "http://localhost/athena/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
 end
 
 Given /^there are (\d+) saved credit cards for "([^"]*)"$/ do |quantity, email|
@@ -25,19 +25,19 @@ Given /^there are (\d+) saved credit cards for "([^"]*)"$/ do |quantity, email|
   quantity.to_i.times do
     card = Factory(:credit_card_with_id)
     cards << card
-    FakeWeb.register_uri(:any, "http://localhost/payments/cards/#{card.id}.json", :status => 200, :body => card.encode)
+    FakeWeb.register_uri(:any, "http://localhost/athena/payments/cards/#{card.id}.json", :status => 200, :body => card.encode)
   end
   @customer = Factory(:customer_with_id)
   @customer.credit_cards = cards
   current_user = User.find_by_email(email)
   current_user.customer = @customer
   current_user.save
-  FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
+  FakeWeb.register_uri(:get, "http://localhost/athena/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
 end
 
 When /^I delete the (\d+)(?:st|nd|rd|th) credit card$/ do |pos|
   @customer.credit_cards.delete_at(pos.to_i-1)
-  FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
+  FakeWeb.register_uri(:get, "http://localhost/athena/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
   within(:xpath, "(//tbody/tr)[#{pos.to_i}]") do
     When %{I follow "Delete"}
   end
@@ -57,7 +57,7 @@ When /^I update (\d+)st credit card details with:$/ do |pos, table|
   Given %{I follow "Edit" for the 1st credit card}
   card = Factory(:credit_card_with_id, table.hashes.first)
   @customer.credit_cards[pos.to_i-1].cardholder_name = card.cardholder_name
-  FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
+  FakeWeb.register_uri(:get, "http://localhost/athena/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
 end
 
 Then /^the (\d+)(?:st|nd|rd|th) credit card should be:$/ do |pos, table|

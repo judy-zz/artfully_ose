@@ -1,6 +1,5 @@
 class AthenaCreditCard < AthenaResource::Base
-  self.site = Artfully::Application.config.tickets_site
-  self.prefix = '/payments/'
+  self.site = Artfully::Application.config.payments_component
   self.collection_name = 'cards'
   self.element_name = 'cards'
 

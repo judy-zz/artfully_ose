@@ -44,13 +44,7 @@ class AthenaRelationship < AthenaResource::Base
   def self.find_by_person(person_or_id)
     id = person_or_id.kind_of?(AthenaPerson)? person_or_id.id : person_or_id
     return if id.nil?
-
-    #TODO: This is a hack because the relationship helper listens at (COMPONENT_NAME)/meta/relationships
-    # but we need to POST to /relationships to create a new object
-    self.collection_name = 'meta/relationships'
-    relationships = find(:all, :from => "people/#{id}".to_sym)
-    self.collection_name = 'relationships'
-    relationships
+    find(:all, :from => "people/#{id}".to_sym)
   end
 
   #convenience methods for normalizing the target of this relationship

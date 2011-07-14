@@ -10,9 +10,9 @@ Factory.define :athena_chart, :default_strategy => :build do |c|
   c.sections { 2.times.collect { Factory(:athena_section_with_id) } }
 
   c.after_build do |chart|
-    FakeWeb.register_uri(:get, "http://localhost/stage/charts/#{chart.id}.json", :body => chart.encode)
-    FakeWeb.register_uri(:post, "http://localhost/stage/charts.json", :body => chart.encode)
-    FakeWeb.register_uri(:put, "http://localhost/stage/charts/#{chart.id}.json", :body => chart.encode)
+    FakeWeb.register_uri(:get, "http://localhost/athena/charts/#{chart.id}.json", :body => chart.encode)
+    FakeWeb.register_uri(:post, "http://localhost/athena/charts.json", :body => chart.encode)
+    FakeWeb.register_uri(:put, "http://localhost/athena/charts/#{chart.id}.json", :body => chart.encode)
   end
 end
 
@@ -39,8 +39,8 @@ end
 Factory.define :athena_section_with_id, :parent => :athena_section do |section|
   section.id { Factory.next(:section_id) }
   section.after_build do |section|
-    FakeWeb.register_uri(:get, "http://localhost/stage/sections/#{section.id}.json", :body => section.encode)
-    FakeWeb.register_uri(:put, "http://localhost/stage/sections/#{section.id}.json", :body => section.encode)
+    FakeWeb.register_uri(:get, "http://localhost/athena/sections/#{section.id}.json", :body => section.encode)
+    FakeWeb.register_uri(:put, "http://localhost/athena/sections/#{section.id}.json", :body => section.encode)
   end
 end
 
@@ -61,10 +61,10 @@ end
 Factory.define :athena_event_with_id, :parent => :athena_event do |e|
   e.id { Factory.next :event_id }
   e.after_build do |event|
-    FakeWeb.register_uri(:post, "http://localhost/stage/events.json", :body => event.encode)
-    FakeWeb.register_uri(:any, "http://localhost/stage/events/#{event.id}.json", :body => event.encode)
+    FakeWeb.register_uri(:post, "http://localhost/athena/events.json", :body => event.encode)
+    FakeWeb.register_uri(:any, "http://localhost/athena/events/#{event.id}.json", :body => event.encode)
     body = '{"performancesOnSale":2,"revenue":{"advanceSales":{"gross":0.0,"net":0.0},"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":62500.0,"net":0.0},"originalPotential":{"gross":62500.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0},"totalPlayed":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"played":{"gross":0,"comped":0},"available":0}}'
-    FakeWeb.register_uri(:get, %r|http://localhost/reports/glance/\.json\?.*eventId=.*|, :body => body)
+    FakeWeb.register_uri(:get, %r|http://localhost/athena/reports/glance/\.json\?.*eventId=.*|, :body => body)
   end
 end
 
@@ -85,8 +85,8 @@ end
 Factory.define :athena_performance_with_id, :parent => :athena_performance do |p|
   p.id { Factory.next :performance_id }
   p.after_build do |performance|
-    FakeWeb.register_uri(:any, "http://localhost/stage/performances/#{performance.id}.json", :body => performance.encode)
+    FakeWeb.register_uri(:any, "http://localhost/athena/performances/#{performance.id}.json", :body => performance.encode)
     body= '{"revenue":{"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":0.0,"net":0.0},"originalPotential":{"gross":0.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"available":0}}'
-    FakeWeb.register_uri(:get, %r|http://localhost/reports/glance/\.json\?.*performanceId=.*|, :body => body)
+    FakeWeb.register_uri(:get, %r|http://localhost/athena/reports/glance/\.json\?.*performanceId=.*|, :body => body)
   end
 end

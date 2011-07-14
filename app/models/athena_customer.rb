@@ -1,6 +1,5 @@
 class AthenaCustomer < AthenaResource::Base
-  self.site = Artfully::Application.config.tickets_site
-  self.prefix = '/payments/'
+  self.site = Artfully::Application.config.payments_component
   self.collection_name = 'customers'
   self.element_name = 'customers'
 

@@ -56,10 +56,7 @@ class AthenaTicket < AthenaResource::Base
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
 
-    #TODO: Couldn't get self.site to parse and give up the path.
-    available_endpoint = '/tix/' + self.collection_name + '/available'
-
-    AthenaTicket.find(:all, :from => available_endpoint, :params => parameterize(terms)) unless terms.empty?
+    AthenaTicket.find(:all, :from => :available, :params => parameterize(terms)) unless terms.empty?
   end
 
   def items
