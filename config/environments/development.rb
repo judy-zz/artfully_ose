@@ -26,12 +26,12 @@ Artfully::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  config.tickets_site = 'http://localhost:8080/tix/'
-  config.payments_component = 'http://localhost:8080/payments/'
-  config.orders_component = 'http://localhost:8080/orders'
-  config.stage_site = 'http://localhost:8080/stage/'
-  config.people_site = 'http://localhost:8080/people/'
-  config.reports_site = 'http://localhost:8080/reports/'
+  config.tickets_site = 'http://localhost:8080/athena/'
+  config.payments_component = 'http://localhost:8080/athena/payments/'
+  config.orders_component = 'http://localhost:8080/athena/'
+  config.stage_site = 'http://localhost:8080/athena/'
+  config.people_site = 'http://localhost:8080/athena/'
+  config.reports_site = 'http://localhost:8080/athena/reports/'
 
   config.athena_resource_user = nil
   config.athena_resource_password = nil

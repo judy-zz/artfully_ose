@@ -214,11 +214,6 @@ class AthenaTicket < AthenaResource::Base
       end
     end
 
-    def self.patch(tickets, attributes)
-      response = connection.put("/tix/tickets/patch/#{tickets.collect(&:id).join(",")}", attributes.to_json, self.headers)
-      format.decode(response.body).map{ |attributes| new(attributes) }
-    end
-
     def find_buyer
       return if self.buyer_id.nil?
 

@@ -28,6 +28,11 @@ module AthenaResource
         Hash[params.collect{|key, value| [key.camelize(:lower),value] }]
       end
 
+      def patch(records, attributes)
+        response = connection.put(self.site.path + self.collection_name + "/patch/#{records.collect(&:id).join(",")}", attributes.to_json, self.headers)
+        format.decode(response.body).map{ |attributes| new(attributes) }
+      end
+
       def search_index(search_query, organization, limit=10)
         if search_query.blank?
           search_query = ''
