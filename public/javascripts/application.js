@@ -51,7 +51,7 @@ $(document).ready(function() {
     });
   });
 
-  $(".sortedstar").tablesorter( {sortList: [[0,1], [1,1]]} );
+  $(".sortedstar").tablesorter();
 
   $(".zebra tbody").each(function(){
     zebra($(this));
