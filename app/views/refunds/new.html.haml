@@ -10,5 +10,5 @@
     - @items.each do |item|
       = hidden_field_tag "items[]", item.id
 
-    = submit_tag "Refund and Return"
+    = submit_tag "Refund and Return" if @items.all?(&:returnable?)
     = submit_tag "Just Refund"

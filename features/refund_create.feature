@@ -19,10 +19,10 @@ Feature: Refund Tickets
     Given I check the 1st ticket for a refund
     When I press "Refund"
     And I press "Refund and Return"
-    Then I should see "Successfully refunded and returned 1 tickets."
+    Then I should see "Successfully refunded and returned 1 items."
 
   Scenario: A producer refunds a ticket without returning it to inventory
     Given I check the 1st ticket for a refund
     When I press "Refund"
     And I press "Just Refund"
-    Then I should see "Successfully refunded 1 tickets."
+    Then I should see "Successfully refunded 1 items."
