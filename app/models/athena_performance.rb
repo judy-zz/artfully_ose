@@ -6,6 +6,7 @@ class AthenaPerformance < AthenaResource::Base
   self.collection_name = 'performances'
 
   validates_presence_of :datetime
+  validates_datetime :datetime
 
   COMP = 'Comp'
 
@@ -109,7 +110,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def datetime
-    attributes['datetime'] = attributes['datetime'].in_time_zone(time_zone)
+    attributes['datetime'] = attributes['datetime'].in_time_zone(time_zone) unless attributes['datetime'].kind_of?(String)
     return attributes['datetime']
   end
 
@@ -166,10 +167,10 @@ class AthenaPerformance < AthenaResource::Base
           Time.zone = time_zone
           attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
         rescue ArgumentError # handles cases where user enters non-date
-          attributes['datetime'] = nil
+          attributes['datetime'] = ""
         end
       else
-        attributes['datetime'] = nil
+        attributes['datetime'] = ""
       end
       #we can erase the datetime fields that came with the time select
       clean_datetime_attributes attributes
