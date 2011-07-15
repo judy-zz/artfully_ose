@@ -36,8 +36,8 @@ end
 Factory.define :credit_card_with_id, :parent => :credit_card do |cc|
   cc.id { UUID.new.generate }
   cc.after_build do |card|
-    FakeWeb.register_uri(:post, "http://localhost/athena/payments/cards.json", :body => card.encode)
-    FakeWeb.register_uri(:get, "http://localhost/athena/payments/cards/#{card.id}.json", :body => card.encode)
+    FakeWeb.register_uri(:post, "http://localhost/payments/cards.json", :body => card.encode)
+    FakeWeb.register_uri(:get, "http://localhost/payments/cards/#{card.id}.json", :body => card.encode)
   end
 end
 
@@ -55,8 +55,8 @@ end
 Factory.define :customer_with_id, :parent => :customer do |c|
   c.id { Factory.next :customer_id }
   c.after_build do |customer|
-    FakeWeb.register_uri(:post, "http://localhost/athena/payments/customers.json", :body => customer.encode)
-    FakeWeb.register_uri(:get, "http://localhost/athena/payments/customers/#{customer.id}.json", :body => customer.encode)
+    FakeWeb.register_uri(:post, "http://localhost/payments/customers.json", :body => customer.encode)
+    FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{customer.id}.json", :body => customer.encode)
   end
 end
 

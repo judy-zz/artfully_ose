@@ -47,8 +47,8 @@ describe Checkout do
 
   describe "finish" do
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/athena/payments/transactions/authorize", :body => '{ "success":true }')
-      FakeWeb.register_uri(:post, "http://localhost/athena/payments/transactions/settle", :body => '{ "success":true }')
+      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => '{ "success":true }')
+      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => '{ "success":true }')
       subject.order.stub(:pay_with)
     end
 

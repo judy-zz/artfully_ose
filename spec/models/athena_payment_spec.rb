@@ -93,11 +93,11 @@ describe AthenaPayment do
     it { should_not be_rejected }
 
     it "should request authorization from ATHENA" do
-      FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
+      FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
       body = subject.encode  #Capture the body before we make the request.
       subject.authorize!
       FakeWeb.last_request.method.should == "POST"
-      FakeWeb.last_request.path.should == '/athena/payments/transactions/authorize'
+      FakeWeb.last_request.path.should == '/payments/transactions/authorize'
       FakeWeb.last_request.body.should == body
     end
 
@@ -107,13 +107,13 @@ describe AthenaPayment do
       end
 
       it "should be approved when ATHENA returns success as true" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
         subject.authorize!
         subject.approved?.should be_true
       end
 
       it "should return true when ATHENA returns success as true" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true }')
         subject.authorize!.should be_true
       end
     end
@@ -124,13 +124,13 @@ describe AthenaPayment do
       end
 
       it "should be rejected when ATHENA returns success as false" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success": false }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": false }')
         subject.authorize!
         subject.rejected?.should be_true
       end
 
       it "should return false when ATHENA returns success as false" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success": false }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": false }')
         subject.authorize!.should be_false
       end
     end
@@ -139,13 +139,13 @@ describe AthenaPayment do
       it { should respond_to :refunded? }
 
       it "should be refunded when ATHENA returns success as true" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/refund', :status => 200, :body => '{ "success": true }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/refund', :status => 200, :body => '{ "success": true }')
         subject.refund!
         subject.refunded?.should be_true
       end
 
       it "should return false when ATHENA returns success as false" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/refund', :status => 200, :body => '{ "success": false }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/refund', :status => 200, :body => '{ "success": false }')
         subject.refund!.should be_false
       end
     end

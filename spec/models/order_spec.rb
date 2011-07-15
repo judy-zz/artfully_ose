@@ -100,30 +100,30 @@ describe Order do
       end
 
       it "should submit the Payment to ATHENA when the payment is confirmed by the user" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
         subject.pay_with(@payment, :settle => false)
         FakeWeb.last_request.method.should == "POST"
-        FakeWeb.last_request.path.should == '/athena/payments/transactions/authorize'
+        FakeWeb.last_request.path.should == '/payments/transactions/authorize'
       end
 
       it "should transition to approved when the payment is approved" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
         subject.pay_with(@payment, :settle => false)
         subject.state.should == "approved"
       end
 
       it "should tranisition to rejected when the Payment is rejected" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success":false}')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":false}')
         subject.pay_with(@payment, :settle => false)
         subject.state.should == "rejected"
       end
 
       it "should settle immediately when an authorized payment is submitted" do
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/authorize', :status => 200, :body => '{ "success": true}')
-        FakeWeb.register_uri(:post, 'http://localhost/athena/payments/transactions/settle', :status => 200, :body => '{ "success": true}')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true}')
+        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/settle', :status => 200, :body => '{ "success": true}')
         subject.pay_with(@payment)
         FakeWeb.last_request.method.should == "POST"
-        FakeWeb.last_request.path.should == '/athena/payments/transactions/settle'
+        FakeWeb.last_request.path.should == '/payments/transactions/settle'
       end
     end
   end
