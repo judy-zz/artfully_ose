@@ -6,7 +6,7 @@ class AthenaPerformance < AthenaResource::Base
   self.collection_name = 'performances'
 
   validates_presence_of :datetime
-  validates_datetime :datetime
+  validates_datetime :datetime, :after => lambda { Time.now }
 
   COMP = 'Comp'
 
