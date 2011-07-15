@@ -112,7 +112,7 @@ class AthenaItem < AthenaResource::Base
   end
 
   def modified?
-    !state.eql? "purchased"
+    not %w( purchased comped ).include?(state)
   end
 
   def settled?

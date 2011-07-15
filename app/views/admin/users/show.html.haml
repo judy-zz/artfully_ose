@@ -4,17 +4,18 @@
 
 .context
 .document
-  %h2 Organizations
-  - if @user.organizations.any?
-    %table.normal.fullwidth
-      %thead
-        %tr
-          %th Name
-          %th Created Date
-      %tbody
-        - @user.organizations.each do |organization|
+  #organizations
+    %h3 Organizations
+    - if @user.organizations.any?
+      %table.standalone
+        %thead
           %tr
-            %td= link_to organization.name, organization
-            %td= l organization.created_at, :format => :short
-  - else
-    %p User is not part of any organizations.
+            %th Name
+            %th Created Date
+        %tbody
+          - @user.organizations.each do |organization|
+            %tr
+              %td= link_to organization.name, organization
+              %td= l organization.created_at, :format => :short
+    - else
+      %p User is not part of any organizations.

@@ -42,7 +42,7 @@ describe AthenaCreditCard do
 
     it "should not include the credit card number when updating a card" do
       @card = Factory(:credit_card_with_id)
-      FakeWeb.register_uri(:put, "http://localhost/athena/payments/cards/#{@card.id}.json", :body => @card.encode)
+      FakeWeb.register_uri(:put, "http://localhost/payments/cards/#{@card.id}.json", :body => @card.encode)
       @card.save
       FakeWeb.last_request.body.should_not match /cardNumber/
     end
@@ -50,48 +50,48 @@ describe AthenaCreditCard do
 
   it "should parse the date into a Date object when fetching a remote resource" do
     card = Factory(:credit_card)
-    FakeWeb.register_uri(:get, "http://localhost/athena/payments/cards/#{card.id}.json", :body => card.encode)
+    FakeWeb.register_uri(:get, "http://localhost/payments/cards/#{card.id}.json", :body => card.encode)
     remote = AthenaCreditCard.find(card.id)
     remote.expiration_date.kind_of?(Date).should be_true
   end
 
   describe "#find" do
     it "should find the card by id" do
-      FakeWeb.register_uri(:get, "http://localhost/athena/payments/cards/1.json", :body => Factory(:credit_card, :id => 1).encode)
+      FakeWeb.register_uri(:get, "http://localhost/payments/cards/1.json", :body => Factory(:credit_card, :id => 1).encode)
       @card = AthenaCreditCard.find(1)
 
       FakeWeb.last_request.method.should == "GET"
-      FakeWeb.last_request.path.should == "/athena/payments/cards/1.json"
+      FakeWeb.last_request.path.should == "/payments/cards/1.json"
     end
   end
 
   describe "#save" do
     it "should issue a PUT when updating a card" do
       @card = Factory(:credit_card, :id => "1")
-      FakeWeb.register_uri(:put, "http://localhost/athena/payments/cards/#{@card.id}.json", :body => @card.encode)
+      FakeWeb.register_uri(:put, "http://localhost/payments/cards/#{@card.id}.json", :body => @card.encode)
       @card.save
 
       FakeWeb.last_request.method.should == "PUT"
-      FakeWeb.last_request.path.should == "/athena/payments/cards/#{@card.id}.json"
+      FakeWeb.last_request.path.should == "/payments/cards/#{@card.id}.json"
     end
 
     it "should issue a POST when creating a new AthenaCreditCard" do
-      FakeWeb.register_uri(:post, "http://localhost/athena/payments/cards.json", :body => "{}")
+      FakeWeb.register_uri(:post, "http://localhost/payments/cards.json", :body => "{}")
       @card = Factory.create(:credit_card, :id => nil)
 
       FakeWeb.last_request.method.should == "POST"
-      FakeWeb.last_request.path.should == "/athena/payments/cards.json"
+      FakeWeb.last_request.path.should == "/payments/cards.json"
     end
   end
 
   describe "#destroy" do
     it "should issue a DELETE when destroying a card" do
       @card = Factory(:credit_card, :id => "1")
-      FakeWeb.register_uri(:delete, "http://localhost/athena/payments/cards/#{@card.id}.json", :status => "204")
+      FakeWeb.register_uri(:delete, "http://localhost/payments/cards/#{@card.id}.json", :status => "204")
       @card.destroy
 
       FakeWeb.last_request.method.should == "DELETE"
-      FakeWeb.last_request.path.should == "/athena/payments/cards/#{@card.id}.json"
+      FakeWeb.last_request.path.should == "/payments/cards/#{@card.id}.json"
     end
   end
 end

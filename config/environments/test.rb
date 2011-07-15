@@ -35,7 +35,7 @@ Artfully::Application.configure do
   config.active_support.deprecation = :stderr
 
   config.tickets_site = 'http://localhost/athena/'
-  config.payments_component = 'http://localhost/athena/payments/'
+  config.payments_component = 'http://localhost/payments/'
   config.orders_component = 'http://localhost/athena/'
   config.stage_site = 'http://localhost/athena/'
   config.people_site = 'http://localhost/athena/'

@@ -13,12 +13,12 @@ class RefundsController < ApplicationController
 
     if @refund.successful?
       if return_items?
-        flash[:notice] = "Successfully refunded and returned #{@refund.items.size} tickets."
+        flash[:notice] = "Successfully refunded and returned #{@refund.items.size} items."
       else
-        flash[:notice] = "Successfully refunded #{@refund.items.size} tickets."
+        flash[:notice] = "Successfully refunded #{@refund.items.size} items."
       end
     else
-      flash[:error] = "Unable to refund tickets."
+      flash[:error] = "Unable to refund items."
     end
 
     redirect_to order_url(@order)
@@ -27,6 +27,6 @@ class RefundsController < ApplicationController
   private
 
   def return_items?
-    params[:commit] == "Refund and Return"
+    @return_items ||= (params[:commit] == "Refund and Return" and @items.all?(&:returnable?))
   end
 end

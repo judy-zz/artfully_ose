@@ -27,7 +27,7 @@ Artfully::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.tickets_site = 'http://localhost:8080/athena/'
-  config.payments_component = 'http://localhost:8080/athena/payments/'
+  config.payments_component = 'http://localhost:8080/payments/'
   config.orders_component = 'http://localhost:8080/athena/'
   config.stage_site = 'http://localhost:8080/athena/'
   config.people_site = 'http://localhost:8080/athena/'

@@ -38,6 +38,7 @@ class PerformancesController < ApplicationController
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date_at_time}"
       redirect_to event_performances_path(@performance.event)
     else
+      flash[:error] = "There was a problem creating your performance."
       redirect_to event_performances_path(@performance.event)
     end
   end

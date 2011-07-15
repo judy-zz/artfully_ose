@@ -48,7 +48,7 @@ describe AthenaPerson do
 
     it "should return nil if it doesn't find anyone" do
       email = "person@example.com"
-      FakeWeb.register_uri(:get, "http://localhost/athena/payments/transactions/settle", :body => '[]')
+      FakeWeb.register_uri(:get, "http://localhost/payments/transactions/settle", :body => '[]')
       p = AthenaPerson.find_by_email_and_organization(email, organization)
       p.should eq nil
     end
