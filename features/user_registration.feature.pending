@@ -5,7 +5,6 @@ Feature: User registration
   Background:
     Given I can save People to ATHENA
 
-  @wip
   Scenario: Register as a producer
     Given I am on the new user registration page
     When I fill in "Email" with "example@example.com"
@@ -15,7 +14,6 @@ Feature: User registration
     And I press "Sign up"
     Then I should be on the dashboard page
 
-  @wip
   Scenario: A producer should not be able to register without accepting the user agreement
     Given I am on the new user registration page
     When I fill in "Email" with "example@example.com"

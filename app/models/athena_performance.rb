@@ -110,7 +110,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def datetime
-    attributes['datetime'] = attributes['datetime'].in_time_zone(time_zone) unless attributes['datetime'].kind_of?(String)
+    attributes['datetime'] = attributes['datetime'].in_time_zone(time_zone) unless attributes['datetime'].blank?
     return attributes['datetime']
   end
 

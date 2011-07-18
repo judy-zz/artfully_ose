@@ -61,11 +61,10 @@ class PerformancesController < ApplicationController
     authorize! :edit, @performance
 
     without_tickets do
-      @performance.update_attributes(params[:athena_performance])
-      if @performance.save
+      if @performance.update_attributes(params[:athena_performance])
         redirect_to event_performances_path(@performance.event)
       else
-        render :template => 'performances/new'
+        render :edit
       end
     end
   end
