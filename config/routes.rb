@@ -49,6 +49,7 @@ Artfully::Application.routes.draw do
     get :alternatives, :on => :collection
   end
 
+  resources :reports, :only => :index
   resources :settlements, :only => [ :index, :show ]
   resources :statements, :only => [ :index, :show ]
 

@@ -18,10 +18,10 @@
       %li= link_to "Search", people_path
 
   %li{ :class => active?(:reports) }
-    = link_to "Reports", statements_url
+    = link_to "Reports", reports_path
     %ul
-      %li= link_to "Statements", statements_url
-      %li= link_to "Settlements", settlements_url
+      %li= link_to "Statements", statements_path
+      %li= link_to "Settlements", settlements_path
 
   %li{ :class => active?(:transactions) }
     = link_to "Transactions", orders_path
