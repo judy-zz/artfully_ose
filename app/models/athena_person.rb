@@ -3,8 +3,10 @@ class AthenaPerson < AthenaResource::Base
   self.element_name = 'people'
   self.collection_name = 'people'
 
-  validates_presence_of :person_info
+  validates_presence_of :email
   validates_presence_of :organization_id
+  validates_presence_of :person_info
+  validate :uniqueness, :unless => lambda { |person| person.email.blank? }
 
   schema do
     attribute 'id',             :integer
@@ -62,8 +64,17 @@ class AthenaPerson < AthenaResource::Base
     @organization, self.organization_id = org, org.id
   end
 
+  private
   def person_info
-    email or first_name or last_name
+    first_name or last_name
   end
 
+  def uniqueness
+    errors.add(:base, "Another person record already exists with this email address.") unless unique?
+  end
+
+  def unique?
+    doppleganger = self.class.find_by_email_and_organization(self.email, self.organization)
+    doppleganger.nil? or (persisted? and person.id == self.id)
+  end
 end
