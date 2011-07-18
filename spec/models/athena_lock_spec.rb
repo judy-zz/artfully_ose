@@ -1,10 +1,6 @@
 require 'spec_helper'
 
 describe AthenaLock do
-  before(:each) do
-    AthenaLock.site = 'http://localhost/'
-  end
-
   describe "attributes" do
     subject { Factory(:lock) }
 
