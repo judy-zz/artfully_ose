@@ -24,5 +24,19 @@ class StatementsController < ApplicationController
     @event = @performance.event
     @played = @event.played_performances
     @statement = AthenaStatement.for_performance(params[:performance_id], current_user.current_organization)
+
+    if @event.free?
+      @statement.expenses.expenses.first.rate = "$0.00"
+      @statement.expenses.expenses.first.expense = 0
+
+      @statement.expenses.expenses.second.rate = "0"
+      @statement.expenses.expenses.second.units = "0"
+      @statement.expenses.expenses.second.expense = 0
+
+      @statement.expenses.total.expense = 0
+
+      @statement.sales.performances.each {|performance| performance.net_revenue = 0 }
+    end
+
   end
 end
