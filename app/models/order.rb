@@ -17,7 +17,7 @@ class Order < ActiveRecord::Base
     end
 
     event :reject do
-      transitions :from => :started, :to => :rejected
+      transitions :from => [ :started, :rejected ], :to => :rejected
     end
   end
 
