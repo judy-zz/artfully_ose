@@ -8,8 +8,8 @@ class Checkout
   end
 
   def valid?
-    if order.nil? 
-      return !!order 
+    if order.nil?
+      return !!order
     else
       return (!!order and !!payment and payment.valid?)
     end
@@ -19,6 +19,7 @@ class Checkout
     order.person = find_or_create_people_record
     order.pay_with(@payment)
     order.save!
+    order.approved?
   end
 
   private

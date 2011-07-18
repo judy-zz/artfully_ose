@@ -52,12 +52,24 @@ describe Checkout do
       subject.order.stub(:pay_with)
     end
 
+    it "should return true if the order was approved" do
+      subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
+      subject.order.stub(:approved?).and_return(true)
+      subject.finish.should be_true
+    end
+
+    it "returns false if the order is not approved" do
+      subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
+      subject.order.stub(:approved?).and_return(false)
+      subject.finish.should be_false
+    end
+
     it "should create a person record when finishing with a new customer" do
       subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
-      
+
       email = payment.customer.email
       organization = subject.order.organizations_from_tickets.first
-      
+
       AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
 
       attributes = {
@@ -74,22 +86,21 @@ describe Checkout do
 
     it "should not create a person record when the person already exists" do
       subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
-      
+
       email = payment.customer.email
       organization = subject.order.organizations_from_tickets.first
-      
+
       attributes = {
         :email => email,
         :organization_id => organization.id,
         :first_name => payment.customer.first_name,
         :last_name  => payment.customer.last_name
       }
-      
+
       AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:athena_person,attributes))
       AthenaPerson.should_not_receive(:create)
 
       subject.finish
     end
-
   end
 end

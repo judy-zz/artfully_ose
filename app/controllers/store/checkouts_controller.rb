@@ -22,8 +22,12 @@ class Store::CheckoutsController < Store::StoreController
     end
 
     with_confirmation do
-      @checkout.finish
-      redirect_to store_order_url(current_order), :notice => 'Thank you for your order!'
+      if @checkout.finish
+        redirect_to store_order_url(current_order), :notice => 'Thank you for your order!'
+      else
+        flash[:error] = "An error occured while trying to validate your payment. Please review your information."
+        render :new
+      end
     end
   end
 
