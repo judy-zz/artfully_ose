@@ -18,6 +18,7 @@ gem 'role_model'
 # Validations
 gem 'validates_timeliness'
 
+gem 'thin'
 gem 'escape_utils'
 gem 'httparty'
 gem 'whenever'
