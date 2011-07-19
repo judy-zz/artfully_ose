@@ -1,29 +1,45 @@
 source 'http://rubygems.org'
 
 gem 'rails'
-gem 'sqlite3-ruby', :require => 'sqlite3'
-gem 'mysql2', '< 0.3'
+
+# Views and Rendering
 gem 'haml'
 gem 'sass'
+gem 'will_paginate', '~> 3.0.beta'
+gem 'high_voltage'
+gem 'jquery-rails', '>= 0.2.6'
+
+# Authentication and Roles
 gem 'devise'
 gem 'devise_invitable'
 gem 'cancan'
 gem 'role_model'
+
+# Validations
+gem 'validates_timeliness'
+
 gem 'escape_utils'
 gem 'httparty'
-gem 'high_voltage'
 gem 'whenever'
-gem 'validates_timeliness'
 gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
+gem 'exceptional'
 gem 'transitions',
     :require => ['transitions','active_record/transitions','active_resource/transitions'],
     :path => "#{File.expand_path(__FILE__)}/../vendor/gems/transitions-0.0.9"
-gem 'jquery-rails', '>= 0.2.6'
 
-gem 'capistrano'
-gem 'capistrano-ext'
-gem 'will_paginate', '~> 3.0.beta'
-gem 'exceptional'
+group :test do
+  gem 'sqlite3-ruby', :require => 'sqlite3'
+end
+
+group :development do
+  gem 'mysql2', '< 0.3'
+end
+
+group :deployment do
+  gem 'capistrano'
+  gem 'capistrano-ext'
+  gem 'heroku'
+end
 
 group :test, :development do
   gem "rspec-rails", ">= 2.1"
