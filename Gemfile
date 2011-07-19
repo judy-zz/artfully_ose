@@ -19,6 +19,7 @@ gem 'role_model'
 gem 'validates_timeliness'
 
 gem 'thin'
+gem 'mysql2', '< 0.3'
 gem 'escape_utils'
 gem 'httparty'
 gem 'whenever'
@@ -30,10 +31,6 @@ gem 'transitions',
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
-end
-
-group :development do
-  gem 'mysql2', '< 0.3'
 end
 
 group :deployment do
