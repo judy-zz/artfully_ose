@@ -26,12 +26,12 @@ Artfully::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  config.tickets_site = 'http://cd49619c.dotcloud.com/'
-  config.payments_component = 'http://cd49619c.dotcloud.com/'
-  config.orders_component = 'http://cd49619c.dotcloud.com/'
-  config.stage_site = 'http://cd49619c.dotcloud.com/'
-  config.people_site = 'http://cd49619c.dotcloud.com/'
-  config.reports_site = 'http://cd49619c.dotcloud.com/'
+  config.payments_component = 'http://athena-staging.elasticbeanstalk.com/payments'
+  config.tickets_site = 'http://athena-staging.elasticbeanstalk.com/'
+  config.orders_component = 'http://athena-staging.elasticbeanstalk.com/'
+  config.stage_site = 'http://athena-staging.elasticbeanstalk.com/'
+  config.people_site = 'http://athena-staging.elasticbeanstalk.com/'
+  config.reports_site = 'http://athena-staging.elasticbeanstalk.com/reports'
 
   config.athena_resource_user = nil
   config.athena_resource_password = nil
