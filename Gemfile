@@ -5,6 +5,7 @@ gem 'rails'
 # Views and Rendering
 gem 'haml'
 gem 'sass'
+gem 'hassle'
 gem 'will_paginate', '~> 3.0.beta'
 gem 'high_voltage'
 gem 'jquery-rails', '>= 0.2.6'
