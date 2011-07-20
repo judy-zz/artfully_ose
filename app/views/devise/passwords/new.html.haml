@@ -10,4 +10,4 @@
         .description= link_to "I don't have an account yet!", new_registration_path(resource_name) if User.ancestors.include? Devise::Models::Registerable
 
     %li
-      = f.submit "Send me reset password instructions"
+      = f.submit "Send Reset Instructions"
