@@ -52,8 +52,8 @@ Artfully::Application.configure do
   config.people_site = 'http://athena-staging.elasticbeanstalk.com/'
   config.reports_site = 'http://athena-staging.elasticbeanstalk.com/reports'
 
-  config.athena_resource_user = nil
-  config.athena_resource_password = nil
-  config.athena_resource_auth_type = nil
+  config.athena_resource_user = ENV['ATHENA_RESOURCE_USER']
+  config.athena_resource_password = ENV['ATHENA_RESOURCE_PASSWORD']
+  config.athena_resource_auth_type = 'digest'
 end
 
