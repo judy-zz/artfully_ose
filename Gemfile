@@ -25,6 +25,7 @@ gem 'httparty'
 gem 'whenever'
 gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'exceptional'
+gem 'newrelic_rpm'
 gem 'transitions',
     :require => ['transitions','active_record/transitions','active_resource/transitions'],
     :path => "#{File.expand_path(__FILE__)}/../vendor/gems/transitions-0.0.9"
