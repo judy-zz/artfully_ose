@@ -7,12 +7,16 @@ development:
   base_uri: "https://demo.firstach.com/"
   login_id: xPCTyjcQ0KlG
   transaction_key: d38a1b4afaf5230c
+staging:
+  base_uri: "https://demo.firstach.com/"
+  login_id: xPCTyjcQ0KlG
+  transaction_key: d38a1b4afaf5230c
 production:
   base_uri: "https://www.firstach.com/"
   #rnPG1Ffg0kgZ
-  login_id: 
+  login_id:
   #87e965c4df0578b5
-  transaction_key: 
+  transaction_key:
 test:
   base_uri: "https://demo.firstach.com/"
   login_id: xPCTyjcQ0KlG
