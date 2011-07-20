@@ -30,8 +30,8 @@ class PeopleController < ApplicationController
     else
       respond_to do |format|
         format.html do
-          flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
-          redirect_to :back
+          flash[:alert] = "Error creating a new person record."
+          render :new
         end
 
         format.json do
