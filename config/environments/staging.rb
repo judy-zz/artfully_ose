@@ -43,7 +43,7 @@ Artfully::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.payments_component = 'http://athena-staging.elasticbeanstalk.com/payments'
+  config.payments_component = 'http://athena-payments-staging.elasticbeanstalk.com/'
   config.tickets_site = 'http://athena-staging.elasticbeanstalk.com/'
   config.orders_component = 'http://athena-staging.elasticbeanstalk.com/'
   config.stage_site = 'http://athena-staging.elasticbeanstalk.com/'
