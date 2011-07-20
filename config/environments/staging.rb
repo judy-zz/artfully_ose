@@ -33,6 +33,8 @@ Artfully::Application.configure do
     :domain         => ENV['SENDGRID_DOMAIN']
   }
 
+  config.action_mailer.default_url_options = { :host => 'http://artfully-staging.herokuapp.com' }
+
   # Enable threaded mode
   # config.threadsafe!
 
