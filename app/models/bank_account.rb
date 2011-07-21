@@ -3,9 +3,11 @@ class BankAccount < ActiveRecord::Base
 
   before_validation :clean_phone
 
+  ACCOUNT_TYPES = ["Business Checking", "Personal Checking", "Personal Savings"].freeze
+
   validates :routing_number,  :presence => true, :length => { :is => 9 }
   validates :number,          :presence => true, :length => { :minimum => 10 }
-  validates :account_type,    :inclusion => { :in => ["Business Checking", "Personal Checking", "Personal Savings"] }
+  validates :account_type,    :inclusion => { :in => ACCOUNT_TYPES }
 
   validates :name,    :presence => true, :length => { :maximum => 50 }
   validates :address, :presence => true, :length => { :maximum => 100 }
