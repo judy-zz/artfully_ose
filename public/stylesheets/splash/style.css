@@ -216,7 +216,7 @@ header nav {
     float: right;
     height: 11px;
     width: 6px;
-    background: url("../images/login-arrow.png") no-repeat;
+    background: url("../../images/login-arrow.png") no-repeat;
     margin: 5px 0 0 5px;
   }
 
@@ -245,16 +245,16 @@ a:hover { color: #1697a9; }
 }
 .features-list { color: #0f6d7b; margin-top: 20px; }
   .features-list li { text-indent: 36px; line-height: 24px; padding-bottom: 7px; }
-  .features-tickets { background: url("../images/feature-tickets.png") no-repeat;}
-  .features-donations { background: url("../images/feature-donations.png") no-repeat;}
-  .features-sales { background: url("../images/feature-sales.png") no-repeat;}
-  .features-patrons { background: url("../images/feature-patrons.png") no-repeat;}
+  .features-tickets { background: url("../../images/feature-tickets.png") no-repeat;}
+  .features-donations { background: url("../../images/feature-donations.png") no-repeat;}
+  .features-sales { background: url("../../images/feature-sales.png") no-repeat;}
+  .features-patrons { background: url("../../images/feature-patrons.png") no-repeat;}
 
 .monitor {
   display: block;
   width: 366px;
   height: 338px;
-  background: url("../images/monitor.png") no-repeat;
+  background: url("../../images/monitor.png") no-repeat;
   position: absolute;
   top: 106px;
   left: 50%;
@@ -271,7 +271,7 @@ a:hover { color: #1697a9; }
   width: 980px;
 }
 .box-top {
-  background: url("../images/box-top.png") no-repeat;
+  background: url("../../images/box-top.png") no-repeat;
   padding-top: 40px;
 }
 .peek, .form, .drawer { padding: 0 5px; }
@@ -319,7 +319,7 @@ a:hover { color: #1697a9; }
     margin: 2px 10px 0 0;
     width: 16px;
     height: 18px;
-    background: url("../images/icon-success.png") no-repeat;
+    background: url("../../images/icon-success.png") no-repeat;
   }
 .button, input.button {
   display: inline-block;
@@ -344,8 +344,8 @@ a:hover { color: #1697a9; }
     padding: 12px 25px 12px 65px;
     font-weight: normal;
     background-color: #fb9b2c;
-    background: url("../images/icon-envelope.png") 25px 16px no-repeat, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fb9b2c), to(#f18305));
-    background: url("../images/icon-envelope.png") 25px 16px no-repeat, -moz-linear-gradient(0 100% 90deg, #f18305, #fb9b2c 100%);
+    background: url("../../images/icon-envelope.png") 25px 16px no-repeat, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fb9b2c), to(#f18305));
+    background: url("../../images/icon-envelope.png") 25px 16px no-repeat, -moz-linear-gradient(0 100% 90deg, #f18305, #fb9b2c 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fb9b2c, endColorstr=#f18305);
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#fb9b2c, endColorstr=#f18305)";
     zoom: 1;
@@ -361,12 +361,12 @@ a:hover { color: #1697a9; }
   .button-sign-up i {
     width: 27px;
     height: 17px;
-    background: url("../images/icon-envelope.png") no-repeat;
+    background: url("../../images/icon-envelope.png") no-repeat;
   }
   .button-hide-form .button i {
     width: 16px;
     height: 16px;
-    background: url("../images/icon-x.png") no-repeat;
+    background: url("../../images/icon-x.png") no-repeat;
   }
 
 #mce-success-response, #show-form, .button-hide-form { display: none; }
@@ -379,6 +379,6 @@ footer .ticket {
   float: right;
   width: 67px;
   height: 38px;
-  background: url("../images/ticket.png") no-repeat;
+  background: url("../../images/ticket.png") no-repeat;
   margin: -45px 0 0 0;
 }
