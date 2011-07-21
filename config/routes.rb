@@ -1,12 +1,10 @@
 Artfully::Application.routes.draw do
 
-  scope :module => :api do
-    constraints :subdomain => "api" do
-      resources :events, :only => :show
-      resources :tickets, :only => :index
-      resources :organizations, :only => [] do
-        get :authorization
-      end
+  namespace :api do
+    resources :events, :only => :show
+    resources :tickets, :only => :index
+    resources :organizations, :only => [] do
+      get :authorization
     end
   end
 
