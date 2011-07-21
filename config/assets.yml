@@ -10,3 +10,6 @@ javascripts:
   common:
     - public/javascripts/jquery_ujs.js
     - public/javascripts/application.js
+
+  widget:
+    - public/javascripts/artfully.js
