@@ -6,6 +6,6 @@ class AdminMailer < ActionMailer::Base
     @kit = kit
     @organization = kit.organization
     
-    mail :to => "support@fracturedatlas.org", :subject => "Artful.ly: Pending Donation Kit for #{@organization.name}"
+    mail :to => "support@artful.ly", :subject => "Artful.ly: Pending Donation Kit for #{@organization.name}"
   end
 end
