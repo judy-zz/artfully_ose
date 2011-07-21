@@ -73,7 +73,7 @@ class AthenaPayment < AthenaResource::Base
   end
 
   def authorize!
-    connection.post( self.element_name + "/transactions/authorize", encode, self.class.headers).tap do |response|
+    connection.post( AthenaPayment::element_name + "/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
     approved?
@@ -82,14 +82,14 @@ class AthenaPayment < AthenaResource::Base
   alias :save! :authorize!
 
   def settle!
-    connection.post( self.element_name + "/transactions/settle", encode, self.class.headers).tap do |response|
+    connection.post( AthenaPayment::element_name + "/transactions/settle", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
     approved?
   end
 
   def refund!
-    connection.post( self.element_name + "/transactions/refund", encode, self.class.headers).tap do |response|
+    connection.post( AthenaPayment::element_name + "/transactions/refund", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
     refunded?
