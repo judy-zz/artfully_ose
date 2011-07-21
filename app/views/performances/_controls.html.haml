@@ -1,7 +1,4 @@
-- content_for :scripts do
-  = javascript_include_tag "performances"
-
-/We can clean this up once played is a state (IG & GM)
+/ We can clean this up once played is a state (IG & GM)
 - if not performance.played?
   = form_tag built_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited pending" do
     = hidden_field_tag :performance_id, performance.id

@@ -3,34 +3,15 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
-    = stylesheet_link_tag "formalize", "jquery/jquery.gritter.css", "jquery/jquery-ui.css", "fullcalendar", :media => :screen
-    = stylesheet_link_tag "application"
-    = stylesheet_link_tag "printing", :media => :print
+    = include_stylesheets :application, :vendor, :media => :screen
+    = include_stylesheets :printing, :media => :print
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
-    = javascript_include_tag "jquery/jquery-ui-1.8.14.custom.min.js","jquery/jquery.tablesorter.min.js","jquery/jquery.easy-tooltip.js", "jquery/jquery.mask-money.js"
-    = javascript_include_tag "jquery/jquery.formalize.js"
-    = javascript_include_tag "jquery/jquery.gritter.min.js"
-    = javascript_include_tag "jquery/jquery.dataTables.min.js"
-    = javascript_include_tag "jquery/dataTables.currencySorter.js"
-    = javascript_include_tag "jquery/jquery.placeholder.js"
-    = javascript_include_tag "jquery/jquery-ui-timepicker-addon.js"
-    = javascript_include_tag "jquery/jquery.jeditable.js"
-    = javascript_include_tag "fullcalendar.min.js"
-    = javascript_include_tag "application"
-    = javascript_include_tag "people"
-    = javascript_include_tag "jquery_ujs"
-    = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
-    = javascript_include_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.js"
-    = javascript_include_tag "datatables"
-    = yield :scripts
-
     = csrf_meta_tag
+
   %body
     #header
       = render :partial => 'layouts/menu'
-
     #content
       .logo{ :id => active_section }
       #page
@@ -44,3 +25,7 @@
         #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
         - if current_user.has_role? :admin
           #administration= link_to "Administration", admin_root_path
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
+    = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
+    = javascript_include_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.js"
+    = include_javascripts :vendor, :application, :custom

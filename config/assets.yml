@@ -7,15 +7,32 @@ javascripts:
   vendor:
     - public/javascripts/jquery/**/*.js
 
-  common:
+  application:
     - public/javascripts/jquery_ujs.js
     - public/javascripts/application.js
+    - public/javascripts/datatables.js
 
   widget:
     - public/javascripts/artfully.js
+
+  custom:
+    - public/javascripts/custom/**/*.js
 
 stylesheets:
   splash:
     - public/stylesheets/formalize.css
     - public/stylesheets/splash/**/*.css
     - public/stylesheets/jquery/jquery.fancybox-1.3.4.css
+
+  application:
+    - public/stylesheets/application.css
+    - public/stylesheets/formalize.css
+
+  vendor:
+    - public/stylesheets/jquery/jquery.gritter.css
+    - public/stylesheets/jquery/jquery.ui.css
+    - public/stylesheets/jquery/jquery.visualize.css
+    - public/stylesheets/jquery/fullcalendar.css
+
+  printing:
+    - public/stylesheets/printing.css

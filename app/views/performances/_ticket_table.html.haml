@@ -1,10 +1,7 @@
-- content_for :scripts do
-  = javascript_include_tag "grouped-form"
-
-= render :partial => 'tickets/on_sale/grouped_form', :locals => { :performance => @performance }
-= render :partial => 'tickets/off_sale/grouped_form', :locals => { :performance => @performance }
-= render :partial => 'tickets/delete/grouped_form', :locals => { :performance => @performance }
-= render :partial => 'comps/grouped_form', :locals => { :performance => @performance }
+= render :partial => 'tickets/on_sale/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
+= render :partial => 'tickets/off_sale/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
+= render :partial => 'tickets/delete/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
+= render :partial => 'comps/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
 
 #tickets.grouped-form-target
   = form_tag do

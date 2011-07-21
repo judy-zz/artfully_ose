@@ -20,9 +20,6 @@
       .key Details
       .value #{@order.details}
 
-  - content_for :scripts do
-    = javascript_include_tag "grouped-form"
-
   - unless @order.all_items.empty?
     = render :partial => 'refunds/grouped_form', :locals => { :order => @order }
     = render :partial => 'exchanges/grouped_form', :locals => { :order => @order }

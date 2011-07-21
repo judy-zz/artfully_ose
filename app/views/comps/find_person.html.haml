@@ -2,9 +2,6 @@
 - content_for :header do
   %h1 Comp Tickets
 
-- content_for :scripts do
-  = javascript_include_tag "comps"
-
 .context
   %h3 New Recipient
   = form_for AthenaPerson.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
