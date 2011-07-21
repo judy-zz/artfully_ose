@@ -45,12 +45,14 @@ Artfully::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.payments_component = 'http://athena-payments-staging.elasticbeanstalk.com/'
   config.tickets_site = 'http://athena-staging.elasticbeanstalk.com/'
   config.orders_component = 'http://athena-staging.elasticbeanstalk.com/'
   config.stage_site = 'http://athena-staging.elasticbeanstalk.com/'
   config.people_site = 'http://athena-staging.elasticbeanstalk.com/'
   config.reports_site = 'http://athena-staging.elasticbeanstalk.com/reports'
+  
+  config.payments_component = 'http://athena-payments-staging.elasticbeanstalk.com/'
+  config.payments_element_name = ''
 
   config.athena_resource_user = ENV['ATHENA_RESOURCE_USER']
   config.athena_resource_password = ENV['ATHENA_RESOURCE_PASSWORD']

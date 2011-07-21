@@ -56,11 +56,13 @@ Artfully::Application.configure do
   config.active_support.deprecation = :notify
 
   config.tickets_site = 'http://localhost:8080/tix/'
-  config.payments_component = 'http://localhost:8080/payments/'
   config.orders_component = 'http://localhost:8080/orders'
   config.stage_site = 'http://localhost:8080/stage/'
   config.people_site = 'http://localhost:8080/people/'
   config.reports_site = 'http://localhost:8080/reports/'
+  
+  config.payments_component = 'http://athena-payments.elasticbeanstalk.com/'
+  config.payments_element_name = ''
 
   config.athena_resource_user = nil
   config.athena_resource_password = nil

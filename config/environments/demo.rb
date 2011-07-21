@@ -56,6 +56,7 @@ Artfully::Application.configure do
   config.stage_site         = 'http://localhost:8080/athena/'
   config.people_site        = 'http://localhost:8080/athena/'
   config.reports_site       = 'http://localhost:8080/athena/reports/'
+  config.payments_element_name = '/payments'
 
   config.athena_resource_user = 'demo'
   config.athena_resource_password = 'LiberateTheArts!'

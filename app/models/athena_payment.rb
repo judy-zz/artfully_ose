@@ -1,7 +1,6 @@
 class AthenaPayment < AthenaResource::Base
   self.site = Artfully::Application.config.payments_component
-  self.collection_name = 'payments'
-  self.element_name = 'payments'
+  self.element_name = Artfully::Application.config.payments_element_name
 
   validates_acceptance_of :user_agreement
   validates_numericality_of :amount, :greater_than_or_equal_to => 0
@@ -74,7 +73,7 @@ class AthenaPayment < AthenaResource::Base
   end
 
   def authorize!
-    connection.post("/payments/transactions/authorize", encode, self.class.headers).tap do |response|
+    connection.post( self.element_name + "/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
     approved?
@@ -83,14 +82,14 @@ class AthenaPayment < AthenaResource::Base
   alias :save! :authorize!
 
   def settle!
-    connection.post("/payments/transactions/settle", encode, self.class.headers).tap do |response|
+    connection.post( self.element_name + "/transactions/settle", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
     approved?
   end
 
   def refund!
-    connection.post("/payments/transactions/refund", encode, self.class.headers).tap do |response|
+    connection.post( self.element_name + "/transactions/refund", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
     refunded?

@@ -27,11 +27,13 @@ Artfully::Application.configure do
   config.action_dispatch.best_standards_support = :builtin
 
   config.tickets_site = 'http://localhost:8080/athena/'
-  config.payments_component = 'http://localhost:8080/payments/'
   config.orders_component = 'http://localhost:8080/athena/'
   config.stage_site = 'http://localhost:8080/athena/'
   config.people_site = 'http://localhost:8080/athena/'
   config.reports_site = 'http://localhost:8080/athena/reports/'
+  
+  config.payments_component = 'http://localhost:8080/payments/'
+  config.payments_element_name = '/payments'
 
   config.athena_resource_user = nil
   config.athena_resource_password = nil
