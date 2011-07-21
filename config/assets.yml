@@ -1,0 +1,12 @@
+package_assets: on
+
+javascripts:
+  splash:
+    - public/javascripts/splash/**/*.js
+
+  vendor:
+    - public/javascripts/jquery/**/*.js
+
+  common:
+    - public/javascripts/jquery_ujs.js
+    - public/javascripts/application.js
