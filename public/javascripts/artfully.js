@@ -46,7 +46,7 @@ artfully.utils = (function(){
   }
 
   function keyOnId(list){
-    var result = [];
+    var result = {};
     $.each(list, function(index, item){
       result[item.id] = item;
     });
@@ -89,9 +89,20 @@ artfully.widgets = (function(){
       var charts = artfully.utils.keyOnId(data.charts);
 
       // Modelize charts and their sections.
-      artfully.utils.modelize(charts, artfully.models.chart, function(chart){
+      //artfully.utils.modelize(charts, artfully.models.chart, function(chart){
+      //  artfully.utils.modelize(chart.sections, artfully.models.section);
+      //});
+      //since charts are hashed, we can't pass in the whole hash because modelize expects and Array
+      //and we can't check for a hash because it's impossible in javascript
+        $.each(charts, function(index, chart){
+          artfully.utils.modelize(chart, artfully.models.chart, 
+            function(chart){
         artfully.utils.modelize(chart.sections, artfully.models.section);
-      });
+      }
+            
+            );
+        });      
+
 
       // Modelize performance and assign charts.
       artfully.utils.modelize(data.performances, artfully.models.performance, function(performance){
@@ -324,7 +335,6 @@ artfully.models = (function(){
             return false;
           })
           .appendTo($t);
-
           this.chart.render($t);
           this.$target = $t;
         }
