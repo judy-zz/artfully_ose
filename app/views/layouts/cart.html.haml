@@ -1,15 +1,9 @@
 !!!
 %html
   %head
+    = include_stylesheets :widget
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-    = stylesheet_link_tag "cart", "formalize"
-
-    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"
-    = javascript_include_tag "jquery/jquery.mask-money.js"
-    = javascript_include_tag "jquery/jquery.formalize.js"
-    = javascript_include_tag "jquery_ujs"
-
     = csrf_meta_tag
 
   %body
@@ -23,6 +17,8 @@
         #controls
           = yield :controls
 
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"
+    = include_javascripts :widget
     :javascript
       $("document").ready(function(){
         $(".currency").each(function(index, element){

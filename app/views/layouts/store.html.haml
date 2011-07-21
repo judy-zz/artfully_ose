@@ -4,10 +4,7 @@
     %title= "#{yield :title} : Artful.ly"
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-    = stylesheet_link_tag "store", "themes/default", "formalize"
+    = include_stylesheets :widget
   %body
-    #content
-      = yield
-    = javascript_include_tag "jquery/jquery.mask-money.js"
-    = javascript_include_tag "jquery/jquery.formalize.js"
-    = javascript_include_tag "jquery_ujs"
+    #content= yield
+    = include_javascripts :widget

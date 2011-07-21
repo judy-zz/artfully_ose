@@ -12,11 +12,13 @@ javascripts:
     - public/javascripts/application.js
     - public/javascripts/datatables.js
 
-  widget:
-    - public/javascripts/artfully.js
-
   custom:
     - public/javascripts/custom/**/*.js
+
+  widget:
+    - public/javascripts/jquery/jquery.mask-money.js
+    - public/javascripts/jquery/jquery.formalize.js
+    - public/javascripts/jquery_ujs.js
 
 stylesheets:
   splash:
@@ -36,3 +38,7 @@ stylesheets:
 
   printing:
     - public/stylesheets/printing.css
+
+  widget:
+    - public/stylesheets/themes/default.css
+    - public/stylesheets/formalize.css
