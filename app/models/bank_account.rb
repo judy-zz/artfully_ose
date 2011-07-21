@@ -3,9 +3,9 @@ class BankAccount < ActiveRecord::Base
 
   before_validation :clean_phone
 
-  validate :valid_account_type
   validates :routing_number,  :presence => true, :length => { :is => 9 }
   validates :number,          :presence => true, :length => { :minimum => 10 }
+  validates :account_type,    :inclusion => { :in => ["Business Checking", "Personal Checking", "Personal Savings"] }
 
   validates :name,    :presence => true, :length => { :maximum => 50 }
   validates :address, :presence => true, :length => { :maximum => 100 }
@@ -34,16 +34,8 @@ class BankAccount < ActiveRecord::Base
     }
   end
 
-  def account_types
-    ["Business Checking", "Personal Checking", "Personal Savings"]
-  end
-
-  def valid_account_type
-    errors.add(:account_type, " is not a valid bank account type.") unless account_types.include? account_type
-  end
-
   def clean_phone
-    self.phone.gsub!(/\D/,"").insert(3,"-").insert(-5, "-") unless phone.blank?
+    self.phone = phone.gsub(/\D/,"").insert(3,"-").insert(-5, "-") unless phone.blank?
   end
 
 end
