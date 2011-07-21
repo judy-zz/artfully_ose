@@ -50,7 +50,7 @@ Artfully::Application.configure do
   config.stage_site = 'http://athena-staging.elasticbeanstalk.com/'
   config.people_site = 'http://athena-staging.elasticbeanstalk.com/'
   config.reports_site = 'http://athena-staging.elasticbeanstalk.com/reports'
-  
+
   config.payments_component = 'http://athena-payments-staging.elasticbeanstalk.com/'
   config.payments_element_name = ''
 

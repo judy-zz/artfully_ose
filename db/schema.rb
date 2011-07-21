@@ -28,19 +28,19 @@ ActiveRecord::Schema.define(:version => 20110721183401) do
   end
 
   create_table "donations", :force => true do |t|
+    t.integer  "amount"
+    t.integer  "order_id"
+    t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "order_id"
-    t.integer  "amount"
-    t.integer  "organization_id"
   end
 
   create_table "kits", :force => true do |t|
     t.string   "state"
     t.string   "type"
+    t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "organization_id"
   end
 
   create_table "memberships", :force => true do |t|
@@ -51,46 +51,34 @@ ActiveRecord::Schema.define(:version => 20110721183401) do
   create_table "orders", :force => true do |t|
     t.string   "state"
     t.string   "transaction_id"
+    t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "person_id"
   end
 
   create_table "organizations", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "time_zone"
     t.string   "legal_organization_name"
     t.string   "ein"
     t.string   "fa_member_id"
-    t.integer  "account_balance",         :default => 0
-    t.string   "website"
-    t.boolean  "ach_on_file",             :default => false
     t.string   "fa_project_id"
-  end
-
-  create_table "performances", :force => true do |t|
-    t.string   "title"
-    t.string   "venue"
-    t.datetime "performed_on"
+    t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "purchasable_tickets", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "order_id"
     t.string   "ticket_id"
     t.string   "lock_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => ""
-    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -101,11 +89,10 @@ ActiveRecord::Schema.define(:version => 20110721183401) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "roles_mask"
     t.string   "customer_id"
-    t.string   "athena_id"
     t.datetime "suspended_at"
     t.string   "suspension_reason"
-    t.integer  "roles_mask"
     t.string   "invitation_token",     :limit => 60
     t.datetime "invitation_sent_at"
   end
