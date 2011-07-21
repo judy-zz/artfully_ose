@@ -30,7 +30,6 @@ class PeopleController < ApplicationController
     else
       respond_to do |format|
         format.html do
-          flash[:alert] = "Error creating a new person record."
           render :new
         end
 
