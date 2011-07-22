@@ -15,6 +15,6 @@ class SettlementsController < ApplicationController
 
   def show
     @settlement = Settlement.find(params[:id])
-    authorize! :view, @settlements
+    authorize! :view, @settlement
   end
 end
