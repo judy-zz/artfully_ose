@@ -24,8 +24,9 @@ describe PurchasableTicket do
 
     it "should update the ticket id when updating the ticket" do
       old_id = subject.ticket_id
-      subject.ticket = Factory(:ticket, :id => old_id + 1)
-      subject.ticket_id.should eq old_id + 1
+      new_id = Factory.next(:ticket_id)
+      subject.ticket = Factory(:ticket, :id => new_id)
+      subject.ticket_id.should eq new_id
     end
 
     it "should fetch the ticket from the remote" do
