@@ -4,15 +4,20 @@ class AthenaSection < AthenaResource::Base
   self.collection_name = 'sections'
 
   schema do
-    attribute 'id', :integer
-    attribute 'name', :string
+    attribute 'id',       :integer
+    attribute 'name',     :string
     attribute 'capacity', :integer
-    attribute 'price', :integer
+    attribute 'price',    :integer
     attribute 'chart_id', :string
   end
 
-  validates_presence_of :name, :capacity, :price
-  validates_numericality_of :capacity, :price
+  validates :name, :presence => true
+
+  validates :price, :presence => true,
+                    :numericality => true
+
+  validates :capacity,  :presence => true,
+                        :numericality => { :less_than_or_equal_to => 1000 }
 
   def chart
     @chart ||= AthenaChart.find(chart_id)
