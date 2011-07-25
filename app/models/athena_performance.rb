@@ -148,6 +148,22 @@ class AthenaPerformance < AthenaResource::Base
     built? or published? or unpublished?
   end
 
+  def on_saleable_tickets
+    tickets.select(&:on_saleable?)
+  end
+
+  def off_saleable_tickets
+    tickets.select(&:off_saleable?)
+  end
+
+  def destroyable_tickets
+    tickets.select(&:destroyable?)
+  end
+
+  def compable_tickets
+    tickets.select(&:compable?)
+  end
+
   private
     def find_tickets
       return [] if new_record?
