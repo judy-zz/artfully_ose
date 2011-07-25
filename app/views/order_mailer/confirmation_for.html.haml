@@ -1,17 +1,21 @@
-%h2 Thanks for your order! Here's what you purchased:
+%h3="Thank you for your order #{@person.first_name} #{@person.last_name}!"
+
+%h5= "Order number: #{@order.id}"
+%h5= "Purchase Date: #{l DateTime.now}"
+%h5= "Order total: #{format("%.2f", (@order.total/100.0))}"
+
 - unless @order.tickets.empty?
-  %h2 Tickets
+  %h4 Tickets
   %ul.ticket-list
     - @order.tickets.each do |ticket|
       %li
-        %span.price= "$#{ticket.price/100.00}"
-        %span.name= "#{ticket.event} at #{l ticket.performance, :format => :short}"
+        %span.price= "$#{format("%.2f", (ticket.price/100.0))}:"
+        %span.name= "#{ticket.event} on #{l ticket.performance, :format => :date_at_time}"
 
 - unless @order.donations.empty?
-  %h2 Donations
+  %h4 Donations
   %ul.donation-list
     - @order.donations.each do |donation|
       %li
-        %span.price= "$#{donation.amount/100.00}"
+        %span.price= "$#{format("%.2f", (donation.amount/100.00))}:"
         %span.name= "Donation to #{donation.organization.name}"
-
