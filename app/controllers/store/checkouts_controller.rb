@@ -1,5 +1,5 @@
 class Store::CheckoutsController < Store::StoreController
-  layout "widget"
+  layout "cart"
 
   def new
     redirect_to(store_order_url, :alert => "This order is empty!") if current_order.empty?

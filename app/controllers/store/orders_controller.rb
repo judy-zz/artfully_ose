@@ -1,5 +1,5 @@
 class Store::OrdersController < Store::StoreController
-  layout "widget"
+  layout "cart"
   skip_before_filter :verify_authenticity_token
 
   def show
