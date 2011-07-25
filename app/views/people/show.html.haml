@@ -18,7 +18,6 @@
       %li=link_to "Give", new_person_action_path(@person, "GIVE"), :class => "popup-link", :remote => true
   #actions
     .table-controls
-      %input.filter{ :type => :text, :value => "Filter" }
     =render :partial=>'action_list', :locals => { :person => @person }
     
   .popup

@@ -57,7 +57,6 @@ class Settlement < AthenaResource::Base
     rescue ACH::ClientError => e
       logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
     end
-
   end
 
   def self.for_items(items)
