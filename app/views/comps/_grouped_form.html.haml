@@ -3,7 +3,7 @@
   = form_tag new_comp_path, :method => :get do
     = hidden_field_tag :performance_id, performance.id
     %ul
-      - tickets.each do |ticket|
+      - performance.compable_tickets.each do |ticket|
         %li
           .label-and-element
             = check_box_tag "selected_tickets[]", ticket.id, false, :id => "comp_ticket_#{ticket.id}", :class => "item_#{ticket.id}"

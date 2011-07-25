@@ -3,7 +3,7 @@
   = form_tag delete_performance_tickets_path(@performance), :method => :delete do
     = hidden_field_tag :performance_id, performance.id
     %ul
-      - tickets.each do |ticket|
+      - performance.destroyable_tickets.each do |ticket|
         %li
           .label-and-element
             = check_box_tag "selected_tickets[]", ticket.id, false, :id => "delete_ticket_#{ticket.id}", :class => "item_#{ticket.id}"
