@@ -161,8 +161,12 @@ class AthenaTicket < AthenaResource::Base
     sold? or comped?
   end
 
+  def destroyable?
+    !(sold? or comped?)
+  end
+
   def destroy
-    super unless sold? or comped?
+    super if destroyable?
   end
 
   def buyer
