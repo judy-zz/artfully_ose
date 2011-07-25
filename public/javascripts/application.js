@@ -45,7 +45,7 @@ $(document).ready(function() {
 
   $(".checkall").click(function(){
     var isChecked = $(this).is(":checked")
-    $(this).closest('form').find("input[type='checkbox']").each(function(index, element){
+    $(this).closest('form').find("input[type='checkbox']:enabled").each(function(index, element){
       element.checked = isChecked;
       $(element).change();
     });
