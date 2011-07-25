@@ -30,7 +30,7 @@ class OrganizationsController < ApplicationController
   end
 
   def create
-    @organization = Organization.new(params[:organization][:organization])
+    @organization = Organization.new(params[:organization])
 
     if @organization.save
       @organization.users << current_user
@@ -41,6 +41,8 @@ class OrganizationsController < ApplicationController
   end
 
   def edit
+    @organization = Organization.find(params[:id])
+    authorize! :edit, @organization
   end
 
   def update
@@ -90,5 +92,5 @@ class OrganizationsController < ApplicationController
       end
     end
   end
-  
+
 end

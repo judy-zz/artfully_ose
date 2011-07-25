@@ -4,18 +4,12 @@
 
 .context
   %h3 About
+  %p Before using Artful.ly, you need to be a member of an organization.
   %p
-    Before using Artful.ly, you need to be a member of an organization.  
-  %p
-    <strong>If you want to join an existing organization, contact the administrator of that organization so they can add you.</strong>
-  %p
-    If you want to start your own organization, fill out the details on the right and click "Create"
+    %strong If you want to join an existing organization, contact the administrator of that organization so they can add you.
+  %p If you want to start your own organization, fill out the details on the right and click "Create"
 .document
   %h3 Create your own
-
-  = form_for @organization, :url => organizations_path do |form|
-    %ul
-      %li
-        = render :partial => 'organizations/form', :locals=>{:parent_form => form, :target => @organization}
-      %li
-        = form.submit "Create"
+  = form_for @organization do |form|
+    %ul= render :partial => 'organizations/form', :locals => { :form => form }
+    = form.submit "Create"

@@ -1,7 +1,6 @@
-= parent_form.fields_for target do |organization_form|
-  %li
-    .label= organization_form.label :name, "Organization Name"
-    .element= organization_form.text_field :name
-  %li
-    .label= organization_form.label :time_zone, "Time Zone"
-    .element= organization_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones
+%li
+  .label= form.label :name, "Organization Name"
+  .element= form.text_field :name
+%li
+  .label= form.label :time_zone, "Time Zone"
+  .element= form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones
