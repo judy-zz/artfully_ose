@@ -36,12 +36,14 @@ class TicketsController < ApplicationController
   def delete
     @performance = AthenaPerformance.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
-    if @performance.bulk_delete(@selected_tickets)
-      flash[:notice] = "Deleted #{to_plural(@selected_tickets.size, 'ticket')}. "
-    else
-      flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
+    with_confirmation do
+      if @performance.bulk_delete(@selected_tickets)
+        flash[:notice] = "Deleted #{to_plural(@selected_tickets.size, 'ticket')}. "
+      else
+        flash[:error] = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
+      end
+      redirect_to event_performance_url(@performance.event, @performance)
     end
-    redirect_to event_performance_url(@performance.event, @performance)
   end
 
   def bulk_edit
@@ -83,7 +85,7 @@ class TicketsController < ApplicationController
       @selected_tickets = params[:selected_tickets]
       @price = params[:price]
       @performance = AthenaPerformance.find(params[:performance_id])
-      
+
       if @performance.bulk_change_price(@selected_tickets, @price)
         flash[:notice] = "Updated the price of #{to_plural(@selected_tickets.size, 'ticket')}. "
       else
