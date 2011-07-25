@@ -75,6 +75,6 @@ class AthenaPerson < AthenaResource::Base
 
   def unique?
     doppleganger = self.class.find_by_email_and_organization(self.email, self.organization)
-    doppleganger.nil? or (persisted? and person.id == self.id)
+    doppleganger.nil? or (persisted? and doppleganger.id == self.id)
   end
 end

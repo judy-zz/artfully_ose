@@ -43,18 +43,13 @@ class PeopleController < ApplicationController
   def update
     @person = AthenaPerson.find(params[:id])
     authorize! :edit, @person
-    person = params[:athena_person][:athena_person]
 
-    @person.first_name = person[:first_name]
-    @person.last_name  = person[:last_name]
-    @person.email      = person[:email]
-
-   if @person.valid? && @person.save!
+   if @person.update_attributes(params[:athena_person][:athena_person])
       flash[:notice] = "Person updated successfully!"
       redirect_to person_url(@person)
     else
       flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
-      redirect_to :back
+      render :edit
     end
   end
 
