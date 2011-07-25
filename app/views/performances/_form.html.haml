@@ -1,7 +1,7 @@
 %ul
   %li
     .label= performance_form.label :datetime, "Performace date/time"
-    .double.element
+    .element.date_field
       = performance_form.text_field :datetime, { :value => "#{l target.datetime, :format => :date_for_input}", :class=>'datepicker hasDatePicker'}
       = performance_form.time_select :datetime, :value => target.datetime.in_time_zone("UTC")
       = performance_form.hidden_field :time_zone, { :value => target.event.time_zone }
