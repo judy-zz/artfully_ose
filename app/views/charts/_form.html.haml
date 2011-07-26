@@ -4,3 +4,9 @@
       = chart_form.label :name, "Name"
     .element
       = chart_form.text_field :name
+
+    .label
+      = chart_form.label :sections, "Sections"
+    .element
+      #edit-sections
+        = link_to "Edit Sections", chart_path(target) if can?(:view, target)
