@@ -1,6 +1,6 @@
 - in_section :reports
 - content_for :header do
-  %h1= "##{@settlement.id}"
+  %h1= "#{@settlement.id}"
   %h2= "Settled on #{l(@settlement.created_at, :format => :date)}"
 
 .overview
