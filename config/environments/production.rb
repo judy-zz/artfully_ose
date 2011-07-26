@@ -45,6 +45,8 @@ Artfully::Application.configure do
     :domain         => ENV['SENDGRID_DOMAIN']
   }
 
+  config.action_mailer.default_url_options = { :host => 'www.artfullyhq.com' }
+
   # Enable threaded mode
   # config.threadsafe!
 
