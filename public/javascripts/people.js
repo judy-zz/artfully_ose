@@ -5,9 +5,9 @@ $(document).ready(function() {
 
   $(".starable").click(function() {
     var star      = $.trim($(this).html()),
-        person_id = $(this).attr("id").split("_")[0],
-        type      = $(this).attr("id").split("_")[1],
-        id        = $(this).attr("id").split("_")[2],
+        person_id = $(this).attr("data-person-id"),
+        type      = $(this).attr("data-type"),
+        id        = $(this).attr("data-action-id"),
         this_table = $(this).parents('table'),
         this_row   = $(this).parents('tr');
 
@@ -33,9 +33,9 @@ $(document).ready(function() {
 
   $(".relationship_starred").click(function() {
     var star      = $.trim($(this).html()),
-        person_id = $(this).attr("id").split("_")[0],
-        type      = $(this).attr("id").split("_")[1],
-        id        = $(this).attr("id").split("_")[2],
+        person_id = $(this).attr("data-person-id"),
+        type      = $(this).attr("data-type"),
+        id        = $(this).attr("data-action-id"),
         relationship_type  = $.trim($('.relationship_type',this.parent).html()),
         name               = $.trim($('.relationship_person',this.parent).html()),
         relationships_list = $('#key_relationships');

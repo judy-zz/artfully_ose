@@ -2,8 +2,7 @@
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
   %head
     %title= "#{yield :title} : Artful.ly"
-    %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
-
+    = favicon_link_tag
     = stylesheet_link_tag "formalize", "jquery/jquery.gritter.css", "jquery/jquery.ui.css", "fullcalendar", :media => :screen
     = stylesheet_link_tag "application"
     = stylesheet_link_tag "printing", :media => :print
@@ -27,8 +26,7 @@
       = render :partial => 'layouts/menu'
 
     #content
-      #logo
-        %img{ :src => '/images/logo.png' }
+      #logo= image_tag("logo.png")
       #page
         #front-matter= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
