@@ -15,8 +15,7 @@ class AthenaCreditCard < AthenaResource::Base
   validates_presence_of :expiration_date, :cardholder_name
   validate :valid_luhn
   
-  validates :cvv, :numericality => true,
-                  :length => { :in => 3..4 }
+  validates :cvv, :numericality => true, :length => { :in => 3..4 }
 
   def valid_luhn
     errors.add(:card_number, " doesn't look like a valid credit card number.") unless passes_luhn?(card_number)
