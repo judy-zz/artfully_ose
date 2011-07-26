@@ -57,11 +57,11 @@ Artfully::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.tickets_site = 'http://athena-prduction.elasticbeanstalk.com/'
-  config.orders_component = 'http://athena-prduction.elasticbeanstalk.com/'
-  config.stage_site = 'http://athena-prduction.elasticbeanstalk.com/'
-  config.people_site = 'http://athena-prduction.elasticbeanstalk.com/'
-  config.reports_site = 'http://athena-prduction.elasticbeanstalk.com/reports/'
+  config.tickets_site = 'http://athena-production.elasticbeanstalk.com/'
+  config.orders_component = 'http://athena-production.elasticbeanstalk.com/'
+  config.stage_site = 'http://athena-production.elasticbeanstalk.com/'
+  config.people_site = 'http://athena-production.elasticbeanstalk.com/'
+  config.reports_site = 'http://athena-production.elasticbeanstalk.com/reports/'
   
   config.payments_component = 'http://athena-payments-prod.elasticbeanstalk.com/'
   config.payments_element_name = ''
