@@ -2,7 +2,7 @@
 
 %h5= "Order number: #{@order.id}"
 %h5= "Purchase Date: #{l DateTime.now}"
-%h5= "Order total: #{format("%.2f", (@order.total/100.0))}"
+%h5= "Order total: $#{format("%.2f", (@order.total/100.0))}"
 
 - unless @order.tickets.empty?
   %h4 Tickets
