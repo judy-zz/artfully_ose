@@ -45,6 +45,8 @@ Artfully::Application.configure do
     :domain         => ENV['SENDGRID_DOMAIN']
   }
 
+  config.action_mailer.default_url_options = { :host => 'www.artfullyhq.com' }
+
   # Enable threaded mode
   # config.threadsafe!
 
@@ -55,16 +57,16 @@ Artfully::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.tickets_site = 'http://localhost:8080/tix/'
-  config.orders_component = 'http://localhost:8080/orders'
-  config.stage_site = 'http://localhost:8080/stage/'
-  config.people_site = 'http://localhost:8080/people/'
-  config.reports_site = 'http://localhost:8080/reports/'
+  config.tickets_site = 'http://athena-production.elasticbeanstalk.com/'
+  config.orders_component = 'http://athena-production.elasticbeanstalk.com/'
+  config.stage_site = 'http://athena-production.elasticbeanstalk.com/'
+  config.people_site = 'http://athena-production.elasticbeanstalk.com/'
+  config.reports_site = 'http://athena-production.elasticbeanstalk.com/reports/'
   
-  config.payments_component = 'http://athena-payments.elasticbeanstalk.com/'
+  config.payments_component = 'http://athena-payments-prod.elasticbeanstalk.com/'
   config.payments_element_name = ''
 
-  config.athena_resource_user = nil
-  config.athena_resource_password = nil
-  config.athena_resource_auth_type = nil
+  config.athena_resource_user = ENV['ATHENA_RESOURCE_USER']
+  config.athena_resource_password = ENV['ATHENA_RESOURCE_PASSWORD']
+  config.athena_resource_auth_type = 'digest'
 end
