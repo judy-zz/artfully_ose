@@ -10,7 +10,7 @@
     .element
       = section_form.text_field :capacity
   %li
-    - if can? :create_paid_events, AthenaEvent.new
+    - if can? :create, :paid_events
       .label
         = section_form.label :price, "Price"
       .element

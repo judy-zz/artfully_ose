@@ -56,7 +56,7 @@ class Ability
       user.is_in_organization?
     end
 
-    can :create_paid_events, AthenaEvent do |event|
+    can :create, :paid_events do
       user.current_organization.can? :access, :paid_ticketing
     end
 
