@@ -6,7 +6,7 @@ class AthenaTicket < AthenaResource::Base
   self.element_name = 'tickets'
 
   schema do
-    attribute 'id',             :integer
+    attribute 'id',             :string
     attribute 'event',          :string
     attribute 'event_id',       :integer
     attribute 'venue',          :string
@@ -26,26 +26,11 @@ class AthenaTicket < AthenaResource::Base
     state :sold
     state :comped
 
-    event :on_sale do
-      transitions :from => [ :on_sale, :off_sale, :sold ], :to => :on_sale
-    end
-
-    event :off_sale do
-      transitions :from => :on_sale, :to => :off_sale
-    end
-
-    event :sell do
-      transitions :from => :on_sale, :to => :sold
-    end
-
-    event :comp do
-      transitions :from => [ :on_sale, :off_sale ], :to => :comped
-    end
-
-    event :do_return do
-      transitions :from => [ :comped, :sold ], :to => :on_sale
-    end
-
+    event(:on_sale)   { transitions :from => [ :on_sale, :off_sale, :sold ],  :to => :on_sale   }
+    event(:off_sale)  { transitions :from => :on_sale,                        :to => :off_sale  }
+    event(:sell)      { transitions :from => :on_sale,                        :to => :sold      }
+    event(:comp)      { transitions :from => [ :on_sale, :off_sale ],         :to => :comped    }
+    event(:do_return) { transitions :from => [ :comped, :sold ],              :to => :on_sale   }
   end
 
   def self.available(params)
@@ -247,7 +232,6 @@ class AthenaTicket < AthenaResource::Base
       begin
         AthenaPerson.find(self.buyer_id)
       rescue ActiveResource::ResourceNotFound
-        update_attribute!(:buyer_id, nil)
         return nil
       end
     end
