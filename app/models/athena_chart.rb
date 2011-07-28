@@ -3,46 +3,38 @@ class AthenaChart < AthenaResource::Base
   self.element_name = 'charts'
   self.collection_name = 'charts'
 
-  validates_presence_of :name
-  validates_length_of :name, :maximum => 255
+  validates :name, :presence => true, :length => { :maximum => 255 }
 
   schema do
-    attribute 'name', :string
-    attribute 'event_id', :string
-    attribute 'performance_id', :string
-    attribute 'is_template', :string
-    attribute 'organization_id', :string
+    attribute 'name',             :string
+    attribute 'is_template',      :string
+    attribute 'event_id',         :string
+    attribute 'performance_id',   :string
+    attribute 'organization_id',  :string
   end
 
   def as_json(options = {})
-    super({ :methods => [ :sections ]}.merge(options))
+    super({ :methods => [ "sections" ]}.merge(options))
   end
 
   def sections
-    @attributes['sections'] ||= find_sections
+    @sections ||= find_sections
   end
 
   def sections=(sections)
     raise TypeError, "Expecting an Array" unless sections.kind_of? Array
-    @attributes['sections'] = sections
+    @sections = sections
   end
 
-  #copy is when they're editing charts and want to create a copy of this char tto modify further (weekday and weekend charts)
-  #This method will copy chart.is_template
+  # copy! is when they're editing charts and want to create a copy of
+  # this chart to modify further (weekday and weekend charts)
+  # This method will copy chart.is_template
   def copy!
-    copy = AthenaChart.new(self.attributes.reject { |key, value| key == 'id' })
-    copy.name = copy.name + ' (Copy)'
-    copy.sections = self.sections.collect { |section| section.dup! }
-    copy
+    duplicate(:without => "id", :with => { :name => "#{name} (Copy)" })
   end
 
-  #dup is used when importing a chart to an event
-  #This method will set chart.is_template to false
   def dup!
-    copy = AthenaChart.new(self.attributes.reject { |key, value| key == 'id' })
-    copy.is_template = false
-    copy.sections = self.sections.collect { |section| section.dup! }
-    copy
+    duplicate(:without => "id", :with => { :is_template => false })
   end
 
   def save
@@ -52,11 +44,6 @@ class AthenaChart < AthenaResource::Base
       section.save
     end
     success
-  end
-
-  def encode(options = {})
-    options[:rejections] = %w( sections )
-    super(options)
   end
 
   def event
@@ -104,6 +91,16 @@ class AthenaChart < AthenaResource::Base
   end
 
   private
+    def duplicate(options = {})
+      rejections = Array.wrap(options[:without])
+      additions = options[:with] || {}
+
+      self.class.new(self.attributes.reject { |key, value| rejections.include?(key) } ).tap do |copy|
+        copy.load(additions)
+        copy.sections = self.sections.collect { |section| section.dup! }
+      end
+    end
+
     def find_sections
       return [] if new_record?
       AthenaSection.find(:all, :params => { :chartId => "eq#{id}" }).each do |section|
