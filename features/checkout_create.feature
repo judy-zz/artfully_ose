@@ -34,5 +34,5 @@ Feature: Order Checkout
     And I follow "Checkout Now"
     And I enter my payment details
     And I press "Purchase"
-    Then I should see "User agreement must be accepted"
+    Then I should see "The user agreement must be accepted"
 

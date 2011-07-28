@@ -44,11 +44,19 @@ form ul li
     @extend .stack
     label, input
       display: inline
-  .description
+  .checkbox
+    float: left
+  .checkbox-text
     font-size: .8em
-    margin: .5em 0
+    margin: .3em 0 .25em 1.5em
+    color: #999
+  .description, .form-error
+    font-size: .8em
+    margin: .25em 0
     width: 75%
     color: #999
+  .form-error
+    color: $red
 
 .label.hidden
   display: none
@@ -70,6 +78,10 @@ form ul li
     margin-right: 2%
     &:last-child
       margin-right: 0
+  .form-error
+    width: 48%
+    margin-right: 2%
+    float: left
 
 .paired.element
   input
