@@ -2,7 +2,7 @@ Thank you for your order <%= @person.first_name %> <%= @person.last_name %>!
 
 Order number: <%= @athena_order.id %>
 Purchase Date: <%= l DateTime.now %>
-Order total: <%= format("%.2f", (@order.total/100.0)) %>
+Order total: $<%= format("%.2f", (@order.total/100.0)) %>
 
 <% unless @order.tickets.empty? %>
   Tickets
