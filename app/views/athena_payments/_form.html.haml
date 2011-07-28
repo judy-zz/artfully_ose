@@ -2,26 +2,23 @@
   .viewport
     %ol
       %li#customer
-        %h3 Customer Information 
-        = render "shared/error_messages.html", :target => @payment.customer
-        = render :partial => 'athena_customers/form.html', :locals => { :parent_form => payment_form, :target => @payment.customer }
+        %h3 Customer Information
+        = render :partial => 'athena_customers/form', :locals => { :parent_form => payment_form, :target => @payment.customer }
 
       -unless @payment.amount.zero?
         %li#credit_card
           %h3 Credit Card Information
-          = render "shared/error_messages.html", :target => @payment.credit_card
-          = render :partial => 'athena_credit_cards/form.html', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
+          = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
 
       %li#billing_address
         %h3 Billing Address
-        = render "shared/error_messages.html", :target => @payment.billing_address
-        = render :partial => 'athena_addresses/form.html', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
+        = render :partial => 'athena_addresses/form', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
 
       %li#confirmation
-
         %ul
           %li
             .label= payment_form.label :user_agreement, "User Agreement"
             .element
-              = payment_form.check_box :user_agreement
-              .description= "I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", page_path("user_agreement"), :target => "_blank"}".html_safe
+              .checkbox= payment_form.check_box :user_agreement
+              .checkbox-text= "I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", page_path("user_agreement"), :target => "_blank"}".html_safe
+              = payment_form.error_message_on(:user_agreement, :prepend_text => "The user agreement ", :css_class => "form-error")

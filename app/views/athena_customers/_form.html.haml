@@ -7,9 +7,15 @@
       .double.element
         = customer_form.text_field :first_name
         = customer_form.text_field :last_name
+        = customer_form.error_message_on(:first_name, :prepend_text => "First name ", :css_class => "form-error")
+        = customer_form.error_message_on(:last_name, :prepend_text => "Last name ", :css_class => "form-error")
     %li
       .label= customer_form.label :phone, "Phone"
-      .element= customer_form.text_field :phone
+      .element
+        = customer_form.text_field :phone
+        = customer_form.error_message_on(:phone, :prepend_text => "Phone ", :css_class => "form-error")
     %li
       .label= customer_form.label :email, "Email"
-      .element= customer_form.text_field :email
+      .element
+        = customer_form.text_field :email
+        = customer_form.error_message_on(:email, :prepend_text => "Email  ", :css_class => "form-error")
