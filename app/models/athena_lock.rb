@@ -16,8 +16,8 @@ class AthenaLock < AthenaResource::Base
     attribute 'status',         :string
   end
 
-  def tickets
-    @attributes['tickets'] ||= []
-    @attributes['tickets']
+  def initialize(*)
+    super
+    self.tickets ||= []
   end
 end
