@@ -29,6 +29,14 @@ class AthenaItem < AthenaResource::Base
     end
   end
 
+  def ticket?
+    product_type == "AthenaTicket"
+  end
+
+  def donation?
+    product_type == "Donation"
+  end
+
   def order
     @order ||= find_order
   end
@@ -173,7 +181,6 @@ class AthenaItem < AthenaResource::Base
       begin
         AthenaOrder.find(self.order_id)
       rescue ActiveResource::ResourceNotFound
-        update_attribute!(:order_id, nil)
         return nil
       end
     end

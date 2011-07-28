@@ -9,18 +9,18 @@ describe AthenaItem do
     it { should respond_to attribute + "=" }
   end
 
-  it "should not be valid with an invalid product type" do
+  it "is not valid with an invalid product type" do
     subject.product_type = "SomethingElse"
     subject.should_not be_valid
   end
 
   describe "#order" do
-    it "should fetch the order form the remote" do
+    it "fetches the order form the remote" do
       subject.order.should be_an AthenaOrder
       subject.order.id.should eq subject.order_id
     end
 
-    it "should return nil if the order_id is not set" do
+    it "returns nil if the order_id is not set" do
       subject.order = subject.order_id = nil
       subject.order.should be_nil
     end
@@ -38,7 +38,7 @@ describe AthenaItem do
   end
 
   describe "#product" do
-    it "should find the product using product_type and product_id" do
+    it "finds the product using product_type and product_id" do
       subject.instance_variable_set(:@product, nil)
       subject.product_type = "AthenaTicket"
       subject.product_id = 1
@@ -111,8 +111,18 @@ describe AthenaItem do
     end
   end
 
+  describe "#ticket?" do
+    subject { Factory(:athena_item, :product => Factory(:sold_ticket_with_id)) }
+    it { should be_a_ticket }
+  end
+
+  describe "#donation?" do
+    subject { Factory(:athena_item, :product => Factory(:donation)) }
+    it { should be_a_donation }
+  end
+
   describe "#dup!" do
-    it "should create a duplicate item without the id and state" do
+    it "creates a duplicate item without the id and state" do
       old_attr = subject.attributes.dup
       old_attr.delete(:id)
       old_attr.delete(:state)

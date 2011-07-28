@@ -15,12 +15,12 @@ describe AthenaOrder do
   end
 
   describe "#organization" do
-    it "should return the organization" do
+    it "returns the organization" do
       subject.organization.should be_an Organization
       subject.organization.id.should eq subject.organization_id
     end
 
-    it "should store the organization id when the organization is set" do
+    it "stores the organization id when the organization is set" do
       organization = Factory(:organization)
       subject.organization = organization
       subject.organization.should eq organization
@@ -28,68 +28,68 @@ describe AthenaOrder do
   end
 
   describe "payment" do
-    it "should return a new Payment based on the transaction ID" do
+    it "returns a new Payment based on the transaction ID" do
       subject.payment.should be_an AthenaPayment
       subject.payment.transaction_id.should eq subject.transaction_id
     end
   end
 
   describe "#person" do
-    it "should fetch the People record" do
+    it "fetches the People record" do
       person =  Factory(:athena_person_with_id)
       subject.person = person
       subject.person.should eq person
     end
 
-    it "should not make a request if the customer_id is not set" do
+    it "does not make a request if the customer_id is not set" do
       subject.person = subject.person_id = nil
       subject.person.should be_nil
     end
 
-    it "should update the customer id when assigning a new customer record" do
+    it "updates the customer id when assigning a new customer record" do
       subject.person = Factory(:athena_person_with_id, :id => 2)
       subject.person_id.should eq(2)
     end
   end
 
   describe "#customer" do
-    it "should fetch the Customer record" do
+    it "fetches the Customer record" do
       customer =  Factory(:customer_with_id)
       subject.customer = customer
       subject.customer.should eq customer
     end
 
-    it "should not make a request if the customer_id is not set" do
+    it "does not make a request if the customer_id is not set" do
       subject.customer = subject.customer_id = nil
       subject.customer.should be_nil
     end
 
-    it "should update the customer id when assigning a new customer record" do
+    it "updates the customer id when assigning a new customer record" do
       subject.customer = Factory(:customer_with_id, :id => 2)
       subject.customer_id.should eq(2)
     end
   end
 
   describe "parent" do
-    it "should fetch the Parent Order record" do
+    it "fetches the Parent Order record" do
       parent = Factory(:athena_order_with_id)
       subject.parent = parent
       subject.parent.should eq parent
     end
 
-    it "should not make a request if the parent_id is not set" do
+    it "does not make a request if the parent_id is not set" do
       subject.parent = subject.parent_id = nil
       subject.parent.should be_nil
     end
 
-    it "should update the parent id when assigning a new parent record" do
+    it "updates the parent id when assigning a new parent record" do
       subject.parent = Factory(:athena_order_with_id, :id => 2)
       subject.parent_id.should eq(2)
     end
   end
 
   describe "#items" do
-    it "should request items for itself" do
+    it "requests items for itself" do
       items = 2.times.collect { Factory(:athena_item) }
       subject.stub(:items).and_return(items)
       subject.items.should eq items
@@ -102,19 +102,19 @@ describe AthenaOrder do
       FakeWeb.register_uri(:get, "http://localhost/athena/items.json?orderId=1", :body=>"")
     end
 
-    it "should save the items after saving the order" do
+    it "saves the items after saving the order" do
       FakeWeb.register_uri(:post, "http://localhost/athena/items.json", :body=>"")
       items = 2.times.collect { Factory(:athena_item) }
       subject.stub(:items).and_return(items)
       subject.save
     end
 
-    it "should create a purchase action after save" do
+    it "creates a purchase action after save" do
       subject.should_receive(:create_purchase_action)
       subject.save
     end
 
-    it "should generate a valid donation action for each donation" do
+    it "generates a valid donation action for each donation" do
       donations = 2.times.collect { Factory(:donation) }
       subject << donations
       actions = subject.send(:create_donation_actions)
@@ -143,20 +143,20 @@ describe AthenaOrder do
       FakeWeb.register_uri(:post, "http://localhost/athena/orders.json", :body => subject.encode)
     end
 
-    it "should assign the organization to the order" do
+    it "assigns the organization to the order" do
       subject.organization.should eq organization
     end
 
-    it "should create an item that references each ticket" do
-      subject.items.select { |item| item.product_type == "AthenaTicket" }.size.should eq tickets.size
-      subject.items.select { |item| item.product_type == "AthenaTicket" }.each do |item|
+    it "creates an item that references each ticket" do
+      subject.items.select(&:ticket?).size.should eq tickets.size
+      subject.items.select(&:ticket?).each do |item|
         tickets.collect(&:id).should include item.product_id
       end
     end
 
-    it "should create an item that references each donation" do
-      subject.items.select { |item| item.product_type == "Donation" }.size.should eq donations.size
-      subject.items.select { |item| item.product_type == "Donation" }.each do |item|
+    it "creates an item that references each donation" do
+      subject.items.select(&:donation?).size.should eq donations.size
+      subject.items.select(&:donation?).each do |item|
         donations.collect(&:id).should include item.product_id
       end
     end

@@ -97,7 +97,7 @@ class AthenaOrder < AthenaResource::Base
   def payment
     AthenaPayment.new(:transaction_id => transaction_id)
   end
-  
+
   def record_exchange!
     items.each do |item|
       item.to_exchange!
@@ -118,11 +118,11 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def all_tickets
-    all_items.select{|item| item.product_type == "AthenaTicket" }
+    all_items.select(&:ticket?)
   end
 
   def all_donations
-    all_items.select{|item| item.product_type == "Donation" }
+    all_items.select(&:donation?)
   end
 
   def settleable_donations
@@ -142,9 +142,9 @@ class AthenaOrder < AthenaResource::Base
     sum_donations = 0
 
     all_items.each{ |item|
-      if item.attributes["product_type"] == "AthenaTicket"
+      if item.ticket?
         num_tickets += 1
-      elsif item.attributes["product_type"] == "Donation"
+      elsif item.donation?
         sum_donations += item.price.to_i
       end }
 
@@ -211,7 +211,7 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def create_donation_actions
-      items.select { |item| item.product_type == "Donation" }.collect do |item|
+      items.select(&:donation?).collect do |item|
         action                 = AthenaDonationAction.new
         action.person          = person
         action.subject         = item.product
@@ -241,7 +241,6 @@ class AthenaOrder < AthenaResource::Base
       begin
         AthenaPerson.find(self.person_id)
       rescue ActiveResource::ResourceNotFound
-        update_attribute!(:person_id, nil)
         return nil
       end
     end
@@ -262,7 +261,6 @@ class AthenaOrder < AthenaResource::Base
       begin
         AthenaCustomer.find(self.customer_id)
       rescue ActiveResource::ResourceNotFound
-        update_attribute!(:customer_id, nil)
         return nil
       end
     end
