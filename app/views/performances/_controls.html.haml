@@ -7,7 +7,7 @@
 
 = form_tag on_sale_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited built" do
   = hidden_field_tag :performance_id, performance.id
-  = submit_tag "Put On Sale", :class => [ :mini, :full ]
+  = submit_tag "Put All On Sale", :class => [ :mini, :full ]
   .confirmation.dialog
     %p= "You are about to put all tickets for the #{l @performance.datetime} performance of #{@performance.event.name} on sale and make it public."
 
