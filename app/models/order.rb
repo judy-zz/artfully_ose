@@ -106,9 +106,10 @@ class Order < ActiveRecord::Base
         order << donations
       end
       order.save!
+      OrderMailer.confirmation_for(self, order).deliver
     end
 
-    OrderMailer.confirmation_for(self).deliver
+
   end
 
   def generate_donations
