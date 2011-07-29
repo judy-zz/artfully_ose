@@ -25,6 +25,18 @@ describe AthenaPerformance do
   it "should parse the datetime attribute to a DateTime object" do
     subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end
+  
+  describe "#played" do
+    it "should be played if the event is in the past" do
+      subject.datetime = Time.now - 1.day
+      subject.should be_played
+    end
+
+    it "should not be played if the event is in the future" do
+      subject.datetime = Time.now + 1.day
+      subject.should_not be_played
+    end
+  end
 
   describe "#publish" do
     subject { Factory(:athena_performance_with_id, :state => "built" ) }
