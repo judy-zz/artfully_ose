@@ -24,6 +24,12 @@ class AthenaPerson < AthenaResource::Base
   def tags
     @tags ||= (attributes['tags'] || [])
   end
+  
+  #ATHENA doesn't let you patch arrays, otherwise it would be smart to do the patch
+  #right here in this method
+  def tag!(tag_text)
+    tags << tag_text      
+  end
 
   def self.find_by_email_and_organization(email, organization)
     find(:first, :params => { :email => "eq#{email}", :organizationId => "eq#{organization.id}"})

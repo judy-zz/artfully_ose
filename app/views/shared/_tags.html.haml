@@ -1,4 +1,4 @@
 %h3 Tags
-= render :partial=>'shared/tag_list', :locals => { :tags => tags }
 -form_tag new_tag_path(subject), :method => :post, :class => 'new-tag-form', :remote=>'true' do
   = text_field_tag :tag, nil, {:id=>'new-tag-field'}
+= render :partial=>'shared/tag_list', :locals => { :tags => tags }

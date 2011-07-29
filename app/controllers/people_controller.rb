@@ -99,6 +99,9 @@ class PeopleController < ApplicationController
   end
   
   def tag
+    @person = AthenaPerson.find(params[:id])
+    @person.tag! params[:tag]
+    @person.save
     render :nothing => true
   end
 

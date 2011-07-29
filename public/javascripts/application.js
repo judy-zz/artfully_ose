@@ -71,11 +71,8 @@ $(document).ready(function() {
   });
 
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
-    //GM: Using an array index within the event is a brittle way to do this.  However, any inspection of the form or
-    //request (using #new-tag-field selectors etc) meat that the remote => true got dropped from the form
-    //and the form submitted synchronously
-    $(document.createElement('li')).text(evt.currentTarget[2].value).appendTo($('.tags'));
-    $('#new-tag-field').clear()
+    $(document.createElement('li')).text($('#new-tag-field').attr('value')).appendTo($('.tags'));
+    $('#new-tag-field').attr('value', '')
   });
 
   $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
