@@ -97,6 +97,10 @@ class PeopleController < ApplicationController
     @person = AthenaPerson.find(params[:id])
     authorize! :edit, @person
   end
+  
+  def tag
+    
+  end
 
   private
     def is_search(params)

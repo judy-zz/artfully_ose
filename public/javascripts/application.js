@@ -75,6 +75,10 @@ $(document).ready(function() {
   });
 });
 
+function addTag() {
+  $(document.createElement('li')).text('hi').appendTo($('.tags');
+}
+
 function activateControls() {
   $(".currency").each(function(index, element){
     var name = $(this).attr('name'),

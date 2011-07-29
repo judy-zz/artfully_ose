@@ -1,3 +1,6 @@
-%ul.tags	
-  - tags.each do |tag|
-    %li=tag
+%h3 Tags
+= render :partial=>'shared/tag_list', :locals => { :tags => tags }
+:erb
+  <form>
+    <input name='tag'>
+  </form>
