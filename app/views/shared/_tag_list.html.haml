@@ -1,4 +1,6 @@
-%ul.tags	
+%ul.detailed-list.tags	
   - tags.each do |tag|
-    %li
+    %li.tag
       =tag
+      %ul.controls
+        %li.delete= link_to "X", "#", :method => :delete

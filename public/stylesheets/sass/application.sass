@@ -316,12 +316,18 @@ input.mini
 
 .tags
   margin-bottom: 0.1em
-  li
+  li.tag
     @include rounded-corners(3px, 3px, 3px, 3px)
     @include gradient(#0baac6, $compliment)
     @include inset-text
     display: inline-block
     padding: 4px 8px
+  ul.controls
+    li.delete
+      a
+        @include rounded-corners(3px, 3px, 3px, 3px)
+        padding: 0px
+        color: black
 
 .pagination
   @include rounded-corners(0, 0, 3px, 3px)
@@ -427,6 +433,7 @@ ul.prices li div
   background: #ccc
   text-align: right
   @include rounded-corners(4px, 0, 0, 0)
+  
 
 @import "main-menu"
 @import "forms"
