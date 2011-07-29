@@ -30,6 +30,10 @@ class AthenaPerson < AthenaResource::Base
   def tag!(tag_text)
     tags << tag_text      
   end
+  
+  def untag!(tag_text)
+    tags.delete tag_text     
+  end
 
   def self.find_by_email_and_organization(email, organization)
     find(:first, :params => { :email => "eq#{email}", :organizationId => "eq#{organization.id}"})
