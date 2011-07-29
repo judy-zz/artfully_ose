@@ -10,7 +10,7 @@ class RegularDonationKit < Kit
   end
 
   def has_tax_info?
-    errors.add(:requirements, "You need to enter your tax information to active this kit.") unless organization.has_tax_info?
+    errors.add(:requirements, "Your organization's tax information is missing or incomplete. Please complete it in order to active this kit.") unless organization.has_tax_info?
     organization.has_tax_info?
   end
 

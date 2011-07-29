@@ -50,17 +50,17 @@ class OrganizationsController < ApplicationController
     authorize! :edit, @organization
 
     if @organization.update_attributes(params[:organization])
-      flash[:notice] = "Successfully updated #{@organization.name}."
       if params[:back]
         redirect_to :back
       else
+        flash[:notice] = "Successfully updated #{@organization.name}."
         redirect_to @organization
       end
     else
-      flash[:error]= "Failed to update #{@organization.name}."
       if params[:back]
         redirect_to :back
       else
+        flash[:error]= "Failed to update #{@organization.name}."
         render :show
       end
     end
