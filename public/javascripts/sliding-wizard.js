@@ -5,6 +5,7 @@
     $proxy.click(function(){
       if(!$proxy.hasClass('disabled')){
         $submit.click();
+        $("#checkout-now, #checkout-now a").addClass('disabled');
       }
       return false;
     });
