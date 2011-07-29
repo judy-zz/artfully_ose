@@ -99,7 +99,7 @@ class PeopleController < ApplicationController
   end
   
   def tag
-    
+    render :nothing => true
   end
 
   private
