@@ -20,6 +20,10 @@ class AthenaPerson < AthenaResource::Base
   def self.recent(organization)
     search_index(nil, organization)
   end
+  
+  def tags
+    @tags ||= (attributes['tags'] || [])
+  end
 
   def self.find_by_email_and_organization(email, organization)
     find(:first, :params => { :email => "eq#{email}", :organizationId => "eq#{organization.id}"})

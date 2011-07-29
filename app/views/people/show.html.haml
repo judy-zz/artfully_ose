@@ -8,6 +8,8 @@
   = link_to "Edit", edit_person_path(@person)
 
 .document
+  = render :partial=>'shared/tags', :locals => { :tags => @person.tags }
+
   %h3 Actions
 
   .call-to-action.dropdown-container
