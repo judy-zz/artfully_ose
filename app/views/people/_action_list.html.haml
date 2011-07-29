@@ -1,4 +1,4 @@
-%table.zebra.tablesorter.sortedstar
+%table.zebra.sortedstar#action-list
   %thead
     %tr
       %th.starred &#10029;
@@ -15,3 +15,20 @@
     - else
       - (person.starred_actions + person.unstarred_actions ).each do |action|
         = render :partial=>'action_list_row', :locals => { :person => person, :action => action }
+
+:javascript
+$(document).bind('zebra sortedstar', function(){
+    $('#action-list').dataTable({
+        "iDisplayLength": 10,
+        "bPaginate": true,
+        "bJQueryUI": true,
+        "sDom": '<"H"lfip>t<"F"ip>',
+        "aoColumns": [
+        null,
+        null,
+        null,
+        null,
+        null
+        ]
+    });
+});

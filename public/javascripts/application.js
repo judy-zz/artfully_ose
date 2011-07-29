@@ -124,3 +124,19 @@ $(document).bind('grouped-form-ready', function(){
         ]
     });
 });
+
+//$(document).bind('actions', function(){
+//    $('#action-list').dataTable({
+//        "iDisplayLength": 20,
+//        "bPaginate": true,
+//        "bJQueryUI": true,
+//        "sDom": '<"H"lfip>t<"F"ip>',
+//        "aoColumns": [
+//        null,
+//        null,
+//        null,
+//        null,
+//        null
+//        ]
+//    });
+//});
