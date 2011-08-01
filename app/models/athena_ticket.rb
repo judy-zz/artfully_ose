@@ -27,7 +27,7 @@ class AthenaTicket < AthenaResource::Base
     state :comped
 
     event :on_sale do
-      transitions :from => [ :off_sale, :sold ], :to => :on_sale
+      transitions :from => [ :on_sale, :off_sale, :sold ], :to => :on_sale
     end
 
     event :off_sale do
@@ -162,7 +162,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def on_saleable?
-    off_sale?
+    !(sold? or comped?)
   end
 
   def off_saleable?

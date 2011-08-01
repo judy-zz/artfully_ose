@@ -236,7 +236,7 @@ DEPENDENCIES
   nokogiri
   rack-jsonp-middleware
   rails
-  rake (= 0.8.7)
+  rake (>= 0.8.7)
   role_model
   rspec-rails (>= 2.1)
   sass

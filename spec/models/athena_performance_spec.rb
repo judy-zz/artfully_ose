@@ -74,6 +74,12 @@ describe AthenaPerformance do
         AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
         subject.bulk_on_sale(:all)
       end
+      
+      it "can put a ticket on sale that is already on_sale" do
+        tickets.first.state = :on_sale
+        outcome = subject.bulk_on_sale(tickets.collect(&:id))
+        outcome.should_not be true        
+      end
 
       it "should put tickets on sale" do
         AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
@@ -81,7 +87,7 @@ describe AthenaPerformance do
       end
 
       it "fails by returning false if any of the tickets can not be put on sale" do
-        tickets.first.state = :on_sale
+        tickets.first.state = :comped
         outcome = subject.bulk_on_sale(tickets.collect(&:id))
         outcome.should be false
       end
