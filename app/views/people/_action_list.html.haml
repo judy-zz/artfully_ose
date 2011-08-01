@@ -1,4 +1,4 @@
-%table.zebra.tablesorter.sortedstar
+%table.zebra.sortedstar#action-list
   %thead
     %tr
       %th.starred &#10029;
@@ -15,3 +15,4 @@
     - else
       - (person.starred_actions + person.unstarred_actions ).each do |action|
         = render :partial=>'action_list_row', :locals => { :person => person, :action => action }
+
