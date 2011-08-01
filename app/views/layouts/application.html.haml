@@ -27,7 +27,7 @@
       = render :partial => 'layouts/menu'
 
     #content
-      #logo= image_tag("logo.png")
+      .logo{ :id => active_section }
       #page
         #front-matter= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
