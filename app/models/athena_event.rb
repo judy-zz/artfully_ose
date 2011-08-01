@@ -96,7 +96,25 @@ class AthenaEvent < AthenaResource::Base
     @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization.id })
   end
 
+  def assign_chart(chart)
+    if already_has_chart(chart)
+      self.errors[:base] << "Chart \"#{chart.name}\" has already been added to this event"
+      return self
+    end
+    
+    if free? && chart.has_paid_sections?
+      self.errors[:base] << "Cannot add chart with paid sections to a free event"
+      return self
+    end
+    chart.assign_to(self)
+    self
+  end
+
   private
+    def already_has_chart(chart)
+      !self.charts.select{|c| c.name == chart.name }.empty?
+    end
+  
     def find_charts
       return [] if new_record?
       AthenaChart.find(:all, :params => { :eventId => "eq#{self.id}" }).each do |chart|
