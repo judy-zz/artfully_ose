@@ -98,6 +98,10 @@ class AthenaChart < AthenaResource::Base
     @chart.event_id = event.id
     @chart
   end
+  
+  def has_paid_sections?
+    !self.sections.drop_while{|s| s.price.to_i == 0}.empty?
+  end
 
   private
     def find_sections
