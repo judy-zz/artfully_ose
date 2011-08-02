@@ -9,4 +9,15 @@ namespace :admin do
       user.save
     end
   end
+
+  desc "Create a new user with a default password of password"
+  task :new_user, [ :email, :password ] => [ :environment ] do |t, args|
+    args.with_defaults(:password => "password")
+    user = User.new( :email => args[:email], :password => args[:password] )
+    user.save!
+  end
+
+  desc "Create a new user and promote them to admin, default password is password"
+  task :new_admin, [ :email, :password ] => [ :environment, :new_user, :promote ]
+
 end

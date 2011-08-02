@@ -58,7 +58,11 @@ Artfully::Application.configure do
   config.reports_site       = 'http://localhost:8080/athena/reports/'
   config.payments_element_name = '/payments'
 
-  config.athena_resource_user = 'demo'
-  config.athena_resource_password = 'LiberateTheArts!'
-  config.athena_resource_auth_type = 'digest'
+  #config.athena_resource_user = 'demo'
+  #config.athena_resource_password = 'LiberateTheArts!'
+  #config.athena_resource_auth_type = 'digest'
+  
+  config.athena_resource_user = nil
+  config.athena_resource_password = nil
+  config.athena_resource_auth_type = nil
 end

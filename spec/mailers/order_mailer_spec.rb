@@ -3,7 +3,8 @@ require "spec_helper"
 describe OrderMailer do
   describe "order confirmation email" do
     let(:order) { Factory(:order_with_items) }
-    subject { OrderMailer.confirmation_for(order) }
+    let(:athena_order) { Factory(:athena_order_with_id) }
+    subject { OrderMailer.confirmation_for(order, athena_order) }
 
     before(:each) do
       subject.deliver

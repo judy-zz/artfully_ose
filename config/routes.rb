@@ -103,7 +103,7 @@ Artfully::Application.routes.draw do
   resources :comps, :only => [ :new, :create ]
   resources :pages
 
-  match '/events/:event_id/charts/assign/' => 'charts#assign', :as => :assign_chart
+  match '/events/:event_id/charts/' => 'events#assign', :as => :assign_chart, :via => "post"
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
   match '/statements/events/:event_id' => 'statements#index', :as => :event_statements, :via => "get"

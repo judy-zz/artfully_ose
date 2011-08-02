@@ -77,6 +77,15 @@ class Settlement < AthenaResource::Base
     [ start, stop ]
   end
 
+  def self.in_range(start, stop, org_id=nil)
+    start = "gt#{start.xmlschema}"
+    stop = "lt#{stop.xmlschema}"
+
+    org_query = "organizationId=eq#{org_id}&" unless org_id.nil?
+
+    instantiate_collection(query("#{org_query}createdAt=#{start}&createdAt=#{stop}"))
+  end
+
   private
   class << self
     def start_from(now)

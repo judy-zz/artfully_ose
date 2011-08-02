@@ -10,7 +10,7 @@ class PerformancesController < ApplicationController
 
   def index
     @performances = @event.performances.paginate(:page => params[:page], :per_page => 10)
-    @performance = @event.next_perf
+    @next_performance = @event.next_perf
   end
 
   def duplicate

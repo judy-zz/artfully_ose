@@ -376,7 +376,7 @@ describe AthenaTicket do
     end
 
     it "does not issue the request if any of the tickets can not be put on sale" do
-      tickets.first.state = :on_sale
+      tickets.first.state = :comped
       AthenaTicket.should_not_receive(:patch)
       AthenaTicket.put_on_sale(tickets)
     end

@@ -27,13 +27,13 @@
           %th Comped
           %th Actions
       %tbody
-        - @performances.each do |performance|
-          %tr{ :class => performance.state }
-            %td= link_to l(performance.datetime, :format => :short), event_performance_path(@event,performance), :title => 'performance-datetime'
-            %td.available= performance.glance.tickets.available
-            %td.gross= performance.glance.tickets.sold.gross
-            %td.comped= performance.glance.tickets.sold.comped
-            %td= render :partial => "controls", :locals => { :performance => performance }
+        - @performances.each do |perf|
+          %tr{ :class => perf.state }
+            %td= link_to l(perf.datetime, :format => :short), event_performance_path(@event, perf), :title => 'performance-datetime'
+            %td.available= perf.glance.tickets.available
+            %td.gross= perf.glance.tickets.sold.gross
+            %td.comped= perf.glance.tickets.sold.comped
+            %td= render :partial => "controls", :locals => { :performance => perf }
         %tr
-          = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @performance }
+          = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @next_performance }
     = will_paginate @performances

@@ -89,6 +89,14 @@ describe AthenaEvent do
       lambda { subject.charts = "Not an Array" }.should raise_error(TypeError)
     end
   end
+  
+  describe "chart assignment" do
+    it "should assign charts to itself" 
+    it "should assign a free chart"
+    it "should assign free charts to itself if the event is free"
+    it "should not assign charts that have already been assigned"
+    it "should not assign a chart if the event is free and the chart contains paid sections"
+  end
 
   describe "#as_widget_json" do
     subject { Factory(:athena_event_with_id) }

@@ -1,26 +1,26 @@
 - content_for :scripts do
   = javascript_include_tag "performances"
 
-= form_tag built_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited pending" do
-  = hidden_field_tag :performance_id, performance.id
-  = submit_tag "Create Tickets", :class => [ :mini, :full ]
+/We can clean this up once played is a state (IG & GM)
+- if not performance.played?
+  = form_tag built_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited pending" do
+    = hidden_field_tag :performance_id, performance.id
+    = submit_tag "Create Tickets", :class => [ :mini, :full ]
 
-= form_tag on_sale_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited built" do
-  = hidden_field_tag :performance_id, performance.id
-  = submit_tag "Put On Sale", :class => [ :mini, :full ]
-  .confirmation.dialog
-    %p= "You are about to put all tickets for the #{l @performance.datetime} performance of #{@performance.event.name} on sale and make it public."
+  = form_tag on_sale_event_performances_path(@event), :remote => true, :'data-type' => :json, :class => "sprited built" do
+    = hidden_field_tag :performance_id, performance.id
+    = submit_tag "Put On Sale", :class => [ :mini, :full ]
+    .confirmation.dialog
+      %p= "You are about to put all tickets for the #{l performance.datetime} performance of #{performance.event.name} on sale and make it public."
 
+  = form_tag published_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited built unpublished" do
+    = hidden_field_tag :performance_id, performance.id
+    = submit_tag "Publish", :class => [ :mini, :half ]
+    .confirmation.dialog
+      %p= "You are publishing the #{l performance.datetime} performance of #{performance.event.name}."
 
-= form_tag published_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited built unpublished" do
-  = hidden_field_tag :performance_id, performance.id
-  = submit_tag "Publish", :class => [ :mini, :half ]
-  .confirmation.dialog
-    %p= "You are publishing the #{l @performance.datetime} performance of #{@performance.event.name}."
-
-
-= form_tag unpublished_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited published", :id => "performance_#{performance.id}" do
-  = hidden_field_tag :performance_id, performance.id
-  = submit_tag "Unpublish", :class => [ :mini, :half ]
-  .confirmation.dialog
-    %p= "You are unpublishing the #{l @performance.datetime} performance of #{@performance.event.name}."
+  = form_tag unpublished_event_performances_path(performance.event), :remote => true, :'data-type' => :json, :class => "sprited published", :id => "performance_#{performance.id}" do
+    = hidden_field_tag :performance_id, performance.id
+    = submit_tag "Unpublish", :class => [ :mini, :half ]
+    .confirmation.dialog
+      %p= "You are unpublishing the #{l performance.datetime} performance of #{performance.event.name}."

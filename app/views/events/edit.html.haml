@@ -1,11 +1,16 @@
 = render :partial => "shared/headers/ticketing"
 
 .context
-  = render "shared/error_messages", :target => @event
+  %h3 Creating an Event
+  - if can? :create, :paid_events
+    %p If this is an event that you will not be charging for, do something with that checkbox.  Otherwise, make sure to lorem ipsum.
+  - else
+    %p= "You may create events with free tickets right away, or you can #{ link_to "upgrade your account", organization_path(current_user.current_organization)} to start selling tickets to lorem ipsum whatever blah".html_safe
 
 .document
+  = render "shared/error_messages", :target => @event
   %h3= "Edit #{@event.name}"
   = form_for @event, :url => event_path(@event) do |form|
-    %ul#event
+    %ul
       = render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
       %li= form.submit "Submit"
