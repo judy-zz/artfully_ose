@@ -8,5 +8,5 @@
   = form_for @chart, :url => chart_path(@chart) do |form|
     %h3 Edit Chart
     %ul
-      = render :partial => 'charts/form', :locals => { :parent_form => form, :target => @chart }
+      = render :partial => 'charts/form', :locals => { :parent_form => form, :target => @chart, :new => false }
       = form.submit "Submit"
