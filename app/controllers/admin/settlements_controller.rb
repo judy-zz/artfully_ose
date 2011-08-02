@@ -9,8 +9,8 @@ class Admin::SettlementsController < Admin::AdminController
         @start = DateTime.now.in_time_zone(Time.zone).beginning_of_month
         @stop  = DateTime.now.in_time_zone(Time.zone).end_of_day
       end
-      settlements_range = Settlement.in_range(@start, @stop, current_user.current_organization.id)
-      @settlements_range = settlements_range.sort{|a,b| b.timestamp <=> a.timestamp }.paginate(:page => params[:page], :per_page => 25)
+      settlements_in_range = Settlement.in_range(@start, @stop, current_user.current_organization.id)
+      @settlements = settlements_in_range.sort{|a,b| a.created_at <=> b.created_at }.paginate(:page => params[:page], :per_page => 25)
     rescue ArgumentError
       flash[:alert] = "One or both of the dates entered are invalid."
       redirect_to :back

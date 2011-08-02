@@ -83,7 +83,7 @@ class Settlement < AthenaResource::Base
 
     org_query = "organizationId=eq#{org_id}&" unless org_id.nil?
 
-    instantiate_collection(query("#{org_query}timestamp=#{start}&timestamp=#{stop}"))
+    instantiate_collection(query("#{org_query}createdAt=#{start}&createdAt=#{stop}"))
   end
 
   private
