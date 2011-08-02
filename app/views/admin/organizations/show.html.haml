@@ -12,7 +12,7 @@
         = submit_tag "Add"
 
 .document
-  %h3 Members (#{@organization.users.size})
+  %h3 Users (#{@organization.users.size})
   %ul.detailed-list#memberships
     - @organization.users.each do |user|
       %li

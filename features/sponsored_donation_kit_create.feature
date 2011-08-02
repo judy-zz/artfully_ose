@@ -20,8 +20,8 @@ Feature: Sponsored Donation Kit
     And I follow "Activate Sponsored Donation Kit"
     And I follow "I have a fiscally sponsored project with Fractured Atlas"
     And the credentials I'll enter are valid
-    When I fill in "Account Email" with "account@fracturedatlas.org"
-    And I fill in "Account Password" with "somepassword"
+    When I fill in "FA Username" with "account@fracturedatlas.org"
+    And I fill in "Password" with "somepassword"
     And I press "Connect"
     Then I should see "You meet the requirements for this kit."
     And I follow "Activate Sponsored Donation Kit"

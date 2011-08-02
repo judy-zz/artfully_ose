@@ -1,7 +1,7 @@
 - in_section :people
 - content_for :header do
   %h1 People
-  %h2 Find and manage important relationships with people
+  %h2 Manage your important relationships
 
 .context
   = render :partial=>'person_summary_sidebar', :locals => { :person => @person }
@@ -9,7 +9,6 @@
 
 .document
   %h3 Actions
-
   .call-to-action.dropdown-container
     %a.dropdown-controller{:href=>'#'}
       Log Action
@@ -19,5 +18,5 @@
   #actions
     .table-controls
     =render :partial=>'action_list', :locals => { :person => @person }
-    
+
   .popup

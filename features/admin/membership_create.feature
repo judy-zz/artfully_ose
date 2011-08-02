@@ -19,7 +19,7 @@ Feature: Organization Membership Create
   Scenario: An admin tries to add a user that does not exist to an organization.
     Given I fill in "Email" with "nobody@example.com"
     When I press "Add"
-    Then I should see "User nobody@example.com could not be found."
+    Then I should see "No Artful.ly user found with email address nobody@example.com. Tell them to sign up!"
 
   Scenario: An admin tries to add the a user with an existing membership
     Given "user@example.com" is part of "Fractured Atlas"

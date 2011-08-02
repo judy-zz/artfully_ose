@@ -14,7 +14,6 @@ Feature: Event creation
     | name      | venue      | city     | state | producer      |
     | Some Name | Some Venue | New York | NY    | Some Producer |
     And I press "Submit"
-    Then I should see "Your event has been created."
     And I should see "Some Name"
     And I should see "Some Venue"
     And I should see "New York, NY"

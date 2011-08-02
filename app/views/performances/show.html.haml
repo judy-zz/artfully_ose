@@ -34,13 +34,12 @@
   = render :partial => "glance", :locals => { :report => @performance.glance }
 
   %h3 Tickets
+  %p= "You have not created tickets for this event.  Tickets will be created using the #{@performance.chart.name} seating chart."
   - if @performance.pending?
     = form_tag built_event_performances_path(@performance.event) do
       = hidden_field_tag :performance_id, @performance.id
       = submit_tag "Create Tickets"
 
-    %p You have not created tickets for this event.  Create tickets using the following seat chart:
-    %h5=@performance.chart.name
-    %p= render :partial => 'sections/section_table', :locals => { :chart => @performance.chart, :include_link => false }
+
   - else
     = render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }

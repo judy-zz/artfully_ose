@@ -59,7 +59,7 @@ class MembershipsController < ActionController::Base
     def with_user(&block)
       flash[:error] = "You must specify an email" and return if params[:user_email].blank?
       user = User.find_by_email(params[:user_email])
-      flash[:error] = "User #{params[:user_email]} could not be found." and return if user.nil?
+      flash[:error] = "No Artful.ly user found with email address #{params[:user_email]}. Tell them to sign up!" and return if user.nil?
       block.call(user)
     end
 

@@ -1,9 +1,9 @@
 - in_section :people
 - content_for :header do
-  %h1 New Contact
+  %h1 Create a New Contact
 
 .spread
-  %h3 Contact Details
+  %h3 First Things First
   = render :partial => "shared/error_messages", :locals => { :target => @person }
   = form_for @person, :url => people_path do |form|
     %ul
