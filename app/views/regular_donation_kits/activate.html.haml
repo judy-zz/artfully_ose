@@ -1,8 +1,7 @@
 - content_for :header do
-  %h1 Regular Donation Kit
+  %h1= t(@kit.type.underscore)
 
-.context
-.document
+.spread
   %p
     You meet the requirements for this kit.
-    = link_to "Activate #{@kit.type.underscore.titleize}", kits_path(:type => @kit.type.underscore), :method => :post
+    = link_to "Activate #{t(@kit.type.underscore)}", kits_path(:type => @kit.type.underscore), :method => :post
