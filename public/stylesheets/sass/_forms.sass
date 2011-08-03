@@ -62,7 +62,7 @@ form ul li
   display: none
 
 .element, .label, .label-and-element, .cancel-submit
-  > div, label, a
+  > div, label
     @include stack-content
   > input, select
     @include stack-reset
@@ -113,6 +113,7 @@ form ul li
 
 .cancel-submit
   a
+    @include stack-content
     @include rounded-corners(4px, 0, 0, 4px)
     float: left
     font-size: .75em

@@ -1,26 +1,20 @@
 = parent_form.fields_for target do |section_form|
   %li
-    .label
-      = section_form.label :name, "Name"
+    .label= section_form.label :name, "Name"
     .element
       = section_form.text_field :name
+      .description Examples: "Orchestra", "General Admission", "Nosebleed".
+
   %li
-    .label
-      = section_form.label :capacity, "Capacity"
-    .element
-      = section_form.text_field :capacity
+    .label= section_form.label :capacity, "Capacity"
+    .element= section_form.text_field :capacity
   %li
     - if can? :create, :paid_events
-      .label
-        = section_form.label :price, "Price"
-      .element
-        = section_form.text_field :price, :class => :currency, :value => number_as_cents(target.price)
+      .label= section_form.label :price, "Price"
+      .element= section_form.text_field :price, :class => :currency, :value => number_as_cents(target.price)
     - else
-      .label
-        = section_form.label :price, "Price"
+      .label= section_form.label :price, "Price"
       .element
         = section_form.text_field :price,   { :class => :currency,:value => number_as_cents(target.price), :disabled => 'disabled' }
         = section_form.hidden_field :price, :value => 0
-        .description 
-          :erb
-            <%=link_to "Upgrade your account", organization_path(current_user.current_organization) %> to create prices on your tickets.
+        .description= "#{link_to "Upgrade your account", organization_path(current_user.current_organization)} to create prices on your tickets.".html_safe
