@@ -4,16 +4,4 @@
       = chart_form.label :name, "Name"
     .element
       = chart_form.text_field :name
-  -if new
-    %li
-      .label
-      .element
-        #help-text
-          %h4= chart_form.label :helptext, "Example: \"Weekend Matinee\". You'll add more details in a minute."
-  -else
-    %li
-      .label
-        = chart_form.label :sections, "Sections"
-      .element
-        #edit-sections
-          = link_to "Edit Sections", chart_path(target) if can?(:view, target)
+      .description= "Example: \"Weekend Matinee\". You'll add more details in a minute." unless target.persisted?

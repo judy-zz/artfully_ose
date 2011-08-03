@@ -3,6 +3,8 @@
   %h1 Chart Templates
 
 .context
+  %h3= @chart.name
+  = link_to "Edit Sections", chart_path(@chart) if can?(:view, @chart)
 .document
   = render "shared/error_messages", :target => @chart
   = form_for @chart, :url => chart_path(@chart) do |form|
