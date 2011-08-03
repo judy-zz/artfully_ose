@@ -8,6 +8,12 @@
         -else
           %th State
     %tbody
+      %tr
+        %td Free Ticketing Kit
+        %td Active
+      %tr
+        %td People Management Kit
+        %td Active
       - kits.each do |kit|
         %tr
           %td= kit.type.underscore.titleize
