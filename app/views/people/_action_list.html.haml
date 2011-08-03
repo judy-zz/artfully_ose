@@ -10,8 +10,10 @@
     - if person.actions.empty?
       %tr
         %td
-        %td{:colspan=>5}
-          No actions for this person
+        %td No actions for this person
+        %td
+        %td
+        %td
     - else
       - (person.starred_actions + person.unstarred_actions ).each do |action|
         = render :partial=>'action_list_row', :locals => { :person => person, :action => action }
