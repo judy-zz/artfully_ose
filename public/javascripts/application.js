@@ -20,6 +20,8 @@ $(document).ready(function() {
 
   bindControlsToListElements();
 
+  $('input, textarea').placeholder();
+
   $(".close").click(function(){
     $(this).closest('.flash').remove();
   })

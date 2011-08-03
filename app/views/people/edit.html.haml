@@ -1,12 +1,13 @@
 - in_section :people
-
--content_for :header do
+- content_for :header do
   %h1 Edit Contact
 
-.spread
+.compact-spread
+  %h3="#{@person.first_name} #{@person.last_name}"
+  = render :partial => "shared/error_messages", :locals => { :target => @person }
   = form_for @person, :url => person_path(@person) do |form|
     %ul
       = render :partial => 'people/form', :locals => { :parent_form => form, :target => @person }
-      %li= form.submit "Save"
-
-  =button_to "Cancel", person_path(@person), :method => :get
+      %li.cancel-submit
+        = link_to "Cancel", person_path(@person)
+        = form.submit "Update"

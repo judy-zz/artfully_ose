@@ -61,7 +61,7 @@ form ul li
 .label.hidden
   display: none
 
-.element, .label, .label-and-element
+.element, .label, .label-and-element, .cancel-submit
   > div, label
     @include stack-content
   > input, select
@@ -108,6 +108,29 @@ form ul li
 .code textarea
   height: 16em
 
-
 .hidden-target
   display: none
+
+.cancel-submit
+  a
+    @include stack-content
+    @include rounded-corners(4px, 0, 0, 4px)
+    float: left
+    font-size: .75em
+    line-height: 14px
+    border: 1px solid
+    border-color: #ddd #bbb #999
+    border-right: none
+    background: #eee
+    color: #999
+    padding: 3px 10px 4px
+  input[type="submit"]
+    padding-left: 3em
+    padding-right: 3em
+    @include rounded-corners(0, 4px, 4px, 0)
+
+input, textarea
+  color: #000
+.placeholder
+  color: #aaa
+
