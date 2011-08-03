@@ -6,6 +6,6 @@
 %ul.detailed-list.tags	
   - tags.each do |tag|
     %li.tag
-      =tag
+      = tag
       %ul.controls
         %li.delete= link_to "X", untag_path(subject, tag), :method => :delete, :remote=>'true'

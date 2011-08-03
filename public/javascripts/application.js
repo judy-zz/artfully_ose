@@ -96,7 +96,7 @@ $(document).ready(function() {
 	
     $(document.createElement('li'))
 			.addClass('tag')
-			.text(tagText)
+			.html(tagText)
 			.append(controlsUl)
 			.appendTo($('.tags'));
     $('#new-tag-field').attr('value', '');
