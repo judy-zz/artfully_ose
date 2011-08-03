@@ -76,6 +76,7 @@ $(document).ready(function() {
 
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
 	var tagText = $('#new-tag-field').attr('value');
+	var subjectId = $('#subject-id-field').attr('value');
 	var alphaNumDashRegEx = /^[0-9a-zA-Z-]+$/;
 	if(!alphaNumDashRegEx.test(tagText)) {
 		$('.tag-error').text("Only letters, number, or dashes allowed in tags")
@@ -85,7 +86,7 @@ $(document).ready(function() {
 	}
 	
 	
-	var deleteLink = '<a href="/people/327680/tag/'+tagText+'" data-method="delete" data-remote="true" rel="nofollow">X</a>'
+	var deleteLink = '<a href="/people/'+ subjectId +'/tag/'+ tagText +'" data-method="delete" data-remote="true" rel="nofollow">X</a>'
 	var controlsUl =  $(document.createElement('ul')).addClass('controls')
 	var deleteLi = $(document.createElement('li')).addClass('delete').append(deleteLink)
 	
