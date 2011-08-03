@@ -20,9 +20,9 @@ class SponsoredDonationKit < Kit
     exclusive
   end
 
-  def alternatives
-    @alternatives ||= [ RegularDonationKit ]
-  end
+  # def alternatives
+  #   @alternatives ||= [ RegularDonationKit ]
+  # end
 
   def has_website?
     errors.add(:requirements, "You need to specify a website for your organization.") unless !organization.website.blank?

@@ -25,9 +25,9 @@ class RegularDonationKit < Kit
     organization.bank_account.nil?
   end
 
-  def alternatives
-    @alternatives ||= [ SponsoredDonationKit ]
-  end
+  # def alternatives
+  #   @alternatives ||= [ SponsoredDonationKit ]
+  # end
 
   def on_pending
     AdminMailer.donation_kit_notification(self).deliver
