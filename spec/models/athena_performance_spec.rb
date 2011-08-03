@@ -25,7 +25,7 @@ describe AthenaPerformance do
   it "should parse the datetime attribute to a DateTime object" do
     subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end
-  
+
   describe "#played" do
     it "should be played if the event is in the past" do
       subject.datetime = Time.now - 1.day
@@ -74,11 +74,11 @@ describe AthenaPerformance do
         AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
         subject.bulk_on_sale(:all)
       end
-      
+
       it "can put a ticket on sale that is already on_sale" do
         tickets.first.state = :on_sale
         outcome = subject.bulk_on_sale(tickets.collect(&:id))
-        outcome.should_not be true        
+        outcome.should_not be true
       end
 
       it "should put tickets on sale" do
@@ -224,6 +224,29 @@ describe AthenaPerformance do
       FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
       AthenaPerformance.in_range(start, stop)
       FakeWeb.last_request.path.should eq "/athena/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
+    end
+  end
+
+  describe ".next_datetime" do
+    context "without a starting performance datetime" do
+      subject { AthenaPerformance.next_datetime(nil) }
+      it "suggests the next available 8 PM" do
+        subject.hour.should eq 20
+      end
+    end
+
+    context "given a starting performance datetime" do
+      let(:base) { Time.now.beginning_of_day }
+      subject { AthenaPerformance.next_datetime(mock(:performance, :datetime => base)) }
+
+      it { should eq base + 1.day }
+    end
+
+    context "given a starting performance datetime in the past" do
+      let(:base) { Time.now.beginning_of_day - 1.week }
+      subject { AthenaPerformance.next_datetime(mock(:performance, :datetime => base)) }
+
+      it { should eq base + 1.week + 1.day }
     end
   end
 end

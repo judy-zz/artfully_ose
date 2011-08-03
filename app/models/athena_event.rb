@@ -60,9 +60,8 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def next_perf
-    next_datetime = performances.empty? ? Time.now : performances.last.datetime
-    next_datetime += 1.day
-    next_perf = AthenaPerformance.new(:datetime=>next_datetime)
+    next_datetime = AthenaPerformance.next_datetime(performances.last)
+    next_perf = AthenaPerformance.new(:datetime => next_datetime, :event => self)
     next_perf.event = self
     next_perf
   end
@@ -101,7 +100,7 @@ class AthenaEvent < AthenaResource::Base
       self.errors[:base] << "Chart \"#{chart.name}\" has already been added to this event"
       return self
     end
-    
+
     if free? && chart.has_paid_sections?
       self.errors[:base] << "Cannot add chart with paid sections to a free event"
       return self
@@ -114,7 +113,7 @@ class AthenaEvent < AthenaResource::Base
     def already_has_chart(chart)
       !self.charts.select{|c| c.name == chart.name }.empty?
     end
-  
+
     def find_charts
       return [] if new_record?
       AthenaChart.find(:all, :params => { :eventId => "eq#{self.id}" }).each do |chart|
