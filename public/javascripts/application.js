@@ -10,6 +10,8 @@ $(document).ready(function() {
     zebra($(this));
   });
 
+  $('input, textarea').placeholder();
+
   $(".detailed-list li").hover(
     function(){
       $(this).find(".controls").stop(false,true).fadeIn('fast');},
