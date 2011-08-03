@@ -19,7 +19,6 @@ class PeopleController < ApplicationController
     if @person.valid? && @person.save!
       respond_to do |format|
         format.html do
-          flash[:notice] = "Person created successfully!"
           redirect_to person_url(@person)
         end
 

@@ -16,7 +16,6 @@ class EventsController < ApplicationController
     end
 
     if @event.save
-      flash[:notice] = "Your event has been created."
       redirect_to event_url(@event)
     else
       render :new
@@ -51,6 +50,16 @@ class EventsController < ApplicationController
 
   def edit
     authorize! :edit, @event
+  end
+  
+  def assign
+    @event = AthenaEvent.find(params[:event_id])
+    @chart = AthenaChart.find(params[:athena_chart][:id])
+    @event.assign_chart(@chart)
+    
+    flash[:error] = @event.errors.full_messages.to_sentence unless @event.errors.empty? 
+    
+    redirect_to event_url(@event)
   end
 
   def update

@@ -3,7 +3,7 @@
 = render "shared/error_messages", :target => @performance
 = form_for @performance, :url => event_performances_path(@event, @performance) do |form|
   #performance
-    %h3 New Performance
+    %h3= "New Performance of #{@event.name}"
     %ul
       = render :partial => 'performances/form', :locals => { :performance_form => form, :target => @performance }
       %li= form.submit "Submit"

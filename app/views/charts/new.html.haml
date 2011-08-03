@@ -2,9 +2,7 @@
 - content_for :header do
   %h1 Chart Templates
 
-.context
-
-.document
+.spread
   %h3 New Chart
   = render "shared/error_messages", :target => @chart
   = form_for @chart, :url => charts_path(@chart) do |form|

@@ -2,6 +2,17 @@
   %h1 Settlements
 
 .context
+  %p Select a date range to find settlements
+  #settlements-search
+    %ul.kv
+      =form_tag admin_settlements_path, :method => :get do
+        %li
+          .key= label_tag :start_date
+          .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+        %li
+          .key= label_tag :end_date
+          .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+        = submit_tag "Search"
 
 .document
   %h3 Settlements
@@ -19,14 +30,24 @@
           %th Realized
           %th Net
       %tbody
-        -@settlements.each do |settlement|
-          %tr
-            %td= settlement.id
-            %td= link_to settlement.organization_id, admin_organization_path(settlement.organization_id)
-            %td= settlement.performance_id
-            %td= l settlement.created_at, :format => :short
-            %td= settlement.transaction_id
-            %td= number_as_cents(settlement.gross)
-            %td= number_as_cents(settlement.realized_gross)
-            %td= number_as_cents(settlement.net)
-    =will_paginate @orders_with_donations
+        -if @settlements.nil?
+          %td= "No settlements found for this date range"
+          %td
+          %td
+          %td
+          %td
+          %td
+          %td
+          %td
+        -else
+          -@settlements.each do |settlement|
+            %tr
+              %td= settlement.id
+              %td= link_to settlement.organization_id, admin_organization_path(settlement.organization_id)
+              %td= settlement.performance_id
+              %td= l settlement.created_at, :format => :short
+              %td= settlement.transaction_id
+              %td= number_as_cents(settlement.gross)
+              %td= number_as_cents(settlement.realized_gross)
+              %td= number_as_cents(settlement.net)
+    =will_paginate @settlements unless @settlements.nil?

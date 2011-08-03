@@ -9,9 +9,10 @@
     %tbody
       - if chart.sections.empty?
         %tr
-          %td{:colspan=>'4'}
-            There are no sections in this seat chart
-            = link_to ", create one now.", new_chart_section_path(chart) if include_link
+        - if include_link
+          %td{:colspan=>'4'}= "There are no sections in this seat chart, #{link_to('create one now', new_chart_section_path(chart))}.".html_safe
+        - else
+          %td{:colspan=>'4'} There are no sections in this seat chart.
       -else
         - chart.sections.each do |section|
           %tr

@@ -5,16 +5,20 @@ zebra = function(table) {
     $("tr:odd", table).addClass("odd");
 }
 
-$(document).ready(function() {
-  $(".zebra tbody").each(function(){
-    zebra($(this));
-  });
-
+bindControlsToListElements = function () {
   $(".detailed-list li").hover(
     function(){
       $(this).find(".controls").stop(false,true).fadeIn('fast');},
     function(){
       $(this).find(".controls").stop(false,true).fadeOut('fast');});
+}
+
+$(document).ready(function() {
+  $(".zebra tbody").each(function(){
+    zebra($(this));
+  });
+
+  bindControlsToListElements();
 
   $(".close").click(function(){
     $(this).closest('.flash').remove();
@@ -71,14 +75,49 @@ $(document).ready(function() {
   });
 
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
-    $(document.createElement('li')).text($('#new-tag-field').attr('value')).appendTo($('.tags'));
-    $('#new-tag-field').attr('value', '')
+	var tagText = $('#new-tag-field').attr('value');
+	var alphaNumDashRegEx = /^[0-9a-zA-Z-]+$/;
+	if(!alphaNumDashRegEx.test(tagText)) {
+		$('.tag-error').text("Only letters, number, or dashes allowed in tags")
+		return false;
+	} else {
+		$('.tag-error').text("")
+	}
+	
+	
+	var deleteLink = '<a href="/people/327680/tag/'+tagText+'" data-method="delete" data-remote="true" rel="nofollow">X</a>'
+	var controlsUl =  $(document.createElement('ul')).addClass('controls')
+	var deleteLi = $(document.createElement('li')).addClass('delete').append(deleteLink)
+	
+	controlsUl.append(deleteLi);
+	
+    $(document.createElement('li'))
+			.addClass('tag')
+			.text(tagText)
+			.append(controlsUl)
+			.appendTo($('.tags'));
+    $('#new-tag-field').attr('value', '');
+
+	bindControlsToListElements();
+	bindXButton();
+  });
+
+  bindXButton();
+
+  $(".delete").bind("ajax:beforeSend", function(evt, data, status, xhr){
+    $(this).closest('.tag').remove();
   });
 
   $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
       $(".super-search-results").html(data.responseText);
   });
 });
+
+bindXButton = function() {
+  $(".delete").bind("ajax:beforeSend", function(evt, data, status, xhr){
+    $(this).closest('.tag').remove();
+  });
+}
 
 function activateControls() {
   $(".currency").each(function(index, element){
@@ -112,20 +151,3 @@ function togglePrintPreview(){
       printStyles.attr("media","all");
   }
 }
-
-$(document).bind('grouped-form-ready', function(){
-    $('#ticket-table').dataTable({
-        "iDisplayLength": 100,
-        "bPaginate": true,
-        "bJQueryUI": true,
-        "sDom": '<"H"lfip>t<"F"ip>',
-        "aoColumns": [
-        null,
-        null,
-        {
-            "sType": "currency"
-        },
-        null
-        ]
-    });
-});

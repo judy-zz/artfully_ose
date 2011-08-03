@@ -148,6 +148,10 @@ class AthenaPerformance < AthenaResource::Base
     built? or published? or unpublished?
   end
 
+  def played?
+    datetime < Time.now
+  end
+
   def on_saleable_tickets
     tickets.select(&:on_saleable?)
   end

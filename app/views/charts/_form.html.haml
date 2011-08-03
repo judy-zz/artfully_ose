@@ -4,3 +4,4 @@
       = chart_form.label :name, "Name"
     .element
       = chart_form.text_field :name
+      .description= "Example: \"Weekend Matinee\". You'll add more details in a minute." unless target.persisted?

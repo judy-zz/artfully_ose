@@ -21,17 +21,18 @@
 
   - unless @organization.connected?
     %h3 Connect to Fractured Atlas
-    %p This organization has not been connected to a Fractured Atlas member.
+    %p This organization has not been connected to a Fractured Atlas membership.
     = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
   - else
     %p This organization has been connected to a Fractured Atlas membership.
 
 .document
   #memberships
-    %h3 Members (#{@organization.users.size})
+    %h3 Users (#{@organization.users.size})
     = render :partial => "memberships/list", :locals => { :organization => @organization }
     - if can? :manage, current_user.current_organization
       %h3 Add User
+      %p Allow another Artful.ly user to work on this organization.
       = form_tag organization_memberships_path(@organization.id), :action => "create", :class => :single_field do
         .stack
           .label= label_tag :user_email, "Email"
@@ -39,5 +40,9 @@
           .submit= submit_tag "Add"
 
   %h3 Kits
-  %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits." unless can? :manage, current_user.current_organization
+  - if can? :manage, current_user.current_organization
+    %p Kits are Artful.ly add-ons that provide specific functionality.
+  - else
+    %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits."
   = render :partial => "kits/list", :locals => { :kits => @kits }
+  %p More coming soon!

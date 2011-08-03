@@ -21,7 +21,7 @@
         %ul.details
           %li= pluralize(chart.sections.size, "Section")
   - if @charts.empty?
-    %p Before creating performances, you'll need to create a seat chart and import it
+    %p Before creating performances, you'll need to create a seat chart and import it.
     = link_to "Create a chart", new_chart_path, :class => 'cta-left-125'
   - else
     %h4 Import a Chart
@@ -40,13 +40,13 @@
   #glance= render :partial => "glance", :locals => { :report => @event.glance }
 
   #widget
-    %h3 Widget
+    %h3 Promote on your Website
     .code
       %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
-      
+
 :erb
   <script>
-  $(document).ready(function() {  
+  $(document).ready(function() {
     $('#calendar').fullCalendar({
       height: 150,
       events: '/events/<%=@event.id%>.json'

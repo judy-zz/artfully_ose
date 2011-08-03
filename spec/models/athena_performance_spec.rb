@@ -25,6 +25,18 @@ describe AthenaPerformance do
   it "should parse the datetime attribute to a DateTime object" do
     subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
   end
+  
+  describe "#played" do
+    it "should be played if the event is in the past" do
+      subject.datetime = Time.now - 1.day
+      subject.should be_played
+    end
+
+    it "should not be played if the event is in the future" do
+      subject.datetime = Time.now + 1.day
+      subject.should_not be_played
+    end
+  end
 
   describe "#publish" do
     subject { Factory(:athena_performance_with_id, :state => "built" ) }
@@ -62,6 +74,12 @@ describe AthenaPerformance do
         AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
         subject.bulk_on_sale(:all)
       end
+      
+      it "can put a ticket on sale that is already on_sale" do
+        tickets.first.state = :on_sale
+        outcome = subject.bulk_on_sale(tickets.collect(&:id))
+        outcome.should_not be true        
+      end
 
       it "should put tickets on sale" do
         AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
@@ -69,7 +87,7 @@ describe AthenaPerformance do
       end
 
       it "fails by returning false if any of the tickets can not be put on sale" do
-        tickets.first.state = :on_sale
+        tickets.first.state = :comped
         outcome = subject.bulk_on_sale(tickets.collect(&:id))
         outcome.should be false
       end

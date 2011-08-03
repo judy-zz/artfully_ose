@@ -1,4 +1,10 @@
 %h3 Tags
 -form_tag new_tag_path(subject), :method => :post, :class => 'new-tag-form', :remote=>'true' do
   = text_field_tag :tag, nil, {:id=>'new-tag-field'}
-= render :partial=>'shared/tag_list', :locals => { :tags => tags }
+  %span.tag-error
+%ul.detailed-list.tags	
+  - tags.each do |tag|
+    %li.tag
+      =tag
+      %ul.controls
+        %li.delete= link_to "X", untag_path(subject, tag), :method => :delete, :remote=>'true'
