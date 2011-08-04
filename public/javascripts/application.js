@@ -99,6 +99,7 @@ $(document).ready(function() {
 			.html(tagText)
 			.append(controlsUl)
 			.appendTo($('.tags'));
+	$('.tags').append("\n");
     $('#new-tag-field').attr('value', '');
 
 	bindControlsToListElements();
