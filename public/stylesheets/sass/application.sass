@@ -451,7 +451,7 @@ ul.prices li div
   background: #ccc
   text-align: right
   @include rounded-corners(4px, 0, 0, 0)
-  
+
 
 #new-actions
   @include stack-list
@@ -472,6 +472,11 @@ ul.prices li div
       color: rgba(255,255,255,0.97) !important
       padding: 10px 0
 
+
+.loading
+  background: url('/images/loading.gif') no-repeat center center
+  > *
+    opacity: .1
 
 @import "main-menu"
 @import "forms"

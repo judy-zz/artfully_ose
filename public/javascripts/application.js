@@ -102,8 +102,13 @@ $(document).ready(function() {
 
   $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
       $(".super-search-results").html(data.responseText);
+      $(".super-search-results").removeClass("loading");
+  }).bind("ajax:beforeSend", function(){
+    $(".super-search-results").addClass("loading");
   });
 });
+
+
 
 bindXButton = function() {
   $(".delete").bind("ajax:beforeSend", function(evt, data, status, xhr){
