@@ -8,14 +8,12 @@
   = link_to "Edit", edit_person_path(@person)
 
 .document
-  %h3 Actions
-  .call-to-action.dropdown-container
-    %a.dropdown-controller{:href=>'#'}
-      Log Action
-    %ul.dropdown
-      %li=link_to "Hear", new_person_action_path(@person, "HEAR"), :class => "popup-link", :remote => true
-      %li=link_to "Give", new_person_action_path(@person, "GIVE"), :class => "popup-link", :remote => true
   #actions
+    %h3 Actions
+    %ul#new-actions
+      %li=link_to "Hear", new_person_action_path(@person, "HEAR"), :class => "popup-link", :remote => true, :title => "Log a communication event"
+      %li=link_to "Give", new_person_action_path(@person, "GIVE"), :class => "popup-link", :remote => true, :title => "Record a donation"
+
     .table-controls
     =render :partial=>'action_list', :locals => { :person => @person }
 

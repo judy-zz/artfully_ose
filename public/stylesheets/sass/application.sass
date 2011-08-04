@@ -442,6 +442,26 @@ ul.prices li div
   text-align: right
   @include rounded-corners(4px, 0, 0, 0)
 
+#new-actions
+  @include stack-list
+  border: 1px solid #eee
+  text-align: left
+  margin-bottom: 10px
+  @include rounded-corners(4px, 4px, 4px, 4px)
+  > li
+    font-size: .8em
+    @extend .stack1of7
+    a
+      @include stack-content
+      @include rounded-corners(4px, 4px, 4px, 4px)
+      @include gradient($light-blue, $blue)
+      margin: 5px 0 5px 5px
+      text-align: center
+      font-weight: bold
+      color: rgba(255,255,255,0.97) !important
+      padding: 10px 0
+
+
 @import "main-menu"
 @import "forms"
 @import "tables"
