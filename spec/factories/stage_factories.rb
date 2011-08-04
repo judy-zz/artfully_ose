@@ -32,7 +32,7 @@ end
 
 Factory.define :athena_section, :class => AthenaSection, :default_strategy => :build do |section|
   section.name 'Balcony'
-  section.capacity 5
+  section.capacity "5"
   section.price 5000
 end
 
