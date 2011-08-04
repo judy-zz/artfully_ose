@@ -26,17 +26,17 @@ Artfully::Application.configure do
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
 
-  config.tickets_site = 'http://localhost:8080/athena/'
+  config.tickets_site     = 'http://localhost:8080/athena/'
   config.orders_component = 'http://localhost:8080/athena/'
-  config.stage_site = 'http://localhost:8080/athena/'
-  config.people_site = 'http://localhost:8080/athena/'
-  config.reports_site = 'http://localhost:8080/athena/reports/'
-  
+  config.stage_site       = 'http://localhost:8080/athena/'
+  config.people_site      = 'http://localhost:8080/athena/'
+  config.reports_site     = 'http://localhost:8080/athena/reports/'
   config.payments_component = 'http://localhost:8080/payments/'
   config.payments_element_name = '/payments'
 
-  config.athena_resource_user = nil
-  config.athena_resource_password = nil
-  config.athena_resource_auth_type = nil
+  AthenaResource::USER_AGENT = "artful.ly"
+  AthenaResource::USER = nil
+  AthenaResource::PASSWORD = nil
+  AthenaResource::AUTH_TYPE = nil
 end
 

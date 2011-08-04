@@ -42,7 +42,9 @@ Artfully::Application.configure do
   config.reports_site = 'http://localhost/athena/reports/'
 
   config.payments_element_name = '/payments'
-  config.athena_resource_user = nil
-  config.athena_resource_password = nil
-  config.athena_resource_auth_type = nil
+
+  AthenaResource::USER_AGENT = "artful.ly"
+  AthenaResource::USER = nil
+  AthenaResource::PASSWORD = nil
+  AthenaResource::AUTH_TYPE = nil
 end

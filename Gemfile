@@ -2,6 +2,8 @@ source 'http://rubygems.org'
 gem 'rake', '0.8.7'
 gem 'rails'
 
+gem 'athena_resource'
+
 # Views and Rendering
 gem 'haml'
 gem 'sass'

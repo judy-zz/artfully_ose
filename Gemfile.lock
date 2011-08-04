@@ -34,6 +34,7 @@ GEM
       activesupport (= 3.0.9)
     activesupport (3.0.9)
     arel (2.0.10)
+    athena_resource (0.0.1)
     awesome_print (0.4.0)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
@@ -209,6 +210,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  athena_resource
   awesome_print
   cancan
   capistrano
