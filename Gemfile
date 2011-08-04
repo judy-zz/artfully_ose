@@ -8,7 +8,7 @@ gem 'sass'
 gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0.beta'
 gem 'high_voltage'
-gem 'jquery-rails', '>= 0.2.6'
+gem 'jquery-rails', '>= 1.0.12'
 
 # Authentication and Roles
 gem 'devise'

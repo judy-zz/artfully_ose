@@ -17,4 +17,5 @@
     .table-controls
     =render :partial=>'action_list', :locals => { :person => @person }
 
+  = render :partial=>'shared/tags', :locals => { :tags => @person.tags, :subject => @person }
   .popup
