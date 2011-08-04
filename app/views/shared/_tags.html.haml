@@ -3,9 +3,8 @@
   = hidden_field_tag :subject_id, subject.id, {:id=>'subject-id-field'}
   = text_field_tag :tag, nil, {:id=>'new-tag-field'}
   %span.tag-error
-%ul.detailed-list.tags	
+%ul.detailed-list.tags{:id => 'people-' + subject.id + '-tags'}
   - tags.each do |tag|
-    %li.tag
+    %li.tag.subject-tag
       = tag
-      %ul.controls
-        %li.delete= link_to "X", untag_path(subject, tag), :method => :delete, :remote=>'true'
+/X-button creation and binding all happens in javascript

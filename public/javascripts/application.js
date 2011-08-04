@@ -18,8 +18,6 @@ $(document).ready(function() {
     zebra($(this));
   });
 
-  bindControlsToListElements();
-
   $('input, textarea').placeholder();
 
   $(".close").click(function(){
@@ -76,36 +74,30 @@ $(document).ready(function() {
     return false;
   });
 
+  $('.subject-tag').each(function() {
+	createControlsForTag($(this));
+  });
+
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
 	var tagText = $('#new-tag-field').attr('value');
-	var subjectId = $('#subject-id-field').attr('value');
-	var alphaNumDashRegEx = /^[0-9a-zA-Z-]+$/;
-	if(!alphaNumDashRegEx.test(tagText)) {
+	if(!validTagText(tagText)) {
 		$('.tag-error').text("Only letters, number, or dashes allowed in tags")
 		return false;
 	} else {
 		$('.tag-error').text("")
 	}
 	
-	
-	var deleteLink = '<a href="/people/'+ subjectId +'/tag/'+ tagText +'" data-method="delete" data-remote="true" rel="nofollow">X</a>'
-	var controlsUl =  $(document.createElement('ul')).addClass('controls')
-	var deleteLi = $(document.createElement('li')).addClass('delete').append(deleteLink)
-	
-	controlsUl.append(deleteLi);
-	
-    $(document.createElement('li'))
-			.addClass('tag')
-			.html(tagText)
-			.append(controlsUl)
-			.appendTo($('.tags'));
+    newTagLi = $(document.createElement('li'));
+	newTagLi.addClass('tag').addClass('subject-tag').html(tagText).appendTo($('.tags'));
 	$('.tags').append("\n");
+	createControlsForTag(newTagLi);
     $('#new-tag-field').attr('value', '');
 
 	bindControlsToListElements();
 	bindXButton();
   });
 
+  bindControlsToListElements();
   bindXButton();
 
   $(".delete").bind("ajax:beforeSend", function(evt, data, status, xhr){
@@ -121,6 +113,29 @@ bindXButton = function() {
   $(".delete").bind("ajax:beforeSend", function(evt, data, status, xhr){
     $(this).closest('.tag').remove();
   });
+}
+
+/*
+ * Validates alphanumeric and -
+ */
+validTagText = function(tagText) {
+	var alphaNumDashRegEx = /^[0-9a-zA-Z-]+$/;
+	return alphaNumDashRegEx.test(tagText);
+}
+
+createControlsForTag = function(tagEl) {
+	var tagText = tagEl.html().trim();
+	var subjectName = tagEl.parent("ul").attr('id').split("-")[0];
+	var subjectId = tagEl.parent("ul").attr('id').split("-")[1];
+	
+	var deleteLink = '<a href="/'+subjectName+'/'+ subjectId +'/tag/'+ tagText +'" data-method="delete" data-remote="true" rel="nofollow">X</a>'
+	var controlsUl =  $(document.createElement('ul')).addClass('controls')
+	var deleteLi = $(document.createElement('li')).addClass('delete').append(deleteLink)
+	
+	controlsUl.append(deleteLi);
+	
+    tagEl.append(controlsUl);
+	tagEl.append("\n");
 }
 
 function activateControls() {
