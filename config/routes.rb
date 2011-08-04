@@ -105,7 +105,8 @@ Artfully::Application.routes.draw do
 
   match '/events/:event_id/charts/' => 'events#assign', :as => :assign_chart, :via => "post"
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
-  match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
+  match '/people/:id/tag/' => 'people#tag', :as => :new_tag, :via => "post"
+  match '/people/:id/tag/:tag' => 'people#untag', :as => :untag, :via => "delete"
   match '/statements/events/:event_id' => 'statements#index', :as => :event_statements, :via => "get"
   match '/statements/performances/:performance_id' => 'statements#show', :as => :performance_statement, :via => "get"
 

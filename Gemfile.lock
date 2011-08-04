@@ -34,6 +34,7 @@ GEM
       activesupport (= 3.0.9)
     activesupport (3.0.9)
     arel (2.0.10)
+    athena_resource (0.0.1)
     awesome_print (0.4.0)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
@@ -110,7 +111,7 @@ GEM
       rack (>= 1.1)
       rspec (>= 1.3.1)
       selenium-webdriver (>= 0.1.3)
-    jquery-rails (1.0.11)
+    jquery-rails (1.0.12)
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.5.2)
@@ -209,6 +210,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  athena_resource
   awesome_print
   cancan
   capistrano
@@ -229,7 +231,7 @@ DEPENDENCIES
   high_voltage
   httparty
   jasmine
-  jquery-rails (>= 0.2.6)
+  jquery-rails (>= 1.0.12)
   launchy
   mysql2 (< 0.3)
   newrelic_rpm

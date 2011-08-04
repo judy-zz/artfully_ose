@@ -64,6 +64,10 @@ class AthenaPerformance < AthenaResource::Base
     instantiate_collection(query("datetime=#{start}&datetime=#{stop}"))
   end
 
+  def self.next_datetime(performance)
+    performance.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(performance.datetime + 1.day)
+  end
+
   def chart
     if chart_id.blank?
       return nil
@@ -169,6 +173,12 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   private
+    def self.future(date)
+      return date if date > Time.now
+      offset = date - date.beginning_of_day
+      future(Time.now.beginning_of_day + offset + 1.day)
+    end
+
     def find_tickets
       return [] if new_record?
       AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })

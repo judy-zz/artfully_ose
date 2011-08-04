@@ -19,12 +19,12 @@
       .key Time Zone
       .value= @organization.time_zone
 
-  - unless @organization.connected?
-    %h3 Connect to Fractured Atlas
-    %p This organization has not been connected to a Fractured Atlas membership.
-    = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
-  - else
-    %p This organization has been connected to a Fractured Atlas membership.
+  -#- unless @organization.connected?
+  -#  %h3 Connect to Fractured Atlas
+  -#  %p This organization has not been connected to a Fractured Atlas membership.
+  -#  = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
+  -#- else
+  -#  %p This organization has been connected to a Fractured Atlas membership.
 
 .document
   #memberships

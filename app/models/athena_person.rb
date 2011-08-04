@@ -20,6 +20,28 @@ class AthenaPerson < AthenaResource::Base
   def self.recent(organization)
     search_index(nil, organization)
   end
+  
+  #GM - Hack around how Athena returns string if it's an array of size 1
+  def tags
+    if attributes['tags'].nil? 
+      attributes['tags'] = []
+    elsif attributes['tags'].kind_of? String
+      temp = []
+      temp << attributes['tags']
+      attributes['tags']  = temp
+    end
+    attributes['tags']
+  end
+  
+  #ATHENA doesn't let you patch arrays, otherwise it would be smart to do the patch
+  #right here in this method
+  def tag!(tag_text)
+    tags << tag_text      
+  end
+  
+  def untag!(tag_text)
+    tags.delete tag_text     
+  end
 
   def self.find_by_email_and_organization(email, organization)
     find(:first, :params => { :email => "eq#{email}", :organizationId => "eq#{organization.id}"})

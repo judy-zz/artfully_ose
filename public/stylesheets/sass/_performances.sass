@@ -16,3 +16,15 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   line-height: 20px
   margin-left: 10px
   color: #aaa
+
+.performance-buttons
+  li
+    float: left
+    width: 50%
+    input
+      width: 100%
+    &.first input[type="submit"]
+      border-right: none
+      @include rounded-corners(4px, 0, 0, 4px)
+    &.last input[type="submit"]
+      @include rounded-corners(0, 4px, 4px, 0)

@@ -4,13 +4,12 @@
 
 = form_tag people_path, {:method => :get, :remote => true, :class => 'big-search super-search'} do
   = hidden_field_tag :commit, "Search"
-  = text_field_tag :search
+  = text_field_tag :search, "", :placeholder => "Email address or name..."
   = submit_tag "Search"
 
-.document
+.spread
   %h3 Results
   .super-search-results
     - unless @people.empty?
       = render :partial => 'list', :locals => { :people => @people } unless @people.empty?
       = will_paginate @people
-.tip
