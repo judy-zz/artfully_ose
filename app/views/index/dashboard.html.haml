@@ -13,7 +13,8 @@
       You are not in an organization yet.  Ask your organization administrator to add you, or
       =link_to "create your own.", new_organization_path
 
-.dashboard
+- width = "75%" if @events.blank?
+.dashboard{ :style => "width: #{width}" }
   #events
     %h3 Events
     - if @events.blank?
@@ -30,10 +31,7 @@
     - else
       = render :partial => 'people/list', :locals => { :people => @people }
 
-
 .sideboard
-  %h3 Overview
-  - if @events.blank?
-    %p You don't have any events yet!
-  - else
+  - if !@events.blank?
+    %h3 Overview
     = render :partial => 'events/glances', :locals => { :events => @events } unless @events.blank?
