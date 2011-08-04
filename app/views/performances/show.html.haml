@@ -5,20 +5,22 @@
   %ul.from-here
     %li= link_to "New Performance", new_event_performance_path(@event)
     %li= link_to "All Performances", event_performances_path(@event)
-    %li= link_to "Door List", door_list_event_performance_path(@event,@performance)
+
+
+.context
+  %ul.performance-buttons
+    %li.first= button_to "Door List", door_list_event_performance_path(@event,@performance), :method => :get
     -if not @performance.played?
       - if not @performance.published?
-        %li
+        %li.last
           = form_tag published_event_performances_path(@performance.event) do
             = hidden_field_tag :performance_id, @performance.id
             = submit_tag "Publish"
       - else
-        %li
+        %li.last
           = form_tag unpublished_event_performances_path(@performance.event) do |form|
             = hidden_field_tag :performance_id, @performance.id
             = submit_tag "Unpublish"
-
-.context
   %h3 Upcoming Performances
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
