@@ -11,6 +11,8 @@ class AthenaSection < AthenaResource::Base
     attribute 'chart_id', :string
   end
 
+  before_validation {capacity.strip!}
+
   validates :name, :presence => true
 
   validates :price, :presence => true,
