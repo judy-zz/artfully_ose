@@ -6,8 +6,6 @@ tmp/**
 .DS_Store
 nbproject
 *.orig
-application.css
-default.css
 *.*~
 config/database.yml
 public/assets

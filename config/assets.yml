@@ -1,5 +1,23 @@
 package_assets: on
 
+s3_bucket: <%= ENV['S3_BUCKET'] %>
+s3_access_key_id: <%= ENV['ACCESS_KEY_ID'] %>
+s3_secret_access_key: <%= ENV['SECRET_ACCESS_KEY'] %>
+
+# S3 Upload Credentials
+s3_upload_files:
+  - public/404.html
+  - public/422.html
+  - public/500.html
+  - public/apple-touch-icon.png
+  - public/favicon.ico
+  - public/robots.txt
+  - public/forms/**/*
+  - public/stylesheets/formalize.css
+  - public/stylesheets/printing.css
+  - public/stylesheets/reset.css
+
+
 javascripts:
   splash:
     - public/javascripts/splash/**/*.js
