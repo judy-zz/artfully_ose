@@ -1,8 +1,7 @@
 - content_for :header do
-  %h1 Regular Donation Kit
+  %h1= #{t(@kit.type.underscore)}
 
-.context
-.document
+.spread
   #requirements
     %h3 Requirements
     - @kit.errors[:requirements].each do |error|

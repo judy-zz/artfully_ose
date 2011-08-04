@@ -1,11 +1,7 @@
 - content_for :header do
-  %h1 Ticketing Kit
+  %h1 Paid Event Ticketing Kit
 
-.context
-.document
-  %p
-    In addition to submitting an authorization request, you must also submit your ACH information for this kit to be activated.
-  %p
-    = link_to "Download ACH Authorization Form", "/forms/artfully_etf_sign_up.pdf"
-  %p
-    = button_to "Submit Activation Request", kits_path(:type => @kit.type.underscore)
+.spread
+  %p In addition to submitting an authorization request, you must also submit your ACH information for this kit to be activated.
+  %p= link_to "Download ACH Authorization Form", "/forms/artfully_etf_sign_up.pdf"
+  %p= button_to "Submit Activation Request", kits_path(:type => @kit.type.underscore)

@@ -39,7 +39,9 @@ class Kit < ActiveRecord::Base
   end
 
   def self.subklasses
-    @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit ].freeze
+    # Pending FAFS
+    # @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit ].freeze
+    @subklasses ||= [ TicketingKit, RegularDonationKit ].freeze
   end
 
   def self.pad_with_new_kits(kits = [])
