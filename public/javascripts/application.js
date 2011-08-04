@@ -61,10 +61,6 @@ $(document).ready(function() {
     zebra($(this));
   });
 
-  $(".dropdown-controller").click(function() {
-    $('.dropdown').toggle();
-  });
-
   $(".popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Log Action"})
 
   $(".popup-link").bind("ajax:complete", function(et, e){
@@ -86,7 +82,7 @@ $(document).ready(function() {
 	} else {
 		$('.tag-error').text("")
 	}
-	
+
     newTagLi = $(document.createElement('li'));
 	newTagLi.addClass('tag').addClass('subject-tag').html(tagText).appendTo($('.tags'));
 	$('.tags').append("\n");
@@ -106,8 +102,13 @@ $(document).ready(function() {
 
   $(".super-search").bind("ajax:complete", function(evt, data, status, xhr){
       $(".super-search-results").html(data.responseText);
+      $(".super-search-results").removeClass("loading");
+  }).bind("ajax:beforeSend", function(){
+    $(".super-search-results").addClass("loading");
   });
 });
+
+
 
 bindXButton = function() {
   $(".delete").bind("ajax:beforeSend", function(evt, data, status, xhr){
@@ -127,13 +128,13 @@ createControlsForTag = function(tagEl) {
 	var tagText = tagEl.html().trim();
 	var subjectName = tagEl.parent("ul").attr('id').split("-")[0];
 	var subjectId = tagEl.parent("ul").attr('id').split("-")[1];
-	
+
 	var deleteLink = '<a href="/'+subjectName+'/'+ subjectId +'/tag/'+ tagText +'" data-method="delete" data-remote="true" rel="nofollow">X</a>'
 	var controlsUl =  $(document.createElement('ul')).addClass('controls')
 	var deleteLi = $(document.createElement('li')).addClass('delete').append(deleteLink)
-	
+
 	controlsUl.append(deleteLi);
-	
+
     tagEl.append(controlsUl);
 	tagEl.append("\n");
 }
