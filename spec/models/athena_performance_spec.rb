@@ -22,10 +22,6 @@ describe AthenaPerformance do
     subject.should_not be_valid
   end
 
-  it "should parse the datetime attribute to a DateTime object" do
-    subject.datetime.should be_a_kind_of(ActiveSupport::TimeWithZone)
-  end
-
   describe "#played" do
     it "should be played if the event is in the past" do
       subject.datetime = Time.now - 1.day

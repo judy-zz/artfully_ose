@@ -97,9 +97,8 @@ class AthenaPerformance < AthenaResource::Base
     @time_zone ||= event.time_zone
   end
 
-  def update_attributes(attributes)
-    prepare_attr!(attributes)
-    super
+  def load(attributes)
+    super(prepare_attr!(attributes))
   end
 
   def dup!
@@ -111,11 +110,6 @@ class AthenaPerformance < AthenaResource::Base
 
   def add_performance_time_string
     attributes['performance_time'] = I18n.l( attributes['datetime'].in_time_zone(time_zone), :format => :long_with_day)
-  end
-
-  def datetime
-    attributes['datetime'] = attributes['datetime'].in_time_zone(time_zone) unless attributes['datetime'].blank?
-    return attributes['datetime']
   end
 
   def glance
@@ -189,28 +183,11 @@ class AthenaPerformance < AthenaResource::Base
     end
 
     def prepare_attr!(attributes)
-      unless attributes.blank? || attributes['datetime'].blank?
-        begin
-          temp_date_only = Date.strptime(attributes.delete('datetime'), "%m/%d/%Y")
-          hour = attributes['datetime(4i)']
-          minute = attributes['datetime(5i)']
-          Time.zone = time_zone
-          attributes['datetime'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
-        rescue ArgumentError # handles cases where user enters non-date
-          attributes['datetime'] = ""
-        end
-      else
-        attributes['datetime'] = ""
+      attributes = attributes.with_indifferent_access
+      if attributes["datetime"].kind_of?(String)
+        Time.zone = time_zone
+        attributes["datetime"] = Time.zone.parse(attributes["datetime"])
       end
-      #we can erase the datetime fields that came with the time select
-      clean_datetime_attributes attributes
-    end
-
-    def clean_datetime_attributes(attributes)
-      attributes.delete('datetime(1i)')
-      attributes.delete('datetime(2i)')
-      attributes.delete('datetime(3i)')
-      attributes.delete('datetime(4i)')
-      attributes.delete('datetime(5i)')
+      attributes
     end
 end

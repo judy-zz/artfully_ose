@@ -1,10 +1,6 @@
 = form_for performance, :url => event_performances_path(event, performance) do |f|
   %td{:colspan => "4"}
-    - performance.datetime = performance.datetime
-    = f.text_field :datetime, { :value => performance.datetime.to_date.strftime("%m/%d/%Y"), :class=>'datepicker hasDatePicker' }
-
-    = f.time_select :datetime, {:size=>'3'}
-    
+    = f.text_field :datetime, :value => l(performance.datetime, :format => :date_for_input), :readonly => true, :class => :datetimepicker
     - default_chart_id_as_s = performance.chart_id.nil? ? nil : performance.chart_id.to_s
     = f.select :chart_id, options_from_collection_for_select(event.charts, "id", "name", default_chart_id_as_s)
   %td
