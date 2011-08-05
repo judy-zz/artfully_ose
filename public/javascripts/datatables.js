@@ -4,7 +4,7 @@ $(document).bind('grouped-form-ready', function(){
         "iDisplayLength": 100,
         "bPaginate": true,
         "bJQueryUI": true,
-        "sDom": '<"H"lfip>t<"F"ip>',
+        "sDom": '<"H"lf>t<"F"ip>',
         "aoColumns": [
         null,
         null,
@@ -21,7 +21,7 @@ $(document).ready( function(){
         "iDisplayLength": 20,
         "bPaginate": true,
         "bJQueryUI": true,
-        "sDom": '<"H"lfip>t<"F"ip>',
+        "sDom": '<"H"lf>t<"F"ip>',
         "aoColumns": [
         null,
         null,
