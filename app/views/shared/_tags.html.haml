@@ -2,6 +2,7 @@
 -form_tag new_tag_path(subject), :method => :post, :class => 'new-tag-form', :remote=>'true' do
   = hidden_field_tag :subject_id, subject.id, {:id=>'subject-id-field'}
   = text_field_tag :tag, nil, {:id=>'new-tag-field'}
+  = submit_tag "Save"
   %span.tag-error
 %ul.detailed-list.tags{:id => 'people-' + subject.id + '-tags'}
   - tags.each do |tag|
