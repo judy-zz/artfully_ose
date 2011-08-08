@@ -33,6 +33,8 @@ describe Settlement do
     it "returns a settlement instance with the transaction_id set from the ACH request" do
       settlement = Settlement.submit(organization.id, items, bank_account)
       settlement.transaction_id.should eq "1231234"
+      settlement.ach_response_code.should eq ACH::Request::SUCCESS
+      settlement.success?.should be_true
     end
 
     it "updates the items with the new settlement ID" do
@@ -42,14 +44,18 @@ describe Settlement do
 
     it "does not send a request if there are no items to settle" do
       Settlement.should_not_receive(:send_request)
-      Settlement.submit(organization.id, [], bank_account)
-      Settlement.submit(organization.id, nil, bank_account)
+      settlement = Settlement.submit(organization.id, [], bank_account)
+      settlement.success?.should be_false
+      settlement = Settlement.submit(organization.id, nil, bank_account)
+      settlement.success?.should be_false
     end
 
     it "does not mark the items if the ACH request fails" do
       Settlement.stub(:send_request).and_raise(ACH::ClientError.new("02"))
-      Settlement.should_not_receive(:for_items)
-      Settlement.submit(organization.id, items, bank_account)
+      AthenaItem.should_not_receive(:settle)
+      settlement = Settlement.submit(organization.id, items, bank_account)
+      settlement.ach_response_code.should eq "02"
+      settlement.success?.should be_false
     end
   end
 

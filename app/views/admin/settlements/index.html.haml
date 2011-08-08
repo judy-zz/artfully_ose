@@ -22,9 +22,10 @@
       %thead
         %tr
           %th ID
-          %th organization ID
+          %th org ID
           %th performance ID
           %th Date
+          %th Response
           %th Transaction ID
           %th Gross
           %th Realized
@@ -41,11 +42,12 @@
           %td
         -else
           -@settlements.each do |settlement|
-            %tr
+            %tr{:class => settlement.success? ? "succeeded" : "failed" }
               %td= settlement.id
               %td= link_to settlement.organization_id, admin_organization_path(settlement.organization_id)
               %td= settlement.performance_id
               %td= l settlement.created_at, :format => :short
+              %td= settlement.ach_response_code
               %td= settlement.transaction_id
               %td= number_as_cents(settlement.gross)
               %td= number_as_cents(settlement.realized_gross)

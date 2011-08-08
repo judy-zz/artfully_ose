@@ -156,7 +156,7 @@ function activateControls() {
   });
 
   $(".tablesorter").tablesorter();
-  // $(".datepicker" ).datepicker();
+  $(".datepicker" ).datepicker();
   $('.datetimepicker').datetimepicker({dateFormat: 'yy-mm-dd', timeFormat:'hh:mm tt', ampm: true });
 }
 

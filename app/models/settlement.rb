@@ -6,16 +6,18 @@ class Settlement < AthenaResource::Base
   self.collection_name = 'settlements'
 
   schema do
-    attribute :id,              :string
-    attribute :transaction_id,  :string
-    attribute :organization_id, :string
-    attribute :performance_id,  :string
-    attribute :created_at,      :string
+    attribute :id,                :string
+    attribute :transaction_id,    :string
+    attribute :ach_response_code, :string
+    attribute :fail_message,      :string
+    attribute :organization_id,   :string
+    attribute :performance_id,    :string
+    attribute :created_at,        :string
 
-    attribute :gross,           :integer
-    attribute :realized_gross,  :integer
-    attribute :net,             :integer
-    attribute :items_count,     :integer
+    attribute :gross,             :integer
+    attribute :realized_gross,    :integer
+    attribute :net,               :integer
+    attribute :items_count,       :integer
   end
 
   def initialize(*)
@@ -30,32 +32,42 @@ class Settlement < AthenaResource::Base
   def items=(items)
     @items = items
   end
+  
+  #This is for failing pre-ACH
+  def self.fail
+    logger.error("There are either no items for this settlement or the bank account is nil")
+    settlement = Settlement.new
+    settlement.ach_response_code = nil
+    settlement.fail_message = "There are either no items for this settlement or the bank account is nil"
+    return settlement    
+  end
 
   def self.submit(organization_id, items, bank_account)
     items = Array.wrap(items)
     if items.empty? or bank_account.nil?
-      logger.error("There are either no items for this settlement or the bank account is nil")
-      return
+      return fail
     end
     memo = "Artful.ly Settlement #{Date.today}"
 
     begin
       logger.debug("Submitting ACH request")
-      transaction_id = send_request(items, bank_account, memo)
+      transaction_id = send_request(items, bank_account, memo)      
       logger.debug("ACH accept, transation id #{transaction_id}")
-      for_items(items) do |settlement|
-        settlement.transaction_id = transaction_id
-        settlement.organization_id = organization_id
-        settlement.performance_id = items.first.performance_id
-        logger.debug("Saving settlememt")
-        settlement.save!
-        logger.debug("Settlement saved [#{settlement.id}]")
-        logger.debug("Settling items")
-        AthenaItem.settle(items, settlement)
-        logger.debug("Done settling items")
-      end
+      ach_response_code = ACH::Request::SUCCESS
     rescue ACH::ClientError => e
       logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
+      ach_response_code = e.to_s
+    end
+    
+    for_items(items) do |settlement|
+      settlement.ach_response_code = ach_response_code
+      settlement.transaction_id = transaction_id
+      settlement.organization_id = organization_id
+      settlement.performance_id = items.first.performance_id
+      settlement.save!
+      if settlement.success?
+        AthenaItem.settle(items, settlement)
+      end
     end
   end
 
@@ -69,6 +81,10 @@ class Settlement < AthenaResource::Base
 
       yield(settlement) if block_given?
     end
+  end
+  
+  def success?
+    ach_response_code.eql? ACH::Request::SUCCESS
   end
 
   def self.range_for(now)

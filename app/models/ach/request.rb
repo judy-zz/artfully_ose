@@ -2,6 +2,8 @@ module ACH
   class Request
     include HTTParty
     base_uri ACH_CONFIG['base_uri']
+    
+    SUCCESS = '01'
 
     require 'ach/exceptions'
 
