@@ -73,7 +73,7 @@ Artfully::Application.routes.draw do
   end
 
   resources :performances, :only => [] do
-    resources :tickets, :only => [] do
+    resources :tickets, :only => [ :new, :create ] do
       collection do
         delete :delete
         put :on_sale

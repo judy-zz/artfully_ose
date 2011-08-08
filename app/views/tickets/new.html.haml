@@ -1,0 +1,23 @@
+- in_section :events
+- content_for :header do
+  %h1 Add Tickets
+
+.context
+  %h3 Sections
+  %ul.selection
+    - @performance.chart.sections.each do |section|
+      %li{:class => @section && section.id == @section.id ? :selected : :unselected }
+        = link_to section.name, :section_id => section.id
+.document
+  - if @section.nil?
+    %p Select a section to add tickets.
+  - else
+    #section
+      %h3= @section.name
+      %p= "This will add tickets to the #{@section.name} section of the #{l(@performance.datetime, :format => :short)} showing."
+      = form_tag performance_tickets_path(@performance), :class => :single_field do
+        = hidden_field_tag :section_id, @section.id
+        .stack
+          .label= label_tag(:quantity)
+          .element= text_field_tag(:quantity)
+          .submit= submit_tag "Create Tickets"

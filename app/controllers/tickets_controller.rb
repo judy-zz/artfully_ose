@@ -5,6 +5,11 @@ class TicketsController < ApplicationController
     redirect_to dashboard_path
   end
 
+  def new
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @section = AthenaSection.find(params[:section_id]) unless params[:section_id].blank?
+  end
+
   def on_sale
     authorize! :bulk_edit, AthenaTicket
     with_confirmation do
