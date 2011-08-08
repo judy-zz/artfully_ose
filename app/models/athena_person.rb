@@ -23,13 +23,7 @@ class AthenaPerson < AthenaResource::Base
   
   #GM - Hack around how Athena returns string if it's an array of size 1
   def tags
-    if attributes['tags'].nil? 
-      attributes['tags'] = []
-    elsif attributes['tags'].kind_of? String
-      temp = []
-      temp << attributes['tags']
-      attributes['tags']  = temp
-    end
+    attributes['tags'] = Array.wrap(attributes['tags']) unless attributes['tags'].kind_of? Array
     attributes['tags']
   end
   
