@@ -16,7 +16,8 @@ class KitsController < ApplicationController
         if (@kit.organization.ein.blank? and @kit.organization.legal_organization_name.blank?)
           flash[:notice] = "Please enter your organization's tax information so that this kit may be activated."
         else
-          flash[:error] = @kit.errors[:requirements].to_sentence
+          errs = @kit.errors[:requirements].to_sentence     
+          flash[:error] = errs
         end
       end
 

@@ -4,8 +4,6 @@
 .spread
   #requirements
     %h3 Requirements
-    - @kit.errors[:requirements].each do |error|
-      %p= error
 
     - unless @kit.organization.has_tax_info?
       /%p= "This kit requires you to fill out additional information about #{@kit.organization.name}."
