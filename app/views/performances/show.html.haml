@@ -35,13 +35,12 @@
 .document
   = render :partial => "glance", :locals => { :report => @performance.glance }
 
-  %h3 Tickets
-  %p= "You have not created tickets for this event.  Tickets will be created using the #{@performance.chart.name} seating chart."
   - if @performance.pending?
+    %h3 Tickets
+    %p= "You have not created tickets for this event.  Tickets will be created using the #{@performance.chart.name} seating chart."
     = form_tag built_event_performances_path(@performance.event) do
       = hidden_field_tag :performance_id, @performance.id
       = submit_tag "Create Tickets"
-
 
   - else
     = render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }
