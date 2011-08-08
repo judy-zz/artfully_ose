@@ -198,6 +198,24 @@ strong
   span
     float: left
 
+ul.selection
+  li
+    margin-bottom: 1px
+    a
+      display: block
+      @include rounded-corners(4px, 4px, 4px, 4px)
+      background: #eee
+      padding: .5em
+  li.unselected
+    a
+      &:before
+        float: right
+        color: darken($neutral-1, 50%)
+        content: "\2192"
+      &:hover
+        background: darken(#eee, 2%)
+
+
 .order-list ul li
   display: block
   font-size: .9em

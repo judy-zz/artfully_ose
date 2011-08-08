@@ -17,14 +17,20 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   margin-left: 10px
   color: #aaa
 
+
 .performance-buttons
+  @include rounded-corners(4px, 4px, 4px, 4px)
+  @include stack-layout
+  border: 1px solid #eee
+  padding: 4px 0 0 4px
+  display: block
+  text-align: left
   li
-    float: left
-    width: 50%
+    @extend .stack1of3
+    form
+      margin: 0 4px 4px 0
     input
       width: 100%
-    &.first input[type="submit"]
-      border-right: none
-      @include rounded-corners(4px, 0, 0, 4px)
-    &.last input[type="submit"]
-      @include rounded-corners(0, 4px, 4px, 0)
+      font-size: .75em
+      @include rounded-corners(2px,2px,2px,2px)
+      // @include rounded-corners(4px, 4px, 4px, 4px)
