@@ -1,4 +1,27 @@
+var offset = 0;
+function nextLogo(){
+  var visibleTime = 2000,
+      fadeTime = 500,
+      delta = 350,
+      max = 2100;
+
+  $("h1 .logo").delay(visibleTime).animate({ opacity: 0 }, fadeTime, function(){
+    offset = offset + delta;
+    if(offset > max){
+      offset = 0;
+    }
+
+    $(this).css('background-position', "-" + offset + "px 0")
+
+    $(this).animate({ opacity: 1 }, fadeTime, function(){
+      nextLogo();
+    });
+  });
+}
+
 $(document).ready(function(){
+  nextLogo();
+
   $(".form, #hide-form").hide();
   $("#mc-embedded-subscribe-form").submit(function(){
     $("#mce-success-response").show();
