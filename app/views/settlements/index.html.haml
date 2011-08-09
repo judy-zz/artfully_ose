@@ -22,11 +22,15 @@
             %th Net
         %tbody
           - @settlements.each do |settlement|
-            %tr
+            %tr{:class => settlement.success? ? "succeeded" : "failed" }
               %td= link_to settlement.id, settlement_path(settlement)
               %td= settlement.performance_id
               %td= l settlement.created_at, :format => :date
-              %td= settlement.transaction_id
+              %td 
+                -if settlement.success?
+                  =settlement.transaction_id
+                -else
+                  FAILED
               %td= number_as_cents(settlement.gross)
               %td= number_as_cents(settlement.realized_gross)
               %td= number_as_cents(settlement.net)

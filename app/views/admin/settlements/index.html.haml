@@ -48,7 +48,11 @@
               %td= settlement.performance_id
               %td= l settlement.created_at, :format => :short
               %td= settlement.ach_response_code
-              %td= settlement.transaction_id
+              %td
+                -if settlement.success?
+                  =settlement.transaction_id
+                -else
+                  FAILED
               %td= number_as_cents(settlement.gross)
               %td= number_as_cents(settlement.realized_gross)
               %td= number_as_cents(settlement.net)
