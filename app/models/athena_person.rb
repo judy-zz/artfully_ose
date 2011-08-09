@@ -13,6 +13,8 @@ class AthenaPerson < AthenaResource::Base
     attribute 'email',          :string
     attribute 'first_name',     :string
     attribute 'last_name',      :string
+    attribute 'company_name',   :string
+    attribute 'website',        :string
     attribute 'organization_id',:integer
   end
 
@@ -20,21 +22,21 @@ class AthenaPerson < AthenaResource::Base
   def self.recent(organization)
     search_index(nil, organization)
   end
-  
+
   #GM - Hack around how Athena returns string if it's an array of size 1
   def tags
     attributes['tags'] = Array.wrap(attributes['tags']) unless attributes['tags'].kind_of? Array
     attributes['tags']
   end
-  
+
   #ATHENA doesn't let you patch arrays, otherwise it would be smart to do the patch
   #right here in this method
   def tag!(tag_text)
-    tags << tag_text      
+    tags << tag_text
   end
-  
+
   def untag!(tag_text)
-    tags.delete tag_text     
+    tags.delete tag_text
   end
 
   def self.find_by_email_and_organization(email, organization)

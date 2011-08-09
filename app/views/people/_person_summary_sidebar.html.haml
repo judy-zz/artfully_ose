@@ -1,7 +1,13 @@
 %h3="#{@person.first_name} #{@person.last_name}"
 
 %h4 Contact Information
-%ul.kv
+%ul.kv.editable
   %li
     .key Email
-    .value=@person.email
+    .value{"data-name" => "email", "data-url" => person_url(@person, :format => :json)}= @person.email
+  %li
+    .key Company Name
+    .value{"data-name" => "company_name", "data-url" => person_url(@person, :format => :json)}= @person.company_name
+  %li
+    .key Website
+    .value{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website

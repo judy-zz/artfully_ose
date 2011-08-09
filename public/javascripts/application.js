@@ -106,6 +106,22 @@ $(document).ready(function() {
   }).bind("ajax:beforeSend", function(){
     $(".super-search-results").addClass("loading");
   });
+
+  $('.editable .value').each(function(){
+    var url = $(this).attr('data-url'),
+        name = $(this).attr('data-name');
+
+    $(this).editable(url, {
+      method: "PUT",
+      name: "athena_person[athena_person][" + name + "]",
+      callback: function(value, settings){
+        $(this).html(value[name]);
+      },
+      ajaxoptions: {
+        dataType: "json"
+      }
+    });
+  });
 });
 
 

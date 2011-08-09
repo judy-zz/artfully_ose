@@ -43,13 +43,28 @@ class PeopleController < ApplicationController
     @person = AthenaPerson.find(params[:id])
     authorize! :edit, @person
 
-   if @person.update_attributes(params[:athena_person][:athena_person])
-      flash[:notice] = "Person updated successfully!"
-      redirect_to person_url(@person)
-    else
-      flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
-      render :edit
+    results = @person.update_attributes(params[:athena_person][:athena_person])
+
+    respond_to do |format|
+      format.html do
+        if results
+          flash[:notice] = "Person updated successfully!"
+          redirect_to person_url(@person)
+        else
+          flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
+          render :edit
+        end
+      end
+
+      format.json do
+        if results
+          render :json => @person
+        else
+          render :nothing => true
+        end
+      end
     end
+
   end
 
   def index
@@ -96,14 +111,14 @@ class PeopleController < ApplicationController
     @person = AthenaPerson.find(params[:id])
     authorize! :edit, @person
   end
-  
+
   def tag
     @person = AthenaPerson.find(params[:id])
     @person.tag! params[:tag]
     @person.save
     render :nothing => true
   end
-  
+
   def untag
     @person = AthenaPerson.find(params[:id])
     @person.untag! params[:tag]
