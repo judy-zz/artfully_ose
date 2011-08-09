@@ -35,6 +35,7 @@ describe Settlement do
       settlement.transaction_id.should eq "1231234"
       settlement.ach_response_code.should eq ACH::Request::SUCCESS
       settlement.success?.should be_true
+      settlement.should_receive(:save!)
     end
 
     it "updates the items with the new settlement ID" do
@@ -48,6 +49,7 @@ describe Settlement do
       settlement.success?.should be_false
       settlement = Settlement.submit(organization.id, nil, bank_account)
       settlement.success?.should be_false
+      settlement.should_receive(:save!)
     end
 
     it "does not mark the items if the ACH request fails" do
@@ -56,6 +58,7 @@ describe Settlement do
       settlement = Settlement.submit(organization.id, items, bank_account)
       settlement.ach_response_code.should eq "02"
       settlement.success?.should be_false
+      settlement.should_receive(:save!)
     end
   end
 

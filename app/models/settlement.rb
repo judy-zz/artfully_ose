@@ -32,38 +32,33 @@ class Settlement < AthenaResource::Base
   def items=(items)
     @items = items
   end
-  
-  #This is for failing pre-ACH
-  def self.fail
-    logger.error("There are either no items for this settlement or the bank account is nil")
-    settlement = Settlement.new
-    settlement.ach_response_code = nil
-    settlement.fail_message = "There are either no items for this settlement or the bank account is nil"
-    return settlement    
-  end
 
   def self.submit(organization_id, items, bank_account)
     items = Array.wrap(items)
+    
     if items.empty? or bank_account.nil?
-      return fail
-    end
-    memo = "Artful.ly Settlement #{Date.today}"
-
-    begin
-      logger.debug("Submitting ACH request")
-      transaction_id = send_request(items, bank_account, memo)      
-      logger.debug("ACH accept, transation id #{transaction_id}")
-      ach_response_code = ACH::Request::SUCCESS
-    rescue ACH::ClientError => e
-      logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
-      ach_response_code = e.to_s
+      ach_response_code = nil
+      fail_message = "There are either no items for this settlement or the bank account is nil"
+    else
+      begin
+        logger.debug("Submitting ACH request")
+        transaction_id = send_request(items, bank_account, "Artful.ly Settlement #{Date.today}")      
+        logger.debug("ACH accept, transation id #{transaction_id}")
+        ach_response_code = ACH::Request::SUCCESS
+        fail_message = ""
+      rescue ACH::ClientError => e
+        logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
+        ach_response_code = e.to_s
+        fail_message = "ACH failed"
+      end
     end
     
     for_items(items) do |settlement|
       settlement.ach_response_code = ach_response_code
       settlement.transaction_id = transaction_id
       settlement.organization_id = organization_id
-      settlement.performance_id = items.first.performance_id
+      settlement.performance_id = items.first.performance_id unless items.empty?
+      settlement.fail_message = fail_message
       settlement.save!
       if settlement.success?
         AthenaItem.settle(items, settlement)
