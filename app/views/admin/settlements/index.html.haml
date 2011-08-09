@@ -17,22 +17,23 @@
 .document
   %h3 Settlements
 
-  #kits
+  #settlement-table
     %table.standalone
       %thead
         %tr
           %th ID
-          %th org ID
-          %th performance ID
+          %th Org
+          %th Performance
           %th Date
-          %th Response
           %th Transaction ID
           %th Gross
           %th Realized
           %th Net
+          %th
       %tbody
         -if @settlements.nil?
           %td= "No settlements found for this date range"
+          %td
           %td
           %td
           %td
@@ -47,13 +48,17 @@
               %td= link_to settlement.organization_id, admin_organization_path(settlement.organization_id)
               %td= settlement.performance_id
               %td= l settlement.created_at, :format => :short
-              %td= settlement.ach_response_code
               %td
                 -if settlement.success?
                   =settlement.transaction_id
                 -else
-                  FAILED
+                  FAILED (#{settlement.ach_response_code})
               %td= number_as_cents(settlement.gross)
               %td= number_as_cents(settlement.realized_gross)
               %td= number_as_cents(settlement.net)
+              %td
+                -if !settlement.success?
+                  = form_tag new_admin_settlement_path, :method=>'get' do
+                    = hidden_field_tag "performance_id", settlement.performance_id
+                    = submit_tag "Re-submit", :class => [ :mini, :full ]                
     =will_paginate @settlements unless @settlements.nil?

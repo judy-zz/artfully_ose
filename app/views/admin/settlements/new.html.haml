@@ -2,13 +2,66 @@
   %h1 New Settlement
 
 .context
-  %h3 Submit Request
+  %h3 Re-submit
   = form_tag admin_settlements_path do
     = hidden_field_tag :performance_id, @performance.id
     = submit_tag "Request Settlement"
+  %h3 Info
+  %ul.kv
+    %li
+      .key Organization
+      .value= link_to @performance.organization.name, organization_path(@performance.organization)
+    %li
+      .key Event
+      .value= @performance.event.name
+    %li
+      .key Performance
+      .value= l @performance.datetime
 
 .document
-  %h3 Settle Performance
+  %h3 Bank Account
+  - if @performance.organization.bank_account.nil?
+    %p This organization has no bank account information
+    = link_to "Add a Bank Account", new_admin_organization_bank_account_path(@performance.organization)
+  - else
+    %ul.kv
+      %li
+        .key Routing Number
+        .value= @performance.organization.bank_account.routing_number
+
+      %li
+        .key Number
+        .value= @performance.organization.bank_account.number
+
+      %li
+        .key Account Type
+        .value= @performance.organization.bank_account.account_type
+
+      %li
+        .key Name
+        .value= @performance.organization.bank_account.name
+
+      %li
+        .key Address
+        .value= @performance.organization.bank_account.address
+
+      %li
+        .key City
+        .value= @performance.organization.bank_account.city
+
+      %li
+        .key State
+        .value= @performance.organization.bank_account.state
+
+      %li
+        .key Zip
+        .value= @performance.organization.bank_account.zip
+
+      %li
+        .key Phone
+        .value= @performance.organization.bank_account.phone
+    = link_to "Edit Bank Account", edit_admin_organization_bank_account_path(@performance.organization)    
+  %h3 Items
   - if @performance.settleables.any?
     %ul
       %table.zebra.standalone
@@ -23,3 +76,5 @@
               %td= link_to "#{item.product.event}", event_path(item.product.event_id)
               %td= link_to "#{l item.product.performance}", event_performance_path(item.product.event_id, item.product.performance_id)
               %td= number_as_cents item.price
+  -else
+    %p There are no items to settle.
