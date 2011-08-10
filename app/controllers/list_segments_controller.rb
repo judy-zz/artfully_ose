@@ -1,5 +1,6 @@
 class ListSegmentsController < ApplicationController
   def index
+    @list_segments = ListSegment.find_by_organization_id(current_user.current_organization)
   end
 
   def show

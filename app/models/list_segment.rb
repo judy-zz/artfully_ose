@@ -34,6 +34,10 @@ class ListSegment < AthenaResource::Base
     @organization, self.organization_id = org, org.id
   end
 
+  def length
+    people_ids.length
+  end
+
   private
 
   def find_people
