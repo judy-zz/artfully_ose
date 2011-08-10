@@ -20,4 +20,14 @@ describe ListSegment do
       subject.people_ids.should eq people.collect(&:id)
     end
   end
+
+  describe "#valid?" do
+    it { should be_valid }
+    let(:people) { 2.times.collect { Factory(:athena_person_with_id, :organization_id => 1) } }
+    it "is not valid if any of the people belong to another organization" do
+      subject.people = people
+      subject.people.first.organization_id = 2
+      subject.should_not be_valid
+    end
+  end
 end

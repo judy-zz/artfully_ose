@@ -11,6 +11,7 @@ class ListSegment < AthenaResource::Base
 
   validates :organization_id, :presence => true
   validates :name, :presence => true, :length => { :maximum => 128 }
+  validate :same_organization
 
   def people_ids
     attributes['people_ids'] = Array.wrap(attributes['people_ids']) unless attributes['people_ids'].kind_of? Array
@@ -22,7 +23,7 @@ class ListSegment < AthenaResource::Base
   end
 
   def people=(ppl)
-    self.people_ids = Array.wrap(ppl).collect(&:id)
+    @people, self.people_ids = ppl, Array.wrap(ppl).collect(&:id)
   end
 
   def organization
@@ -42,5 +43,9 @@ class ListSegment < AthenaResource::Base
 
   def find_people
     people_ids.collect { |person_id| AthenaPerson.find(person_id) }
+  end
+
+  def same_organization
+    errors.add(:base, "Invalid user selection") unless people.all? { |person| person.organization_id == self.organization_id }
   end
 end

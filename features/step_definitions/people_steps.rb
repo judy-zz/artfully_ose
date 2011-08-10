@@ -12,7 +12,7 @@ end
 
 Given /^there are (\d+) people tagged with "([^"]*)"$/ do |quantity, tag|
   @people = quantity.to_i.times.collect do
-    Factory(:athena_person_with_id, :tags => [ tag ])
+    Factory(:athena_person_with_id, :tags => [ tag ], :organization => @current_user.current_organization)
   end
   body = @people.collect(&:encode).join(",")
   FakeWeb.register_uri(:get, "http://localhost/athena/people.json?_limit=10&_q=donor+AND+organizationId%3A#{@current_user.current_organization.id}", :body => "[#{body}]")
