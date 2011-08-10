@@ -60,5 +60,5 @@
                 -if !settlement.success?
                   = form_tag new_admin_settlement_path, :method=>'get' do
                     = hidden_field_tag "performance_id", settlement.performance_id
-                    = submit_tag "Re-submit", :class => [ :mini, :full ]                
+                    = submit_tag "Re-settle", :class => [ :mini, :full ]                
     =will_paginate @settlements unless @settlements.nil?

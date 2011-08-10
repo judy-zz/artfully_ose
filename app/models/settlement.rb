@@ -10,6 +10,7 @@ class Settlement < AthenaResource::Base
     attribute :transaction_id,    :string
     attribute :ach_response_code, :string
     attribute :fail_message,      :string
+    attribute :success,           :string
     attribute :organization_id,   :string
     attribute :performance_id,    :string
     attribute :created_at,        :string
@@ -33,12 +34,18 @@ class Settlement < AthenaResource::Base
     @items = items
   end
 
-  def self.submit(organization_id, items, bank_account)
+  def self.submit(organization_id, items, bank_account, performance_id=nil)
     items = Array.wrap(items)
     
-    if items.empty? or bank_account.nil?
+    if items.empty?
+      # This is considered a success.  No items, no money to transfer, we're done
       ach_response_code = nil
-      fail_message = "There are either no items for this settlement or the bank account is nil"
+      success = true
+      fail_message = "There are no items for this settlement"
+    elsif bank_account.nil?
+      ach_response_code = nil
+      success = false
+      fail_message = "This organization has no bank account"
     else
       begin
         logger.debug("Submitting ACH request")
@@ -46,10 +53,12 @@ class Settlement < AthenaResource::Base
         logger.debug("ACH accept, transation id #{transaction_id}")
         ach_response_code = ACH::Request::SUCCESS
         fail_message = ""
+        success = true
       rescue ACH::ClientError => e
         logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
         ach_response_code = e.to_s
         fail_message = "ACH failed"
+        success = false
       end
     end
     
@@ -57,8 +66,9 @@ class Settlement < AthenaResource::Base
       settlement.ach_response_code = ach_response_code
       settlement.transaction_id = transaction_id
       settlement.organization_id = organization_id
-      settlement.performance_id = items.first.performance_id unless items.empty?
+      settlement.performance_id = performance_id
       settlement.fail_message = fail_message
+      settlement.success = success
       settlement.save!
       if settlement.success?
         AthenaItem.settle(items, settlement)
@@ -81,7 +91,7 @@ class Settlement < AthenaResource::Base
   end
   
   def success?
-    ach_response_code.eql? ACH::Request::SUCCESS
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? success
   end
 
   def self.range_for(now)

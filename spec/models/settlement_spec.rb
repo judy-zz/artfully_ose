@@ -7,6 +7,7 @@ describe Settlement do
 
   let(:bank_account) { Factory(:bank_account) }
   let(:organization) { Factory(:organization_with_id) }
+  let(:performance)  { Factory(:athena_performance_with_id) }
   subject { Settlement.new }
 
   it "should set the created_at time when initialized" do
@@ -18,21 +19,22 @@ describe Settlement do
       AthenaItem.stub(:settle).and_return(items)
       FakeWeb.register_uri(:post, "http://localhost/athena/settlements.json", :body => "")
       ACH::Request.stub(:for).and_return(mock(:request, :submit => "1231234"))
+      performance.id = 1
     end
 
     it "sums the net from the items" do
       ACH::Request.should_receive(:for).with(9650, bank_account, "Artful.ly Settlement #{Date.today}").and_return(mock(:request, :submit => "011231234"))
-      Settlement.submit(organization.id, items, bank_account)
+      Settlement.submit(organization.id, items, bank_account, performance.id)
     end
 
     it "submits the request to the ACH API" do
       Settlement.should_receive(:send_request).with(items, bank_account, "Artful.ly Settlement #{Date.today}")
-      Settlement.submit(organization.id, items, bank_account)
+      Settlement.submit(organization.id, items, bank_account, performance.id)
     end
 
     it "returns a settlement instance with the transaction_id set from the ACH request" do
       FakeWeb.register_uri(:post, "http://localhost/athena/settlements.json", :body => "")
-      settlement = Settlement.submit(organization.id, items, bank_account)
+      settlement = Settlement.submit(organization.id, items, bank_account, performance.id)
       settlement.transaction_id.should eq "1231234"
       settlement.ach_response_code.should eq ACH::Request::SUCCESS
       settlement.success?.should be_true
@@ -43,18 +45,18 @@ describe Settlement do
       Settlement.submit(organization.id, items, bank_account)
     end
 
-    it "does not send a request if there are no items to settle" do
+    it "does not send a request if there are no items to settle but considers the settlement a success" do
       Settlement.should_not_receive(:send_request)
-      settlement = Settlement.submit(organization.id, [], bank_account)
-      settlement.success?.should be_false
-      settlement = Settlement.submit(organization.id, nil, bank_account)
-      settlement.success?.should be_false
+      settlement = Settlement.submit(organization.id, [], bank_account, performance.id)
+      settlement.success?.should be_true
+      settlement = Settlement.submit(organization.id, nil, bank_account, performance.id)
+      settlement.success?.should be_true
     end
 
     it "does not mark the items if the ACH request fails" do
       Settlement.stub(:send_request).and_raise(ACH::ClientError.new("02"))
       AthenaItem.should_not_receive(:settle)
-      settlement = Settlement.submit(organization.id, items, bank_account)
+      settlement = Settlement.submit(organization.id, items, bank_account, performance.id)
       settlement.ach_response_code.should eq "02"
       settlement.success?.should be_false
     end

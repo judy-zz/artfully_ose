@@ -23,7 +23,7 @@ describe Job::Settlement do
 
     it "creates and submit a Settlement for each performance" do
       performances.each do |performance|
-        Settlement.should_receive(:submit).with(organization.id, performance.settleables, organization.bank_account).and_return(settlement)
+        Settlement.should_receive(:submit).with(organization.id, performance.settleables, organization.bank_account, performance.id).and_return(settlement)
       end
       Job::Settlement.settle_performances_in(Settlement.range_for(DateTime.now))
     end

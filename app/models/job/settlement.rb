@@ -12,7 +12,7 @@ class Job::Settlement < Job::Base
         logger.info "Settling #{performance.event.name}, #{performance.datetime}"
 
         logger.error "#{performance.organization.name} does not have a bank account." if performance.organization.bank_account.nil?
-        Settlement.submit(performance.organization.id, performance.settleables, performance.organization.bank_account)
+        Settlement.submit(performance.organization.id, performance.settleables, performance.organization.bank_account, performance.id)
       end
     end
 
