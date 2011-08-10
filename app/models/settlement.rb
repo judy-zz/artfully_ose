@@ -1,4 +1,4 @@
-require 'ach/exceptions'
+require_or_load 'ach/exceptions'
 
 class Settlement < AthenaResource::Base
   self.site = Artfully::Application.config.orders_component
@@ -48,16 +48,24 @@ class Settlement < AthenaResource::Base
       fail_message = "This organization has no bank account"
     else
       begin
-        logger.debug("Submitting ACH request")
-        transaction_id = send_request(items, bank_account, "Artful.ly Settlement #{Date.today}")      
-        logger.debug("ACH accept, transation id #{transaction_id}")
+        transaction_id = send_request(items, bank_account, "Artful.ly Settlement #{Date.today}")
         ach_response_code = ACH::Request::SUCCESS
         fail_message = ""
         success = true
       rescue ACH::ClientError => e
-        logger.error("Failed to settle items #{items.collect(&:id).join(',')}. #{e.to_s} #{e.backtrace.inspect}")
+        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
         ach_response_code = e.to_s
-        fail_message = "ACH failed"
+        fail_message = "#{e.backtrace.inspect}"
+        success = false
+      rescue Exception => e
+        ach_response_code = e.to_s
+        fail_message = "#{e.to_s} #{e.backtrace.inspect}"
         success = false
       end
     end

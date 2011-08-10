@@ -21,6 +21,13 @@ describe Settlement do
       ACH::Request.stub(:for).and_return(mock(:request, :submit => "1231234"))
       performance.id = 1
     end
+    
+    it "should handle any exception when trying to communicate with FirstACH" do
+      e = Errno::ECONNRESET
+      ACH::Request.should_receive(:for).with(9650, bank_account, "Artful.ly Settlement #{Date.today}").and_raise(e)
+      settlement = Settlement.submit(organization.id, items, bank_account, performance.id)    
+      settlement.success?.should be_false
+    end
 
     it "sums the net from the items" do
       ACH::Request.should_receive(:for).with(9650, bank_account, "Artful.ly Settlement #{Date.today}").and_return(mock(:request, :submit => "011231234"))
