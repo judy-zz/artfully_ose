@@ -51,6 +51,12 @@ class AthenaPerson < AthenaResource::Base
     @organization ||= Organization.find(organization_id)
   end
 
+  def organization=(org)
+    raise TypeError, "Expecting an Organization" unless org.kind_of? Organization
+    org.save unless org.persisted?
+    @organization, self.organization_id = org, org.id
+  end
+
   #Sort of a verbose Java-like pattern, but it makes the views very readable
   def actions
     @actions ||= AthenaAction.find_by_person_and_organization(self, organization)
@@ -74,12 +80,6 @@ class AthenaPerson < AthenaResource::Base
 
   def unstarred_relationships
     relationships.select { |relationship| relationship.unstarred? }
-  end
-
-  def organization=(org)
-    raise TypeError, "Expecting an Organization" unless org.kind_of? Organization
-    org.save unless org.persisted?
-    @organization, self.organization_id = org, org.id
   end
 
   private

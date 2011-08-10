@@ -1,0 +1,24 @@
+class ListSegmentsController < ApplicationController
+  def index
+  end
+
+  def show
+    @list_segment = ListSegment.find(params[:id])
+  end
+
+  def new
+    @list_segment = ListSegment.new
+    @list_segment.people = params[:people].collect { |person_id| AthenaPerson.find(person_id) }
+  end
+
+  def create
+    @list_segment = ListSegment.new(params[:list_segment])
+    @list_segment.organization = current_user.current_organization
+    @list_segment.people = params[:people].collect { |person_id| AthenaPerson.find(person_id) }
+    if @list_segment.save
+      redirect_to @list_segment
+    else
+      render :new
+    end
+  end
+end

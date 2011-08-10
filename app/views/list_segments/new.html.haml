@@ -1,0 +1,18 @@
+- in_section :people
+- content_for :header do
+  %h1 New List Segment
+
+.compact-spread
+  = render "shared/error_messages", :target => @list_segment
+  #list-segment
+    = form_for(@list_segment) do |form|
+      %ul.people-list
+        - @list_segment.people.each do |person|
+          %li
+            = hidden_field_tag "people[]", person.id, :id => nil
+            .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
+            .email= person.email
+      .stack.single_field
+        .label= form.label(:name)
+        .element= form.text_field :name, :html_options => { :placeholder => "Name your list segment..." }
+        .submit= form.submit "Create"

@@ -72,11 +72,9 @@ class PeopleController < ApplicationController
     @people = []
     if is_search(params)
       @people = AthenaPerson.search_index(params[:search], current_user.current_organization)
-      respond_with do |format|
-        if request.xhr?
-          format.html do
-            render :partial => 'list', :layout => false, :locals => { :people => @people }
-          end
+      if request.xhr?
+        respond_with do |format|
+          format.html { render :partial => 'list', :layout => false, :locals => { :people => @people } }
         end
       end
     else

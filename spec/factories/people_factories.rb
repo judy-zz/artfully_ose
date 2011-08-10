@@ -35,3 +35,7 @@ Factory.define :athena_donation_action, :default_strategy => :build do |a|
   a.subject { Factory(:donation) }
   a.occurred_at { DateTime.now }
 end
+
+Factory.define(:list_segment, :default_strategy => :build) do |ls|
+  ls.organization { Factory(:organization) }
+end

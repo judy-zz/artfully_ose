@@ -1,7 +1,11 @@
 %ul.people-list
   - if people.empty?
     %p No results found
-  - people.each do |person|
-    %li
-      .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
-      .email= person.email
+  - else
+    = form_tag new_list_segment_path, :method => :get do
+      - people.each do |person|
+        %li
+          .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
+          .email= person.email
+          = hidden_field_tag "people[]", person.id, :id => nil
+      = submit_tag "New List Segment"
