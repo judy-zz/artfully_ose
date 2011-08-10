@@ -63,6 +63,8 @@ class Settlement < AthenaResource::Base
       if settlement.success?
         AthenaItem.settle(items, settlement)
       end
+      
+      settlement
     end
   end
 
