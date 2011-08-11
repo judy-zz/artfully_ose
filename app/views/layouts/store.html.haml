@@ -4,7 +4,7 @@
     %title= "#{yield :title} : Artful.ly"
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-    = include_stylesheets :widget
+    = include_stylesheets :store
   %body
     #content= yield
-    = include_javascripts :widget
+    = include_javascripts :store

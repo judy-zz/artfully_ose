@@ -3,10 +3,11 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
-    = include_stylesheets :application, :vendor, :media => :screen
-    = include_stylesheets :printing, :media => :print
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
+    = stylesheet_link_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.css"
+    = include_stylesheets :vendor, :application, :media => :screen
+    = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
 
   %body
