@@ -54,8 +54,9 @@ Artfully::Application.configure do
   config.payments_component = 'http://athena-payments-staging.elasticbeanstalk.com/'
   config.payments_element_name = ''
 
-  config.athena_resource_user = ENV['ATHENA_RESOURCE_USER']
-  config.athena_resource_password = ENV['ATHENA_RESOURCE_PASSWORD']
-  config.athena_resource_auth_type = 'digest'
+  AthenaResource::USER_AGENT = "artful.ly"
+  AthenaResource::USER = ENV['ATHENA_RESOURCE_USER']
+  AthenaResource::PASSWORD = ENV['ATHENA_RESOURCE_PASSWORD']
+  AthenaResource::AUTH_TYPE = 'digest'
 end
 

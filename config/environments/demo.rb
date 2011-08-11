@@ -61,8 +61,9 @@ Artfully::Application.configure do
   #config.athena_resource_user = 'demo'
   #config.athena_resource_password = 'LiberateTheArts!'
   #config.athena_resource_auth_type = 'digest'
-  
-  config.athena_resource_user = nil
-  config.athena_resource_password = nil
-  config.athena_resource_auth_type = nil
+
+  AthenaResource::USER_AGENT = "artful.ly"
+  AthenaResource::USER = nil
+  AthenaResource::PASSWORD = nil
+  AthenaResource::AUTH_TYPE = nil
 end
