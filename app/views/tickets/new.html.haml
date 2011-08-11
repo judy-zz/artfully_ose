@@ -7,7 +7,7 @@
   %ul.selection
     - @performance.chart.sections.each do |section|
       %li{:class => @section && section.id == @section.id ? :selected : :unselected }
-        = link_to section.name, :section_id => section.id
+        = link_to section.name,  new_performance_ticket_path(@performance, :section_id => section.id)
 .document
   - if @section.nil?
     %p Select a section to add tickets.
@@ -19,5 +19,5 @@
         = hidden_field_tag :section_id, @section.id
         .stack
           .label= label_tag(:quantity)
-          .element= text_field_tag(:quantity)
+          .element= text_field_tag(:quantity, @quantity)
           .submit= submit_tag "Create Tickets"

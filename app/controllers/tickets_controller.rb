@@ -10,6 +10,21 @@ class TicketsController < ApplicationController
     @section = AthenaSection.find(params[:section_id]) unless params[:section_id].blank?
   end
 
+  def create
+    @performance = AthenaPerformance.find(params[:performance_id])
+    @section = AthenaSection.find(params[:section_id])
+    @quantity = params[:quantity].to_i
+
+    if @quantity > 0
+      tickets = AthenaTicket.factory(@performance, @section, @quantity)
+      flash[:notice] = "Successfully added #{to_plural(tickets.size, 'tickets')}."
+      redirect_to event_performance_path(@performance.event_id, @performance)
+    else
+      flash[:error] = "Enter a number greater than 0 to add tickets to the performance."
+      render :new
+    end
+  end
+
   def on_sale
     authorize! :bulk_edit, AthenaTicket
     with_confirmation do

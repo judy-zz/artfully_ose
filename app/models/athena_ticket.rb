@@ -59,6 +59,20 @@ class AthenaTicket < AthenaResource::Base
     AthenaTicket.find(:all, :from => :available, :params => parameterize(terms)) unless terms.empty?
   end
 
+  def self.factory(performance, section, quantity)
+    attributes = {
+      :event          => performance.event.name,
+      :event_id       => performance.event_id,
+      :venue          => performance.event.venue,
+      :performance    => performance.datetime,
+      :performance_id => performance.id,
+      :section        => section.name,
+      :price          => section.price
+    }
+
+    quantity.times.collect { create(attributes) }
+  end
+
   def items
     @items ||= AthenaItem.find_by_product(self)
   end
