@@ -1,3 +1,13 @@
+GIT
+  remote: git://github.com/railsjedi/jammit-s3.git
+  revision: e8aaa4074ab1689795de9376460261cc2c466fa5
+  specs:
+    jammit-s3 (0.6.0.2)
+      jammit (>= 0.5.4)
+      mimemagic (>= 0.1.7)
+      ruby-hmac
+      s3 (>= 0.3.7)
+
 PATH
   remote: vendor/gems/transitions-0.0.9
   specs:
@@ -112,10 +122,6 @@ GEM
     i18n (0.5.0)
     jammit (0.6.3)
       yui-compressor (>= 0.9.3)
-    jammit-s3 (0.6.0.2)
-      jammit (>= 0.5.4)
-      mimemagic (>= 0.1.7)
-      s3 (>= 0.3.7)
     jasmine (1.0.2.1)
       json_pure (>= 1.4.3)
       rack (>= 1.1)
@@ -188,6 +194,7 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.6.0)
+    ruby-hmac (0.4.0)
     rubyzip (0.9.4)
     s3 (0.3.8)
       proxies (~> 0.2.0)
@@ -248,7 +255,7 @@ DEPENDENCIES
   high_voltage
   httparty
   jammit
-  jammit-s3
+  jammit-s3!
   jasmine
   jquery-rails (>= 1.0.12)
   launchy

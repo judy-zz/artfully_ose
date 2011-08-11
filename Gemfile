@@ -12,7 +12,7 @@ gem 'will_paginate', '~> 3.0.beta'
 gem 'high_voltage'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'jammit'
-gem 'jammit-s3'
+gem 'jammit-s3', :git => "git://github.com/railsjedi/jammit-s3.git"
 
 # Authentication and Roles
 gem 'devise'
