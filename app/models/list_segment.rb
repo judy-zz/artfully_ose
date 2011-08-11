@@ -32,7 +32,7 @@ class ListSegment < AthenaResource::Base
 
   def organization=(org)
     raise TypeError, "Expecting an Organization" unless org.kind_of? Organization
-    @organization, self.organization_id = org, org.id
+    @organization, self.organization_id = org, org.id.to_s
   end
 
   def length
