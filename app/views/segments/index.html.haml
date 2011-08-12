@@ -3,10 +3,13 @@
   %h1 List Segments
 
 .compact-spread
-  %ul.detailed-list
-    - @segments.each do |segment|
-      %li
-        %h4= link_to segment.name, segment
-        %ul.details-long
-          %li= pluralize(segment.length, 'person')
-
+  %h3 Segments
+  - if @segments.empty?
+    %p= "You have no list segments yet! #{link_to "Create one", people_path} by searching for people.".html_safe
+  - else
+    %ul.detailed-list
+      - @segments.each do |segment|
+        %li
+          %h4= link_to segment.name, segment
+          %ul.details-long
+            %li= pluralize(segment.length, 'person')

@@ -22,4 +22,8 @@ class Segment < AthenaResource::Base
   def people
     @people ||= AthenaPerson.search_index(terms, organization)
   end
+
+  def length
+    people.size
+  end
 end
