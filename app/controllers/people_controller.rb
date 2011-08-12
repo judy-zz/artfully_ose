@@ -71,7 +71,7 @@ class PeopleController < ApplicationController
     authorize! :manage, AthenaPerson
     @people = []
     if is_search(params)
-      @people = AthenaPerson.search_index(params[:search], current_user.current_organization)
+      @people = AthenaPerson.search_index(params[:search].dup, current_user.current_organization)
       if request.xhr?
         respond_with do |format|
           format.html { render :partial => 'list', :layout => false, :locals => { :people => @people } }

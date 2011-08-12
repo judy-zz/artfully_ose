@@ -1,10 +1,10 @@
 - in_section :people
 - content_for :header do
-  %h1= @list_segment.name
+  %h1= @segment.name
 
 .spread
   %ul.people-list
-    - @list_segment.people.each do |person|
+    - @segment.people.each do |person|
       %li
         .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
         .email= person.email

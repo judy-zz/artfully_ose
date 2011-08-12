@@ -11,6 +11,7 @@ Given /^I search for the person "([^"]*)"$/ do |email|
 end
 
 Given /^there are (\d+) people tagged with "([^"]*)"$/ do |quantity, tag|
+  @tag = tag
   @people = quantity.to_i.times.collect do
     Factory(:athena_person_with_id, :tags => [ tag ], :organization => @current_user.current_organization)
   end

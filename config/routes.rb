@@ -56,7 +56,7 @@ Artfully::Application.routes.draw do
   resources :people, :except => :destroy do
     resources :actions
   end
-  resources :list_segments
+  resources :segments
 
   resources :events do
     resources :performances do
