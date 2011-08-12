@@ -1,10 +1,10 @@
+---
 package_assets: on
 
 s3_bucket: <%= ENV['S3_BUCKET'] %>
 s3_access_key_id: <%= ENV['ACCESS_KEY_ID'] %>
 s3_secret_access_key: <%= ENV['SECRET_ACCESS_KEY'] %>
 
-# S3 Upload Credentials
 s3_upload_files:
   - public/404.html
   - public/422.html
