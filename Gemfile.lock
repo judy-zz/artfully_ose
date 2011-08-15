@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/crafterm/comma.git
+  revision: 5f426bf1c6f92f86b4696d741e9d0b113cf7604f
+  specs:
+    comma (0.4.0)
+      activesupport (>= 2.2.2)
+
+GIT
   remote: git://github.com/railsjedi/jammit-s3.git
   revision: e8aaa4074ab1689795de9376460261cc2c466fa5
   specs:
@@ -7,13 +14,6 @@ GIT
       mimemagic (>= 0.1.7)
       ruby-hmac
       s3 (>= 0.3.7)
-
-GIT
-  remote: https://github.com/crafterm/comma.git
-  revision: 5f426bf1c6f92f86b4696d741e9d0b113cf7604f
-  specs:
-    comma (0.4.0)
-      activesupport (>= 2.2.2)
 
 PATH
   remote: vendor/gems/transitions-0.0.9
