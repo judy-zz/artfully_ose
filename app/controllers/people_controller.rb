@@ -70,16 +70,19 @@ class PeopleController < ApplicationController
   def index
     authorize! :manage, AthenaPerson
     @people = []
+
     if is_search(params)
       @people = AthenaPerson.search_index(params[:search].dup, current_user.current_organization)
-      if request.xhr?
-        respond_with do |format|
-          format.html { render :partial => 'list', :layout => false, :locals => { :people => @people } }
-        end
+
+      respond_with do |format|
+        format.csv  { render :csv => @people, :filename => "SearchResults-#{DateTime.now.strftime("%m-%d-%y")}.csv" }
+        format.html { render :partial => 'list', :layout => false, :locals => { :people => @people } if request.xhr? }
       end
+
     else
       @people = AthenaPerson.recent(current_user.current_organization)
     end
+
     @people = @people.paginate(:page => params[:page], :per_page => 10)
   end
 
@@ -126,7 +129,7 @@ class PeopleController < ApplicationController
 
   private
     def is_search(params)
-      !params[:commit].nil? && params[:commit].eql?('Search')
+      params[:commit].present?
     end
 
 end
