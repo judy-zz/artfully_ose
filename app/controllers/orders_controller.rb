@@ -19,41 +19,19 @@ class OrdersController < ApplicationController
 
   def contributions
     authorize! :view, AthenaOrder
-    begin
-      Time.zone = current_user.current_organization.time_zone
-      unless params[:commit].blank?
-        @start = Time.zone.parse(Date.strptime(params[:start], "%m/%d/%Y").to_s)
-        @stop  = Time.zone.parse(Date.strptime(params[:stop] , "%m/%d/%Y").to_s).end_of_day
-      else
-        @start = DateTime.now.in_time_zone(Time.zone).beginning_of_month
-        @stop  = DateTime.now.in_time_zone(Time.zone).end_of_day
-      end
-      orders_in_range = AthenaOrder.in_range(@start, @stop, current_user.current_organization.id)
-      @orders_with_donations = orders_in_range.select{|order| not order.items.select{|item| item.product_type == "Donation" }.empty?}
-      @orders_with_donations = @orders_with_donations.sort{|a,b| b.timestamp <=> a.timestamp }.paginate(:page => params[:page], :per_page => 25)
-    rescue ArgumentError
-      flash[:alert] = "One or both of the dates entered are invalid."
-      redirect_to :back
+    Time.zone = current_user.current_organization.time_zone
+
+    @search = DonationSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
+      results.paginate(:page => params[:page], :per_page => 10)
     end
   end
 
   def sales
     authorize! :view, AthenaOrder
-    begin
-      Time.zone = current_user.current_organization.time_zone
-      unless params[:commit].blank?
-        @start = Time.zone.parse(Date.strptime(params[:start], "%m/%d/%Y").to_s)
-        @stop  = Time.zone.parse(Date.strptime(params[:stop] , "%m/%d/%Y").to_s).end_of_day
-      else
-        @start = DateTime.now.in_time_zone(Time.zone).beginning_of_month
-        @stop  = DateTime.now.in_time_zone(Time.zone).end_of_day
-      end
-      orders_in_range = AthenaOrder.in_range(@start, @stop, current_user.current_organization.id)
-      @orders_with_tickets = orders_in_range.select{|order| not order.items.select{|item| item.product_type == "AthenaTicket" }.empty?}
-      @orders_with_tickets = @orders_with_tickets.sort{|a,b| b.timestamp <=> a.timestamp }.paginate(:page => params[:page], :per_page => 25)
-    rescue ArgumentError
-      flash[:alert] = "One or both of the dates entered are invalid."
-      redirect_to :back
+    Time.zone = current_user.current_organization.time_zone
+
+    @search = SaleSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
+      results.paginate(:page => params[:page], :per_page => 10)
     end
   end
 

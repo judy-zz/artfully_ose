@@ -166,6 +166,14 @@ class AthenaOrder < AthenaResource::Base
     all_tickets.size
   end
 
+  def has_ticket?
+    items.select(&:ticket?).present?
+  end
+
+  def has_donation?
+    items.select(&:donation?).present?
+  end
+
   def sum_donations
     all_donations.collect{|item| item.price.to_i}.sum
   end

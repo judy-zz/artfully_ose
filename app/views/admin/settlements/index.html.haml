@@ -8,10 +8,10 @@
       =form_tag admin_settlements_path, :method => :get do
         %li
           .key= label_tag :start_date
-          .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+          .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", :readonly => true, :class=>'datepicker'
         %li
           .key= label_tag :end_date
-          .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+          .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", :readonly => true, :class=>'datepicker'
         = submit_tag "Search"
 
 .document
@@ -60,5 +60,5 @@
                 -if !settlement.success?
                   = form_tag new_admin_settlement_path, :method=>'get' do
                     = hidden_field_tag "performance_id", settlement.performance_id
-                    = submit_tag "Re-settle", :class => [ :mini, :full ]                
+                    = submit_tag "Re-settle", :class => [ :mini, :full ]
     =will_paginate @settlements unless @settlements.nil?

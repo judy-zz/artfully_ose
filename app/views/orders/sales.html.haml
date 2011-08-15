@@ -4,22 +4,22 @@
   %h2 Tickets
 
 .context
-  %p Select a date range to find tickets
-  #tickets-search
+  %h3 Range
+  #donations-search
     %ul.kv
-      =form_tag sales_orders_path, :method => :get do
+      = form_tag sales_orders_path, :method => :get do
         %li
           .key= label_tag :start_date
-          .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+          .value= text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
         %li
           .key= label_tag :end_date
-          .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", { :class=>'datepicker hasDatePicker'}
+          .value= text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
         = submit_tag "Search"
 
 .document
   %h3 Sales
-  - unless @orders_with_tickets.empty?
-    %h4= "From #{l @start} to #{l @stop}"
+  - unless @search.results.empty?
+    %h4= "From #{l @search.start} to #{l @search.stop}"
     #tickets
       %table.standalone.zebra
         %thead
@@ -31,16 +31,15 @@
             %th Amount
             %th Order
         %tbody
-          - @orders_with_tickets.each do |order|
-            -order.items.each do |item|
-              -if item.product_type == "AthenaTicket"
-                %tr
-                  %td= item.id
-                  %td= l order.timestamp
-                  %td= "#{item.product.event}, #{l item.product.performance}"
-                  %td= link_to "#{order.person.last_name}, #{order.person.first_name}", person_path(order.person)
-                  %td= number_as_cents item.price
-                  %td= link_to "#{order.id}", order_path(order)
-      =will_paginate @orders_with_tickets
-  -else
-    %h4= "No tickets found between #{l @start} and #{l @stop}"
+          - @search.results.each do |order|
+            - order.items.select(&:ticket?).each do |item|
+              %tr
+                %td= item.id
+                %td= l order.timestamp
+                %td= "#{item.product.event}, #{l item.product.performance}"
+                %td= link_to "#{order.person.last_name}, #{order.person.first_name}", person_path(order.person)
+                %td= number_as_cents item.price
+                %td= link_to "#{order.id}", order_path(order)
+      = will_paginate(@search.results)
+  - else
+    %h4= "No tickets found between #{l @search.start} and #{l @search.stop}"
