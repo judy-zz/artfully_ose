@@ -6,7 +6,7 @@
       %li
         .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
         .email= person.email
-- if params[:search].present?
-  = form_for(Segment.new(:terms => params[:search]), :url => new_segment_path, :html => {:method => :get}) do |form|
-    = form.hidden_field :terms
-    = form.submit "New List Segment"
+    - if params[:search].present?
+      = form_for(Segment.new(:terms => params[:search]), :url => new_segment_path, :html => {:method => :get}) do |form|
+        = form.hidden_field :terms
+        = form.submit "New List Segment"

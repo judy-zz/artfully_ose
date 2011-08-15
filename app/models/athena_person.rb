@@ -1,3 +1,4 @@
+require 'comma'
 class AthenaPerson < AthenaResource::Base
   self.site = Artfully::Application.config.people_site
   self.element_name = 'people'
@@ -16,6 +17,15 @@ class AthenaPerson < AthenaResource::Base
     attribute 'company_name',   :string
     attribute 'website',        :string
     attribute 'organization_id',:integer
+  end
+
+  comma do
+    first_name
+    last_name
+    email
+    company_name
+    website
+    tags { |tags| tags.join(" ") }
   end
 
   #TODO: This isn't actually recent, but that's an Athena problem, not an artfully problem

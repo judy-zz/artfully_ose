@@ -10,6 +10,8 @@ gem 'sass'
 gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0.beta'
 gem 'high_voltage'
+gem 'comma', :git => "https://github.com/crafterm/comma.git"
+gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'jammit'
 gem 'jammit-s3', :git => "git://github.com/railsjedi/jammit-s3.git"

@@ -5,6 +5,10 @@ class SegmentsController < ApplicationController
 
   def show
     @segment = Segment.find(params[:id])
+    respond_to do |format|
+      format.html
+      format.csv { render :csv => @segment.people, :filename => "#{@segment.name}-#{DateTime.now.strftime("%m-%d-%y")}.csv" }
+    end
   end
 
   def new
@@ -21,6 +25,4 @@ class SegmentsController < ApplicationController
       render :new
     end
   end
-
-  private
 end
