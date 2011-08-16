@@ -17,6 +17,8 @@ class AthenaPerson < AthenaResource::Base
     attribute 'company_name',   :string
     attribute 'website',        :string
     attribute 'organization_id',:integer
+    attribute 'tags',           :string
+    attribute 'phones',         :string
   end
 
   comma do
@@ -33,10 +35,10 @@ class AthenaPerson < AthenaResource::Base
     search_index(nil, organization)
   end
 
-  #GM - Hack around how Athena returns string if it's an array of size 1
-  def tags
-    attributes['tags'] = Array.wrap(attributes['tags']) unless attributes['tags'].kind_of? Array
-    attributes['tags']
+  def initialize(attributes = {})
+    super(attributes)
+    load_tags
+    load_phones
   end
 
   #ATHENA doesn't let you patch arrays, otherwise it would be smart to do the patch
@@ -92,7 +94,19 @@ class AthenaPerson < AthenaResource::Base
     relationships.select { |relationship| relationship.unstarred? }
   end
 
+  def phones
+    attributes['phones']
+  end
+
   private
+  def load_tags
+    self.tags = Array.wrap(self.tags) unless self.tags.kind_of? Array
+  end
+
+  def load_phones
+    self.phones = Array.wrap(self.phones).collect{ |serialized_phone| AthenaPerson::Phone.deserialize(serialized_phone) }
+  end
+
   def person_info
     first_name or last_name
   end
@@ -104,5 +118,50 @@ class AthenaPerson < AthenaResource::Base
   def unique?
     doppleganger = self.class.find_by_email_and_organization(self.email, self.organization)
     doppleganger.nil? or (persisted? and doppleganger.id == self.id)
+  end
+end
+
+class AthenaPerson::Phone
+  attr_accessor :type, :number
+
+  def initialize(type, number)
+    @type = type
+    @number = number
+    clean_phone
+  end
+
+  def id
+    attributes.values.join("+")
+  end
+
+  def number=(number)
+    @number = number
+    clean_phone
+  end
+
+  def formatted_number
+    number.dup.insert(3,"-").insert(-5, "-") unless number.blank?
+  end
+
+  def attributes
+    {
+      :type => type,
+      :number => number
+    }
+  end
+
+  def self.deserialize(serialized)
+    type, number = serialized.split(':')
+    new(type, number)
+  end
+
+  def encode(options = {})
+    attributes.values.join(":")
+  end
+
+  private
+
+  def clean_phone
+    @number = number.gsub(/\D/,"") unless number.blank?
   end
 end

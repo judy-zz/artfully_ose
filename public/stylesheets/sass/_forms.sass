@@ -87,9 +87,15 @@ form ul li
   input
     width: 75%
   input[type=submit]
-    width: auto
+    width: 25%
     float: right
+    text-align: center
+    margin: 0
+    border-left: none
+    @include rounded-corners(0, 4px, 4px, 0)
 
+.full.element
+  @extend .stack
 
 .single_field
   margin-top: 10px

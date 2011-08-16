@@ -55,6 +55,7 @@ Artfully::Application.routes.draw do
 
   resources :people, :except => :destroy do
     resources :actions
+    resources :phones, :only => [:create, :destroy]
   end
   resources :segments
 

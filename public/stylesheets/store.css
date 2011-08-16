@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, form ul li .label-and-element, .stack1of2, .stack1of3, form ul li .label, .stack2of3, form ul li .element, .stack1of4, #sidebar, .stack3of4, #store, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .stackAuto {
+.stack, form ul li .label-and-element, .full.element, .stack1of2, .stack1of3, form ul li .label, .stack2of3, form ul li .element, .stack1of4, #sidebar, .stack3of4, #store, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -9,7 +9,7 @@
   text-align: center;
   vertical-align: top; }
 
-.stack, form ul li .label-and-element {
+.stack, form ul li .label-and-element, .full.element {
   width: 100%; }
 
 .stack1of2 {
@@ -145,8 +145,14 @@ form ul li {
 .paired.element input {
   width: 75%; }
 .paired.element input[type=submit] {
-  width: auto;
-  float: right; }
+  width: 25%;
+  float: right;
+  text-align: center;
+  margin: 0;
+  border-left: none;
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0; }
 
 .single_field {
   margin-top: 10px; }

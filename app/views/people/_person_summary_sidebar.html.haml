@@ -11,3 +11,22 @@
   %li
     .key Website
     .value{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website
+
+%h4 Phone Numbers
+%ul.kv
+  - person.phones.each do |phone|
+    %li
+      .key= phone.type
+      .value
+        = phone.formatted_number
+        = link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :confirm => "Are you sure you want to delete #{phone.number}?"
+
+= form_tag(person_phones_path(@person)) do
+  %ul
+    %li
+      .hidden.label= label_tag(:phone_number, "New Phone")
+      .full.paired.element
+        = submit_tag("Save")
+        = text_field_tag(:phone_number, "", :placeholder => "Type and number separated by a colon...")
+        .description Example: Cell: 555-123-1234
+
