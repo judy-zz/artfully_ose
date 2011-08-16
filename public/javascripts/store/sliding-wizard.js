@@ -155,7 +155,7 @@ $(document).ready(function(){
 
   $("#steps").stepsFor($wizard);
 
-  $('.sliding-wizard :submit').proxySubmit($("#checkout-now a"));
+  $('.sliding-wizard :submit').proxySubmit($("#checkout-now.disabled a"));
   $wizard.bind("onLastSlideIn", function(){
     $("#checkout-now, #checkout-now a").removeClass("disabled");
   });
