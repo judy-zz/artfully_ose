@@ -27,6 +27,6 @@
       .hidden.label= label_tag(:phone_number, "New Phone")
       .full.paired.element
         = submit_tag("Save")
-        = text_field_tag(:phone_number, "", :placeholder => "Type and number separated by a colon...")
-        .description Example: Cell: 555-123-1234
+        = text_field_tag(:phone_number, "", :placeholder => "Example Type: 555-123-1234")
+        .description Phone type and number are separated by a colon.
 

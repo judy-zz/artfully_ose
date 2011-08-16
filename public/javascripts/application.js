@@ -24,6 +24,12 @@ $(document).ready(function() {
     });
   }
 
+  $("form .description").siblings("input").focusin(function(){
+    $("form .description").addClass("active");
+  }).focusout(function(){
+    $("form .description").removeClass("active");
+  });
+
   $(".zebra tbody").each(function(){
     zebra($(this));
   });

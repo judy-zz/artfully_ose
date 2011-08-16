@@ -906,6 +906,8 @@ form ul li {
     margin: 0.25em 0;
     width: 75%;
     color: #999999; }
+  form ul li .active.description {
+    color: #666666; }
   form ul li .form-error {
     color: #f03504; }
 
