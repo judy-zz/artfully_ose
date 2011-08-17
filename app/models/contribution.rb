@@ -68,7 +68,7 @@ class Contribution
     AthenaItem.new({
       :order_id       => order.id,
       :product_type   => "Donation",
-      :state          => :settled,
+      :state          => "settled",
       :price          => price,
       :realized_price => price,
       :net            => price

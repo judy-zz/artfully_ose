@@ -23,11 +23,6 @@ describe AthenaPurchaseAction do
       subject.person_id = nil
       subject.should_not be_valid
     end
-
-    it "should not be valid without an subject id" do
-      subject.subject_id = nil
-      subject.should_not be_valid
-    end
   end
 
   describe "subject" do
