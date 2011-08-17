@@ -86,6 +86,14 @@ $(document).ready(function() {
     return false;
   });
 
+  $(document).ready(function() {
+    $('#calendar').fullCalendar({
+      height: 150,
+      events: '/events/<%=@event.id%>.json'
+    });
+    $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
+  });
+
   $('.subject-tag').each(function() {
 	createControlsForTag($(this));
   });

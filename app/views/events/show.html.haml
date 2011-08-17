@@ -43,14 +43,3 @@
     %h3 Promote on your Website
     .code
       %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
-
-:erb
-  <script>
-  $(document).ready(function() {
-    $('#calendar').fullCalendar({
-      height: 150,
-      events: '/events/<%=@event.id%>.json'
-    });
-    $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
-  });
-  </script>
