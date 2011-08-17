@@ -1,0 +1,21 @@
+- in_section :transactions
+- content_for :header do
+  %h1 Record Contribution
+
+.compact-spread
+  %h3 Find Recipient
+  %ul.wizard-list
+    - @contributors.each do |contributor|
+      %li
+        %span.name= "#{contributor.first_name} #{contributor.last_name} (#{contributor.email})"
+        = form_for(@contribution, :url => new_contribution_path, :html => {:method => :get}) do |form|
+          = form.hidden_field :contributor_id, :value => contributor.id
+          = form.submit "Select", :class => :mini
+
+  = form_tag new_contribution_path, :method => :get do
+    %ul
+      %li
+        .label= label_tag :terms, "Search"
+        .paired.element
+          = submit_tag "Search"
+          = text_field_tag :terms

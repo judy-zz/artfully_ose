@@ -17,7 +17,7 @@ class AthenaItem < AthenaResource::Base
     attribute 'net',            :integer
   end
 
-  validates_presence_of :order_id, :product_type, :product_id, :price, :realized_price, :net
+  validates_presence_of :order_id, :product_type, :price, :realized_price, :net
   validates_inclusion_of :product_type, :in => %( AthenaTicket Donation )
   validate :product_type_exists
 

@@ -4,6 +4,8 @@ class AthenaOrder < AthenaResource::Base
   self.element_name = 'orders'
   self.collection_name = 'orders'
 
+  attr_accessor :skip_actions
+
   schema do
     attribute :person_id,       :integer
     attribute :organization_id, :integer
@@ -20,8 +22,8 @@ class AthenaOrder < AthenaResource::Base
 
   before_save :set_timestamp
   after_save :save_items, :unless => lambda { items.empty? }
-  after_save :create_purchase_action
-  after_save :create_donation_actions
+  after_save :create_purchase_action, :unless => :skip_actions
+  after_save :create_donation_actions, :unless => :skip_actions
 
   def person
     @person ||= find_person

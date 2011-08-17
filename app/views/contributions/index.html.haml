@@ -4,10 +4,13 @@
   %h2 Donations & Grants
 
 .context
+  %ul.performance-buttons
+    %li= button_to "Record Contribution", new_contribution_path, :method => :get
+
   %h3 Range
   #donations-search
     %ul.kv
-      = form_tag contributions_orders_path, :method => :get do
+      = form_tag contributions_path, :method => :get do
         %li
           .key= label_tag :start_date
           .value= text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
@@ -15,6 +18,7 @@
           .key= label_tag :end_date
           .value= text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
         = submit_tag "Search"
+
 
 .document
   %h3 Donations

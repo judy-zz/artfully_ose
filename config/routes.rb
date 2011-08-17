@@ -95,10 +95,12 @@ Artfully::Application.routes.draw do
 
   resources :orders do
     collection do
-      get :contributions
       get :sales
     end
   end
+
+  resources :contributions
+
   resources :refunds, :only => [ :new, :create ]
   resources :exchanges, :only => [ :new, :create ]
   resources :returns, :only => :create

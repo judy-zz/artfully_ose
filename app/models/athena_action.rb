@@ -4,11 +4,13 @@ class AthenaAction < AthenaResource::Base
   self.collection_name = 'actions'
 
   validates_presence_of :occurred_at
-  validates_presence_of :person_id, :subject_id
+  validates_presence_of :person_id
 
   #
   # Action types: give, go, do, get, join, hear
   #
+
+  GIVE_TYPES = [ "Donation (Cash)", "Donation (Check)", "Donation (In-Kind)" ].freeze
 
   schema do
     attribute 'organization_id',    :string
@@ -36,7 +38,7 @@ class AthenaAction < AthenaResource::Base
     action
   end
 
-  def set_params(params, person, curr_user)
+  def set_params(params = {}, person, curr_user)
     self.prepare_datetime(params, curr_user.current_organization.time_zone)
     self.creator_id = curr_user.id
     self.organization_id = curr_user.current_organization.id
@@ -107,9 +109,7 @@ class AthenaAction < AthenaResource::Base
   end
 
   def give_action_subtypes
-    [ "Donation (Cash)",
-      "Donation (Check)",
-      "Donation (In-Kind)" ]
+    GIVE_TYPES
   end
 
   def prepare_datetime(attributes, tz)

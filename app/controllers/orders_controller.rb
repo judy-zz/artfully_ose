@@ -17,15 +17,6 @@ class OrdersController < ApplicationController
     @order.items.each{ |item| @total += item.price.to_i }
   end
 
-  def contributions
-    authorize! :view, AthenaOrder
-    Time.zone = current_user.current_organization.time_zone
-
-    @search = DonationSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
-      results.paginate(:page => params[:page], :per_page => 10)
-    end
-  end
-
   def sales
     authorize! :view, AthenaOrder
     Time.zone = current_user.current_organization.time_zone
