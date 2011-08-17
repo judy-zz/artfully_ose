@@ -1,6 +1,7 @@
 - in_section :events
 - content_for :header do
   %h1 Events
+  %h2= t('.h2', :default => "Manage your events")
   %ul.from-here
     %li= link_to "New Event", new_event_path
 
@@ -10,7 +11,7 @@
 
 .dashboard
   %h3 Dashboard
-  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+  %p= t(".dashboard", :default => "This is your event dashboard.")
 
 .sideboard
   %h3 Overview

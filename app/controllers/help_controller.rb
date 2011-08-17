@@ -1,3 +1,0 @@
-class HelpController < ApplicationController
-  
-end
