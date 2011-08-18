@@ -137,6 +137,10 @@ $(document).ready(function() {
 
     $(this).editable(url, {
       method: "PUT",
+      submit: "OK",
+      cssclass: "jeditable",
+      height: "15px",
+      width: "90px",
       name: "athena_person[athena_person][" + name + "]",
       callback: function(value, settings){
         $(this).html(value[name]);

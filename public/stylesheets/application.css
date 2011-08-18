@@ -1014,6 +1014,17 @@ input, textarea {
 .placeholder {
   color: #aaaaaa; }
 
+form.jeditable input {
+  padding: 1px 0; }
+form.jeditable button {
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+  border-left: none;
+  display: block;
+  float: right;
+  padding: 3px 10px; }
+
 .ui-timepicker-div .ui-widget-header {
   margin-bottom: 8px; }
 .ui-timepicker-div dl {
