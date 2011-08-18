@@ -30,12 +30,10 @@ class AthenaAction < AthenaResource::Base
   def action_type=(action_type); ;end
 
   def self.create_of_type(type)
-    if "HEAR" == type
-      action = AthenaCommunicationAction.new
-    elsif "GIVE" == type
-      action = AthenaDonationAction.new
+    case type
+      when "hear" then AthenaCommunicationAction.new
+      when "give" then AthenaDonationAction.new
     end
-    action
   end
 
   def set_params(params = {}, person, curr_user)

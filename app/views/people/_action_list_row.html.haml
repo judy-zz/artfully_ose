@@ -1,9 +1,0 @@
-%tr
-  %td.starable{"data-person-id" => person.id, "data-type" => 'action', "data-action-id" => action.id }
-    = (action.starred? ? "&#10029;" : "&#10025;").html_safe
-  %td= l action.occurred_at.in_time_zone(current_user.current_organization.time_zone), :format => :short unless action.occurred_at.nil?
-  %td="#{action.action_type.capitalize} - #{action.action_subtype unless action.action_subtype.nil?}"
-  %td= truncate(action.details, :length =>50, :separator => ' ', :omission => '...')
-  %td
-    =link_to("Edit", edit_person_action_path(person, action, "HEAR"), :class => "popup-link", :remote => true) if action.action_type == "Hear"
-    =link_to("Edit", edit_person_action_path(person, action, "GIVE"), :class => "popup-link", :remote => true) if action.action_type == "Give" unless action.creator_id.nil?

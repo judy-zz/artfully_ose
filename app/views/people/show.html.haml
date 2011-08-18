@@ -11,8 +11,8 @@
   #actions
     %h3 Actions
     %ul#new-actions
-      %li=link_to "Hear", new_person_action_path(@person, "HEAR"), :class => "popup-link", :remote => true, :title => "Log a communication event"
-    = render :partial=>'action_list', :locals => { :person => @person }
+      %li=link_to "Hear", new_person_action_path(@person, :format => :html, :type => :hear), :class => "popup-link", :remote => true, :title => "Log a communication event"
+    = render :partial => 'actions/list', :locals => { :person => @person, :actions => (@person.starred_actions + @person.unstarred_actions ) }
 
   = render :partial=>'shared/tags', :locals => { :tags => @person.tags, :subject => @person }
   .popup
