@@ -39,7 +39,7 @@ class AthenaAction < AthenaResource::Base
   end
 
   def set_params(params = {}, person, curr_user)
-    self.prepare_datetime(params, curr_user.current_organization.time_zone)
+    params = prepare_datetime(params,curr_user.current_organization.time_zone)
     self.creator_id = curr_user.id
     self.organization_id = curr_user.current_organization.id
 
@@ -113,32 +113,16 @@ class AthenaAction < AthenaResource::Base
   end
 
   def prepare_datetime(attributes, tz)
-    unless attributes.blank? || attributes['occurred_at'].blank?
-      begin
-        temp_date_only = Date.strptime(attributes.delete('occurred_at'), "%m/%d/%Y")
-        hour = attributes['occurred_at(4i)']
-        minute = attributes['occurred_at(5i)']
-        Time.zone = tz
-        attributes['occurred_at'] = Time.zone.parse( temp_date_only.to_s ).change(:hour=>hour, :min=>minute)
-      rescue ArgumentError # handles cases where user enters non-date
-        attributes['occurred_at'] = nil
-      end
-    else
-      attributes['occurred_at'] = nil
+    attributes = attributes.with_indifferent_access
+    if attributes["occurred_at"].kind_of?(String)
+      Time.zone = tz
+      attributes["occurred_at"] = Time.zone.parse(attributes["occurred_at"])
     end
-    #we can erase the datetime fields that came with the time select
-    clean_datetime_attributes attributes
+    attributes
   end
 
   private
 
-    def clean_datetime_attributes(attributes)
-      attributes.delete('occurred_at(1i)')
-      attributes.delete('occurred_at(2i)')
-      attributes.delete('occurred_at(3i)')
-      attributes.delete('occurred_at(4i)')
-      attributes.delete('occurred_at(5i)')
-    end
 
     def find_person
       return if self.person_id.nil?

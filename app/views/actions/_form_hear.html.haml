@@ -6,7 +6,7 @@
   %li
     .label= action_form.label :occurred_at, "Action date/time"
     .element.date_field
-      = action_form.text_field :occurred_at, :value => l(target.occurred_at, :format => :date_for_input), :readonly => true, :class => :datetimepicker
+      = action_form.text_field :occurred_at, :value => l(target.occurred_at, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
 
   %li
     .label= action_form.label :details, "Details"
