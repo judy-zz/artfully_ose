@@ -21,4 +21,4 @@
             %td= number_as_cents section.price
             %td
               = link_to "Edit", edit_chart_section_path(chart, section) if can?(:edit, chart)
-              = link_to "Delete", chart_section_path(chart, section), :confirm => "Are you sure?", :method => :delete if can?(:delete, @chart)
+              = link_to "Delete", chart_section_path(chart, section), :confirm => "Are you sure you want to remove #{section.name}?", :method => :delete if can?(:delete, @chart)

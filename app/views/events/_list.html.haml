@@ -7,7 +7,7 @@
         %h4= link_to event.name, event_path(event), :title => 'event-name'
         %ul.controls
           %li= link_to "Edit", edit_event_path(event) if can?(:edit, event)
-          %li= link_to "Delete", event_path(event), :method => :delete, :confirm => "Are you sure?" if can?(:destroy, event)
+          %li= link_to "Delete", event_path(event), :method => :delete, :confirm => "Are you sure you want to delete #{event.name}?" if can?(:destroy, event)
         %ul.details-long
           %li= event.venue
           %li= event.producer

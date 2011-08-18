@@ -4,7 +4,7 @@
     .price= number_as_cents current_order.total
     %span= "You have #{pluralize(current_order.items.size, "item")}"
   #checkout-now= link_to "Checkout Now", new_store_checkout_path unless current_order.items.empty?
-  #clear-cart= link_to "Clear My Cart", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure?' unless current_order.empty?
+  #clear-cart= link_to "Clear My Cart", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure you want to empty your cart?' unless current_order.empty?
 
 %ul.item-list
   - current_order.items.each do |item|

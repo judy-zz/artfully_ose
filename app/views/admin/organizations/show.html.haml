@@ -18,10 +18,10 @@
       %li
         %h4= "#{user.email}"
         %ul.details
-          -if user == @organization.owner
+          - if user == @organization.owner
             Organization administrator
-          -elsif
-            %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :confirm => "Are you sure?", :method => :delete
+          - else
+            %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
   %h3 Kits
   - if @organization.kits.empty?
     %p This organization does not have any kits.
