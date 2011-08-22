@@ -12,6 +12,15 @@
       border-left: none
       @include rounded-corners(0, 4px, 4px, 0)
 
+form
+  fieldset
+    margin-bottom: $gutter
+  legend
+    line-height: 3 * $line_height
+    color: #666
+    font-size: 1.5em
+    font-family: Raleway, sans-serif
+
 form ul li
   @include stack-list
   line-height: 3 * $line_height

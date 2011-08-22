@@ -346,8 +346,7 @@ strong {
   word-spacing: normal;
   text-align: left;
   position: relative;
-  color: #594b43;
-  margin-bottom: 12px; }
+  color: #594b43; }
   .detailed-list > li:after {
     content: ".";
     display: block;
@@ -827,6 +826,14 @@ ul.prices li div {
     -moz-border-radius: 0 4px 4px 0;
     -webkit-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0; }
+
+form fieldset {
+  margin-bottom: 12px; }
+form legend {
+  line-height: 36px;
+  color: #666666;
+  font-size: 1.5em;
+  font-family: Raleway, sans-serif; }
 
 form ul li {
   font-family: "Courier New", monospace;

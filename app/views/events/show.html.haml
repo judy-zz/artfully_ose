@@ -10,34 +10,21 @@
     %li= link_to "All Performances", event_performances_path(@event)
 
 .context
-  %h3 Upcoming Performances
+  = render :partial => "glance", :locals => { :report => @event.glance }
   = render :partial => "performances/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
   %h3 Charts
-  - @event.charts.each do |chart|
-    %ul.detailed-list
+  %ul.detailed-list
+    - @event.charts.each do |chart|
       %li
         %h4= chart.name
         %ul.details
           %li= pluralize(chart.sections.size, "Section")
-  - if @charts.empty?
-    %p Before creating performances, you'll need to create a seat chart and import it.
-    = link_to "Create a chart", new_chart_path, :class => 'cta-left-125'
-  - else
-    %h4 Import a Chart
-    = form_for @chart, :url => assign_chart_path(@event) do |form|
-      %ul
-        %li
-          .label= form.label :id, "Chart"
-          .element= form.select :id, options_from_collection_for_select(@charts, "id", "name")
-      = form.submit "Import"
 
 .document
   #this-week
     %h3 This Week
     #calendar
-
-  #glance= render :partial => "glance", :locals => { :report => @event.glance }
 
   #widget
     %h3 Promote on your Website

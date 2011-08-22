@@ -1,5 +1,5 @@
 /*
-Syntax error: Undefined variable: "$line_height".
+Syntax error: Undefined variable: "$gutter".
         on line 17 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass
         from line 4 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/cart.sass
 
@@ -20,9 +20,17 @@ Backtrace:
 /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/cart.sass:4
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/variable.rb:45:in `_perform'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/node.rb:40:in `perform'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/operation.rb:67:in `_perform'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/node.rb:40:in `perform'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:215:in `visit_prop'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:18:in `visit'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `map'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `visit_children'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:27:in `block in visit_children'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:39:in `with_environment'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:26:in `visit_children'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `block in visit'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:230:in `visit_rule'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:18:in `visit'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
@@ -106,4 +114,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: Undefined variable: \"$line_height\".\A         on line 17 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass\A         from line 4 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/cart.sass\A \A 12: a\A 13:   color: $compliment\A 14:   text-decoration: none\A 15: \A 16: #cart, #controls\A 17:   @include section\A 18:   > *\A 19:     margin-top: 0\A 20:     margin-bottom: 0\A 21: \A 22: #controls"; }
+  content: "Syntax error: Undefined variable: \"$gutter\".\A         on line 17 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass\A         from line 4 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/cart.sass\A \A 12: a\A 13:   color: $compliment\A 14:   text-decoration: none\A 15: \A 16: #cart, #controls\A 17:   @include section\A 18:   > *\A 19:     margin-top: 0\A 20:     margin-bottom: 0\A 21: \A 22: #controls"; }

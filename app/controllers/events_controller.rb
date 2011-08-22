@@ -16,6 +16,9 @@ class EventsController < ApplicationController
     end
 
     if @event.save
+      @charts = params[:charts].collect { |id| AthenaChart.find(id) }.each do |chart|
+        @event.assign_chart(chart)
+      end
       redirect_to event_url(@event)
     else
       render :new
@@ -46,19 +49,20 @@ class EventsController < ApplicationController
     @event = AthenaEvent.new
     authorize! :new, @event
     @event.producer = current_user.current_organization.name
+    @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
   end
 
   def edit
     authorize! :edit, @event
   end
-  
+
   def assign
     @event = AthenaEvent.find(params[:event_id])
     @chart = AthenaChart.find(params[:athena_chart][:id])
     @event.assign_chart(@chart)
-    
-    flash[:error] = @event.errors.full_messages.to_sentence unless @event.errors.empty? 
-    
+
+    flash[:error] = @event.errors.full_messages.to_sentence unless @event.errors.empty?
+
     redirect_to event_url(@event)
   end
 
@@ -90,5 +94,4 @@ class EventsController < ApplicationController
   def upcoming_performances
     @upcoming = @event.upcoming_performances
   end
-
 end
