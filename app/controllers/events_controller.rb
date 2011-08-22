@@ -16,7 +16,7 @@ class EventsController < ApplicationController
     end
 
     if @event.save
-      @charts = params[:charts].collect { |id| AthenaChart.find(id) }.each do |chart|
+      @charts = find_charts.each do |chart|
         @event.assign_chart(chart)
       end
       redirect_to event_url(@event)
@@ -89,6 +89,11 @@ class EventsController < ApplicationController
 
   def find_event
     @event = AthenaEvent.find(params[:id])
+  end
+
+  def find_charts
+    ids = params[:charts] || []
+    ids.collect { |id| AthenaChart.find(id) }
   end
 
   def upcoming_performances

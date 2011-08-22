@@ -9,7 +9,7 @@ Feature: Event creation
   Scenario: A producer creates a new event
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
-    And I am on the new event page
+    And I want to create a new event
     When I fill in the following event details:
     | name      | venue      | city     | state | producer      |
     | Some Name | Some Venue | New York | NY    | Some Producer |

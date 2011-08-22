@@ -28,3 +28,8 @@ Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
     click_link "event-name"
   end
 end
+
+Given /^I want to create a new event$/ do
+  FakeWeb.register_uri(:get, %r|http://localhost/athena/charts\.json\?isTemplate=eqtrue.*|, :body => "[]")
+  Given %{I am on the new event page}
+end
