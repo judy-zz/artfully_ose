@@ -23,3 +23,7 @@ Then /^a reset password email was sent to "([^"]*)"$/ do |email|
   ActionMailer::Base.deliveries.first.subject eq "Reset password instructions"
   ActionMailer::Base.deliveries.first.to.should include email
 end
+
+Then /^an invite should have been sent to "([^"]*)"$/ do |email|
+  User.find_by_email(email).invitation_token.should_not be_empty
+end
