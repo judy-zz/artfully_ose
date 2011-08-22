@@ -834,11 +834,12 @@ form ul li {
   word-spacing: -0.65em;
   text-align: center;
   vertical-align: top;
-  padding: 0.5em 0;
+  line-height: 36px;
   position: relative; }
   form ul li input[type="submit"] {
     float: left; }
-  form ul li .element input {
+  form ul li .element input, form ul li .element select {
+    margin: 7px 0 6px 0;
     width: 98%; }
   form ul li .element input[type="checkbox"] {
     width: auto; }
@@ -865,8 +866,8 @@ form ul li {
     margin: 0.3em 0 0.25em 1.5em;
     color: #999999; }
   form ul li .description, form ul li .form-error {
-    font-size: 0.8em;
-    margin: 0.25em 0;
+    font-size: 0.75em;
+    line-height: 12px;
     width: 75%;
     color: #999999; }
   form ul li .active.description {
@@ -941,36 +942,38 @@ form ul li {
 .hidden-target {
   display: none; }
 
-.cancel-submit a {
-  display: block;
-  font-family: "Arimo", sans-serif;
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-align: left;
-  -moz-border-radius: 4px 0 0 4px;
-  -webkit-border-radius: 4px 0 0 4px;
-  border-radius: 4px 0 0 4px;
-  float: left;
-  font-size: 0.75em;
-  line-height: 14px;
-  border: 1px solid;
-  border-color: #dddddd #bbbbbb #999999;
-  border-right: none;
-  background: #eeeeee;
-  color: #999999;
-  padding: 3px 10px 4px; }
-  .cancel-submit a:after {
-    content: ".";
+.cancel-submit {
+  margin: 12px 0; }
+  .cancel-submit a {
     display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden; }
-.cancel-submit input[type="submit"] {
-  padding-left: 3em;
-  padding-right: 3em;
-  -moz-border-radius: 0 4px 4px 0;
-  -webkit-border-radius: 0 4px 4px 0;
-  border-radius: 0 4px 4px 0; }
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left;
+    -moz-border-radius: 4px 0 0 4px;
+    -webkit-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+    float: left;
+    font-size: 0.75em;
+    line-height: 14px;
+    border: 1px solid;
+    border-color: #dddddd #bbbbbb #999999;
+    border-right: none;
+    background: #eeeeee;
+    color: #999999;
+    padding: 3px 10px 4px; }
+    .cancel-submit a:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+  .cancel-submit input[type="submit"] {
+    padding-left: 3em;
+    padding-right: 3em;
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0; }
 
 input, textarea {
   color: black; }

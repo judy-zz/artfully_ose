@@ -1,23 +1,26 @@
 /*
-Syntax error: Undefined variable: "$gutter".
-        on line 5 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_flash.sass
-        from line 5 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/store.sass
+Syntax error: Undefined variable: "$line_height".
+        on line 17 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass
+        from line 4 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/store.sass
 
-1: @import "stack-layout"
-2: @import "colors"
-3: @import "mixins"
-4: @import "forms"
-5: @import "flash"
-6: 
-7: 
-8: body
-9:   font:
-10:     size: 11pt
+12: 
+13: a
+14:   color: $compliment
+15:   text-decoration: none
+16: 
+17: h1, h2, h3, h4
+18:   font-family: "Raleway" !important
+19:   @include stack-content
+20: 
+21: h1
+22:   font-size: 3.5em
 
 Backtrace:
-/Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_flash.sass:5
-/Users/micahfrost/fa/artful.ly/public/stylesheets/sass/store.sass:5
+/Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass:17
+/Users/micahfrost/fa/artful.ly/public/stylesheets/sass/store.sass:4
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/variable.rb:45:in `_perform'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/node.rb:40:in `perform'
+/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/operation.rb:67:in `_perform'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/node.rb:40:in `perform'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:215:in `visit_prop'
 /Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
@@ -103,4 +106,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: Undefined variable: \"$gutter\".\A         on line 5 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_flash.sass\A         from line 5 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/store.sass\A \A 1: @import \"stack-layout\"\A 2: @import \"colors\"\A 3: @import \"mixins\"\A 4: @import \"forms\"\A 5: @import \"flash\"\A 6: \A 7: \A 8: body\A 9:   font:\A 10:     size: 11pt"; }
+  content: "Syntax error: Undefined variable: \"$line_height\".\A         on line 17 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass\A         from line 4 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/store.sass\A \A 12: \A 13: a\A 14:   color: $compliment\A 15:   text-decoration: none\A 16: \A 17: h1, h2, h3, h4\A 18:   font-family: \"Raleway\" !important\A 19:   @include stack-content\A 20: \A 21: h1\A 22:   font-size: 3.5em"; }

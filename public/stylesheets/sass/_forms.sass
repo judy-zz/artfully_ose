@@ -14,13 +14,14 @@
 
 form ul li
   @include stack-list
-  padding: .5em 0
+  line-height: 3 * $line_height
   position: relative
   input[type="submit"]
     float: left
   .element
     @extend .stack2of3
-    input
+    input, select
+      margin: 7px 0 6px 0
       width: 98%
     input[type="checkbox"]
       width: auto
@@ -51,8 +52,8 @@ form ul li
     margin: .3em 0 .25em 1.5em
     color: #999
   .description, .form-error
-    font-size: .8em
-    margin: .25em 0
+    font-size: .75em
+    line-height: $line_height
     width: 75%
     color: #999
   .active.description
@@ -121,6 +122,7 @@ form ul li
   display: none
 
 .cancel-submit
+  margin: $gutter 0
   a
     @include stack-content
     @include rounded-corners(4px, 0, 0, 4px)
