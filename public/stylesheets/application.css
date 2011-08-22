@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, form ul li .label, .performance-buttons li, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .drilldown, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, .stackAuto {
+.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, form ul li .label, .performance-buttons li, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .drilldown, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -9,7 +9,7 @@
   text-align: center;
   vertical-align: top; }
 
-.stack, .spread, form ul li .label-and-element, .full.element {
+.stack, #heading, .spread, form ul li .label-and-element, .full.element {
   width: 100%; }
 
 .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li {
@@ -55,89 +55,54 @@ a {
   text-decoration: none; }
 
 h1, h3 {
-  font-family: "Raleway" !important;
-  display: block;
-  font-family: "Arimo", sans-serif;
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-align: left; }
-  h1:after, h3:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden; }
+  font-family: "Raleway" !important; }
 
 h1 {
   font-size: 2.5em;
+  line-height: 48px;
   color: #077083;
   border-bottom: 1px solid #eeeeee;
-  padding-bottom: 10px;
-  margin-bottom: 10px; }
+  margin-bottom: 12px; }
 
 h2 {
   float: left;
-  color: #666666;
-  display: block;
-  font-family: "Arimo", sans-serif;
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-align: left; }
-  h2:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden; }
-
-#front-matter {
-  margin-bottom: 3em;
-  padding: 0 10px; }
-  #front-matter:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden; }
-
-.from-here {
-  display: block;
-  font-family: "Arimo", sans-serif;
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-align: left;
-  font-size: 0.8em;
-  text-align: right; }
-  .from-here:after {
-    content: ".";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden; }
-  .from-here li {
-    display: inline;
-    padding-left: 1em; }
+  color: #666666; }
 
 h3 {
   font-size: 2em;
+  line-height: 24px;
   color: #f08204;
-  margin-bottom: 10px; }
+  margin-bottom: 12px; }
 
 h4 {
   color: #594b43;
   font-style: italic;
-  margin-bottom: 0.5em;
-  display: block;
-  font-family: "Arimo", sans-serif;
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-align: left; }
-  h4:after {
-    content: ".";
+  line-height: 24px; }
+
+#heading {
+  position: relative;
+  margin-bottom: 24px; }
+  #heading > * {
+    margin: 12px;
     display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden; }
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    #heading > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+  #heading h2, #heading .from-here {
+    margin: 0 12px; }
+  #heading .from-here {
+    font-size: 0.8em;
+    float: right; }
+    #heading .from-here li {
+      display: inline;
+      padding-left: 1em; }
 
 strong {
   font-weight: bold;
@@ -171,11 +136,11 @@ strong {
 #content {
   margin: 0 auto;
   max-width: 1260px;
-  padding: 80px 10px;
+  padding: 72px 12px;
   position: relative; }
   #content p {
-    font-size: 0.9em;
-    line-height: 1.5em;
+    font-size: 0.875em;
+    line-height: 24px;
     margin: 1em inherit;
     color: #666666; }
   #content .logo {
@@ -194,7 +159,7 @@ strong {
 .spread {
   position: relative; }
   .spread > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -209,10 +174,10 @@ strong {
 
 .compact-spread {
   position: relative;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #eeeeee; }
   .compact-spread > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -228,7 +193,7 @@ strong {
 .context, .tip, .overview {
   position: relative; }
   .context > *, .tip > *, .overview > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -244,7 +209,7 @@ strong {
 .dashboard {
   position: relative; }
   .dashboard > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -260,7 +225,7 @@ strong {
 .sideboard {
   position: relative; }
   .sideboard > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -277,7 +242,7 @@ strong {
   background: white;
   position: relative; }
   .document > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -293,7 +258,7 @@ strong {
 .of2 {
   position: relative; }
   .of2 > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -309,7 +274,7 @@ strong {
 .of3 {
   position: relative; }
   .of3 > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -325,7 +290,7 @@ strong {
 .drilldown.final {
   position: relative; }
   .drilldown.final > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -345,7 +310,7 @@ strong {
 .drilldown {
   position: relative; }
   .drilldown > * {
-    margin: 10px;
+    margin: 12px;
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -381,27 +346,31 @@ strong {
   word-spacing: normal;
   text-align: left;
   position: relative;
-  border-bottom: 1px solid #ced1cb;
   color: #594b43;
-  padding-bottom: 10px;
-  margin-bottom: 10px; }
+  margin-bottom: 12px; }
   .detailed-list > li:after {
     content: ".";
     display: block;
     height: 0;
     clear: both;
     visibility: hidden; }
-  .detailed-list > li.active {
-    background: #eeeeee; }
 .detailed-list ul.details li {
   display: inline;
   font-size: 0.8em;
-  line-height: 1.2em;
+  line-height: 24px;
   color: #999999; }
 .detailed-list ul.details-long li {
-  line-height: 1.2em;
-  font-size: 0.8em;
-  color: #999999; }
+  line-height: 24px;
+  font-size: 0.75em;
+  color: #999999;
+  display: inline; }
+  .detailed-list ul.details-long li .key, .detailed-list ul.details-long li .value {
+    display: inline;
+    color: #666666; }
+  .detailed-list ul.details-long li .key {
+    color: #333333; }
+    .detailed-list ul.details-long li .key:after {
+      content: ":"; }
 .detailed-list h4 {
   margin-bottom: 0; }
   .detailed-list h4 a {
@@ -449,26 +418,22 @@ input.mini {
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left;
-  margin: 1em 0;
   padding: 0;
   border-bottom: 1px solid #eeeeee;
-  position: relative; }
+  text-align: right;
+  position: relative;
+  line-height: 35px; }
   .people-list li:after {
     content: ".";
     display: block;
     height: 0;
     clear: both;
     visibility: hidden; }
-.people-list h4 {
-  padding: 0.25em 0; }
 .people-list .name {
-  margin-bottom: 0.5em; }
+  float: left; }
 .people-list .email {
   font-size: 0.9em;
-  color: #666666;
-  position: absolute;
-  right: 0;
-  top: 0; }
+  color: #666666; }
 
 .controls {
   position: absolute;
@@ -478,7 +443,6 @@ input.mini {
   -khtml-opacity: 0.95;
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=95)";
   filter: "alpha(opacity=95)";
-  padding: 0 5px;
   right: 0;
   top: 0;
   text-align: right;
@@ -486,12 +450,13 @@ input.mini {
   .controls li {
     display: inline-block; }
     .controls li a, .controls li span {
+      padding: 0 6px;
       font-weight: bold;
       text-decoration: none;
-      font-size: 0.8em;
+      font-size: 0.875em;
       display: inline-block;
-      padding: 0.25em;
-      color: #666666; }
+      color: #666666;
+      line-height: 24px; }
     .controls li a:hover {
       color: #077083; }
 
@@ -579,10 +544,9 @@ input.mini {
   width: 1em; }
 
 .kv {
-  font-size: 0.9em;
-  margin-bottom: 2em; }
+  font-size: 0.875em; }
   .kv li {
-    padding: 0.25em 0; }
+    line-height: 24px; }
   .kv .key, .kv .value {
     display: inline-block;
     color: #666666; }
@@ -1154,9 +1118,9 @@ tfoot tr {
   border-radius: 4px 4px 4px 4px;
   color: white;
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
-  padding: 1em;
-  margin-bottom: 1em;
-  line-height: 1.2em; }
+  padding: 12px;
+  margin-bottom: 12px;
+  line-height: 12px; }
   .flash:after {
     content: ".";
     display: block;
@@ -1164,7 +1128,7 @@ tfoot tr {
     clear: both;
     visibility: hidden; }
   .flash .close {
-    margin-left: 1em;
+    margin-left: 12px;
     float: right;
     cursor: pointer; }
   .flash p {
@@ -1202,7 +1166,7 @@ tfoot tr {
   .reports > li {
     position: relative; }
     .reports > li > * {
-      margin: 0 10px;
+      margin: 12px;
       display: block;
       font-family: "Arimo", sans-serif;
       letter-spacing: normal;
@@ -1216,14 +1180,13 @@ tfoot tr {
         visibility: hidden; }
 
 .report {
-  padding-bottom: 10px;
-  margin-bottom: 10px; }
+  margin-bottom: 12px; }
   .report li {
     font-weight: bold;
-    font-size: 0.8em;
+    line-height: 24px;
+    font-size: 0.875em;
     color: #594b43;
-    text-align: right;
-    margin: 0.75em 0; }
+    text-align: right; }
   .report .stat {
     float: left;
     text-transform: uppercase; }
@@ -1240,16 +1203,6 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 .dialog {
   display: none; }
-
-.performance-list h6 {
-  line-height: 20px; }
-
-.list-glance {
-  float: left;
-  font-size: 0.8em;
-  line-height: 20px;
-  margin-left: 10px;
-  color: #aaaaaa; }
 
 .performance-buttons {
   -moz-border-radius: 4px 4px 4px 4px;
@@ -1270,6 +1223,9 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   .performance-buttons li input {
     width: 100%;
     font-size: 0.75em;
+    display: block;
+    height: 24px;
+    padding: 0;
     -moz-border-radius: 2px 2px 2px 2px;
     -webkit-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px; }

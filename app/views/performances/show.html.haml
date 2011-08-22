@@ -22,9 +22,9 @@
           = form_tag unpublished_event_performances_path(@performance.event) do |form|
             = hidden_field_tag :performance_id, @performance.id
             = submit_tag "Unpublish"
+  = render :partial => "glance", :locals => { :report => @performance.glance }
   %h3 Upcoming Performances
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
-
   %ul.kv
     %li
       .key Venue
@@ -34,8 +34,6 @@
       .value= @event.producer
 
 .document
-  = render :partial => "glance", :locals => { :report => @performance.glance }
-
   - if @performance.pending?
     %h3 Tickets
     %p= "You have not created tickets for this event.  Tickets will be created using the #{@performance.chart.name} seating chart."

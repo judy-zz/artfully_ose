@@ -1,3 +1,4 @@
+@import "grid"
 @import "stack-layout"
 @import "colors"
 @import "mixins"
@@ -13,49 +14,41 @@ a
 
 h1, h3
   font-family: "Raleway" !important
-  @include stack-content
 
 h1
   font-size: 2.5em
+  line-height: 4 * $line_height
   color: $compliment
   border-bottom: 1px solid #eee
-  padding-bottom: 10px
-  margin-bottom: 10px
+  margin-bottom: $gutter
 
 h2
   float: left
   color: #666
-  @include stack-content
-
-
-#front-matter
-  margin-bottom: 3em
-  padding: 0 10px
-  &:after
-    content: "."
-    display: block
-    height: 0
-    clear: both
-    visibility: hidden
-
-.from-here
-  @include stack-content
-  font-size: .8em
-  text-align: right
-  li
-    display: inline
-    padding-left: 1em
 
 h3
   font-size: 2em
+  line-height: 2 * $line_height
   color: $primary
-  margin-bottom: 10px
+  margin-bottom: $gutter
 
 h4
   color: $secondary
   font-style: italic
-  margin-bottom: .5em
-  @include stack-content
+  line-height: 2 * $line_height
+
+#heading
+  @include section
+  @extend .stack
+  margin-bottom: 2 * $gutter
+  h2, .from-here
+    margin: 0 $gutter
+  .from-here
+    font-size: .8em
+    float: right
+    li
+      display: inline
+      padding-left: 1em
 
 strong
   font-weight: bold
@@ -87,11 +80,11 @@ strong
 #content
   margin: 0 auto
   max-width: 1260px
-  padding: 80px 10px
+  padding: 6 * $gutter $gutter
   position: relative
   p
-    font-size: .9em
-    line-height: 1.5em
+    font-size: .875em
+    line-height: 2 * $line_height
     margin: 1em inherit
     color: #666
   .logo
@@ -109,7 +102,7 @@ strong
 .compact-spread
   @include section
   @extend .stack1of2
-  padding: 10px
+  padding: $gutter
   border: 1px solid #eee
 
 .context, .tip, .overview
@@ -167,21 +160,27 @@ strong
   > li
     @include stack-content
     position: relative
-    border-bottom: 1px solid $neutral-1
     color: $secondary
-    padding-bottom: 10px
-    margin-bottom: 10px
-    &.active
-      background: #eee
+    margin-bottom: $gutter
   ul.details li
     display: inline
     font-size: .8em
-    line-height: 1.2em
+    line-height: 2 * $line-height
     color: #999
-  ul.details-long li
-    line-height: 1.2em
-    font-size: .8em
-    color: #999
+  ul.details-long
+    li
+      line-height: 2 * $line-height
+      font-size: .75em
+      color: #999
+      display: inline
+      .key, .value
+        display: inline
+        color: #666
+      .key
+        color: #333
+        &:after
+          content: ":"
+
   h4
     margin-bottom: 0
     a
@@ -226,26 +225,21 @@ input.mini
 .people-list
   li
     @include stack-content
-    margin: 1em 0
     padding: 0
     border-bottom: 1px solid #eee
+    text-align: right
     position: relative
-  h4
-    padding: .25em 0
+    line-height: 3 * $line_height - 1
   .name
-    margin-bottom: .5em
+    float: left
   .email
     font-size: .9em
     color: #666
-    position: absolute
-    right: 0
-    top: 0
 
 .controls
   position: absolute
   background: #fff
   @include opacity(0.95)
-  padding: 0 5px
   right: 0
   top: 0
   text-align: right
@@ -253,12 +247,13 @@ input.mini
   li
     display: inline-block
     a, span
+      padding: 0 $gutter / 2
       font-weight: bold
       text-decoration: none
-      font-size: .8em
+      font-size: .875em
       display: inline-block
-      padding: .25em
       color: #666
+      line-height: 2 * $line_height
     a:hover
       color: $compliment
 
@@ -332,10 +327,9 @@ input.mini
   width: 1em
 
 .kv
-  font-size: .9em
-  margin-bottom: 2em
+  font-size: .875em
   li
-    padding: .25em 0
+    line-height: 2 * $line_height
   .key, .value
     display: inline-block
     color: #666

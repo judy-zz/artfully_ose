@@ -11,11 +11,11 @@
 
 
 .context
+  = render :partial => "glance", :locals => { :report => @event.glance }
   %h3 Upcoming Performances
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
 .document
-  = render :partial => "glance", :locals => { :report => @event.glance }
   %h3 All Performances
   #performances
     %table.standalone.zebra

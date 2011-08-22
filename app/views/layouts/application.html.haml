@@ -16,7 +16,7 @@
     #content
       .logo{ :id => active_section }
       #page
-        #front-matter= yield :header
+        #heading= yield :header
         = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
         - flash.discard
         = yield

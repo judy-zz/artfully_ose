@@ -9,5 +9,9 @@
           %li= link_to "Edit", edit_event_path(event) if can?(:edit, event)
           %li= link_to "Delete", event_path(event), :method => :delete, :confirm => "Are you sure you want to delete #{event.name}?" if can?(:destroy, event)
         %ul.details-long
-          %li= event.venue
-          %li= event.producer
+          %li
+            .key Venue
+            .value= event.venue
+          %li
+            .key Producer
+            .value= event.producer
