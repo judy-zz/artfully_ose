@@ -24,9 +24,10 @@ form
 form ul li
   @include stack-list
   line-height: 3 * $line_height
+  min-height: 3 * $line_height
   position: relative
   input[type="submit"]
-    float: left
+    text-align: left
   .element
     @extend .stack2of3
     input, select
@@ -131,7 +132,7 @@ form ul li
   display: none
 
 .cancel-submit
-  margin: $gutter 0
+  margin: $gutter 0 0
   a
     @include stack-content
     @include rounded-corners(4px, 0, 0, 4px)

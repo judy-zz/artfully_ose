@@ -11,6 +11,5 @@
   = render "shared/error_messages", :target => @event
   %h3= "Edit #{@event.name}"
   = form_for @event, :url => event_path(@event) do |form|
-    %ul
-      = render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
-      %li= form.submit "Submit"
+    %ul= render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
+    = form.submit "Submit"

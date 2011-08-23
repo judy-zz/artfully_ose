@@ -1,8 +1,5 @@
 .spread
   = form_for @action, :url => person_actions_path do |form|
-    %ul
-      - if params[:type] == "hear"
-        = render :partial => 'actions/form_hear', :locals => { :parent_form => form, :target => @action }
-
-      = hidden_field_tag "action_type", params[:type]
-      %li= form.submit "Save #{params[:type].titleize} action"
+    = hidden_field_tag "action_type", params[:type]
+    %ul= render :partial => 'actions/form_hear', :locals => { :parent_form => form, :target => @action } if params[:type] == "hear"
+    = form.submit "Save #{params[:type].titleize} action"

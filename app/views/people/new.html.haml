@@ -6,8 +6,7 @@
   %h3 First Things First
   = render :partial => "shared/error_messages", :locals => { :target => @person }
   = form_for @person, :url => people_path do |form|
-    %ul
-      = render :partial => 'people/form', :locals => { :parent_form => form, :target => @person }
-      %li.cancel-submit
-        = link_to "Cancel", people_path
-        = form.submit "Create"
+    %ul= render :partial => 'people/form', :locals => { :parent_form => form, :target => @person }
+    .cancel-submit
+      = link_to "Cancel", people_path
+      = form.submit "Create"

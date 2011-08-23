@@ -7,6 +7,5 @@
   %h3 Edit Section
   = render "shared/error_messages", :target => @section
   = form_for @section, :url => chart_section_path(@chart, @section) do |form|
-    %ul
-      = render :partial => 'sections/form', :locals => { :parent_form => form, :target => @section }
-      %li= form.submit "Submit"
+    %ul= render :partial => 'sections/form', :locals => { :parent_form => form, :target => @section }
+    = form.submit "Submit"

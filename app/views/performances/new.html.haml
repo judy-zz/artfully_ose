@@ -7,8 +7,7 @@
   = form_for @performance, :url => event_performances_path(@event, @performance) do |form|
     #performance
       %h3= @event.name
-      %ul
-        = render :partial => 'performances/form', :locals => { :performance_form => form, :target => @performance }
-        %li.cancel-submit
-          = link_to "Cancel", event_path(@event)
-          = form.submit "Create"
+      %ul= render :partial => 'performances/form', :locals => { :performance_form => form, :target => @performance }
+      .cancel-submit
+        = link_to "Cancel", event_path(@event)
+        = form.submit "Create"

@@ -12,11 +12,9 @@
       %li
         .label= form.label :subtype, "Type"
         .element= form.select :subtype, options_for_select(AthenaAction::GIVE_TYPES)
-
       %li
         .label= form.label :amount, "Dollar Value"
         .element= form.text_field :amount, :class => :currency
-
       %li
         .label= form.label :occurred_at, "Date and Time"
         .element= form.text_field :occurred_at, :value => l(Time.now, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
@@ -25,6 +23,6 @@
         .element
           = form.text_field :details
           .description Consider including the donation amount in the details.
-      %li.cancel-submit
-        = link_to "Cancel", contributions_path
-        = submit_tag "Create"
+    .cancel-submit
+      = link_to "Cancel", contributions_path
+      = submit_tag "Create"

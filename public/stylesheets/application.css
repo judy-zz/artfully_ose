@@ -856,9 +856,10 @@ form ul li {
   text-align: center;
   vertical-align: top;
   line-height: 36px;
+  min-height: 36px;
   position: relative; }
   form ul li input[type="submit"] {
-    float: left; }
+    text-align: left; }
   form ul li .element input, form ul li .element select {
     margin: 7px 0 6px 0;
     width: 98%; }
@@ -964,7 +965,7 @@ form ul li {
   display: none; }
 
 .cancel-submit {
-  margin: 12px 0; }
+  margin: 12px 0 0; }
   .cancel-submit a {
     display: block;
     font-family: "Arimo", sans-serif;
