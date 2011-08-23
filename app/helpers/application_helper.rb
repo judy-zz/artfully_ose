@@ -7,6 +7,19 @@ module ApplicationHelper
     menu.render_menu
   end
 
+  def widget_script(event, organization)
+    return <<-EOF
+$(document).ready(function(){
+  artfully.configure({
+    base_uri: '#{root_url}api/',
+    store_uri: '#{root_url}store/',
+  });
+  #{render :partial => "widgets/event", :locals => { :event => event } unless event.nil? }
+  #{render :partial => "widgets/donation", :locals => { :organization => organization } unless organization.nil? }
+});
+    EOF
+  end
+
   def number_as_cents(cents)
     number_to_currency(cents.to_i / 100.00)
   end

@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   respond_to :html, :json
   before_filter :authenticate_user!
 
-  before_filter :find_event, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget ]
   before_filter :upcoming_performances, :only => :show
 
   def create
@@ -83,6 +83,9 @@ class EventsController < ApplicationController
     authorize! :destroy, @event
     @event.destroy
     redirect_to events_url
+  end
+
+  def widget
   end
 
   private

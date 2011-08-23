@@ -29,5 +29,4 @@
 
   #widget
     %h3 Promote on your Website
-    .code
-      %textarea= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
+    %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe

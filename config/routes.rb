@@ -60,6 +60,7 @@ Artfully::Application.routes.draw do
   resources :segments
 
   resources :events do
+    get :widget, :on => :member
     resources :performances do
       member do
         get :door_list

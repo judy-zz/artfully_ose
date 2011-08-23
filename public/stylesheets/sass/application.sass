@@ -85,7 +85,6 @@ strong
   p
     font-size: .875em
     line-height: 2 * $line_height
-    margin: 1em inherit
     color: #666
   .logo
     position: absolute
@@ -215,6 +214,19 @@ ul.selection
 .order-list ul li
   display: block
   font-size: .9em
+
+.code
+  font-size: .75em
+  font-family: monospace
+  font-weight: bold
+  border: 1px solid #ccc
+  border-left: $gutter solid #ccc
+  background: #eee
+  color: #666
+  line-height: $line_height
+  padding: $gutter / 2
+  margin: $gutter / 2 0
+  @include rounded-corners(2px,2px,2px,2px)
 
 input.mini
   font-size: .75em
