@@ -3,7 +3,7 @@
 
 = form_tag people_path, {:method => :get, :remote => true, :class => 'big-search super-search'} do
   = hidden_field_tag :commit, "Search"
-  = text_field_tag :search, "", :placeholder => "Email address or name..."
+  = text_field_tag :search, "", :placeholder => "Email address, name, or tag..."
   = submit_tag "Search"
 
 .spread
