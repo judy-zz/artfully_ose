@@ -36,7 +36,8 @@ class AthenaAction < AthenaResource::Base
     end
   end
 
-  def set_params(params = {}, person, curr_user)
+  def set_params(params, person, curr_user)
+    params ||= {}
     params = prepare_datetime(params,curr_user.current_organization.time_zone)
     self.creator_id = curr_user.id
     self.organization_id = curr_user.current_organization.id
