@@ -37,9 +37,16 @@ Artfully::Application.configure do
   # config.action_controller.asset_host = "http://assets.example.com"
 
   # Disable delivery errors, bad email addresses will be ignored
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.smtp_settings = {
+    :address        => "smtp.sendgrid.net",
+    :port           => "25",
+    :authentication => :plain,
+    :user_name      => ENV['SENDGRID_USERNAME'],
+    :password       => ENV['SENDGRID_PASSWORD'],
+    :domain         => ENV['SENDGRID_DOMAIN']
+  }
 
+  config.action_mailer.default_url_options = { :host => 'artfully-demo.herokuapp.com' }
   # Enable threaded mode
   # config.threadsafe!
 
@@ -50,12 +57,12 @@ Artfully::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.tickets_site       = 'http://localhost:8080/athena/'
-  config.payments_component = 'http://localhost:8080/payments/'
-  config.orders_component   = 'http://localhost:8080/athena/'
-  config.stage_site         = 'http://localhost:8080/athena/'
-  config.people_site        = 'http://localhost:8080/athena/'
-  config.reports_site       = 'http://localhost:8080/athena/reports/'
+  config.tickets_site       = 'http://athenadev.fracturedatlas.org:8080/athena/'
+  config.payments_component = 'http://athenadev.fracturedatlas.org:8080/payments/'
+  config.orders_component   = 'http://athenadev.fracturedatlas.org:8080/athena/'
+  config.stage_site         = 'http://athenadev.fracturedatlas.org:8080/athena/'
+  config.people_site        = 'http://athenadev.fracturedatlas.org:8080/athena/'
+  config.reports_site       = 'http://athenadev.fracturedatlas.org:8080/athena/reports/'
   config.payments_element_name = '/payments'
 
   #config.athena_resource_user = 'demo'
