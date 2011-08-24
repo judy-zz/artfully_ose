@@ -224,7 +224,7 @@ h1 {
   display: block;
   width: 350px;
   height: 75px;
-  background: url("../images/logo-blank.png") no-repeat;
+  background: url("/images/logo-blank.png") no-repeat;
   text-indent: -9999px;
   margin-top: 35px;
 }
@@ -233,7 +233,7 @@ h1 .logo {
   display: block;
   width: 350px;
   height: 75px;
-  background: url("../images/logo-sprite.png") no-repeat;
+  background: url("/images/logo-sprite.png") no-repeat;
 }
 
 a, a:active, a:visited { color: #0f6d7b; text-decoration: none; }
