@@ -1,0 +1,1 @@
+Mail.register_interceptor(DevelopmentMailInterceptor) if %w( test development demo stagin).include?(Rails.env)
