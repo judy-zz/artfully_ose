@@ -1,5 +1,5 @@
 ---
-package_assets: on
+package_assets: always
 
 s3_bucket: <%= ENV['S3_BUCKET'] %>
 s3_access_key_id: <%= ENV['ACCESS_KEY_ID'] %>
