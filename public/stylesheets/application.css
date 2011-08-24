@@ -754,6 +754,23 @@ ul.prices li div {
   .loading > * {
     opacity: 0.1; }
 
+.search-help-popup {
+  font-family: Arial;
+  font-size: 1.1em; }
+  .search-help-popup p {
+    margin-bottom: 10px; }
+  .search-help-popup ul {
+    margin-left: 20px;
+    list-style: circle; }
+  .search-help-popup li {
+    margin-bottom: 5px; }
+  .search-help-popup pre {
+    display: inline;
+    background-color: white;
+    color: black;
+    font-family: Courier;
+    padding: 1px; }
+
 #header {
   left: 0;
   right: 0;
@@ -832,7 +849,7 @@ ul.prices li div {
 .big-search {
   margin-bottom: 3em; }
   .big-search input[type='text'] {
-    width: 85%; }
+    width: 80%; }
   .big-search input[type='submit'] {
     width: 15%;
     margin: 0;
@@ -887,15 +904,16 @@ form ul li {
     font-size: 0.8em;
     margin: 0.3em 0 0.25em 1.5em;
     color: #999999; }
-  form ul li .description, form ul li .form-error {
-    font-size: 0.75em;
-    line-height: 12px;
-    width: 75%;
-    color: #999999; }
   form ul li .active.description {
     color: #666666; }
   form ul li .form-error {
     color: #f03504; }
+
+form .description, form .form-error {
+  font-size: 0.75em;
+  line-height: 12px;
+  width: 75%;
+  color: #999999; }
 
 .label.hidden {
   display: none; }

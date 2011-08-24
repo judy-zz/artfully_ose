@@ -5,7 +5,7 @@
   margin-bottom: 3em
   input
     &[type='text']
-      width: 85%
+      width: 80%
     &[type='submit']
       width: 15%
       margin: 0
@@ -61,15 +61,17 @@ form ul li
     font-size: .8em
     margin: .3em 0 .25em 1.5em
     color: #999
+  .active.description
+    color: #666
+  .form-error
+    color: $red
+
+form
   .description, .form-error
     font-size: .75em
     line-height: $line_height
     width: 75%
     color: #999
-  .active.description
-    color: #666
-  .form-error
-    color: $red
 
 .label.hidden
   display: none

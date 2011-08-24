@@ -77,6 +77,12 @@ $(document).ready(function() {
     zebra($(this));
   });
 
+  $(".search-help-popup").dialog({autoOpen: false, draggable:false, modal:true, width:700, title:"Search help"})  
+  $("#search-help-link").click(function(){
+    $(".search-help-popup").dialog("open")
+    return false;
+  });
+
   $(".popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Log Action"})
 
   $(".popup-link").bind("ajax:complete", function(et, e){
