@@ -11,6 +11,7 @@
 # It's strongly recommended to check this file into your version control system.
 
 ActiveRecord::Schema.define(:version => 20110826135112) do
+
   create_table "admins", :force => true do |t|
     t.string   "email",                             :default => "", :null => false
     t.string   "encrypted_password", :limit => 128, :default => "", :null => false

@@ -2,7 +2,7 @@ class Admin::UsersController < Admin::AdminController
   def index
     unless params[:email].blank?
       @user = User.find_by_email(params[:email])
-      redirect_to edit_admin_user_path(@user) unless @user.nil?
+      redirect_to admin_user_path(@user) unless @user.nil?
     end
   end
 
@@ -32,6 +32,10 @@ class Admin::UsersController < Admin::AdminController
         render :edit and return
       end
     end
+  end
 
+  def sessions
+    sign_in(:user, User.find(params[:id]))
+    redirect_to root_path
   end
 end
