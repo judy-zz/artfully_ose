@@ -11,6 +11,7 @@ gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0.beta'
 gem 'high_voltage'
 gem 'copycopter_client'
+gem 'sanitize_email'
 gem 'comma', :git => "git://github.com/crafterm/comma.git"
 gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.12'
