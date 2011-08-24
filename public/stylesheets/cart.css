@@ -1,117 +1,426 @@
-/*
-Syntax error: Undefined variable: "$gutter".
-        on line 17 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass
-        from line 4 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/cart.sass
+.stackAuto {
+  width: auto; }
 
-12: a
-13:   color: $compliment
-14:   text-decoration: none
-15: 
-16: #cart, #controls
-17:   @include section
-18:   > *
-19:     margin-top: 0
-20:     margin-bottom: 0
-21: 
-22: #controls
+.stack, form ul li .label-and-element, .full.element, .stack1of2, .stack1of3, form ul li .label, .stack2of3, form ul li .element, .stack1of4, #controls, #customer-confirmation, #credit_card-confirmation, #billing_address-confirmation, .stack3of4, #cart, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .stackAuto {
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top; }
 
-Backtrace:
-/Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass:17
-/Users/micahfrost/fa/artful.ly/public/stylesheets/sass/cart.sass:4
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/variable.rb:45:in `_perform'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/script/node.rb:40:in `perform'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:215:in `visit_prop'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:18:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `map'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:27:in `block in visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:39:in `with_environment'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:26:in `visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `block in visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:230:in `visit_rule'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:18:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `map'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:27:in `block in visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:39:in `with_environment'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:26:in `visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `block in visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:230:in `visit_rule'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:18:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:145:in `block in visit_import'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:145:in `map'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:145:in `visit_import'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:18:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `block in visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `map'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:53:in `visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:27:in `block in visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:39:in `with_environment'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:26:in `visit_children'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `block in visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:47:in `visit_root'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/base.rb:37:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:18:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/visitors/perform.rb:7:in `visit'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/tree/root_node.rb:20:in `render'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/engine.rb:291:in `_render'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/engine.rb:239:in `block in render'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/util.rb:298:in `silence_sass_warnings'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/engine.rb:239:in `render'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin/compiler.rb:319:in `update_stylesheet'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin/compiler.rb:181:in `block (2 levels) in update_stylesheets'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin/compiler.rb:175:in `each'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin/compiler.rb:175:in `block in update_stylesheets'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin/compiler.rb:173:in `each'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin/compiler.rb:173:in `update_stylesheets'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin.rb:81:in `update_stylesheets'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin.rb:54:in `check_for_updates'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/sass-3.1.2/lib/sass/plugin/rack.rb:51:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/warden-1.0.4/lib/warden/manager.rb:35:in `block in call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/warden-1.0.4/lib/warden/manager.rb:34:in `catch'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/warden-1.0.4/lib/warden/manager.rb:34:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/best_standards_support.rb:17:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/head.rb:14:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-1.2.3/lib/rack/methodoverride.rb:24:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/params_parser.rb:21:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/flash.rb:182:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/session/abstract_store.rb:149:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/cookies.rb:302:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/activerecord-3.0.9/lib/active_record/query_cache.rb:32:in `block in call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/activerecord-3.0.9/lib/active_record/connection_adapters/abstract/query_cache.rb:28:in `cache'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/activerecord-3.0.9/lib/active_record/query_cache.rb:12:in `cache'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/activerecord-3.0.9/lib/active_record/query_cache.rb:31:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/activerecord-3.0.9/lib/active_record/connection_adapters/abstract/connection_pool.rb:354:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/callbacks.rb:46:in `block in call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/activesupport-3.0.9/lib/active_support/callbacks.rb:416:in `_run_call_callbacks'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/callbacks.rb:44:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-1.2.3/lib/rack/sendfile.rb:107:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/remote_ip.rb:48:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/show_exceptions.rb:47:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/railties-3.0.9/lib/rails/rack/logger.rb:13:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-1.2.3/lib/rack/runtime.rb:17:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/activesupport-3.0.9/lib/active_support/cache/strategy/local_cache.rb:72:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-1.2.3/lib/rack/lock.rb:11:in `block in call'
-<internal:prelude>:10:in `synchronize'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-1.2.3/lib/rack/lock.rb:11:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/actionpack-3.0.9/lib/action_dispatch/middleware/static.rb:30:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/railties-3.0.9/lib/rails/application.rb:168:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/railties-3.0.9/lib/rails/application.rb:77:in `method_missing'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-jsonp-middleware-0.0.5/lib/rack/jsonp.rb:21:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/railties-3.0.9/lib/rails/rack/log_tailer.rb:14:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-1.2.3/lib/rack/content_length.rb:13:in `call'
-/Users/micahfrost/.rvm/gems/ruby-1.9.2-p180/gems/rack-1.2.3/lib/rack/handler/webrick.rb:52:in `service'
-/Users/micahfrost/.rvm/rubies/ruby-1.9.2-p180/lib/ruby/1.9.1/webrick/httpserver.rb:111:in `service'
-/Users/micahfrost/.rvm/rubies/ruby-1.9.2-p180/lib/ruby/1.9.1/webrick/httpserver.rb:70:in `run'
-/Users/micahfrost/.rvm/rubies/ruby-1.9.2-p180/lib/ruby/1.9.1/webrick/server.rb:183:in `block in start_thread'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Syntax error: Undefined variable: \"$gutter\".\A         on line 17 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/_forms.sass\A         from line 4 of /Users/micahfrost/fa/artful.ly/public/stylesheets/sass/cart.sass\A \A 12: a\A 13:   color: $compliment\A 14:   text-decoration: none\A 15: \A 16: #cart, #controls\A 17:   @include section\A 18:   > *\A 19:     margin-top: 0\A 20:     margin-bottom: 0\A 21: \A 22: #controls"; }
+.stack, form ul li .label-and-element, .full.element {
+  width: 100%; }
+
+.stack1of2 {
+  width: 50%; }
+
+.stack1of3, form ul li .label {
+  width: 33.334%; }
+
+.stack2of3, form ul li .element {
+  width: 66.667%; }
+
+.stack1of4, #controls, #customer-confirmation, #credit_card-confirmation, #billing_address-confirmation {
+  width: 25%; }
+
+.stack3of4, #cart {
+  width: 75%; }
+
+.stack1of5, .single_field .label, .single_field .submit {
+  width: 20%; }
+
+.stack2of5 {
+  width: 40%; }
+
+.stack3of5, .single_field .element {
+  width: 60%; }
+
+.stack4of5 {
+  width: 80%; }
+
+.stack1of6 {
+  width: 16.667%; }
+
+.stack1of7 {
+  width: 14.285%; }
+
+.grouped-checkbox {
+  width: 1em; }
+
+.big-search {
+  margin-bottom: 3em; }
+  .big-search input[type='text'] {
+    width: 85%; }
+  .big-search input[type='submit'] {
+    width: 15%;
+    margin: 0;
+    border-left: none;
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0; }
+
+form fieldset {
+  margin-bottom: 12px; }
+form legend {
+  line-height: 36px;
+  color: #666666;
+  font-size: 1.5em;
+  font-family: Raleway, sans-serif; }
+
+form ul li {
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top;
+  line-height: 36px;
+  min-height: 36px;
+  position: relative; }
+  form ul li input[type="submit"] {
+    text-align: left; }
+  form ul li .element input, form ul li .element select {
+    margin: 7px 0 6px 0;
+    width: 98%; }
+  form ul li .element input[type="checkbox"] {
+    width: auto; }
+  form ul li .date_field {
+    text-align: left; }
+    form ul li .date_field input {
+      width: 48%;
+      display: inline;
+      margin-right: 2%; }
+    form ul li .date_field select {
+      width: 20%;
+      display: inline;
+      margin-right: 2%; }
+  form ul li .label label {
+    font-family: "Raleway"; }
+  form ul li .label-and-element {
+    text-align: left; }
+    form ul li .label-and-element label, form ul li .label-and-element input {
+      display: inline; }
+  form ul li .checkbox {
+    float: left; }
+  form ul li .checkbox-text {
+    font-size: 0.8em;
+    margin: 0.3em 0 0.25em 1.5em;
+    color: #999999; }
+  form ul li .description, form ul li .form-error {
+    font-size: 0.75em;
+    line-height: 12px;
+    width: 75%;
+    color: #999999; }
+  form ul li .active.description {
+    color: #666666; }
+  form ul li .form-error {
+    color: #f03504; }
+
+.label.hidden {
+  display: none; }
+
+.element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left; }
+  .element > div:after, .element label:after, .label > div:after, .label label:after, .label-and-element > div:after, .label-and-element label:after, .cancel-submit > div:after, .cancel-submit label:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+.element > input, .element select, .label > input, .label select, .label-and-element > input, .label-and-element select, .cancel-submit > input, .cancel-submit select {
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left; }
+
+.double.element {
+  text-align: left; }
+  .double.element select {
+    display: inline;
+    margin-right: 3.5%; }
+  .double.element input {
+    width: 48%;
+    display: inline;
+    margin-right: 2%; }
+    .double.element input:last-child {
+      margin-right: 0; }
+  .double.element .form-error {
+    width: 48%;
+    margin-right: 2%;
+    float: left; }
+
+.paired.element input {
+  width: 75%; }
+.paired.element input[type=submit] {
+  width: 25%;
+  float: right;
+  text-align: center;
+  margin: 0;
+  border-left: none;
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0; }
+
+.single_field {
+  margin-top: 10px; }
+  .single_field .element input {
+    width: 100%; }
+  .single_field .submit input {
+    width: 100%;
+    border-left: none;
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0; }
+
+.code textarea {
+  height: 16em; }
+
+.hidden-target {
+  display: none; }
+
+.cancel-submit {
+  margin: 12px 0 0; }
+  .cancel-submit a {
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left;
+    -moz-border-radius: 4px 0 0 4px;
+    -webkit-border-radius: 4px 0 0 4px;
+    border-radius: 4px 0 0 4px;
+    float: left;
+    font-size: 0.75em;
+    line-height: 14px;
+    border: 1px solid;
+    border-color: #dddddd #bbbbbb #999999;
+    border-right: none;
+    background: #eeeeee;
+    color: #999999;
+    padding: 3px 10px 4px; }
+    .cancel-submit a:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+  .cancel-submit input[type="submit"] {
+    padding-left: 3em;
+    padding-right: 3em;
+    -moz-border-radius: 0 4px 4px 0;
+    -webkit-border-radius: 0 4px 4px 0;
+    border-radius: 0 4px 4px 0; }
+
+input, textarea {
+  color: black; }
+
+.placeholder {
+  color: #aaaaaa; }
+
+form.jeditable input {
+  padding: 1px 0; }
+form.jeditable button {
+  -moz-border-radius: 0 4px 4px 0;
+  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 4px 4px 0;
+  border-left: none;
+  display: block;
+  float: right;
+  padding: 3px 10px; }
+
+.ui-timepicker-div .ui-widget-header {
+  margin-bottom: 8px; }
+.ui-timepicker-div dl {
+  text-align: left; }
+.ui-timepicker-div dl dt {
+  height: 25px; }
+.ui-timepicker-div dl dd {
+  margin: -25px 0 10px 65px; }
+.ui-timepicker-div td {
+  font-size: 90%; }
+
+.flash {
+  display: block;
+  font-family: "Arimo", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left;
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+  color: white;
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+  padding: 12px;
+  margin-bottom: 12px;
+  line-height: 12px; }
+  .flash:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+  .flash .close {
+    margin-left: 12px;
+    float: right;
+    cursor: pointer; }
+  .flash p {
+    color: rgba(255, 255, 255, 0.97) !important; }
+  .flash ul li {
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    .flash ul li:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+
+.error, .warning {
+  background: #fb572c;
+  background: -moz-linear-gradient(top, #fb572c 0%, #f03504 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fb572c), color-stop(100%, #f03504)); }
+
+.notice, .info, .success {
+  background: #0a99b3;
+  background: -moz-linear-gradient(top, #0a99b3 0%, #077083 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083)); }
+
+#content {
+  margin: 10px 2%;
+  width: 96%;
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top; }
+
+a {
+  color: #077083;
+  text-decoration: none; }
+
+#cart, #controls {
+  position: relative; }
+  #cart > *, #controls > * {
+    margin: 0 12px 12px;
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    #cart > *:after, #controls > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+  #cart > *, #controls > * {
+    margin-top: 0;
+    margin-bottom: 0; }
+
+#total {
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd; }
+  #total span {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: #cccccc; }
+  #total .price {
+    color: #999999;
+    font-size: 2.5em; }
+
+#checkout-now {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd; }
+  #checkout-now a {
+    display: block;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    color: white;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+    background: #0a99b3;
+    background: -moz-linear-gradient(top, #0a99b3 14%, #077083 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #0a99b3), color-stop(100%, #077083));
+    border: 1px solid #065b6b;
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    line-height: 40px; }
+
+#checkout-now.disabled a {
+  background: #dddddd;
+  background: -moz-linear-gradient(top, #dddddd 14%, #cccccc 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #dddddd), color-stop(100%, #cccccc));
+  border: 1px solid #cccccc;
+  cursor: default; }
+
+#clear-cart {
+  text-align: right;
+  font-size: 0.8em; }
+  #clear-cart a {
+    color: #999999; }
+
+.upsell {
+  padding: 10px 0 0; }
+
+.item-list li {
+  border-bottom: 1px solid #dddddd;
+  line-height: 2em; }
+  .item-list li .item {
+    color: #333333; }
+  .item-list li .price {
+    color: #666666;
+    float: right; }
+
+.sliding-wizard {
+  overflow: hidden;
+  padding: 10px 0 0; }
+  .sliding-wizard .next {
+    float: right; }
+
+#confirmation p {
+  text-transform: capitalize; }
+
+#customer-confirmation, #credit_card-confirmation, #billing_address-confirmation {
+  position: relative; }
+  #customer-confirmation > *, #credit_card-confirmation > *, #billing_address-confirmation > * {
+    margin: 0 12px 12px;
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    #customer-confirmation > *:after, #credit_card-confirmation > *:after, #billing_address-confirmation > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+  #customer-confirmation > *, #credit_card-confirmation > *, #billing_address-confirmation > * {
+    margin: 0; }
+
+#steps {
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd; }
+  #steps li {
+    list-style-type: decimal;
+    margin-left: 2em;
+    font-size: 0.8em;
+    padding: 0.25em 0;
+    color: #666666; }
+    #steps li.active {
+      font-weight: bold; }
