@@ -13,7 +13,7 @@ Feature: User accounts
     When I fill in "Email" with "user@example.com"
     And I fill in "Password" with "changeme"
     And I press "Sign in"
-    Then I should be on the dashboard page
+    Then I should see "Dashboard"
 
   Scenario: A user sees the splash page and logs in
     Given I am on the root page
@@ -24,11 +24,11 @@ Feature: User accounts
     When I fill in "Email" with "user@example.com"
     And I fill in "Password" with "changeme"
     And I press "Sign in"
-    Then I should be on the dashboard page
+    Then I should see "Dashboard"
 
   Scenario: A user signs out
     Given I am logged in
     And I am on the root page
     When I follow "Sign Out"
-    Then I should be on the new user session page
+    Then I should be on the root page
 

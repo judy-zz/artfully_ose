@@ -1,6 +1,4 @@
 class SettlementsController < ApplicationController
-  before_filter :authenticate_user!
-
   def index
     unless current_user.current_organization.id.nil?
       @settlements = Settlement.find_by_organization_id(current_user.current_organization.id)

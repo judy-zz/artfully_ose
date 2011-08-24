@@ -3,8 +3,6 @@ class Ability
 
   def initialize(user)
     user ||= User.new
-
-    admin_abilities_for(user) if user.has_role? :admin
     ticketing_abilities_for(user) if user.is_in_organization?
     paid_ticketing_abilities_for(user) if user.current_organization.can? :access, :paid_ticketing
     person_abilities_for(user) if user.is_in_organization?
@@ -34,12 +32,6 @@ class Ability
     can :view, Settlement do |settlement|
       user.is_in_organization?
     end
-
-  end
-
-  def admin_abilities_for(user)
-    can :administer, :all
-    can :manage, :all
   end
 
   def ticketing_abilities_for(user)

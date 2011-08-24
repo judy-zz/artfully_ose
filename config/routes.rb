@@ -1,5 +1,4 @@
 Artfully::Application.routes.draw do
-
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index
@@ -35,6 +34,7 @@ Artfully::Application.routes.draw do
   end
 
   devise_for :users
+  devise_for :admins
 
   resources :organizations do
     put :tax_info, :on => :member
@@ -115,9 +115,7 @@ Artfully::Application.routes.draw do
   match '/people/:id/tag/' => 'people#tag', :as => :new_tag, :via => "post"
   match '/people/:id/tag/:tag' => 'people#untag', :as => :untag, :via => "delete"
 
-  match '/dashboard' => 'index#dashboard', :as => :dashboard
-  root :to => 'index#login_success', :constraints => lambda {|r| r.env["warden"].authenticate? }
-
+  root :to => 'index#dashboard', :constraints => lambda{|r| r.env["warden"].authenticate?}
   root :to => 'index#index'
 
 end
