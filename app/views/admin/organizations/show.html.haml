@@ -3,7 +3,7 @@
 
 .context
   %h3 Add User
-  = form_tag organization_memberships_path(@organization.id), :action => "create" do
+  = form_tag admin_organization_memberships_path(@organization.id), :action => "create" do
     %ul
       %li
         .label=   label_tag :user_email, "Email"
@@ -21,7 +21,7 @@
           - if user == @organization.owner
             Organization administrator
           - else
-            %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
+            %li= link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
   %h3 Kits
   - if @organization.kits.empty?
     %p This organization does not have any kits.
