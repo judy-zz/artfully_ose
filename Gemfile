@@ -22,7 +22,6 @@ gem 'jammit-s3', :git => "git://github.com/railsjedi/jammit-s3.git"
 gem 'devise'
 gem 'devise_invitable'
 gem 'cancan'
-gem 'role_model'
 
 # Validations
 gem 'validates_timeliness'

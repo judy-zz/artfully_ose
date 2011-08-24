@@ -175,7 +175,6 @@ GEM
     rdoc (3.6.1)
     rest-client (1.6.3)
       mime-types (>= 1.16)
-    role_model (0.7.0)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
@@ -262,7 +261,6 @@ DEPENDENCIES
   rack-jsonp-middleware
   rails
   rake (= 0.8.7)
-  role_model
   rspec-rails (>= 2.1)
   sass
   shoulda

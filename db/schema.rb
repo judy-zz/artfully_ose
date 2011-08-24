@@ -10,7 +10,6 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-
 ActiveRecord::Schema.define(:version => 20110826135112) do
   create_table "admins", :force => true do |t|
     t.string   "email",                             :default => "", :null => false
@@ -123,7 +122,6 @@ ActiveRecord::Schema.define(:version => 20110826135112) do
     t.string   "athena_id"
     t.datetime "suspended_at"
     t.string   "suspension_reason"
-    t.integer  "roles_mask"
     t.string   "invitation_token",     :limit => 60
     t.datetime "invitation_sent_at"
     t.integer  "invited_by_id"

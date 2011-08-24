@@ -24,8 +24,6 @@
       #current
         #current-user= current_user.email
         #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
-        - if current_user.has_role? :admin
-          #administration= link_to "Administration", admin_root_path
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
     = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
     = javascript_include_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.js"
