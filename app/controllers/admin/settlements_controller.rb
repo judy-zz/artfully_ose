@@ -1,20 +1,10 @@
 class Admin::SettlementsController < Admin::AdminController
   def index
-    begin
-      Time.zone = current_user.current_organization.time_zone
-      unless params[:commit].blank?
-        @start = Time.zone.parse(Date.strptime(params[:start], "%m/%d/%Y").to_s)
-        @stop  = Time.zone.parse(Date.strptime(params[:stop] , "%m/%d/%Y").to_s).end_of_day
-      else
-        @start = DateTime.now.in_time_zone(Time.zone).beginning_of_month
-        @stop  = DateTime.now.in_time_zone(Time.zone).end_of_day
-      end
-      settlements_in_range = Settlement.in_range(@start, @stop)
-      @settlements = settlements_in_range.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
-    rescue ArgumentError
-      flash[:alert] = "One or both of the dates entered are invalid."
-      redirect_to :back
-    end
+    @start = params[:start].present? ? Time.zone.parse(params[:start]) : Time.now.beginning_of_month
+    @stop  = params[:start].present? ? Time.zone.parse(params[:stop]).end_of_day : Time.now.end_of_day
+
+    settlements_in_range = Settlement.in_range(@start, @stop)
+    @settlements = settlements_in_range.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
   end
 
   def new
