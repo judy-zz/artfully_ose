@@ -186,7 +186,10 @@ class AthenaPerformance < AthenaResource::Base
       attributes = attributes.with_indifferent_access
       if attributes["datetime"].kind_of?(String)
         Time.zone = time_zone
-        attributes["datetime"] = Time.zone.parse(attributes["datetime"])
+        offset = ActiveSupport::TimeZone.new(time_zone).formatted_offset
+        dt = Time.zone.parse("#{attributes["datetime"]} #{offset}")
+        dt -= 1.hour if dt.dst?
+        attributes["datetime"] = dt
       end
       attributes
     end
