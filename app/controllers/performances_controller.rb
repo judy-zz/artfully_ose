@@ -1,5 +1,5 @@
 class PerformancesController < ApplicationController
-  before_filter :find_event, :only => [ :index, :show, :new ]
+  before_filter :find_event, :only => [ :index, :show, :new, :edit ]
   before_filter :check_for_charts, :only => [ :index, :new ]
   before_filter :upcoming_performances, :only => [ :index, :show ]
 

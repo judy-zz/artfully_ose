@@ -2,10 +2,12 @@
 - content_for :header do
   %h1 Edit Performance
 
-.context
-.document
+.compact-spread
   = render "shared/error_messages", :target => @performance
-
-  = form_for @performance, :url => event_performance_path(@performance.event,@performance) do |form|
-    = render :partial => 'performances/form', :locals => { :performance_form => form, :target => @performance }
-    = form.submit "Submit"
+  = form_for @performance, :url => event_performance_path(@event,@performance) do |form|
+    #performance
+      %h3= @event.name
+      %ul= render :partial => 'performances/form', :locals => { :performance_form => form, :target => @performance }
+      .cancel-submit
+        = link_to "Cancel", event_path(@event)
+        = form.submit "Update"
