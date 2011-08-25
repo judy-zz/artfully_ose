@@ -961,7 +961,7 @@ form .description, form .form-error {
     margin-right: 2%;
     float: left; }
 
-.paired.element input {
+.paired.element input, .paired.element select {
   width: 75%; }
 .paired.element .half {
   float: left;

@@ -26,6 +26,10 @@ class AthenaEvent < AthenaResource::Base
     @attributes['charts'] ||= charts
   end
 
+  def filter_charts(charts)
+    charts.reject { |chart| already_has_chart(chart) }
+  end
+
   def organization
     @organization ||= Organization.find(organization_id)
   end
