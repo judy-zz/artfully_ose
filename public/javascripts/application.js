@@ -77,7 +77,7 @@ $(document).ready(function() {
     zebra($(this));
   });
 
-  $(".search-help-popup").dialog({autoOpen: false, draggable:false, modal:true, width:700, title:"Search help"})  
+  $(".search-help-popup").dialog({autoOpen: false, draggable:false, modal:true, width:700, title:"Search help"})
   $("#search-help-link").click(function(){
     $(".search-help-popup").dialog("open")
     return false;
@@ -93,9 +93,10 @@ $(document).ready(function() {
   });
 
   $(document).ready(function() {
+    var eventId = $("#calendar").attr("data-event");
     $('#calendar').fullCalendar({
       height: 150,
-      events: '/events/<%=@event.id%>.json'
+      events: '/events/'+ eventId + '.json'
     });
     $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
   });

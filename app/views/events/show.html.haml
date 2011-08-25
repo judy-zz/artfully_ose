@@ -25,7 +25,7 @@
 .document
   #this-week
     %h3 This Week
-    #calendar
+    #calendar{ :"data-event" => @event.id }
 
   #widget
     %h3 Promote on your Website
