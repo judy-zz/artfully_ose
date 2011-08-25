@@ -749,6 +749,13 @@ ul.prices li div {
         clear: both;
         visibility: hidden; }
 
+.list-manipulations {
+  margin: 12px 0; }
+  .list-manipulations li {
+    display: inline; }
+    .list-manipulations li form {
+      display: inline; }
+
 .loading {
   background: url("/images/loading.gif") no-repeat center center; }
   .loading > * {
@@ -851,9 +858,10 @@ ul.prices li div {
   .big-search input[type='text'] {
     width: 80%; }
   .big-search input[type='submit'] {
-    width: 15%;
+    width: 20%;
     margin: 0;
     border-left: none;
+    float: right;
     -moz-border-radius: 0 4px 4px 0;
     -webkit-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0; }
@@ -1060,13 +1068,13 @@ form.jeditable button {
       border-radius: 0 0 0 0;
       border-right: none; }
     .table-controls ul li:first-child input {
-      -moz-border-radius: 11px 0 0 11px;
-      -webkit-border-radius: 11px 0 0 11px;
-      border-radius: 11px 0 0 11px; }
+      -moz-border-radius: 7px 0 0 7px;
+      -webkit-border-radius: 7px 0 0 7px;
+      border-radius: 7px 0 0 7px; }
     .table-controls ul li:last-child input {
-      -moz-border-radius: 0 11px 11px 0;
-      -webkit-border-radius: 0 11px 11px 0;
-      border-radius: 0 11px 11px 0;
+      -moz-border-radius: 0 7px 7px 0;
+      -webkit-border-radius: 0 7px 7px 0;
+      border-radius: 0 7px 7px 0;
       border-right: 1px solid #bbbbbb; }
 
 table {
