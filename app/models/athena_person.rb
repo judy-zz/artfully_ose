@@ -130,6 +130,10 @@ class AthenaPerson::Phone
     clean_phone
   end
 
+  def self.types
+    [ "Work", "Home", "Cell", "Fax" ]
+  end
+
   def id
     attributes.values.join("+")
   end

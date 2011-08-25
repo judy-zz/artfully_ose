@@ -158,6 +158,11 @@ form .description, form .form-error {
 
 .paired.element input {
   width: 75%; }
+.paired.element .half {
+  float: left;
+  width: 37.5%; }
+.paired.element input.half {
+  border-left: none; }
 .paired.element input[type=submit] {
   width: 25%;
   float: right;
