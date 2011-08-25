@@ -43,8 +43,6 @@ group :test do
 end
 
 group :deployment do
-  gem 'capistrano'
-  gem 'capistrano-ext'
   gem 'heroku'
 end
 
