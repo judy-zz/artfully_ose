@@ -37,6 +37,7 @@ Artfully::Application.routes.draw do
   devise_for :users
 
   resources :organizations do
+    put :tax_info, :on => :member
     resources :memberships
     member do
       post :connect

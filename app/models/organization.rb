@@ -6,6 +6,8 @@ class Organization < ActiveRecord::Base
                   :after_add => lambda { |u,k| k.activate! unless k.activated? }
 
   validates_presence_of :name
+  validates :ein, :presence => true, :if => :updating_tax_info
+  validates :legal_organization_name, :presence => true, :if => :updating_tax_info
 
   def owner
     users.first
@@ -14,6 +16,15 @@ class Organization < ActiveRecord::Base
   delegate :can?, :cannot?, :to => :ability
   def ability
     OrganizationAbility.new(self)
+  end
+
+  attr_accessor :updating_tax_info
+  def update_tax_info(params)
+    @updating_tax_info = true
+    update_attributes({
+      :ein => params[:ein],
+      :legal_organization_name => params[:legal_organization_name]
+    })
   end
 
   def has_tax_info?

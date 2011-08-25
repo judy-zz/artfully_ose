@@ -11,16 +11,6 @@ class KitsController < ApplicationController
     if @kit.requirements_met?
       render "#{@kit.type.underscore.pluralize}/activate"
     else
-      #Display friendly explanatory message if the donation kit has no tax information, display the error message if partial or incorrect information was given
-      if @kit.type == "RegularDonationKit"
-        if (@kit.organization.ein.blank? and @kit.organization.legal_organization_name.blank?)
-          flash[:notice] = "Please enter your organization's tax information so that this kit may be activated."
-        else
-          errs = @kit.errors[:requirements].to_sentence     
-          flash[:error] = errs
-        end
-      end
-
       render "#{@kit.type.underscore.pluralize}/requirements"
     end
   end

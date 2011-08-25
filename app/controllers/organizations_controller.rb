@@ -50,23 +50,26 @@ class OrganizationsController < ApplicationController
     authorize! :edit, @organization
 
     if @organization.update_attributes(params[:organization])
-      if params[:back]
-        redirect_to :back
-      else
-        flash[:notice] = "Successfully updated #{@organization.name}."
-        redirect_to @organization
-      end
+      flash[:notice] = "Successfully updated #{@organization.name}."
+      redirect_to @organization
     else
-      if params[:back]
-        redirect_to :back
-      else
-        flash[:error]= "Failed to update #{@organization.name}."
-        render :show
-      end
+      flash[:error]= "Failed to update #{@organization.name}."
+      render :show
     end
   end
 
   def destroy
+  end
+
+  def tax_info
+    @organization = Organization.find(params[:id])
+    authorize! :edit, @organization
+
+    unless @organization.update_tax_info(params[:organization])
+      flash[:error] = @organization.errors.full_messages.to_sentence
+    end
+
+    redirect_to :back and return if params[:back]
   end
 
   def connect

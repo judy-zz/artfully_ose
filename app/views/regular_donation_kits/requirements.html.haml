@@ -1,12 +1,12 @@
 - content_for :header do
-  %h1= #{t(@kit.type.underscore)}
+  %h1 Charity Donation Kit
 
-.spread
+.compact-spread
   #requirements
     %h3 Requirements
 
     - unless @kit.organization.has_tax_info?
-      = form_for @kit.organization do |form|
+      = form_for @kit.organization, :url => tax_info_organization_path(@kit.organization) do |form|
         = hidden_field_tag :back, true
         %ul
           %li
