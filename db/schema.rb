@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110721183401) do
+ActiveRecord::Schema.define(:version => 20110826135112) do
 
   create_table "bank_accounts", :force => true do |t|
     t.string   "routing_number"
@@ -108,6 +108,8 @@ ActiveRecord::Schema.define(:version => 20110721183401) do
     t.integer  "roles_mask"
     t.string   "invitation_token",     :limit => 60
     t.datetime "invitation_sent_at"
+    t.integer  "invited_by_id"
+    t.string   "invited_by_type"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
