@@ -5,7 +5,7 @@
 .spread
   %p= "You are about to delete #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime } performance of #{@performance.event.name}."
 
-  = form_tag delete_performance_tickets_path(@performance), :method => :delete do
+  = form_tag delete_show_tickets_path, :method => :delete do
     = hidden_field_tag :confirmed, :true
     - @selected_tickets.each do |st|
       = hidden_field_tag "selected_tickets[]", st
@@ -14,4 +14,4 @@
 
   %p
     If this is not correct,
-    = link_to "cancel this action and return to the performance page", event_performance_url(@performance.event, @performance)
+    = link_to "cancel this action and return to the performance page", event_show_url(@performance.event, @performance)

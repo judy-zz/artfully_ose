@@ -1,5 +1,5 @@
 %li
-  .label= performance_form.label :datetime, "Performace date/time"
+  .label= performance_form.label :datetime, "Show date/time"
   .element
     = performance_form.text_field :datetime, :value => l(target.datetime, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
     = performance_form.hidden_field :time_zone, { :value => target.event.time_zone }

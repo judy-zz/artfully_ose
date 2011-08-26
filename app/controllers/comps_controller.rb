@@ -28,7 +28,7 @@ class CompsController < ApplicationController
         flash[:notice] = "Comped #{to_plural(@comp.comped_count, 'ticket')}."
       end
 
-      redirect_to event_performance_url(@performance.event, @performance)
+      redirect_to event_show_url(@performance.event, @performance)
     end
   end
 

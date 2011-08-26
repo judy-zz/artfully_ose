@@ -14,9 +14,9 @@
 
 .drilldown
   - unless @performances.nil?
-    %h3 Choose a Performance
+    %h3 Choose a Show
     - if @performances.empty?
-      %p Sorry, there are no performances that meet the requirements for an exchange.
+      %p Sorry, there are no shows that meet the requirements for an exchange.
     - else
       %ul#performance-drilldown
         - @performances.each do |performance|

@@ -1,4 +1,4 @@
-class PerformancesController < ApplicationController
+class ShowsController < ApplicationController
   before_filter :find_event, :only => [ :index, :show, :new, :edit ]
   before_filter :check_for_charts, :only => [ :index, :new ]
   before_filter :upcoming_performances, :only => [ :index, :show ]
@@ -19,7 +19,7 @@ class PerformancesController < ApplicationController
 
     @new_performance = @performance.dup!
     @new_performance.save
-    redirect_to event_performances_path(@performance.event)
+    redirect_to event_shows_path(@performance.event)
   end
 
   def new
@@ -36,10 +36,10 @@ class PerformancesController < ApplicationController
 
     if @performance.valid? && @performance.save
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date_at_time}"
-      redirect_to event_performances_path(@performance.event)
+      redirect_to event_shows_path(@performance.event)
     else
       flash[:error] = "There was a problem creating your performance."
-      redirect_to event_performances_path(@performance.event)
+      redirect_to event_shows_path(@performance.event)
     end
   end
 
@@ -62,7 +62,7 @@ class PerformancesController < ApplicationController
 
     without_tickets do
       if @performance.update_attributes(params[:athena_performance])
-        redirect_to event_performances_path(@performance.event)
+        redirect_to event_shows_path(@performance.event)
       else
         render :edit
       end
@@ -92,7 +92,7 @@ class PerformancesController < ApplicationController
       respond_to do |format|
         format.html do
           flash[:error] = 'Please create tickets for this performance before putting it on sale'
-          redirect_to event_performance_url(@performance.event, @performance)
+          redirect_to event_show_url(@performance.event, @performance)
         end
 
         format.json { render :json => { :errors => ['Please create tickets for this performance before putting it on sale'] } }
@@ -104,7 +104,7 @@ class PerformancesController < ApplicationController
     with_confirmation do
       @performance.publish!
       respond_to do |format|
-        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now published.' }
+        format.html { redirect_to event_show_url(@performance.event, @performance), :notice => 'Your performance is now published.' }
         format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
       end
     end
@@ -117,7 +117,7 @@ class PerformancesController < ApplicationController
     with_confirmation do
       @performance.unpublish!
       respond_to do |format|
-        format.html { redirect_to event_performance_url(@performance.event, @performance), :notice => 'Your performance is now unpublished.' }
+        format.html { redirect_to event_show_url(@performance.event, @performance), :notice => 'Your performance is now unpublished.' }
         format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
       end
     end
@@ -132,7 +132,7 @@ class PerformancesController < ApplicationController
     authorize! :create_tickets, @performance.chart.sections
 
     respond_to do |format|
-      format.html { redirect_to event_performance_url(@event, @performance) }
+      format.html { redirect_to event_show_url(@event, @performance) }
       format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
     end
   end
@@ -153,7 +153,7 @@ class PerformancesController < ApplicationController
         format.html do
           flash[:notice] = notice
           flash[:error] = error
-          redirect_to event_performance_url(@performance.event, @performance)
+          redirect_to event_show_url(@performance.event, @performance)
         end
 
         format.json do

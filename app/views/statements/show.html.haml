@@ -1,16 +1,16 @@
 - in_section :reports
 - content_for :header do
   %h1 Statement Reports
-  %h2 View statements for your performances
+  %h2 View statements for your shows
 
 .context
-  %h3 Performances
-  = render :partial => "played_performances", :locals => { :event => @event, :played => @played }
+  %h3 Shows
+  = render :partial => "played_shows", :locals => { :event => @event, :played => @played }
 
 .document
   -if @statement.nil?
     %p
-      Please select a performance or a date range
+      Please select a show or a date range
   -else
     %h3="Statement Report: #{@event.name}"
     %h4 Revenue
@@ -18,7 +18,7 @@
       %table.standalone
         %thead
           %tr
-            %th{:style=>'width:200px'} Performance
+            %th{:style=>'width:200px'} Shows
             %th{:style=>'width:100px'} Tickets Sold
             %th{:style=>'width:100px'} Comps
             %th{:style=>'width:100px'} Potential
@@ -49,8 +49,7 @@
         %tbody
           - @statement.expenses.expenses.each do |row|
             %tr
-              %td
-                =row.description
+              %td=row.description
               %td=row.units
               %td=row.rate
               %td
@@ -58,13 +57,10 @@
               %td
           %tr
             %td
-              %strong
-                =@statement.expenses.total.description
+              %strong=@statement.expenses.total.description
             %td
             %td
             %td
             %td
-              %strong
-                =number_as_cents @statement.expenses.total.expense
+              %strong=number_as_cents @statement.expenses.total.expense
             %td
-  

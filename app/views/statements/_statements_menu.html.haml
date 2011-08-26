@@ -1,4 +1,4 @@
-%ul.detailed-list#of_performances
+%ul.detailed-list
   %li
     %h4= link_to (l DateTime.civil(2010,6,23,12,00,00), :format => :short), statement_path(4), :title => 'performance-datetime'
   %li
@@ -8,4 +8,4 @@
   %li
     %h4= link_to (l DateTime.civil(2010,6,26,12,00,00), :format => :short), statement_path(4), :title => 'performance-datetime'
     %ul.controls
-      %li= link_to "View", event_performance_path(2, 4)
+      %li= link_to "View", event_show_path(2, 4)

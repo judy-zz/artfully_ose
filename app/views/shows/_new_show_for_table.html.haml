@@ -1,4 +1,4 @@
-= form_for performance, :url => event_performances_path(event, performance) do |f|
+= form_for performance, :url => event_shows_path(event, performance) do |f|
   %td{:colspan => "4"}
     = f.text_field :datetime, :value => l(performance.datetime, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
     - default_chart_id_as_s = performance.chart_id.nil? ? nil : performance.chart_id.to_s

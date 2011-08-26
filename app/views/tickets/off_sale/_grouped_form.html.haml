@@ -1,6 +1,6 @@
 #off-sale.grouped-form
   %h3 Take off Sale
-  = form_tag off_sale_performance_tickets_path(performance), :method => :put do
+  = form_tag off_sale_show_tickets_path(performance), :method => :put do
     = hidden_field_tag :performance_id, performance.id
     %ul
       - performance.off_saleable_tickets.each do |ticket|

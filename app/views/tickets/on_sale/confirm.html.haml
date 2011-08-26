@@ -4,9 +4,9 @@
 
 .context
 .document
-  %p= "You are about to put #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime } performance of #{@performance.event.name} on sale."
+  %p= "You are about to put #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime } showing of #{@performance.event.name} on sale."
 
-  = form_tag on_sale_performance_tickets_path(@performance), :method => :put do
+  = form_tag on_sale_show_tickets_path, :method => :put do
     = hidden_field_tag :confirmed, :true
     - @selected_tickets.each do |st|
       = hidden_field_tag "selected_tickets[]", st
@@ -15,4 +15,4 @@
 
   %p
     If this is not correct,
-    = link_to "cancel this action and return to the performance page", event_performance_url(@performance.event, @performance)
+    = link_to "cancel this action and return to the show page", event_show_url(@performance.event, @performance)

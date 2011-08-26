@@ -6,8 +6,8 @@
     &mdash;
     = "#{@event.venue} #{@event.city}, #{@event.state}"
   %ul.from-here
-    %li= link_to "New Performance", new_event_performance_path(@event)
-    %li= link_to "All Performances", event_performances_path(@event)
+    %li= link_to "New Show", new_event_show_path(@event)
+    %li= link_to "All Shows", event_shows_path(@event)
 
 
 .context
@@ -15,12 +15,12 @@
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
 .document
-  %h3 All Performances
+  %h3 All Shows
   #performances
     %table.standalone.zebra
       %thead
         %tr
-          %th Performance
+          %th Show
           %th Available
           %th Sold
           %th Comped
@@ -28,11 +28,11 @@
       %tbody
         - @performances.each do |perf|
           %tr{ :class => perf.state }
-            %td= link_to l(perf.datetime, :format => :short), event_performance_path(@event, perf), :title => 'performance-datetime'
+            %td= link_to l(perf.datetime, :format => :short), event_show_path(@event, perf), :title => 'performance-datetime'
             %td.available= perf.glance.tickets.available
             %td.gross= perf.glance.tickets.sold.gross
             %td.comped= perf.glance.tickets.sold.comped
             %td= render :partial => "controls", :locals => { :performance => perf }
         %tr
-          = render :partial => 'performances/new_performance_for_table', :locals => { :event => @event, :performance => @next_performance }
+          = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :performance => @next_performance }
     = will_paginate @performances

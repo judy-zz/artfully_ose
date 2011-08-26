@@ -21,7 +21,7 @@ Artfully::Application.routes.draw do
     resources :organizations do
 
       resources :events, :only => :show do
-        resources :performances, :only => :show
+        resources :shows, :only => :show
       end
 
       resources :kits do
@@ -62,7 +62,7 @@ Artfully::Application.routes.draw do
 
   resources :events do
     get :widget, :on => :member
-    resources :performances do
+    resources :shows do
       member do
         get :door_list
         post :duplicate
@@ -76,7 +76,7 @@ Artfully::Application.routes.draw do
     end
   end
 
-  resources :performances, :only => [] do
+  resources :shows, :only => [] do
     resources :tickets, :only => [ :new, :create ] do
       collection do
         delete :delete
@@ -114,7 +114,7 @@ Artfully::Application.routes.draw do
   match '/people/:id/tag/' => 'people#tag', :as => :new_tag, :via => "post"
   match '/people/:id/tag/:tag' => 'people#untag', :as => :untag, :via => "delete"
   match '/statements/events/:event_id' => 'statements#index', :as => :event_statements, :via => "get"
-  match '/statements/performances/:performance_id' => 'statements#show', :as => :performance_statement, :via => "get"
+  match '/statements/shows/:performance_id' => 'statements#show', :as => :show_statement, :via => "get"
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard
   root :to => 'index#login_success', :constraints => lambda {|r| r.env["warden"].authenticate? }

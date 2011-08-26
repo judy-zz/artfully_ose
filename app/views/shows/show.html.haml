@@ -3,23 +3,23 @@
   %h1= link_to @event.name, event_path(@event)
   %h2= l @performance.datetime, :format => :long_with_day
   %ul.from-here
-    %li= link_to "New Performance", new_event_performance_path(@event)
-    %li= link_to "All Performances", event_performances_path(@event)
+    %li= link_to "New Show", new_event_show_path(@event)
+    %li= link_to "All Shows", event_shows_path(@event)
 
 
 .context
   %ul.performance-buttons
-    %li= button_to "Add Tickets", new_performance_ticket_path(@performance), :method => :get
-    %li= button_to "Door List", door_list_event_performance_path(@event,@performance), :method => :get
+    %li= button_to "Add Tickets", new_show_ticket_path(@performance), :method => :get
+    %li= button_to "Door List", door_list_event_show_path(@event,@performance), :method => :get
     - if not @performance.played?
       - if not @performance.published?
         %li
-          = form_tag published_event_performances_path(@performance.event) do
+          = form_tag published_event_shows_path(@performance.event) do
             = hidden_field_tag :performance_id, @performance.id
             = submit_tag "Publish"
       - else
         %li
-          = form_tag unpublished_event_performances_path(@performance.event) do |form|
+          = form_tag unpublished_event_shows_path(@performance.event) do |form|
             = hidden_field_tag :performance_id, @performance.id
             = submit_tag "Unpublish"
   = render :partial => "glance", :locals => { :report => @performance.glance }
@@ -36,7 +36,7 @@
   - if @performance.pending?
     %h3 Tickets
     %p= "You have not created tickets for this event.  Tickets will be created using the #{@performance.chart.name} seating chart."
-    = form_tag built_event_performances_path(@performance.event) do
+    = form_tag built_event_shows_path(@performance.event) do
       = hidden_field_tag :performance_id, @performance.id
       = submit_tag "Create Tickets"
 

@@ -1,7 +1,7 @@
 - in_section :reports
 - content_for :header do
   %h1 Settlement Reports
-  %h2 View settlements for performances and donations
+  %h2 View settlements for shows and donations
 
 
 .document
@@ -14,7 +14,7 @@
         %thead
           %tr
             %th ID
-            %th Performance ID
+            %th Show ID
             %th Date
             %th Transaction ID
             %th Gross
@@ -26,7 +26,7 @@
               %td= link_to settlement.id, settlement_path(settlement)
               %td= settlement.performance_id
               %td= l settlement.created_at, :format => :date
-              %td 
+              %td
                 -if settlement.success?
                   =settlement.transaction_id
                 -else
@@ -38,6 +38,5 @@
 
 .context
   %h3 Settlement Schedule
-  %p Settlement happens 2 business days after the performance plays or the donation occurs.
-  %p For example, let's say that you had a performance on Monday night, you would receive |
-      settlement for that on Thursday.                                                    |
+  %p Settlement happens 2 business days after the show plays or the donation occurs.
+  %p For example, let's say that you had a show on Monday night, you would receive settlement for that on Thursday.
