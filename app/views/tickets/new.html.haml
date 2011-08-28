@@ -21,3 +21,16 @@
           .label= label_tag(:quantity)
           .element= text_field_tag(:quantity, @quantity)
           .submit= submit_tag "Create Tickets"
+    %ul{:style=>"width:25%"}
+      %li
+        %h4 Current Tickets
+        %ul.report
+          %li
+            %span.stat Total Tickets
+            %span.current=@summary.total
+          %li
+            %span.stat Sold
+            %span.current=@summary.sold
+          %li
+            %span.stat Comped
+            %span.current=@summary.comped

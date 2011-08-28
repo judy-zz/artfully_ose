@@ -165,6 +165,11 @@ class AthenaPerformance < AthenaResource::Base
   def compable_tickets
     tickets.select(&:compable?)
   end
+  
+  def create_tickets
+    tickets = ActiveSupport::JSON.decode(post(:createtickets).body)
+    build!
+  end
 
   private
     def self.future(date)

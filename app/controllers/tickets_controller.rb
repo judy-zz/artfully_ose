@@ -7,7 +7,10 @@ class TicketsController < ApplicationController
 
   def new
     @performance = AthenaPerformance.find(params[:performance_id])
-    @section = AthenaSection.find(params[:section_id]) unless params[:section_id].blank?
+    if !params[:section_id].blank?
+      @section = AthenaSection.find(params[:section_id])
+      @summary = @section.summarize(@performance.id)
+    end 
   end
 
   def create
@@ -16,7 +19,7 @@ class TicketsController < ApplicationController
     @quantity = params[:quantity].to_i
 
     if @quantity > 0
-      tickets = AthenaTicket.factory(@performance, @section, @quantity)
+      tickets = @section.create_tickets(@performance.id, @quantity)
       flash[:notice] = "Successfully added #{to_plural(tickets.size, 'tickets')}."
       redirect_to event_performance_path(@performance.event_id, @performance)
     else

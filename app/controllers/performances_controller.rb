@@ -127,7 +127,7 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :edit, @performance
 
-    AthenaTicketFactory.for_performance(@performance)
+    @performance.create_tickets
     @event = AthenaEvent.find(@performance.event_id)
     authorize! :create_tickets, @performance.chart.sections
 
