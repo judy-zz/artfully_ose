@@ -27,8 +27,8 @@
         %li
           .hidden.label= form.label :id, "Chart"
           .full.paired.element
-            = form.submit "Import"
             = form.select :id, options_from_collection_for_select(@charts, "id", "name")
+            = form.submit "Import"
 
 .document
   #this-week

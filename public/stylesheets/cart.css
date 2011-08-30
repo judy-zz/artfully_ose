@@ -157,15 +157,17 @@ form .description, form .form-error {
     float: left; }
 
 .paired.element input, .paired.element select {
+  float: left;
   width: 75%; }
 .paired.element .half {
   float: left;
   width: 37.5%; }
 .paired.element input.half {
   border-left: none; }
+.paired.element .description {
+  float: left; }
 .paired.element input[type=submit] {
   width: 25%;
-  float: right;
   text-align: center;
   margin: 7px 0 6px;
   border-left: none;
