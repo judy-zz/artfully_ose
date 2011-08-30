@@ -790,6 +790,10 @@ ul.prices li div {
   -webkit-box-shadow: 0px 2px 2px #cccccc;
   box-shadow: 0px 2px 2px #cccccc; }
 
+.top-level {
+  cursor: default;
+  font-style: italic; }
+
 #main-menu {
   overflow: hidden;
   font-family: "Courier New", monospace;
@@ -797,7 +801,7 @@ ul.prices li div {
   word-spacing: -0.65em;
   text-align: center;
   vertical-align: top; }
-  #main-menu > li > a {
+  #main-menu > li > a, #main-menu > li .top-level {
     display: block;
     font-family: "Arimo", sans-serif;
     letter-spacing: normal;
@@ -808,7 +812,7 @@ ul.prices li div {
     display: block;
     color: #666666;
     text-decoration: none; }
-    #main-menu > li > a:after {
+    #main-menu > li > a:after, #main-menu > li .top-level:after {
       content: ".";
       display: block;
       height: 0;
