@@ -265,7 +265,7 @@ form.jeditable button {
   color: white;
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
   padding: 12px;
-  margin-bottom: 12px;
+  margin: 0 12px 12px;
   line-height: 12px; }
   .flash:after {
     content: ".";
