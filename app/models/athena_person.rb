@@ -144,7 +144,7 @@ class AthenaPerson::Phone
   end
 
   def formatted_number
-    number.dup.insert(3,"-").insert(-5, "-") unless number.blank?
+    formattable? ? number.dup.insert(3,"-").insert(-5, "-") : number
   end
 
   def attributes
@@ -164,6 +164,10 @@ class AthenaPerson::Phone
   end
 
   private
+
+  def formattable?
+    number.present? and (number.length == 10)
+  end
 
   def clean_phone
     @number = number.gsub(/\D/,"") unless number.blank?
