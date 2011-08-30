@@ -48,19 +48,6 @@
 .grouped-checkbox {
   width: 1em; }
 
-.big-search {
-  margin-bottom: 3em; }
-  .big-search input[type='text'] {
-    width: 80%; }
-  .big-search input[type='submit'] {
-    width: 20%;
-    margin: 0;
-    border-left: none;
-    float: right;
-    -moz-border-radius: 0 4px 4px 0;
-    -webkit-border-radius: 0 4px 4px 0;
-    border-radius: 0 4px 4px 0; }
-
 form fieldset {
   margin-bottom: 12px; }
 form legend {
