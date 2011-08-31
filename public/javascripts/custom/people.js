@@ -3,7 +3,7 @@ $(document).ready(function() {
     return (htmlElement === "\u272D");
   };
 
-  $(".starable").click(function() {
+  $(".starable").live('click', function() {
     var star      = $.trim($(this).html()),
         person_id = $(this).attr("data-person-id"),
         type      = $(this).attr("data-type"),
@@ -16,16 +16,16 @@ $(document).ready(function() {
        url: "/people/" + person_id + "/star/" + type + "/" + id
     });
 
+
+    console.log("Updating star...")
+
     if(is_star(star)) {
       $(this).html("&#10025;");
-      this_table.append(this_row);
+      $(this).trigger("unstarred");
     } else {
       $(this).html("&#10029;");
-      this_row.prependTo('tbody:first', this_table);
+      $(this).trigger("starred");
     }
-
-    //resort the table on star and date, we'll lose whatever sort they had
-    this_table.tablesorter();
 
     //and re-zebra the table
     zebra(this_table);

@@ -4,12 +4,15 @@
 .spread
   = form_tag people_path, {:method => :get, :remote => true, :class => 'big-search super-search'} do
     = hidden_field_tag :commit, "Search"
-    = text_field_tag :search, "", :placeholder => "Email address, name, or tag..."
-    = submit_tag "Search"
-    .description
-      %a#search-help-link{:href=>'#'}
-        Search help
-        
+    %ul
+      %li
+        .full.paired.element
+          = text_field_tag :search, "", :placeholder => "Email address, name, or tag..."
+          = submit_tag "Search"
+          .description
+            %a#search-help-link{:href=>'#'}
+              Search help
+
 .search-help-popup.hidden
   %h4
     General

@@ -12,7 +12,7 @@ class ContributionsController < ApplicationController
     if @contribution.has_contributor?
       render :new
     else
-      @contributors = contributors || []
+      @contributors = contributors
       render :find_person
     end
   end
@@ -26,7 +26,11 @@ class ContributionsController < ApplicationController
   private
 
   def contributors
-    AthenaPerson.search_index(params[:terms].dup, current_user.current_organization) unless params[:terms].blank?
+    if params[:terms].present?
+      people = AthenaPerson.search_index(params[:terms].dup, current_user.current_organization)
+      flash[:error] = "No people matched your search terms." if people.empty?
+    end
+    people || []
   end
 
   def create_contribution

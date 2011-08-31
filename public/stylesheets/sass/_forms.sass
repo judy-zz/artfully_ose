@@ -1,18 +1,6 @@
 .grouped-checkbox
   width: 1em
 
-.big-search
-  margin-bottom: 3em
-  input
-    &[type='text']
-      width: 80%
-    &[type='submit']
-      width: 20%
-      margin: 0
-      border-left: none
-      float: right
-      @include rounded-corners(0, 4px, 4px, 0)
-
 form
   fieldset
     margin-bottom: $gutter
@@ -101,15 +89,17 @@ form
 
 .paired.element
   input, select
+    float: left
     width: 75%
   .half
     float: left
     width: 37.5%
   input.half
     border-left: none
+  .description
+    float: left
   input[type=submit]
     width: 25%
-    float: right
     text-align: center
     margin: 7px 0 6px
     border-left: none

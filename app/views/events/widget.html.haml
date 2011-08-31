@@ -21,14 +21,14 @@
   #script
     %h4 The Script
     %p= t(".script_installation", :default => "Script installation.")
-    %pre.code= "<script src='#{root_url}javascripts/artfully.js'></script>"
+    %pre.code= "<script src='#{javascript_path("artfully")}'></script>"
     %p= t(".jquery_installation", :default => "This script requires jQuery.")
     %pre.code= "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js'></script>"
 
   #styles
     %h4 Styles
     %p= t(".styles_installation", :default => "Stylesheet installation.")
-    %pre.code= "<link href='#{root_url}stylesheets/themes/default.css' media='screen' rel='stylesheet' type='text/css'>"
+    %pre.code= "<link href='#{stylesheet_path("themes/default.css")}' media='screen' rel='stylesheet' type='text/css'>"
 
   #integration
     %h4 Integration

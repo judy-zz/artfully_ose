@@ -1,4 +1,12 @@
-= render :partial => 'widgets/widget', :locals => { :event => @event, :organization => @event.organization }
+:javascript
+  $(document).ready(function(){
+    artfully.configure({
+      base_uri: '#{root_url}api/',
+      store_uri: '#{root_url}store/',
+    });
+    #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
+    #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } unless @event.organization.nil? }
+  });
 
 #sidebar
   #donation

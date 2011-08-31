@@ -226,6 +226,7 @@ ul.selection
   line-height: $line_height
   padding: $gutter / 2
   margin: $gutter / 2 0
+  white-space: pre-wrap
   @include rounded-corners(2px,2px,2px,2px)
 
 input.mini
@@ -336,6 +337,8 @@ input.mini
 
 .starred
   width: 1em
+  .DataTables_sort_wrapper
+    padding: 0
 
 .kv
   font-size: .875em

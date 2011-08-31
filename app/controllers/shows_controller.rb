@@ -30,15 +30,13 @@ class ShowsController < ApplicationController
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @performance.event = @event
-
-    @performance.update_attributes(params[:athena_performance])
-    @performance.organization_id = current_user.current_organization.id
-
+    @performance.set_attributes params[:athena_performance]
+    @performance.organization_id = current_user.current_organization.id    
     if @performance.valid? && @performance.save
-      flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date_at_time}"
+      flash[:notice] = "Show created on #{l @performance.datetime, :format => :date_at_time}"
       redirect_to event_shows_path(@performance.event)
     else
-      flash[:error] = "There was a problem creating your performance."
+      flash[:error] = "There was a problem creating your show."
       redirect_to event_shows_path(@performance.event)
     end
   end
@@ -127,7 +125,7 @@ class ShowsController < ApplicationController
     @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :edit, @performance
 
-    AthenaTicketFactory.for_performance(@performance)
+    @performance.create_tickets
     @event = AthenaEvent.find(@performance.event_id)
     authorize! :create_tickets, @performance.chart.sections
 

@@ -48,19 +48,6 @@
 .grouped-checkbox {
   width: 1em; }
 
-.big-search {
-  margin-bottom: 3em; }
-  .big-search input[type='text'] {
-    width: 80%; }
-  .big-search input[type='submit'] {
-    width: 20%;
-    margin: 0;
-    border-left: none;
-    float: right;
-    -moz-border-radius: 0 4px 4px 0;
-    -webkit-border-radius: 0 4px 4px 0;
-    border-radius: 0 4px 4px 0; }
-
 form fieldset {
   margin-bottom: 12px; }
 form legend {
@@ -157,15 +144,17 @@ form .description, form .form-error {
     float: left; }
 
 .paired.element input, .paired.element select {
+  float: left;
   width: 75%; }
 .paired.element .half {
   float: left;
   width: 37.5%; }
 .paired.element input.half {
   border-left: none; }
+.paired.element .description {
+  float: left; }
 .paired.element input[type=submit] {
   width: 25%;
-  float: right;
   text-align: center;
   margin: 7px 0 6px;
   border-left: none;
@@ -263,7 +252,7 @@ form.jeditable button {
   color: white;
   text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
   padding: 12px;
-  margin-bottom: 12px;
+  margin: 0 12px 12px;
   line-height: 12px; }
   .flash:after {
     content: ".";

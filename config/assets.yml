@@ -16,6 +16,8 @@ s3_upload_files:
   - public/stylesheets/formalize.css
   - public/stylesheets/printing.css
   - public/stylesheets/reset.css
+  - public/stylesheets/themes/default.css
+  - public/javascripts/artfully.js
 
 javascripts:
   splash:
@@ -56,6 +58,9 @@ stylesheets:
 
   printing:
     - public/stylesheets/printing.css
+
+  themes_default:
+    - public/stylesheets/themes/default.css
 
   store:
     - public/stylesheets/reset.css
