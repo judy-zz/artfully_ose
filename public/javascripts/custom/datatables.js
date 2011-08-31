@@ -8,26 +8,24 @@ $(document).bind('grouped-form-ready', function(){
         "aoColumns": [
         null,
         null,
-        {
-            "sType": "currency"
-        },
+        null,
         null
         ]
     });
 });
 
 $(document).ready( function(){
-    $('#action-list').dataTable({
+    var $table = $('#action-list').dataTable({
         "iDisplayLength": 20,
         "bPaginate": true,
         "bJQueryUI": true,
         "sDom": '<"H"lf>t<"F"ip>',
         "aoColumns": [
+        { "asSorting": [ 'desc', 'asc' ], "bSortable": false },
         null,
         null,
         null,
-        null,
-        null
+        { "bSortable": false }
         ]
     });
 });

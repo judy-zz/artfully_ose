@@ -71,8 +71,6 @@ $(document).ready(function() {
     });
   });
 
-  $(".sortedstar").tablesorter();
-
   $(".zebra tbody").each(function(){
     zebra($(this));
   });
@@ -206,7 +204,6 @@ function activateControls() {
     });
   });
 
-  $(".tablesorter").tablesorter();
   $(".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
   $('.datetimepicker').datetimepicker({dateFormat: 'yy-mm-dd', timeFormat:'hh:mm tt', ampm: true });
 }

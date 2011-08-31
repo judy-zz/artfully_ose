@@ -556,6 +556,8 @@ input.mini {
 
 .starred {
   width: 1em; }
+  .starred .DataTables_sort_wrapper {
+    padding: 0; }
 
 .kv {
   font-size: 0.875em; }

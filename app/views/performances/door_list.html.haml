@@ -6,11 +6,11 @@
   %ul.from-here
     %li= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
 
-.document
+.spread
   %h3= "Tickets (as of #{l @current_time})"
   - unless @door_list.items.empty?
     #door-list
-      %table#door-list.tablesorter.standalone
+      %table#door-list.standalone
         %thead
           %tr
             %th
