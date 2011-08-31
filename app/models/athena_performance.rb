@@ -103,7 +103,7 @@ class AthenaPerformance < AthenaResource::Base
 
   def load(attrs)
     super(attrs)
-    prepare_attr!(attrs)
+    set_attributes(attrs)
   end
 
   def dup!
