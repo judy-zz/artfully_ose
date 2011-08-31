@@ -8,7 +8,7 @@
   %p
     Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
-.document  
+.document
   %h3 Events
   - if @events.blank?
     = link_to "Create an Event", new_event_path, :class => 'cta-left-125'
@@ -16,4 +16,4 @@
     %ul.detailed-list
       - @events.each do |event|
         %li
-          %h4= link_to event.name, event_statements_path(event), :title => 'event-name'
+          %h4= link_to event.name, statements_path(:event_id => event.id), :title => 'event-name'
