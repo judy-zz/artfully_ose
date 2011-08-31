@@ -52,6 +52,7 @@ Artfully::Application.routes.draw do
   resources :settlements, :only => [ :index, :show ]
   resources :statements, :only => [ :index, :show ]
 
+
   resources :credit_cards, :except => :show
 
   resources :people, :except => :destroy do
@@ -113,8 +114,6 @@ Artfully::Application.routes.draw do
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
   match '/people/:id/tag/' => 'people#tag', :as => :new_tag, :via => "post"
   match '/people/:id/tag/:tag' => 'people#untag', :as => :untag, :via => "delete"
-  match '/statements/events/:event_id' => 'statements#index', :as => :event_statements, :via => "get"
-  match '/statements/shows/:performance_id' => 'statements#show', :as => :show_statement, :via => "get"
 
   match '/dashboard' => 'index#dashboard', :as => :dashboard
   root :to => 'index#login_success', :constraints => lambda {|r| r.env["warden"].authenticate? }
