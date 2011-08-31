@@ -4,4 +4,4 @@
   %ul.detailed-list
     - played.each do |performance|
       %li
-        %h4= link_to (l performance.datetime, :format => :short), show_statement_path(performance), :title => 'performance-datetime'
+        %h4= link_to (l performance.datetime, :format => :short), statement_path(performance), :title => 'performance-datetime'
