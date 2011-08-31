@@ -81,12 +81,16 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def event
-    @event ||= AthenaEvent.find(event_id)
+    @event ||= AthenaEvent.find(attributes["event_id"])
   end
 
   def event=(event)
     raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
     @event, self.event_id = event, event.id
+  end
+  
+  def set_attributes(attrs)
+    attributes.merge!(prepare_attr! attrs)    
   end
 
   def has_door_list?
@@ -97,8 +101,9 @@ class AthenaPerformance < AthenaResource::Base
     @time_zone ||= event.time_zone
   end
 
-  def load(attributes)
-    super(prepare_attr!(attributes))
+  def load(attrs)
+    super(attrs)
+    prepare_attr!(attrs)
   end
 
   def dup!
@@ -187,9 +192,9 @@ class AthenaPerformance < AthenaResource::Base
       tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
     end
 
-    def prepare_attr!(attributes)
-      attributes = attributes.with_indifferent_access
-      if attributes["datetime"].kind_of?(String)
+    def prepare_attr!(attrs)
+      attributes = attrs.with_indifferent_access
+      if attributes["datetime"].kind_of?(String) || attributes["datetime"].kind_of?(Time)
         Time.zone = time_zone
         offset = ActiveSupport::TimeZone.new(time_zone).formatted_offset
         dt = Time.zone.parse("#{attributes["datetime"]} #{offset}")

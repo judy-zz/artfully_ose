@@ -65,7 +65,7 @@ class AthenaEvent < AthenaResource::Base
 
   def next_perf
     next_datetime = AthenaPerformance.next_datetime(performances.last)
-    next_perf = AthenaPerformance.new(:datetime => next_datetime, :event => self)
+    next_perf = AthenaPerformance.new({:datetime => next_datetime, :event_id => self.id})
     next_perf.event = self
     next_perf
   end

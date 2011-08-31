@@ -53,13 +53,6 @@ class Settlement < AthenaResource::Base
         fail_message = ""
         success = true
       rescue ACH::ClientError => e
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-        puts "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
         ach_response_code = e.to_s
         fail_message = "#{e.backtrace.inspect}"
         success = false

@@ -30,10 +30,8 @@ class PerformancesController < ApplicationController
     @performance = AthenaPerformance.new
     @event = AthenaEvent.find(params[:event_id])
     @performance.event = @event
-
-    @performance.update_attributes(params[:athena_performance])
-    @performance.organization_id = current_user.current_organization.id
-
+    @performance.set_attributes params[:athena_performance]
+    @performance.organization_id = current_user.current_organization.id    
     if @performance.valid? && @performance.save
       flash[:notice] = "Performance created on #{l @performance.datetime, :format => :date_at_time}"
       redirect_to event_performances_path(@performance.event)
