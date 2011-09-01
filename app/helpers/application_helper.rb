@@ -9,14 +9,16 @@ module ApplicationHelper
 
   def widget_script(event, organization)
     return <<-EOF
-$(document).ready(function(){
-  artfully.configure({
-    base_uri: '#{root_url}api/',
-    store_uri: '#{root_url}store/',
+<script>
+  $(document).ready(function(){
+    artfully.configure({
+      base_uri: '#{root_url}api/',
+      store_uri: '#{root_url}store/',
+    });
+    #{render :partial => "widgets/event", :locals => { :event => event } unless event.nil? }
+    #{render :partial => "widgets/donation", :locals => { :organization => organization } unless organization.nil? }
   });
-  #{render :partial => "widgets/event", :locals => { :event => event } unless event.nil? }
-  #{render :partial => "widgets/donation", :locals => { :organization => organization } unless organization.nil? }
-});
+<script>
     EOF
   end
 

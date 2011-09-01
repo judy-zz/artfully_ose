@@ -34,3 +34,6 @@
     %h4 Integration
     %p= t(".intregration", :default => "Integration")
     %pre.code= widget_script(@event, current_user.current_organization)
+
+    %p= t(".hooks", :default => "Rendering hooks")
+    %pre.code= '<div id="event"></div>'
