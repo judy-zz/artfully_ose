@@ -5,15 +5,16 @@
       store_uri: '#{root_url}store/',
     });
     #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
-    #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } unless @event.organization.nil? }
+    #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
   });
 
-#sidebar
-  #donation
-    %h1 Donate
-    %h2 Add a donation
+- if @event.organization.can?(:receive, Donation)
+  #sidebar
+    #donation
+      %h1 Donate
+      %h2 Add a donation
 
-    %p Help support the show by adding a donation to your order!
+      %p Help support the show by adding a donation to your order!
 
 #store
   #artfully-alert.flash.error
