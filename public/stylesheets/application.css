@@ -81,7 +81,8 @@ h4 {
 
 #heading {
   position: relative;
-  margin-bottom: 24px; }
+  padding-bottom: 12px;
+  margin-bottom: 12px; }
   #heading > * {
     margin: 0 12px 12px;
     display: block;
@@ -156,7 +157,8 @@ strong {
     width: 100%; }
 
 .spread {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .spread > * {
     margin: 0 12px 12px;
     display: block;
@@ -173,6 +175,7 @@ strong {
 
 .compact-spread {
   position: relative;
+  padding-bottom: 12px;
   padding: 12px;
   border: 1px solid #eeeeee; }
   .compact-spread > * {
@@ -190,7 +193,8 @@ strong {
       visibility: hidden; }
 
 .context, .tip, .overview {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .context > *, .tip > *, .overview > * {
     margin: 0 12px 12px;
     display: block;
@@ -206,7 +210,8 @@ strong {
       visibility: hidden; }
 
 .dashboard {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .dashboard > * {
     margin: 0 12px 12px;
     display: block;
@@ -222,7 +227,8 @@ strong {
       visibility: hidden; }
 
 .sideboard {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .sideboard > * {
     margin: 0 12px 12px;
     display: block;
@@ -239,7 +245,8 @@ strong {
 
 .document {
   background: white;
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .document > * {
     margin: 0 12px 12px;
     display: block;
@@ -255,7 +262,8 @@ strong {
       visibility: hidden; }
 
 .of2 {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .of2 > * {
     margin: 0 12px 12px;
     display: block;
@@ -271,7 +279,8 @@ strong {
       visibility: hidden; }
 
 .of3 {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .of3 > * {
     margin: 0 12px 12px;
     display: block;
@@ -287,7 +296,8 @@ strong {
       visibility: hidden; }
 
 .drilldown.final {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .drilldown.final > * {
     margin: 0 12px 12px;
     display: block;
@@ -307,7 +317,8 @@ strong {
       margin-left: 1em; }
 
 .drilldown {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .drilldown > * {
     margin: 0 12px 12px;
     display: block;
@@ -1216,7 +1227,8 @@ tfoot tr {
   vertical-align: top;
   margin: 0 !important; }
   .reports > li {
-    position: relative; }
+    position: relative;
+    padding-bottom: 12px; }
     .reports > li > * {
       margin: 0 12px 12px;
       display: block;

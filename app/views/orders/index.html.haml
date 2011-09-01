@@ -3,10 +3,14 @@
   %h1 Orders & Donations
   %h2 Find and manage orders and donations
 
-%form.big-search
-  = form_tag orders_path, :method => :get do
-    = text_field_tag :search
-    = submit_tag "Search"
+.spread
+  %form
+    = form_tag orders_path, :method => :get do
+      %ul
+        %li
+          .full.paired.element
+            = text_field_tag :search, "", :placeholder => "Enter an order number..."
+            = submit_tag "Search"
 
 .tip
   %h3 Tips

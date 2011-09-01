@@ -344,7 +344,8 @@ p {
   vertical-align: top; }
 
 #sidebar {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   #sidebar > * {
     margin: 0 12px 12px;
     display: block;
@@ -360,7 +361,8 @@ p {
       visibility: hidden; }
 
 #store {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   #store > * {
     margin: 0 12px 12px;
     display: block;
