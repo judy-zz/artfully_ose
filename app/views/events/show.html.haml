@@ -58,5 +58,10 @@
     = will_paginate @performances
 
   #widget
-    %h3 Promote on your Website
+    %h3 Sell Tickets
+
+    %h4 Quick and Easy
+    %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
+
+    %h4 Sell Anywhere
     %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe
