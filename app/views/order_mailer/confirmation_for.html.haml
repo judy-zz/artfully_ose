@@ -10,7 +10,7 @@
     - @order.tickets.each do |ticket|
       %li
         %span.price= "$#{format("%.2f", (ticket.price/100.0))}:"
-        %span.name= "#{ticket.event} on #{l ticket.performance, :format => :date_at_time}"
+        %span.name= "#{ticket.event} on #{l ticket.datetime, :format => :date_at_time}"
 
 - unless @order.donations.empty?
   %h4 Donations

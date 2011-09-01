@@ -70,6 +70,11 @@ class AthenaTicket < AthenaResource::Base
     @settled_item ||= items.select(&:settled?).first
   end
 
+  def datetime
+    @performance ||= AthenaPerformance.find(performance_id)
+    @performance.datetime
+  end
+
   def price
     super.to_i
   end
