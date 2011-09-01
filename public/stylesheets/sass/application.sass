@@ -40,7 +40,7 @@ h4
 #heading
   @include section
   @extend .stack
-  margin-bottom: $gutter
+  margin-bottom: 2 * $gutter
   h2, .from-here
     margin: 0 $gutter
   .from-here
@@ -534,3 +534,18 @@ ul.prices li div
 
 #zenbox_tab
   top: 80%
+
+dl
+  border-bottom: 1px solid #ccc
+  font-size: .875em
+  margin: $gutter 0
+  dd, dt
+    border-top: 1px solid #ccc
+    line-height: 3 * $line_height
+    text-indent: $gutter
+  dt
+    background: #eee
+    float: left
+    width: 50%
+    font-weight: bold
+    color: #666

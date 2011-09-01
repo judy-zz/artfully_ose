@@ -82,7 +82,7 @@ h4 {
 #heading {
   position: relative;
   padding-bottom: 12px;
-  margin-bottom: 12px; }
+  margin-bottom: 24px; }
   #heading > * {
     margin: 0 12px 12px;
     display: block;
@@ -1315,3 +1315,18 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 #zenbox_tab {
   top: 80%; }
+
+dl {
+  border-bottom: 1px solid #cccccc;
+  font-size: 0.875em;
+  margin: 12px 0; }
+  dl dd, dl dt {
+    border-top: 1px solid #cccccc;
+    line-height: 36px;
+    text-indent: 12px; }
+  dl dt {
+    background: #eeeeee;
+    float: left;
+    width: 50%;
+    font-weight: bold;
+    color: #666666; }
