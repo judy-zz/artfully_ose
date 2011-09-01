@@ -63,7 +63,7 @@ Artfully::Application.routes.draw do
 
   resources :events do
     get :widget, :on => :member
-    resources :shows do
+    resources :shows, :except => :index do
       member do
         get :door_list
         post :duplicate

@@ -5,12 +5,13 @@
     = @event.producer
     &mdash;
     = "#{@event.venue} #{@event.city}, #{@event.state}"
-  %ul.from-here
-    %li= link_to "Edit", edit_event_path(@event)
-    %li= link_to "New Show", new_event_show_path(@event)
-    %li= link_to "All Shows", event_shows_path(@event)
 
 .context
+  %ul.context-buttons
+    %li= button_to "Edit Event", edit_event_path(@event), :method => :get
+    %li= button_to "Store Front", store_event_path(@event), :method => :get
+    %li= button_to "New Show", new_event_show_path(@event), :method => :get
+
   = render :partial => "glance", :locals => { :report => @event.glance }
 
 .document

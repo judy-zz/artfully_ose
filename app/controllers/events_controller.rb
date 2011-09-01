@@ -32,6 +32,8 @@ class EventsController < ApplicationController
 
   def show
     authorize! :view, @event
+    @performances = @event.performances.paginate(:page => params[:page], :per_page => 10)
+    @next_performance = @event.next_perf
     @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
     @charts = @event.filter_charts(AthenaChart.find_templates_by_organization(current_user.current_organization))
     @chart = AthenaChart.new

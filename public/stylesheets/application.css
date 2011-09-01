@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, form ul li .label, .performance-buttons li, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .drilldown, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, .stackAuto {
+.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .drilldown, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -15,7 +15,7 @@
 .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li {
   width: 50%; }
 
-.stack1of3, .context, .tip, .overview, .of3, form ul li .label, .performance-buttons li {
+.stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label {
   width: 33.334%; }
 
 .stack2of3, .document, form ul li .element {
@@ -792,6 +792,32 @@ ul.prices li div {
     font-family: Courier;
     padding: 1px; }
 
+.context-buttons {
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top;
+  border: 1px solid #eeeeee;
+  padding: 4px 0 0 4px;
+  display: block;
+  text-align: left; }
+  .context-buttons li form {
+    margin: 0 4px 4px 0; }
+  .context-buttons li input {
+    width: 100%;
+    font-size: 0.75em;
+    display: block;
+    height: 24px;
+    padding: 0;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px; }
+
 #header {
   left: 0;
   right: 0;
@@ -1267,32 +1293,6 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 .dialog {
   display: none; }
-
-.performance-buttons {
-  -moz-border-radius: 4px 4px 4px 4px;
-  -webkit-border-radius: 4px 4px 4px 4px;
-  border-radius: 4px 4px 4px 4px;
-  display: inline-block;
-  font-family: "Courier New", monospace;
-  letter-spacing: -0.65em;
-  word-spacing: -0.65em;
-  text-align: center;
-  vertical-align: top;
-  border: 1px solid #eeeeee;
-  padding: 4px 0 0 4px;
-  display: block;
-  text-align: left; }
-  .performance-buttons li form {
-    margin: 0 4px 4px 0; }
-  .performance-buttons li input {
-    width: 100%;
-    font-size: 0.75em;
-    display: block;
-    height: 24px;
-    padding: 0;
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    border-radius: 2px 2px 2px 2px; }
 
 .logo {
   height: 75px;

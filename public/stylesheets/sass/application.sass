@@ -524,6 +524,26 @@ ul.prices li div
     font-family: Courier
     padding: 1px
 
+
+.context-buttons
+  @include rounded-corners(4px, 4px, 4px, 4px)
+  @include stack-layout
+  border: 1px solid #eee
+  padding: 4px 0 0 4px
+  display: block
+  text-align: left
+  li
+    @extend .stack1of3
+    form
+      margin: 0 4px 4px 0
+    input
+      width: 100%
+      font-size: .75em
+      display: block
+      height: 24px
+      padding: 0
+      @include rounded-corners(2px,2px,2px,2px)
+
 @import "main-menu"
 @import "forms"
 @import "tables"

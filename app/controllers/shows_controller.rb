@@ -19,7 +19,7 @@ class ShowsController < ApplicationController
 
     @new_performance = @performance.dup!
     @new_performance.save
-    redirect_to event_shows_path(@performance.event)
+    redirect_to event_path(@performance.event)
   end
 
   def new
@@ -31,13 +31,13 @@ class ShowsController < ApplicationController
     @event = AthenaEvent.find(params[:event_id])
     @performance.event = @event
     @performance.set_attributes params[:athena_performance]
-    @performance.organization_id = current_user.current_organization.id    
+    @performance.organization_id = current_user.current_organization.id
     if @performance.valid? && @performance.save
       flash[:notice] = "Show created on #{l @performance.datetime, :format => :date_at_time}"
-      redirect_to event_shows_path(@performance.event)
+      redirect_to event_path(@performance.event)
     else
       flash[:error] = "There was a problem creating your show."
-      redirect_to event_shows_path(@performance.event)
+      redirect_to event_path(@performance.event)
     end
   end
 
@@ -60,7 +60,7 @@ class ShowsController < ApplicationController
 
     without_tickets do
       if @performance.update_attributes(params[:athena_performance])
-        redirect_to event_shows_path(@performance.event)
+        redirect_to event_path(@performance.event)
       else
         render :edit
       end
