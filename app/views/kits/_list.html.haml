@@ -1,45 +1,44 @@
-#kits
-  %table.standalone
-    %thead
+%table.standalone
+  %thead
+    %tr
+      %th Name
+      -if can? :manage, current_user.current_organization
+        %th Actions
+      -else
+        %th State
+  %tbody
+    %tr
+      %td Free Ticketing Kit
+      %td Activated
+    %tr
+      %td People Management Kit
+      %td Activated
+    - kits.each do |kit|
       %tr
-        %th Name
+        %td= t(kit.type.underscore)
         -if can? :manage, current_user.current_organization
-          %th Actions
+          - if kit.new?
+            - if kit.has_alternatives?
+              %td= link_to "Activate #{t(kit.type.underscore)}", alternatives_kits_path(:type => kit.type.underscore)
+            - else
+              %td= link_to "Activate #{t(kit.type.underscore)}", new_kit_path(:type => kit.type.underscore)
+          - elsif kit.cancelled?
+            %td= link_to "Reactivate #{t(kit.type.underscore)}", kit_path(kit), :method => :put
+          - elsif kit.pending?
+            %td
+              = "#{kit.state.titleize}."
+              -if current_user.current_organization.bank_account.nil?
+                = "We haven't processed your ACH authorization form"
+                = link_to "(download)", "/forms/artfully_etf_sign_up.pdf"
+                = ". If you have not already done so, please submit this form and a voided check by email to support@artful.ly or by fax to (212) 277-8025, ATTN: Artful.ly."
+              -else
+                = " Your ACH information has been processed."
+          - else
+            %td= kit.state.titleize
         -else
-          %th State
-    %tbody
-      %tr
-        %td Free Ticketing Kit
-        %td Activated
-      %tr
-        %td People Management Kit
-        %td Activated
-      - kits.each do |kit|
-        %tr
-          %td= t(kit.type.underscore)
-          -if can? :manage, current_user.current_organization
-            - if kit.new?
-              - if kit.has_alternatives?
-                %td= link_to "Activate #{t(kit.type.underscore)}", alternatives_kits_path(:type => kit.type.underscore)
-              - else
-                %td= link_to "Activate #{t(kit.type.underscore)}", new_kit_path(:type => kit.type.underscore)
-            - elsif kit.cancelled?
-              %td= link_to "Reactivate #{t(kit.type.underscore)}", kit_path(kit), :method => :put
-            - elsif kit.pending?
-              %td
-                = "#{kit.state.titleize}."
-                -if current_user.current_organization.bank_account.nil?
-                  = "We haven't processed your ACH authorization form"
-                  = link_to "(download)", "/forms/artfully_etf_sign_up.pdf"
-                  = ". If you have not already done so, please submit this form and a voided check by email to support@artful.ly or by fax to (212) 277-8025, ATTN: Artful.ly."
-                -else
-                  = " Your ACH information has been processed."
-            - else
-              %td= kit.state.titleize
-          -else
-            - if kit.new?
-              %td= "Not active"
-            - elsif kit.cancelled?
-              %td= "Cancelled"
-            - else
-              %td= kit.state.titleize
+          - if kit.new?
+            %td= "Not active"
+          - elsif kit.cancelled?
+            %td= "Cancelled"
+          - else
+            %td= kit.state.titleize

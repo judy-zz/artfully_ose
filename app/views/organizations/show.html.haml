@@ -5,19 +5,23 @@
     %li= link_to "Edit Organization", edit_organization_path(@organization)
 
 .context
-  %h3 Details
-  %ul.kv
-    - unless @organization.legal_organization_name.blank?
+  #memberships
+    %h3 Users
+    = render :partial => "memberships/list", :locals => { :organization => @organization }
+  #details
+    %h3 Details
+    %ul.kv
+      - unless @organization.legal_organization_name.blank?
+        %li
+          .key Legal Name
+          .value= @organization.legal_organization_name
+      - unless @organization.ein.blank?
+        %li
+          .key EIN
+          .value= @organization.ein
       %li
-        .key Legal Name
-        .value= @organization.legal_organization_name
-    - unless @organization.ein.blank?
-      %li
-        .key EIN
-        .value= @organization.ein
-    %li
-      .key Time Zone
-      .value= @organization.time_zone
+        .key Time Zone
+        .value= @organization.time_zone
 
   -#- unless @organization.connected?
   -#  %h3 Connect to Fractured Atlas
@@ -27,22 +31,23 @@
   -#  %p This organization has been connected to a Fractured Atlas membership.
 
 .document
-  #memberships
-    %h3 Users (#{@organization.users.size})
-    = render :partial => "memberships/list", :locals => { :organization => @organization }
-    - if can? :manage, current_user.current_organization
-      %h3 Add User
-      %p Allow another Artful.ly user to work on this organization.
-      = form_tag organization_memberships_path(@organization.id), :action => "create", :class => :single_field do
-        .stack
-          .label= label_tag :user_email, "Email"
-          .element= text_field_tag :user_email
-          .submit= submit_tag "Add"
-
-  %h3 Kits
   - if can? :manage, current_user.current_organization
-    %p Kits are Artful.ly add-ons that provide specific functionality.
-  - else
-    %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits."
-  = render :partial => "kits/list", :locals => { :kits => @kits }
-  %p More coming soon!
+    #new-membership
+      %h3 Add Users
+      %p Allow another Artful.ly user to work on this organization.
+      = form_tag organization_memberships_path(@organization.id), :action => "create" do
+        %ul
+          %li
+            .full.paired.element
+              .hidden.label= label_tag :user_email, "Email"
+              = text_field_tag :user_email, "", :placeholder => "Enter an email address..."
+              = submit_tag "Add"
+
+  #kits
+    %h3 Kits
+    - if can? :manage, current_user.current_organization
+      %p Kits are Artful.ly add-ons that provide specific functionality.
+    - else
+      %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits."
+    = render :partial => "kits/list", :locals => { :kits => @kits }
+    %p More coming soon!
