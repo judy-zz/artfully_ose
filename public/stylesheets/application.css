@@ -1316,15 +1316,15 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 #zenbox_tab {
   top: 80%; }
 
-dl {
+dl.table-display {
   border-bottom: 1px solid #cccccc;
   font-size: 0.875em;
   margin: 12px 0; }
-  dl dd, dl dt {
+  dl.table-display dd, dl.table-display dt {
     border-top: 1px solid #cccccc;
     line-height: 36px;
     text-indent: 12px; }
-  dl dt {
+  dl.table-display dt {
     background: #eeeeee;
     float: left;
     width: 50%;
