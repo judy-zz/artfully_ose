@@ -1,4 +1,7 @@
-= render :partial => "shared/headers/ticketing"
+- in_section :events
+- content_for :header do
+  %h1= t('.heading', :default => "Events")
+  %h2= t('.subheading', :default => "Manage your events")
 
 .context
   %h3 Creating an Event
@@ -9,7 +12,6 @@
 
 .document
   = render "shared/error_messages", :target => @event
-
   = form_for @event, :url => events_path do |form|
     %fieldset
       %legend Details
