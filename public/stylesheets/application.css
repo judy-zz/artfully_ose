@@ -137,7 +137,7 @@ strong {
 #content {
   margin: 0 auto;
   max-width: 1260px;
-  padding: 72px 12px;
+  padding: 72px 12px 120px;
   position: relative; }
   #content p {
     font-size: 0.875em;
