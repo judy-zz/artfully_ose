@@ -16,6 +16,7 @@
       .logo{ :id => active_section }
       #page
         #heading= yield :header
+        = yield
     = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
     = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
     = javascript_include_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.js"
