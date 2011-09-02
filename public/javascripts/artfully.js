@@ -372,8 +372,8 @@ artfully.models = (function(){
       modelCache.donation = {
         message: function($key){
           var messages = {
-            'regular': "This is the notice for regular donations.",
-            'sponsored': "This is the notice for fiscally sponsored programs."
+            'regular': "Contributions are tax-deductible to the extent permitted by law.",
+            'sponsored': "This organization is a fiscally sponsored project of Fractured Atlas, a non-profit arts service organization. Contributions for the purposes of this organization must be made payable to Fractured Atlas and are tax-deductible to the extent permitted by law."
           };
           return messages[$key] || "";
         },
