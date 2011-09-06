@@ -1,6 +1,7 @@
 class StatementsController < ApplicationController
 
   def index
+    authorize! :view, AthenaStatement.new
     if params[:event_id].present?
       @event = AthenaEvent.find(params[:event_id])
       authorize! :view, @event

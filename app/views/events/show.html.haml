@@ -5,12 +5,13 @@
     = @event.producer
     &mdash;
     = "#{@event.venue} #{@event.city}, #{@event.state}"
-  %ul.from-here
-    %li= link_to "Edit", edit_event_path(@event)
-    %li= link_to "New Show", new_event_show_path(@event)
-    %li= link_to "All Shows", event_shows_path(@event)
 
 .context
+  %ul.context-buttons
+    %li= button_to "Edit Event", edit_event_path(@event), :method => :get
+    %li= button_to "Store Front", store_event_path(@event), :method => :get
+    %li= button_to "New Show", new_event_show_path(@event), :method => :get
+
   = render :partial => "glance", :locals => { :report => @event.glance }
   = render :partial => "shows/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
@@ -35,6 +36,32 @@
     %h3 This Week
     #calendar{ :"data-event" => @event.id }
 
+  #performances
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Show
+          %th Available
+          %th Sold
+          %th Comped
+          %th Actions
+      %tbody
+        - @performances.each do |perf|
+          %tr{ :class => perf.state }
+            %td= link_to l(perf.datetime, :format => :short), event_show_path(@event, perf), :title => 'performance-datetime'
+            %td.available= perf.glance.tickets.available
+            %td.gross= perf.glance.tickets.sold.gross
+            %td.comped= perf.glance.tickets.sold.comped
+            %td= render :partial => "shows/controls", :locals => { :performance => perf }
+        %tr
+          = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :performance => @next_performance }
+    = will_paginate @performances
+
   #widget
-    %h3 Promote on your Website
+    %h3 Sell Tickets
+
+    %h4 Quick and Easy
+    %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
+
+    %h4 Sell Anywhere
     %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe

@@ -80,7 +80,7 @@ strong
 #content
   margin: 0 auto
   max-width: 1260px
-  padding: 6 * $gutter $gutter
+  padding: 6 * $gutter $gutter 10 * $gutter
   position: relative
   p
     font-size: .875em
@@ -524,6 +524,26 @@ ul.prices li div
     font-family: Courier
     padding: 1px
 
+
+.context-buttons
+  @include rounded-corners(4px, 4px, 4px, 4px)
+  @include stack-layout
+  border: 1px solid #eee
+  padding: 4px 0 0 4px
+  display: block
+  text-align: left
+  li
+    @extend .stack1of3
+    form
+      margin: 0 4px 4px 0
+    input
+      width: 100%
+      font-size: .75em
+      display: block
+      height: 24px
+      padding: 0
+      @include rounded-corners(2px,2px,2px,2px)
+
 @import "main-menu"
 @import "forms"
 @import "tables"
@@ -534,3 +554,18 @@ ul.prices li div
 
 #zenbox_tab
   top: 80%
+
+dl.table-display
+  border-bottom: 1px solid #ccc
+  font-size: .875em
+  margin: $gutter 0
+  dd, dt
+    border-top: 1px solid #ccc
+    line-height: 3 * $line_height
+    text-indent: $gutter
+  dt
+    background: #eee
+    float: left
+    width: 50%
+    font-weight: bold
+    color: #666

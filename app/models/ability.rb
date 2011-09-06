@@ -32,6 +32,10 @@ class Ability
     can :view, Settlement do |settlement|
       user.is_in_organization?
     end
+    
+    can :view, AthenaStatement do |statement|
+      user.is_in_organization?
+    end
   end
 
   def ticketing_abilities_for(user)

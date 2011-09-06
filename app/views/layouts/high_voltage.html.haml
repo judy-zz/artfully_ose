@@ -2,16 +2,22 @@
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
   %head
     %title= "#{yield :title} : Artful.ly"
-    %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
-
-    = include_stylesheets :application
+    = favicon_link_tag
     = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-
+    = stylesheet_link_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.css"
+    = include_stylesheets :application
+    = csrf_meta_tag
 
   %body
-    #large-header
-      = link_to image_tag("/images/logo.png"), root_path
+    #header
+      = render :partial => 'layouts/menu' if user_signed_in?
     #content
-      #heading= yield :header
-      = yield
+      .logo{ :id => active_section }
+      #page
+        #heading= yield :header
+        = yield
+    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
+    = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
+    = javascript_include_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.js"
+    = include_javascripts :vendor, :application, :custom

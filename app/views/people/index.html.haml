@@ -2,7 +2,7 @@
 = render :partial => "shared/headers/people"
 
 .spread
-  = form_tag people_path, {:method => :get, :remote => true, :class => 'big-search super-search'} do
+  = form_tag people_path, {:method => :get, :remote => true, :class => 'super-search'} do
     = hidden_field_tag :commit, "Search"
     %ul
       %li

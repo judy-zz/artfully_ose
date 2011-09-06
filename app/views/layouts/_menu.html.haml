@@ -31,7 +31,7 @@
       %li= link_to "Contributions", contributions_path
       %li= link_to "Search", orders_path
   %li
-  %li{ :class => :help }
+  %li{ :class => active?(:help) }
     %span.top-level Information
     %ul
       %li= link_to "Privacy Policy", page_path("privacy")

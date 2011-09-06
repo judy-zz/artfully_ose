@@ -1,35 +1,7 @@
+- in_section :help
 - content_for :header do
-  %h1 Privacy Policy
+  %h1= t(".heading", :default => "Privacy Policy")
+  %h2= t(".subheading", :default => "")
 
 .spread
-  %p Protecting the information you share with us is very important to us, and we respect your privacy. This Privacy Policy is meant to explain how we use and protect the information you share with us. This Privacy Policy applies to all users of this web site or our services, and to any information provided to us.
-  %p We reserve the right to change, modify, add, or remove provisions of this Privacy Policy. Changes to this Privacy Policy will be posted on this site. We encourage you to check back from time to time to ensure continuing familiarity with the most current version of our Privacy Policy. Please read this Privacy Policy carefully. Your use of this web site constitutes your acceptance to be bound by this Privacy Policy without limitation, qualification or change. If at any time you do not accept all the terms and conditions contained herein, you must immediately discontinue use of this web site.
-
-  %h3 Information Collection
-
-  %p We collect information from users of this web site at several different points on this web site.  When you opt to use many of the services on our web site, you must first set up an account, which requires you to submit contact information (i.e., email and mailing address), demographic information, and certain unique identifiers. We only ask for such information as is necessary for the provision of member services, and we use it in the provision of those services.
-  %p In the event you make a transaction through the web site, we may collect your credit card number or other payment account number, billing address and other information related to such purchase (collectively, "Payment Information") from you.  The Payment Information is transmitted via secure, encrypted processes. We do not store credit card numbers any longer than is necessary to process transactions and provide related support. Our third-party credit card processing vendors may store credit card numbers indefinitely, and are responsible for ensuring the security of such storage.
-  %p We will use the Payment Information that you provide to bill you for and fulfill your transaction. By providing your Payment Information, you are authorizing us to give that information to third parties as necessary to confirm and fulfill your order (for example, to process your credit card or payment account number and to send you products you have ordered).
-
-  %h3 Traffic Analysis
-  %p When you visit pages on this web site, our web server records your page views. This is an extremely common practice, and is necessary for us to design the best, most usable web site possible.
-
-  %h3 Information Use
-  %p Information submitted by users of this web site either in the sign up process or when using one of the "premium" features of the web site will be used:
-  %ul.bulleted
-    %li to assist us in the provision of services;
-    %li to contact users with important updates about this web site or the services it provides; and
-    %li in the aggregate, as a means for us to understand more about our community and its needs.
-  %p This web site uses "cookies" exclusively to aid the login process. A cookie is a piece of data stored on the user's computer tied to information about the user. The cookies used by this web site contain very minimal information used only to identify and authenticate members. No sensitive identifying information is stored by cookies.
-  %p Like most standard web site servers, we use log files. This includes internet protocol (IP) addresses, browser type, internet service provider (ISP), referring/exit pages, platform type, date/time stamp, and number of clicks to analyze trends, administer the site, track users movement in the aggregate, and gather broad demographic information for aggregate use. These types of files are not linked to sensitive identifying information.
-
-  %h3 Third Party Information Use
-  %p We do not share individual demographic information with any advertisers or other outside companies.
-  %p Though we make every effort to preserve user privacy, we may need to disclose demographic or other identifying information collected on our web site when required by law when we have a good-faith belief that such action is necessary to comply with a current judicial proceeding, a court order or legal process served on our web site.
-  %p In the event that we go through a business transition, such as a merger, being acquired by another company, or selling a portion of our assets, users’ information will be, in most instances, part of the assets transferred.
-
-  %h3 Links
-  %p This web site contains links to other sites. We are not responsible for the privacy practices of such other web sites. We encourage our users to be aware when they leave our web site and to read the privacy statements of each and every web site that collects identifying information. This privacy statement applies solely to information collected by this web site.
-
-  %h3 Notification of Changes
-  %p If we decide to change our privacy policy, we will post those changes to this privacy statement so our users are always aware of what information we collect, how we use it, and under what circumstances, if any, we disclose it.
+  = t(".content", :default => "")

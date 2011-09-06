@@ -304,7 +304,8 @@ a {
   text-decoration: none; }
 
 #cart, #controls {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   #cart > *, #controls > * {
     margin: 0 12px 12px;
     display: block;
@@ -391,7 +392,8 @@ a {
   text-transform: capitalize; }
 
 #customer-confirmation, #credit_card-confirmation, #billing_address-confirmation {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   #customer-confirmation > *, #credit_card-confirmation > *, #billing_address-confirmation > * {
     margin: 0 12px 12px;
     display: block;

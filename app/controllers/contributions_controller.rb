@@ -1,5 +1,6 @@
 class ContributionsController < ApplicationController
   def index
+    authorize! :manage, AthenaOrder
     Time.zone = current_user.current_organization.time_zone
 
     @search = DonationSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|

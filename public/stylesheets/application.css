@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, form ul li .label, .performance-buttons li, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .drilldown, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, .stackAuto {
+.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .drilldown, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -15,7 +15,7 @@
 .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li {
   width: 50%; }
 
-.stack1of3, .context, .tip, .overview, .of3, form ul li .label, .performance-buttons li {
+.stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label {
   width: 33.334%; }
 
 .stack2of3, .document, form ul li .element {
@@ -81,6 +81,7 @@ h4 {
 
 #heading {
   position: relative;
+  padding-bottom: 12px;
   margin-bottom: 24px; }
   #heading > * {
     margin: 0 12px 12px;
@@ -136,7 +137,7 @@ strong {
 #content {
   margin: 0 auto;
   max-width: 1260px;
-  padding: 72px 12px;
+  padding: 72px 12px 120px;
   position: relative; }
   #content p {
     font-size: 0.875em;
@@ -156,7 +157,8 @@ strong {
     width: 100%; }
 
 .spread {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .spread > * {
     margin: 0 12px 12px;
     display: block;
@@ -173,6 +175,7 @@ strong {
 
 .compact-spread {
   position: relative;
+  padding-bottom: 12px;
   padding: 12px;
   border: 1px solid #eeeeee; }
   .compact-spread > * {
@@ -190,7 +193,8 @@ strong {
       visibility: hidden; }
 
 .context, .tip, .overview {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .context > *, .tip > *, .overview > * {
     margin: 0 12px 12px;
     display: block;
@@ -206,7 +210,8 @@ strong {
       visibility: hidden; }
 
 .dashboard {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .dashboard > * {
     margin: 0 12px 12px;
     display: block;
@@ -222,7 +227,8 @@ strong {
       visibility: hidden; }
 
 .sideboard {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .sideboard > * {
     margin: 0 12px 12px;
     display: block;
@@ -239,7 +245,8 @@ strong {
 
 .document {
   background: white;
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .document > * {
     margin: 0 12px 12px;
     display: block;
@@ -255,7 +262,8 @@ strong {
       visibility: hidden; }
 
 .of2 {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .of2 > * {
     margin: 0 12px 12px;
     display: block;
@@ -271,7 +279,8 @@ strong {
       visibility: hidden; }
 
 .of3 {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .of3 > * {
     margin: 0 12px 12px;
     display: block;
@@ -287,7 +296,8 @@ strong {
       visibility: hidden; }
 
 .drilldown.final {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .drilldown.final > * {
     margin: 0 12px 12px;
     display: block;
@@ -307,7 +317,8 @@ strong {
       margin-left: 1em; }
 
 .drilldown {
-  position: relative; }
+  position: relative;
+  padding-bottom: 12px; }
   .drilldown > * {
     margin: 0 12px 12px;
     display: block;
@@ -781,6 +792,32 @@ ul.prices li div {
     font-family: Courier;
     padding: 1px; }
 
+.context-buttons {
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+  display: inline-block;
+  font-family: "Courier New", monospace;
+  letter-spacing: -0.65em;
+  word-spacing: -0.65em;
+  text-align: center;
+  vertical-align: top;
+  border: 1px solid #eeeeee;
+  padding: 4px 0 0 4px;
+  display: block;
+  text-align: left; }
+  .context-buttons li form {
+    margin: 0 4px 4px 0; }
+  .context-buttons li input {
+    width: 100%;
+    font-size: 0.75em;
+    display: block;
+    height: 24px;
+    padding: 0;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px; }
+
 #header {
   left: 0;
   right: 0;
@@ -824,7 +861,7 @@ ul.prices li div {
     background: #fb9b2c;
     background: -moz-linear-gradient(top, #fb9b2c 14%, #f08204 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #fb9b2c), color-stop(100%, #f08204)); }
-    #main-menu li.active a {
+    #main-menu li.active a, #main-menu li.active span {
       color: white;
       text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3); }
   #main-menu li ul {
@@ -1216,7 +1253,8 @@ tfoot tr {
   vertical-align: top;
   margin: 0 !important; }
   .reports > li {
-    position: relative; }
+    position: relative;
+    padding-bottom: 12px; }
     .reports > li > * {
       margin: 0 12px 12px;
       display: block;
@@ -1256,32 +1294,6 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 .dialog {
   display: none; }
 
-.performance-buttons {
-  -moz-border-radius: 4px 4px 4px 4px;
-  -webkit-border-radius: 4px 4px 4px 4px;
-  border-radius: 4px 4px 4px 4px;
-  display: inline-block;
-  font-family: "Courier New", monospace;
-  letter-spacing: -0.65em;
-  word-spacing: -0.65em;
-  text-align: center;
-  vertical-align: top;
-  border: 1px solid #eeeeee;
-  padding: 4px 0 0 4px;
-  display: block;
-  text-align: left; }
-  .performance-buttons li form {
-    margin: 0 4px 4px 0; }
-  .performance-buttons li input {
-    width: 100%;
-    font-size: 0.75em;
-    display: block;
-    height: 24px;
-    padding: 0;
-    -moz-border-radius: 2px 2px 2px 2px;
-    -webkit-border-radius: 2px 2px 2px 2px;
-    border-radius: 2px 2px 2px 2px; }
-
 .logo {
   height: 75px;
   width: 350px;
@@ -1289,7 +1301,7 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   background-color: transparent;
   background-repeat: no-repeat; }
 
-#dashboard {
+#dashboard, #help {
   background-position: -350px 0px; }
 
 #events {
@@ -1303,3 +1315,18 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 #zenbox_tab {
   top: 80%; }
+
+dl.table-display {
+  border-bottom: 1px solid #cccccc;
+  font-size: 0.875em;
+  margin: 12px 0; }
+  dl.table-display dd, dl.table-display dt {
+    border-top: 1px solid #cccccc;
+    line-height: 36px;
+    text-indent: 12px; }
+  dl.table-display dt {
+    background: #eeeeee;
+    float: left;
+    width: 50%;
+    font-weight: bold;
+    color: #666666; }

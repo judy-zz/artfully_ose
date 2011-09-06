@@ -3,8 +3,6 @@
   %h1 Orders & Donations
 
 .context
-
-.document
   %h3= @order.id
   %ul.kv
     %li
@@ -19,7 +17,7 @@
     %li
       .key Details
       .value #{@order.details}
-
+.document
   - unless @order.all_items.empty?
     = render :partial => 'refunds/grouped_form', :locals => { :order => @order }
     = render :partial => 'exchanges/grouped_form', :locals => { :order => @order }
