@@ -105,9 +105,6 @@ form .description, form .form-error {
   width: 75%;
   color: #999999; }
 
-.label.hidden {
-  display: none; }
-
 .element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
   display: block;
   font-family: "Arimo", sans-serif;

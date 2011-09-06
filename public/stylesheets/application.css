@@ -792,6 +792,9 @@ ul.prices li div {
     font-family: Courier;
     padding: 1px; }
 
+.hidden {
+  display: none; }
+
 .context-buttons {
   -moz-border-radius: 4px 4px 4px 4px;
   -webkit-border-radius: 4px 4px 4px 4px;
@@ -953,9 +956,6 @@ form .description, form .form-error {
   line-height: 12px;
   width: 75%;
   color: #999999; }
-
-.label.hidden {
-  display: none; }
 
 .element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
   display: block;
