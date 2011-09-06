@@ -1,23 +1,16 @@
 namespace :admin do
-  desc "Promote a user to admin"
-  task :promote, [ :email ] => [ :environment ] do |t, args|
-    user = User.find_by_email(args[:email])
-    if user.nil?
-      puts "Unable to find a user for #{args[:email]}."
+  desc "Create a new Admin"
+  task :create, [ :email, :password ] => [ :environment ] do |t, args|
+    if Admin.find_by_email(args[:email]).present?
+      puts "An admin already exists with that email address."
     else
-      user.roles << :admin
-      user.save
+      admin = Admin.new(:email => args[:email], :password => args[:password])
+      if admin.save
+        puts "Created a new admin with email address #{args[:email]}"
+      else
+        puts "Trouble creating a new admin: "
+        puts admin.errors.full_messages.to_sentence
+      end
     end
   end
-
-  desc "Create a new user with a default password of password"
-  task :new_user, [ :email, :password ] => [ :environment ] do |t, args|
-    args.with_defaults(:password => "password")
-    user = User.new( :email => args[:email], :password => args[:password] )
-    user.save!
-  end
-
-  desc "Create a new user and promote them to admin, default password is password"
-  task :new_admin, [ :email, :password ] => [ :environment, :new_user, :promote ]
-
 end
