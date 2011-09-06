@@ -9,7 +9,7 @@
     = include_stylesheets :vendor, :application, :media => :screen
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
-
+    = render :partial => 'layouts/google_analytics'
   %body
     #header
       = render :partial => 'layouts/menu'
