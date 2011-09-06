@@ -58,5 +58,4 @@ group :test, :development do
   gem 'awesome_print', :require => 'ap'
   gem 'uuid'
   gem 'faker'
-  gem 'jasmine'
 end
