@@ -4,8 +4,9 @@
 <!--[if IE 8 ]>    <html class="no-js ie8 ie" lang="en"> <![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
   <title>Artfully</title>
   <meta name="description" content="Artfully is cloud-based business software built for individual artists and arts organizations.">
   <meta name="author" content="Fractured Atlas">
@@ -31,7 +32,7 @@
       <div class="container_12">
         <div class="title grid_6">
           <h1>
-            <div class="logo">Artfully</div>
+            <span class="logo">Artfully</span>
           </h1>
         </div>
         <div class="grid_6">
@@ -153,7 +154,6 @@
       <div class="ticket"></div>
     </footer>
 
-  </div>
   <%= include_javascripts :splash %>
 </body>
 </html>
