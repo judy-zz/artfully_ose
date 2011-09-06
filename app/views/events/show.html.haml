@@ -10,54 +10,52 @@
   %ul.context-buttons
     %li= button_to "Edit Event", edit_event_path(@event), :method => :get
     %li= button_to "Store Front", store_event_path(@event), :method => :get
-    - unless @event.charts.empty?
-      %li= button_to "New Show", new_event_show_path(@event), :method => :get
+    %li= button_to "New Show", new_event_show_path(@event), :method => :get
 
   = render :partial => "glance", :locals => { :report => @event.glance }
   = render :partial => "shows/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
-  - if !@event.charts.empty?
-    %h3 Charts
-    %ul.detailed-list
-      - @event.charts.each do |chart|
+  %h3 Charts
+  %ul.detailed-list
+    - @event.charts.each do |chart|
+      %li
+        %h4= chart.name
+        %ul.details
+          %li= pluralize(chart.sections.size, "Section")
+  - unless @charts.empty?
+    = form_for @chart, :url => assign_chart_path(@event) do |form|
+      %ul
         %li
-          %h4= chart.name
-          %ul.details
-            %li= pluralize(chart.sections.size, "Section")
-    - unless @charts.empty?
-      = render :partial => "events/chart_select", :locals => { :event => @event, :chart => @chart }
+          .hidden.label= form.label :id, "Chart"
+          .full.paired.element
+            = form.select :id, options_from_collection_for_select(@charts, "id", "name")
+            = form.submit "Import"
 
 .document
-  - if @event.charts.empty?
-    %h3 Import seat chart
-    %p= "Before creating shows, you'll need to import seat charts to this event so Artfully knows how to generate tickets for your shows."
-    - unless @charts.empty?
-      = render :partial => "events/chart_select", :locals => { :event => @event, :chart => @chart }
-    = link_to 'Create a new chart', new_chart_path
-  - else
-    #this-week
-      %h3 This Week
-      #calendar{ :"data-event" => @event.id }
-    #performances
-      %table.standalone.zebra
-        %thead
-          %tr
-            %th Show
-            %th Available
-            %th Sold
-            %th Comped
-            %th Actions
-        %tbody
-          - @performances.each do |perf|
-            %tr{ :class => perf.state }
-              %td= link_to l(perf.datetime, :format => :short), event_show_path(@event, perf), :title => 'performance-datetime'
-              %td.available= perf.glance.tickets.available
-              %td.gross= perf.glance.tickets.sold.gross
-              %td.comped= perf.glance.tickets.sold.comped
-              %td= render :partial => "shows/controls", :locals => { :performance => perf }
-          %tr
-            = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :performance => @next_performance }
-      = will_paginate @performances
+  #this-week
+    %h3 This Week
+    #calendar{ :"data-event" => @event.id }
+
+  #performances
+    %table.standalone.zebra
+      %thead
+        %tr
+          %th Show
+          %th Available
+          %th Sold
+          %th Comped
+          %th Actions
+      %tbody
+        - @performances.each do |perf|
+          %tr{ :class => perf.state }
+            %td= link_to l(perf.datetime, :format => :short), event_show_path(@event, perf), :title => 'performance-datetime'
+            %td.available= perf.glance.tickets.available
+            %td.gross= perf.glance.tickets.sold.gross
+            %td.comped= perf.glance.tickets.sold.comped
+            %td= render :partial => "shows/controls", :locals => { :performance => perf }
+        %tr
+          = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :performance => @next_performance }
+    = will_paginate @performances
 
   #widget
     %h3 Sell Tickets
