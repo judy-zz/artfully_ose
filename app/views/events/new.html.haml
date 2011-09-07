@@ -16,13 +16,15 @@
     %fieldset
       %legend Details
       %ul= render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
-    %fieldset
-      %legend Seat Charts
-      %ul
-        - @templates.each do |chart_template|
-          %li
-            .label= label_tag "charts[]", chart_template.name
-            .element= check_box_tag "charts[]", chart_template.id
+    
+    - unless @templates.empty?
+      %fieldset
+        %legend Seat Charts
+        %ul
+          - @templates.each do |chart_template|
+            %li
+              .label= label_tag "charts[]", chart_template.name
+              .element= check_box_tag "charts[]", chart_template.id
 
     = form.submit "Submit"
 

@@ -1,7 +1,6 @@
 - if !target.nil? && target.errors.any?
   .flash.error
     .close &#10006;
-    - target.errors.full_messages.each do |message|
-      %span= message
+    = target.errors.full_messages.to_sentence
 
 
