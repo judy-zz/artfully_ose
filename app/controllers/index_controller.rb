@@ -2,7 +2,11 @@ class IndexController < ApplicationController
   skip_before_filter :authenticate_user!, :only => :index
 
   def index
-    render :layout => false
+    if admin_signed_in?
+      redirect_to admin_root_path
+    else
+      render :layout => false
+    end
   end
 
   def login_success
