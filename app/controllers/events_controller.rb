@@ -43,7 +43,13 @@ class EventsController < ApplicationController
       format.json do
         render :json => @event.as_full_calendar_json.to_json
       end
-      format.html
+      format.html do
+        if @event.charts.empty?
+          render :show_with_chart_select
+        else
+          render :show
+        end
+      end
     end
 
   end
