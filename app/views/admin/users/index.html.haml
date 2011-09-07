@@ -2,7 +2,7 @@
   %h1 User Administration
 
 .context
-  = link_to "Invite User", new_user_invitation_path
+  = link_to "Invite User", new_admin_user_path
 .document
   = form_tag admin_users_path, :method => :get do
     %ul
@@ -12,6 +12,4 @@
         .element
           = text_field_tag :email
           .description Start by finding a user by email address.
-
-      %li
         = submit_tag "Search"

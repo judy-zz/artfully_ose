@@ -1,0 +1,10 @@
+- content_for :header do
+  %h1 Invite a User
+
+.spread
+  = form_for @user, :url => admin_users_path do |f|
+    %ul
+      %li
+        .label= f.label :email
+        .element= f.text_field :email
+    = f.submit "Send an invitation"
