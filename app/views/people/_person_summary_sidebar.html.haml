@@ -10,7 +10,7 @@
     .value{"data-name" => "company_name", "data-url" => person_url(@person, :format => :json)}= @person.company_name
   %li
     .key Website
-    .value{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website
+    .value.website{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website
 
 %h4 Phone Numbers
 %ul.kv

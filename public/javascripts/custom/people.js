@@ -16,9 +16,6 @@ $(document).ready(function() {
        url: "/people/" + person_id + "/star/" + type + "/" + id
     });
 
-
-    console.log("Updating star...")
-
     if(is_star(star)) {
       $(this).html("&#10025;");
       $(this).trigger("unstarred");
@@ -45,5 +42,18 @@ $(document).ready(function() {
     } else {
       $(('#'+id), relationships_list).remove();
     }
+  });
+
+  $(".website.value").each(function(){
+    var $link = $(document.createElement('a')),
+        field = this;
+
+    $link.html("[ &#9656; ]")
+    $link.appendTo($(this).parent());
+
+    $link.hover(function(){
+      var href = $(field).html();
+      $(this).attr("href", href);
+    });
   });
 });
