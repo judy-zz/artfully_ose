@@ -7,6 +7,7 @@ class EventsController < ApplicationController
 
   def create
     @event = AthenaEvent.new(params[:athena_event][:athena_event])
+    @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @event.organization_id = current_user.current_organization.id
     begin
       authorize! :create, @event
@@ -42,7 +43,13 @@ class EventsController < ApplicationController
       format.json do
         render :json => @event.as_full_calendar_json.to_json
       end
-      format.html
+      format.html do
+        if @event.charts.empty?
+          render :show_with_chart_select
+        else
+          render :show
+        end
+      end
     end
 
   end
