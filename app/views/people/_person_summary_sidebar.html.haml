@@ -1,5 +1,8 @@
 %h3="#{@person.first_name} #{@person.last_name}"
 
+%ul.context-buttons
+  %li= button_to "Edit", edit_person_path(@person), :method => :get
+
 %h4 Contact Information
 %ul.kv.editable
   %li
