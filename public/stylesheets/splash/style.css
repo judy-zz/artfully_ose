@@ -236,6 +236,10 @@ h1 .logo {
   background: url("/images/logo-sprite.png") no-repeat;
 }
 
+.ie h1 .logo {
+  background: #fff url("/images/logo-sprite.png") no-repeat;
+}
+
 a, a:active, a:visited { color: #0f6d7b; text-decoration: none; }
 a:hover { color: #1697a9; }
 
