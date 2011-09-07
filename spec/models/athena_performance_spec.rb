@@ -19,9 +19,16 @@ describe AthenaPerformance do
 
   it "should not be valid for a time in the past" do
     subject.datetime = Time.now - 1.day
+    subject.chart_id = "4"
     subject.should_not be_valid
   end
-
+  
+  it "should not be valid without a chart_id" do
+    subject.datetime = Time.now + 1.day
+    subject.chart_id = nil
+    subject.should_not be_valid
+  end
+  
   describe "#played" do
     it "should be played if the event is in the past" do
       subject.datetime = Time.now - 1.day
