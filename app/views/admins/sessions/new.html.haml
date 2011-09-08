@@ -10,6 +10,5 @@
       .label= f.label :password
       .element
         = f.password_field :password, :tabindex => "2"
-        .description= link_to "Request unlock instructions?", new_unlock_path(resource_name)
         .description= link_to "Forgot your password?", new_password_path(resource_name)
   = f.submit "Sign in", :tabindex => "3"
