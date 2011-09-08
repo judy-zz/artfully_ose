@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
     # end
 
     def public_controller?
-      %w( devise/sessions devise/registrations devise/passwords ).include?(params[:controller])
+      %w( devise/sessions devise/registrations devise/passwords devise/unlocks ).include?(params[:controller])
     end
 
     def public_action?
