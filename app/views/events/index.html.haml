@@ -11,5 +11,4 @@
 
 .context
   %h3 Overview
-  #debug=ap Rails.env["warden"]
   = render :partial => 'glances', :locals => { :events => @events } unless @events.blank?
