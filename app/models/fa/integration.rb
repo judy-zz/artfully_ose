@@ -11,7 +11,7 @@ class FA::Integration < FA::Base
   end
 
   def save
-    connection.post("/members/integrations.xml", to_xml(), self.class.headers).tap do |response|
+    connection.post("/members/integrations.xml", to_xml(:dasherize => false), self.class.headers).tap do |response|
       self.id = id_from_response(response)
     end
   end
