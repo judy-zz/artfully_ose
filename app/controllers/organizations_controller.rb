@@ -79,6 +79,8 @@ class OrganizationsController < ApplicationController
     @kits = @organization.available_kits
 
     if @fa_user.authenticate
+      @integration = FA::Integration.new(@fa_user, @organization)
+      @integration.save
       @organization.update_attribute(:fa_member_id, @fa_user.member_id)
       flash[:notice] = "Successfully connected to Fractured Atlas!"
       if params[:back]
