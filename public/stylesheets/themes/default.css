@@ -84,6 +84,8 @@ form ul li {
       margin-right: 2%; }
   form ul li .label label {
     font-family: "Raleway"; }
+  form ul li .hidden.label {
+    display: none; }
   form ul li .label-and-element {
     text-align: left; }
     form ul li .label-and-element label, form ul li .label-and-element input {
