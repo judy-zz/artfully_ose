@@ -1,3 +1,6 @@
+String.prototype.startsWith = function(str)
+{return (this.match("^"+str)==str)}
+
 $(document).ready(function() {
   var is_star = function(htmlElement) {
     return (htmlElement === "\u272D");
@@ -53,7 +56,12 @@ $(document).ready(function() {
 
     $link.hover(function(){
       var href = $(field).html();
-      $(this).attr("href", href);
+      if("Click to edit" !== href){
+        if(!href.startsWith("http://")){
+          href = "http://" + href;
+        }
+        $(this).attr("href", href);
+      }
     });
   });
 });
