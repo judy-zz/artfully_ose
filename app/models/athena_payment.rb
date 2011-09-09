@@ -72,6 +72,10 @@ class AthenaPayment < AthenaResource::Base
     super(amount)
   end
 
+  def require_authorization?
+    amount > 0
+  end
+
   def authorize!
     connection.post( AthenaPayment::element_name + "/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)

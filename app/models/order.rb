@@ -1,4 +1,3 @@
-#Used for shopping cart in the widget
 class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 
@@ -61,7 +60,7 @@ class Order < ActiveRecord::Base
   end
 
   def total
-    items.inject(0) { |sum, item| sum + item.price }
+    items.sum(&:price)
   end
 
   def unfinished?
@@ -74,19 +73,11 @@ class Order < ActiveRecord::Base
 
   def pay_with(payment, options = {})
     @payment = payment
-    options[:settle] = true if options[:settle].nil?
-
-    if payment.amount > 0
-      payment.authorize! ? approve! : reject!
-      if options[:settle] and approved?
-        payment.settle!
-      end
+    if payment.requires_authorization?
+      pay_with_authorization(payment, options)
     else
-      #options[:settle] = true # neccessary?
-      payment.transaction_id = nil
       approve!
     end
-
   end
 
   def finish
@@ -108,8 +99,6 @@ class Order < ActiveRecord::Base
       order.save!
       OrderMailer.confirmation_for(self, order).deliver
     end
-
-
   end
 
   def generate_donations
@@ -138,6 +127,13 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+    def pay_with_authorization(payment, options)
+      options[:settle] = true if options[:settle].nil?
+      payment.authorize! ? approve! : reject!
+      payment.settle! if options[:settle] and approved?
+    end
+
     #TODO: Debt: Move this out of order into PurchasableCollection
     def create_lock(ids)
       begin
