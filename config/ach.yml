@@ -13,8 +13,8 @@ staging:
   transaction_key: d38a1b4afaf5230c
 production:
   base_uri: "https://www.firstach.com/"
-  login_id:rnPG1Ffg0kgZ
-  transaction_key:87e965c4df0578b5
+  login_id: rnPG1Ffg0kgZ
+  transaction_key: 87e965c4df0578b5
 test:
   base_uri: "https://demo.firstach.com/"
   login_id: xPCTyjcQ0KlG
