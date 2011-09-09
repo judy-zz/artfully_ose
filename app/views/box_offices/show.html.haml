@@ -1,0 +1,33 @@
+- in_section :events
+- content_for :header do
+  %h1 Box Office
+  %h2="#{@event.name}, #{l(@show.datetime, :format => :long_with_day)}"
+
+.context
+  = form_tag do
+    %h3 New Sale
+    %ul
+      - @show.chart.sections.each do |section|
+        %li
+          .label= label_tag :quantity, section.name
+          .quantity.element= select_tag :quantity, options_for_select(1..20)
+    = submit_tag "Next"
+.document
+  %h3 Door List
+  - unless @door_list.items.empty?
+    %table#door-list.standalone
+      %thead
+        %tr
+          %th
+          %th Buyer
+          %th Email
+          %th Section
+          %th Price
+      %tbody
+        - @door_list.items.each do |item|
+          %tr
+            %td= "☐"
+            %td= "#{item.buyer.last_name}, #{item.buyer.first_name}"
+            %td= item.buyer.email
+            %td= item.ticket.section
+            %td= number_as_cents(item.ticket.price)

@@ -793,7 +793,7 @@ ul.prices li div {
     padding: 1px; }
 
 .hidden {
-  display: none; }
+  display: none !important; }
 
 .label.hidden {
   display: none; }
@@ -988,6 +988,11 @@ form ul li {
     width: 98%; }
   form ul li .element input[type="checkbox"] {
     width: auto; }
+  form ul li .quantity.element {
+    text-align: right; }
+    form ul li .quantity.element select {
+      display: inline-block;
+      width: 4em; }
   form ul li .date_field {
     text-align: left; }
     form ul li .date_field input {
