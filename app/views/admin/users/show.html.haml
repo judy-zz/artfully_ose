@@ -39,7 +39,7 @@
         %tbody
           - @user.organizations.each do |organization|
             %tr
-              %td= link_to organization.name, organization
+              %td= link_to organization.name, admin_organization_path(organization)
               %td= l organization.created_at, :format => :short
     - else
       %p User is not part of any organizations.
