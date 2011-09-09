@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     if current_user.is_in_organization?
       flash[:alert] = "Sorry, we couldn't find that page!"
-      redirect_to dashboard_path
+      redirect_to root_path
     else
       flash[:notice] = "Wait, we need some more information from you first!"
       redirect_to new_organization_path
@@ -30,9 +30,9 @@ class ApplicationController < ActionController::Base
 
   private
     # Overwriting the sign_out redirect path method
-    def after_sign_out_path_for(resource_or_scope)
-      new_user_session_path
-    end
+    # def after_sign_out_path_for(resource_or_scope)
+    #   new_user_session_path
+    # end
 
     def public_controller?
       %w( devise/sessions devise/registrations devise/passwords ).include?(params[:controller])

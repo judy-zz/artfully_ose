@@ -377,7 +377,7 @@ input.mini
   padding: .5em
   background: #eee
 
-#user_new, #user_edit
+#user_new, #user_edit, #admin_new, #admin_edit
   width: 480px
   margin: 0 auto
 
@@ -527,7 +527,9 @@ ul.prices li div
 .hidden
   display: none
 
-
+.label.hidden  	
+  display: none
+  
 .context-buttons
   @include rounded-corners(4px, 4px, 4px, 4px)
   @include stack-layout
@@ -548,6 +550,7 @@ ul.prices li div
       @include rounded-corners(2px,2px,2px,2px)
 
 @import "main-menu"
+@import "admin-menu"
 @import "forms"
 @import "tables"
 @import "flash"

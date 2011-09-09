@@ -2,10 +2,6 @@
   %h1 Administration
 
 .context
-  %ul
-    %li= link_to "Users", admin_users_path
-    %li= link_to "Organizations", admin_organizations_path
-    %li= link_to "Kits", admin_kits_path
-    %li= link_to "Settlements", admin_settlements_path
 
 .document
+  %p= "You are signed in as #{current_admin.email}"

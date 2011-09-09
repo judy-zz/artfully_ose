@@ -1,25 +1,23 @@
-class MembershipsController < ActionController::Base
+class Admin::MembershipsController < Admin::AdminController
   def new
     @organization = Organization.find(params[:organization_id])
   end
 
   def create
     @organization = Organization.find(params[:organization_id])
-    authorize! :manage, @organization
 
     with_user do |user|
       build_membership(user, @organization) or build_errors(user, @organization)
     end
 
-    redirect_to organization_url(@organization) and return
+    redirect_to admin_organization_url(@organization) and return
   end
 
   def destroy
     @organization = Organization.find(params[:organization_id])
     @mship = Membership.find(params[:id])
-    authorize! :manage, @organization
     @mship.destroy
-    redirect_to organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
+    redirect_to admin_organization_url(@organization), :notice => "User has been removed from #{@organization.name}" and return
   end
 
   private

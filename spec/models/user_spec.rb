@@ -87,18 +87,6 @@ describe User do
     end
   end
 
-  describe "roles" do
-    it { should respond_to(:roles) }
-    it { should respond_to(:has_role?) }
-
-    describe "#has_role?" do
-      it "admin should return true when the user is a admin" do
-        subject = Factory(:admin)
-        subject.should have_role :admin
-      end
-    end
-  end
-
   describe "organizations" do
     let(:organization) { Factory(:organization) }
 

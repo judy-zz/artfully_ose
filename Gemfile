@@ -22,7 +22,6 @@ gem 'jammit-s3', :git => "git://github.com/railsjedi/jammit-s3.git"
 gem 'devise'
 gem 'devise_invitable'
 gem 'cancan'
-gem 'role_model'
 
 # Validations
 gem 'validates_timeliness'
@@ -59,5 +58,4 @@ group :test, :development do
   gem 'awesome_print', :require => 'ap'
   gem 'uuid'
   gem 'faker'
-  gem 'jasmine'
 end

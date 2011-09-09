@@ -1,8 +1,22 @@
 class Admin::UsersController < Admin::AdminController
+  def new
+    @user = User.new(params[:user])
+  end
+
+  def create
+    @user = User.invite!(params[:user])
+    if @user.persisted?
+      redirect_to admin_user_path(@user)
+    else
+      flash[:error] = "There was a problem inviting this user. Please check the supplied email address."
+      render :new
+    end
+  end
+
   def index
     unless params[:email].blank?
       @user = User.find_by_email(params[:email])
-      redirect_to edit_admin_user_path(@user) unless @user.nil?
+      redirect_to admin_user_path(@user) unless @user.nil?
     end
   end
 
@@ -32,6 +46,10 @@ class Admin::UsersController < Admin::AdminController
         render :edit and return
       end
     end
+  end
 
+  def sessions
+    sign_in(:user, User.find(params[:id]))
+    redirect_to root_path
   end
 end

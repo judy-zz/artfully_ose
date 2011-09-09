@@ -1,7 +1,7 @@
 class KitsController < ApplicationController
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
-    redirect_to dashboard_path, :alert => exception.message
+    redirect_to root_path, :alert => exception.message
   end
 
   def new
