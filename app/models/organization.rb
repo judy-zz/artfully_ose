@@ -48,8 +48,12 @@ class Organization < ActiveRecord::Base
   #and have fa_member_id set
   def refresh_active_fs_project
     unless fa_member_id.nil?
-      @fs_project = FA::Project.find_by_member_id(fa_member_id)
-      update_attribute(:fa_project_id, @fs_project.id)
+      begin
+        @fs_project = FA::Project.find_by_member_id(fa_member_id)
+        update_attribute(:fa_project_id, @fs_project.id)
+      rescue ActiveResource::ResourceNotFound
+        logger.debug "No FAFS project found for member id #{fa_member_id}"
+      end
     end
     self
   end
