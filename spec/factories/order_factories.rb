@@ -1,5 +1,4 @@
 Factory.define :order do |o|
-  o.person { Factory(:athena_person_with_id) }
 end
 
 Factory.define :order_with_items, :parent => :order do |o|

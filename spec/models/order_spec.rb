@@ -146,30 +146,9 @@ describe Order do
   end
 
   describe "#finish" do
-    before :each do
-      FakeWeb.register_uri(:post, "http://localhost/athena/orders.json", :body => Factory(:athena_order_with_id).encode)
-      FakeWeb.register_uri(:post, "http://localhost/athena/items.json", :body => Factory(:athena_item).encode)
-      FakeWeb.register_uri(:post, "http://localhost/athena/actions.json", :body => Factory(:athena_purchase_action).encode)
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
-      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      subject.add_tickets tickets
-      subject.items.each { |item| item.stub!(:sell_to) }
-      subject.items.each { |item| item.stub!(:sold?).and_return(true) }
-      subject.instance_variable_set(:@payment, Factory(:payment))
-    end
-
-    it "should be called when the order is approved" do
-      subject.stub!(:finish)
-      subject.should_receive(:finish)
-      subject.approve!
-    end
-
     it "should mark each item as sold" do
-      item = Factory(:athena_item)
-      FakeWeb.register_uri(:get, %r|http://localhost/athena/items.json\?orderId=eq|, :status => 200, :body => "[#{item.encode}]")
       subject.items.each { |item| item.should_receive(:sell_to) }
-      subject.finish
+      subject.finish(Factory(:athena_person), Time.now)
     end
   end
 

@@ -3,9 +3,9 @@ class OrderMailer < ActionMailer::Base
   layout "mail"
 
   # TODO: Send using only information from AthenaOrder
-  def confirmation_for(order, athena_order)
+  def confirmation_for(order, athena_order, person)
     @order = order
-    @person = order.person
+    @person = person
     @athena_order = athena_order
 
     mail :to => @person.email, :subject => "Your Order"
