@@ -80,12 +80,24 @@ class AthenaOrder < AthenaResource::Base
     @customer, self.customer_id = customer, customer.id
   end
 
+  def total
+    all_items.inject(0) {|sum, item| sum + item.price.to_i }
+  end
+
   def items
     @items ||= find_items
   end
 
   def items=(items)
     @items = items
+  end
+
+  def tickets
+    items.select(&:ticket?)
+  end
+
+  def donations
+    items.select(&:donation?)
   end
 
   def for_organization(org)
@@ -277,7 +289,7 @@ class AthenaOrder < AthenaResource::Base
 
     def find_items
       return [] if new_record?
-      items ||= AthenaItem.find_by_order(self)
+      AthenaItem.find_by_order(self)
     end
 
     def set_timestamp

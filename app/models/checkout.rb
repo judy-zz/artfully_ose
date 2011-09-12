@@ -51,7 +51,7 @@ class Checkout
       @order.organizations.each do |organization|
         athena_order = new_order(organization, order_timestamp, @person)
         athena_order.save!
-        OrderMailer.confirmation_for(@order, athena_order, @person).deliver
+        OrderMailer.confirmation_for(athena_order).deliver
       end
     end
 

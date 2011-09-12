@@ -13,8 +13,7 @@ class OrdersController < ApplicationController
     @order = AthenaOrder.find(params[:id])
     authorize! :view, @order
     @person = AthenaPerson.find(@order.person_id)
-    @total = 0
-    @order.items.each{ |item| @total += item.price.to_i }
+    @total = @order.total
   end
 
   def sales
