@@ -78,25 +78,25 @@ class OrganizationsController < ApplicationController
     @fa_user = FA::User.new(params[:fa_user])
     @kits = @organization.available_kits
 
-    if @fa_user.authenticate
-      @integration = FA::Integration.new(@fa_user, @organization)
-      @integration.save
-      @organization.update_attribute(:fa_member_id, @fa_user.member_id)
-      @organization.refresh_active_fs_project
-      flash[:notice] = "Successfully connected to Fractured Atlas!"
-      if params[:back]
-        redirect_to :back
+    begin
+      if @fa_user.authenticate
+        @integration = FA::Integration.new(@fa_user, @organization)
+        @integration.save
+        @organization.update_attribute(:fa_member_id, @fa_user.member_id)
+        @organization.refresh_active_fs_project
+        flash[:notice] = "Successfully connected to Fractured Atlas!"
       else
-        redirect_to @organization
-      end
+        flash[:error]= "Unable to connect to your Fractured Atlas account.  Please check your username and password."
+      end      
+    rescue ActiveResource::BadRequest
+      #If FA already has an integration for this member_id, FA will return 400 
+      flash[:error]= "Unable to connect to your Fractured Atlas account.  Please contact support."
+    end
+    
+    if params[:back]
+      redirect_to :back
     else
-      flash[:error]= "Unable to connect to your Fractured Atlas account."
-      if params[:back]
-        redirect_to :back
-      else
-        render :show
-      end
+      redirect_to @organization
     end
   end
-
 end
