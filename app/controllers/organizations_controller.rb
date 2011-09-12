@@ -82,6 +82,7 @@ class OrganizationsController < ApplicationController
       @integration = FA::Integration.new(@fa_user, @organization)
       @integration.save
       @organization.update_attribute(:fa_member_id, @fa_user.member_id)
+      @organization.refresh_active_fs_project
       flash[:notice] = "Successfully connected to Fractured Atlas!"
       if params[:back]
         redirect_to :back

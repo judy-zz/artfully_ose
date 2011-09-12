@@ -44,14 +44,24 @@ class Organization < ActiveRecord::Base
       :type       => donation_type }
   end
 
+  #Before calling this method, organization must have already been conected to an FA membership
+  #and have fa_member_id set
+  def refresh_active_fs_project
+    unless fa_member_id.nil?
+      @fs_project = FA::Project.find_by_member_id(fa_member_id)
+      update_attribute(:fa_project_id, @fs_project.id)
+    end
+    self
+  end
+
   private
 
-  def check_for_duplicates(kit)
-    raise Kit::DuplicateError if kits.where(:type => kit.type).any?
-  end
+    def check_for_duplicates(kit)
+      raise Kit::DuplicateError if kits.where(:type => kit.type).any?
+    end
 
-  def donation_type
-    return :regular if kits.where(:type => "RegularDonationKit").any?
-    return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
-  end
+    def donation_type
+      return :regular if kits.where(:type => "RegularDonationKit").any?
+      return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
+    end
 end
