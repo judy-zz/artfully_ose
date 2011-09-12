@@ -1,0 +1,8 @@
+= form_for(resource, :as => resource_name, :url => unlock_path(resource_name), :html => { :method => :post }) do |f|
+  %h3 Unlock Instructions
+  = devise_error_messages!
+  %ul
+    %li
+      .label= f.label :email
+      .element= f.text_field :email
+  = f.submit "Send Instructions"
