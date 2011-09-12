@@ -6,14 +6,6 @@ describe Checkout do
 
   subject { Checkout.new(order, payment) }
 
-  it "should store the payment" do
-    subject.payment.should be payment
-  end
-
-  it "should store the order" do
-    subject.order.should be order
-  end
-
   it "should set the amount for the payment from the order" do
     subject.payment.amount.should eq order.total
   end
@@ -45,62 +37,61 @@ describe Checkout do
     subject.should_not be_valid
   end
 
-  describe "finish" do
+  describe "cash payments" do
+    let(:payment) { CashPayment.new }
+    subject { Checkout.new(order, payment) }
+
+    it "should always approve orders with cash payments" do
+      subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
+      subject.finish.should be_true
+    end
+  end
+
+  describe "#finish" do
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => '{ "success":true }')
-      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => '{ "success":true }')
       subject.order.stub(:pay_with)
     end
 
-    it "should return true if the order was approved" do
-      subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
-      subject.order.stub(:approved?).and_return(true)
-      subject.finish.should be_true
+    describe "return value" do
+      before(:each) do
+        subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
+      end
+
+      it "returns true if the order was approved" do
+        subject.order.stub(:approved?).and_return(true)
+        subject.finish.should be_true
+      end
+
+      it "returns false if the order is not approved" do
+        subject.order.stub(:approved?).and_return(false)
+        subject.finish.should be_false
+      end
     end
 
-    it "returns false if the order is not approved" do
-      subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
-      subject.order.stub(:approved?).and_return(false)
-      subject.finish.should be_false
-    end
-
-    it "should create a person record when finishing with a new customer" do
-      subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
-
-      email = payment.customer.email
-      organization = subject.order.organizations_from_tickets.first
-
-      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
-
-      attributes = {
-        :email => email,
-        :organization_id => organization.id,
-        :first_name => payment.customer.first_name,
-        :last_name  => payment.customer.last_name
+    describe "people creation" do
+      let(:email){ payment.customer.email }
+      let(:organization){ Factory(:organization) }
+      let(:attributes){
+        { :email           => email,
+          :organization_id => organization.id,
+          :first_name      => payment.customer.first_name,
+          :last_name       => payment.customer.last_name
+        }
       }
 
-      AthenaPerson.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))
+      it "should create a person record when finishing with a new customer" do
+        subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+        AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
+        AthenaPerson.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))
+        subject.finish
+      end
 
-      subject.finish
-    end
-
-    it "should not create a person record when the person already exists" do
-      subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(Factory(:organization)))
-
-      email = payment.customer.email
-      organization = subject.order.organizations_from_tickets.first
-
-      attributes = {
-        :email => email,
-        :organization_id => organization.id,
-        :first_name => payment.customer.first_name,
-        :last_name  => payment.customer.last_name
-      }
-
-      AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:athena_person,attributes))
-      AthenaPerson.should_not_receive(:create)
-
-      subject.finish
+      it "should not create a person record when the person already exists" do
+        subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+        AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:athena_person,attributes))
+        AthenaPerson.should_not_receive(:create)
+        subject.finish
+      end
     end
   end
 end

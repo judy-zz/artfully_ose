@@ -91,12 +91,12 @@ describe AthenaPayment do
   describe "#requires_authorization?" do
     it "requires authorization for amounts greater than 0" do
       subject.stub(:amount).and_return(1)
-      subject.require_authorization?.should be_true
+      subject.requires_authorization?.should be_true
     end
 
     it "does not requires authorization for amounts less than or equal to 0" do
       subject.stub(:amount).and_return(0)
-      subject.require_authorization?.should be_false
+      subject.requires_authorization?.should be_false
     end
   end
 

@@ -93,9 +93,13 @@ describe Order do
   describe "#pay_with" do
     let(:payment) { mock(:payment, :amount => 100) }
 
-    describe "authorization" do
-      let(:payment) { mock(:payment, :amount => 100) }
+    it "saves the order after payment" do
+      payment.stub(:requires_authorization?) { false }
+      subject.should_receive(:save!)
+      subject.pay_with(payment, :settle => false)
+    end
 
+    describe "authorization" do
       it "attempt to authorize the payment if required" do
         payment.stub(:requires_authorization?) { true }
         payment.should_receive(:authorize!).and_return(true)
@@ -110,8 +114,6 @@ describe Order do
     end
 
     describe "state transitions" do
-      let(:payment) { mock(:payment, :amount => 100) }
-
       it "should transition to approved when the payment is approved" do
         payment.stub(:requires_authorization?).and_return(true)
         payment.stub(:authorize!).and_return(true)

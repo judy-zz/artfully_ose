@@ -2,9 +2,9 @@ class Checkout
   attr_accessor :order, :payment
 
   def initialize(order, payment)
-    self.order = order
-    self.payment = payment
-    self.payment.amount = self.order.total
+    @order = order
+    @payment = payment
+    @payment.amount = @order.total
   end
 
   def valid?
@@ -18,7 +18,6 @@ class Checkout
   def finish
     order.person = find_or_create_people_record
     order.pay_with(@payment)
-    order.save!
     order.approved?
   end
 

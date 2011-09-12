@@ -73,6 +73,7 @@ class Order < ActiveRecord::Base
 
   def pay_with(payment, options = {})
     @payment = payment
+
     if payment.requires_authorization?
       pay_with_authorization(payment, options)
     else

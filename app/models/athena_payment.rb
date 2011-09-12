@@ -72,7 +72,7 @@ class AthenaPayment < AthenaResource::Base
     super(amount)
   end
 
-  def require_authorization?
+  def requires_authorization?
     amount > 0
   end
 
