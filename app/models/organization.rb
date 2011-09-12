@@ -1,6 +1,7 @@
 class Organization < ActiveRecord::Base
   has_many :memberships
   has_one  :bank_account
+  has_one  :fiscally_sponsored_project
   has_many :users, :through => :memberships
   has_many :kits, :before_add => :check_for_duplicates,
                   :after_add => lambda { |u,k| k.activate! unless k.activated? }
@@ -49,8 +50,10 @@ class Organization < ActiveRecord::Base
   def refresh_active_fs_project
     unless fa_member_id.nil?
       begin
-        @fs_project = FA::Project.find_by_member_id(fa_member_id)
-        update_attribute(:fa_project_id, @fs_project.id)
+        fafs_project = FA::Project.find_by_member_id(fa_member_id)
+        fiscally_sponsored_project = FiscallySponsoredProject.from_fractured_atlas(fafs_project, self, fiscally_sponsored_project)
+        fiscally_sponsored_project.save
+        save
       rescue ActiveResource::ResourceNotFound
         logger.debug "No FAFS project found for member id #{fa_member_id}"
       end

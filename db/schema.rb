@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110909211149) do
+ActiveRecord::Schema.define(:version => 20110912200828) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
@@ -69,6 +69,20 @@ ActiveRecord::Schema.define(:version => 20110909211149) do
     t.integer  "organization_id"
   end
 
+  create_table "fiscally_sponsored_projects", :force => true do |t|
+    t.string   "fs_project_id"
+    t.string   "fa_member_id"
+    t.string   "name"
+    t.string   "category"
+    t.text     "profile"
+    t.string   "website"
+    t.datetime "applied_on"
+    t.string   "status"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "kits", :force => true do |t|
     t.string   "state"
     t.string   "type"
@@ -101,7 +115,6 @@ ActiveRecord::Schema.define(:version => 20110909211149) do
     t.integer  "account_balance",         :default => 0
     t.string   "website"
     t.boolean  "ach_on_file",             :default => false
-    t.string   "fa_project_id"
   end
 
   create_table "performances", :force => true do |t|
