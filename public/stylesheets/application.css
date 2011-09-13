@@ -263,7 +263,10 @@ strong {
 
 .of2 {
   position: relative;
-  padding-bottom: 12px; }
+  padding-bottom: 12px;
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 0; }
   .of2 > * {
     margin: 0 12px 12px;
     display: block;

@@ -1,0 +1,22 @@
+- in_section :events
+- content_for :header do
+  %h1 Checkout Confirmation
+
+.context
+  %h3= "Tickets (#{@cart.tickets.size})"
+  %ul.detailed-list
+    - @cart.tickets.each do |ticket|
+      %li
+        %h4= ticket.section
+        %ul.details-long
+          %li
+            .key Price
+            .value= number_as_cents(ticket.price)
+
+.document
+  %h3 Checkout
+  %h4= link_to "#{@person.first_name} #{@person.last_name}", person_path(@person)
+  = form_tag box_office_checkout_path do
+    = hidden_field_tag :person_id, @person.id
+    = hidden_field_tag :cart_id, @cart.id
+    = submit_tag "Checkout"

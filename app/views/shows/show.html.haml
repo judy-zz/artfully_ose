@@ -6,7 +6,7 @@
 .context
   %ul.context-buttons
     %li= button_to "Add Tickets", new_show_ticket_path(@performance), :method => :get
-    %li= button_to "Box Office", event_show_box_office_path(@event,@performance), :method => :get
+    %li= button_to "Box Office", box_office_event_show_path(@event,@performance), :method => :get
     - if not @performance.played?
       - if not @performance.published?
         %li

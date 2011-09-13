@@ -13,6 +13,11 @@ Artfully::Application.routes.draw do
     resource :checkout
   end
 
+  namespace :box_office do
+    resources :carts, :only => [ :show, :create, :update, :destroy ]
+    resource :checkout, :only => [ :new, :create ]
+  end
+
   namespace :admin do
     root :to => "index#index"
     resources :users do
@@ -67,10 +72,10 @@ Artfully::Application.routes.draw do
   resources :events do
     get :widget, :on => :member
     resources :shows, :except => :index do
-      resource :box_office, :only => :show
       member do
         get :door_list
         post :duplicate
+        get :box_office
       end
       collection do
         post :built

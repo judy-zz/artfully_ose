@@ -4,13 +4,14 @@
   %h2="#{@event.name}, #{l(@show.datetime, :format => :long_with_day)}"
 
 .context
-  = form_tag do
+  = form_tag box_office_carts_path do
+    = hidden_field_tag :show_id, @show.id
     %h3 New Sale
     %ul
       - @show.chart.sections.each do |section|
         %li
           .label= label_tag :quantity, section.name
-          .quantity.element= select_tag :quantity, options_for_select(1..20)
+          .quantity.element= select_tag "quantity[#{section.name}]", options_for_select(1..20)
     = submit_tag "Next"
 .document
   %h3 Door List
