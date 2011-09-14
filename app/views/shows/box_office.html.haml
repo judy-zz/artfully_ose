@@ -10,7 +10,7 @@
     %ul
       - @show.chart.sections.each do |section|
         %li
-          .label= label_tag :quantity, section.name
+          .label= label_tag "quantity[#{section.name}]", section.name
           .quantity.element= select_tag "quantity[#{section.name}]", options_for_select(1..20)
     = submit_tag "Next"
 .document

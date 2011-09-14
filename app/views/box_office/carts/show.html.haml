@@ -6,7 +6,7 @@
   %h3= "Tickets (#{@cart.tickets.size})"
   %ul.detailed-list
     - @cart.tickets.each do |ticket|
-      %li
+      %li.ticket
         %h4= ticket.section
         %ul.details-long
           %li

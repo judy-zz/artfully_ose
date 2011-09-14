@@ -13,7 +13,7 @@ Factory.define :athena_person_with_id, :parent => :athena_person do |p|
   p.id { Factory.next :person_id }
   p.after_build do |person|
     FakeWeb.register_uri(:any, "http://localhost/athena/people/#{person.id}.json", :body => person.encode)
-    FakeWeb.register_uri(:get, "http://localhost/athena/people.json?email=eq#{CGI::escape(person.email)}&organizationId=eq#{person.organization_id}", :body => "[#{person.encode}]")
+    FakeWeb.register_uri(:get, %r|http://localhost/athena/people\.json\?email=eq#{CGI::escape(person.email)}.*|, :body => "[#{person.encode}]")
   end
 end
 

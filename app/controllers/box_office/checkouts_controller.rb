@@ -14,7 +14,7 @@ class BoxOffice::CheckoutsController < ApplicationController
     @checkout = Checkout.new(@cart, @payment)
 
     if @checkout.finish
-      redirect_to events_path, :notice => 'Items purchased.'
+      redirect_to events_path, :notice => 'Items succesfully purchased.'
     else
       flash[:error] = "An error occured while trying to finish the order."
       render :new
