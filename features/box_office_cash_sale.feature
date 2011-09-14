@@ -5,6 +5,7 @@ Feature: Cash Sales
   Background:
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
+    And my organization has a dummy person record
     And there is an Event with 3 Performances
     And the 1st performance has had tickets created
     And the 1st performance is on sale
@@ -37,3 +38,12 @@ Feature: Cash Sales
     And I find a customer record for the order
     When I press "Checkout"
     Then I should see "Items succesfully purchased."
+
+  Scenario: A producer creates an anonymous order in the box office
+    Given there are 2 tickets available
+    And I select "2" from "Balcony"
+    And I press "Next"
+    When I find a use an anonymous customer for the order
+    Then I should see "Checkout Confirmation"
+    And I should see "Anonymous Purchase"
+    And I should see 2 tickets

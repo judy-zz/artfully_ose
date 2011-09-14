@@ -2,6 +2,7 @@ class BoxOffice::CartsController < ApplicationController
   def show
     @cart = Order.find(params[:id])
     @buyers = find_buyers
+    @dummy = AthenaPerson.dummy_for(current_user.current_organization)
   end
 
   def create

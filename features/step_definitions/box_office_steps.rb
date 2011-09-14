@@ -5,3 +5,7 @@ When /^I find a customer record for the order$/ do
   click_button("Search")
   click_button("Select")
 end
+
+When /^I find a use an anonymous customer for the order$/ do
+  click_button("Anonymous Checkout")
+end

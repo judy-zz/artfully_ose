@@ -19,6 +19,7 @@ class AthenaPerson < AthenaResource::Base
     attribute 'organization_id',:integer
     attribute 'tags',           :string
     attribute 'phones',         :string
+    attribute 'dummy',          :string
   end
 
   comma do
@@ -67,6 +68,28 @@ class AthenaPerson < AthenaResource::Base
     raise TypeError, "Expecting an Organization" unless org.kind_of? Organization
     org.save unless org.persisted?
     @organization, self.organization_id = org, org.id
+  end
+
+  def dummy?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include?(dummy)
+  end
+
+  def self.dummy_for(organization)
+    dummy = find(:first, :params => { :organizationId => "eq#{organization.id}", :dummy => true })
+    if dummy.nil?
+      create_dummy_for(organization)
+    else
+      dummy
+    end
+  end
+
+  def self.create_dummy_for(organization)
+    create({
+      :first_name      => "Anonymous",
+      :email           => "anonymous@artfullyhq.com",
+      :dummy           => true,
+      :organization_id => organization.id
+    })
   end
 
   #Sort of a verbose Java-like pattern, but it makes the views very readable

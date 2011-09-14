@@ -27,6 +27,11 @@
   .option1.of2
     %h4 Anonymous Purchase
     %p Checkout using an anonymous person record.
+    = form_tag(new_box_office_checkout_path, :method => :get) do
+      = hidden_field_tag :person_id, @dummy.id
+      = hidden_field_tag :cart_id, @cart.id
+      %ul
+        %li= submit_tag "Anonymous Checkout"
 
   - unless @buyers.blank?
     %h3 Results

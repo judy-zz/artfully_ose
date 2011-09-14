@@ -40,3 +40,11 @@ Factory.define(:segment, :default_strategy => :build) do |ls|
   ls.name "Some List Segment"
   ls.organization { Factory(:organization) }
 end
+
+Factory.define(:dummy, :parent => :athena_person_with_id) do |p|
+  p.dummy true
+  p.after_build do |person|
+    body = "[#{person.encode}]"
+    FakeWeb.register_uri(:get, "http://localhost/athena/people.json?dummy=true&organizationId=eq#{person.organization_id}", :body => body)
+  end
+end

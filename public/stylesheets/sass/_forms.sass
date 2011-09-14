@@ -12,6 +12,7 @@ form
 
 form ul li
   @include stack-list
+  text-align: left
   line-height: 3 * $line_height
   min-height: 3 * $line_height
   position: relative
@@ -111,6 +112,8 @@ form
 
 .full.element
   @extend .stack
+.quarter.element
+  @extend .stack1of4
 
 .single_field
   margin-top: 10px
