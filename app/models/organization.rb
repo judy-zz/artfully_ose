@@ -60,6 +60,17 @@ class Organization < ActiveRecord::Base
     end
     self
   end
+  
+  def import_fa_donations
+    fa_donations = FA::Donation.find_by_member_id(fa_member_id)
+
+    fa_donations.each do |fa_donation|
+      @order, @item = AthenaOrder.from_fa_donation(fa_donations, self)
+      @order.save
+      @item.order = @order
+      @item.save
+    end
+  end
 
   private
 

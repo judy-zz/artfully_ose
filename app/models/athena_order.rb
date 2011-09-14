@@ -196,6 +196,18 @@ class AthenaOrder < AthenaResource::Base
     attributes['timestamp'] = attributes['timestamp'].in_time_zone(Organization.find(organization_id).time_zone)
     return attributes['timestamp']
   end
+  
+  def self.from_fa_donation(fa_donation, organization)
+    @order = AthenaOrder.new
+    @order.organization_id = organization.id
+    @order.timestamp = fa_donation.created_at
+    
+    @item = AthenaItem.new
+    @item.organization_id = organization.id
+    @item.price = fa_donation.amount * 100
+    
+    return @order, @item
+  end  
 
   private
     def merge_and_sort_items

@@ -1,4 +1,6 @@
 class FA::Donation < FA::Base
+  self.element_name = "donation"
+  
   schema do
     attribute 'amount',         :string
     attribute 'nongift',        :string
@@ -18,6 +20,12 @@ class FA::Donation < FA::Base
 
   def to_xml(options = {})
     super({ :dasherize => false, :skip_types => true, :methods => [ 'donor', 'credit_card' ]}.merge(options))
+  end
+  
+  def self.find_by_member_id(fa_member_id)
+    response = self.connection.get("/donations.xml?FsProject.member_id=#{fa_member_id}")
+    collection = response[self.element_name]      
+    collection.collect! { |record| instantiate_record(record, {}) }
   end
 
   private
@@ -40,38 +48,6 @@ class FA::Donation < FA::Base
           'expiration' => expiration,
           'zip'        => zip,
           'code'       => code
-        }
-      end
-    end
-
-    class Donor
-      include ActiveModel::Serializers::Xml
-
-      attr_accessor :email, :first_name, :last_name, :address1, :city, :state, :zip
-      attr_accessor :anonymous
-
-      def self.extract_from(payment)
-        new.tap do |this|
-          this.email      = payment.customer.email
-          this.first_name = payment.customer.first_name
-          this.last_name  = payment.customer.last_name
-          this.address1   = payment.billing_address.street_address1
-          this.city       = payment.billing_address.city
-          this.state      = payment.billing_address.state
-          this.zip        = payment.billing_address.postal_code
-        end
-      end
-
-      def attributes
-        {
-          'email'        => email,
-          'first_name'   => first_name,
-          'last_name'    => last_name,
-          'address1'     => address1,
-          'city'         => city,
-          'state'        => state,
-          'zip'          => zip,
-          'country'      => "US"
         }
       end
     end
