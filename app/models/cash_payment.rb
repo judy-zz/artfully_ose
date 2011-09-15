@@ -1,6 +1,10 @@
 class CashPayment
   attr_accessor :amount, :customer
 
+  def initialize(customer)
+    @customer = customer
+  end
+
   def requires_authorization?
     false
   end

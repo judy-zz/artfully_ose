@@ -92,6 +92,10 @@ class AthenaPerson < AthenaResource::Base
     })
   end
 
+  def to_customer
+    AthenaCustomer.new(:email => email, :first_name => first_name, :last_name => last_name)
+  end
+
   #Sort of a verbose Java-like pattern, but it makes the views very readable
   def actions
     @actions ||= AthenaAction.find_by_person_and_organization(self, organization)
