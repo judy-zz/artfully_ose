@@ -35,7 +35,7 @@ Artfully::Application.configure do
   config.active_support.deprecation = :stderr
   
   #Fractured Atlas
-  config.fractured_atlas = 'http://localhost/'
+  config.fractured_atlas = 'http://staging.api.fracturedatlas.org/'
 
   config.tickets_site = 'http://localhost/athena/'
   config.payments_component = 'http://localhost/payments/'

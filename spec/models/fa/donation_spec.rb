@@ -5,6 +5,22 @@ describe FA::Donation do
   let(:payment) { Factory(:payment) }
   subject { FA::Donation.from(donation, payment) }
 
+  describe ".find_by_member_id" do
+    it "gets the donations from fa" do
+      FA::Donation.find_by_member_id("100")
+       
+      
+    end
+    
+    it "recovers from a 404 with style and grace" do
+      FakeWeb.register_uri(:get, 
+                           "http://staging.api.fracturedatlas.org/donations.xml?FsProject.member_id=100", 
+                           :body => "Not found",
+                           :status => ["404", "Not Found"])
+      FA::Donation.find_by_member_id("100")
+    end
+  end
+
   describe ".from" do
     it "sets the amount based on the donation" do
       subject.amount.should eq donation.amount / 100.00
@@ -42,23 +58,6 @@ describe FA::Donation do
         subject.expiration.should == payment.credit_card.expiration_date.strftime('%m/%Y')
         subject.zip.should        == payment.billing_address.postal_code
         subject.code.should       == payment.credit_card.cvv
-      end
-    end
-  end
-
-  describe FA::Donation::Donor do
-    let(:payment) { Factory(:payment) }
-    subject { FA::Donation::Donor.extract_from(payment) }
-
-    describe ".extract_from" do
-      it "captures donor information from the payment" do
-        subject.email.should      == payment.customer.email
-        subject.first_name.should == payment.customer.first_name
-        subject.last_name.should  == payment.customer.last_name
-        subject.address1.should   == payment.billing_address.street_address1
-        subject.city.should       == payment.billing_address.city
-        subject.state.should      == payment.billing_address.state
-        subject.zip.should        == payment.billing_address.postal_code
       end
     end
   end

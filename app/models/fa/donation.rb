@@ -14,7 +14,7 @@ class FA::Donation < FA::Base
       this.amount        = donation.amount / 100.00
       this.fs_project_id = donation.organization.fa_project_id
       this.credit_card   = CreditCard.extract_from(payment)
-      this.donor         = Donor.extract_from(payment)
+      this.donor         = FA::Donor.extract_from(payment)
     end
   end
 
@@ -23,9 +23,13 @@ class FA::Donation < FA::Base
   end
   
   def self.find_by_member_id(fa_member_id)
-    response = self.connection.get("/donations.xml?FsProject.member_id=#{fa_member_id}")
-    collection = response[self.element_name]      
-    collection.collect! { |record| instantiate_record(record, {}) }
+    begin
+      response = self.connection.get("/donations.xml?FsProject.member_id=#{fa_member_id}")
+      collection = response[self.element_name]      
+      collection.collect! { |record| instantiate_record(record, {}) }
+    rescue ActiveResource::ResourceNotFound
+      []
+    end
   end
 
   private
