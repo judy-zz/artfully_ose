@@ -14,6 +14,7 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def index
+    @users = User.all
     unless params[:email].blank?
       @user = User.find_by_email(params[:email])
       redirect_to admin_user_path(@user) unless @user.nil?
