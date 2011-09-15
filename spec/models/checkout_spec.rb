@@ -38,7 +38,7 @@ describe Checkout do
   end
 
   describe "cash payments" do
-    let(:payment) { CashPayment.new }
+    let(:payment) { CashPayment.new(Factory(:athena_person)) }
     subject { Checkout.new(order, payment) }
 
     it "should always approve orders with cash payments" do
