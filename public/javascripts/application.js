@@ -149,6 +149,7 @@ $(document).ready(function() {
       name: "athena_person[athena_person][" + name + "]",
       callback: function(value, settings){
         $(this).html(value[name]);
+        $(this).trigger('done')
       },
       ajaxoptions: {
         dataType: "json"
