@@ -1,5 +1,8 @@
 require 'spec_helper'
 
+sample_donation = "<donations><donation><id>40951</id><date>2010-06-02</date><amount>10.00</amount><nongift>0.00</nongift><check_no/><is_noncash/><is_stock/><fs_project><id>2353</id><member_id>4052</member_id><name>Everything Under the Sun</name></fs_project><fs_available_on>2010-06-09</fs_available_on><donor><email>support-test@indiegogo.com</email><first_name/><last_name/><company_name/><address1/><address2/><city/><state/><zip/><country>United States</country><anonymous>No</anonymous></donor><is_anonymous/><is_name_only/><memo/><reversed_at>1275603003</reversed_at><reversed_note>Credit card transaction refunded (originally $1)</reversed_note><created_at>2010-06-02 00:00:00</created_at><updated_at>2010-06-02 00:00:00</updated_at></donation><donation><id>40952</id><date>2010-06-02</date><amount>0.00</amount><nongift>0.00</nongift><check_no/><is_noncash/><is_stock/><fs_project><id>2353</id><member_id>4052</member_id><name>Everything Under the Sun</name></fs_project><fs_available_on>2010-06-09</fs_available_on><donor><email>support-test@indiegogo.com</email><first_name/><last_name/><company_name/><address1/><address2/><city/><state/><zip/><country>United States</country><anonymous>No</anonymous></donor><is_anonymous/><is_name_only/><memo/><reversed_at>1275602794</reversed_at><reversed_note>Credit card transaction refunded (originally $1)</reversed_note><created_at>2010-06-02 00:00:00</created_at><updated_at>2010-06-02 00:00:00</updated_at></donation></donations>"
+sample_single_donation = "<donations><donation><id>40951</id><date>2010-06-02</date><amount>10.00</amount><nongift>50.00</nongift><check_no/><is_noncash/><is_stock/><fs_project><id>2353</id><member_id>4052</member_id><name>Everything Under the Sun</name></fs_project><fs_available_on>2010-06-09</fs_available_on><donor><email>support-test@indiegogo.com</email><first_name>Indie</first_name><last_name>Gogo</last_name><company_name/><address1/><address2/><city/><state/><zip/><country>United States</country><anonymous>No</anonymous></donor><is_anonymous/><is_name_only/><memo/><reversed_at>1275603003</reversed_at><reversed_note>Credit card transaction refunded (originally $1)</reversed_note><created_at>2010-06-02 00:00:00</created_at><updated_at>2010-06-02 00:00:00</updated_at></donation></donations>"
+
 describe FA::Donation do
   let(:donation) { Factory(:sponsored_donation) }
   let(:payment) { Factory(:payment) }
@@ -7,9 +10,38 @@ describe FA::Donation do
 
   describe ".find_by_member_id" do
     it "gets the donations from fa" do
-      FA::Donation.find_by_member_id("100")
-       
+      FakeWeb.register_uri(:get, 
+                           "http://staging.api.fracturedatlas.org/donations.xml?FsProject.member_id=100",
+                            :body => "#{sample_donation}")
+      donations = FA::Donation.find_by_member_id("100")
+      donations.size.should eq 2
       
+    end
+
+    #ActiveResource handles one donation differently (even though the xml is the same)
+    #the collection comes out as a hash instead of an array
+    it "gets the donations from fa when there is only one" do
+      FakeWeb.register_uri(:get, 
+                           "http://staging.api.fracturedatlas.org/donations.xml?FsProject.member_id=100",
+                            :body => "#{sample_single_donation}")
+      donations = FA::Donation.find_by_member_id("100")
+      donations.size.should eq 1
+      donation = donations.first
+      donation.amount.should eq "10.00"
+      donation.date.should eq "2010-06-02"
+      donation.nongift.should eq "50.00"
+      donation.check_no.should eq nil
+      donation.is_stock.should eq nil
+      donation.fs_available_on.should eq "2010-06-09"
+      donation.reversed_at.should eq "1275603003"
+      donation.reversed_note.should eq "Credit card transaction refunded (originally $1)"
+      donation.created_at.should eq "2010-06-02 00:00:00"
+      donation.updated_at.should eq "2010-06-02 00:00:00"
+      
+      donation.donor.email.should eq "support-test@indiegogo.com"
+      donation.donor.first_name.should eq "Indie"
+      donation.donor.last_name.should eq "Gogo"
+      donation.donor.anonymous.should eq "No"
     end
     
     it "recovers from a 404 with style and grace" do
@@ -17,7 +49,8 @@ describe FA::Donation do
                            "http://staging.api.fracturedatlas.org/donations.xml?FsProject.member_id=100", 
                            :body => "Not found",
                            :status => ["404", "Not Found"])
-      FA::Donation.find_by_member_id("100")
+      donations = FA::Donation.find_by_member_id("100")
+      donations.size.should eq 0
     end
   end
 

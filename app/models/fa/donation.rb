@@ -5,6 +5,10 @@ class FA::Donation < FA::Base
     attribute 'amount',         :string
     attribute 'nongift',        :string
     attribute 'fs_project_id',  :string
+    attribute 'date',           :string
+    attribute 'check_no',       :string
+    attribute 'is_noncash',     :string
+    attribute 'is_stock',       :string
   end
 
   attr_accessor :credit_card, :donor
@@ -17,21 +21,40 @@ class FA::Donation < FA::Base
       this.donor         = FA::Donor.extract_from(payment)
     end
   end
-
+  
   def to_xml(options = {})
     super({ :dasherize => false, :skip_types => true, :methods => [ 'donor', 'credit_card' ]}.merge(options))
+  end
+  
+  def self.instantiate_record(record, options = {})
+    donation = super(record, options)
+    donation.donor = FA::Donor.new
+    donation.donor.email = record['donor']['email']
+    donation.donor.first_name = record['donor']['first_name']
+    donation.donor.last_name = record['donor']['last_name']
+    donation.donor.anonymous = record['donor']['anonymous']
+    donation
   end
   
   def self.find_by_member_id(fa_member_id)
     begin
       response = self.connection.get("/donations.xml?FsProject.member_id=#{fa_member_id}")
-      collection = response[self.element_name]      
-      collection.collect! { |record| instantiate_record(record, {}) }
+      collection = response[self.element_name]  
+      collection = Array.wrap(collection) unless collection.kind_of? Array    
+      collection.collect! { |record| instantiate_record(record, {}) }    
     rescue ActiveResource::ResourceNotFound
       []
     end
   end
 
+  def donor=(d)
+    @donor=d
+  end
+  
+  def donor
+    @donor
+  end
+  
   private
     class CreditCard
       include ActiveModel::Serializers::Xml
@@ -55,4 +78,6 @@ class FA::Donation < FA::Base
         }
       end
     end
+    
+
 end
