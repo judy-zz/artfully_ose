@@ -131,6 +131,16 @@ strong
 .of3
   @include section
   @extend .stack1of3
+  display: inline-block
+  margin-left: 0
+  margin-right: 0
+
+.of4
+  @include section
+  @extend .stack1of4
+  display: inline-block
+  margin-left: 0
+  margin-right: 0
 
 .drilldown.final
   @include section
@@ -552,15 +562,6 @@ ul.prices li div
       padding: 0
       @include rounded-corners(2px,2px,2px,2px)
 
-@import "main-menu"
-@import "admin-menu"
-@import "forms"
-@import "tables"
-@import "flash"
-@import "reports"
-@import "performances"
-@import "logo"
-
 #zenbox_tab
   top: 80%
 
@@ -578,3 +579,29 @@ dl.table-display
     width: 50%
     font-weight: bold
     color: #666
+
+.or
+  text-align: center
+  color: #333
+  border-bottom: 1px solid #ccc
+  height: $line_height / 2
+  margin-bottom: $line_height / 2 - 1
+  background: #fff
+  &:after
+    background: #fff
+    font-size: .875em
+    line-height: $line_height
+    color: #999
+    content: "OR"
+    padding: $gutter
+
+
+
+@import "main-menu"
+@import "admin-menu"
+@import "forms"
+@import "tables"
+@import "flash"
+@import "reports"
+@import "performances"
+@import "logo"
