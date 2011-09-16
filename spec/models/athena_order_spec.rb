@@ -14,6 +14,35 @@ describe AthenaOrder do
     it { should respond_to association + "=" }
   end
 
+  describe "fa_donations" do
+    it "creates an order and an item from an fa_donation" do
+      fa_donation = Factory(:fa_donation)
+      organization = Factory(:organization)
+      puts organization.id
+      order, item = AthenaOrder.from_fa_donation(fa_donation, organization)
+      
+      order.organization_id.should eq organization.id
+      order.price.should eq fa_donation.amount.to_f * 100
+      order.timestamp.should eq fa_donation.date
+      order.first_name.should eq fa_donation.donor.first_name
+      order.last_name.should eq fa_donation.donor.last_name
+      order.email.should eq fa_donation.donor.email
+      order.should be_valid
+      
+      item.price.should eq fa_donation.amount.to_f * 100
+      item.realized_price.should eq fa_donation.amount.to_f * 100
+      item.net.should eq (fa_donation.amount.to_f * 100) * 0.94
+      item.fs_project_id.should eq fa_donation.fs_project_id
+      item.nongift_amount.should eq fa_donation.nongift
+      item.is_noncash.should eq fa_donation.is_noncash
+      item.is_stock.should eq fa_donation.is_stock
+      item.reversed_at.should eq fa_donation.reversed_at
+      item.reversed_note.should eq fa_donation.reversed_note
+      item.fs_available_on.should eq fa_donation.fs_available_on
+      item.is_anonymous.should eq fa_donation.is_anonymous
+    end
+  end
+
   describe "#organization" do
     it "returns the organization" do
       subject.organization.should be_an Organization
