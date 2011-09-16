@@ -51,8 +51,8 @@ class Organization < ActiveRecord::Base
     unless fa_member_id.nil?
       begin
         fafs_project = FA::Project.find_by_member_id(fa_member_id)
-        fiscally_sponsored_project = FiscallySponsoredProject.from_fractured_atlas(fafs_project, self, fiscally_sponsored_project)
-        fiscally_sponsored_project.save
+        @fiscally_sponsored_project = FiscallySponsoredProject.from_fractured_atlas(fafs_project, self, fiscally_sponsored_project)
+        @fiscally_sponsored_project.save
         save
       rescue ActiveResource::ResourceNotFound
         logger.debug "No FAFS project found for member id #{fa_member_id}"

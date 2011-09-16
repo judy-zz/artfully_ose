@@ -5,6 +5,8 @@ end
 
 Factory.define :sponsored_donation, :parent => :donation do |d|
   d.after_create do |donation|
-    donation.organization.update_attribute(:fa_project_id, 1)
+    donation.organization.fiscally_sponsored_project = FiscallySponsoredProject.new
+    donation.organization.fiscally_sponsored_project.fs_project_id = 1
+    donation.organization.save
   end
 end

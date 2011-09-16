@@ -9,7 +9,7 @@ class FiscallySponsoredProject < ActiveRecord::Base
     @fsp.category  = fa_project.category               
     @fsp.profile   = fa_project.profile                       
     @fsp.website = fa_project.website                     
-    @fsp.applied_on = fa_project.applied_on                      
+    @fsp.applied_on = DateTime.parse fa_project.applied_on                      
     @fsp.status  = fa_project.status
     @fsp.organization = organization
     @fsp

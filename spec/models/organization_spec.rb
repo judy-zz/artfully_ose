@@ -10,7 +10,22 @@ describe Organization do
   describe "ability" do
     it { should respond_to :ability }
   end
-
+  
+  describe "refreshing_fa_project" do
+    it "should not refresh if fa_member_id is not set" do
+      o = subject.refresh_active_fs_project
+      o.fa_member_id.should be_nil
+    end
+    
+    it "should refresh" do
+      fa_project = Factory(:fa_project)
+      FA::Project.stub(:find_by_member_id).and_return(fa_project)
+      subject.fa_member_id = fa_project.id
+      subject.refresh_active_fs_project
+      subject.fiscally_sponsored_project.should_not be_nil
+    end
+  end
+  
   describe ".owner" do
     it "should return the first user as the owner of the organization" do
       user = Factory(:user)

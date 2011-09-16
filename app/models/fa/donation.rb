@@ -21,7 +21,7 @@ class FA::Donation < FA::Base
   def self.from(donation, payment)
     new.tap do |this|
       this.amount        = donation.amount / 100.00
-      this.fs_project_id = donation.organization.fa_project_id
+      this.fs_project_id = donation.organization.fiscally_sponsored_project.fs_project_id
       this.credit_card   = CreditCard.extract_from(payment)
       this.donor         = FA::Donor.extract_from(payment)
     end

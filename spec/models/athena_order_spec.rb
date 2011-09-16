@@ -18,7 +18,6 @@ describe AthenaOrder do
     it "creates an order and an item from an fa_donation" do
       fa_donation = Factory(:fa_donation)
       organization = Factory(:organization)
-      puts organization.id
       order, item = AthenaOrder.from_fa_donation(fa_donation, organization)
       
       order.organization_id.should eq organization.id
@@ -33,7 +32,7 @@ describe AthenaOrder do
       item.realized_price.should eq fa_donation.amount.to_f * 100
       item.net.should eq (fa_donation.amount.to_f * 100) * 0.94
       item.fs_project_id.should eq fa_donation.fs_project_id
-      item.nongift_amount.should eq fa_donation.nongift
+      item.nongift_amount.should eq fa_donation.nongift.to_f * 100
       item.is_noncash.should eq fa_donation.is_noncash
       item.is_stock.should eq fa_donation.is_stock
       item.reversed_at.should eq fa_donation.reversed_at

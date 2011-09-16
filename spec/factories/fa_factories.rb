@@ -4,6 +4,17 @@ Factory.define :fa_user, :class => FA::User, :default_strategy => :build do |f|
   f.password "password"
 end
 
+Factory.define :fa_project, :class => FA::Project, :default_strategy => :build do |f|
+  f.id          "10000"
+  f.member_id   "1"
+  f.name        "Sample project"
+  f.category    "Sample category"
+  f.profile     "Sample profile"
+  f.website     "http://www.fracturedatlas.org"
+  f.applied_on  "2002-06-24"
+  f.status      "Active"
+end
+
 Factory.define :fa_user_with_member_id, :class => FA::User, :default_strategy => :build do |f|
   f.email "user@fracturedatlas.org"
   f.username "user"
