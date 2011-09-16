@@ -3,23 +3,22 @@
   %h1 Box Office
   %h2="#{@event.name}, #{l(@show.datetime, :format => :long_with_day)}"
 
-
 .dashboard
   %h3 New Sale
-  = form_tag box_office_checkout_path do
+  = form_tag event_show_sales_path do
     %fieldset
       %h4 Sections
       %ul
-        - @show.chart.sections.each do |section|
+        - @sale.sections.each do |section|
           %li
-            .label= label_tag "quantity[#{section.name}]", section.name
-            .quantity.element= select_tag "quantity[#{section.name}]", options_for_select(0..20)
+            .label= label_tag "quantities[#{section.id}]", section.name
+            .quantity.element= select_tag "quantities[#{section.id}]", options_for_select(0..20, @sale.quantities[section.id])
     %fieldset
       %h4 Customer Information
       %ul.radio-list
         %li
-          .radio= radio_button_tag(:person, 0)
-          .label= label_tag(:person, "Anonymous")
+          .radio= radio_button_tag(:person_id, @dummy.id, true)
+          .label= label_tag(:person_id, "Anonymous Sale")
       .or
       %ul
         %li
@@ -27,11 +26,6 @@
             = text_field_tag :terms
             = tag(:input, :type => :button, :value => "Search")
       %ul.radio-list
-        - AthenaPerson.recent(current_user.current_organization).take(4).each do |person|
-          %li
-            .radio= radio_button_tag(:person, person.id)
-            .label= label_tag(:person, "#{person.first_name} #{person.last_name}")
-
     %fieldset
       = submit_tag "Checkout"
 
@@ -50,7 +44,7 @@
         - @door_list.items.each do |item|
           %tr
             %td= "☐"
-            %td= "#{item.buyer.last_name}, #{item.buyer.first_name}"
+            %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
             %td= item.buyer.email
             %td= item.ticket.section
             %td= number_as_cents(item.ticket.price)

@@ -77,6 +77,7 @@ class PeopleController < ApplicationController
       respond_with do |format|
         format.csv  { render :csv => @people, :filename => "SearchResults-#{DateTime.now.strftime("%m-%d-%y")}.csv" }
         format.html { render :partial => 'list', :layout => false, :locals => { :people => @people } if request.xhr? }
+        format.json { render :json => @people }
       end
 
     else

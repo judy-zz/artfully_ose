@@ -82,13 +82,6 @@ class ShowsController < ApplicationController
     @door_list = DoorList.new(@performance)
   end
 
-  def box_office
-    @event = AthenaEvent.find(params[:event_id])
-    @show = AthenaPerformance.find(params[:id])
-    authorize! :view, @show
-    @door_list = DoorList.new(@show)
-  end
-
   def published
     @performance = AthenaPerformance.find(params[:performance_id])
     authorize! :show, @performance

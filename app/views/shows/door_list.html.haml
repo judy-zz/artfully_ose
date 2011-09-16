@@ -22,7 +22,7 @@
           - @door_list.items.each do |item|
             %tr
               %td= "☐"
-              %td= "#{item.buyer.last_name}, #{item.buyer.first_name}"
+              %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
               %td= item.buyer.email
               %td= item.ticket.section
               %td= number_as_cents(item.ticket.price)

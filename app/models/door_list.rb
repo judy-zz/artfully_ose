@@ -8,8 +8,7 @@ class DoorList
   def items
     @items ||= performance.tickets.select(&:committed?).collect do |ticket|
       Item.new(ticket, ticket.buyer)
-    end
-    @items.sort!{ |a,b| a.ticket.buyer.last_name.downcase <=> b.ticket.buyer.last_name.downcase }
+    end.sort{ |a,b| a.ticket.buyer.email <=> b.ticket.buyer.email }
   end
 
   private
