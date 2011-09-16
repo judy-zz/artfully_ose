@@ -23,9 +23,13 @@
       %ul
         %li
           .full.paired.element
-            = text_field_tag :terms
-            = tag(:input, :type => :button, :value => "Search")
-      %ul.radio-list
+            = text_field_tag(:terms, "", :id => "terms")
+            = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
+      %ul.radio-list.target
+        %li.template.hidden
+          .radio
+          .label
+
     %fieldset
       = submit_tag "Checkout"
 
