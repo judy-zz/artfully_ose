@@ -214,11 +214,13 @@ class AthenaOrder < AthenaResource::Base
     @order.organization_id = organization.id
     @order.timestamp = DateTime.parse fa_donation.date
     @order.price = (fa_donation.amount.to_f * 100).to_i
-    @order.first_name = fa_donation.donor.first_name
-    @order.last_name = fa_donation.donor.last_name
-    @order.email = fa_donation.donor.email
+    @order.first_name = fa_donation.donor.first_name || ""
+    @order.last_name = fa_donation.donor.last_name || ""
     
-    @item = AthenaItem.from_fa_donation(fa_donation, organization)
+    #This should go to the anonymous record
+    @order.email = fa_donation.donor.email || ""
+    
+    @item = AthenaItem.from_fa_donation(fa_donation, organization, @order)
     
     return @order, @item
   end  
