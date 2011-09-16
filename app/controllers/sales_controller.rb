@@ -1,6 +1,10 @@
 class SalesController < ApplicationController
   before_filter :find_event, :find_show, :create_door_list, :find_dummy
 
+  def show
+    redirect_to new_event_show_sales_path(@event, @show)
+  end
+
   def new
     @sale = Sale.new(@show, @show.chart.sections)
   end
