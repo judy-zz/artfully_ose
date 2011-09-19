@@ -3,7 +3,7 @@
   %h1 Box Office
   %h2="#{@event.name}, #{l(@show.datetime, :format => :long_with_day)}"
 
-.dashboard
+.context
   %h3 New Sale
   = form_tag event_show_sales_path do
     %fieldset
@@ -31,9 +31,23 @@
           .label
 
     %fieldset
+      %h4 Payment Information
+      %p For a cash payment, leave these fields blank.
+
+      %ul
+        %li
+          .label= label_tag("credit_card[card_number]", "Card Number")
+          .element= text_field_tag("credit_card[card_number]")
+        %li
+          .label= label_tag("credit_card[expiration_date]", "Expiration Date")
+          .element.date_field
+            = hidden_field_tag("credit_card[expiration_date(3i)]", 1)
+            = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12))
+            = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10))
+
       = submit_tag "Checkout"
 
-.dashboard
+.document
   %h3 Door List
   - unless @door_list.items.empty?
     %table#door-list.standalone
