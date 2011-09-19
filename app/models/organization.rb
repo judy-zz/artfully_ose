@@ -65,10 +65,7 @@ class Organization < ActiveRecord::Base
     fa_donations = FA::Donation.find_by_member_id(fa_member_id)
 
     fa_donations.each do |fa_donation|
-      @order, @item = AthenaOrder.from_fa_donation(fa_donation, self)
-      @order.valid?
-      @item.order = @order
-      @item.valid?
+      @order = AthenaOrder.from_fa_donation(fa_donation, self)
     end
   end
 

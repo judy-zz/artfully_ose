@@ -220,9 +220,8 @@ class AthenaOrder < AthenaResource::Base
     #This should go to the anonymous record
     @order.email = fa_donation.donor.email || ""
     
-    @item = AthenaItem.from_fa_donation(fa_donation, organization, @order)
-    
-    return @order, @item
+    @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order)
+    @order.save
   end  
 
   private
