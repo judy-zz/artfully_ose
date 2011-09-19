@@ -13,7 +13,7 @@ class SalesController < ApplicationController
     @sale = Sale.new(@show, @show.chart.sections, params[:quantities])
 
     if @sale.sell(payment)
-      redirect_to new_event_show_sales_path(@event, @show), :notice => 'Items succesfully purchased.'
+      redirect_to new_event_show_sales_path(@event, @show), :notice => 'Items successfully purchased.'
     else
       flash[:error] = "An error occured while trying to finish the order."
       render :new

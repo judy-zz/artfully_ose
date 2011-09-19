@@ -46,7 +46,7 @@ class Sale::TicketRequest
   def initialize(show, section, quantity)
     @show     = show
     @section  = section
-    @quantity = (quantity || 0).to_i
+    @quantity = quantity.to_i
   end
 
   def fulfilled?
