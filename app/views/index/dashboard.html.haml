@@ -18,7 +18,7 @@
   #events
     %h3 Events
     - if @events.blank?
-      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+      %p= t(".first-event", :default => "Create your first Event.")
       = link_to "Create your first Event", new_event_path, :class => :cta
     - else
       = render :partial => 'events/list', :locals => { :events => @events }
@@ -26,7 +26,7 @@
   #people
     %h3 People
     - if @people.blank?
-      %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula <strong>nisi eget lacus</strong> gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+      %p= t(".first-person", :default => "Add your Contacts.")
       = link_to "Add a Contact", new_person_path, :class => :cta
     - else
       = render :partial => 'people/list', :locals => { :people => @people }
