@@ -40,8 +40,9 @@ class Organization < ActiveRecord::Base
   end
 
   def authorization_hash
-    { :authorized => can?(:receive, Donation),
-      :type       => donation_type }
+    { :authorized   => can?(:receive, Donation),
+      :type         => donation_type,
+      :organization => name }
   end
 
   private
