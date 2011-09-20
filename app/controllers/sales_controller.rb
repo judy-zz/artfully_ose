@@ -15,7 +15,7 @@ class SalesController < ApplicationController
     if @sale.sell(payment)
       redirect_to new_event_show_sales_path(@event, @show), :notice => 'Items successfully purchased.'
     else
-      flash[:error] = "An error occured while trying to finish the order."
+      flash[:error] = "#{@sale.errors.full_messages.to_sentence.capitalize}."
       render :new
     end
   end

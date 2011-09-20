@@ -1,6 +1,11 @@
 class Sale
+  include ActiveModel::Validations
+
   attr_accessor :sections, :quantities
   attr_accessor :person
+
+  validate :fulfilled?
+  validate :has_tickets?
 
   def initialize(show, sections, quantities = {})
     @show       = show
@@ -13,10 +18,12 @@ class Sale
   end
 
   def sell(payment)
-    if fulfilled? and has_tickets?
+    if valid?
       cart.add_tickets(tickets)
       checkout = Checkout.new(cart, payment)
-      checkout.finish
+      checkout.finish.tap do |success|
+        errors.add(:base, "payment was not accepted") unless success
+      end
     end
   end
 
@@ -25,11 +32,11 @@ class Sale
   end
 
   def fulfilled?
-    requests.all?(&:fulfilled?)
+    errors.add(:base, "some of the requested sections were not available") unless requests.all?(&:fulfilled?)
   end
 
   def has_tickets?
-    tickets.size > 0
+    errors.add(:base, "no tickets were added") unless tickets.size > 0
   end
 
   private
