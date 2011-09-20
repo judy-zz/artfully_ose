@@ -1448,3 +1448,12 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 #transactions {
   background-position: -1750px 0px; }
+
+#checkout {
+  margin: 12px 0 auto; }
+  #checkout input {
+    height: 36px;
+    width: 100%; }
+
+#person-search {
+  margin-top: 12px; }
