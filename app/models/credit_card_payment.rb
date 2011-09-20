@@ -1,4 +1,6 @@
 class CreditCardPayment < AthenaResource::Base
+  # A slimmed down version of Athena Payments for use in the Box Office
+
   self.site = Artfully::Application.config.payments_component
   self.element_name = Artfully::Application.config.payments_element_name
 

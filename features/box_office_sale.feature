@@ -16,7 +16,16 @@ Feature: Cash Sales
     And I press "Box Office"
 
   Scenario: A producer creates an anonymous cash sale in the box office
-    And there are 2 tickets available
+    Given there are 2 tickets available
     And I select "2" from "Balcony"
+    When I press "Checkout"
+    Then I should see "Items successfully purchased."
+
+  Scenario: A producer creates an anonymous credit card sale in the box office
+    Given there are 2 tickets available
+    And I can authorize Credit Cards in ATHENA
+    And I can settle Credit Cards in ATHENA
+    And I select "2" from "Balcony"
+    And I fill in "Card Number" with "4111111111111111"
     When I press "Checkout"
     Then I should see "Items successfully purchased."
