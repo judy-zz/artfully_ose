@@ -41,13 +41,42 @@ class FA::Donation < FA::Base
     donation
   end
   
-  def self.find_by_member_id(fa_member_id)
+  def self.find_by_project_id(fa_project_id, since=nil)
+    logger.info "Finding donations for FA project #{fa_project_id}"
     begin
-      response = self.connection.get("/donations.xml?FsProject.member_id=#{fa_member_id}")
+      url = "/donations.xml?fs_project_id=#{fa_project_id}"
+      url = url + "&updated_at-gt=#{CGI.escape(since.to_s)}" unless since.nil?
+      logger.info "Getting donations from #{url}"
+      response = self.connection.get(url)
       collection = response[self.element_name]  
       collection = Array.wrap(collection) unless collection.kind_of? Array    
       collection.collect! { |record| instantiate_record(record, {}) }    
-    rescue ActiveResource::ResourceNotFound
+    rescue ActiveResource::ResourceNotFound => e
+      logger.info "No donations found"
+      []
+    rescue ActiveResource::ServerError => e
+      logger.info "Error getting donations."
+      logger.info e.backtrace
+      []
+    end    
+  end
+  
+  def self.find_by_member_id(fa_member_id, since=nil)
+    logger.info "Finding donations for FA member #{fa_member_id}"
+    begin
+      url = "/donations.xml?FsProject.member_id=#{fa_member_id}"
+      url = url + "&updated_at-gt=#{CGI.escape(since.to_s)}" unless since.nil?
+      logger.info "Getting donations from #{url}"
+      response = self.connection.get(url)
+      collection = response[self.element_name]  
+      collection = Array.wrap(collection) unless collection.kind_of? Array    
+      collection.collect! { |record| instantiate_record(record, {}) }    
+    rescue ActiveResource::ResourceNotFound => e
+      logger.info "No donations found"
+      []
+    rescue ActiveResource::ServerError => e
+      logger.info "Error getting donations."
+      logger.info e.backtrace
       []
     end
   end

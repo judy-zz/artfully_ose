@@ -10,6 +10,8 @@ class Organization < ActiveRecord::Base
   validates :ein, :presence => true, :if => :updating_tax_info
   validates :legal_organization_name, :presence => true, :if => :updating_tax_info
 
+  scope :linked_to_fa, where("fa_member_id is not null")
+
   def owner
     users.first
   end
@@ -44,6 +46,10 @@ class Organization < ActiveRecord::Base
     { :authorized => can?(:receive, Donation),
       :type       => donation_type }
   end
+  
+  def has_active_fiscally_sponsored_project?
+    return !@fiscally_sponsored_project.nil?
+  end
 
   #Before calling this method, organization must have already been conected to an FA membership
   #and have fa_member_id set
@@ -53,6 +59,10 @@ class Organization < ActiveRecord::Base
         fafs_project = FA::Project.find_by_member_id(fa_member_id)
         @fiscally_sponsored_project = FiscallySponsoredProject.from_fractured_atlas(fafs_project, self, fiscally_sponsored_project)
         @fiscally_sponsored_project.save
+        
+        #ensure that updated_at gets updated even if there were no changes.  We'll use updated_at
+        #when we poll FA for recent donations
+        @fiscally_sponsored_project.touch
         save
       rescue ActiveResource::ResourceNotFound
         logger.debug "No FAFS project found for member id #{fa_member_id}"
@@ -61,16 +71,27 @@ class Organization < ActiveRecord::Base
     self
   end
   
-  def import_fa_donations
-    fa_donations = FA::Donation.find_by_member_id(fa_member_id)
-
-    fa_donations.each do |fa_donation|
-      @order = AthenaOrder.from_fa_donation(fa_donation, self)
-    end
+  def import_all_fa_donations
+    return unless has_active_fiscally_sponsored_project?
+    process_donations FA::Donation.find_by_member_id(fa_member_id)
+  end
+  
+  def import_recent_fa_donations(since=nil)
+    return unless has_active_fiscally_sponsored_project?
+    since ||= @fiscally_sponsored_project.updated_at
+    puts fa_member_id
+    puts since.to_s
+    process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
 
   private
 
+    def process_donations(fa_donations)
+      fa_donations.each do |fa_donation|
+        @order = AthenaOrder.from_fa_donation(fa_donation, self)
+      end
+    end
+  
     def check_for_duplicates(kit)
       raise Kit::DuplicateError if kits.where(:type => kit.type).any?
     end

@@ -83,9 +83,9 @@ class OrganizationsController < ApplicationController
         @integration = FA::Integration.new(@fa_user, @organization)
         @integration.save
         @organization.update_attribute(:fa_member_id, @fa_user.member_id)
-        @organization.refresh_active_fs_project
-        @organization.delay.import_fa_donations
-        flash[:notice] = "Successfully connected to Fractured Atlas!"
+        @organization.delay.refresh_active_fs_project
+        @organization.delay.import_all_fa_donations
+        flash[:notice] = "Successfully connected to Fractured Atlas!  We'll import your donation history into Artfully shortly."
       else
         flash[:error]= "Unable to connect to your Fractured Atlas account.  Please check your username and password."
       end      

@@ -18,7 +18,14 @@ describe AthenaOrder do
     it "creates an order and an item from an fa_donation" do
       fa_donation = Factory(:fa_donation)
       organization = Factory(:organization)
-      order, item = AthenaOrder.from_fa_donation(fa_donation, organization)
+      
+      stubbed_order = Factory(:athena_order_with_id)
+      stubbed_order.stub(:save).and_return(stubbed_order)
+      stubbed_order.stub(:items).and_return([])
+      stubbed_order.should_receive(:save)
+      AthenaOrder.stub(:new).and_return(stubbed_order)
+      
+      order = AthenaOrder.from_fa_donation(fa_donation, organization)
       
       order.organization_id.should eq organization.id
       order.price.should eq fa_donation.amount.to_f * 100
@@ -28,13 +35,16 @@ describe AthenaOrder do
       order.email.should eq fa_donation.donor.email
       order.should be_valid
       
+      order.items.size.should eq 1
+      item = order.items[0]
+      
       item.price.should eq fa_donation.amount.to_f * 100
       item.realized_price.should eq fa_donation.amount.to_f * 100
-      item.net.should eq (fa_donation.amount.to_f * 100) * 0.94
+      item.net.should eq ((fa_donation.amount.to_f * 100) * 0.94)
       item.fs_project_id.should eq fa_donation.fs_project_id
       item.nongift_amount.should eq fa_donation.nongift.to_f * 100
       item.is_noncash.should eq fa_donation.is_noncash
-      item.is_stock.should eq fa_donation.is_stock
+      item.is_stock.should be_false
       item.reversed_at.should eq fa_donation.reversed_at
       item.reversed_note.should eq fa_donation.reversed_note
       item.fs_available_on.should eq fa_donation.fs_available_on

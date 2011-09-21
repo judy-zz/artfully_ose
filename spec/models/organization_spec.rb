@@ -20,9 +20,37 @@ describe Organization do
     it "should refresh" do
       fa_project = Factory(:fa_project)
       FA::Project.stub(:find_by_member_id).and_return(fa_project)
-      subject.fa_member_id = fa_project.id
+      subject.fa_member_id = fa_project.member_id
       subject.refresh_active_fs_project
       subject.fiscally_sponsored_project.should_not be_nil
+    end
+  end
+  
+  describe "importing donations" do
+    before(:each) do
+      fa_project = Factory(:fa_project)
+      FA::Project.stub(:find_by_member_id).and_return(fa_project)
+      subject.fa_member_id = fa_project.member_id
+      
+      FA::Donation.stub(:find_by_member_id).and_return([])
+    end
+    
+    it "should import all donations" do
+      subject.refresh_active_fs_project
+      FA::Donation.should_receive(:find_by_member_id).with("1")
+      subject.import_all_fa_donations
+    end
+    
+    it "should import all donations since the last refresh" do
+      subject.refresh_active_fs_project
+      FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at)
+      subject.import_recent_fa_donations
+    end
+    
+    it "shouldn't call anything if the fiscally_sponsored_project is nil" do
+      subject.fiscally_sponsored_project = nil
+      subject.import_all_fa_donations.should be_nil
+      subject.import_recent_fa_donations.should be_nil
     end
   end
   
