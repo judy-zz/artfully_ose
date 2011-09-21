@@ -96,7 +96,7 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization.id })
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization_id })
   end
 
   def assign_chart(chart)
