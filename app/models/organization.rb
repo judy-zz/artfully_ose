@@ -48,7 +48,7 @@ class Organization < ActiveRecord::Base
   end
   
   def has_active_fiscally_sponsored_project?
-    return !@fiscally_sponsored_project.nil?
+    return !fiscally_sponsored_project.nil?
   end
 
   #Before calling this method, organization must have already been conected to an FA membership
@@ -78,7 +78,7 @@ class Organization < ActiveRecord::Base
   
   def import_recent_fa_donations(since=nil)
     return unless has_active_fiscally_sponsored_project?
-    since ||= @fiscally_sponsored_project.updated_at
+    since ||= fiscally_sponsored_project.updated_at
     process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
 

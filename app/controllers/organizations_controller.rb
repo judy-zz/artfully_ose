@@ -83,7 +83,7 @@ class OrganizationsController < ApplicationController
         @integration = FA::Integration.new(@fa_user, @organization)
         @integration.save
         @organization.update_attribute(:fa_member_id, @fa_user.member_id)
-        @organization.delay.refresh_active_fs_project
+        @organization.refresh_active_fs_project
         @organization.delay.import_all_fa_donations
         flash[:notice] = "Successfully connected to Fractured Atlas!  We'll import your donation history into Artfully shortly."
       else
