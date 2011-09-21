@@ -25,6 +25,13 @@ describe Organization do
       subject.fiscally_sponsored_project.should_not be_nil
     end
     
+    it "should not save an fsp if one isn't found" do
+      FA::Project.should_receive(:find_by_member_id).and_raise(ActiveResource::ResourceNotFound.new("Not Found"))
+      subject.fa_member_id = "3"
+      subject.refresh_active_fs_project
+      subject.fiscally_sponsored_project.should be_nil
+    end
+    
     it "shouldn't create a second fs project" do
       fa_project = Factory(:fa_project)
       FA::Project.stub(:find_by_member_id).and_return(fa_project)
