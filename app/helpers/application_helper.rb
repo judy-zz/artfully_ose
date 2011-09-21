@@ -21,6 +21,12 @@ module ApplicationHelper
 <script>
     EOF
   end
+  
+  def amount_and_nongift(item)
+    str = number_as_cents item.price
+    str += " (#{number_as_cents item.nongift_amount} nongift)" unless item.nongift_amount.nil?
+    str
+  end
 
   def number_as_cents(cents)
     number_to_currency(cents.to_i / 100.00)
