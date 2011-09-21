@@ -32,7 +32,7 @@ class Ability
     can :view, Settlement do |settlement|
       user.is_in_organization?
     end
-    
+
     can :view, AthenaStatement do |statement|
       user.is_in_organization?
     end
@@ -85,6 +85,10 @@ class Ability
   def person_abilities_for(user)
     can :manage, AthenaPerson do |person|
       (user.current_organization.can? :manage, person)
+    end
+
+    can :manage, Segment do |segment|
+      user.current_organization.can?(:manage, segment)
     end
   end
 

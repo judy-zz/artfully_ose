@@ -1,10 +1,12 @@
 class SegmentsController < ApplicationController
   def index
+    authorize! :view, Segment
     @segments = Segment.find_by_organization_id(current_user.current_organization)
   end
 
   def show
     @segment = Segment.find(params[:id])
+    authorize! :view, @segment
     respond_to do |format|
       format.html
       format.csv { render :csv => @segment.people, :filename => "#{@segment.name}-#{DateTime.now.strftime("%m-%d-%y")}.csv" }
@@ -12,11 +14,13 @@ class SegmentsController < ApplicationController
   end
 
   def new
+    authorize! :create, @segment
     @segment = Segment.new(params[:segment])
     @segment.organization = current_user.current_organization
   end
 
   def create
+    authorize! :create, @segment
     @segment = Segment.new(params[:segment])
     @segment.organization = current_user.current_organization
     if @segment.save

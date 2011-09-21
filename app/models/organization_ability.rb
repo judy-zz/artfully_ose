@@ -31,6 +31,10 @@ class OrganizationAbility
       person.organization_id.to_i == organization.id
     end
 
+    can :manage, Segment do |segment|
+      segment.organization_id.to_i == organization.id
+    end
+
     can :manage, AthenaOrder do |order|
       order.organization_id.to_i == organization.id
     end
@@ -38,6 +42,8 @@ class OrganizationAbility
     can :manage, Organization do |org|
       org.id.to_i == organization.id
     end
+
+
 
   end
 end
