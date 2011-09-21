@@ -57,7 +57,7 @@ class Organization < ActiveRecord::Base
     unless fa_member_id.nil?
       begin
         fafs_project = FA::Project.find_by_member_id(fa_member_id)
-        @fiscally_sponsored_project = FiscallySponsoredProject.from_fractured_atlas(fafs_project, self, fiscally_sponsored_project)
+        @fiscally_sponsored_project = FiscallySponsoredProject.from_fractured_atlas(fafs_project, self, @fiscally_sponsored_project)
         @fiscally_sponsored_project.save
         
         #ensure that updated_at gets updated even if there were no changes.  We'll use updated_at
@@ -79,8 +79,6 @@ class Organization < ActiveRecord::Base
   def import_recent_fa_donations(since=nil)
     return unless has_active_fiscally_sponsored_project?
     since ||= @fiscally_sponsored_project.updated_at
-    puts fa_member_id
-    puts since.to_s
     process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
 

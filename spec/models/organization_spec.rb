@@ -24,6 +24,19 @@ describe Organization do
       subject.refresh_active_fs_project
       subject.fiscally_sponsored_project.should_not be_nil
     end
+    
+    it "shouldn't create a second fs project" do
+      fa_project = Factory(:fa_project)
+      FA::Project.stub(:find_by_member_id).and_return(fa_project)
+      subject.fa_member_id = fa_project.member_id
+      subject.refresh_active_fs_project
+      fa_project.id="444444"
+      subject.refresh_active_fs_project
+      subject.fiscally_sponsored_project.fs_project_id.should eq "444444"
+      
+      fsps = FiscallySponsoredProject.where(:organization_id => subject.id)
+      fsps.size.should eq 1
+    end
   end
   
   describe "importing donations" do
