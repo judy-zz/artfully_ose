@@ -33,10 +33,12 @@ class Sale
 
   def fulfilled?
     errors.add(:base, "some of the requested sections were not available") unless requests.all?(&:fulfilled?)
+    requests.all?(&:fulfilled?)
   end
 
   def has_tickets?
     errors.add(:base, "no tickets were added") unless tickets.size > 0
+    tickets.size > 0
   end
 
   private
