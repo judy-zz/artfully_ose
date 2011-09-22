@@ -24,6 +24,9 @@ Artfully::Application.configure do
 
   # Only use best-standards-support built into browsers
   config.action_dispatch.best_standards_support = :builtin
+  
+  #Fractured Atlas
+  config.fractured_atlas = 'http://staging.api.fracturedatlas.org'
 
   config.tickets_site     = 'http://localhost:8080/athena/'
   config.orders_component = 'http://localhost:8080/athena/'

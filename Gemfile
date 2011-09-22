@@ -4,6 +4,8 @@ gem 'rails'
 
 gem 'athena_resource'
 
+gem 'delayed_job'
+
 # Views and Rendering
 gem 'haml'
 gem 'sass'

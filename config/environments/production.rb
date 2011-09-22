@@ -56,6 +56,9 @@ Artfully::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+  
+  #Fractured Atlas
+  config.fractured_atlas = 'http://api.fracturedatlas.org'
 
   config.tickets_site = 'http://athena-production.elasticbeanstalk.com/'
   config.orders_component = 'http://athena-production.elasticbeanstalk.com/'

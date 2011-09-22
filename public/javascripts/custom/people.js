@@ -47,21 +47,32 @@ $(document).ready(function() {
     }
   });
 
-  $(".website.value").each(function(){
-    var $link = $(document.createElement('a')),
-        field = this;
+  function generateLink(field, $link){
+    var href = $(field).html();
 
-    $link.html("[ &#9656; ]")
-    $link.appendTo($(this).parent());
+    if("Click to edit" !== href && "" !== href){
+      $link.html("[ &#9656; ]").attr('target','_blank').appendTo($(field).parent());
 
-    $link.hover(function(){
-      var href = $(field).html();
-      if("Click to edit" !== href){
+      $link.hover(function(){
         if(!href.startsWith("http://")){
           href = "http://" + href;
         }
         $(this).attr("href", href);
-      }
+      });
+    }
+  }
+
+  $(".website.value").each(function(){
+    var $link = $(document.createElement('a')),
+        field = this;
+
+    generateLink(field, $link);
+
+    $(this).bind('done', function(){
+      $link.remove();
+      console.log($(field).html());
+      generateLink(field, $link);
     });
   });
+
 });
