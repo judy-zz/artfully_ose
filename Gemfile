@@ -12,11 +12,11 @@ gem 'will_paginate', '~> 3.0.beta'
 gem 'high_voltage'
 gem 'copycopter_client'
 gem 'mail'
-gem 'comma', :git => "git://github.com/crafterm/comma.git"
 gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'jammit'
-gem 'jammit-s3', :git => "git://github.com/railsjedi/jammit-s3.git"
+gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
+gem 'comma',     :path => "vendor/gems/comma-0.4.0"
 
 # Authentication and Roles
 gem 'devise'

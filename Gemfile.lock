@@ -1,13 +1,11 @@
-GIT
-  remote: git://github.com/crafterm/comma.git
-  revision: 5f426bf
+PATH
+  remote: vendor/gems/comma-0.4.0
   specs:
     comma (0.4.0)
       activesupport (>= 2.2.2)
 
-GIT
-  remote: git://github.com/railsjedi/jammit-s3.git
-  revision: e8aaa40
+PATH
+  remote: vendor/gems/jammit-s3-0.6.3
   specs:
     jammit-s3 (0.6.0.2)
       jammit (>= 0.5.4)
