@@ -7,9 +7,10 @@ class CreditCardPayment < AthenaResource::Base
   attr_accessor :customer
 
   schema do
-    attribute 'amount', :string
-    attribute 'credit_card', :string
-    attribute 'success', :string
+    attribute 'amount',         :string
+    attribute 'credit_card',    :string
+    attribute 'success',        :string
+    attribute 'transaction_id', :string
   end
 
   def self.for_card_and_customer(card, customer)
