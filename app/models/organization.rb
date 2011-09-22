@@ -10,7 +10,7 @@ class Organization < ActiveRecord::Base
   validates :legal_organization_name, :presence => true, :if => :updating_tax_info
 
   def owner
-    users.first
+    @owner ||= users.first
   end
 
   delegate :can?, :cannot?, :to => :ability
