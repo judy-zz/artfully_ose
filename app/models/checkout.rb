@@ -38,9 +38,20 @@ class Checkout
     ::Rails.logger.info "Processing FAFS donations"
     if organization.has_active_fiscally_sponsored_project?
       ::Rails.logger.info "Organization #{organization.id} has an active FSP"
-      #build FA::Donation from order.donations
-      #clear order.donations
+      donations = order.donations
+      donations_amount = donations.inject(0) { |sum, donation| sum + donation.amount }
+      
+      ::Rails.logger.info "Order total is #{@payment.amount}"
+      ::Rails.logger.info "Donations total #{donations_amount}"
+      
       order.donations = []
+      @payment.reduce_amount donations_amount
+      ::Rails.logger.info "New payment amount is #{@payment.amount}"
+      
+      ::Rails.logger.info "Processing donation with FA"
+      donations.each do |donation|
+        
+      end
     else
       ::Rails.logger.info "Organization #{organization.id} does not have an active FSP"
     end
