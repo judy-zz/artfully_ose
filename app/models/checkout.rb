@@ -18,7 +18,8 @@ class Checkout
   end
 
   def finish
-    @person = find_or_create_people_record
+    @person = find_or_create_people_record    
+    process_fafs_donations   
     order.pay_with(@payment)
 
     if order.approved?
@@ -30,7 +31,23 @@ class Checkout
     order.approved?
   end
 
+  def process_fafs_donations
+    organization = order.organizations.first
+    return if organization.nil?
+          
+    ::Rails.logger.info "Processing FAFS donations"
+    if organization.has_active_fiscally_sponsored_project?
+      ::Rails.logger.info "Organization #{organization.id} has an active FSP"
+      #build FA::Donation from order.donations
+      #clear order.donations
+      order.donations = []
+    else
+      ::Rails.logger.info "Organization #{organization.id} does not have an active FSP"
+    end
+  end
+
   private
+  
     def find_or_create_people_record
       organization = order.organizations.first
       person = AthenaPerson.find_by_email_and_organization(@customer.email, organization)

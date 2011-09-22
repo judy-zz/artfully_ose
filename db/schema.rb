@@ -46,12 +46,41 @@ ActiveRecord::Schema.define(:version => 20110912204231) do
     t.datetime "updated_at"
   end
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
   create_table "donations", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "order_id"
     t.integer  "amount"
     t.integer  "organization_id"
+  end
+
+  create_table "fiscally_sponsored_projects", :force => true do |t|
+    t.string   "fs_project_id"
+    t.string   "fa_member_id"
+    t.string   "name"
+    t.string   "category"
+    t.text     "profile"
+    t.string   "website"
+    t.datetime "applied_on"
+    t.string   "status"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "kits", :force => true do |t|
@@ -85,7 +114,6 @@ ActiveRecord::Schema.define(:version => 20110912204231) do
     t.integer  "account_balance",         :default => 0
     t.string   "website"
     t.boolean  "ach_on_file",             :default => false
-    t.string   "fa_project_id"
   end
 
   create_table "performances", :force => true do |t|
