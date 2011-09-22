@@ -23,10 +23,11 @@ class AthenaPayment < AthenaResource::Base
 
   schema do
     attribute 'amount', :string
-    attribute 'billing_address', :string
-    attribute 'credit_card', :string
-    attribute 'customer', :string
-    attribute 'success', :string
+    attribute 'billing_address',  :string
+    attribute 'credit_card',      :string
+    attribute 'customer',         :string
+    attribute 'success',          :string
+    attribute 'transaction_id',   :string
   end
 
   def load(attributes = [])
