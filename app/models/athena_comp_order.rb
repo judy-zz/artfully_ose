@@ -4,8 +4,23 @@ class AthenaCompOrder < AthenaOrder
   self.element_name = 'orders'
   self.collection_name = 'orders'
 
-  def initialize(attributes = {})
-    super(attributes)
+  schema do
+    attribute :person_id,       :integer
+    attribute :organization_id, :integer
+    attribute :customer_id,     :string
+    attribute :transaction_id,  :string
+    attribute :parent_id,       :string
+    attribute :price,           :integer
+    attribute :details,         :string
+    attribute :timestamp,       :string
+
+    #pseudo people
+    attribute :first_name,      :string
+    attribute :last_name,       :string
+    attribute :email,           :string
+
+    #fa attributes
+    attribute :check_no,    :string
   end
 
   def ticket_details

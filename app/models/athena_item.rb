@@ -9,12 +9,21 @@ class AthenaItem < AthenaResource::Base
     attribute 'product_id',     :string
     attribute 'performance_id', :string
     attribute 'settlement_id',  :string
-
     attribute 'state',          :string
 
     attribute 'price',          :integer
     attribute 'realized_price', :integer
     attribute 'net',            :integer
+    
+    #FA
+    attribute 'fs_project_id',  :string
+    attribute 'is_noncash',     :string
+    attribute 'is_stock',       :string
+    attribute 'reversed_at',    :string
+    attribute 'reversed_note',  :string
+    attribute 'fs_available_on',:string
+    attribute 'is_anonymous',   :string
+    attribute 'nongift_amount',   :string
   end
 
   validates_presence_of :order_id, :product_type, :price, :realized_price, :net
@@ -143,6 +152,29 @@ class AthenaItem < AthenaResource::Base
 
     logger.debug("Settling items #{items.collect(&:id).join(',')}")
     patch(items, { :settlementId => settlement.id, :state => :settled })
+  end
+
+  def self.from_fa_donation(fa_donation, organization, order)    
+    @item = AthenaItem.new({
+              :order_id       => order.id,
+              :product_type   => "Donation",
+              :state          => "settled"
+            })
+    
+    @item.organization_id = organization.id
+    @item.price = (fa_donation.amount.to_f * 100).to_i
+    @item.realized_price = (fa_donation.amount.to_f * 100).to_i
+    @item.net = ((fa_donation.amount.to_f * 100) * 0.94).to_i
+    @item.fs_project_id = fa_donation.fs_project_id
+    @item.nongift_amount = (fa_donation.nongift.to_f * 100).to_i
+    @item.is_noncash = fa_donation.is_noncash || false
+    @item.is_stock = fa_donation.is_stock || false
+    @item.reversed_at = fa_donation.reversed_at unless fa_donation.reversed_at.nil?
+    @item.reversed_note = fa_donation.reversed_note unless fa_donation.reversed_note.nil?
+    @item.fs_available_on = fa_donation.fs_available_on unless fa_donation.fs_available_on.nil?
+    @item.is_anonymous = fa_donation.is_anonymous || false
+    
+    return @item
   end
 
   private

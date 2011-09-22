@@ -1,5 +1,5 @@
 class FA::Base < ActiveResource::Base
-  self.site = "http://staging.api.fracturedatlas.org"
+  self.site = Artfully::Application.config.fractured_atlas
 
   self.auth_type = :digest
   self.user = 'artful.ly'

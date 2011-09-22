@@ -23,10 +23,11 @@ class AthenaPayment < AthenaResource::Base
 
   schema do
     attribute 'amount', :string
-    attribute 'billing_address', :string
-    attribute 'credit_card', :string
-    attribute 'customer', :string
-    attribute 'success', :string
+    attribute 'billing_address',  :string
+    attribute 'credit_card',      :string
+    attribute 'customer',         :string
+    attribute 'success',          :string
+    attribute 'transaction_id',   :string
   end
 
   def load(attributes = [])
@@ -70,6 +71,10 @@ class AthenaPayment < AthenaResource::Base
     # Convert from cents to dollars for the payment processor
     amount = amount.to_i / 100.00
     super(amount)
+  end
+
+  def requires_authorization?
+    amount > 0
   end
 
   def authorize!

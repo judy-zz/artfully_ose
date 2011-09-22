@@ -5,8 +5,8 @@ Then /^I should see (\d+) tickets to "([^"]*)" at "([^"]*)" for \$(\d+)$/ do |qu
   Then %{I should see #{quantity} tickets}
 end
 
-Then /^I should see (\d+) tickets$/ do |quantity|
-  page.has_xpath? "//li[@class='ticket']", :count => quantity
+Then /^I should see (\d+) tickets?$/ do |quantity|
+  page.should have_xpath("//li[@class='ticket']", :count => quantity)
 end
 
 Given /^I search for (\d+) tickets for \$(\d+)$/ do |quantity, price|
@@ -70,4 +70,12 @@ Then /^the (\d+)st ticket should be off sale$/ do |pos|
   within(:xpath, "//table/tbody/tr[#{pos.to_i}]") do
     Then %Q{I should see "Off Sale"}
   end
+end
+
+Given /^there are (\d+) tickets available$/ do |quantity|
+  quantity = quantity.to_i
+  Given "I can lock Tickets in ATHENA"
+  tickets = current_performances.first.tickets.take(quantity)
+  body = "[#{tickets.collect(&:encode).join(',')}]"
+  FakeWeb.register_uri(:get, %r|http://localhost/athena/tickets/available\.json\?.*_limit=\d+&.*&state=on_sale.*|, :body => body)
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110907173649) do
+ActiveRecord::Schema.define(:version => 20110912204231) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
@@ -46,20 +46,49 @@ ActiveRecord::Schema.define(:version => 20110907173649) do
     t.datetime "updated_at"
   end
 
-  create_table "donations", :force => true do |t|
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "order_id"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
+  create_table "donations", :force => true do |t|
     t.integer  "amount"
+    t.integer  "order_id"
     t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "fiscally_sponsored_projects", :force => true do |t|
+    t.string   "fs_project_id"
+    t.string   "fa_member_id"
+    t.string   "name"
+    t.string   "category"
+    t.text     "profile"
+    t.string   "website"
+    t.datetime "applied_on"
+    t.string   "status"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "kits", :force => true do |t|
     t.string   "state"
     t.string   "type"
+    t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "organization_id"
   end
 
   create_table "memberships", :force => true do |t|
@@ -72,44 +101,30 @@ ActiveRecord::Schema.define(:version => 20110907173649) do
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "person_id"
   end
 
   create_table "organizations", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "time_zone"
     t.string   "legal_organization_name"
     t.string   "ein"
     t.string   "fa_member_id"
-    t.integer  "account_balance",         :default => 0
     t.string   "website"
-    t.boolean  "ach_on_file",             :default => false
-    t.string   "fa_project_id"
-  end
-
-  create_table "performances", :force => true do |t|
-    t.string   "title"
-    t.string   "venue"
-    t.datetime "performed_on"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "purchasable_tickets", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "order_id"
     t.string   "ticket_id"
     t.string   "lock_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => ""
-    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -121,7 +136,6 @@ ActiveRecord::Schema.define(:version => 20110907173649) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "customer_id"
-    t.string   "athena_id"
     t.datetime "suspended_at"
     t.string   "suspension_reason"
     t.string   "invitation_token",     :limit => 60
