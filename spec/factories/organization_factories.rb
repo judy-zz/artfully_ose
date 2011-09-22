@@ -18,5 +18,4 @@ Factory.define :organization_with_donations, :parent => :organization do |o|
 end
 
 Factory.define :fiscally_sponsored_project do |fsp|
-  fsp = FiscallySponsoredProject.new
 end
