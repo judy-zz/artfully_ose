@@ -30,5 +30,5 @@
         #current-org= link_to "Sign Out", destroy_admin_session_path
 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
-    = javascript_include_tag "https://www.denoteapp.com/js/allow.js" if Rails.env.demo?
+    / = javascript_include_tag "https://www.denoteapp.com/js/allow.js" if Rails.env.demo?
     = include_javascripts :vendor, :application, :custom

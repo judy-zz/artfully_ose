@@ -1,5 +1,6 @@
 class Checkout
   attr_accessor :order, :payment
+  attr_reader :athena_order
 
   def initialize(order, payment)
     @order = order
@@ -37,7 +38,7 @@ class Checkout
   def prepare_fafs_donations
     organization = order.organizations.first
     return if organization.nil?
-          
+
     ::Rails.logger.info "Processing FAFS donations"
     if organization.has_active_fiscally_sponsored_project?
       ::Rails.logger.info "Organization #{organization.id} has an active FSP"      
@@ -65,7 +66,7 @@ class Checkout
   end
 
   private
-  
+
     def find_or_create_people_record
       organization = order.organizations.first
       person = AthenaPerson.find_by_email_and_organization(@customer.email, organization)
@@ -84,9 +85,10 @@ class Checkout
 
     def create_order(order_timestamp)
       @order.organizations.each do |organization|
-        athena_order = new_order(organization, order_timestamp, @person)
-        athena_order.save!
+        @athena_order = new_order(organization, order_timestamp, @person)
+        @athena_order.save!
         OrderMailer.confirmation_for(athena_order).deliver
+        @athena_order
       end
     end
 

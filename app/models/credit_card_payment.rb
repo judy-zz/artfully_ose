@@ -23,6 +23,10 @@ class CreditCardPayment < AthenaResource::Base
     true
   end
 
+  def requires_settlement?
+    true
+  end
+
   def approved?
     self.success == true
   end

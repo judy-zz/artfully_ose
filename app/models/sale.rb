@@ -22,7 +22,8 @@ class Sale
       cart.add_tickets(tickets)
       checkout = Checkout.new(cart, payment)
       checkout.finish.tap do |success|
-        errors.add(:base, "payment was not accepted") unless success
+        errors.add(:base, "payment was not accepted") and return if !success
+        settle(checkout, success) if (success and !payment.requires_settlement?)
       end
     end
   end
@@ -45,6 +46,10 @@ class Sale
 
   def requests
     @requests ||= sections.collect { |section| Sale::TicketRequest.new(@show, section, @quantities[section.id]) }
+  end
+
+  def settle(checkout, success)
+    AthenaItem.settle(checkout.athena_order.items, Settlement.new)
   end
 end
 
