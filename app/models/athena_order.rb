@@ -1,5 +1,8 @@
 # Used for artful.ly orders (and not for checkout in the api/widget)
 class AthenaOrder < AthenaResource::Base
+  include ActionView::Helpers::NumberHelper
+  include ApplicationHelper
+  
   self.site = Artfully::Application.config.orders_component
   self.element_name = 'orders'
   self.collection_name = 'orders'
@@ -95,6 +98,10 @@ class AthenaOrder < AthenaResource::Base
 
   def total
     all_items.inject(0) {|sum, item| sum + item.price.to_i }
+  end
+
+  def nongift_amount
+    all_items.inject(0) {|sum, item| sum + item.nongift_amount.to_i }
   end
 
   def items
@@ -208,9 +215,18 @@ class AthenaOrder < AthenaResource::Base
   def ticket_details
     "#{num_tickets} ticket(s)"
   end
+  
+  def is_fafs?
+    !fa_id.nil?
+  end
 
   def donation_details
-    "$#{sum_donations/100.00} donation"
+    if is_fafs?
+      o = Organization.find(organization_id)
+      "#{number_as_cents sum_donations} donation via Fractured Atlas for the benefit of #{o.fiscally_sponsored_project.name}"
+    else
+      "#{number_as_cents sum_donations} donation"
+    end
   end
 
   def returnable_items
@@ -236,6 +252,7 @@ class AthenaOrder < AthenaResource::Base
     
     @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order)
     @order.save
+    @order
   end  
 
   private
@@ -271,9 +288,6 @@ class AthenaOrder < AthenaResource::Base
         action.details         = donation_details
         action.occurred_at     = action.timestamp
         action.action_subtype  = "Donation"
-
-        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
-        logger.debug("Action: #{action.attributes}")
         action.save!
         action
       end

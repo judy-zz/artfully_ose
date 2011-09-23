@@ -37,13 +37,13 @@
           %ul.report
             %li
               %span.stat Project
-              %span.current= @organization.fiscally_sponsored_project.name  
+              %span.current= @organization.fiscally_sponsored_project.name || "&nbsp;".html_safe 
             %li
               %span.stat Website
-              %span.current= @organization.fiscally_sponsored_project.website  
+              %span.current= @organization.fiscally_sponsored_project.website || "&nbsp;".html_safe
             %li
               %span.stat Status
-              %span.current= @organization.fiscally_sponsored_project.status  
+              %span.current= @organization.fiscally_sponsored_project.status || "&nbsp;".html_safe
 
 .document
   - if can? :manage, current_user.current_organization

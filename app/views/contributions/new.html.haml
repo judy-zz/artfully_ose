@@ -23,6 +23,9 @@
         .element
           = form.text_field :details
           .description Consider including the donation amount in the details.
+    %p
+      - if current_user.current_organization.has_active_fiscally_sponsored_project?
+        Use this form for recording contributions received outside of Fractured Atlas.  Donations to Fractured Atlas Fiscally Sponsored Projects should be made through Fractured Atlas.  Please contact support with any questions.
     .cancel-submit
       = link_to "Cancel", contributions_path
       = submit_tag "Create"
