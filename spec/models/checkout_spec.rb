@@ -38,10 +38,12 @@ describe Checkout do
   end
 
   describe "cash payments" do
-    let(:payment) { CashPayment.new(Factory(:athena_person)) }
-    subject { Checkout.new(order, payment) }
+    let(:payment)         { CashPayment.new(Factory(:athena_person)) }
+    let(:order_with_item) { Factory(:order_with_items) }
+    subject               { Checkout.new(order_with_item, payment) }
 
     it "should always approve orders with cash payments" do
+      subject.stub(:create_order).and_return(AthenaOrder.new)
       subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
       subject.finish.should be_true
     end

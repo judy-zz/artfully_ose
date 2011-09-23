@@ -5,8 +5,8 @@ describe Kit do
   subject { Kit.new }
 
   describe ".pad_with_new_kits" do
-    it "fills an empty array with a new instance of each type of kit" do
-      Kit.pad_with_new_kits([]).collect(&:class).should eq Kit.subklasses
+    it "fills an empty array with a new instance of each type of kit except sponsored donation kit" do
+      Kit.pad_with_new_kits([]).collect(&:class).should eq Kit.subklasses.reject{ |klass| klass.to_s == "SponsoredDonationKit" }
     end
 
     it "does not create a new instance if the array has one of that type" do

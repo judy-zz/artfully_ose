@@ -39,7 +39,6 @@ class Kit < ActiveRecord::Base
   end
 
   def self.subklasses
-    # Pending FAFS
     @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit ].freeze
   end
 

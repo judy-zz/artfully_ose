@@ -40,7 +40,7 @@ class Checkout
     return if organization.nil?
 
     ::Rails.logger.info "Processing FAFS donations"
-    if organization.has_active_fiscally_sponsored_project?
+    if !organization.nil? && organization.has_active_fiscally_sponsored_project?
       ::Rails.logger.info "Organization #{organization.id} has an active FSP"      
       @fafs_donations = order.clear_donations
       donation_total = @fafs_donations.inject(0) { |sum, donation| sum += donation.amount }
@@ -55,7 +55,8 @@ class Checkout
   #This is done in two steps so that we can process the tickets, ensure that the CC is valid etc...
   #Then process with FA
   def process_fafs_donations
-    if organization.has_active_fiscally_sponsored_project?
+    organization = order.organizations.first
+    if !organization.nil? && organization.has_active_fiscally_sponsored_project?
       @fafs_donations.each do |donation|
         ::Rails.logger.info "Processing donation for #{donation.amount}"
         fa_donation = FA::Donation.from(donation, payment)
