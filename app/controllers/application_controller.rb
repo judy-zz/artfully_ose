@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
     end
 
     def public_action?
-      params[:controller] == "devise/invitations" and params[:action] == "edit"
+      params[:controller] == "devise/invitations"
     end
 
 end
