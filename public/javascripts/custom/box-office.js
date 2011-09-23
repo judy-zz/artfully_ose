@@ -24,6 +24,11 @@ $("document").ready(function(){
     }
   });
 
+  // Make sure the defaults start as checked.
+  $("#anonymous:not(:checked), #cash:not(:checked)").each(function(){
+    $(this).click();
+  });
+
   $("#anonymous").change(function(){
     if($(this).is(":checked")){
       $("#person-search").addClass("hidden");
