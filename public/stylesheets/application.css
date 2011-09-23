@@ -1454,6 +1454,3 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   #checkout input {
     height: 36px;
     width: 100%; }
-
-#person-search {
-  margin-top: 12px; }

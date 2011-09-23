@@ -24,6 +24,25 @@ $("document").ready(function(){
     }
   });
 
+  $("#anonymous").change(function(){
+    if($(this).is(":checked")){
+      $("#person-search").addClass("hidden");
+      $(".target li:visible").remove();
+      $("#dummy").click();
+    } else {
+      $("#person-search").removeClass("hidden");
+    }
+  });
+
+  $("#cash").change(function(){
+    if($(this).is(":checked")){
+      $("#payment-info").addClass("hidden");
+      $("#credit_card_card_number").val("")
+    } else {
+      $("#payment-info").removeClass("hidden");
+    }
+  });
+
   $("#people-for-sales").bind("click", function(){
     $(".target li:visible").remove();
     var input = $(this).siblings("#terms"),

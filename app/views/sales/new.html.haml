@@ -37,11 +37,13 @@
       %h4 Customer Information
       %ul.radio-list
         %li
-          .radio= radio_button_tag(:person_id, @dummy.id, true)
+          .radio= check_box_tag(:anonymous, nil, true)
+          .label= label_tag(:anonymous, "Anonymous Sale")
+        %li.hidden
+          .radio= radio_button_tag(:person_id, @dummy.id, true, :id => "dummy")
           .label= label_tag(:person_id, "Anonymous Sale")
-      .or
-      %ul
-        %li#person-search
+      %ul#person-search.hidden
+        %li
           .full.paired.element
             = text_field_tag(:terms, "", :id => "terms")
             = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
@@ -50,9 +52,13 @@
           .radio
           .label
 
-    %fieldset#payment-info
+    %fieldset
       %h4 Payment Information
-      %ul
+      %ul.radio-list
+        %li
+          .radio= check_box_tag(:cash, nil, true)
+          .label= label_tag(:cash, "Cash Payment")
+      %ul#payment-info.hidden
         %li
           .label= label_tag("credit_card[card_number]", "Card Number")
           .element= text_field_tag("credit_card[card_number]")
