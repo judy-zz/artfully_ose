@@ -72,6 +72,10 @@ class AthenaPayment < AthenaResource::Base
     amount = amount.to_i / 100.00
     super(amount)
   end
+  
+  def reduce_amount_by(amount_in_cents)
+    self.amount=((amount * 100) - amount_in_cents)
+  end
 
   def requires_authorization?
     amount > 0

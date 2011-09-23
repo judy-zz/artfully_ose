@@ -204,6 +204,7 @@ artfully.widgets = (function(){
       jQuery.getJSON(artfully.utils.donation_uri(donation.organizationId), function(data){
         if(data.authorized){
           donation.type = data.type;
+          donation.fsp_name = data.fsp_name;
           donation.render(jQuery('#donation'));
         }
       });
@@ -373,7 +374,7 @@ artfully.models = (function(){
         message: function($key){
           var messages = {
             'regular': "Contributions are tax-deductible to the extent permitted by law.",
-            'sponsored': "This organization is a fiscally sponsored project of Fractured Atlas, a non-profit arts service organization. Contributions for the purposes of this organization must be made payable to Fractured Atlas and are tax-deductible to the extent permitted by law."
+            'sponsored': this.fsp_name + " is a fiscally sponsored project of Fractured Atlas, a non-profit arts service organization. Contributions for the purposes of " + this.fsp_name  + " must be made payable to Fractured Atlas and are tax-deductible to the extent permitted by law."
           };
           return messages[$key] || "";
         },
@@ -382,13 +383,15 @@ artfully.models = (function(){
               $producer = jQuery(document.createElement('input')).attr({'type':'hidden','name':'donation[organization_id]','value':this.organizationId}),
               $amount = jQuery(document.createElement('input')).attr({'type':'text', 'name':'donation[amount]'}).addClass('currency'),
               $submit = jQuery(document.createElement('input')).attr({'type':'submit', 'value':'Make Donation'}),
-              $notice = jQuery(document.createElement('p')).html(this.message(this.type));
+              $notice = jQuery(document.createElement('p')).html(this.message(this.type)),
+              $project = jQuery(document.createElement('p')).html("Donate to " + this.fsp_name + ".");
 
           $form.submit(function(){
             artfully.widgets.cart().show();
           });
 
           $notice.appendTo($t);
+          $project.appendTo($t);
 
           $form.append($amount)
                .append($producer)

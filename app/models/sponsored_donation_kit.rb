@@ -1,12 +1,17 @@
 class SponsoredDonationKit < Kit
   acts_as_kit :with_approval => true do
     activate :if => :connected?
-    activate :if => :exclusive?
-    activate :if => :has_website?
+    activate :if => :has_active_fiscally_sponsored_project
+    # activate :if => :exclusive?
+    # activate :if => :has_website?
 
     when_active do |organization|
       organization.can :receive, Donation
     end
+  end
+
+  def has_active_fiscally_sponsored_project
+    organization.has_active_fiscally_sponsored_project?
   end
 
   def connected?
@@ -30,7 +35,6 @@ class SponsoredDonationKit < Kit
   end
 
   def on_pending
-    AdminMailer.donation_kit_notification(self).deliver
-    ProducerMailer.donation_kit_notification(self, self.organization.owner).deliver
+    AdminMailer.sponsored_donation_kit_notification(self).deliver
   end
 end
