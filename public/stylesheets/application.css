@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .drilldown, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, #admin-menu > li, .stackAuto {
+.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .of4, .drilldown, .quarter.element, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, #admin-menu > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -21,7 +21,7 @@
 .stack2of3, .document, form ul li .element {
   width: 66.667%; }
 
-.stack1of4, .sideboard, .drilldown {
+.stack1of4, .sideboard, .of4, .drilldown, .quarter.element {
   width: 25%; }
 
 .stack3of4 {
@@ -263,7 +263,10 @@ strong {
 
 .of2 {
   position: relative;
-  padding-bottom: 12px; }
+  padding-bottom: 12px;
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 0; }
   .of2 > * {
     margin: 0 12px 12px;
     display: block;
@@ -280,7 +283,10 @@ strong {
 
 .of3 {
   position: relative;
-  padding-bottom: 12px; }
+  padding-bottom: 12px;
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 0; }
   .of3 > * {
     margin: 0 12px 12px;
     display: block;
@@ -289,6 +295,26 @@ strong {
     word-spacing: normal;
     text-align: left; }
     .of3 > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+
+.of4 {
+  position: relative;
+  padding-bottom: 12px;
+  display: inline-block;
+  margin-left: 0;
+  margin-right: 0; }
+  .of4 > * {
+    margin: 0 12px 12px;
+    display: block;
+    font-family: "Arimo", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    .of4 > *:after {
       content: ".";
       display: block;
       height: 0;
@@ -793,7 +819,7 @@ ul.prices li div {
     padding: 1px; }
 
 .hidden {
-  display: none; }
+  display: none !important; }
 
 .label.hidden {
   display: none; }
@@ -823,6 +849,39 @@ ul.prices li div {
     -moz-border-radius: 2px 2px 2px 2px;
     -webkit-border-radius: 2px 2px 2px 2px;
     border-radius: 2px 2px 2px 2px; }
+
+#zenbox_tab {
+  top: 80%; }
+
+dl.table-display {
+  border-bottom: 1px solid #cccccc;
+  font-size: 0.875em;
+  margin: 12px 0; }
+  dl.table-display dd, dl.table-display dt {
+    border-top: 1px solid #cccccc;
+    line-height: 36px;
+    text-indent: 12px; }
+  dl.table-display dt {
+    background: #eeeeee;
+    float: left;
+    width: 50%;
+    font-weight: bold;
+    color: #666666; }
+
+.or {
+  text-align: center;
+  color: #333333;
+  border-bottom: 1px solid #cccccc;
+  height: 6px;
+  margin-bottom: 5px;
+  background: white; }
+  .or:after {
+    background: white;
+    font-size: 0.875em;
+    line-height: 12px;
+    color: #999999;
+    content: "OR";
+    padding: 12px; }
 
 #header {
   left: 0;
@@ -978,6 +1037,7 @@ form ul li {
   word-spacing: -0.65em;
   text-align: center;
   vertical-align: top;
+  text-align: left;
   line-height: 36px;
   min-height: 36px;
   position: relative; }
@@ -988,6 +1048,11 @@ form ul li {
     width: 98%; }
   form ul li .element input[type="checkbox"] {
     width: auto; }
+  form ul li .quantity.element {
+    text-align: right; }
+    form ul li .quantity.element select {
+      display: inline-block;
+      width: 4em; }
   form ul li .date_field {
     text-align: left; }
     form ul li .date_field input {
@@ -1068,7 +1133,7 @@ form .description, form .form-error {
   border-left: none; }
 .paired.element .description {
   float: left; }
-.paired.element input[type=submit] {
+.paired.element input[type=submit], .paired.element input[type=button] {
   width: 25%;
   text-align: center;
   margin: 7px 0 6px;
@@ -1154,6 +1219,11 @@ form.jeditable button {
   margin: -25px 0 10px 65px; }
 .ui-timepicker-div td {
   font-size: 90%; }
+
+.radio-list li .radio {
+  text-align: center;
+  display: inline-block;
+  width: 36px; }
 
 .table-controls {
   -moz-border-radius: 3px 3px 0 0;
@@ -1379,20 +1449,11 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 #transactions {
   background-position: -1750px 0px; }
 
-#zenbox_tab {
-  top: 80%; }
+#checkout {
+  margin: 12px 0 auto; }
+  #checkout input {
+    height: 36px;
+    width: 100%; }
 
-dl.table-display {
-  border-bottom: 1px solid #cccccc;
-  font-size: 0.875em;
-  margin: 12px 0; }
-  dl.table-display dd, dl.table-display dt {
-    border-top: 1px solid #cccccc;
-    line-height: 36px;
-    text-indent: 12px; }
-  dl.table-display dt {
-    background: #eeeeee;
-    float: left;
-    width: 50%;
-    font-weight: bold;
-    color: #666666; }
+#person-search {
+  margin-top: 12px; }

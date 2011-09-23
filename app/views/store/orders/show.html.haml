@@ -7,8 +7,10 @@
   #clear-cart= link_to "Clear My Cart", store_order_path(current_order), :method => :delete, :confirm => 'Are you sure you want to empty your cart?' unless current_order.empty?
 
 %ul.item-list
-  - current_order.items.each do |item|
-    %li= render item
+  - current_order.purchasable_tickets.each do |ticket|
+    %li.ticket= render ticket
+  - current_order.donations.each do |donation|
+    %li.donation= render donation
 
 - unless @donations.empty?
   - @donations.each do |donation|

@@ -40,6 +40,7 @@ end
 
 Given /^I have added (\d+) donations to my order$/ do |a_few|
   organization = Factory(:organization)
+  FakeWeb.register_uri(:post, 'http://localhost/athena/items.json', :body => "" )
   donations = a_few.to_i.times.collect { Factory.build(:donation, :organization => organization) }
   donations.each do |donation|
     page.driver.post "/store/order", "donation[amount]=#{donation.amount}&donation[organization_id]=#{organization.id}"

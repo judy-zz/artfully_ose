@@ -1,4 +1,3 @@
-#Used for shopping cart in the widget
 class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 
@@ -9,7 +8,7 @@ class Order < ActiveRecord::Base
 
   state_machine do
     state :started
-    state :approved, :enter => :finish
+    state :approved
     state :rejected
 
     event :approve do
@@ -19,16 +18,6 @@ class Order < ActiveRecord::Base
     event :reject do
       transitions :from => [ :started, :rejected ], :to => :rejected
     end
-  end
-
-  def person
-    @person ||= find_person
-  end
-
-  def person=(person)
-    raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
-    @person, self.person_id = person, person.id
-    save
   end
 
   def clean_order
@@ -51,6 +40,12 @@ class Order < ActiveRecord::Base
 
     purchasable_tickets << ptkts
   end
+  
+  def clear_donations
+    temp = donations
+    donations = []
+    temp
+  end
 
   def lock_lockables(line_items)
     lock = create_lock(line_items.collect { |i| i.item_id })
@@ -61,7 +56,7 @@ class Order < ActiveRecord::Base
   end
 
   def total
-    items.inject(0) { |sum, item| sum + item.price }
+    items.sum(&:price)
   end
 
   def unfinished?
@@ -74,42 +69,16 @@ class Order < ActiveRecord::Base
 
   def pay_with(payment, options = {})
     @payment = payment
-    options[:settle] = true if options[:settle].nil?
 
-    if payment.amount > 0
-      payment.authorize! ? approve! : reject!
-      if options[:settle] and approved?
-        payment.settle!
-      end
+    if payment.requires_authorization?
+      pay_with_authorization(payment, options)
     else
-      #options[:settle] = true # neccessary?
-      payment.transaction_id = nil
       approve!
     end
-
   end
 
-  def finish
-    order_timestamp = Time.now
-    purchasable_tickets.map { |ticket| ticket.sell_to(person, order_timestamp) }
-
-    organizations.each do |organization|
-      logger.debug("INSIDE organizations.each do |organization|, organization: #{organization}")
-      order = AthenaOrder.new.tap do |order|
-        order.organization    = organization
-        order.timestamp       = order_timestamp
-        order.person          = person
-        order.transaction_id  = @payment.transaction_id
-
-        #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
-        order << tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
-        order << donations
-      end
-      order.save!
-      OrderMailer.confirmation_for(self, order).deliver
-    end
-
-
+  def finish(person, order_timestamp)
+    purchasable_tickets.each { |ticket| ticket.sell_to(person, order_timestamp) }
   end
 
   def generate_donations
@@ -138,6 +107,13 @@ class Order < ActiveRecord::Base
   end
 
   private
+
+    def pay_with_authorization(payment, options)
+      options[:settle] = true if options[:settle].nil?
+      payment.authorize! ? approve! : reject!
+      payment.settle! if options[:settle] and approved?
+    end
+
     #TODO: Debt: Move this out of order into PurchasableCollection
     def create_lock(ids)
       begin
@@ -146,16 +122,5 @@ class Order < ActiveRecord::Base
         self.errors.add(:items, "could not be locked")
       end
       lock
-    end
-
-    def find_person
-      return if self.person_id.nil?
-
-      begin
-        AthenaCustomer.find(self.person_id)
-      rescue ActiveResource::ResourceNotFound
-        update_attribute!(:person_id, nil)
-        return nil
-      end
     end
 end

@@ -29,6 +29,15 @@ describe AthenaPayment do
       subject.amount.should eq 10.00
     end
   end
+  
+  describe "reduce amount" do
+    it "should reduce the amount" do
+      subject.amount = 1000
+      subject.amount.should eq 10.00
+      subject.reduce_amount_by 501
+      subject.amount.should eq 4.99
+    end
+  end
 
   describe "with nested attributes" do
     it "should be invalid with an invalid billing address" do
@@ -85,6 +94,18 @@ describe AthenaPayment do
       subject.customer.stub!(:encode)
       subject.customer.should_receive(:encode)
       subject.encode
+    end
+  end
+
+  describe "#requires_authorization?" do
+    it "requires authorization for amounts greater than 0" do
+      subject.stub(:amount).and_return(1)
+      subject.requires_authorization?.should be_true
+    end
+
+    it "does not requires authorization for amounts less than or equal to 0" do
+      subject.stub(:amount).and_return(0)
+      subject.requires_authorization?.should be_false
     end
   end
 

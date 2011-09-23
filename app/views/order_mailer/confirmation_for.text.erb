@@ -1,19 +1,21 @@
 Thank you for your order <%= @person.first_name %> <%= @person.last_name %>!
 
-Order number: <%= @athena_order.id %>
-Purchase Date: <%= l DateTime.now %>
+Order number: <%= @order.id %>
+Purchase Date: <%= l(@order.timestamp)%>
 Order total: $<%= format("%.2f", (@order.total/100.0)) %>
 
 <% unless @order.tickets.empty? %>
   Tickets
-  <% @order.tickets.each do |ticket| %>
+  <% @order.tickets.each do |item| %>
+    <%- ticket = item.product %>
     - <%= "$#{format("%.2f", (ticket.price/100.0))}: #{ticket.event} at #{l ticket.performance, :format => :date_at_time}" %>
   <% end %>
 <% end %>
 
 <% unless @order.donations.empty? %>
   Donations
-  <% @order.donations.each do |donation| %>
+  <% @order.donations.each do |item| %>
+    <%- donation = item.product %>
     - <%= "$#{format("%.2f", (donation.amount/100.00))} donation to #{donation.organization.name}" %>
   <% end %>
 <% end %>
