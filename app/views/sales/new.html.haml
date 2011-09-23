@@ -28,7 +28,7 @@
   = form_tag event_show_sales_path do
     %fieldset
       %h4 Sections
-      %ul
+      %ul#section-list
         - @sale.sections.each do |section|
           %li
             .label= label_tag "quantities[#{section.id}]", section.name
