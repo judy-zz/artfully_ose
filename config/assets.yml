@@ -4,6 +4,7 @@ package_assets: on
 s3_bucket: <%= ENV['S3_BUCKET'] %>
 s3_access_key_id: <%= ENV['ACCESS_KEY_ID'] %>
 s3_secret_access_key: <%= ENV['SECRET_ACCESS_KEY'] %>
+ssl: true
 
 s3_upload_files:
   - public/404.html

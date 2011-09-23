@@ -85,6 +85,10 @@ class OrganizationsController < ApplicationController
         @organization.update_attribute(:fa_member_id, @fa_user.member_id)
         @organization.refresh_active_fs_project
         @organization.delay.import_all_fa_donations
+        @kit = SponsoredDonationKit.new
+        @organization.kits << @kit
+        @organization.save
+        @kit.activate!
         flash[:notice] = "Successfully connected to Fractured Atlas!"
       else
         flash[:error]= "Unable to connect to your Fractured Atlas account.  Please check your username and password."

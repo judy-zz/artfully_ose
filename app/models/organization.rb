@@ -43,8 +43,9 @@ class Organization < ActiveRecord::Base
   end
 
   def authorization_hash
-    { :authorized => can?(:receive, Donation),
-      :type       => donation_type }
+    { :authorized   => can?(:receive, Donation),
+      :type         => donation_type,
+      :fsp_name     => fiscally_sponsored_project.try(:name) }
   end
   
   def has_active_fiscally_sponsored_project?
@@ -95,7 +96,7 @@ class Organization < ActiveRecord::Base
     end
 
     def donation_type
-      return :regular if kits.where(:type => "RegularDonationKit").any?
       return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
+      return :regular if kits.where(:type => "RegularDonationKit").any?
     end
 end

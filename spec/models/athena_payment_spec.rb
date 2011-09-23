@@ -28,11 +28,13 @@ describe AthenaPayment do
       subject.amount = 1000
       subject.amount.should eq 10.00
     end
-
-    it "should deduct from the amount" do
+  end
+  
+  describe "reduce amount" do
+    it "should reduce the amount" do
       subject.amount = 1000
       subject.amount.should eq 10.00
-      subject.reduce_amount(501)
+      subject.reduce_amount_by 501
       subject.amount.should eq 4.99
     end
   end

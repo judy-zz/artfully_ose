@@ -3,9 +3,9 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
-    = stylesheet_link_tag 'http://fonts.googleapis.com/css?family=Raleway:100'
-    = stylesheet_link_tag "http://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-    = stylesheet_link_tag "http://asset0.zendesk.com/external/zenbox/v2.1/zenbox.css"
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
+    = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
+    = stylesheet_link_tag "https://asset0.zendesk.com/external/zenbox/v2.1/zenbox.css"
     = include_stylesheets :vendor, :application, :media => :screen
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
@@ -29,6 +29,6 @@
         #current-user= current_admin.email
         #current-org= link_to "Sign Out", destroy_admin_session_path
 
-    = javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
-    = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
+    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
+    = javascript_include_tag "https://www.denoteapp.com/js/allow.js" if Rails.env.demo?
     = include_javascripts :vendor, :application, :custom
