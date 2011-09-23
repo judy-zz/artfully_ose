@@ -40,15 +40,14 @@ class Kit < ActiveRecord::Base
 
   def self.subklasses
     # Pending FAFS
-    # @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit ].freeze
-    @subklasses ||= [ TicketingKit, RegularDonationKit ].freeze
+    @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit ].freeze
   end
 
   def self.pad_with_new_kits(kits = [])
     types = kits.collect(&:type)
     alternatives = kits.collect(&:alternatives).flatten.uniq
 
-    padding = subklasses.reject{ |klass| (types.include? klass.to_s) or (alternatives.include? klass) }.collect(&:new)
+    padding = subklasses.reject{ |klass| klass.to_s == "SponsoredDonationKit" }.reject{ |klass| (types.include? klass.to_s) or (alternatives.include? klass) }.collect(&:new)
     kits + padding
   end
 

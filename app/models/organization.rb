@@ -96,7 +96,7 @@ class Organization < ActiveRecord::Base
     end
 
     def donation_type
-      return :regular if kits.where(:type => "RegularDonationKit").any?
       return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
+      return :regular if kits.where(:type => "RegularDonationKit").any?
     end
 end
