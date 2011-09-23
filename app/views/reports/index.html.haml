@@ -5,10 +5,10 @@
 
 .option1.of2
   %h3 Statements
-  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec turpis nunc, ullamcorper non pretium non, cursus vitae est. Phasellus imperdiet vestibulum urna, non vehicula nisl accumsan in. Praesent ullamcorper ipsum sed ante interdum sit amet aliquet velit tincidunt. Nam vitae turpis mauris. Etiam ac augue lacus. Sed eros mi, auctor vitae fermentum ut, faucibus a nisl. Ut eget ipsum lectus, sit amet condimentum ligula.
+  %p= t(".statements", :default => "View Statements")
   = link_to "View Statements", statements_path, :class => :cta
 
 .option2.of2
   %h3 Settlements
-  %p Donec turpis nunc, ullamcorper non pretium non, cursus vitae est. Phasellus imperdiet vestibulum urna, non vehicula nisl accumsan in. Praesent ullamcorper ipsum sed ante interdum sit amet aliquet velit tincidunt. Nam vitae turpis mauris. Etiam ac augue lacus. Sed eros mi, auctor vitae fermentum ut, faucibus a nisl. Ut eget ipsum lectus, sit amet condimentum ligula.
+  %p= t(".settlements", :default => "View Settlements")
   = link_to "View Settlements", settlements_path, :class => :cta

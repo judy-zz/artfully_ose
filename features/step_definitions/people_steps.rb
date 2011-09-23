@@ -29,3 +29,7 @@ end
 Then /^I should see (\d+) people$/ do |count|
   page.should have_xpath("//ul[@class='people-list']/li", :count => count.to_i)
 end
+
+Given /^my organization has a dummy person record$/ do
+  Factory(:dummy, :organization => @current_user.current_organization)
+end

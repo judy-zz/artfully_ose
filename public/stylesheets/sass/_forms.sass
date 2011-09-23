@@ -12,6 +12,7 @@ form
 
 form ul li
   @include stack-list
+  text-align: left
   line-height: 3 * $line_height
   min-height: 3 * $line_height
   position: relative
@@ -24,6 +25,11 @@ form ul li
       width: 98%
     input[type="checkbox"]
       width: auto
+  .quantity.element
+    text-align: right
+    select
+      display: inline-block
+      width: 4em
   .date_field
     text-align: left
     input
@@ -97,7 +103,7 @@ form
     border-left: none
   .description
     float: left
-  input[type=submit]
+  input[type=submit], input[type=button]
     width: 25%
     text-align: center
     margin: 7px 0 6px
@@ -106,6 +112,8 @@ form
 
 .full.element
   @extend .stack
+.quarter.element
+  @extend .stack1of4
 
 .single_field
   margin-top: 10px
@@ -175,3 +183,11 @@ form.jeditable
     margin: -25px 0 10px 65px
   td
     font-size: 90%
+
+
+.radio-list
+  li
+    .radio
+      text-align: center
+      display: inline-block
+      width: 3 * $line_height

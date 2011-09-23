@@ -19,35 +19,30 @@ describe Order do
     it "should be empty without any items" do
       subject.should be_empty
     end
+  end
+
+  describe "#add_tickets" do
+    let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }
+
+    before(:each) do
+      subject.stub(:create_lock).and_return(Factory(:lock, :tickets => tickets.collect {|t| t.id }))
+      subject.add_tickets tickets
+    end
 
     it "should return the tickets added via add_tickets" do
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
-      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      subject.add_tickets tickets
       subject.tickets.should eq tickets
     end
 
     it "should have PurchasableTickets when a tickets are added to the order" do
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
-      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      subject.add_tickets tickets
-      subject.items.each do |item|
-        item.should be_a PurchasableTicket
-      end
+      subject.items.each { |item| item.should be_a PurchasableTicket }
     end
 
     it "should have the right PurchasableTickets when tickets are added to the order" do
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
-      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      subject.add_tickets tickets
-      subject.items.each do |item|
-        tickets.should include(item.ticket)
-      end
+      subject.items.each { |item| tickets.should include(item.ticket) }
     end
+  end
 
+  describe "donations" do
     it "should have a Donation when one is added to the order" do
       donation = Factory(:donation)
       subject.donations << donation
@@ -87,72 +82,73 @@ describe Order do
     end
   end
 
-  describe "and Payments" do
+  describe "#total" do
+    let(:items) { 10.times.collect{ mock(:item, :price => 10) }}
     it "should sum up the price of the tickets via total" do
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => Factory(:lock).encode)
-      subject.add_tickets 2.times.collect { Factory(:ticket_with_id, :price => "100") }
-      subject.total.should eq 200
+      subject.stub(:items) { items }
+      subject.total.should eq 100
+    end
+  end
+
+  describe "#pay_with" do
+    let(:payment) { mock(:payment, :amount => 100) }
+
+    it "saves the order after payment" do
+      payment.stub(:requires_authorization?) { false }
+      subject.should_receive(:save!)
+      subject.pay_with(payment, :settle => false)
     end
 
-    describe "when transitioning state based on the response from ATHENA" do
-      before(:each) do
-        @payment = Factory(:payment)
+    describe "authorization" do
+      it "attempt to authorize the payment if required" do
+        payment.stub(:requires_authorization?) { true }
+        payment.should_receive(:authorize!).and_return(true)
+        subject.pay_with(payment, :settle => false)
       end
 
-      it "should submit the Payment to ATHENA when the payment is confirmed by the user" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
-        subject.pay_with(@payment, :settle => false)
-        FakeWeb.last_request.method.should == "POST"
-        FakeWeb.last_request.path.should == '/payments/transactions/authorize'
+      it "does not attempt to authorize the payment if it is not required" do
+        payment.stub(:requires_authorization?).and_return(false)
+        payment.should_not_receive(:authorize!)
+        subject.pay_with(payment, :settle => false)
       end
+    end
 
+    describe "state transitions" do
       it "should transition to approved when the payment is approved" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":true }')
-        subject.pay_with(@payment, :settle => false)
-        subject.state.should == "approved"
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:authorize!).and_return(true)
+        subject.pay_with(payment, :settle => false)
+        subject.should be_approved
       end
 
       it "should tranisition to rejected when the Payment is rejected" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success":false}')
-        subject.pay_with(@payment, :settle => false)
-        subject.state.should == "rejected"
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:authorize!).and_return(false)
+        subject.pay_with(payment, :settle => false)
+        subject.should be_rejected
       end
 
+      it "should transition to approved if no authorization is required for the payment" do
+        payment.stub(:requires_authorization?).and_return(false)
+        subject.pay_with(payment, :settle => false)
+        subject.should be_approved
+      end
+    end
+
+    describe "settlement" do
       it "should settle immediately when an authorized payment is submitted" do
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/authorize', :status => 200, :body => '{ "success": true}')
-        FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/settle', :status => 200, :body => '{ "success": true}')
-        subject.pay_with(@payment)
-        FakeWeb.last_request.method.should == "POST"
-        FakeWeb.last_request.path.should == '/payments/transactions/settle'
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:authorize!).and_return(true)
+        payment.should_receive(:settle!)
+        subject.pay_with(payment, :settle => true)
       end
     end
   end
 
-  describe ".finish" do
-    before :each do
-      FakeWeb.register_uri(:post, "http://localhost/athena/orders.json", :body => Factory(:athena_order_with_id).encode)
-      FakeWeb.register_uri(:post, "http://localhost/athena/items.json", :body => Factory(:athena_item).encode)
-      FakeWeb.register_uri(:post, "http://localhost/athena/actions.json", :body => Factory(:athena_purchase_action).encode)
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
-      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      subject.add_tickets tickets
-      subject.items.each { |item| item.stub!(:sell_to) }
-      subject.items.each { |item| item.stub!(:sold?).and_return(true) }
-      subject.instance_variable_set(:@payment, Factory(:payment))
-    end
-
-    it "should be called when the order is approved" do
-      subject.stub!(:finish)
-      subject.should_receive(:finish)
-      subject.approve!
-    end
-
+  describe "#finish" do
     it "should mark each item as sold" do
-      item = Factory(:athena_item)
-      FakeWeb.register_uri(:get, %r|http://localhost/athena/items.json\?orderId=eq|, :status => 200, :body => "[#{item.encode}]")
       subject.items.each { |item| item.should_receive(:sell_to) }
-      subject.finish
+      subject.finish(Factory(:athena_person), Time.now)
     end
   end
 

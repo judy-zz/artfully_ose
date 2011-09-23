@@ -16,5 +16,5 @@ Feature: Door List Creation
     And I view the 1st event
     And I view the 1st performance
     And I press "Door List"
-    Then I should see "Patron, Joe"
-    And I should see "Patron, Bob"
+    Then I should see "Joe Patron"
+    And I should see "Bob Patron"

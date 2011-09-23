@@ -21,7 +21,7 @@ Factory.define :athena_chart_template, :parent => :athena_chart do |c|
 end
 
 Factory.sequence :section_id do |n|
-  n
+  n.to_s
 end
 
 Factory.define :athena_free_section, :class => AthenaSection, :default_strategy => :build do |section|

@@ -15,9 +15,17 @@ class AthenaOrder < AthenaResource::Base
     attribute :price,           :integer
     attribute :details,         :string
     attribute :timestamp,       :string
+    
+    #pseudo people
+    attribute :first_name,      :string
+    attribute :last_name,       :string
+    attribute :email,           :string
+    
+    #fa attributes
+    attribute :check_no,    :string
   end
 
-  validates_presence_of :person_id
+  validates_presence_of :person_id, :unless => lambda { person_information_present? }
   validates_presence_of :organization_id
 
   before_save :set_timestamp
@@ -27,6 +35,10 @@ class AthenaOrder < AthenaResource::Base
 
   def person
     @person ||= find_person
+  end
+
+  def person_information_present?
+    !(first_name.nil? || last_name.nil? || email.nil?)
   end
 
   def person=(person)
@@ -80,12 +92,24 @@ class AthenaOrder < AthenaResource::Base
     @customer, self.customer_id = customer, customer.id
   end
 
+  def total
+    all_items.inject(0) {|sum, item| sum + item.price.to_i }
+  end
+
   def items
     @items ||= find_items
   end
 
   def items=(items)
     @items = items
+  end
+
+  def tickets
+    items.select(&:ticket?)
+  end
+
+  def donations
+    items.select(&:donation?)
   end
 
   def for_organization(org)
@@ -196,6 +220,21 @@ class AthenaOrder < AthenaResource::Base
     attributes['timestamp'] = attributes['timestamp'].in_time_zone(Organization.find(organization_id).time_zone)
     return attributes['timestamp']
   end
+  
+  def self.from_fa_donation(fa_donation, organization)
+    @order = AthenaOrder.new
+    @order.organization_id = organization.id
+    @order.timestamp = DateTime.parse fa_donation.date
+    @order.price = (fa_donation.amount.to_f * 100).to_i
+    @order.first_name = fa_donation.donor.first_name || ""
+    @order.last_name = fa_donation.donor.last_name || ""
+    
+    #This should go to the anonymous record
+    @order.email = fa_donation.donor.email || ""
+    
+    @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order)
+    @order.save
+  end  
 
   private
     def merge_and_sort_items
@@ -277,7 +316,7 @@ class AthenaOrder < AthenaResource::Base
 
     def find_items
       return [] if new_record?
-      items ||= AthenaItem.find_by_order(self)
+      AthenaItem.find_by_order(self)
     end
 
     def set_timestamp

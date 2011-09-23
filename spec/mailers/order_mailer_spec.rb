@@ -2,11 +2,11 @@ require "spec_helper"
 
 describe OrderMailer do
   describe "order confirmation email" do
-    let(:order) { Factory(:order_with_items) }
-    let(:athena_order) { Factory(:athena_order_with_id) }
-    subject { OrderMailer.confirmation_for(order, athena_order) }
+    let(:order) { Factory(:athena_order_with_id) }
+    subject { OrderMailer.confirmation_for(order) }
 
     before(:each) do
+      order.stub(:items).and_return(10.times.collect{ Factory(:athena_item_with_id)})
       subject.deliver
     end
 

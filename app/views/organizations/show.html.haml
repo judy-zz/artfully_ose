@@ -23,12 +23,27 @@
         .key Time Zone
         .value= @organization.time_zone
 
-  -#- unless @organization.connected?
-  -#  %h3 Connect to Fractured Atlas
-  -#  %p This organization has not been connected to a Fractured Atlas membership.
-  -#  = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
-  -#- else
-  -#  %p This organization has been connected to a Fractured Atlas membership.
+  - unless @organization.connected?
+    %h3 Connect to Fractured Atlas
+    %p This organization has not been connected to a Fractured Atlas membership.  Enter your Fractured Atlas username and password below to connect.
+    = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
+  - else
+    %h3 Fractured Atlas
+    %p This organization is connected to a Fractured Atlas membership.
+    -if @organization.has_active_fiscally_sponsored_project?
+      %ul
+        %li
+          %h4 Fiscal Sponsorship
+          %ul.report
+            %li
+              %span.stat Project
+              %span.current= @organization.fiscally_sponsored_project.name  
+            %li
+              %span.stat Website
+              %span.current= @organization.fiscally_sponsored_project.website  
+            %li
+              %span.stat Status
+              %span.current= @organization.fiscally_sponsored_project.status  
 
 .document
   - if can? :manage, current_user.current_organization
