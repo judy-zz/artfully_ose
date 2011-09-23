@@ -23,6 +23,7 @@ class AthenaOrder < AthenaResource::Base
     
     #fa attributes
     attribute :check_no,    :string
+    attribute :fa_id,       :string
   end
 
   validates_presence_of :person_id, :unless => lambda { person_information_present? }
@@ -228,6 +229,7 @@ class AthenaOrder < AthenaResource::Base
     @order.price = (fa_donation.amount.to_f * 100).to_i
     @order.first_name = fa_donation.donor.first_name || ""
     @order.last_name = fa_donation.donor.last_name || ""
+    @order.fa_id = fa_donation.id
     
     #This should go to the anonymous record
     @order.email = fa_donation.donor.email || ""

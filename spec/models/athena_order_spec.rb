@@ -33,6 +33,7 @@ describe AthenaOrder do
       order.first_name.should eq fa_donation.donor.first_name
       order.last_name.should eq fa_donation.donor.last_name
       order.email.should eq fa_donation.donor.email
+      order.fa_id.should eq fa_donation.id
       order.should be_valid
       
       order.items.size.should eq 1
@@ -50,6 +51,8 @@ describe AthenaOrder do
       item.fs_available_on.should eq fa_donation.fs_available_on
       item.is_anonymous.should eq fa_donation.is_anonymous
     end
+    
+    it "updates an order if it already exists"
   end
 
   describe "#organization" do
