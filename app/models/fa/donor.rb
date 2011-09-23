@@ -2,8 +2,7 @@ class FA::Donor < FA::Base
   self.element_name = "donor"
   include ActiveModel::Serializers::Xml
 
-  attr_accessor :email, :first_name, :last_name, :address1, :city, :state, :zip
-  attr_accessor :anonymous
+  attr_accessor :email, :first_name, :last_name, :company_name, :address1, :city, :state, :zip, :country, :anonymous
 
   def self.extract_from(payment)
     new.tap do |this|
@@ -17,6 +16,9 @@ class FA::Donor < FA::Base
     end
   end
 
+  #order matters here, we use these in to_xml to adhered to the FA schema which is an xs:sequence
+  #see: http://api.fracturedatlas.org/donations.xsd
+  #Note: Ruby 1.8.7 doens't preserve hash order.  FA validation will fail.
   def attributes
     {
       'email'        => email,

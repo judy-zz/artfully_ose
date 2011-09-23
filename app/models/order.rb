@@ -40,6 +40,12 @@ class Order < ActiveRecord::Base
 
     purchasable_tickets << ptkts
   end
+  
+  def clear_donations
+    temp = donations
+    donations = []
+    temp
+  end
 
   def lock_lockables(line_items)
     lock = create_lock(line_items.collect { |i| i.item_id })
