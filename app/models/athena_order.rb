@@ -238,8 +238,16 @@ class AthenaOrder < AthenaResource::Base
     return attributes['timestamp']
   end
   
+  def self.find_by_fa_id(fa_id)
+    o = find(:all, :params => { :faId => fa_id }).first
+    return if o.nil?
+    o.skip_actions = true
+    o
+  end
+  
   def self.from_fa_donation(fa_donation, organization)
-    @order = AthenaOrder.new
+    @order = AthenaOrder.find_by_fa_id(fa_donation.id) || AthenaOrder.new
+
     @order.organization_id = organization.id
     @order.timestamp = DateTime.parse fa_donation.date
     @order.price = (fa_donation.amount.to_f * 100).to_i
@@ -250,7 +258,7 @@ class AthenaOrder < AthenaResource::Base
     #This should go to the anonymous record
     @order.email = fa_donation.donor.email || ""
     
-    @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order)
+    @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order, @order.items.first)
     @order.save
     @order
   end  

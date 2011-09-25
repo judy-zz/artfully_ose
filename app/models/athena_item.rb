@@ -154,12 +154,16 @@ class AthenaItem < AthenaResource::Base
     patch(items, { :settlementId => settlement.id, :state => :settled })
   end
 
-  def self.from_fa_donation(fa_donation, organization, order)    
-    @item = AthenaItem.new({
-              :order_id       => order.id,
-              :product_type   => "Donation",
-              :state          => "settled"
-            })
+  def self.find_by_fa_id(fa_id)
+    find(:all, :params => { :faId => fa_id }).first
+  end
+
+  def self.from_fa_donation(fa_donation, organization, order, existing_item=nil)    
+    @item = existing_item || AthenaItem.new({
+                                            :order_id       => order.id,
+                                            :product_type   => "Donation",
+                                            :state          => "settled"
+                                          })
     
     @item.organization_id = organization.id
     @item.price = (fa_donation.amount.to_f * 100).to_i

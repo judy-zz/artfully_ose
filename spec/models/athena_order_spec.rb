@@ -23,6 +23,7 @@ describe AthenaOrder do
       stubbed_order.stub(:save).and_return(stubbed_order)
       stubbed_order.stub(:items).and_return([])
       stubbed_order.should_receive(:save)
+      AthenaOrder.stub(:find_by_fa_id).and_return(nil)
       AthenaOrder.stub(:new).and_return(stubbed_order)
       
       order = AthenaOrder.from_fa_donation(fa_donation, organization)
@@ -51,8 +52,39 @@ describe AthenaOrder do
       item.fs_available_on.should eq fa_donation.fs_available_on
       item.is_anonymous.should eq fa_donation.is_anonymous
     end
+
+    it "updates an order instead of creating a new one" do
+      fa_donation = Factory(:fa_donation)
+      organization = Factory(:organization)      
+      stubbed_item = Factory(:fa_item)
+      stubbed_order = Factory(:athena_order_with_id)
+      stubbed_order.stub(:save).and_return(stubbed_order)
+      stubbed_order.stub(:items).and_return(Array.wrap(stubbed_item))
+      stubbed_order.should_receive(:save)
+      stubbed_order.should_not_receive(:create_purchase_action)
+      stubbed_order.should_not_receive(:create_donation_actions)
+      AthenaOrder.should_receive(:find_by_fa_id).and_return(stubbed_order)
+      AthenaOrder.should_not_receive(:new)
+      AthenaItem.should_not_receive(:new)
+      
+      order = AthenaOrder.from_fa_donation(fa_donation, organization)
+    end
     
-    it "updates an order if it already exists"
+    it "can find a single order by fa_id" do
+      order = Factory(:athena_order_with_id)
+      order.fa_id = "400"
+      orders = []
+      orders << order
+      AthenaOrder.should_receive(:find).and_return(orders)
+      single_order = AthenaOrder.find_by_fa_id "400"
+      single_order.class.name.should eq "AthenaOrder"
+    end
+    
+    it "returns null if it didn't find an order by fa_id" do
+      AthenaOrder.should_receive(:find).and_return([])
+      single_order = AthenaOrder.find_by_fa_id "400"
+      single_order.should be_nil
+    end
   end
 
   describe "#organization" do

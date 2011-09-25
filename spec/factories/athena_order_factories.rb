@@ -38,6 +38,10 @@ Factory.define :athena_item_with_id, :parent => :athena_item do |i|
   end
 end
 
+Factory.define :fa_item, :parent => :athena_item do |i|
+
+end
+
 Factory.define :athena_item_for_comped_ticket, :default_strategy => :build, :class => AthenaItem do |i|
   i.id    { Factory.next(:athena_item_id)               }
   i.order { Factory(:athena_order_with_id)              }
