@@ -35,7 +35,7 @@ class Organization < ActiveRecord::Base
   end
 
   def connected?
-    !fa_member_id.blank?
+    fa_member_id.present?
   end
 
   def available_kits
@@ -47,50 +47,55 @@ class Organization < ActiveRecord::Base
       :type         => donation_type,
       :fsp_name     => fiscally_sponsored_project.try(:name) }
   end
-  
+
+  def fsp
+    fiscally_sponsored_project || build_fiscally_sponsored_project(:fa_member_id => fa_member_id)
+  end
+
   def has_active_fiscally_sponsored_project?
-    return !fiscally_sponsored_project.nil?
+    connected? and fsp.active?
   end
 
   #Before calling this method, organization must have already been conected to an FA membership
   #and have fa_member_id set
   def refresh_active_fs_project
-    unless fa_member_id.nil?
-      begin
-        fafs_project = FA::Project.find_by_member_id(fa_member_id)
-        @fiscally_sponsored_project = FiscallySponsoredProject.from_fractured_atlas(fafs_project, self, @fiscally_sponsored_project)
-        @fiscally_sponsored_project.save
-        
-        #ensure that updated_at gets updated even if there were no changes.  We'll use updated_at
-        #when we poll FA for recent donations
-        @fiscally_sponsored_project.touch
-        save
-      rescue ActiveResource::ResourceNotFound
-        logger.debug "No FAFS project found for member id #{fa_member_id}"
-      end
+    if fa_member_id.present?
+      fsp.refresh
+      update_kits
     end
-    self
   end
-  
+
   def import_all_fa_donations
     return unless has_active_fiscally_sponsored_project?
     process_donations FA::Donation.find_by_member_id(fa_member_id)
   end
-  
+
   def import_recent_fa_donations(since=nil)
     return unless has_active_fiscally_sponsored_project?
-    since ||= fiscally_sponsored_project.updated_at
+    since ||= fsp.updated_at
     process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
 
   private
+
+    def update_kits
+      if fsp.active? and sponsored_kit.cancelled?
+        sponsored_kit.reactive
+      elsif fsp.inactive? and sponsored_kit.active?
+        sponsored_kit.cancel!
+      end
+    end
+
+    def sponsored_kit
+      kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new
+    end
 
     def process_donations(fa_donations)
       fa_donations.each do |fa_donation|
         @order = AthenaOrder.from_fa_donation(fa_donation, self)
       end
     end
-  
+
     def check_for_duplicates(kit)
       raise Kit::DuplicateError if kits.where(:type => kit.type).any?
     end

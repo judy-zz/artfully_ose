@@ -1,17 +1,42 @@
 class FiscallySponsoredProject < ActiveRecord::Base
   belongs_to :organization
-  
-  def self.from_fractured_atlas(fa_project, organization, fiscally_sponsored_project=nil)
-    @fsp = fiscally_sponsored_project || FiscallySponsoredProject.new
-    @fsp.fs_project_id = fa_project.id
-    @fsp.fa_member_id = fa_project.member_id
-    @fsp.name = fa_project.name            
-    @fsp.category  = fa_project.category               
-    @fsp.profile   = fa_project.profile                       
-    @fsp.website = fa_project.website                     
-    @fsp.applied_on = DateTime.parse fa_project.applied_on                      
-    @fsp.status  = fa_project.status
-    @fsp.organization = organization
-    @fsp
+
+  def refresh
+    with_remote_project do |project|
+      update_attributes(self.class.attributes_from(project))
+    end
+  end
+
+  def active?
+    status == "Active"
+  end
+
+  def inactive?
+    !active?
+  end
+
+  private
+
+  def remote_project
+    FA::Project.find_by_member_id(fa_member_id)
+  end
+
+  def self.attributes_from(project)
+    { :fs_project_id => project.id,
+      :fa_member_id  => project.member_id,
+      :name          => project.name,
+      :category      => project.category,
+      :profile       => project.profile,
+      :website       => project.website,
+      :applied_on    => DateTime.parse(project.applied_on),
+      :status        => project.status }
+  end
+
+  def with_remote_project(&block)
+    begin
+      block.call(remote_project)
+    rescue ActiveResource::ResourceNotFound
+      logger.debug("No FAFS project found for member id #{fa_member_id}")
+    end
   end
 end

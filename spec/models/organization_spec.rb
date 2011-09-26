@@ -10,70 +10,35 @@ describe Organization do
   describe "ability" do
     it { should respond_to :ability }
   end
-  
-  describe "refreshing_fa_project" do
-    it "should not refresh if fa_member_id is not set" do
-      o = subject.refresh_active_fs_project
-      o.fa_member_id.should be_nil
-    end
-    
-    it "should refresh" do
-      fa_project = Factory(:fa_project)
-      FA::Project.stub(:find_by_member_id).and_return(fa_project)
-      subject.fa_member_id = fa_project.member_id
-      subject.refresh_active_fs_project
-      subject.fiscally_sponsored_project.should_not be_nil
-    end
-    
-    it "should not save an fsp if one isn't found" do
-      FA::Project.should_receive(:find_by_member_id).and_raise(ActiveResource::ResourceNotFound.new("Not Found"))
-      subject.fa_member_id = "3"
-      subject.refresh_active_fs_project
-      subject.fiscally_sponsored_project.should be_nil
-    end
-    
-    it "shouldn't create a second fs project" do
-      fa_project = Factory(:fa_project)
-      FA::Project.stub(:find_by_member_id).and_return(fa_project)
-      subject.fa_member_id = fa_project.member_id
-      subject.refresh_active_fs_project
-      fa_project.id="444444"
-      subject.refresh_active_fs_project
-      subject.fiscally_sponsored_project.fs_project_id.should eq "444444"
-      
-      fsps = FiscallySponsoredProject.where(:organization_id => subject.id)
-      fsps.size.should eq 1
-    end
-  end
-  
+
   describe "importing donations" do
     before(:each) do
       fa_project = Factory(:fa_project)
       FA::Project.stub(:find_by_member_id).and_return(fa_project)
       subject.fa_member_id = fa_project.member_id
-      
+
       FA::Donation.stub(:find_by_member_id).and_return([])
     end
-    
+
     it "should import all donations" do
       subject.refresh_active_fs_project
       FA::Donation.should_receive(:find_by_member_id).with("1")
       subject.import_all_fa_donations
     end
-    
+
     it "should import all donations since the last refresh" do
       subject.refresh_active_fs_project
       FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at)
       subject.import_recent_fa_donations
     end
-    
+
     it "shouldn't call anything if the fiscally_sponsored_project is nil" do
       subject.fiscally_sponsored_project = nil
       subject.import_all_fa_donations.should be_nil
       subject.import_recent_fa_donations.should be_nil
     end
   end
-  
+
   describe ".owner" do
     it "should return the first user as the owner of the organization" do
       user = Factory(:user)

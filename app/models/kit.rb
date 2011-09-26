@@ -116,6 +116,10 @@ class Kit < ActiveRecord::Base
         event :cancel do
           transitions :from => [:activated, :rejected ], :to => :cancelled
         end
+
+        event :reactive do
+          transitions :from => :cancelled, :to => :activated, :guard => :activatable?
+        end
       end
 
       if requires_approval
