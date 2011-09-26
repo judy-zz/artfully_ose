@@ -55,6 +55,7 @@ describe AthenaOrder do
 
     it "updates an order instead of creating a new one" do
       fa_donation = Factory(:fa_donation)
+      fa_donation.nongift_amount = 1234.56
       organization = Factory(:organization)      
       stubbed_item = Factory(:fa_item)
       stubbed_order = Factory(:athena_order_with_id)
@@ -68,6 +69,7 @@ describe AthenaOrder do
       AthenaItem.should_not_receive(:new)
       
       order = AthenaOrder.from_fa_donation(fa_donation, organization)
+      order.items.size.should eq 1
     end
     
     it "can find a single order by fa_id" do

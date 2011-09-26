@@ -248,22 +248,28 @@ class AthenaOrder < AthenaResource::Base
   def self.from_fa_donation(fa_donation, organization)
     @order = AthenaOrder.find_by_fa_id(fa_donation.id) || AthenaOrder.new
 
-    @order.organization_id = organization.id
-    @order.timestamp = DateTime.parse fa_donation.date
-    @order.price = (fa_donation.amount.to_f * 100).to_i
-    @order.first_name = fa_donation.donor.first_name || ""
-    @order.last_name = fa_donation.donor.last_name || ""
-    @order.fa_id = fa_donation.id
+    @order.organization_id  = organization.id
+    @order.timestamp        = DateTime.parse fa_donation.date
+    @order.price            = (fa_donation.amount.to_f * 100).to_i
+    @order.first_name       = fa_donation.donor.first_name || ""
+    @order.last_name        = fa_donation.donor.last_name || ""
+    @order.fa_id            = fa_donation.id
     
     #This should go to the anonymous record
-    @order.email = fa_donation.donor.email || ""
+    @order.email            = fa_donation.donor.email || ""
     
-    @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order, @order.items.first)
+    if @order.items.blank?
+      @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order)
+    else
+      item = @order.items.first.copy_fa_donation(fa_donation)
+    end
+    
     @order.save
     @order
   end  
 
   private
+  
     def merge_and_sort_items
       items.concat(children.collect(&:items).flatten)
     end
@@ -302,6 +308,7 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def save_items
+      puts "Saving #{items.size} items"
       items.each do |item|
         item.order = self
         item.save
