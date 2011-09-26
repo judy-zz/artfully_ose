@@ -7,5 +7,5 @@
         .paired.element
           = f.text_field :amount, :class => :currency
           = f.submit "Make Donation"
-          .description= "Help support #{target.organization.name} by making adding a donation to your order."
+          .description= "Help support #{target.organization.name_for_donations} by adding a donation to your order."
 

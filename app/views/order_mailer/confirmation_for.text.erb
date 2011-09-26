@@ -16,6 +16,6 @@ Order total: $<%= format("%.2f", (@order.total/100.0)) %>
   Donations
   <% @order.donations.each do |item| %>
     <%- donation = item.product %>
-    - <%= "$#{format("%.2f", (donation.amount/100.00))} donation to #{donation.organization.name}" %>
+    - <%= "$#{format("%.2f", (donation.amount/100.00))} donation to #{donation.organization.name_for_donations}" %>
   <% end %>
 <% end %>

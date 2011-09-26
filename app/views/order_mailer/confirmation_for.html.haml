@@ -20,4 +20,4 @@
       - donation = item.product
       %li
         %span.price= "$#{format("%.2f", (donation.amount/100.00))}:"
-        %span.name= "Donation to #{donation.organization.name}"
+        %span.name= "Donation to #{donation.organization.name_for_donations}"

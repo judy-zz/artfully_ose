@@ -45,7 +45,11 @@ class Organization < ActiveRecord::Base
   def authorization_hash
     { :authorized   => can?(:receive, Donation),
       :type         => donation_type,
-      :fsp_name     => fiscally_sponsored_project.try(:name) }
+      :fsp_name     => name_for_donations  }
+  end
+
+  def name_for_donations
+    has_active_fiscally_sponsored_project? ? fiscally_sponsored_project.name : name
   end
 
   def fsp
