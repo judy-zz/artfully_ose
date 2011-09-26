@@ -14,13 +14,13 @@ class SegmentsController < ApplicationController
   end
 
   def new
-    authorize! :create, @segment
+    authorize! :create, Segment
     @segment = Segment.new(params[:segment])
     @segment.organization = current_user.current_organization
   end
 
   def create
-    authorize! :create, @segment
+    authorize! :create, Segment
     @segment = Segment.new(params[:segment])
     @segment.organization = current_user.current_organization
     if @segment.save
