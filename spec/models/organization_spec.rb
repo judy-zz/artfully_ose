@@ -129,4 +129,24 @@ describe Organization do
       end
     end
   end
+
+  describe "#update_kits" do
+    let(:kit) { mock(:sponsored_kit, :activated? => true, :cancelled? => true) }
+
+    it "cancels the kit if the FSP is no longer active" do
+      subject.stub(:fsp).and_return(mock(:fsp, :active? => false, :inactive? => true))
+      subject.stub(:sponsored_kit).and_return(kit)
+
+      kit.should_receive(:cancel!)
+      subject.send(:update_kits)
+    end
+
+    it "reactivates the kit if the FSP is active" do
+      subject.stub(:fsp).and_return(mock(:fsp, :active? => true, :inactive? => false))
+      subject.stub(:sponsored_kit).and_return(kit)
+
+      kit.should_receive(:reactivate!)
+      subject.send(:update_kits)
+    end
+  end
 end
