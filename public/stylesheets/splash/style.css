@@ -15,7 +15,7 @@ time, mark, audio, video {
 }
 
 h1{font-size:36px!important;}
-h2{font-size:24px!important;}
+h2{font-size:20px!important;}
 h3{font-size:18px!important;}
 h4{font-size:16px!important;}
 h5{font-size:14px!important;}
@@ -244,8 +244,8 @@ a, a:active, a:visited { color: #0f6d7b; text-decoration: none; }
 a:hover { color: #1697a9; }
 
 .introduction {
-  padding-top: 60px;
-  height: 255px;
+  padding-top: 30px;
+  height: 300px;
 }
 .features-list { color: #0f6d7b; margin-top: 20px; }
   .features-list li { text-indent: 36px; line-height: 24px; padding-bottom: 7px; }
@@ -260,7 +260,7 @@ a:hover { color: #1697a9; }
   height: 338px;
   background: url("../../images/monitor.png") no-repeat;
   position: absolute;
-  top: 106px;
+  top: 121px;
   left: 50%;
   margin-left: 50px;
 }
