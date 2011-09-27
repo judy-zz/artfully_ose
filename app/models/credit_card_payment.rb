@@ -42,6 +42,10 @@ class CreditCardPayment < AthenaResource::Base
     super(amount)
   end
 
+  def reduce_amount_by(amount_in_cents)
+    self.amount=((amount * 100) - amount_in_cents)
+  end
+
   def authorize!
     connection.post( AthenaPayment::element_name + "/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)

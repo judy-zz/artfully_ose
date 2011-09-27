@@ -19,8 +19,8 @@ class Checkout
   end
 
   def finish
-    @person = find_or_create_people_record    
-    prepare_fafs_donations   
+    @person = find_or_create_people_record
+    prepare_fafs_donations
     order.pay_with(@payment)
     process_fafs_donations
 
@@ -41,7 +41,7 @@ class Checkout
 
     ::Rails.logger.info "Processing FAFS donations"
     if !organization.nil? && organization.has_active_fiscally_sponsored_project?
-      ::Rails.logger.info "Organization #{organization.id} has an active FSP"      
+      ::Rails.logger.info "Organization #{organization.id} has an active FSP"
       @fafs_donations = order.clear_donations
       donation_total = @fafs_donations.inject(0) { |sum, donation| sum += donation.amount }
       ::Rails.logger.info "Payment amount is #{@payment.amount}"
@@ -51,7 +51,7 @@ class Checkout
       ::Rails.logger.info "Organization #{organization.id} does not have an active FSP"
     end
   end
-  
+
   #This is done in two steps so that we can process the tickets, ensure that the CC is valid etc...
   #Then process with FA
   def process_fafs_donations
@@ -62,8 +62,8 @@ class Checkout
         fa_donation = FA::Donation.from(donation, payment)
         fa_donation.save
         ::Rails.logger.info "Donation processed"
-      end  
-    end  
+      end
+    end
   end
 
   private
@@ -88,7 +88,7 @@ class Checkout
       @order.organizations.each do |organization|
         @athena_order = new_order(organization, order_timestamp, @person)
         @athena_order.save!
-        OrderMailer.confirmation_for(athena_order).deliver
+        OrderMailer.confirmation_for(athena_order).deliver unless @person.dummy?
         @athena_order
       end
     end
