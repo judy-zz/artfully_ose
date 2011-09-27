@@ -13,6 +13,14 @@ class CashPayment
     false
   end
 
+  def amount=(amount)
+    @amount = amount.to_i / 100.00
+  end
+
+  def reduce_amount_by(amount_in_cents)
+    self.amount=((amount * 100) - amount_in_cents)
+  end
+
   # DEBT: Because Orders are creating AthenaOrders for record keeping,
   # the transaction ID is stored.
   def transaction_id
