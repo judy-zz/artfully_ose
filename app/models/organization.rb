@@ -60,6 +60,10 @@ class Organization < ActiveRecord::Base
     connected? and fsp.active?
   end
 
+  def has_fiscally_sponsored_project?
+    connected? and !fsp.nil?
+  end
+
   #Before calling this method, organization must have already been conected to an FA membership
   #and have fa_member_id set
   def refresh_active_fs_project
@@ -70,12 +74,12 @@ class Organization < ActiveRecord::Base
   end
 
   def import_all_fa_donations
-    return unless has_active_fiscally_sponsored_project?
+    return unless has_fiscally_sponsored_project?
     process_donations FA::Donation.find_by_member_id(fa_member_id)
   end
 
   def import_recent_fa_donations(since=nil)
-    return unless has_active_fiscally_sponsored_project?
+    return unless has_fiscally_sponsored_project?
     since ||= fsp.updated_at
     process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
