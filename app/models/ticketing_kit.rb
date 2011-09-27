@@ -23,4 +23,8 @@ class TicketingKit < Kit
     organization.bank_account.nil?
   end
 
+  def on_pending
+    AdminMailer.ticketing_kit_notification(self).deliver
+  end
+
 end
