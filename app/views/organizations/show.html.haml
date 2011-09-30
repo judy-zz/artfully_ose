@@ -30,7 +30,7 @@
   - else
     %h3 Fractured Atlas
     %p This organization is connected to a Fractured Atlas membership.
-    -if @organization.has_fiscally_sponsored_project?
+    -if @organization.has_active_fiscally_sponsored_project?
       %ul
         %li
           %h4 Fiscal Sponsorship
