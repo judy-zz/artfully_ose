@@ -18,7 +18,7 @@ class FiscallySponsoredProject < ActiveRecord::Base
   private
 
   def remote_project
-    FA::Project.find_by_member_id(fa_member_id)
+    FA::Project.find_active_by_member_id(fa_member_id)
   end
 
   def self.attributes_from(project)
