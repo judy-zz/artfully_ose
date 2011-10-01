@@ -33,9 +33,9 @@ class FiscallySponsoredProject < ActiveRecord::Base
     
     #Sucks to repeat this hash, but coudln't think of another way to do
     #it without blowing up the thing that is going on.
+    #Note that we skip fa_member_id
     def self.clear
       { :fs_project_id => nil,
-        :fa_member_id  => nil,
         :name          => nil,
         :category      => nil,
         :profile       => nil,
