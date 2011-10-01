@@ -87,8 +87,8 @@ class Organization < ActiveRecord::Base
   private
 
     def update_kits
-      if fsp.active? and sponsored_kit.cancelled?
-        sponsored_kit.reactivate!
+      if fsp.active?
+        sponsored_kit.approve!
       elsif fsp.inactive? and sponsored_kit.activated?
         sponsored_kit.cancel!
       end

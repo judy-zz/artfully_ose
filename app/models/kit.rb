@@ -106,7 +106,7 @@ class Kit < ActiveRecord::Base
         state :cancelled
 
         event :activate do
-          transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
+          transitions :from => [:new, :pending, :cancelled], :to => :activated, :guard => :activatable?
         end
 
         event :approve do
