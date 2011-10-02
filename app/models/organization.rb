@@ -88,14 +88,14 @@ class Organization < ActiveRecord::Base
 
     def update_kits
       if fsp.active?
-        sponsored_kit.approve!
-      elsif fsp.inactive? and sponsored_kit.activated?
-        sponsored_kit.cancel!
+        sponsored_kit.activate_without_prejudice!
+      else
+        sponsored_kit.cancel_with_authority!
       end
     end
 
     def sponsored_kit
-      kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new
+      kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new({:organization => self})
     end
 
     def process_donations(fa_donations)
