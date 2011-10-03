@@ -9,11 +9,11 @@ class SponsoredDonationKit < Kit
     
     state_machine do
       event :activate_without_prejudice do
-        transitions :from => [:new, :pending, :cancelled], :to => :activated
+        transitions :from => [:new, :activated, :pending, :cancelled], :to => :activated
       end   
            
       event :cancel_with_authority do
-        transitions :from => [:new, :pending, :activated], :to => :cancelled
+        transitions :from => [:new, :pending, :activated, :cancelled], :to => :cancelled
       end   
     end
   end

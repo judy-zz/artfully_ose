@@ -20,8 +20,16 @@ describe SponsoredDonationKit do
       subject.state = "cancelled"
       subject.activate_without_prejudice!
       subject.should be_activated
+      subject.state = "activated"
+      subject.activate_without_prejudice!
+      subject.should be_activated
+      
+      
       subject.cancel_with_authority!
       subject.should be_cancelled
+      subject.cancel_with_authority!
+      subject.should be_cancelled
+      
       subject.state = "pending"
       subject.activate_without_prejudice!
       subject.should be_activated
