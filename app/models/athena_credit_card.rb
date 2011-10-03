@@ -31,6 +31,7 @@ class AthenaCreditCard < AthenaResource::Base
   end
 
   def load(attributes = {})
+    attributes = attributes.dup
     prepare_attr!(attributes) if needs_date_parse(attributes)
     prepare_customer!(attributes) if needs_customer(attributes)
     super
