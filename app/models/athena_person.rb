@@ -121,6 +121,10 @@ class AthenaPerson < AthenaResource::Base
     relationships.select { |relationship| relationship.unstarred? }
   end
 
+  def address
+    find_address || Address.new
+  end
+
   def phones
     attributes['phones']
   end
@@ -136,6 +140,10 @@ class AthenaPerson < AthenaResource::Base
 
   def person_info
     first_name or last_name
+  end
+
+  def find_address
+    Address.find_by_person_id(self.id).first || Address.new
   end
 
   def uniqueness

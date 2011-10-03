@@ -1,0 +1,23 @@
+= form_for(address, :url => person_address_path(person), :html => {:id => "mailing-address-form"}) do |form|
+  %ul
+    %li
+      .label= form.label(:address1, "Address")
+      .element= form.text_field(:address1)
+    %li
+      .label= form.label(:address2, "Secondary")
+      .element= form.text_field(:address2)
+    %li
+      .label= form.label(:city, "City")
+      .element= form.text_field(:city)
+    %li
+      .label= form.label(:state, "State / Province")
+      .element= form.text_field(:state)
+    %li
+      .label= form.label(:zip, "Zip / Postal Code")
+      .element= form.text_field(:zip)
+    %li
+      .label= form.label(:country, "Country")
+      .element= form.text_field(:country)
+    .cancel-submit
+      = link_to "Cancel", "#", :id => "cancel"
+      = form.submit

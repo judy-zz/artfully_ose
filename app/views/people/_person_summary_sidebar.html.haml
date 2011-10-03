@@ -33,3 +33,11 @@
         = text_field_tag(:number, "", :placeholder => "Ex: 555-123-1234", :class => :half)
         = submit_tag("Save")
 
+%h4 Mailing Address
+- if @person.address.persisted?
+  = render @person.address
+  = button_to "Edit", "#", :id => "update-mailing-address"
+- else
+  = button_to "Add", "#", :id => "create-mailing-address"
+
+= render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address }

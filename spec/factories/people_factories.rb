@@ -48,3 +48,12 @@ Factory.define(:dummy, :parent => :athena_person_with_id) do |p|
     FakeWeb.register_uri(:get, "http://localhost/athena/people.json?dummy=true&organizationId=eq#{person.organization_id}", :body => body)
   end
 end
+
+Factory.define(:address, :default_strategy => :build) do |a|
+  a.address1        { Faker::Address.street_address }
+  a.address2        { Faker::Address.secondary_address }
+  a.city            { Faker::Address.city }
+  a.state           { Faker::Address.us_state }
+  a.zip             { Faker::Address.zip_code }
+  a.country         "United States"
+end

@@ -75,4 +75,19 @@ $(document).ready(function() {
     });
   });
 
+  $("#mailing-address-form").hide();
+  $("#create-mailing-address, #update-mailing-address").bind("click", function(){
+    $("#mailing-address").hide();
+    $("#mailing-address-form").show();
+    $(this).hide();
+    return false;
+  });
+
+  $("#cancel").bind("click", function(){
+    $("#mailing-address-form").hide();
+    $("#mailing-address").show();
+    $("#create-mailing-address, #update-mailing-address").show();
+    return false;
+  });
+
 });
