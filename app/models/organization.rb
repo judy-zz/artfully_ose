@@ -80,7 +80,7 @@ class Organization < ActiveRecord::Base
 
   def import_recent_fa_donations(since=nil)
     return unless has_fiscally_sponsored_project?
-    since ||= fsp.updated_at
+    since ||= (fsp.updated_at - 1.day)
     process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
 
