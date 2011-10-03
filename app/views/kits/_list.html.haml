@@ -22,6 +22,8 @@
               %td= link_to "Activate #{t(kit.type.underscore)}", alternatives_kits_path(:type => kit.type.underscore)
             - else
               %td= link_to "Activate #{t(kit.type.underscore)}", new_kit_path(:type => kit.type.underscore)
+          - elsif kit.cancelled? && kit.type == "SponsoredDonationKit"
+            %td= "Contact support@artful.ly to learn about Fiscal Sponsorship for your organization"
           - elsif kit.cancelled?
             %td= link_to "Reactivate #{t(kit.type.underscore)}", kit_path(kit), :method => :put
           - elsif kit.pending?
