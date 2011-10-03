@@ -82,6 +82,9 @@ class Checkout
           :organization_id => organization.id # DEBT: This doesn't account for multiple organizations per order
         }
         person = AthenaPerson.create(params)
+        address = Address.from_payment(payment)
+        address.person_id = person.id
+        address.save
       end
       person
     end
