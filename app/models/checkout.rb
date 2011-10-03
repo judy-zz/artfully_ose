@@ -19,7 +19,7 @@ class Checkout
   end
 
   def finish
-    @person = find_or_create_people_record
+    @person = find_or_create_people_record    
     prepare_fafs_donations
     order.pay_with(@payment)
     process_fafs_donations
@@ -55,14 +55,16 @@ class Checkout
   #This is done in two steps so that we can process the tickets, ensure that the CC is valid etc...
   #Then process with FA
   def process_fafs_donations
-    organization = order.organizations.first
-    if !organization.nil? && organization.has_active_fiscally_sponsored_project?
+    if !@fafs_donations.blank? && @fafs_donations.first.organization.has_active_fiscally_sponsored_project?
+      ::Rails.logger.info "Processing: #{@fafs_donations.size} fafs donations"
       @fafs_donations.each do |donation|
         ::Rails.logger.info "Processing donation for #{donation.amount}"
         fa_donation = FA::Donation.from(donation, payment)
         fa_donation.save
         ::Rails.logger.info "Donation processed"
       end
+    else
+      ::Rails.logger.info "Either no donations to process or this org does not have an active fsp"
     end
   end
 
@@ -102,6 +104,14 @@ class Checkout
 
         #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
         athena_order << @order.tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
+        
+        puts "******************"
+        puts "******************"
+        puts "******************"
+        puts "******************"
+        puts "Slapping #{@order.donations.size} donations onto this order"
+        puts "******************"
+        
         athena_order << @order.donations
       end
     end

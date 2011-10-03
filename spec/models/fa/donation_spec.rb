@@ -59,6 +59,10 @@ describe FA::Donation do
       subject.amount.should eq donation.amount / 100.00
     end
 
+    it "creates an item that is already settled" do
+      subject.settled = donation.organization.fiscally_sponsored_project.fs_project_id
+    end
+
     it "sets the project ID based on the organization" do
       subject.fs_project_id = donation.organization.fiscally_sponsored_project.fs_project_id
     end
