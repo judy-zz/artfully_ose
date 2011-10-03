@@ -24,7 +24,6 @@ describe SponsoredDonationKit do
       subject.activate_without_prejudice!
       subject.should be_activated
       
-      
       subject.cancel_with_authority!
       subject.should be_cancelled
       subject.cancel_with_authority!

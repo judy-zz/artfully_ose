@@ -38,7 +38,7 @@ class SponsoredDonationKit < Kit
     !organization.website.blank?
   end
 
-  def on_pending
+  def on_activation
     AdminMailer.sponsored_donation_kit_notification(self).deliver
   end
   
