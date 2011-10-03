@@ -37,25 +37,21 @@ class SponsoredDonationKit < Kit
     errors.add(:requirements, "You need to specify a website for your organization.") unless !organization.website.blank?
     !organization.website.blank?
   end
-
-  def on_activation
-    AdminMailer.sponsored_donation_kit_notification(self).deliver
-  end
   
-    def self.setup_state_machine
-      state_machine do
-        state :new
-        state :pending, :enter => :on_pending
-        state :activated, :enter => :on_activation
-        state :cancelled
+  def self.setup_state_machine
+    state_machine do
+      state :new
+      state :pending, :enter => :on_pending
+      state :activated, :enter => :on_activation
+      state :cancelled
 
-        event :activate do
-          transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
-        end          
-        
-        event :activate_without_pending do
-          transitions :from => [:new, :pending, :cancelled], :to => :activated
-        end
+      event :activate do
+        transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
+      end          
+      
+      event :activate_without_pending do
+        transitions :from => [:new, :pending, :cancelled], :to => :activated
       end
     end
+  end
 end
