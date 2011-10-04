@@ -33,7 +33,6 @@
       You can use the <pre>OR</pre> operator, but the clause must be enclosed by parenthesis: <pre>(*example.com OR *google.com)</pre>
 
 .spread
-  %h3 Results
   .super-search-results
     - unless @people.empty?
       = render :partial => 'list', :locals => { :people => @people } unless @people.empty?
