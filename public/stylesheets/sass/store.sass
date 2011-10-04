@@ -48,11 +48,11 @@ p
 
 #sidebar
   @include section
-  @extend .stack1of4
+  @extend .stack1of3
 
 #store
   @include section
-  @extend .stack3of4
+  @extend .stack2of3
 
 .sections .section-name
   font-family: "Raleway" !important
@@ -60,10 +60,11 @@ p
 
 #donation
   input[type="text"]
-    width: 60%
+    width: 50%
   input[type="submit"]
     border-left: none
-    width: 40%
+    width: 50%
+    min-width: 75px
     @include rounded-corners(0, 4px, 4px, 0)
 
 .upsell
