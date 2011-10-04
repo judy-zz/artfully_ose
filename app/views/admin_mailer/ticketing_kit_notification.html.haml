@@ -1,4 +1,4 @@
 %h2= "The organization #{@organization.name} has applied for a Ticketing Kit in Artful.ly with the following details:"
 
 %ul
-  %li= "Organization Name: #{@organization.name}"
+  %li= "Organization Name: #{link_to(@organization.name, admin_organization_url(@organization))}"

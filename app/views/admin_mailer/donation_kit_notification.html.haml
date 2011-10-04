@@ -1,6 +1,6 @@
 %h2= "The organization #{@organization.name} has applied for a DonationKit in Artful.ly with the following details:"
 
 %ul
-  %li= "Organization Name: #{@organization.name}"
+  %li= "Organization Name: #{link_to(@organization.name, admin_organization_url(@organization))}".html_safe
   %li= "Legal Organization Name: #{@organization.legal_organization_name}"
   %li= "EIN: #{@organization.ein}"
