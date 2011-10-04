@@ -1,7 +1,13 @@
-class AdminStats
-  #Fully intend to move this into ActiveRecord and update it hourly with cron  
-  attr_accessor :users, :logged_in_more_than_once, :organizations, :fa_connected_orgs, :active_fafs_projects
+class AdminStats < ActiveRecord::Base  
   
+  scope :latest, order("updated_at DESC").limit(1)
+  
+  def self.most_recent
+    self.latest.first
+  end
+  
+  #This method is called by the job and reports the up-to-the-second stats.  
+  #For the cron'd stats, call the :recent 
   def self.load
     AdminStats.new.tap do |stats|
       stats.users = User.count

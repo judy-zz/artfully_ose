@@ -6,6 +6,6 @@ class Admin::AdminController < ActionController::Base
   layout("admin")
   
   def load_admin_stats
-    @stats = AdminStats.load
+    @stats = AdminStats.most_recent
   end
 end
