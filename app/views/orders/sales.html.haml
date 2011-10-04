@@ -24,7 +24,6 @@
       %table.standalone.zebra
         %thead
           %tr
-            %th Item
             %th Timestamp
             %th Event and Show
             %th Person
@@ -34,12 +33,11 @@
           - @search.results.each do |order|
             - order.items.select(&:ticket?).each do |item|
               %tr
-                %td= item.id
                 %td= l order.timestamp
                 %td= "#{item.product.event}, #{l item.product.performance}"
                 %td= link_to "#{order.person.last_name}, #{order.person.first_name}", person_path(order.person)
                 %td= number_as_cents item.price
-                %td= link_to "#{order.id}", order_path(order)
+                %td= link_to "view", order_path(order)
       = will_paginate(@search.results)
   - else
     %h4= "No tickets found between #{l @search.start} and #{l @search.stop}"

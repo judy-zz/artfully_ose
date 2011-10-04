@@ -3,8 +3,10 @@
   %h1 Orders & Donations
 
 .context
-  %h3= @order.id
   %ul.kv
+    %li
+      .key ID
+      .value=@order.id
     %li
       .key Ordered by
       .value=link_to_person @person
