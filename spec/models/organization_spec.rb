@@ -137,15 +137,15 @@ describe Organization do
       subject.stub(:fsp).and_return(mock(:fsp, :active? => false, :inactive? => true))
       subject.stub(:sponsored_kit).and_return(kit)
 
-      kit.should_receive(:cancel!)
+      kit.should_receive(:cancel_with_authority!)
       subject.send(:update_kits)
     end
 
-    it "reactivates the kit if the FSP is active" do
+    it "activates the kit if the FSP is active" do
       subject.stub(:fsp).and_return(mock(:fsp, :active? => true, :inactive? => false))
       subject.stub(:sponsored_kit).and_return(kit)
 
-      kit.should_receive(:reactivate!)
+      kit.should_receive(:activate_without_prejudice!)
       subject.send(:update_kits)
     end
   end

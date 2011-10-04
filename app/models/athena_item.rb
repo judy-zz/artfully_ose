@@ -171,6 +171,7 @@ class AthenaItem < AthenaResource::Base
   end
   
   def copy_fa_donation(fa_donation)
+    self.state             = "settled"
     self.price             = (fa_donation.amount.to_f * 100).to_i
     self.realized_price    = (fa_donation.amount.to_f * 100).to_i
     self.net               = ((fa_donation.amount.to_f * 100) * 0.94).to_i

@@ -168,6 +168,35 @@ describe Order do
       subject.organizations.should include organization
     end
   end
+  
+  describe ".clear_donations" do
+    it "should do nothing when there are no donations" do
+      donations = subject.clear_donations
+      subject.donations.size.should eq 0
+      donations.size.should eq 0
+    end
+    
+    it "should clear when there is one donation" do
+      donation = Factory(:donation)
+      subject.donations << donation
+      donations = subject.clear_donations
+      subject.donations.size.should eq 0
+      donations.size.should eq 1
+      donations.first.should eq donation
+    end
+    
+    it "should clear when there are two donations" do
+      donation = Factory(:donation)
+      donation2 = Factory(:donation)
+      subject.donations << donation
+      subject.donations << donation2
+      donations = subject.clear_donations
+      subject.donations.size.should eq 0
+      donations.size.should eq 2
+      donations.first.should eq donation
+      donations[1].should eq donation2
+    end
+  end
 
   describe ".generate_donations" do
     let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }

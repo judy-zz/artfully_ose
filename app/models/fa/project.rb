@@ -13,7 +13,7 @@ class FA::Project < FA::Base
   end
 
   def self.find_active_by_member_id(member_id)
-    response = self.connection.get("/fs/projects.xml?member_id=#{member_id}&status=active")
+    response = self.connection.get("/fs/projects.xml?member_id=#{member_id}&status=Active")
     fs_project = FA::Project.new(response['fs_project'])
     fs_project
   end

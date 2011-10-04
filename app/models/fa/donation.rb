@@ -2,18 +2,18 @@ class FA::Donation < FA::Base
   self.element_name = "donation"
   
   schema do
-    attribute 'amount',         :string
-    attribute 'nongift',        :string
-    attribute 'fs_project_id',  :string
-    attribute 'date',           :string
-    attribute 'check_no',       :string
-    attribute 'is_noncash',     :string
-    attribute 'is_stock',       :string
-    attribute 'reversed_at',       :string
-    attribute 'reversed_note',       :string
-    attribute 'fs_available_on',       :string
-    attribute 'is_anonymous',       :string
-    attribute 'nongift',   :string
+    attribute 'amount',           :string
+    attribute 'nongift',          :string
+    attribute 'fs_project_id',    :string
+    attribute 'date',             :string
+    attribute 'check_no',         :string
+    attribute 'is_noncash',       :string
+    attribute 'is_stock',         :string
+    attribute 'reversed_at',      :string
+    attribute 'reversed_note',    :string
+    attribute 'fs_available_on',  :string
+    attribute 'is_anonymous',     :string
+    attribute 'nongift',          :string
   end
 
   attr_accessor :credit_card, :donor

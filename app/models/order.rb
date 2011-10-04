@@ -42,8 +42,12 @@ class Order < ActiveRecord::Base
   end
   
   def clear_donations
-    temp = donations
-    donations = []
+    temp = []
+    
+    #This won't work if there is more than 1 FAFS donation on the order
+    donations.each do |donation|
+      temp = donations.delete(donations)
+    end
     temp
   end
 

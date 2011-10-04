@@ -80,22 +80,22 @@ class Organization < ActiveRecord::Base
 
   def import_recent_fa_donations(since=nil)
     return unless has_fiscally_sponsored_project?
-    since ||= fsp.updated_at
+    since ||= (fsp.updated_at - 1.day)
     process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
 
   private
 
     def update_kits
-      if fsp.active? and sponsored_kit.cancelled?
-        sponsored_kit.reactivate!
-      elsif fsp.inactive? and sponsored_kit.activated?
-        sponsored_kit.cancel!
+      if fsp.active?
+        sponsored_kit.activate_without_prejudice!
+      else
+        sponsored_kit.cancel_with_authority!
       end
     end
 
     def sponsored_kit
-      kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new
+      kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new({:organization => self})
     end
 
     def process_donations(fa_donations)
