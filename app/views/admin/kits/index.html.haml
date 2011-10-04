@@ -10,7 +10,8 @@
     %table.standalone
       %thead
         %tr
-          %th Kit Creation
+          %th Created
+          %th Kit
           %th Org Name
           %th Legal Name
           %th EIN
@@ -20,6 +21,7 @@
         -org = kit.organization
           %tr
             %td= l kit.updated_at, :format => :short
+            %td= t(kit.type.underscore)
             %td= link_to kit.organization.name, admin_organization_path(org)
             %td= kit.organization.legal_organization_name
             %td= kit.organization.ein

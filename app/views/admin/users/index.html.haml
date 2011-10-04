@@ -12,22 +12,7 @@
             = text_field_tag :email, "", :placeholder => "Email address..."
             = submit_tag "Search"
   = link_to "Invite User", new_admin_user_path
-  %ul.report
-    %li
-      %span.stat Users
-      %span.current= 4
-    %li
-      %span.stat Signins > 1
-      %span.current= 4
-    %li
-      %span.stat Organizations
-      %span.current= 4
-    %li
-      %span.stat FA connections
-      %span.current= 4
-    %li
-      %span.stat Active FAFS
-      %span.current= 4
+  = render :partial => "admin/stats/stats"
 .document
   #users
     %h3 All Users

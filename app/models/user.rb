@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable,
          :suspendable, :invitable
 
+  scope :logged_in_more_than_once, where("users.sign_in_count > 1")
+
   def self.generate_password
     Devise.friendly_token
   end

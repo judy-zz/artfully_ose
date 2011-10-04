@@ -1,0 +1,16 @@
+%ul.report
+  %li
+    %span.stat Users
+    %span.current= @stats.users
+  %li
+    %span.stat Signins > 1
+    %span.current= @stats.logged_in_more_than_once
+  %li
+    %span.stat Organizations
+    %span.current= @stats.organizations
+  %li
+    %span.stat FA connections
+    %span.current= @stats.fa_connected_orgs
+  %li
+    %span.stat Active FAFS
+    %span.current= @stats.active_fafs_projects
