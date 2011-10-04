@@ -36,7 +36,7 @@ class Settlement < AthenaResource::Base
 
   def self.submit(organization_id, items, bank_account, performance_id=nil)
     items = Array.wrap(items)
-    
+
     if items.empty?
       # This is considered a success.  No items, no money to transfer, we're done
       ach_response_code = nil
@@ -62,19 +62,19 @@ class Settlement < AthenaResource::Base
         success = false
       end
     end
-    
+
     for_items(items) do |settlement|
       settlement.ach_response_code = ach_response_code
-      settlement.transaction_id = transaction_id
-      settlement.organization_id = organization_id
-      settlement.performance_id = performance_id
-      settlement.fail_message = fail_message
-      settlement.success = success
+      settlement.transaction_id    = transaction_id
+      settlement.organization_id   = organization_id
+      settlement.performance_id    = performance_id
+      settlement.fail_message      = fail_message
+      settlement.success           = success
       settlement.save!
       if settlement.success?
         AthenaItem.settle(items, settlement)
       end
-      
+
       settlement
     end
   end
@@ -90,7 +90,7 @@ class Settlement < AthenaResource::Base
       yield(settlement) if block_given?
     end
   end
-  
+
   def success?
     ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? success
   end
