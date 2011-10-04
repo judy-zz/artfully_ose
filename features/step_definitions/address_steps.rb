@@ -3,7 +3,7 @@ When /^I fill out the address form$/ do
   fill_in("Address", :with => address.address1)
   fill_in("Secondary", :with => address.address2)
   fill_in("City", :with => address.city)
-  fill_in("State", :with => address.state)
+  select(address.state, :from => "State")
   fill_in("Zip", :with => address.zip)
   fill_in("Country", :with => address.country)
 end

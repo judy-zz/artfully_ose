@@ -131,8 +131,9 @@ form .description, form .form-error {
 .double.element {
   text-align: left; }
   .double.element select {
+    width: 48%;
     display: inline;
-    margin-right: 3.5%; }
+    margin-right: 2%; }
   .double.element input {
     width: 48%;
     display: inline;

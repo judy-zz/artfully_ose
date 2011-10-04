@@ -11,7 +11,7 @@
       .element= form.text_field(:city)
     %li
       .label= form.label(:state, "State / Province")
-      .element= form.text_field(:state)
+      .element= form.select(:state, options_for_select(sorted_us_state_names, address.state))
     %li
       .label= form.label(:zip, "Zip / Postal Code")
       .element= form.text_field(:zip)
