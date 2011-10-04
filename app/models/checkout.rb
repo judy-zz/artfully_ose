@@ -106,15 +106,7 @@ class Checkout
         athena_order.transaction_id  = @payment.transaction_id
 
         #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
-        athena_order << @order.tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
-        
-        puts "******************"
-        puts "******************"
-        puts "******************"
-        puts "******************"
-        puts "Slapping #{@order.donations.size} donations onto this order"
-        puts "******************"
-        
+        athena_order << @order.tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }        
         athena_order << @order.donations
       end
     end
