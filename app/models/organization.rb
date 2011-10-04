@@ -61,7 +61,7 @@ class Organization < ActiveRecord::Base
   end
 
   def has_fiscally_sponsored_project?
-    connected? and !fsp.nil?
+    connected? and fiscally_sponsored_project.present?
   end
 
   #Before calling this method, organization must have already been conected to an FA membership

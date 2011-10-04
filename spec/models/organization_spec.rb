@@ -28,14 +28,14 @@ describe Organization do
 
     it "should import all donations since the last refresh" do
       subject.refresh_active_fs_project
-      FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at)
+      FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at - 1.day)
       subject.import_recent_fa_donations
     end
 
     it "shouldn't call anything if the fiscally_sponsored_project is nil" do
       subject.fiscally_sponsored_project = nil
-      subject.import_all_fa_donations.should eq []
-      subject.import_recent_fa_donations.should eq []
+      subject.import_all_fa_donations.should be_nil
+      subject.import_recent_fa_donations.should be_nil
     end
   end
 
