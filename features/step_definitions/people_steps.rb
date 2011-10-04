@@ -33,3 +33,14 @@ end
 Given /^my organization has a dummy person record$/ do
   Factory(:dummy, :organization => @current_user.current_organization)
 end
+
+
+Given /^I view the people record for "([^"]*)"$/ do |email|
+  @person ||= Factory(:athena_person_with_id, :email => email, :organization => @current_user.current_organization)
+  visit(person_path(@person))
+end
+
+Given /^there are no addresses for "([^"]*)"$/ do |email|
+  @person ||= Factory(:athena_person_with_id, :email => email, :organization => @current_user.current_organization)
+  FakeWeb.register_uri(:get, "http://localhost/athena/addresses.json?personId=#{@person.id}", :body => "[]")
+end
