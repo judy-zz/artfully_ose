@@ -1,5 +1,5 @@
 class AdminMailer < ActionMailer::Base
-  default :from => "noreply@artful.ly"
+  default :from => "support@artful.ly"
   layout "mail"
 
   def ticketing_kit_notification(kit)
