@@ -4,8 +4,8 @@ class Admin::AdminController < ActionController::Base
   before_filter :authenticate_admin!
   before_filter :load_admin_stats
   layout("admin")
-  
+
   def load_admin_stats
-    @stats = AdminStats.most_recent
+    @stats = AdminStats.most_recent || AdminStats.load
   end
 end
