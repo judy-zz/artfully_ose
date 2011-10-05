@@ -13,11 +13,11 @@
 ActiveRecord::Schema.define(:version => 20111004232140) do
 
   create_table "admin_stats", :force => true do |t|
-    t.string   "users"
-    t.string   "logged_in_more_than_once"
-    t.string   "organizations"
-    t.string   "fa_connected_orgs"
-    t.string   "active_fafs_projects"
+    t.integer  "users"
+    t.integer  "logged_in_more_than_once"
+    t.integer  "organizations"
+    t.integer  "fa_connected_orgs"
+    t.integer  "active_fafs_projects"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -72,11 +72,11 @@ ActiveRecord::Schema.define(:version => 20111004232140) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "donations", :force => true do |t|
+    t.integer  "amount"
+    t.integer  "order_id"
+    t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "order_id"
-    t.integer  "amount"
-    t.integer  "organization_id"
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -96,9 +96,9 @@ ActiveRecord::Schema.define(:version => 20111004232140) do
   create_table "kits", :force => true do |t|
     t.string   "state"
     t.string   "type"
+    t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "organization_id"
   end
 
   create_table "memberships", :force => true do |t|
@@ -115,38 +115,26 @@ ActiveRecord::Schema.define(:version => 20111004232140) do
 
   create_table "organizations", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "time_zone"
     t.string   "legal_organization_name"
     t.string   "ein"
     t.string   "fa_member_id"
-    t.integer  "account_balance",         :default => 0
     t.string   "website"
-    t.boolean  "ach_on_file",             :default => false
-  end
-
-  create_table "performances", :force => true do |t|
-    t.string   "title"
-    t.string   "venue"
-    t.datetime "performed_on"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "purchasable_tickets", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.integer  "order_id"
     t.string   "ticket_id"
     t.string   "lock_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => ""
-    t.string   "password_salt",                       :default => "", :null => false
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"
@@ -158,7 +146,6 @@ ActiveRecord::Schema.define(:version => 20111004232140) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "customer_id"
-    t.string   "athena_id"
     t.datetime "suspended_at"
     t.string   "suspension_reason"
     t.string   "invitation_token",     :limit => 60
