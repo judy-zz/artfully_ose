@@ -35,5 +35,6 @@
 .spread
   .super-search-results
     - unless @people.empty?
+      %h3 Results
       = render :partial => 'list', :locals => { :people => @people } unless @people.empty?
       = will_paginate @people
