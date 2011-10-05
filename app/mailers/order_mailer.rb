@@ -1,5 +1,5 @@
 class OrderMailer < ActionMailer::Base
-  default :from => "noreply@artful.ly"
+  default :from => "support@artful.ly"
   layout "mail"
 
   # TODO: Send using only information from AthenaOrder
