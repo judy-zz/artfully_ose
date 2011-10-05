@@ -22,13 +22,13 @@ describe AthenaPerformance do
     subject.chart_id = "4"
     subject.should_not be_valid
   end
-  
+
   it "should not be valid without a chart_id" do
     subject.datetime = Time.now + 1.day
     subject.chart_id = nil
     subject.should_not be_valid
   end
-  
+
   describe "#played" do
     it "should be played if the event is in the past" do
       subject.datetime = Time.now - 1.day
@@ -191,11 +191,9 @@ describe AthenaPerformance do
   end
 
   describe "#live?" do
-    [ :built, :published, :unpublished ].each do |state|
-      it "is considered live when it is #{state}" do
-        subject.stub("#{state}?").and_return(true)
-        subject.should be_live
-      end
+    it "is considered live when there is a sold ticket" do
+      subject.stub(:tickets).and_return(Array.wrap(mock(:ticket, :comped? => false, :sold? => true)))
+      subject.should be_live
     end
   end
 

@@ -45,7 +45,8 @@ describe Ability do
 
       it "should not be able to delete an event where the performances cannot be deleted also" do
         performances = 3.times.collect { mock(:performance, :live? => true) }
-        event = Factory(:athena_event, :organization_id => organization.id, :performances => performances)
+        event = Factory(:athena_event, :organization_id => organization.id)
+        event.stub(:performances).and_return(performances)
         subject.should_not be_able_to(:destroy, event)
       end
     end
