@@ -628,6 +628,7 @@ input.mini {
     color: black; }
 
 .tag-error {
+  font-size: 0.8em;
   color: #f03504; }
 
 .pagination {
