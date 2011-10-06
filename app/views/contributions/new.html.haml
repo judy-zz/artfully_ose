@@ -5,8 +5,13 @@
 .compact-spread
   = form_for(@contribution, :url => contributions_path) do |form|
     %h4= link_to "#{@contribution.contributor.first_name} #{@contribution.contributor.last_name}", person_path(@contribution.contributor)
-    = @contribution.contributor.email
-    = form.hidden_field :contributor_id
+    %h5= @contribution.contributor.email
+    .hr
+    - if current_user.current_organization.has_active_fiscally_sponsored_project?
+      %p Use this form for recording contributions received outside of Fractured Atlas.  Donations to Fractured Atlas Fiscally Sponsored Projects should be made through Fractured Atlas.
+      %p Please contact support with any questions.
+      .hr
+    = form.hidden_field :person_id
     = form.hidden_field :organization_id
     %ul
       %li
@@ -23,9 +28,6 @@
         .element
           = form.text_field :details
           .description Consider including the donation amount in the details.
-    %p
-      - if current_user.current_organization.has_active_fiscally_sponsored_project?
-        Use this form for recording contributions received outside of Fractured Atlas.  Donations to Fractured Atlas Fiscally Sponsored Projects should be made through Fractured Atlas.  Please contact support with any questions.
     .cancel-submit
       = link_to "Cancel", contributions_path
       = submit_tag "Create"

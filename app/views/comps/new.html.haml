@@ -4,21 +4,11 @@
 
 = render "shared/error_messages", :target => @event
 
-.context
-  %h4 Recipient
-  %ul.kv
-    %li
-      .key First Name
-      .value= @comp.recipient.first_name
-    %li
-      .key Last Name
-      .value= @comp.recipient.last_name
-    %li
-      .key Email Address
-      .value= @comp.recipient.email
-
-.document
+.compact-spread
   = form_for @comp do |form|
+    %h4= link_to "#{@comp.recipient.first_name} #{@comp.recipient.last_name}", person_path(@comp.recipient)
+    %h5= @comp.recipient.email
+    .hr
     = hidden_field_tag :performance_id, @performance.id
     = hidden_field_tag :person_id, @comp.recipient.id
     - @selected_tickets.each do |st|
@@ -26,7 +16,8 @@
     %ul
       %li
         .label= label_tag :comp_reason, "Reason for Comp"
-        .element= text_field_tag :comp_reason
-    = submit_tag "Submit"
+        .full.paired.element
+          = text_field_tag :comp_reason
+          = submit_tag "Submit"
   %p= link_to "Search for a different Person Record", "javascript:history.back()"
 
