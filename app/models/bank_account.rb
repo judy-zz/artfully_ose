@@ -6,7 +6,7 @@ class BankAccount < ActiveRecord::Base
   ACCOUNT_TYPES = ["Business Checking", "Personal Checking", "Personal Savings"].freeze
 
   validates :routing_number,  :presence => true, :length => { :is => 9 }
-  validates :number,          :presence => true, :length => { :minimum => 10 }
+  validates :number,          :presence => true
   validates :account_type,    :inclusion => { :in => ACCOUNT_TYPES }
 
   validates :name,    :presence => true, :length => { :maximum => 50 }
