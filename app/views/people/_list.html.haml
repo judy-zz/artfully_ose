@@ -6,13 +6,13 @@
       %li
         .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
         .email= person.email
-    - if params[:search].present?
-      %ul.list-manipulations
-        %li
-          = form_for(Segment.new(:terms => params[:search]), :url => new_segment_path, :html => {:method => :get}) do |form|
-            = form.hidden_field :terms
-            = form.submit "New List Segment"
-        %li
-          = form_tag(people_path(:format => :csv), :method => :get) do
-            = hidden_field_tag :search, params[:search]
-            = submit_tag "Export CSV"
+- if !people.empty? and params[:search].present?
+  %ul.list-manipulations
+    %li
+      = form_for(Segment.new(:terms => params[:search]), :url => new_segment_path, :html => {:method => :get}) do |form|
+        = form.hidden_field :terms
+        = form.submit "New List Segment"
+    %li
+      = form_tag(people_path(:format => :csv), :method => :get) do
+        = hidden_field_tag :search, params[:search]
+        = submit_tag "Export CSV"
