@@ -14,7 +14,7 @@ class AthenaItem < AthenaResource::Base
     attribute 'price',          :integer
     attribute 'realized_price', :integer
     attribute 'net',            :integer
-    
+
     #FA
     attribute 'fs_project_id',  :string
     attribute 'is_noncash',     :string
@@ -158,18 +158,18 @@ class AthenaItem < AthenaResource::Base
     find(:all, :params => { :faId => fa_id }).first
   end
 
-  def self.from_fa_donation(fa_donation, organization, order)    
+  def self.from_fa_donation(fa_donation, organization, order)
     @item = AthenaItem.new({
                             :order_id       => order.id,
                             :product_type   => "Donation",
                             :state          => "settled"
                           })
-    
+
     @item.organization_id   = organization.id
     @item.copy_fa_donation(fa_donation)
     @item
   end
-  
+
   def copy_fa_donation(fa_donation)
     self.state             = "settled"
     self.price             = (fa_donation.amount.to_f * 100).to_i
@@ -179,7 +179,7 @@ class AthenaItem < AthenaResource::Base
     self.nongift_amount    = (fa_donation.nongift.to_f * 100).to_i
     self.is_noncash        = fa_donation.is_noncash || false
     self.is_stock          = fa_donation.is_stock || false
-    self.reversed_at       = fa_donation.reversed_at unless fa_donation.reversed_at.nil?
+    self.reversed_at       = Time.at(fa_donation.reversed_at) unless fa_donation.reversed_at.nil?
     self.reversed_note     = fa_donation.reversed_note unless fa_donation.reversed_note.nil?
     self.fs_available_on   = fa_donation.fs_available_on unless fa_donation.fs_available_on.nil?
     self.is_anonymous      = fa_donation.is_anonymous || false
