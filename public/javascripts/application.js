@@ -94,7 +94,10 @@ $(document).ready(function() {
     var eventId = $("#calendar").attr("data-event");
     $('#calendar').fullCalendar({
       height: 150,
-      events: '/events/'+ eventId + '.json'
+      events: '/events/'+ eventId + '.json',
+      eventClick: function(calEvent, jsEvent, view){
+        window.location = '/events/'+ eventId + '/shows/' + calEvent.id
+      }
     });
     $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
   });
