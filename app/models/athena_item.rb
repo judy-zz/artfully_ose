@@ -179,7 +179,7 @@ class AthenaItem < AthenaResource::Base
     self.nongift_amount    = (fa_donation.nongift.to_f * 100).to_i
     self.is_noncash        = fa_donation.is_noncash || false
     self.is_stock          = fa_donation.is_stock || false
-    self.reversed_at       = Time.at(fa_donation.reversed_at) unless fa_donation.reversed_at.nil?
+    self.reversed_at       = Time.at(fa_donation.reversed_at.to_i) unless fa_donation.reversed_at.nil?
     self.reversed_note     = fa_donation.reversed_note unless fa_donation.reversed_note.nil?
     self.fs_available_on   = fa_donation.fs_available_on unless fa_donation.fs_available_on.nil?
     self.is_anonymous      = fa_donation.is_anonymous || false
