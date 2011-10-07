@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111004232140) do
+ActiveRecord::Schema.define(:version => 20111007155926) do
 
   create_table "admin_stats", :force => true do |t|
     t.integer  "users"
@@ -20,6 +20,12 @@ ActiveRecord::Schema.define(:version => 20111004232140) do
     t.integer  "active_fafs_projects"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ticketing_kits"
+    t.integer  "donation_kits"
+    t.integer  "tickets"
+    t.integer  "tickets_sold"
+    t.integer  "donations"
+    t.integer  "fafs_donations"
   end
 
   create_table "admins", :force => true do |t|
