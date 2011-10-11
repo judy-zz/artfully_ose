@@ -1,7 +1,7 @@
 $(document).ready(function(){
   $("#new_athena_person").bind("ajax:success", function(xhr, person){
     var $target = $(".hidden-target").clone();
-    $target.find("input[name='person_id']").val(person.id);
+    $target.find("input#person_id").val(person.id);
     $target.find(".name").html(person.first_name + " " + person.last_name + " (" + person.email + ")");
     $li = $(document.createElement('li'));
     $li.append($target.children()).appendTo(".wizard-list");

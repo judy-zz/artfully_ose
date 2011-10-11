@@ -79,6 +79,11 @@ h4 {
   font-style: italic;
   line-height: 24px; }
 
+h5 {
+  color: #594b43;
+  font-size: 0.875em;
+  line-height: 24px; }
+
 #heading {
   position: relative;
   padding-bottom: 12px;
@@ -886,6 +891,11 @@ dl.table-display {
     color: #999999;
     content: "OR";
     padding: 12px; }
+
+.hr {
+  border-bottom: 1px solid #eeeeee;
+  height: 12px;
+  margin-bottom: 11px; }
 
 #header {
   left: 0;

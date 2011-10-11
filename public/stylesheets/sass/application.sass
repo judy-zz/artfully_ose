@@ -37,6 +37,12 @@ h4
   font-style: italic
   line-height: 2 * $line_height
 
+h5
+  color: $secondary
+  font-size: .875em
+  line-height: 2 * $line_height
+
+
 #heading
   @include section
   @extend .stack
@@ -598,7 +604,10 @@ dl.table-display
     content: "OR"
     padding: $gutter
 
-
+.hr
+  border-bottom: 1px solid #eee
+  height: $line_height
+  margin-bottom: $line_height - 1
 
 @import "main-menu"
 @import "admin-menu"
