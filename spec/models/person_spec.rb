@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe AthenaPerson do
-  subject { Factory(:athena_person) }
+describe Person do
+  subject { Factory(:person) }
 
   describe "#valid?" do
     before(:each) do
@@ -38,22 +38,21 @@ describe AthenaPerson do
     let(:organization) { Factory(:organization) }
 
     before(:each) do
-      AthenaPerson.stub(:find).and_return
+      Person.stub(:find).and_return
     end
 
     it "should search for the Person by email address and organization" do
       params = {
-        :email => "eqperson@example.com",
-        :organizationId => "eq#{organization.id}"
+        :email => "person@example.com",
+        :organization_id => organization.id
       }
-      AthenaPerson.should_receive(:find).with(:first, :params => params)
-      AthenaPerson.find_by_email_and_organization("person@example.com", organization)
+      Person.should_receive(:find).with(:first, :conditions => params)
+      Person.find_by_email_and_organization("person@example.com", organization)
     end
 
     it "should return nil if it doesn't find anyone" do
       email = "person@example.com"
-      FakeWeb.register_uri(:get, "http://localhost/payments/transactions/settle", :body => '[]')
-      p = AthenaPerson.find_by_email_and_organization(email, organization)
+      p = Person.find_by_email_and_organization(email, organization)
       p.should eq nil
     end
   end
@@ -64,26 +63,22 @@ describe AthenaPerson do
   end
 
   describe "uniqueness" do
-    subject { Factory(:athena_person) }
+    subject { Factory(:person) }
     it "should not be valid if another person record exists with that email for the organization" do
-      Factory(:athena_person_with_id, :email => subject.email, :organization => subject.organization)
+      Factory(:person_with_id, :email => subject.email, :organization => subject.organization)
       subject.should_not be_valid
     end
   end
 
   describe "#dummy_for" do
     let(:organization) { Factory(:organization) }
-    let(:person) { Factory(:athena_person_with_id) }
     it "fetches the dummy record for the organization" do
-      body = "[#{person.encode}]"
-      FakeWeb.register_uri(:get, "http://localhost/athena/people.json?dummy=true&organizationId=eq#{organization.id}", :body => body)
-      AthenaPerson.dummy_for(organization).should eq person
+      person = Person.dummy_for(organization)
+      Person.dummy_for(organization).should eq person
     end
 
     it "creates the dummy record if one does not yet exist" do
-      FakeWeb.register_uri(:get, "http://localhost/athena/people.json?dummy=true&organizationId=eq#{organization.id}", :body => "[]")
-      AthenaPerson.should_receive(:create).and_return(Factory(:athena_person_with_id, :dummy => true))
-      person = AthenaPerson.dummy_for(organization)
+      person = Person.dummy_for(organization)
       person.dummy.should be_true
     end
   end

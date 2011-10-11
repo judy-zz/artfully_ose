@@ -1,14 +1,15 @@
 require 'spec_helper'
 
-describe AthenaPurchaseAction do
+describe PurchaseAction do
 
-  subject { Factory(:athena_purchase_action) }
+  subject { Factory(:purchase_action) }
 
   it { should be_valid }
 
   describe "action type" do
     it "should be of type purchase" do
-      AthenaPurchaseAction.new.action_type.should eq "Get"
+      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #{PurchaseAction.new.action_type}"
+      PurchaseAction.new.action_type.should eq "Get"
       subject.action_type.should eq "Get"
     end
 
@@ -26,15 +27,8 @@ describe AthenaPurchaseAction do
   end
 
   describe "subject" do
-    it "should return an AthenaOrder as the subject" do
-      subject.subject.should be_an AthenaOrder
-    end
-
-    it "should fetch the AthenaOrder if not cached" do
-      order = subject.subject
-      subject.instance_variable_set(:@subject, nil)
-      subject.subject.should eq order
-    end
+    it "should return an Order as the subject"
+    it "should fetch the Order if not cached"
   end
 
 end

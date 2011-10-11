@@ -10,7 +10,31 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110912204231) do
+ActiveRecord::Schema.define(:version => 20111009184600) do
+
+  create_table "actions", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.integer  "user_id"
+    t.string   "action_type"
+    t.string   "action_subtype"
+    t.datetime "occurred_at"
+    t.string   "details"
+    t.boolean  "starred"
+    t.integer  "dollar_amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "admin_stats", :force => true do |t|
+    t.integer  "users"
+    t.integer  "logged_in_more_than_once"
+    t.integer  "organizations"
+    t.integer  "fa_connected_orgs"
+    t.integer  "active_fafs_projects"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "admins", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
@@ -110,6 +134,20 @@ ActiveRecord::Schema.define(:version => 20110912204231) do
     t.string   "ein"
     t.string   "fa_member_id"
     t.string   "website"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "people", :force => true do |t|
+    t.integer  "organization_id"
+    t.string   "state"
+    t.string   "type"
+    t.string   "email"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "company_name"
+    t.string   "website"
+    t.boolean  "dummy"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
