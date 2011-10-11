@@ -8,18 +8,6 @@ describe DonationAction do
 
   it { should be_valid }
 
-  describe "action type" do
-    it "should be of type donation" do
-      DonationAction.new.action_type.should eq "Give"
-      subject.action_type.should eq "Give"
-    end
-
-    it "should not change when assigned a different value" do
-      subject.action_type = "other"
-      subject.action_type.should eq "Give"
-    end
-  end
-
   describe ".valid?" do
     it "should not be valid without a person id" do
       subject.person_id = nil

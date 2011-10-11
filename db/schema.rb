@@ -10,20 +10,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111011180921) do
+ActiveRecord::Schema.define(:version => 20111011191451) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
     t.integer  "person_id"
     t.integer  "user_id"
-    t.string   "action_type"
-    t.string   "action_subtype"
     t.datetime "occurred_at"
     t.string   "details"
     t.boolean  "starred"
     t.integer  "dollar_amount"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
   end
 
   create_table "admin_stats", :force => true do |t|

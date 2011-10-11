@@ -1,6 +1,6 @@
 class DonationAction < Action
-  def initialize(attributes = {})
-    super(attributes.merge(:action_type => "Give"))
+  def action_type
+    "Give"
   end
 
   def set_params(params, person, organization)
@@ -8,9 +8,4 @@ class DonationAction < Action
     self.dollar_amount = params[:dollar_amount]
     super(params, person, organization)
   end
-
-  private
-    def find_subject
-      # raise ApplicationError
-    end
 end

@@ -34,10 +34,6 @@ class Action < ActiveRecord::Base
     self.timestamp = DateTime.now
   end
 
-  def starred?
-    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? starred
-  end
-
   def unstarred?
     !starred?
   end
@@ -46,19 +42,8 @@ class Action < ActiveRecord::Base
     # raise ApplicationError
   end
 
-  def self.find_by_person_and_organization(person, organization)
-    find(:all, :params => { :personId => "eq#{person.id}", :organizationId => "eq#{organization.id}"})
-  end
-
   def subject=(subject)
     # raise ApplicationError
-  end
-
-  def after_initialize
-    set_type
-  end
-
-  def set_type
   end
 
   def hear_action_subtypes
