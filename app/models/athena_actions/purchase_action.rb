@@ -1,7 +1,5 @@
 class PurchaseAction < Action
-  def initialize(attributes = {})
-    puts "*******************************************"
+  def set_type
     action_type = "Get"
-    puts "********************** #{action_type}"
   end
 end

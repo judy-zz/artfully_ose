@@ -4,7 +4,7 @@ require 'spec_helper'
 
 describe DonationAction do
 
-  subject { Factory(:athena_donation_action) }
+  subject { Factory(:donation_action) }
 
   it { should be_valid }
 

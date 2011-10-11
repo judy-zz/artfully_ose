@@ -8,7 +8,6 @@ describe PurchaseAction do
 
   describe "action type" do
     it "should be of type purchase" do
-      puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!! #{PurchaseAction.new.action_type}"
       PurchaseAction.new.action_type.should eq "Get"
       subject.action_type.should eq "Get"
     end

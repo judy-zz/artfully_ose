@@ -43,7 +43,7 @@ class Action < ActiveRecord::Base
   end
 
   def subject
-    raise ApplicationError
+    # raise ApplicationError
   end
 
   def self.find_by_person_and_organization(person, organization)
@@ -51,7 +51,14 @@ class Action < ActiveRecord::Base
   end
 
   def subject=(subject)
-    raise ApplicationError
+    # raise ApplicationError
+  end
+
+  def after_initialize
+    set_type
+  end
+
+  def set_type
   end
 
   def hear_action_subtypes

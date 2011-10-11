@@ -5,13 +5,13 @@ Factory.define :person do |p|
   p.association     :organization
 end
 
-Factory.define :purchase_action, :default_strategy => :build do |a|
+Factory.define(:purchase_action) do |a|
   a.person { Factory(:person) }
   # a.subject { Factory(:order_with_id) }
   a.occurred_at { DateTime.now }
 end
 
-Factory.define :donation_action, :default_strategy => :build do |a|
+Factory.define(:donation_action) do |a|
   a.person { Factory(:person) }
   a.subject { Factory(:donation) }
   a.occurred_at { DateTime.now }

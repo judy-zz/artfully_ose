@@ -3,11 +3,13 @@
 class Person < ActiveRecord::Base
   belongs_to :organization
   has_many :actions
-  
+
   validates_presence_of :email
   validates_presence_of :organization_id
   validates_presence_of :person_info
-  
+
+  validates :email, :uniqueness => true
+
   comma do
     first_name
     last_name
@@ -20,19 +22,13 @@ class Person < ActiveRecord::Base
   def self.recent(organization)
     []
   end
-  
+
   def self.find_by_email_and_organization(email, organization)
     find(:first, :conditions => { :email => email, :organization_id => organization.id })
   end
 
   def self.find_by_organization(organization)
     find_by_organization_id(organization.id)
-  end
-
-  def organization=(org)
-    raise TypeError, "Expecting an Organization" unless org.kind_of? Organization
-    org.save unless org.persisted?
-    @organization, self.organization_id = org, org.id
   end
 
   def self.dummy_for(organization)
