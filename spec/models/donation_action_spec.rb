@@ -2,7 +2,7 @@ require 'spec_helper'
 
 require 'spec_helper'
 
-describe AthenaDonationAction do
+describe DonationAction do
 
   subject { Factory(:athena_donation_action) }
 
@@ -10,7 +10,7 @@ describe AthenaDonationAction do
 
   describe "action type" do
     it "should be of type donation" do
-      AthenaDonationAction.new.action_type.should eq "Give"
+      DonationAction.new.action_type.should eq "Give"
       subject.action_type.should eq "Give"
     end
 

@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe DoorList do
-  let(:performance) { Factory(:athena_performance_with_id) }
-  let(:buyer) { Factory(:athena_person_with_id) }
+  let(:performance) { Factory(:show) }
+  let(:buyer) { Factory(:person) }
   subject { DoorList.new(performance) }
 
   before(:each) do

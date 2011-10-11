@@ -12,7 +12,7 @@ describe Ability do
 
     #this is for events_controller.new, not .create
     describe "who are creating an event" do
-      it { should be_able_to(:new, AthenaEvent) }
+      it { should be_able_to(:new, Event) }
     end
 
     describe "and are creating tickets with priced sections" do
@@ -38,27 +38,27 @@ describe Ability do
     end
 
     describe "and events" do
-      it { should be_able_to(:manage, Factory(:athena_event, :organization_id => organization.id)) }
-      it { should be_able_to(:create, AthenaEvent) }
+      it { should be_able_to(:manage, Factory(:event, :organization_id => organization.id)) }
+      it { should be_able_to(:create, Event) }
 
-      it { should_not be_able_to(:manage, Factory(:athena_event, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:manage, Factory(:event, :organization_id => organization.id + 1)) }
 
       it "should not be able to delete an event where the performances cannot be deleted also" do
         performances = 3.times.collect { mock(:performance, :live? => true) }
-        event = Factory(:athena_event, :organization_id => organization.id, :performances => performances)
+        event = Factory(:event, :organization_id => organization.id, :performances => performances)
         subject.should_not be_able_to(:destroy, event)
       end
     end
 
     describe "and performances" do
-      it { should be_able_to(:manage, Factory(:athena_performance, :organization_id => organization.id)) }
-      it { should be_able_to(:create, AthenaPerformance) }
+      it { should be_able_to(:manage, Factory(:show, :organization_id => organization.id)) }
+      it { should be_able_to(:create, Show) }
 
-      it { should_not be_able_to(:manage, Factory(:athena_performance, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:manage, Factory(:show, :organization_id => organization.id + 1)) }
 
-      it { should_not be_able_to(:edit, Factory(:athena_performance, :state => "on_sale")) }
-      it { should_not be_able_to(:destroy, Factory(:athena_performance, :state => "on_sale")) }
-      it { should_not be_able_to(:destroy, Factory(:athena_performance, :state => "built")) }
+      it { should_not be_able_to(:edit, Factory(:show, :state => "on_sale")) }
+      it { should_not be_able_to(:destroy, Factory(:show, :state => "on_sale")) }
+      it { should_not be_able_to(:destroy, Factory(:show, :state => "built")) }
     end
 
     describe "and charts" do
@@ -71,7 +71,7 @@ describe Ability do
     end
 
     describe "and tickets" do
-      let(:event) { Factory(:athena_event_with_id, :organization_id => organization.id) }
+      let(:event) { Factory(:event, :organization_id => organization.id) }
 
       it { should be_able_to(:manage, Factory(:ticket_with_id, :event_id => event.id)) }
       it { should be_able_to(:manage, AthenaTicket) }
@@ -84,15 +84,15 @@ describe Ability do
     subject { Ability.new(user) }
 
     describe "working with events" do
-      it { should_not be_able_to :create, AthenaEvent }
-      it { should_not be_able_to :edit, AthenaEvent }
-      it { should_not be_able_to :delete, AthenaEvent }
+      it { should_not be_able_to :create, Event }
+      it { should_not be_able_to :edit, Event }
+      it { should_not be_able_to :delete, Event }
     end
 
     describe "working with performances" do
-      it { should_not be_able_to :create, AthenaPerformance }
-      it { should_not be_able_to :edit, AthenaPerformance }
-      it { should_not be_able_to :delete, AthenaPerformance }
+      it { should_not be_able_to :create, Show }
+      it { should_not be_able_to :edit, Show }
+      it { should_not be_able_to :delete, Show }
     end
 
     describe "working with charts" do

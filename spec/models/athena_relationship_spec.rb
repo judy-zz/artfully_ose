@@ -50,19 +50,19 @@ describe AthenaRelationship do
     it { should respond_to :object }
 
     it "should find the People record for the subject of the relationship" do
-      subject.subject.should be_an(AthenaPerson)
+      subject.subject.should be_an(Person)
       subject.subject.id.should eq subject.left_side_id
     end
 
     it "should find the People record for the object of the relationship" do
-      subject.object.should be_an(AthenaPerson)
+      subject.object.should be_an(Person)
       subject.object.id.should eq subject.right_side_id
     end
   end
 
   describe "#find_by_person" do
     it "should request the relationships based on the person's id" do
-      person = Factory(:athena_person_with_id)
+      person = Factory(:person)
       FakeWeb.register_uri(:get, "http://localhost/athena/relationships/people/#{person.id}.json", :body => "[]")
       AthenaRelationship.find_by_person(person)
       FakeWeb.last_request.path.should eq "/athena/relationships/people/#{person.id}.json"

@@ -51,7 +51,7 @@ class AthenaOrder < AthenaResource::Base
       return
     end
 
-    raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
+    raise TypeError, "Expecting an Person" unless person.kind_of? Person
     @person, self.person_id = person, person.id
   end
 
@@ -294,7 +294,7 @@ class AthenaOrder < AthenaResource::Base
 
     def create_donation_actions
       items.select(&:donation?).collect do |item|
-        action                 = AthenaDonationAction.new
+        action                 = DonationAction.new
         action.person          = person
         action.subject         = item.product
         action.organization_id = organization.id
@@ -318,7 +318,7 @@ class AthenaOrder < AthenaResource::Base
       return if self.person_id.nil?
 
       begin
-        AthenaPerson.find(self.person_id)
+        Person.find(self.person_id)
       rescue ActiveResource::ResourceNotFound
         return nil
       end

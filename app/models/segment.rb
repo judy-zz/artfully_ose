@@ -20,7 +20,7 @@ class Segment < AthenaResource::Base
   end
 
   def people
-    @people ||= AthenaPerson.search_index(terms, organization)
+    @people ||= Person.search_index(terms, organization)
   end
 
   def length

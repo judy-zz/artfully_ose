@@ -47,16 +47,16 @@ class AthenaChart < AthenaResource::Base
   end
 
   def event
-    @event ||= AthenaEvent.find(event_id)
+    @event ||= Event.find(event_id)
   end
 
   def event=(event)
-    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
+    raise TypeError, "Expecting an Event" unless event.kind_of? Event
     @event, self.event_id = event, event.id
   end
 
   def assign_to(event)
-    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
+    raise TypeError, "Expecting an Event" unless event.kind_of? Event
     assigned = self.dup!
     assigned.event = event
     assigned.save
@@ -79,7 +79,7 @@ class AthenaChart < AthenaResource::Base
   end
 
   def self.default_chart_for(event)
-    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
+    raise TypeError, "Expecting an Event" unless event.kind_of? Event
     @chart = self.new
     @chart.name = self.get_default_name(event.name)
     @chart.event_id = event.id

@@ -8,7 +8,7 @@ class Job::Settlement < Job::Base
 
     def settle_performances_in(range)
       logger.info "Settling performances..."
-      AthenaPerformance.in_range(range[0], range[1]).each do |performance|
+      Show.in_range(range[0], range[1]).each do |performance|
         logger.info "Settling #{performance.event.name}, #{performance.datetime}"
 
         logger.error "#{performance.organization.name} does not have a bank account." if performance.organization.bank_account.nil?

@@ -1,6 +1,6 @@
 class CompsController < ApplicationController
   def new
-    @performance = AthenaPerformance.find(params[:performance_id])
+    @performance = Show.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
 
     @comp = Comp.new(@performance, @selected_tickets, recipient)
@@ -14,7 +14,7 @@ class CompsController < ApplicationController
   end
 
   def create
-    @performance = AthenaPerformance.find(params[:performance_id])
+    @performance = Show.find(params[:performance_id])
     @selected_tickets = params[:selected_tickets]
 
     @comp = Comp.new(@performance, @selected_tickets, recipient)
@@ -45,10 +45,10 @@ class CompsController < ApplicationController
   private
 
   def recipients
-    AthenaPerson.search_index(params[:terms].dup, current_user.current_organization) unless params[:terms].blank?
+    Person.search_index(params[:terms].dup, current_user.current_organization) unless params[:terms].blank?
   end
 
   def recipient
-    AthenaPerson.find(params[:person_id]) if params[:person_id]
+    Person.find(params[:person_id]) if params[:person_id]
   end
 end

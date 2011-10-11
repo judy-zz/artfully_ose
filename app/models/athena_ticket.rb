@@ -71,7 +71,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def datetime
-    @performance ||= AthenaPerformance.find(performance_id)
+    @performance ||= Show.find(performance_id)
     @performance.datetime
   end
 
@@ -190,7 +190,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def buyer=(person)
-    raise TypeError, "Expecting an AthenaPerson" unless person.kind_of? AthenaPerson
+    raise TypeError, "Expecting an Person" unless person.kind_of? Person
     @buyer, self.buyer_id = person, person.id
   end
 
@@ -235,7 +235,7 @@ class AthenaTicket < AthenaResource::Base
       return if self.buyer_id.nil?
 
       begin
-        AthenaPerson.find(self.buyer_id)
+        Person.find(self.buyer_id)
       rescue ActiveResource::ResourceNotFound
         return nil
       end

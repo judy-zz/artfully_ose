@@ -9,7 +9,7 @@ module AthenaHelpers
 
   def event_from_table_row(attributes)
     attributes.merge!(:organization_id => @current_user.current_organization.id)
-    Factory(:athena_event_with_id, attributes)
+    Factory(:event, attributes)
   end
 
   def current_event(event = nil)

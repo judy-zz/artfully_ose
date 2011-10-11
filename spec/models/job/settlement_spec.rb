@@ -10,7 +10,7 @@ describe Job::Settlement do
   end
 
   describe ".settle_performances_in" do
-    let(:performances) { 3.times.collect{ Factory(:athena_performance_with_id) } }
+    let(:performances) { 3.times.collect{ Factory(:show) } }
     let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
     let(:settlement) { mock(:settlement, :submit => nil) }
 
@@ -18,7 +18,7 @@ describe Job::Settlement do
       performances.each { |performance| performance.stub(:organization).and_return(organization) }
       performances.each { |performance| performance.stub(:id).and_return("12") }
       performances.each { |performance| performance.stub(:settleables).and_return(5.times.collect{ Factory(:athena_item) } ) }
-      AthenaPerformance.stub(:in_range).and_return(performances)
+      Show.stub(:in_range).and_return(performances)
     end
 
     it "creates and submit a Settlement for each performance" do

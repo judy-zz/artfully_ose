@@ -31,8 +31,8 @@ end
 
 Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build do |t|
   t.id { Factory.next :ticket_id }
-  t.event_id { Factory(:athena_event_with_id).id }
-  t.performance_id { Factory(:athena_performance_with_id).id }
+  t.event_id { Factory(:event).id }
+  t.performance_id { Factory(:show).id }
   t.price "3000"
   t.after_build do |ticket|
     FakeWeb.register_uri(:get, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
@@ -42,8 +42,8 @@ end
 
 Factory.define :sold_ticket_with_id, :parent => :sold_ticket, :default_strategy => :build do |t|
   t.id { Factory.next :ticket_id }
-  t.event_id { Factory(:athena_event_with_id).id }
-  t.performance_id { Factory(:athena_performance_with_id).id }
+  t.event_id { Factory(:event).id }
+  t.performance_id { Factory(:show).id }
   t.after_build do |ticket|
     FakeWeb.register_uri(:get, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
     FakeWeb.register_uri(:put, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)

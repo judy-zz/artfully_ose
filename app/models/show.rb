@@ -1,24 +1,13 @@
-class AthenaPerformance < AthenaResource::Base
-  include ActiveResource::Transitions
+class Show < ActiveRecord::Base
+  include ActiveRecord::Transitions
 
-  self.site = Artfully::Application.config.stage_site
-  self.element_name = 'performances'
-  self.collection_name = 'performances'
+  belongs_to :organization
+  belongs_to :event
+  belongs_to :chart
 
   validates_presence_of :datetime
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }
-
-  COMP = 'Comp'
-
-  schema do
-    attribute 'id',               :integer
-    attribute 'event_id',         :string
-    attribute 'chart_id',         :string
-    attribute 'datetime',         :string
-    attribute 'state',            :string
-    attribute 'organization_id',  :string
-  end
 
   state_machine do
     state :pending
@@ -37,10 +26,6 @@ class AthenaPerformance < AthenaResource::Base
     event :unpublish do
       transitions :from => :published, :to => :unpublished
     end
-  end
-
-  def organization
-    @organization ||= Organization.find(organization_id)
   end
 
   def gross_potential
@@ -69,29 +54,8 @@ class AthenaPerformance < AthenaResource::Base
     performance.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(performance.datetime + 1.day)
   end
 
-  def chart
-    if chart_id.blank?
-      return nil
-    end
-    @chart ||= AthenaChart.find(chart_id)
-  end
-
-  def chart=(chart)
-    raise TypeError, "Expecting an AthenaChart" unless chart.kind_of? AthenaChart
-    @chart, self.chart_id = chart, chart.id
-  end
-
-  def event
-    @event ||= AthenaEvent.find(attributes["event_id"])
-  end
-
-  def event=(event)
-    raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
-    @event, self.event_id = event, event.id
-  end
-  
   def set_attributes(attrs)
-    attributes.merge!(prepare_attr! attrs)    
+    attributes.merge!(prepare_attr! attrs)
   end
 
   def has_door_list?
@@ -108,7 +72,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def dup!
-    copy = AthenaPerformance.new(self.attributes.reject { |key, value| key == 'id' || key == 'state' })
+    copy = Show.new(self.attributes.reject { |key, value| key == 'id' || key == 'state' })
     copy.event = self.event
     copy.datetime = copy.datetime + 1.day
     copy
@@ -171,7 +135,7 @@ class AthenaPerformance < AthenaResource::Base
   def compable_tickets
     tickets.select(&:compable?)
   end
-  
+
   def create_tickets
     tickets = ActiveSupport::JSON.decode(post(:createtickets).body)
     build!

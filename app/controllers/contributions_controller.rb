@@ -28,7 +28,7 @@ class ContributionsController < ApplicationController
 
   def contributors
     if params[:terms].present?
-      people = AthenaPerson.search_index(params[:terms].dup, current_user.current_organization)
+      people = Person.search_index(params[:terms].dup, current_user.current_organization)
       flash[:error] = "No people matched your search terms." if people.empty?
     end
     people || []

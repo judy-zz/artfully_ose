@@ -28,7 +28,7 @@ class AthenaRelationship < AthenaResource::Base
   end
 
   def subject=(subject)
-    raise TypeError, "Expecting an AthenaPerson" unless subject.kind_of? AthenaPerson
+    raise TypeError, "Expecting an Person" unless subject.kind_of? Person
     @subject, self.left_side_id = subject, subject.id
   end
 
@@ -37,12 +37,12 @@ class AthenaRelationship < AthenaResource::Base
   end
 
   def object=(object)
-    raise TypeError, "Expecting an AthenaPerson" unless subject.kind_of? AthenaPerson
+    raise TypeError, "Expecting an Person" unless subject.kind_of? Person
     @object, self.right_side_id = object, object.id
   end
 
   def self.find_by_person(person_or_id)
-    id = person_or_id.kind_of?(AthenaPerson)? person_or_id.id : person_or_id
+    id = person_or_id.kind_of?(Person)? person_or_id.id : person_or_id
     return if id.nil?
     find(:all, :from => "people/#{id}".to_sym)
   end
@@ -50,13 +50,13 @@ class AthenaRelationship < AthenaResource::Base
   #convenience methods for normalizing the target of this relationship
   #since the person may be on the left of right
 
-  #returns an AthenaPerson or nil if person is not a member of this relationship
+  #returns an Person or nil if person is not a member of this relationship
   def person(person)
-    id = person.kind_of?(AthenaPerson)? person.id : person
+    id = person.kind_of?(Person)? person.id : person
     if left_side_id == id.to_s
-      AthenaPerson.find(right_side_id)
+      Person.find(right_side_id)
     elsif right_side_id == id.to_s
-      AthenaPerson.find(left_side_id)
+      Person.find(left_side_id)
     else
       nil
     end
@@ -64,7 +64,7 @@ class AthenaRelationship < AthenaResource::Base
 
   #Returns a string describing the relationship or '' if person is not a member of this relationship
   def relationship(person)
-    id = person.kind_of?(AthenaPerson)? person.id : person
+    id = person.kind_of?(Person)? person.id : person
     if left_side_id == id.to_s
       relationship_type
     elsif right_side_id == id.to_s
@@ -85,7 +85,7 @@ class AthenaRelationship < AthenaResource::Base
 
     def find_person(id)
       begin
-        AthenaPerson.find(id)
+        Person.find(id)
       rescue ActiveResource::ResourceNotFound
         return nil
       end

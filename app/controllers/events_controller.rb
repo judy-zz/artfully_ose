@@ -5,7 +5,7 @@ class EventsController < ApplicationController
   before_filter :upcoming_performances, :only => :show
 
   def create
-    @event = AthenaEvent.new(params[:athena_event][:athena_event])
+    @event = Event.new(params[:athena_event][:athena_event])
     @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @event.organization_id = current_user.current_organization.id
     begin
@@ -26,8 +26,8 @@ class EventsController < ApplicationController
   end
 
   def index
-    authorize! :view, AthenaEvent
-    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
+    authorize! :view, Event
+    @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
@@ -54,7 +54,7 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = AthenaEvent.new
+    @event = Event.new
     authorize! :new, @event
     @event.producer = current_user.current_organization.name
     @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
@@ -65,7 +65,7 @@ class EventsController < ApplicationController
   end
 
   def assign
-    @event = AthenaEvent.find(params[:event_id])
+    @event = Event.find(params[:event_id])
     @chart = AthenaChart.find(params[:athena_chart][:id])
     @event.assign_chart(@chart)
 
@@ -99,7 +99,7 @@ class EventsController < ApplicationController
   private
 
   def find_event
-    @event = AthenaEvent.find(params[:id])
+    @event = Event.find(params[:id])
   end
 
   def find_charts

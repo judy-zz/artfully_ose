@@ -72,7 +72,7 @@ class Checkout
 
     def find_or_create_people_record
       organization = order.organizations.first
-      person = AthenaPerson.find_by_email_and_organization(@customer.email, organization)
+      person = Person.find_by_email_and_organization(@customer.email, organization)
 
       if person.nil?
         params = {
@@ -81,7 +81,10 @@ class Checkout
           :email           => @customer.email,
           :organization_id => organization.id # DEBT: This doesn't account for multiple organizations per order
         }
-        person = AthenaPerson.create(params)
+        person = Person.create(params)
+        address = Address.from_payment(payment)
+        address.person_id = person.id
+        address.save
       end
       person
     end
@@ -103,15 +106,7 @@ class Checkout
         athena_order.transaction_id  = @payment.transaction_id
 
         #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
-        athena_order << @order.tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }
-        
-        puts "******************"
-        puts "******************"
-        puts "******************"
-        puts "******************"
-        puts "Slapping #{@order.donations.size} donations onto this order"
-        puts "******************"
-        
+        athena_order << @order.tickets.select { |ticket| Event.find(ticket.event_id).organization_id == organization.id.to_s }        
         athena_order << @order.donations
       end
     end

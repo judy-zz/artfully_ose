@@ -22,7 +22,7 @@ describe AthenaChart do
   end
 
   it "creates a default based on an event" do
-    @event = Factory(:athena_event)
+    @event = Factory(:event)
     @chart = AthenaChart.default_chart_for(@event)
 
     @chart.name.should eq AthenaChart.get_default_name(@event.name)
@@ -31,7 +31,7 @@ describe AthenaChart do
   end
 
   it "gets charts for an event" do
-    @event = Factory(:athena_event_with_id)
+    @event = Factory(:event)
     FakeWeb.register_uri(:get, "http://localhost/athena/charts.json?eventId=#{@event.id}", :body => "[#{subject.encode}]" )
     @charts = AthenaChart.find_by_event(@event)
     subject.should eq @charts.first
@@ -123,7 +123,7 @@ describe AthenaChart do
 
   describe "#assign_to" do
     before :each do
-      @event = Factory(:athena_event)
+      @event = Factory(:event)
     end
 
     it "assigns a duplicate chart to the event" do
@@ -132,7 +132,7 @@ describe AthenaChart do
       subject.assign_to(@event)
     end
 
-    it "raises a TypeError if not being assigned to an AthenaEvent" do
+    it "raises a TypeError if not being assigned to an Event" do
       lambda { subject.assign_to("event") }.should raise_error(TypeError)
     end
   end

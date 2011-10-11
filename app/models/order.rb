@@ -106,7 +106,7 @@ class Order < ActiveRecord::Base
   def organizations_from_tickets
     return @organizations unless @organizations.nil?
 
-    events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
+    events = tickets.collect(&:event_id).uniq.collect! { |id| Event.find(id) }
     @organizations = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
   end
 

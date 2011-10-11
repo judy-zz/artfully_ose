@@ -4,13 +4,13 @@ class ExchangesController < ApplicationController
     items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
 
     if items.all?(&:exchangeable?)
-      @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" })
+      @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" })
 
       unless params[:event_id].blank?
-        @event = AthenaEvent.find(params[:event_id])
+        @event = Event.find(params[:event_id])
         @performances = @event.upcoming_performances(:all)
         unless params[:performance_id].blank?
-          @performance = AthenaPerformance.find(params[:performance_id])
+          @performance = Show.find(params[:performance_id])
           @tickets = @performance.tickets.select(&:on_sale?)
         end
       end

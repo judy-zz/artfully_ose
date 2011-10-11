@@ -14,7 +14,7 @@ class ShowsController < ApplicationController
   end
 
   def duplicate
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
     authorize! :duplicate, @performance
 
     @new_performance = @performance.dup!
@@ -27,8 +27,8 @@ class ShowsController < ApplicationController
   end
 
   def create
-    @performance = AthenaPerformance.new
-    @event = AthenaEvent.find(params[:event_id])
+    @performance = Show.new
+    @event = Event.find(params[:event_id])
     @performance.event = @event
     @performance.set_attributes params[:athena_performance]
     @performance.organization_id = current_user.current_organization.id
@@ -42,7 +42,7 @@ class ShowsController < ApplicationController
   end
 
   def show
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
     authorize! :view, @performance
 
     @performance.tickets = @performance.tickets
@@ -50,12 +50,12 @@ class ShowsController < ApplicationController
   end
 
   def edit
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
     authorize! :edit, @performance
   end
 
   def update
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
     authorize! :edit, @performance
 
     without_tickets do
@@ -68,7 +68,7 @@ class ShowsController < ApplicationController
   end
 
   def destroy
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
     authorize! :destroy, @performance
 
     @performance.destroy
@@ -76,14 +76,14 @@ class ShowsController < ApplicationController
   end
 
   def door_list
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
     authorize! :view, @performance
     @current_time = DateTime.now.in_time_zone(@performance.event.time_zone)
     @door_list = DoorList.new(@performance)
   end
 
   def published
-    @performance = AthenaPerformance.find(params[:performance_id])
+    @performance = Show.find(params[:performance_id])
     authorize! :show, @performance
 
     if @performance.tickets.empty?
@@ -109,7 +109,7 @@ class ShowsController < ApplicationController
   end
 
   def unpublished
-    @performance = AthenaPerformance.find(params[:performance_id])
+    @performance = Show.find(params[:performance_id])
     authorize! :hide, @performance
 
     with_confirmation do
@@ -122,11 +122,11 @@ class ShowsController < ApplicationController
   end
 
   def built
-    @performance = AthenaPerformance.find(params[:performance_id])
+    @performance = Show.find(params[:performance_id])
     authorize! :edit, @performance
 
     @performance.create_tickets
-    @event = AthenaEvent.find(@performance.event_id)
+    @event = Event.find(@performance.event_id)
     authorize! :create_tickets, @performance.chart.sections
 
     respond_to do |format|
@@ -138,7 +138,7 @@ class ShowsController < ApplicationController
   def on_sale
     authorize! :bulk_edit, AthenaTicket
     with_confirmation do
-      @performance = AthenaPerformance.find(params[:performance_id])
+      @performance = Show.find(params[:performance_id])
 
       if @performance.bulk_on_sale(:all)
         @performance.publish!
@@ -168,7 +168,7 @@ class ShowsController < ApplicationController
 
   private
     def find_event
-      @event = AthenaEvent.find(params[:event_id])
+      @event = Event.find(params[:event_id])
     end
 
     def upcoming_performances

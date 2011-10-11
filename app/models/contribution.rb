@@ -40,11 +40,11 @@ class Contribution
   end
 
   def find_contributor
-    AthenaPerson.find(@contributor_id) unless @contributor_id.blank?
+    Person.find(@contributor_id) unless @contributor_id.blank?
   end
 
   def build_action
-    AthenaDonationAction.new({
+    DonationAction.new({
       :action_subtype  => @subtype,
       :organization_id => @organization_id,
       :occurred_at     => @occurred_at,

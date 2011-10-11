@@ -1,9 +1,9 @@
 Given /^an athena person exists with an email of "([^"]*)"$/ do |email|
-  Factory(:athena_person_with_id, :email => email)
+  Factory(:person, :email => email)
 end
 
 Given /^an athena person exists with an email of "([^"]*)" for my organization$/ do |email|
-  Factory(:athena_person_with_id, :email => email, :organization => @current_user.current_organization)
+  Factory(:person, :email => email, :organization => @current_user.current_organization)
 end
 
 Given /^I search for the person "([^"]*)"$/ do |email|
@@ -13,7 +13,7 @@ end
 Given /^there are (\d+) people tagged with "([^"]*)"$/ do |quantity, tag|
   @tag = tag
   @people = quantity.to_i.times.collect do
-    Factory(:athena_person_with_id, :tags => [ tag ], :organization => @current_user.current_organization)
+    Factory(:person, :tags => [ tag ], :organization => @current_user.current_organization)
   end
   body = @people.collect(&:encode).join(",")
   FakeWeb.register_uri(:get, "http://localhost/athena/people.json?_limit=10&_q=donor+AND+organizationId%3A#{@current_user.current_organization.id}", :body => "[#{body}]")
@@ -32,4 +32,15 @@ end
 
 Given /^my organization has a dummy person record$/ do
   Factory(:dummy, :organization => @current_user.current_organization)
+end
+
+
+Given /^I view the people record for "([^"]*)"$/ do |email|
+  @person ||= Factory(:person, :email => email, :organization => @current_user.current_organization)
+  visit(person_path(@person))
+end
+
+Given /^there are no addresses for "([^"]*)"$/ do |email|
+  @person ||= Factory(:person, :email => email, :organization => @current_user.current_organization)
+  FakeWeb.register_uri(:get, "http://localhost/athena/addresses.json?personId=#{@person.id}", :body => "[]")
 end

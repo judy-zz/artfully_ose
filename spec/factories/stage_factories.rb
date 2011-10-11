@@ -44,50 +44,24 @@ Factory.define :athena_section_with_id, :parent => :athena_section do |section|
   end
 end
 
-Factory.sequence :event_id do |id|
-  id
-end
 
-Factory.define :athena_event, :default_strategy => :build do |e|
+Factory.define :event do |e|
   e.name "Some Event"
   e.venue "Some Venue"
   e.city "Some City"
   e.state "Some State"
   e.producer "Some Producer"
   e.time_zone "Hawaii"
-  e.organization_id { Factory(:organization).id }
+  e.association :organization
 end
 
-Factory.define :athena_event_with_id, :parent => :athena_event do |e|
-  e.id { Factory.next :event_id }
-  e.after_build do |event|
-    FakeWeb.register_uri(:post, "http://localhost/athena/events.json", :body => event.encode)
-    FakeWeb.register_uri(:any, "http://localhost/athena/events/#{event.id}.json", :body => event.encode)
-    body = '{"performancesOnSale":2,"revenue":{"advanceSales":{"gross":0.0,"net":0.0},"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":62500.0,"net":0.0},"originalPotential":{"gross":62500.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0},"totalPlayed":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"played":{"gross":0,"comped":0},"available":0}}'
-    FakeWeb.register_uri(:get, %r|http://localhost/athena/reports/glance/\.json\?.*eventId=.*|, :body => body)
-  end
-end
-
-Factory.sequence :performance_datetime do |n|
+Factory.sequence :datetime do |n|
   (DateTime.now + n.days)
 end
 
-Factory.sequence :performance_id do |id|
-  id
-end
-
-Factory.define :athena_performance, :default_strategy => :build do |p|
-  p.datetime { Factory.next :performance_datetime }
-  p.event { Factory(:athena_event_with_id) }
-  p.organization_id { Factory(:organization).id }
-end
-
-Factory.define :athena_performance_with_id, :parent => :athena_performance do |p|
-  p.id { Factory.next :performance_id }
-  p.chart_id "4"
-  p.after_build do |performance|
-    FakeWeb.register_uri(:any, "http://localhost/athena/performances/#{performance.id}.json", :body => performance.encode)
-    body= '{"revenue":{"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":0.0,"net":0.0},"originalPotential":{"gross":0.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"available":0}}'
-    FakeWeb.register_uri(:get, %r|http://localhost/athena/reports/glance/\.json\?.*performanceId=.*|, :body => body)
-  end
+Factory.define(:show) do |p|
+  p.datetime { Factory.next :datetime }
+  p.association :organization
+  # TODO
+  p.chart_id 1
 end

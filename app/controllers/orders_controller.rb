@@ -12,7 +12,7 @@ class OrdersController < ApplicationController
   def show
     @order = AthenaOrder.find(params[:id])
     authorize! :view, @order
-    @person = AthenaPerson.find(@order.person_id)
+    @person = Person.find(@order.person_id)
     @total = @order.total
   end
 

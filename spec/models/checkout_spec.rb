@@ -44,7 +44,7 @@ describe Checkout do
 
     it "should always approve orders with cash payments" do
       subject.stub(:create_order).and_return(AthenaOrder.new)
-      subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
+      subject.stub(:find_or_create_people_record).and_return(Factory(:person))
       subject.finish.should be_true
     end
   end
@@ -56,7 +56,7 @@ describe Checkout do
 
     describe "return value" do
       before(:each) do
-        subject.stub(:find_or_create_people_record).and_return(Factory(:athena_person_with_id))
+        subject.stub(:find_or_create_people_record).and_return(Factory(:person))
       end
 
       it "returns true if the order was approved" do
@@ -83,15 +83,15 @@ describe Checkout do
 
       it "should create a person record when finishing with a new customer" do
         subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
-        AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
-        AthenaPerson.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))
+        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
+        Person.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))
         subject.finish
       end
 
       it "should not create a person record when the person already exists" do
         subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
-        AthenaPerson.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:athena_person,attributes))
-        AthenaPerson.should_not_receive(:create)
+        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:athena_person,attributes))
+        Person.should_not_receive(:create)
         subject.finish
       end
     end

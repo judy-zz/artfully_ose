@@ -56,7 +56,7 @@ end
 
 Given /^a user@example.com named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |name, wanted, pos|
   fname, lname = name.split(" ")
-  customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname)
+  customer = Factory(:person, :first_name => fname, :last_name => lname)
 
   performance = current_performances[pos.to_i - 1]
   tickets = performance.tickets
@@ -71,8 +71,8 @@ end
 
 When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
   fname, lname = name.split(" ")
-  customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
-  FakeWeb.register_uri(:get, %r|http://localhost/athena/people\.json?.*_q.*|, :body => "[#{customer.encode}]")
+  customer = Factory(:person, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
+  # FakeWeb.register_uri(:get, %r|http://localhost/athena/people\.json?.*_q.*|, :body => "[#{customer.encode}]")
   FakeWeb.register_uri(:post, "http://localhost/athena/actions.json", :body => Factory(:athena_purchase_action).encode)
 
   When %{I fill in "Search" with "#{email}"}
@@ -80,7 +80,7 @@ When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email
 end
 
 When /^I confirm comp$/ do
-  customer = Factory(:athena_person_with_id)
+  customer = Factory(:person)
   ticket = Factory(:ticket_with_id)
   FakeWeb.register_uri(:get, "http://localhost/athena/orders.json?parentId=1", :body=>"")
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111009184600) do
+ActiveRecord::Schema.define(:version => 20111011152930) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -34,6 +34,12 @@ ActiveRecord::Schema.define(:version => 20111009184600) do
     t.integer  "active_fafs_projects"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ticketing_kits"
+    t.integer  "donation_kits"
+    t.integer  "tickets"
+    t.integer  "tickets_sold"
+    t.integer  "donations"
+    t.integer  "fafs_donations"
   end
 
   create_table "admins", :force => true do |t|
@@ -88,6 +94,19 @@ ActiveRecord::Schema.define(:version => 20111009184600) do
   create_table "donations", :force => true do |t|
     t.integer  "amount"
     t.integer  "order_id"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "events", :force => true do |t|
+    t.string   "name"
+    t.string   "venue"
+    t.string   "state"
+    t.string   "city"
+    t.string   "time_zone"
+    t.string   "producer"
+    t.boolean  "is_free"
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -158,6 +177,14 @@ ActiveRecord::Schema.define(:version => 20111009184600) do
     t.string   "lock_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "shows", :force => true do |t|
+    t.string   "state"
+    t.datetime "datetime"
+    t.integer  "event_id"
+    t.integer  "chart_id"
+    t.integer  "organization_id"
   end
 
   create_table "users", :force => true do |t|

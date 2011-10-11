@@ -144,7 +144,7 @@ describe AthenaTicket do
   end
 
   describe "#sell_to" do
-    let (:buyer) { Factory(:athena_person_with_id) }
+    let (:buyer) { Factory(:person) }
     subject { Factory(:ticket_with_id, :state=>"on_sale") }
 
     before(:each) do
@@ -184,7 +184,7 @@ describe AthenaTicket do
   end
 
    describe "#comp_to" do
-    let (:buyer) { Factory(:athena_person_with_id) }
+    let (:buyer) { Factory(:person) }
     subject { Factory(:ticket_with_id, :state=>"on_sale") }
 
     before(:each) do
@@ -228,7 +228,7 @@ describe AthenaTicket do
     it { should respond_to :buyer= }
 
     it "fetches the People record" do
-      person =  Factory(:athena_person_with_id)
+      person =  Factory(:person)
       subject.buyer = person
       subject.buyer.should eq person
     end
@@ -239,7 +239,7 @@ describe AthenaTicket do
     end
 
     it "updates the customer id when assigning a new customer record" do
-      subject.buyer = Factory(:athena_person_with_id, :id => 2)
+      subject.buyer = Factory(:person, :id => 2)
       subject.buyer_id.should eq(2)
     end
   end
@@ -287,7 +287,7 @@ describe AthenaTicket do
   end
 
   describe "return!" do
-    subject { Factory(:ticket_with_id, :performance => DateTime.now + 1.day, :buyer => Factory(:athena_person_with_id), :state => :sold) }
+    subject { Factory(:ticket_with_id, :performance => DateTime.now + 1.day, :buyer => Factory(:person), :state => :sold) }
     it "removes the buyer from the item" do
       subject.stub(:save!)
       subject.return!

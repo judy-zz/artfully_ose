@@ -65,7 +65,7 @@ describe Person do
   describe "uniqueness" do
     subject { Factory(:person) }
     it "should not be valid if another person record exists with that email for the organization" do
-      Factory(:person_with_id, :email => subject.email, :organization => subject.organization)
+      Factory(:person, :email => subject.email, :organization => subject.organization)
       subject.should_not be_valid
     end
   end

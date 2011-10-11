@@ -7,7 +7,7 @@ describe Settlement do
 
   let(:bank_account) { Factory(:bank_account) }
   let(:organization) { Factory(:organization_with_id) }
-  let(:performance)  { Factory(:athena_performance_with_id) }
+  let(:performance)  { Factory(:show) }
   subject { Settlement.new }
 
   it "should set the created_at time when initialized" do

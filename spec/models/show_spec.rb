@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe AthenaPerformance do
-  subject { Factory(:athena_performance_with_id) }
+describe Show do
+  subject { Factory(:show) }
 
   it { should be_valid }
 
@@ -22,13 +22,13 @@ describe AthenaPerformance do
     subject.chart_id = "4"
     subject.should_not be_valid
   end
-  
+
   it "should not be valid without a chart_id" do
     subject.datetime = Time.now + 1.day
     subject.chart_id = nil
     subject.should_not be_valid
   end
-  
+
   describe "#played" do
     it "should be played if the event is in the past" do
       subject.datetime = Time.now - 1.day
@@ -42,7 +42,7 @@ describe AthenaPerformance do
   end
 
   describe "#publish" do
-    subject { Factory(:athena_performance_with_id, :state => "built" ) }
+    subject { Factory(:show, :state => "built" ) }
 
     it "should mark the performance as on sale" do
       subject.publish!
@@ -51,7 +51,7 @@ describe AthenaPerformance do
   end
 
   describe "#unpublish" do
-    subject { Factory(:athena_performance_with_id, :state => "published" ) }
+    subject { Factory(:show, :state => "published" ) }
 
     it "should mark the performance as off sale" do
       subject.unpublish!
@@ -60,7 +60,7 @@ describe AthenaPerformance do
   end
 
   describe "bulk edit tickets" do
-    subject { Factory(:athena_performance_with_id) }
+    subject { Factory(:show) }
     let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
 
     before(:each) do
@@ -135,13 +135,13 @@ describe AthenaPerformance do
 
   describe "#event" do
     it "should store the event when one is assigned" do
-      event = Factory(:athena_event_with_id)
+      event = Factory(:event)
       subject.event = event
       subject.event.should eq event
     end
 
     it "should store the event id when an event is assigned" do
-      event = Factory(:athena_event_with_id)
+      event = Factory(:event)
       subject.event = event
       subject.event_id.should eq event.id
     end
@@ -149,7 +149,7 @@ describe AthenaPerformance do
 
   describe "#dup!" do
     before(:each) do
-      subject { Factory(:athena_performance) }
+      subject { Factory(:show) }
       @new_performance = subject.dup!
     end
 
@@ -165,29 +165,6 @@ describe AthenaPerformance do
     it "should be set for one day in the future" do
       subject.datetime.should eq @new_performance.datetime - 1.day
     end
-  end
-
-  it "should return nil if no chart is assigned" do
-    subject.chart_id = nil
-    nil.should eq subject.chart
-  end
-
-  it "should update chart_id when assiging a chart" do
-    subject.chart = Factory(:athena_chart, :id => 1)
-    subject.chart_id.should eq 1
-  end
-
-  it "should raise a TypeError for invalid chart assignment" do
-    lambda { subject.chart = "Not a Chart" }.should raise_error(TypeError)
-  end
-
-  it "should update event_id when assiging an event" do
-    subject.event = Factory(:athena_event, :id => 1)
-    subject.event_id.should eq 1
-  end
-
-  it "should raise a TypeError for invalid event assignment" do
-    lambda { subject.chart = "Not an Event" }.should raise_error(TypeError)
   end
 
   describe "#live?" do
@@ -221,18 +198,12 @@ describe AthenaPerformance do
   end
 
   describe ".in_range" do
-    it "composes a GET request for a given set of Time objects" do
-      start = Time.now.beginning_of_day
-      stop = start.end_of_day
-      FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}", :body => "[]")
-      AthenaPerformance.in_range(start, stop)
-      FakeWeb.last_request.path.should eq "/athena/performances.json?datetime=gt#{start.xmlschema.gsub(/\+/,'%2B')}&datetime=lt#{stop.xmlschema.gsub(/\+/,'%2B')}"
-    end
+    pending
   end
 
   describe ".next_datetime" do
     context "without a starting performance datetime" do
-      subject { AthenaPerformance.next_datetime(nil) }
+      subject { Show.next_datetime(nil) }
       it "suggests the next available 8 PM" do
         subject.hour.should eq 20
       end
@@ -240,14 +211,14 @@ describe AthenaPerformance do
 
     context "given a starting performance datetime" do
       let(:base) { Time.now.beginning_of_day }
-      subject { AthenaPerformance.next_datetime(mock(:performance, :datetime => base)) }
+      subject { Show.next_datetime(mock(:performance, :datetime => base)) }
 
       it { should eq base + 1.day }
     end
 
     context "given a starting performance datetime in the past" do
       let(:base) { Time.now.beginning_of_day - 1.week }
-      subject { AthenaPerformance.next_datetime(mock(:performance, :datetime => base)) }
+      subject { Show.next_datetime(mock(:performance, :datetime => base)) }
 
       it { should eq base + 1.week + 1.day }
     end

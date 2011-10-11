@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Contribution do
   let(:organization){ Factory(:organization) }
-  let(:person) { Factory(:athena_person_with_id) }
+  let(:person) { Factory(:person) }
   let(:attributes) do
     {
       :subtype         => "Donation (Cash)",

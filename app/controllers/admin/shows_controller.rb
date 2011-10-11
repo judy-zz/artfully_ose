@@ -1,5 +1,5 @@
 class Admin::ShowsController < Admin::AdminController
   def show
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
   end
 end

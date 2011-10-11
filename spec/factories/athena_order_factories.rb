@@ -7,7 +7,7 @@ Factory.sequence :athena_item_id do |n|
 end
 
 Factory.define :athena_order, :default_strategy => :build do |o|
-  o.person { Factory(:athena_person_with_id) }
+  o.person { Factory(:person) }
   o.organization { Factory(:organization) }
   o.customer { Factory(:customer_with_id) }
   o.transaction_id "j59qrb"

@@ -3,19 +3,19 @@ class StatementsController < ApplicationController
   def index
     authorize! :view, AthenaStatement.new
     if params[:event_id].present?
-      @event = AthenaEvent.find(params[:event_id])
+      @event = Event.find(params[:event_id])
       authorize! :view, @event
       @played = @event.played_performances(:all)
       @statement = nil
       render :show and return
     else
-      @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" })
+      @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" })
       @events.each {|event| authorize! :view, event}
     end
   end
 
   def show
-    @performance = AthenaPerformance.find(params[:id])
+    @performance = Show.find(params[:id])
     authorize! :view, @performance
     @event = @performance.event
     @played = @event.played_performances

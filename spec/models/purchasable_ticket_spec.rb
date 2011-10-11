@@ -85,7 +85,7 @@ describe PurchasableTicket do
     it "should delegate sell_to to the ticket" do
       subject.ticket.stub!(:sell_to)
       subject.ticket.should_receive :sell_to
-      subject.sell_to(Factory(:athena_person_with_id))
+      subject.sell_to(Factory(:person))
     end
   end
 

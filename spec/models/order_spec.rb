@@ -162,7 +162,7 @@ describe Order do
     it "includes the organizations for the included tickets" do
       Factory(:lock)
       ticket = Factory(:ticket_with_id)
-      organization = AthenaEvent.find(ticket.event_id).organization
+      organization = Event.find(ticket.event_id).organization
 
       subject.add_tickets([ticket])
       subject.organizations.should include organization
@@ -203,7 +203,7 @@ describe Order do
 
     before(:each) do
       @events = tickets.collect do |ticket|
-        AthenaEvent.find(ticket.event_id)
+        Event.find(ticket.event_id)
       end
 
       @organizations = @events.collect(&:organization)
