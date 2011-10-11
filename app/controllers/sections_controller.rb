@@ -1,14 +1,14 @@
 class SectionsController < ApplicationController
   def new
-    @section = AthenaSection.new
-    @chart = AthenaChart.find(params[:chart_id])
+    @section = Section.new
+    @chart = Chart.find(params[:chart_id])
   end
 
   def create
-    @section = AthenaSection.new
+    @section = Section.new
 
     @section.update_attributes(params[:athena_section][:athena_section])
-    @chart = AthenaChart.find(params[:chart_id])
+    @chart = Chart.find(params[:chart_id])
     @section.chart_id = @chart.id
 
     if @section.save
@@ -19,14 +19,14 @@ class SectionsController < ApplicationController
   end
 
   def edit
-    @section = AthenaSection.find(params[:id])
-    @chart = AthenaChart.find(params[:chart_id])
+    @section = Section.find(params[:id])
+    @chart = Chart.find(params[:chart_id])
   end
 
   def update
-    @section = AthenaSection.find(params[:id])
+    @section = Section.find(params[:id])
     @section.update_attributes(params[:athena_section][:athena_section])
-    @chart = AthenaChart.find(params[:chart_id])
+    @chart = Chart.find(params[:chart_id])
     @section.chart_id = @chart.id
 
     if @section.save
@@ -37,9 +37,9 @@ class SectionsController < ApplicationController
   end
 
   def destroy
-    @section = AthenaSection.find(params[:id])
+    @section = Section.find(params[:id])
     @section.destroy
-    @chart = AthenaChart.find(params[:chart_id])
+    @chart = Chart.find(params[:chart_id])
     redirect_to chart_url(@chart)
   end
 

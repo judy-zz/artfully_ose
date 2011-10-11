@@ -38,7 +38,7 @@ describe Checkout do
   end
 
   describe "cash payments" do
-    let(:payment)         { CashPayment.new(Factory(:athena_person)) }
+    let(:payment)         { CashPayment.new(Factory(:person)) }
     let(:order_with_item) { Factory(:order_with_items) }
     subject               { Checkout.new(order_with_item, payment) }
 
@@ -84,13 +84,13 @@ describe Checkout do
       it "should create a person record when finishing with a new customer" do
         subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
         Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
-        Person.should_receive(:create).with(attributes).and_return(Factory(:athena_person,attributes))
+        Person.should_receive(:create).with(attributes).and_return(Factory(:person,attributes))
         subject.finish
       end
 
       it "should not create a person record when the person already exists" do
         subject.order.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
-        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:athena_person,attributes))
+        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:person,attributes))
         Person.should_not_receive(:create)
         subject.finish
       end

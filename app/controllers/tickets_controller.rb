@@ -8,14 +8,14 @@ class TicketsController < ApplicationController
   def new
     @performance = Show.find(params[:show_id])
     if !params[:section_id].blank?
-      @section = AthenaSection.find(params[:section_id])
+      @section = Section.find(params[:section_id])
       @summary = @section.summarize(@performance.id)
     end 
   end
 
   def create
     @performance = Show.find(params[:show_id])
-    @section = AthenaSection.find(params[:section_id])
+    @section = Section.find(params[:section_id])
     @quantity = params[:quantity].to_i
 
     if @quantity > 0

@@ -6,7 +6,7 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.new(params[:athena_event][:athena_event])
-    @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @templates = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
     @event.organization_id = current_user.current_organization.id
     begin
       authorize! :create, @event
@@ -35,8 +35,8 @@ class EventsController < ApplicationController
     @performances = @event.performances.paginate(:page => params[:page], :per_page => 10)
     @next_performance = @event.next_perf
     @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
-    @charts = @event.filter_charts(AthenaChart.find_templates_by_organization(current_user.current_organization))
-    @chart = AthenaChart.new
+    @charts = @event.filter_charts(Chart.find_templates_by_organization(current_user.current_organization))
+    @chart = Chart.new
 
     respond_to do |format|
       format.json do
@@ -57,7 +57,7 @@ class EventsController < ApplicationController
     @event = Event.new
     authorize! :new, @event
     @event.producer = current_user.current_organization.name
-    @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @templates = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
   end
 
   def edit
@@ -66,7 +66,7 @@ class EventsController < ApplicationController
 
   def assign
     @event = Event.find(params[:event_id])
-    @chart = AthenaChart.find(params[:athena_chart][:id])
+    @chart = Chart.find(params[:athena_chart][:id])
     @event.assign_chart(@chart)
 
     flash[:error] = @event.errors.full_messages.to_sentence unless @event.errors.empty?
@@ -104,7 +104,7 @@ class EventsController < ApplicationController
 
   def find_charts
     ids = params[:charts] || []
-    ids.collect { |id| AthenaChart.find(id) }
+    ids.collect { |id| Chart.find(id) }
   end
 
   def upcoming_performances

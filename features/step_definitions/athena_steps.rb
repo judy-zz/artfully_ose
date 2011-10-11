@@ -35,7 +35,7 @@ Given /^I can lock Tickets in ATHENA$/ do
 end
 
 Given /^I can save People to ATHENA$/ do
-  FakeWeb.register_uri(:post, 'http://localhost/athena/people.json', :body => Factory(:athena_person).encode )
+  FakeWeb.register_uri(:post, 'http://localhost/athena/people.json', :body => Factory(:person).encode )
 end
 
 Given /^I can save purchase actions in ATHENA$/ do

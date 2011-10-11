@@ -1,29 +1,13 @@
-class AthenaChart < AthenaResource::Base
-  self.site = Artfully::Application.config.stage_site
-  self.element_name = 'charts'
-  self.collection_name = 'charts'
+class Chart < ActiveRecord::Base
+  belongs_to :event
+  belongs_to :organization
+  has_many :performances
+  has_many :sections
 
   validates :name, :presence => true, :length => { :maximum => 255 }
 
-  schema do
-    attribute 'name',             :string
-    attribute 'is_template',      :string
-    attribute 'event_id',         :string
-    attribute 'performance_id',   :string
-    attribute 'organization_id',  :string
-  end
-
   def as_json(options = {})
-    super({ :methods => [ "sections" ]}.merge(options))
-  end
-
-  def sections
-    @sections ||= find_sections
-  end
-
-  def sections=(sections)
-    raise TypeError, "Expecting an Array" unless sections.kind_of? Array
-    @sections = sections
+    super({:methods => ['sections']}.merge(options))
   end
 
   # copy! is when they're editing charts and want to create a copy of
@@ -46,28 +30,11 @@ class AthenaChart < AthenaResource::Base
     success
   end
 
-  def event
-    @event ||= Event.find(event_id)
-  end
-
-  def event=(event)
-    raise TypeError, "Expecting an Event" unless event.kind_of? Event
-    @event, self.event_id = event, event.id
-  end
-
   def assign_to(event)
     raise TypeError, "Expecting an Event" unless event.kind_of? Event
     assigned = self.dup!
     assigned.event = event
     assigned.save
-  end
-
-  def self.find_by_event(event)
-    find_by_event_id(event.id)
-  end
-
-  def self.find_by_organization(organization)
-    find_by_organization_id(organization.id)
   end
 
   def self.find_templates_by_organization(organization)
@@ -85,7 +52,7 @@ class AthenaChart < AthenaResource::Base
     @chart.event_id = event.id
     @chart
   end
-  
+
   def has_paid_sections?
     !self.sections.drop_while{|s| s.price.to_i == 0}.empty?
   end
@@ -94,17 +61,10 @@ class AthenaChart < AthenaResource::Base
     def duplicate(options = {})
       rejections = Array.wrap(options[:without])
       additions = options[:with] || {}
+      attrs = self.attributes.reject { |key, value| rejections.include?(key) }.merge(additions)
 
-      self.class.new(self.attributes.reject { |key, value| rejections.include?(key) } ).tap do |copy|
-        copy.load(additions)
+      self.class.new(attrs).tap do |copy|
         copy.sections = self.sections.collect { |section| section.dup! }
-      end
-    end
-
-    def find_sections
-      return [] if new_record?
-      AthenaSection.find(:all, :params => { :chartId => "eq#{id}" }).each do |section|
-        section.chart = self
       end
     end
 end

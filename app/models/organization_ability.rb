@@ -9,7 +9,7 @@ class OrganizationAbility
 #    TODO: Use these when ids on ATHENA are actually integers
 #    can :manage, Event, :organization_id => organization.id
 #    can :manage, Show, :organization_id => organization.id
-#    can :manage, AthenaChart, :organization_id => organization.id
+#    can :manage, Chart, :organization_id => organization.id
 
     can :manage, Event do |event|
       event.organization_id.to_i == organization.id
@@ -23,7 +23,7 @@ class OrganizationAbility
       can? :manage, Event.find(ticket.event_id)
     end
 
-    can :manage, AthenaChart do |chart|
+    can :manage, Chart do |chart|
       chart.organization_id.to_i == organization.id
     end
 

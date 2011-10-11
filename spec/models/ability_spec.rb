@@ -17,13 +17,13 @@ describe Ability do
 
     describe "and are creating tickets with priced sections" do
       sections = Array.new
-      sections << Factory(:athena_section)
+      sections << Factory(:section)
       it { should_not be_able_to(:create_tickets, sections) }
     end
 
     describe "and are creating tickets with free sections" do
       sections = Array.new
-      sections << Factory(:athena_free_section)
+      sections << Factory(:free_section)
       it { should be_able_to(:create_tickets, sections) }
     end
   end
@@ -62,12 +62,12 @@ describe Ability do
     end
 
     describe "and charts" do
-      let(:chart) { Factory(:athena_chart, :organization_id => organization.id) }
+      let(:chart) { Factory(:chart, :organization_id => organization.id) }
 
       it { should be_able_to :view, chart }
       it { should be_able_to :manage, chart }
-      it { should_not be_able_to(:manage, Factory(:athena_chart, :organization_id => organization.id + 1)) }
-      it { should_not be_able_to(:view, Factory(:athena_chart, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:manage, Factory(:chart, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:view, Factory(:chart, :organization_id => organization.id + 1)) }
     end
 
     describe "and tickets" do
@@ -96,9 +96,9 @@ describe Ability do
     end
 
     describe "working with charts" do
-      it { should_not be_able_to :create, AthenaChart }
-      it { should_not be_able_to :edit, AthenaChart }
-      it { should_not be_able_to :delete, AthenaChart }
+      it { should_not be_able_to :create, Chart }
+      it { should_not be_able_to :edit, Chart }
+      it { should_not be_able_to :delete, Chart }
     end
   end
 end

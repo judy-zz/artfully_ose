@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Sale do
   let(:show){Factory(:show)}
-  let(:chart){Factory(:athena_chart)}
+  let(:chart){Factory(:chart)}
   let(:quantities){{chart.sections.first.id => "2"}}
   subject { Sale.new(show, chart.sections, quantities)}
 

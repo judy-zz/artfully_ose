@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe AthenaChart do
-  subject { Factory(:athena_section) }
+describe Section do
+  subject { Factory(:section) }
 
   it { should be_valid }
 

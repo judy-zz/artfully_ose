@@ -2,7 +2,7 @@ When /^(?:|I )fill in the following event details:$/ do |table|
   event = event_from_table_row(table.hashes.first)
   setup_event(event)
 
-  setup_charts([Factory(:athena_chart, :organization_id => event.organization_id)])
+  setup_charts([Factory(:chart, :organization_id => event.organization_id)])
   setup_performances([])
 
   When %{I fill in "Name" with "#{event.name}"}
@@ -16,7 +16,7 @@ Given /^there is an [Ee]vent with (\d+) [Pp]erformances$/ do |performance_count|
   event = Factory(:event, :organization_id => @current_user.current_organization.id)
 
   setup_event(event)
-  charts = setup_charts([Factory(:athena_chart, :organization_id => @current_user.current_organization.id)])
+  charts = setup_charts([Factory(:chart, :organization_id => @current_user.current_organization.id)])
   setup_performances(performance_count.to_i.times.collect { Factory(:show, :event => current_event, :chart => charts.first, :organization_id => @current_user.current_organization.id) })
 
 #  visit events_path

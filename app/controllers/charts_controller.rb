@@ -1,12 +1,12 @@
 class ChartsController < ApplicationController
   def index
-    authorize! :view, AthenaChart
-    @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    authorize! :view, Chart
+    @charts = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
   end
 
   def new
-    authorize! :view, AthenaChart
-    @chart = AthenaChart.new
+    authorize! :view, Chart
+    @chart = Chart.new
   end
 
   def create
@@ -18,18 +18,18 @@ class ChartsController < ApplicationController
   end
 
   def show
-    @charts = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
-    @chart = AthenaChart.find(params[:id])
+    @charts = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @chart = Chart.find(params[:id])
     authorize! :view, @chart
   end
 
   def edit
-    @chart = AthenaChart.find(params[:id])
+    @chart = Chart.find(params[:id])
     authorize! :edit, @chart
   end
 
   def update
-    @chart = AthenaChart.find(params[:id])
+    @chart = Chart.find(params[:id])
     authorize! :edit, @chart
     @chart.update_attributes(params[:athena_chart][:athena_chart])
     if @chart.save
@@ -40,7 +40,7 @@ class ChartsController < ApplicationController
   end
 
   def destroy
-    @chart = AthenaChart.find(params[:id])
+    @chart = Chart.find(params[:id])
     authorize! :destroy, @chart
     @chart.destroy
     redirect_to charts_url
@@ -49,7 +49,7 @@ class ChartsController < ApplicationController
   private
 
   def new_chart(params)
-    @chart = AthenaChart.new
+    @chart = Chart.new
     @chart.update_attributes(params[:athena_chart][:athena_chart])
     @chart.organization_id = current_user.current_organization.id
     @chart.isTemplate = true
@@ -62,8 +62,8 @@ class ChartsController < ApplicationController
   end
 
   def copy_chart(params)
-    @source_chart = AthenaChart.find(params[:chart_id])
-    authorize! :view, AthenaChart
+    @source_chart = Chart.find(params[:chart_id])
+    authorize! :view, Chart
     @chart = @source_chart.copy!
     @chart.save
     redirect_to chart_url(@chart)

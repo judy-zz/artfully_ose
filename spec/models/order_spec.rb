@@ -148,7 +148,7 @@ describe Order do
   describe "#finish" do
     it "should mark each item as sold" do
       subject.items.each { |item| item.should_receive(:sell_to) }
-      subject.finish(Factory(:athena_person), Time.now)
+      subject.finish(Factory(:person), Time.now)
     end
   end
 

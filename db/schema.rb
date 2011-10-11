@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111011152930) do
+ActiveRecord::Schema.define(:version => 20111011180921) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -74,6 +74,13 @@ ActiveRecord::Schema.define(:version => 20111011152930) do
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "charts", :force => true do |t|
+    t.string  "name"
+    t.boolean "is_template"
+    t.integer "event_id"
+    t.integer "organization_id"
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -177,6 +184,13 @@ ActiveRecord::Schema.define(:version => 20111011152930) do
     t.string   "lock_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "sections", :force => true do |t|
+    t.string  "name"
+    t.integer "capacity"
+    t.integer "price"
+    t.integer "chart_id"
   end
 
   create_table "shows", :force => true do |t|
