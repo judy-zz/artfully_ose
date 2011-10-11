@@ -203,11 +203,9 @@ describe AthenaPerformance do
   end
 
   describe "#live?" do
-    [ :built, :published, :unpublished ].each do |state|
-      it "is considered live when it is #{state}" do
-        subject.stub("#{state}?").and_return(true)
-        subject.should be_live
-      end
+    it "is considered live when there is a sold ticket" do
+      subject.stub(:tickets).and_return(Array.wrap(mock(:ticket, :comped? => false, :sold? => true)))
+      subject.should be_live
     end
   end
 

@@ -59,6 +59,10 @@ class AthenaPerformance < AthenaResource::Base
     @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
   end
 
+  def tickets_comped
+    @tickets_comped ||= tickets.select { |ticket| ticket.comped? }
+  end
+
   def self.in_range(start, stop)
     start = "gt#{start.xmlschema}"
     stop = "lt#{stop.xmlschema}"
@@ -151,7 +155,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def live?
-    built? or published? or unpublished?
+    (tickets_comped + tickets_sold).any?
   end
 
   def played?

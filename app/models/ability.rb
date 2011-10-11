@@ -61,7 +61,7 @@ class Ability
     end
 
     can [ :manage, :show, :hide, :duplicate ], AthenaPerformance do |performance|
-      user.current_organization.can? :manage, performance
+      user.current_organization.can?(:manage, performance)
     end
 
     can :manage, AthenaChart do |chart|
