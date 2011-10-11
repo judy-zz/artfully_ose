@@ -16,8 +16,7 @@ describe Ability do
     end
 
     describe "and are creating tickets with priced sections" do
-      sections = Array.new
-      sections << Factory(:section)
+      sections =  Array.wrap(Factory(:section, :price => 1000))
       it { should_not be_able_to(:create_tickets, sections) }
     end
 
@@ -43,22 +42,19 @@ describe Ability do
 
       it { should_not be_able_to(:manage, Factory(:event, :organization_id => organization.id + 1)) }
 
-      it "should not be able to delete an event where the performances cannot be deleted also" do
-        performances = 3.times.collect { mock(:performance, :live? => true) }
-        event = Factory(:event, :organization_id => organization.id, :performances => performances)
+      it "should not be able to delete an event where the shows cannot be deleted also" do
+        event = Factory(:event, :organization_id => organization.id)
+        event.stub(:shows).and_return(3.times.collect { mock(:show, :live? => true) })
         subject.should_not be_able_to(:destroy, event)
       end
     end
 
-    describe "and performances" do
+    describe "and shows" do
       it { should be_able_to(:manage, Factory(:show, :organization_id => organization.id)) }
       it { should be_able_to(:create, Show) }
 
       it { should_not be_able_to(:manage, Factory(:show, :organization_id => organization.id + 1)) }
-
-      it { should_not be_able_to(:edit, Factory(:show, :state => "on_sale")) }
-      it { should_not be_able_to(:destroy, Factory(:show, :state => "on_sale")) }
-      it { should_not be_able_to(:destroy, Factory(:show, :state => "built")) }
+      it { should_not be_able_to(:edit, Factory(:show).stub(:live? => true)) }
     end
 
     describe "and charts" do
@@ -89,7 +85,7 @@ describe Ability do
       it { should_not be_able_to :delete, Event }
     end
 
-    describe "working with performances" do
+    describe "working with shows" do
       it { should_not be_able_to :create, Show }
       it { should_not be_able_to :edit, Show }
       it { should_not be_able_to :delete, Show }
