@@ -22,13 +22,13 @@ describe AthenaPerformance do
     subject.chart_id = "4"
     subject.should_not be_valid
   end
-  
+
   it "should not be valid without a chart_id" do
     subject.datetime = Time.now + 1.day
     subject.chart_id = nil
     subject.should_not be_valid
   end
-  
+
   describe "#played" do
     it "should be played if the event is in the past" do
       subject.datetime = Time.now - 1.day
@@ -56,6 +56,18 @@ describe AthenaPerformance do
     it "should mark the performance as off sale" do
       subject.unpublish!
       subject.should be_unpublished
+    end
+  end
+
+  describe "#free?" do
+    it "is free when the event is free" do
+      subject.stub(:event).and_return(mock(:event, :free? => true))
+      subject.should be_free
+    end
+
+    it "is not free when the event is not free" do
+      subject.stub(:event).and_return(mock(:event, :free? => false))
+      subject.should_not be_free
     end
   end
 
