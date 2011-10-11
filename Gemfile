@@ -60,4 +60,5 @@ group :test, :development do
   gem 'awesome_print', :require => 'ap'
   gem 'uuid'
   gem 'faker'
+  gem 'rails-footnotes', '>= 3.7.5.rc4'
 end

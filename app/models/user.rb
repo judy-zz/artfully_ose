@@ -22,11 +22,11 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :user_agreement
 
   def is_in_organization?
-    organizations.any?
+    @is_in_organization ||= memberships.any?
   end
 
   def current_organization
-    (memberships.any? and memberships.first.organization) || Organization.new
+    @current_organization ||= (is_in_organization? ? memberships.first.organization : Organization.new)
   end
 
   def customer

@@ -13,7 +13,7 @@ class Organization < ActiveRecord::Base
   scope :linked_to_fa, where("fa_member_id is not null")
 
   def owner
-    users.first
+    @owner ||= users.first
   end
 
   delegate :can?, :cannot?, :to => :ability
