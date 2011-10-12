@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Checkout do
   let(:payment) { Factory(:payment) }
-  let(:order) { Factory(:order) }
+  let(:order) { Factory(:cart) }
 
   subject { Checkout.new(order, payment) }
 
@@ -11,7 +11,7 @@ describe Checkout do
   end
 
   it "should not be valid without a payment if the order total > 0 (Not Free)" do
-    subject = Checkout.new(Factory(:order_with_items), payment)
+    subject = Checkout.new(Factory(:cart_with_items), payment)
     subject.payment = nil
     subject.should_not be_valid
   end
@@ -27,7 +27,7 @@ describe Checkout do
   end
 
   it "should not be valid if the payment is invalid and order total > 0 (Not Free)" do
-    subject = Checkout.new(Factory(:order_with_items), payment)
+    subject = Checkout.new(Factory(:cart_with_items), payment)
     subject.payment.stub(:valid?).and_return(false)
     subject.should_not be_valid
   end
@@ -39,7 +39,7 @@ describe Checkout do
 
   describe "cash payments" do
     let(:payment)         { CashPayment.new(Factory(:person)) }
-    let(:order_with_item) { Factory(:order_with_items) }
+    let(:order_with_item) { Factory(:cart_with_items) }
     subject               { Checkout.new(order_with_item, payment) }
 
     it "should always approve orders with cash payments" do

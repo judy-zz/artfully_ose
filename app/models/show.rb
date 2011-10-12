@@ -27,7 +27,7 @@ class Show < ActiveRecord::Base
       transitions :from => :published, :to => :unpublished
     end
   end
-  
+
   delegate :free?, :to => :event
 
   def gross_potential
@@ -44,6 +44,10 @@ class Show < ActiveRecord::Base
 
   def tickets_sold
     @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
+  end
+
+  def tickets_comped
+    @tickets_comped ||= tickets.select { |ticket| ticket.comped? }
   end
 
   def self.in_range(start, stop)

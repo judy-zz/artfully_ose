@@ -29,7 +29,7 @@ class Sale
   end
 
   def cart
-    @cart ||= Order.new
+    @cart ||= Cart.new
   end
 
   def fulfilled?

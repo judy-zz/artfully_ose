@@ -1,10 +1,10 @@
-class Order < ActiveRecord::Base
+class Cart < ActiveRecord::Base
   include ActiveRecord::Transitions
 
   has_many :purchasable_tickets, :dependent => :destroy
   has_many :donations, :dependent => :destroy
 
-  after_initialize :clean_order
+  after_initialize :clean_cart
 
   state_machine do
     state :started
@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
     end
   end
 
-  def clean_order
+  def clean_cart
     return if approved?
     purchasable_tickets.delete(purchasable_tickets.select{ |item| !item.locked? })
   end
@@ -40,10 +40,10 @@ class Order < ActiveRecord::Base
 
     purchasable_tickets << ptkts
   end
-  
+
   def clear_donations
     temp = []
-    
+
     #This won't work if there is more than 1 FAFS donation on the order
     donations.each do |donation|
       temp = donations.delete(donations)
@@ -106,7 +106,7 @@ class Order < ActiveRecord::Base
   def organizations_from_tickets
     return @organizations unless @organizations.nil?
 
-    events = tickets.collect(&:event_id).uniq.collect! { |id| Event.find(id) }
+    events = tickets.collect(&:event_id).uniq.collect! { |id| ::Event.find(id) }
     @organizations = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
   end
 

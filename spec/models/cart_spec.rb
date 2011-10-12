@@ -1,10 +1,10 @@
 require 'spec_helper'
 
-describe Order do
-  subject { Factory(:order) }
+describe Cart do
+  subject { Factory(:cart) }
 
   it "should be marked as unfinished in the started state" do
-    subject.state = 'started'
+    subject.state = 'starteded'
     subject.should be_unfinished
   end
 
@@ -33,17 +33,17 @@ describe Order do
       subject.tickets.should eq tickets
     end
 
-    it "should have PurchasableTickets when a tickets are added to the order" do
+    it "should have PurchasableTickets when a tickets are added to the cart" do
       subject.items.each { |item| item.should be_a PurchasableTicket }
     end
 
-    it "should have the right PurchasableTickets when tickets are added to the order" do
+    it "should have the right PurchasableTickets when tickets are added to the cart" do
       subject.items.each { |item| tickets.should include(item.ticket) }
     end
   end
 
   describe "donations" do
-    it "should have a Donation when one is added to the order" do
+    it "should have a Donation when one is added to the cart" do
       donation = Factory(:donation)
       subject.donations << donation
       subject.items.should include(donation)
@@ -77,8 +77,8 @@ describe Order do
       FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       FakeWeb.register_uri(:delete, "http://localhost/athena/locks/#{lock.id}.json", :status => 200)
       subject.add_tickets tickets
-      order = Order.find(subject.id)
-      order.items.should be_empty
+      cart = Cart.find(subject.id)
+      cart.items.should be_empty
     end
   end
 
@@ -93,7 +93,7 @@ describe Order do
   describe "#pay_with" do
     let(:payment) { mock(:payment, :amount => 100) }
 
-    it "saves the order after payment" do
+    it "saves the cart after payment" do
       payment.stub(:requires_authorization?) { false }
       subject.should_receive(:save!)
       subject.pay_with(payment, :settle => false)
@@ -168,14 +168,14 @@ describe Order do
       subject.organizations.should include organization
     end
   end
-  
+
   describe ".clear_donations" do
     it "should do nothing when there are no donations" do
       donations = subject.clear_donations
       subject.donations.size.should eq 0
       donations.size.should eq 0
     end
-    
+
     it "should clear when there is one donation" do
       donation = Factory(:donation)
       subject.donations << donation
@@ -184,7 +184,7 @@ describe Order do
       donations.size.should eq 1
       donations.first.should eq donation
     end
-    
+
     it "should clear when there are two donations" do
       donation = Factory(:donation)
       donation2 = Factory(:donation)
@@ -214,7 +214,7 @@ describe Order do
       FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => Factory(:lock).encode)
     end
 
-    it "should return a donation for the producer of a single ticket in the order" do
+    it "should return a donation for the producer of a single ticket in the cart" do
       subject.add_tickets tickets
       donations = subject.generate_donations
       donations.each do |donation|

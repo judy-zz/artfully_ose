@@ -1,7 +1,7 @@
-Factory.define :order do |o|
+Factory.define :cart do |o|
 end
 
-Factory.define :order_with_items, :parent => :order do |o|
+Factory.define :cart_with_items, :parent => :cart do |o|
   o.after_create do |order|
     tickets = 3.times.collect { Factory(:ticket_with_id) }
     Factory(:lock, :tickets => tickets.collect(&:id))

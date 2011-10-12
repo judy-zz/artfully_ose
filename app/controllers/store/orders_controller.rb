@@ -3,7 +3,7 @@ class Store::OrdersController < Store::StoreController
   skip_before_filter :verify_authenticity_token
 
   def show
-    @donations = current_order.generate_donations
+    @donations = current_cart.generate_donations
   end
 
   def create
@@ -17,7 +17,7 @@ class Store::OrdersController < Store::StoreController
   end
 
   def destroy
-    current_order.destroy
+    current_cart.destroy
     redirect_to store_order_url
   end
 
@@ -26,14 +26,14 @@ class Store::OrdersController < Store::StoreController
       handle_tickets(params[:tickets]) if params.has_key? :tickets
       handle_donation(params[:donation]) if params.has_key? :donation
 
-      unless current_order.save
-        flash[:error] = current_order.errors
+      unless current_cart.save
+        flash[:error] = current_cart.errors
       end
     end
 
     def handle_tickets(ids)
       tickets = ids.collect { |id| AthenaTicket.find(id) }
-      current_order.add_tickets tickets
+      current_cart.add_tickets tickets
     end
 
     def handle_donation(data)
@@ -42,6 +42,6 @@ class Store::OrdersController < Store::StoreController
       donation.amount = data[:amount]
       donation.organization = Organization.find(data.delete(:organization_id))
 
-      current_order.donations << donation
+      current_cart.donations << donation
     end
 end

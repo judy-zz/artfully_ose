@@ -75,6 +75,13 @@ ActiveRecord::Schema.define(:version => 20111012012804) do
     t.datetime "updated_at"
   end
 
+  create_table "carts", :force => true do |t|
+    t.string   "state"
+    t.string   "transaction_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "charts", :force => true do |t|
     t.string  "name"
     t.boolean "is_template"
@@ -99,7 +106,7 @@ ActiveRecord::Schema.define(:version => 20111012012804) do
 
   create_table "donations", :force => true do |t|
     t.integer  "amount"
-    t.integer  "order_id"
+    t.integer  "cart_id"
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -145,13 +152,6 @@ ActiveRecord::Schema.define(:version => 20111012012804) do
     t.integer "organization_id"
   end
 
-  create_table "orders", :force => true do |t|
-    t.string   "state"
-    t.string   "transaction_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.string   "time_zone"
@@ -178,7 +178,7 @@ ActiveRecord::Schema.define(:version => 20111012012804) do
   end
 
   create_table "purchasable_tickets", :force => true do |t|
-    t.integer  "order_id"
+    t.integer  "cart_id"
     t.string   "ticket_id"
     t.string   "lock_id"
     t.datetime "created_at"

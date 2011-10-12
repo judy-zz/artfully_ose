@@ -7,7 +7,6 @@ end
 
 Factory.define(:purchase_action) do |a|
   a.person { Factory(:person) }
-  # a.subject { Factory(:order_with_id) }
   a.occurred_at { DateTime.now }
 end
 
