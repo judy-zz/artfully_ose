@@ -60,8 +60,8 @@ class Ability
       sections.none? {|s| s.price.to_i > 0} || (user.current_organization.can? :access, :paid_ticketing)
     end
 
-    can [ :manage, :show, :hide, :duplicate ], Show do |show|
-      user.current_organization.can? :manage, show
+    can [ :manage, :show, :hide, :duplicate ], AthenaPerformance do |performance|
+      user.current_organization.can?(:manage, performance)
     end
 
     can :manage, Chart do |chart|

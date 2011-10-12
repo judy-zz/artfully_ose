@@ -2,14 +2,24 @@
 - content_for :header do
   %h1 Record Contribution
 
-.compact-spread
+.context
+  %h3 New Donor
+  = form_for AthenaPerson.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
+    %ul= render :partial => 'people/form', :locals => { :parent_form => form, :target => AthenaPerson.new }
+    = form.submit "Save"
+  .hidden-target
+    %span.name
+    = form_for(@contribution, :url => new_contribution_path, :html => {:method => :get}) do |form|
+      = form.hidden_field :person_id, :id => "person_id"
+      = form.submit "Select", :class => :mini
+.document
   %h3 Find Donor
   %ul.wizard-list
     - @contributors.each do |contributor|
       %li
         %span.name= "#{contributor.first_name} #{contributor.last_name} (#{contributor.email})"
         = form_for(@contribution, :url => new_contribution_path, :html => {:method => :get}) do |form|
-          = form.hidden_field :contributor_id, :value => contributor.id
+          = form.hidden_field :person_id, :value => contributor.id
           = form.submit "Select", :class => :mini
 
   = form_tag new_contribution_path, :method => :get do

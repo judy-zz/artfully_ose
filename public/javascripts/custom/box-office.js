@@ -24,15 +24,22 @@ $("document").ready(function(){
     }
   });
 
-  // Make sure the defaults start as checked.
-  $("#anonymous:not(:checked), #cash:not(:checked)").each(function(){
-    $(this).click();
+  var mappings = {
+    "#anonymous": "#person-search",
+    "#cash": "#payment-info"
+  }
+
+  $.each(mappings, function(checkbox, section){
+    if($(checkbox).is(":checked")){
+      $(section).addClass("hidden");
+    }
   });
 
   $("#anonymous").change(function(){
     if($(this).is(":checked")){
       $("#person-search").addClass("hidden");
       $(".target li:visible").remove();
+      $("#terms").val("");
       $("#dummy").click();
     } else {
       $("#person-search").removeClass("hidden");

@@ -37,10 +37,10 @@ Factory.define :fa_donation, :class => FA::Donation, :default_strategy => :build
   d.date            "2010-08-27"
   d.check_no        "3"
   d.is_noncash      "1"
-  d.reversed_at     "2010-08-27 00:00:00"
+  d.reversed_at     Time.now.to_i
   d.reversed_note   "Note"
   d.fs_available_on "2010-09-03"
   d.is_anonymous    "1"
-  
+
   d.donor Factory(:fa_donor)
 end

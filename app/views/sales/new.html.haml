@@ -37,17 +37,21 @@
       %h4 Customer Information
       %ul.radio-list
         %li
-          .radio= check_box_tag(:anonymous, nil, true)
+          .radio= check_box_tag(:anonymous, nil, params[:anonymous])
           .label= label_tag(:anonymous, "Anonymous Sale")
         %li.hidden
           .radio= radio_button_tag(:person_id, @dummy.id, true, :id => "dummy")
           .label= label_tag(:person_id, "Anonymous Sale")
-      %ul#person-search.hidden
+      %ul#person-search
         %li
           .full.paired.element
-            = text_field_tag(:terms, "", :id => "terms")
+            = text_field_tag(:terms, params[:terms], :id => "terms")
             = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
       %ul.radio-list.target
+        - @people.each do |person|
+          %li
+            .radio= radio_button_tag(:person_id, person.id, params[:person_id] == person.id)
+            .label= label_tag(:person_id, "#{person.first_name} #{person.last_name}")
         %li.template.hidden
           .radio
           .label
@@ -56,17 +60,17 @@
       %h4 Payment Information
       %ul.radio-list
         %li
-          .radio= check_box_tag(:cash, nil, true)
+          .radio= check_box_tag(:cash, nil, params[:cash])
           .label= label_tag(:cash, "Cash Payment")
-      %ul#payment-info.hidden
+      %ul#payment-info
         %li
           .label= label_tag("credit_card[card_number]", "Card Number")
-          .element= text_field_tag("credit_card[card_number]")
+          .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
         %li
           .label= label_tag("credit_card[expiration_date]", "Expiration Date")
           .element.date_field
             = hidden_field_tag("credit_card[expiration_date(3i)]", 1)
-            = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12))
-            = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10))
+            = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
+            = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
     %fieldset
       #checkout= submit_tag "Checkout"

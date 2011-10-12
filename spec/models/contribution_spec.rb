@@ -10,13 +10,13 @@ describe Contribution do
       :occurred_at     => "2011-08-17 02:28 pm",
       :details         => "Some details.",
       :organization_id => organization.id,
-      :contributor_id  => person.id
+      :person_id  => person.id
     }
   end
 
   subject { Contribution.new(attributes)}
 
-  [:contributor_id, :subtype, :amount, :details, :organization_id].each do |attribute|
+  [:person_id, :subtype, :amount, :details, :organization_id].each do |attribute|
     it "loads the #{attribute} when created" do
       subject.send(attribute).should eq attributes[attribute]
     end
@@ -46,7 +46,7 @@ describe Contribution do
     let(:order) { subject.send(:build_order) }
 
     it "sets the person and organization" do
-      order.person_id.should eq subject.contributor_id
+      order.person_id.should eq subject.person_id
       order.organization_id.should eq subject.organization_id
     end
 
@@ -87,7 +87,7 @@ describe Contribution do
       action.organization_id.should eq subject.organization_id
       action.occurred_at.should eq subject.occurred_at
       action.details.should eq subject.details
-      action.person_id.should eq subject.contributor_id
+      action.person_id.should eq subject.person_id
     end
   end
 

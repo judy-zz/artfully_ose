@@ -10,4 +10,4 @@ Feature: Edit a performance
     And the 1st performance is on sale
     And I follow "Events"
     When I view the 1st event
-    Then I should see not be able to edit the 1st performance
+    Then I should not be able to edit the 1st performance

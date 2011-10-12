@@ -13,7 +13,7 @@ class Organization < ActiveRecord::Base
   scope :linked_to_fa, where("fa_member_id is not null")
 
   def owner
-    users.first
+    @owner ||= users.first
   end
 
   delegate :can?, :cannot?, :to => :ability
@@ -61,7 +61,7 @@ class Organization < ActiveRecord::Base
   end
 
   def has_fiscally_sponsored_project?
-    connected? and !fsp.nil?
+    connected? and fiscally_sponsored_project.present?
   end
 
   #Before calling this method, organization must have already been conected to an FA membership

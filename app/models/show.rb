@@ -27,6 +27,8 @@ class Show < ActiveRecord::Base
       transitions :from => :published, :to => :unpublished
     end
   end
+  
+  delegate :free?, :to => :event
 
   def gross_potential
     @gross_potential ||= tickets.inject(0) { |sum, ticket| sum += ticket.price.to_i }
@@ -113,7 +115,7 @@ class Show < ActiveRecord::Base
   end
 
   def live?
-    built? or published? or unpublished?
+    (tickets_comped + tickets_sold).any?
   end
 
   def played?

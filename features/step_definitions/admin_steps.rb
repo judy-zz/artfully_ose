@@ -1,4 +1,5 @@
 Given /^I am logged in as an admin$/ do
+  Factory(:admin_stats)
   @current_admin = Factory(:admin)
   visit new_admin_session_path
   fill_in("Email", :with => @current_admin.email)

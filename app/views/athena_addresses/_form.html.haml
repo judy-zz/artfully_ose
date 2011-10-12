@@ -11,7 +11,7 @@
       .hidden.label= addr_form.label :state, "State"
       .double.element
         = addr_form.text_field :city
-        = addr_form.text_field :state
+        = addr_form.select(:state, options_for_select(sorted_us_state_names))
         = addr_form.error_message_on(:city, :prepend_text => "City ", :css_class => "form-error")
         = addr_form.error_message_on(:state, :prepend_text => "State ", :css_class => "form-error")
     %li

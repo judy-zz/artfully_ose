@@ -1,6 +1,9 @@
 class FiscallySponsoredProject < ActiveRecord::Base
   belongs_to :organization
 
+
+  scope :active, where("status = 'Active'")
+
   def refresh
     begin
       project = FA::Project.find_active_by_member_id(fa_member_id)

@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, form ul li .label-and-element, .full.element, .stack1of2, .stack1of3, form ul li .label, .stack2of3, form ul li .element, .stack1of4, .quarter.element, #sidebar, .stack3of4, #store, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .stackAuto {
+.stack, form ul li .label-and-element, .full.element, .stack1of2, .stack1of3, form ul li .label, #sidebar, .stack2of3, form ul li .element, #store, .stack1of4, .quarter.element, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -15,16 +15,16 @@
 .stack1of2 {
   width: 50%; }
 
-.stack1of3, form ul li .label {
+.stack1of3, form ul li .label, #sidebar {
   width: 33.334%; }
 
-.stack2of3, form ul li .element {
+.stack2of3, form ul li .element, #store {
   width: 66.667%; }
 
-.stack1of4, .quarter.element, #sidebar {
+.stack1of4, .quarter.element {
   width: 25%; }
 
-.stack3of4, #store {
+.stack3of4 {
   width: 75%; }
 
 .stack1of5, .single_field .label, .single_field .submit {
@@ -80,12 +80,8 @@ form ul li {
       width: 4em; }
   form ul li .date_field {
     text-align: left; }
-    form ul li .date_field input {
-      width: 48%;
-      display: inline;
-      margin-right: 2%; }
     form ul li .date_field select {
-      width: 20%;
+      width: 48%;
       display: inline;
       margin-right: 2%; }
   form ul li .label label {
@@ -135,8 +131,9 @@ form .description, form .form-error {
 .double.element {
   text-align: left; }
   .double.element select {
+    width: 48%;
     display: inline;
-    margin-right: 3.5%; }
+    margin-right: 2%; }
   .double.element input {
     width: 48%;
     display: inline;
@@ -392,10 +389,11 @@ p {
   color: #077083; }
 
 #donation input[type="text"] {
-  width: 60%; }
+  width: 50%; }
 #donation input[type="submit"] {
   border-left: none;
-  width: 40%;
+  width: 50%;
+  min-width: 75px;
   -moz-border-radius: 0 4px 4px 0;
   -webkit-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0; }

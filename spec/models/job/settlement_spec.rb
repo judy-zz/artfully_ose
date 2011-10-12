@@ -29,6 +29,13 @@ describe Job::Settlement do
       end
       Job::Settlement.settle_performances_in(Settlement.range_for(DateTime.now))
     end
+
+    it "does not attempt to settle free performances" do
+      Settlement.stub(:submit)
+      performances.first.stub(:free?).and_return(true)
+      performances.first.should_not_receive(:settleables)
+      Job::Settlement.settle_performances_in(Settlement.range_for(DateTime.now))
+    end
   end
 
   describe ".settle_donations_in" do

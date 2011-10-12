@@ -32,10 +32,7 @@
             = form.submit "Import"
 
 .document
-  #this-week
-    %h3 This Week
-    #calendar{ :"data-event" => @event.id }
-
+  %h3 Performances
   #performances
     %table.standalone.zebra
       %thead
@@ -56,6 +53,9 @@
         %tr
           = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :performance => @next_performance }
     = will_paginate @performances
+  #this-week
+    #calendar{ :"data-event" => @event.id }
+
 
   #widget
     %h3 Sell Tickets

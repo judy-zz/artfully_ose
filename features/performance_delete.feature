@@ -11,11 +11,11 @@ Feature: Delete a performance
     When I delete the 1st Performance
     Then I should see 2 performances
 
-  Scenario: A producer attempts to delete a performance with tickets
+  Scenario: A producer attempts to delete a live show
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
     And there is an Event with 3 Performances
-    And the 1st performance has had tickets created
+    And the 1st performance has had tickets sold
     And I follow "Events"
     When I view the 1st event
-    Then I should see not be able to delete the 1st performance
+    Then I should not be able to delete the 1st performance

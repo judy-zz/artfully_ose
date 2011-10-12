@@ -59,6 +59,18 @@ describe Show do
     end
   end
 
+  describe "#free?" do
+    it "is free when the event is free" do
+      subject.stub(:event).and_return(mock(:event, :free? => true))
+      subject.should be_free
+    end
+
+    it "is not free when the event is not free" do
+      subject.stub(:event).and_return(mock(:event, :free? => false))
+      subject.should_not be_free
+    end
+  end
+
   describe "bulk edit tickets" do
     subject { Factory(:show) }
     let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
@@ -168,11 +180,9 @@ describe Show do
   end
 
   describe "#live?" do
-    [ :built, :published, :unpublished ].each do |state|
-      it "is considered live when it is #{state}" do
-        subject.stub("#{state}?").and_return(true)
-        subject.should be_live
-      end
+    it "is considered live when there is a sold ticket" do
+      subject.stub(:tickets).and_return(Array.wrap(mock(:ticket, :comped? => false, :sold? => true)))
+      subject.should be_live
     end
   end
 
