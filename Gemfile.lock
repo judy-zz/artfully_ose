@@ -52,6 +52,8 @@ GEM
       activemodel (= 3.0.9)
       activesupport (= 3.0.9)
     activesupport (3.0.9)
+    acts-as-taggable-on (2.1.1)
+      rails
     arel (2.0.10)
     athena_resource (0.0.1)
     awesome_print (0.4.0)
@@ -224,6 +226,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts-as-taggable-on (~> 2.1.0)
   athena_resource
   awesome_print
   cancan

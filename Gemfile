@@ -5,6 +5,7 @@ gem 'rails'
 gem 'athena_resource'
 
 gem 'delayed_job'
+gem 'acts-as-taggable-on', '~>2.1.0'
 
 # Views and Rendering
 gem 'haml'

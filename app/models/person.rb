@@ -1,6 +1,8 @@
 #TODO: tags, phones
 
 class Person < ActiveRecord::Base
+  acts_as_taggable
+  
   belongs_to :organization
   has_many :actions
 

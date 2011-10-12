@@ -14,5 +14,5 @@
       %li=link_to "Give", new_contribution_path("contribution[contributor_id]" => @person.id)
     = render :partial => 'actions/list', :locals => { :person => @person, :actions => (@person.starred_actions + @person.unstarred_actions ) }
 
-  = render :partial=>'shared/tags', :locals => { :tags => @person.tags, :subject => @person }
+  = render :partial=>'shared/tags', :locals => { :tags => @person.tag_list, :subject => @person }
   .popup

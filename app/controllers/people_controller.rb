@@ -116,14 +116,14 @@ class PeopleController < ApplicationController
 
   def tag
     @person = Person.find(params[:id])
-    @person.tag! params[:tag]
+    @person.tag_list << params[:tag]
     @person.save
     render :nothing => true
   end
 
   def untag
     @person = Person.find(params[:id])
-    @person.untag! params[:tag]
+    @person.tag_list.remove
     @person.save
     render :nothing => true
   end
