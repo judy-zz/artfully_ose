@@ -103,8 +103,10 @@ class AthenaChart < AthenaResource::Base
 
     def find_sections
       return [] if new_record?
-      AthenaSection.find(:all, :params => { :chartId => "eq#{id}" }).each do |section|
+      secs = AthenaSection.find(:all, :params => { :chartId => "eq#{id}" })
+      secs.each do |section|
         section.chart = self
       end
+      secs.sort { |a,b| b.price.to_f <=> a.price.to_f }
     end
 end
