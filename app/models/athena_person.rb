@@ -4,7 +4,6 @@ class AthenaPerson < AthenaResource::Base
   self.element_name = 'people'
   self.collection_name = 'people'
 
-  validates_presence_of :email
   validates_presence_of :organization_id
   validates_presence_of :person_info
   validate :uniqueness, :unless => lambda { |person| person.email.blank? }
@@ -139,7 +138,7 @@ class AthenaPerson < AthenaResource::Base
   end
 
   def person_info
-    first_name or last_name
+    !(first_name.blank? and last_name.blank? and email.blank?)
   end
 
   def find_address
