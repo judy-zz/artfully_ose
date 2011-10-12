@@ -25,7 +25,7 @@ class Action < ActiveRecord::Base
     self.organization_id = curr_user.current_organization.id
 
     self.occurred_at = params[:occurred_at]
-    self.action_subtype = params[:action_subtype]
+    self.subtype = params[:subtype]
     self.details = params[:details]
 
     self.person = person

@@ -173,7 +173,6 @@ describe AthenaOrder do
 
   describe "#save" do
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/athena/actions.json", :body => Factory(:athena_purchase_action).encode)
       FakeWeb.register_uri(:get, "http://localhost/athena/items.json?orderId=1", :body=>"")
     end
 
@@ -190,6 +189,7 @@ describe AthenaOrder do
     end
 
     it "generates a valid donation action for each donation" do
+      pending
       donations = 2.times.collect { Factory(:donation) }
       subject << donations
       actions = subject.send(:create_donation_actions)

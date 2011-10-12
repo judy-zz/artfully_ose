@@ -71,6 +71,10 @@ describe Checkout do
     end
 
     describe "people creation" do
+      before(:each) do
+        FakeWeb.register_uri(:post, "http://localhost/athena/addresses.json", :body => "")
+      end
+
       let(:email){ payment.customer.email }
       let(:organization){ Factory(:organization) }
       let(:attributes){

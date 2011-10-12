@@ -10,7 +10,7 @@ describe Contribution do
       :occurred_at     => "2011-08-17 02:28 pm",
       :details         => "Some details.",
       :organization_id => organization.id,
-      :person_id  => person.id
+      :person_id       => person.id
     }
   end
 
@@ -83,7 +83,7 @@ describe Contribution do
     let(:action) { subject.send(:build_action)}
 
     it "maps attributes onto the Action" do
-      action.action_subtype.should eq subject.subtype
+      action.subtype.should eq subject.subtype
       action.organization_id.should eq subject.organization_id
       action.occurred_at.should eq subject.occurred_at
       action.details.should eq subject.details

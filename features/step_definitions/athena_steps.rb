@@ -39,7 +39,7 @@ Given /^I can save People to ATHENA$/ do
 end
 
 Given /^I can save purchase actions in ATHENA$/ do
-  FakeWeb.register_uri(:post, 'http://localhost/athena/actions.json', :body => Factory(:athena_purchase_action).encode )
+  FakeWeb.register_uri(:post, 'http://localhost/athena/actions.json', :body => Factory(:purchase_action).encode )
 end
 
 Given /^I can save Orders in ATHENA$/ do
