@@ -4,6 +4,12 @@ Factory.define :chart do |c|
   c.association :organization
 end
 
+Factory.define :chart_with_sections, :parent => :chart do |c|
+  c.after_create do |chart|
+    chart.sections << Factory(:section)
+  end
+end
+
 Factory.define :chart_template, :parent => :chart do |c|
   c.is_template true
 end
@@ -18,12 +24,6 @@ Factory.define :free_section, :class => Section do |section|
   section.name 'Balcony'
   section.capacity 5
   section.price 0
-end
-
-Factory.define :athena_section, :class => Section do |section|
-  section.name 'Balcony'
-  section.capacity 5
-  section.price 5000
 end
 
 Factory.define :event do |e|

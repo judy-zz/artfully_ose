@@ -5,6 +5,10 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name, :venue, :city, :state, :producer, :organization_id, :time_zone
 
+  def free?
+    is_free?
+  end
+
   def filter_charts(charts)
     charts.reject { |chart| already_has_chart(chart) }
   end
@@ -56,7 +60,7 @@ class Event < ActiveRecord::Base
       return self
     end
 
-    if free? && chart.has_paid_sections?
+    if is_free? && chart.has_paid_sections?
       self.errors[:base] << "Cannot add chart with paid sections to a free event"
       return self
     end

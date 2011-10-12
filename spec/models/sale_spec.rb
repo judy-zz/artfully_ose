@@ -2,13 +2,14 @@ require 'spec_helper'
 
 describe Sale do
   let(:show){Factory(:show)}
-  let(:chart){Factory(:chart)}
+  let(:chart){Factory(:chart_with_sections)}
   let(:quantities){{chart.sections.first.id => "2"}}
+
   subject { Sale.new(show, chart.sections, quantities)}
 
   describe "requests" do
     it "generates a new Sale::TicketRequest for each section" do
-      subject.send(:requests).should have(2).request
+      subject.send(:requests).should have(chart.sections.count).requests
     end
 
     it "requests available tickets" do
