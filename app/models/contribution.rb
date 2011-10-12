@@ -59,13 +59,13 @@ class Contribution
       :organization_id => @organization_id
     }
 
-    AthenaOrder.new(attributes).tap do |order|
+    Order.new(attributes).tap do |order|
       order.skip_actions = true
     end
   end
 
   def build_item(order, price)
-    AthenaItem.new({
+    Item.new({
       :order_id       => order.id,
       :product_type   => "Donation",
       :state          => "settled",

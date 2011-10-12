@@ -1,6 +1,6 @@
 Given /^there is an order with an ID of (\d+) and (\d+) tickets$/ do |id, number_of_tickets|
-  order = Factory(:athena_order, :id => id, :organization => @current_user.current_organization)
-  items = number_of_tickets.to_i.times.collect { Factory(:athena_item_with_id) }
+  order = Factory(:order, :id => id, :organization => @current_user.current_organization)
+  items = number_of_tickets.to_i.times.collect { Factory(:item) }
 
   body = items.collect { |i| i.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/athena/items.json?orderId=#{order.id}", :body => "[#{body}]")
@@ -10,8 +10,8 @@ Given /^there is an order with an ID of (\d+) and (\d+) tickets$/ do |id, number
 end
 
 Given /^there is an order with an ID of (\d+) with (\d+) comps$/ do |id, number_of_tickets|
-  order = Factory(:athena_order, :id => id, :organization => @current_user.current_organization)
-  items = number_of_tickets.to_i.times.collect { Factory(:athena_item_for_comped_ticket) }
+  order = Factory(:order, :id => id, :organization => @current_user.current_organization)
+  items = number_of_tickets.to_i.times.collect { Factory(:comped_item) }
 
   body = items.collect { |i| i.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/athena/items.json?orderId=#{order.id}", :body => "[#{body}]")

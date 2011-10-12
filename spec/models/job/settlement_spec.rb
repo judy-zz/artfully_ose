@@ -11,15 +11,13 @@ describe Job::Settlement do
 
   describe ".settle_performances_in" do
     let(:performances) { 3.times.collect{ Factory(:show) } }
-    let(:event)        { Factory(:event) }
     let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
     let(:settlement) { mock(:settlement, :submit => nil) }
 
     before(:each) do
       performances.each { |performance| performance.stub(:organization).and_return(organization) }
       performances.each { |performance| performance.stub(:id).and_return("12") }
-      performances.each { |performance| performance.stub(:settleables).and_return(5.times.collect{ Factory(:athena_item) } ) }
-      performances.each { |performance| performance.event = event }
+      performances.each { |performance| performance.stub(:settleables).and_return(5.times.collect{ Factory(:item) } ) }
       Show.stub(:in_range).and_return(performances)
     end
 
@@ -29,20 +27,13 @@ describe Job::Settlement do
       end
       Job::Settlement.settle_performances_in(Settlement.range_for(DateTime.now))
     end
-
-    it "does not attempt to settle free performances" do
-      Settlement.stub(:submit)
-      performances.first.stub(:free?).and_return(true)
-      performances.first.should_not_receive(:settleables)
-      Job::Settlement.settle_performances_in(Settlement.range_for(DateTime.now))
-    end
   end
 
   describe ".settle_donations_in" do
-    let(:orders) { 2.times.collect { Factory(:athena_order_with_id) } }
+    let(:orders) { 2.times.collect { Factory(:order) } }
 
-    let(:donations_for_first_org)   { 2.times.collect{ Factory(:athena_item_with_id, :product_type => "Donation")}}
-    let(:donations_for_second_org)  { 2.times.collect{ Factory(:athena_item_with_id, :product_type => "Donation")}}
+    let(:donations_for_first_org)   { 2.times.collect{ Factory(:item, :product_type => "Donation")}}
+    let(:donations_for_second_org)  { 2.times.collect{ Factory(:item, :product_type => "Donation")}}
 
     let(:organizations) { 2.times.collect { Factory(:organization, :bank_account => Factory(:bank_account)) } }
     let(:settlement) { mock(:settlement, :submit => nil) }
@@ -56,7 +47,7 @@ describe Job::Settlement do
       orders.second.stub(:organization).and_return(organizations.second)
       orders.second.stub(:all_donations).and_return(donations_for_second_org)
 
-      AthenaOrder.stub(:in_range).and_return(orders)
+      Order.stub(:in_range).and_return(orders)
     end
 
     it "creates and submit a Settlement for each organization for all donations" do

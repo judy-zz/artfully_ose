@@ -187,22 +187,22 @@ describe Show do
   end
 
   describe "#settleables" do
-    let(:items) { 10.times.collect{ Factory(:athena_item, :performance_id => subject.id) } }
+    let(:items) { 10.times.collect{ Factory(:item, :performance_id => subject.id) } }
 
     it "finds the settleable line items for the performance" do
-      AthenaItem.stub(:find_by_performance_id).and_return(items)
+      Item.stub(:find_by_performance_id).and_return(items)
       subject.settleables.should eq items
     end
 
     it "rejects line items that have been modified in some way" do
       items.first.state = "returned"
-      AthenaItem.stub(:find_by_performance_id).and_return(items)
+      Item.stub(:find_by_performance_id).and_return(items)
       subject.settleables.should have(9).items
     end
 
     it "rejects line items that have been settled already" do
       items.first.state = "settled"
-      AthenaItem.stub(:find_by_performance_id).and_return(items)
+      Item.stub(:find_by_performance_id).and_return(items)
       subject.settleables.should have(9).items
     end
   end

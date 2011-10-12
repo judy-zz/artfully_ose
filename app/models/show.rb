@@ -115,7 +115,7 @@ class Show < ActiveRecord::Base
   end
 
   def settleables
-    AthenaItem.find_by_performance_id(self.id).reject(&:modified?)
+    Item.find_by_performance_id(self.id).reject(&:modified?)
   end
 
   def live?

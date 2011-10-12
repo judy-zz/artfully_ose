@@ -35,7 +35,7 @@ class Refund
   end
 
   def create_refund_order
-    refund_order = AthenaOrder.new.tap do |refund_order|
+    refund_order = Order.new.tap do |refund_order|
       refund_order.person = order.person
       refund_order.transaction_id = payment.transaction_id
       refund_order.parent = order

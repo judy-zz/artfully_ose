@@ -13,7 +13,7 @@ Factory.define :expired_lock, :parent => :lock, :default_strategy => :build do |
 end
 
 Factory.sequence :ticket_id do |n|
-  "#{n}"
+  n
 end
 
 Factory.define :ticket, :class => AthenaTicket, :default_strategy => :build do |t|

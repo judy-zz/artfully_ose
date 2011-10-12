@@ -50,10 +50,10 @@ class Exchange
 
   def create_athena_order(time=Time.now)
     ::Rails.logger.debug("CREATING EXCHANGE ORDER")
-    exchange_order = AthenaOrder.new.tap do |exchange_order|
+    exchange_order = Order.new.tap do |exchange_order|
       exchange_order.person = order.person
       exchange_order.parent = order
-      exchange_order.timestamp = time
+      exchange_order.created_at = time
       exchange_order.for_organization order.organization
       exchange_order << tickets
     end

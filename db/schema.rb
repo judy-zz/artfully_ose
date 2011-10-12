@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111012012804) do
+ActiveRecord::Schema.define(:version => 20111012180030) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(:version => 20111012012804) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.string   "subtype"
   end
 
   create_table "admin_stats", :force => true do |t|
@@ -139,6 +140,28 @@ ActiveRecord::Schema.define(:version => 20111012012804) do
     t.datetime "updated_at"
   end
 
+  create_table "items", :force => true do |t|
+    t.string   "state"
+    t.string   "product_type"
+    t.integer  "product_id"
+    t.integer  "price"
+    t.integer  "realized_price"
+    t.integer  "net"
+    t.string   "settlement_id"
+    t.string   "fs_project_id"
+    t.string   "nongift_amount"
+    t.boolean  "is_noncash"
+    t.boolean  "is_stock"
+    t.boolean  "is_anonymous"
+    t.datetime "fs_available_on"
+    t.datetime "reversed_at"
+    t.string   "reversed_note"
+    t.integer  "order_id"
+    t.integer  "performance_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "kits", :force => true do |t|
     t.string   "state"
     t.string   "type"
@@ -150,6 +173,16 @@ ActiveRecord::Schema.define(:version => 20111012012804) do
   create_table "memberships", :force => true do |t|
     t.integer "user_id"
     t.integer "organization_id"
+  end
+
+  create_table "orders", :force => true do |t|
+    t.string   "transaction_id"
+    t.integer  "price"
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.integer  "order_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "organizations", :force => true do |t|

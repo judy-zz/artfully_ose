@@ -2,7 +2,7 @@ class OrderMailer < ActionMailer::Base
   default :from => "support@artful.ly"
   layout "mail"
 
-  # TODO: Send using only information from AthenaOrder
+  # TODO: Send using only information from Order
   def confirmation_for(order)
     @order = order
     @person = order.person

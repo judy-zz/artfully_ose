@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe Return do
-  let(:order) { Factory(:athena_order_with_id) }
-  let(:items) { 3.times.collect { Factory(:athena_item_with_id) } }
+  let(:order) { Factory(:order) }
+  let(:items) { 3.times.collect { Factory(:item) } }
   subject { Return.new(order, items) }
 
   describe "#submit" do

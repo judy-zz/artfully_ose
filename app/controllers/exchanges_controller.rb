@@ -1,7 +1,7 @@
 class ExchangesController < ApplicationController
   def new
-    order = AthenaOrder.find(params[:order_id])
-    items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
+    order = Order.find(params[:order_id])
+    items = params[:items].collect { |item_id| Item.find(item_id) }
 
     if items.all?(&:exchangeable?)
       @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" })
@@ -21,8 +21,8 @@ class ExchangesController < ApplicationController
   end
 
   def create
-    order = AthenaOrder.find(params[:order_id])
-    items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
+    order = Order.find(params[:order_id])
+    items = params[:items].collect { |item_id| Item.find(item_id) }
     tickets = params[:tickets].collect { |ticket_id| AthenaTicket.find(ticket_id) } unless params[:tickets].nil?
     logger.debug("Beginning exchange")
     @exchange = Exchange.new(order, items, tickets)

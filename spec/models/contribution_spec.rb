@@ -56,7 +56,7 @@ describe Contribution do
   end
 
   describe "build_item" do
-    let(:order) { Factory(:athena_order_with_id) }
+    let(:order) { Factory(:order) }
     let(:item) { subject.send(:build_item, order, 100 )}
 
     it "sets the order id for the item to the given order" do

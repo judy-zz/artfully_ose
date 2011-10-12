@@ -8,7 +8,7 @@ class Job::Settlement < Job::Base
 
     def settle_performances_in(range)
       logger.info "Settling performances..."
-      Show.in_range(range[0], range[1]).reject(&:free?).each do |performance|
+      Show.in_range(range[0], range[1]).each do |performance|
         logger.info "Settling #{performance.event.name}, #{performance.datetime}"
 
         logger.error "#{performance.organization.name} does not have a bank account." if performance.organization.bank_account.nil?
@@ -18,7 +18,7 @@ class Job::Settlement < Job::Base
 
     def settle_donations_in(range)
       logger.info "Settling donations..."
-      AthenaOrder.in_range(range[0], range[1]).group_by(&:organization_id).each do |organization_id, order_set|
+      Order.in_range(range[0], range[1]).group_by(&:organization_id).each do |organization_id, order_set|
         logger.info "Settling donations for #{Organization.find(organization_id).name}"
         donations = order_set.collect(&:settleable_donations).flatten
         organization = order_set.first.organization

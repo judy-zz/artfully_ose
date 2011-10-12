@@ -16,16 +16,16 @@ describe Settlement do
 
   describe ".submit" do
     before(:each) do
-      AthenaItem.stub(:settle).and_return(items)
+      Item.stub(:settle).and_return(items)
       FakeWeb.register_uri(:post, "http://localhost/athena/settlements.json", :body => "")
       ACH::Request.stub(:for).and_return(mock(:request, :submit => "1231234"))
       performance.id = 1
     end
-
+    
     it "should handle any exception when trying to communicate with FirstACH" do
       e = Errno::ECONNRESET
       ACH::Request.should_receive(:for).with(9650, bank_account, "Artful.ly Settlement #{Date.today}").and_raise(e)
-      settlement = Settlement.submit(organization.id, items, bank_account, performance.id)
+      settlement = Settlement.submit(organization.id, items, bank_account, performance.id)    
       settlement.success?.should be_false
     end
 
@@ -48,7 +48,7 @@ describe Settlement do
     end
 
     it "updates the items with the new settlement ID" do
-      AthenaItem.should_receive(:settle)
+      Item.should_receive(:settle)
       Settlement.submit(organization.id, items, bank_account)
     end
 
@@ -62,7 +62,7 @@ describe Settlement do
 
     it "does not mark the items if the ACH request fails" do
       Settlement.stub(:send_request).and_raise(ACH::ClientError.new("02"))
-      AthenaItem.should_not_receive(:settle)
+      Item.should_not_receive(:settle)
       settlement = Settlement.submit(organization.id, items, bank_account, performance.id)
       settlement.ach_response_code.should eq "02"
       settlement.success?.should be_false

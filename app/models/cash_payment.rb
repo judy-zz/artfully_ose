@@ -21,7 +21,7 @@ class CashPayment
     self.amount=((amount * 100) - amount_in_cents)
   end
 
-  # DEBT: Because Orders are creating AthenaOrders for record keeping,
+  # DEBT: Because Orders are creating Orders for record keeping,
   # the transaction ID is stored.
   def transaction_id
     nil

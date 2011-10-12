@@ -1,42 +1,9 @@
-class AthenaItem < AthenaResource::Base
-  self.site = Artfully::Application.config.orders_component
-  self.element_name = 'items'
-  self.collection_name = 'items'
-
-  schema do
-    attribute 'order_id',       :integer
-    attribute 'product_type',   :string
-    attribute 'product_id',     :string
-    attribute 'performance_id', :string
-    attribute 'settlement_id',  :string
-    attribute 'state',          :string
-
-    attribute 'price',          :integer
-    attribute 'realized_price', :integer
-    attribute 'net',            :integer
-
-    #FA
-    attribute 'fs_project_id',  :string
-    attribute 'is_noncash',     :string
-    attribute 'is_stock',       :string
-    attribute 'reversed_at',    :string
-    attribute 'reversed_note',  :string
-    attribute 'fs_available_on',:string
-    attribute 'is_anonymous',   :string
-    attribute 'nongift_amount',   :string
-  end
+class Item < ActiveRecord::Base
+  belongs_to :order
+  belongs_to :performance
 
   validates_presence_of :order_id, :product_type, :price, :realized_price, :net
   validates_inclusion_of :product_type, :in => %( AthenaTicket Donation )
-  validate :product_type_exists
-
-  def product_type_exists
-    begin
-      Kernel.const_get(product_type)
-    rescue NameError
-      errors.add(:product_type, "is not a valid type") unless valid_type
-    end
-  end
 
   def ticket?
     product_type == "AthenaTicket"
@@ -44,20 +11,6 @@ class AthenaItem < AthenaResource::Base
 
   def donation?
     product_type == "Donation"
-  end
-
-  def order
-    @order ||= find_order
-  end
-
-  def order=(order)
-    if order.nil?
-      @order = order_id = order
-      return
-    end
-
-    raise TypeError, "Expecting an AthenaOrder" unless order.kind_of? AthenaOrder
-    @order, self.order_id = order, order.id
   end
 
   def self.for(prod)
@@ -146,7 +99,7 @@ class AthenaItem < AthenaResource::Base
 
   def self.settle(items, settlement)
     if items.blank?
-      logger.debug("AthenaItem.settle: No items to settle, returning")
+      logger.debug("Item.settle: No items to settle, returning")
       return
     end
 
@@ -159,7 +112,7 @@ class AthenaItem < AthenaResource::Base
   end
 
   def self.from_fa_donation(fa_donation, organization, order)
-    @item = AthenaItem.new({
+    @item = Item.new({
                             :order_id       => order.id,
                             :product_type   => "Donation",
                             :state          => "settled"
@@ -210,16 +163,6 @@ class AthenaItem < AthenaResource::Base
         klass.find(product_id)
       rescue NameError
         return nil
-      rescue ActiveResource::ResourceNotFound
-        return nil
-      end
-    end
-
-    def find_order
-      return if self.order_id.nil?
-
-      begin
-        AthenaOrder.find(self.order_id)
       rescue ActiveResource::ResourceNotFound
         return nil
       end

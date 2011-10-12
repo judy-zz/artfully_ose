@@ -13,7 +13,7 @@ class Organization < ActiveRecord::Base
   scope :linked_to_fa, where("fa_member_id is not null")
 
   def owner
-    @owner ||= users.first
+    users.first
   end
 
   delegate :can?, :cannot?, :to => :ability
@@ -100,7 +100,7 @@ class Organization < ActiveRecord::Base
 
     def process_donations(fa_donations)
       fa_donations.each do |fa_donation|
-        @order = AthenaOrder.from_fa_donation(fa_donation, self)
+        @order = Order.from_fa_donation(fa_donation, self)
       end
     end
 

@@ -1,12 +1,12 @@
 class RefundsController < ApplicationController
   def new
-    @order = AthenaOrder.find(params[:order_id])
-    @items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
+    @order = Order.find(params[:order_id])
+    @items = params[:items].collect { |item_id| Item.find(item_id) }
   end
 
   def create
-    @order = AthenaOrder.find(params[:order_id])
-    @items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
+    @order = Order.find(params[:order_id])
+    @items = params[:items].collect { |item_id| Item.find(item_id) }
 
     @refund = Refund.new(@order, @items)
     @refund.submit(:and_return => return_items?)

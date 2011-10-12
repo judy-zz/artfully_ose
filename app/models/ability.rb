@@ -77,7 +77,7 @@ class Ability
   end
 
   def order_ablilities_for(user)
-    can :manage, AthenaOrder do |order|
+    can :manage, Order do |order|
       user.current_organization.can? :manage, order
     end
   end

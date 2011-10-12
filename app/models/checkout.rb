@@ -99,9 +99,9 @@ class Checkout
     end
 
     def new_order(organization, order_timestamp, person)
-      AthenaOrder.new.tap do |athena_order|
+      Order.new.tap do |athena_order|
         athena_order.organization    = organization
-        athena_order.timestamp       = order_timestamp
+        athena_order.created_at       = order_timestamp
         athena_order.person          = @person
         athena_order.transaction_id  = @payment.transaction_id
 

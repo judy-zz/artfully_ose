@@ -49,7 +49,7 @@ class Sale
   end
 
   def settle(checkout, success)
-    AthenaItem.settle(checkout.athena_order.items, Settlement.new)
+    Item.settle(checkout.athena_order.items, Settlement.new)
   end
 end
 

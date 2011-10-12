@@ -59,7 +59,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def items
-    @items ||= AthenaItem.find_by_product(self)
+    @items ||= Item.find_by_product(self)
   end
 
   def settlement_id

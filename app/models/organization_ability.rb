@@ -35,7 +35,7 @@ class OrganizationAbility
       segment.organization_id.to_i == organization.id
     end
 
-    can :manage, AthenaOrder do |order|
+    can :manage, Order do |order|
       order.organization_id.to_i == organization.id
     end
 

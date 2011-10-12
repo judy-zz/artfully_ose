@@ -1,7 +1,7 @@
 Thank you for your order <%= @person.first_name %> <%= @person.last_name %>!
 
 Order number: <%= @order.id %>
-Purchase Date: <%= l(@order.timestamp)%>
+Purchase Date: <%= l(@order.created_at)%>
 Order total: $<%= format("%.2f", (@order.total/100.0)) %>
 
 <% unless @order.tickets.empty? %>
