@@ -111,7 +111,7 @@ form .description, form .form-error {
 
 .element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left; }
@@ -123,7 +123,7 @@ form .description, form .form-error {
     visibility: hidden; }
 .element > input, .element select, .label > input, .label select, .label-and-element > input, .label-and-element select, .cancel-submit > input, .cancel-submit select {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left; }
@@ -185,7 +185,7 @@ form .description, form .form-error {
   margin: 12px 0 0; }
   .cancel-submit a {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left;
@@ -249,7 +249,7 @@ form.jeditable button {
 
 .flash {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left;
@@ -275,7 +275,7 @@ form.jeditable button {
     color: rgba(255, 255, 255, 0.97) !important; }
   .flash ul li {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -316,7 +316,7 @@ a {
   #cart > *, #controls > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -404,7 +404,7 @@ a {
   #customer-confirmation > *, #credit_card-confirmation > *, #billing_address-confirmation > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
