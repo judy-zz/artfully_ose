@@ -11,6 +11,7 @@ describe Job::Settlement do
 
   describe ".settle_performances_in" do
     let(:performances) { 3.times.collect{ Factory(:show) } }
+    let(:event)        { Factory(:event) }
     let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
     let(:settlement) { mock(:settlement, :submit => nil) }
 
@@ -18,6 +19,7 @@ describe Job::Settlement do
       performances.each { |performance| performance.stub(:organization).and_return(organization) }
       performances.each { |performance| performance.stub(:id).and_return("12") }
       performances.each { |performance| performance.stub(:settleables).and_return(5.times.collect{ Factory(:athena_item) } ) }
+      performances.each { |performance| performance.event = event }
       Show.stub(:in_range).and_return(performances)
     end
 
