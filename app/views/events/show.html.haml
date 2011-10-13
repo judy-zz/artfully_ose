@@ -53,6 +53,7 @@
         %tr
           = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :performance => @next_performance }
     = will_paginate @performances
+  %h3 This Week
   #this-week
     #calendar{ :"data-event" => @event.id }
 
