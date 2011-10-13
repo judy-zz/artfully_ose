@@ -258,6 +258,7 @@ DEPENDENCIES
   rails
   rake (= 0.8.7)
   rspec-rails (>= 2.1)
+  s3 (>= 0.3.8)
   sass
   shoulda
   sqlite3-ruby

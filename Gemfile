@@ -16,6 +16,7 @@ gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.12'
+gem 's3', '>= 0.3.8'
 gem 'jammit'
 gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
 gem 'comma',     :path => "vendor/gems/comma-0.4.0"
