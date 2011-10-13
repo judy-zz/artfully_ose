@@ -18,6 +18,7 @@ module Artfully
     config.autoload_paths += %W[
       #{::Rails.root.to_s}/app/models/actions
       #{::Rails.root.to_s}/app/models/kits
+      #{::Rails.root.to_s}/app/models/payments
     ]
 
     # Only load the plugins named here, in the order given (default is alphabetical).
