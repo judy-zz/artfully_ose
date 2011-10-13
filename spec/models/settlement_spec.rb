@@ -1,31 +1,24 @@
 require 'spec_helper'
 
 describe Settlement do
-  let(:items) do
-    10.times.collect { |id| mock(:item, {:price => 1200, :realized_price => 1000, :net => 965, :id => id, :performance_id => 1 }) }
-  end
+  let(:items) { 10.times.collect { Factory(:item) } }
 
   let(:bank_account) { Factory(:bank_account) }
-  let(:organization) { Factory(:organization_with_id) }
+  let(:organization) { Factory(:organization) }
   let(:performance)  { Factory(:show) }
   subject { Settlement.new }
-
-  it "should set the created_at time when initialized" do
-    subject.created_at.should_not be_nil
-  end
 
   describe ".submit" do
     before(:each) do
       Item.stub(:settle).and_return(items)
-      FakeWeb.register_uri(:post, "http://localhost/athena/settlements.json", :body => "")
       ACH::Request.stub(:for).and_return(mock(:request, :submit => "1231234"))
       performance.id = 1
     end
-    
+
     it "should handle any exception when trying to communicate with FirstACH" do
       e = Errno::ECONNRESET
       ACH::Request.should_receive(:for).with(9650, bank_account, "Artful.ly Settlement #{Date.today}").and_raise(e)
-      settlement = Settlement.submit(organization.id, items, bank_account, performance.id)    
+      settlement = Settlement.submit(organization.id, items, bank_account, performance.id)
       settlement.success?.should be_false
     end
 
@@ -40,7 +33,6 @@ describe Settlement do
     end
 
     it "returns a settlement instance with the transaction_id set from the ACH request" do
-      FakeWeb.register_uri(:post, "http://localhost/athena/settlements.json", :body => "")
       settlement = Settlement.submit(organization.id, items, bank_account, performance.id)
       settlement.transaction_id.should eq "1231234"
       settlement.ach_response_code.should eq ACH::Request::SUCCESS
@@ -98,13 +90,6 @@ describe Settlement do
       friday = jobs[:friday].beginning_of_day - 1.week
       sunday = friday + 2.days
       Settlement.range_for(jobs[:wednesday]).should eq [ friday, sunday.end_of_day ]
-    end
-  end
-
-  describe "#items" do
-    it "should fetch items from ATHENA" do
-      FakeWeb.register_uri(:get, "http://localhost/athena/items.json?settlementId=1", :body => "")
-      subject.items
     end
   end
 

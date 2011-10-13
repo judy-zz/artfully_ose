@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111013185507) do
+ActiveRecord::Schema.define(:version => 20111013212250) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(:version => 20111013185507) do
     t.datetime "updated_at"
     t.string   "type"
     t.string   "subtype"
+  end
+
+  create_table "addresses", :force => true do |t|
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "admin_stats", :force => true do |t|
@@ -223,6 +235,27 @@ ActiveRecord::Schema.define(:version => 20111013185507) do
     t.integer "capacity"
     t.integer "price"
     t.integer "chart_id"
+  end
+
+  create_table "segments", :force => true do |t|
+    t.string  "name"
+    t.string  "terms"
+    t.integer "organization_id"
+  end
+
+  create_table "settlements", :force => true do |t|
+    t.string   "transaction_id"
+    t.string   "ach_response_code"
+    t.string   "fail_message"
+    t.string   "created_at"
+    t.boolean  "success"
+    t.integer  "gross"
+    t.integer  "realized_gross"
+    t.integer  "net"
+    t.integer  "items_count"
+    t.integer  "organization_id"
+    t.integer  "performance_id"
+    t.datetime "updated_at"
   end
 
   create_table "shows", :force => true do |t|
