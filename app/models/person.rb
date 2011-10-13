@@ -2,9 +2,10 @@
 
 class Person < ActiveRecord::Base
   acts_as_taggable
-  
+
   belongs_to :organization
   has_many :actions
+  has_one :addresses
 
   validates_presence_of :email
   validates_presence_of :organization_id
