@@ -136,7 +136,7 @@ class ShowsController < ApplicationController
   end
 
   def on_sale
-    authorize! :bulk_edit, AthenaTicket
+    authorize! :bulk_edit, Ticket
     with_confirmation do
       @performance = Show.find(params[:performance_id])
 

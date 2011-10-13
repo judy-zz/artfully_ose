@@ -27,7 +27,7 @@ describe Item do
   end
 
   describe ".for" do
-    let(:product) { Factory(:ticket_with_id) }
+    let(:product) { Factory(:ticket) }
     subject { Item.for(product) }
 
     it { should be_an Item }
@@ -40,9 +40,9 @@ describe Item do
   describe "#product" do
     it "finds the product using product_type and product_id" do
       subject.instance_variable_set(:@product, nil)
-      subject.product_type = "AthenaTicket"
+      subject.product_type = "Ticket"
       subject.product_id = 1
-      AthenaTicket.should_receive(:find).with(1)
+      Ticket.should_receive(:find).with(1)
       subject.product
 
       subject.instance_variable_set(:@product, nil)
@@ -54,7 +54,7 @@ describe Item do
   end
 
   describe "#product=" do
-    let(:product) { Factory(:ticket_with_id) }
+    let(:product) { Factory(:ticket) }
     before(:each) { subject.product = product }
 
     it "sets the product_id to the product.id" do
@@ -66,7 +66,7 @@ describe Item do
     end
 
     context "a ticket" do
-      let(:ticket) { Factory(:ticket_with_id) }
+      let(:ticket) { Factory(:ticket) }
       before(:each) { subject.product = ticket }
 
       it "sets the performance_id to the tickets performance id" do
@@ -112,7 +112,7 @@ describe Item do
   end
 
   describe "#ticket?" do
-    subject { Factory(:item, :product => Factory(:sold_ticket_with_id)) }
+    subject { Factory(:item, :product => Factory(:sold_ticket)) }
     it { should be_a_ticket }
   end
 

@@ -16,7 +16,7 @@ class PurchasableTicket < ActiveRecord::Base
   end
 
   def ticket
-    @ticket ||= AthenaTicket.find(self.ticket_id)
+    @ticket ||= Ticket.find(self.ticket_id)
   end
 
   def ticket=(ticket)

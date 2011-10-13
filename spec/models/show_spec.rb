@@ -73,20 +73,15 @@ describe Show do
 
   describe "bulk edit tickets" do
     subject { Factory(:show) }
-    let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
+    let(:tickets) { 3.times.collect { Factory(:ticket) } }
 
     before(:each) do
       subject.stub!(:tickets).and_return(tickets)
     end
 
     describe "#bulk_on_sale" do
-      before(:each) do
-        body = tickets.collect(&:encode).join(",").gsub(/off_sale/,'on_sale')
-        FakeWeb.register_uri(:put, "http://localhost/athena/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
-      end
-
       it "puts all tickets on sale when :all is specified" do
-        AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+        Ticket.should_receive(:put_on_sale).with(subject.tickets)
         subject.bulk_on_sale(:all)
       end
 
@@ -97,7 +92,7 @@ describe Show do
       end
 
       it "should put tickets on sale" do
-        AthenaTicket.should_receive(:put_on_sale).with(subject.tickets)
+        Ticket.should_receive(:put_on_sale).with(subject.tickets)
         subject.bulk_on_sale(tickets.collect(&:id))
       end
 
@@ -109,14 +104,8 @@ describe Show do
     end
 
     describe "bulk_off_sale" do
-      before(:each) do
-        tickets.each { |ticket| ticket.state = "on_sale" }
-        body = tickets.collect(&:encode).join(",").gsub(/on_sale/,'off_sale')
-        FakeWeb.register_uri(:put, "http://localhost/athena/tickets/patch/#{tickets.collect(&:id).join(',')}", :body => "[#{body}]")
-      end
-
       it "takes tickets off sale" do
-        AthenaTicket.should_receive(:take_off_sale).with(subject.tickets)
+        Ticket.should_receive(:take_off_sale).with(subject.tickets)
         subject.bulk_off_sale(tickets.collect(&:id))
       end
 

@@ -18,7 +18,7 @@ end
 
 Given /^there are (\d+) tickets to "([^"]*)" at "([^"]*)" for (\d+)$/ do |quantity, event, venue, price|
   quantity.to_i.times do |i|
-    ticket = Factory(:ticket_with_id, :event => event, :venue => venue, :price => price)
+    ticket = Factory(:ticket, :event => event, :venue => venue, :price => price)
     body << ticket
     ids << ticket.id
   end
@@ -31,7 +31,7 @@ Given /^I have found the following tickets by searching for$/ do |table|
   body = []
   ids = []
   table.hashes.each do |hash|
-    ticket = Factory(:ticket_with_id, hash)
+    ticket = Factory(:ticket, hash)
     body << ticket
     ids << ticket.id
   end

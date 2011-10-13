@@ -39,7 +39,7 @@ class Ability
   end
 
   def ticketing_abilities_for(user)
-    can [:manage, :bulk_edit ], AthenaTicket do |ticket|
+    can [:manage, :bulk_edit ], Ticket do |ticket|
       user.current_organization.can? :manage, ticket
     end
 

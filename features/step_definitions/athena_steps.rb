@@ -51,7 +51,7 @@ end
 Given /^the following tickets exist in ATHENA:$/ do |table|
   body = []
   table.hashes.each do |hash|
-    body << ticket = Factory(:ticket_with_id, hash)
+    body << ticket = Factory(:ticket, hash)
   end
   FakeWeb.register_uri(:get, %r|http://localhost/athena/tickets.json\?.*$|, :body => body.to_json)
 end

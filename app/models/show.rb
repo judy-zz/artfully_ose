@@ -99,11 +99,11 @@ class Show < ActiveRecord::Base
 
   def bulk_on_sale(ids)
     targets = (ids == :all) ? tickets : tickets.select { |t| ids.include? t.id }
-    AthenaTicket.put_on_sale(targets)
+    Ticket.put_on_sale(targets)
   end
 
   def bulk_off_sale(ids)
-    AthenaTicket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
+    Ticket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
   end
 
   def bulk_delete(ids)
@@ -156,7 +156,7 @@ class Show < ActiveRecord::Base
 
     def find_tickets
       return [] if new_record?
-      AthenaTicket.find(:all, :params => { :performanceId => "eq#{self.id}" })
+      Ticket.find(:all, :params => { :performanceId => "eq#{self.id}" })
     end
 
     def bulk_comp(ids)

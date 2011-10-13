@@ -98,7 +98,7 @@ describe Order do
 
   describe "generating athena orders" do
     let(:organization) { Factory(:organization) }
-    let(:tickets) { 3.times.collect { Factory(:ticket_with_id) } }
+    let(:tickets) { 3.times.collect { Factory(:ticket) } }
     let(:donations) { 2.times.collect { Factory(:donation, :organization => organization) } }
 
     subject do

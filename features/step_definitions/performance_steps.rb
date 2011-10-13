@@ -24,7 +24,7 @@ Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance has had tickets created$/ do |po
   performance = current_performances[pos.to_i - 1]
   FakeWeb.register_uri(:get, "http://localhost/athena/performances/#{performance.id}.json", :body => performance.encode)
 
-  tickets = 5.times.collect { Factory(:ticket_with_id, :event_id => current_event.id, :peformance_id => performance.id) }
+  tickets = 5.times.collect { Factory(:ticket, :event_id => current_event.id, :peformance_id => performance.id) }
   body = tickets.collect { |t| t.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/athena/tickets.json?performanceId=eq#{performance.id}", :body => "[#{body}]")
 
@@ -81,13 +81,13 @@ end
 
 When /^I confirm comp$/ do
   customer = Factory(:person)
-  ticket = Factory(:ticket_with_id)
+  ticket = Factory(:ticket)
   FakeWeb.register_uri(:get, "http://localhost/athena/orders.json?parentId=1", :body=>"")
 
   body1 = '{"subjectId":"1","personId":"1","actionType":"purchase","id":"1"}'
   FakeWeb.register_uri(:post, "http://localhost/athena/orders.json", :body => "#{body1}")
 
-  body2 = '{"price":"1","itemType":"AthenaTicket","itemId":"1","orderId":"1","id":"1"}'
+  body2 = '{"price":"1","itemType":"Ticket","itemId":"1","orderId":"1","id":"1"}'
   FakeWeb.register_uri(:post, "http://localhost/athena/items.json", :body => "#{body2}")
 
   FakeWeb.register_uri(:post, "http://localhost/people/actions.json", :body => "#{body1}")

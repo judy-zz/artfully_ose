@@ -21,7 +21,7 @@ class Comp
 
   def submit(benefactor)
     comped_ids      = performance.bulk_comp_to(tickets, recipient)
-    comped_tickets  = comped_ids.collect{|id| AthenaTicket.find(id)}
+    comped_tickets  = comped_ids.collect{|id| Ticket.find(id)}
 
     create_order(comped_tickets, benefactor)
 

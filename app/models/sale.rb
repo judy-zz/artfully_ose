@@ -70,7 +70,7 @@ class Sale::TicketRequest
   def tickets
     return [] if @quantity == 0
 
-    @tickets ||= AthenaTicket.available({
+    @tickets ||= Ticket.available({
       :performance_id => @show.id,
       :section        => @section.name,
       :price          => @section.price,

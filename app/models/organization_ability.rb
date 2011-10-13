@@ -19,7 +19,7 @@ class OrganizationAbility
       performance.organization_id.to_i == organization.id
     end
 
-    can :manage, AthenaTicket do |ticket|
+    can :manage, Ticket do |ticket|
       can? :manage, Event.find(ticket.event_id)
     end
 

@@ -4,7 +4,7 @@ describe Exchange do
   let(:order)       { Factory(:order) }
   let(:items)       { 3.times.collect { Factory(:item) } }
   let(:event)       { Factory(:event, :organization_id => order.organization.id) }
-  let(:tickets)     { 3.times.collect { Factory(:ticket_with_id, :state => "on_sale", :event_id => event.id) } }
+  let(:tickets)     { 3.times.collect { Factory(:ticket, :state => "on_sale", :event_id => event.id) } }
 
   subject { Exchange.new(order, items, tickets) }
 

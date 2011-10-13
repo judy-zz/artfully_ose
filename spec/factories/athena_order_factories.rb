@@ -6,7 +6,7 @@ Factory.define(:order) do |o|
 end
 
 Factory.define(:item) do |i|
-  i.product { Factory(:sold_ticket_with_id) }
+  i.product { Factory(:sold_ticket) }
   i.price 1000
   i.association :order
 end
@@ -15,7 +15,7 @@ Factory.define :fa_item, :parent => :item do |i|
 end
 
 Factory.define(:comped_item, :parent => :item) do |i|
-  i.product { Factory(:ticket_with_id, :state => :comped) }
+  i.product { Factory(:ticket, :state => :comped) }
 end
 
 Factory.sequence(:settlement_id) do |n|

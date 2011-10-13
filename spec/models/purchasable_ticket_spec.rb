@@ -8,7 +8,7 @@ describe PurchasableTicket do
   it { should respond_to :item_id }
 
   describe ".for" do
-    let(:ticket) { Factory(:ticket_with_id) }
+    let(:ticket) { Factory(:ticket) }
     subject { PurchasableTicket.for(ticket) }
 
     it { should be_a PurchasableTicket }
@@ -30,7 +30,7 @@ describe PurchasableTicket do
     end
 
     it "should fetch the ticket from the remote" do
-      ticket = Factory(:ticket_with_id)
+      ticket = Factory(:ticket)
       subject.ticket_id = ticket.id
       subject.ticket.should eq ticket
     end

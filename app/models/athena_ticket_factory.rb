@@ -1,4 +1,4 @@
-class AthenaTicketFactory < AthenaResource::Base
+class TicketFactory < AthenaResource::Base
   self.site = Artfully::Application.config.tickets_site
   self.element_name = 'ticketfactory'
   self.collection_name = 'ticketfactory'
@@ -12,7 +12,7 @@ class AthenaTicketFactory < AthenaResource::Base
   end
 
   def self.for_performance(performance)
-    @factory = AthenaTicketFactory.new(performance.attributes)
+    @factory = TicketFactory.new(performance.attributes)
     performance.build! if @factory.save
   end
 

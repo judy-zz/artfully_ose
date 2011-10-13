@@ -31,7 +31,7 @@ Given /^I have added (\d+) tickets to my order$/ do |a_few|
   producer = Factory(:user)
   producer.organizations << Factory(:organization_with_donations)
   event = Factory(:event, :organization_id => producer.current_organization.id )
-  tickets = a_few.to_i.times.collect { Factory(:ticket_with_id, :event_id => event.id) }
+  tickets = a_few.to_i.times.collect { Factory(:ticket, :event_id => event.id) }
 
   FakeWeb.register_uri(:any, %r|http://localhost/locks/.*\.json|, :body => Factory(:lock, :tickets => tickets.collect(&:id)).encode)
   body = tickets.collect { |ticket| "tickets[]=#{ticket.id}" }.join("&")

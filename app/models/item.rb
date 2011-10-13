@@ -3,10 +3,10 @@ class Item < ActiveRecord::Base
   belongs_to :performance
 
   validates_presence_of :order_id, :product_type, :price, :realized_price, :net
-  validates_inclusion_of :product_type, :in => %( AthenaTicket Donation )
+  validates_inclusion_of :product_type, :in => %( Ticket Donation )
 
   def ticket?
-    product_type == "AthenaTicket"
+    product_type == "Ticket"
   end
 
   def donation?

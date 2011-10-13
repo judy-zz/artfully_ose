@@ -14,7 +14,7 @@ class Section < ActiveRecord::Base
   end
 
   def summarize(performance_id)
-    tickets = AthenaTicket.find(:all, :params => {:performanceId => "eq#{performance_id}", :section => "eq#{name}"})
+    tickets = Ticket.find(:all, :params => {:performanceId => "eq#{performance_id}", :section => "eq#{name}"})
     summary = SectionSummary.for_tickets(tickets)
   end
 

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AthenaTicketFactory do
+describe TicketFactory do
   before(:each) do
     @performance = Factory(:show)
     @performance.stub(:build!)
@@ -9,6 +9,6 @@ describe AthenaTicketFactory do
   it "should call build on the performance" do
     pending
     @performance.should_receive(:build!)
-    @ticket_factory = AthenaTicketFactory.for_performance(@performance)
+    @ticket_factory = TicketFactory.for_performance(@performance)
   end
 end

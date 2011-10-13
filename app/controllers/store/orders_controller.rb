@@ -32,7 +32,7 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_tickets(ids)
-      tickets = ids.collect { |id| AthenaTicket.find(id) }
+      tickets = ids.collect { |id| Ticket.find(id) }
       current_cart.add_tickets tickets
     end
 

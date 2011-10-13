@@ -12,40 +12,15 @@ Factory.define :expired_lock, :parent => :lock, :default_strategy => :build do |
   t.lock_expires { DateTime.now - 1.hour }
 end
 
-Factory.sequence :ticket_id do |n|
-  n
-end
-
-Factory.define :ticket, :class => AthenaTicket, :default_strategy => :build do |t|
-  t.event { Faker::Lorem.words(2).join(" ") }
+Factory.define :ticket do |t|
   t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
-  t.performance { DateTime.now + 1.month }
   t.price "5000"
+  t.association :show
 end
 
 Factory.define :sold_ticket, :parent => :ticket do |t|
   t.state "sold"
-  t.sold_price "5000"
-  t.sold_at Time.now
-end
-
-Factory.define :ticket_with_id, :parent => :ticket, :default_strategy => :build do |t|
-  t.id { Factory.next :ticket_id }
-  t.event_id { Factory(:event).id }
-  t.performance_id { Factory(:show).id }
-  t.price "3000"
-  t.after_build do |ticket|
-    FakeWeb.register_uri(:get, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
-    FakeWeb.register_uri(:put, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
-  end
-end
-
-Factory.define :sold_ticket_with_id, :parent => :sold_ticket, :default_strategy => :build do |t|
-  t.id { Factory.next :ticket_id }
-  t.event_id { Factory(:event).id }
-  t.performance_id { Factory(:show).id }
-  t.after_build do |ticket|
-    FakeWeb.register_uri(:get, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
-    FakeWeb.register_uri(:put, "http://localhost/athena/tickets/#{ticket.id}.json", :status => 200, :body => ticket.encode)
+  t.after_create do |ticket|
+    ticket.sell_to(Factory(:person))
   end
 end

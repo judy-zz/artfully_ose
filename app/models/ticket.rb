@@ -1,24 +1,11 @@
-class AthenaTicket < AthenaResource::Base
-  include ActiveResource::Transitions
+class Ticket < ActiveRecord::Base
+  include ActiveRecord::Transitions
 
-  self.site = Artfully::Application.config.tickets_site
-  self.collection_name = 'tickets'
-  self.element_name = 'tickets'
+  belongs_to :buyer, :class_name => "Person"
+  belongs_to :show
+  belongs_to :organization
 
-  schema do
-    attribute 'id',             :string
-    attribute 'event',          :string
-    attribute 'event_id',       :integer
-    attribute 'venue',          :string
-    attribute 'performance',    :string
-    attribute 'performance_id', :integer
-    attribute 'section',        :string
-    attribute 'price',          :integer
-    attribute 'buyer_id',       :integer
-    attribute 'state',          :string
-    attribute 'sold_price',     :integer
-    attribute 'sold_at',        :string
-  end
+  delegate :datetime, :event, :to => :show
 
   state_machine do
     state :off_sale
@@ -41,21 +28,7 @@ class AthenaTicket < AthenaResource::Base
     terms[:state] ||= "on_sale"
     terms[:_limit] = limit
 
-    AthenaTicket.find(:all, :from => :available, :params => parameterize(terms)) unless terms.empty?
-  end
-
-  def self.factory(performance, section, quantity)
-    attributes = {
-      :event          => performance.event.name,
-      :event_id       => performance.event_id,
-      :venue          => performance.event.venue,
-      :performance    => performance.datetime,
-      :performance_id => performance.id,
-      :section        => section.name,
-      :price          => section.price
-    }
-
-    quantity.times.collect { create(attributes) }
+    Ticket.find(:all, :from => :available, :params => parameterize(terms)) unless terms.empty?
   end
 
   def items
@@ -70,25 +43,12 @@ class AthenaTicket < AthenaResource::Base
     @settled_item ||= items.select(&:settled?).first
   end
 
-  def datetime
-    @performance ||= Show.find(performance_id)
-    @performance.datetime
-  end
-
-  def price
-    super.to_i
-  end
-
-  def sold_price
-    super.to_i
-  end
-
   def self.fee
     200 # $2.00 fee
   end
 
   def expired?
-    performance < DateTime.now
+    datetime < DateTime.now
   end
 
   def refundable?
@@ -185,35 +145,23 @@ class AthenaTicket < AthenaResource::Base
     super if destroyable?
   end
 
-  def buyer
-    @buyer || find_buyer
-  end
-
-  def buyer=(person)
-    raise TypeError, "Expecting an Person" unless person.kind_of? Person
-    @buyer, self.buyer_id = person, person.id
-  end
-
   def return!
-    logger.debug("Returning ticket id [#{self.id}]")
-    logger.debug("State is [#{self.state}]")
-    self.sold_price = 0
-    attributes.delete('sold_at')
-    attributes.delete(:buyer_id)
+    self.buyer = nil
+    update_attributes(:sold_price => nil, :sold_at => nil, :buyer_id => nil)
     do_return!
   end
 
   def self.put_on_sale(tickets)
     return false if tickets.blank?
     attempt_transition(tickets, :on_sale) do
-      patch(tickets, { :state => :on_sale })
+      # patch(tickets, { :state => :on_sale })
     end
   end
 
   def self.take_off_sale(tickets)
     return false if tickets.blank?
     attempt_transition(tickets, :off_sale) do
-      patch(tickets, { :state => :off_sale })
+      # patch(tickets, { :state => :off_sale })
     end
   end
 
@@ -228,16 +176,6 @@ class AthenaTicket < AthenaResource::Base
         yield
       rescue Transitions::InvalidTransition
         false
-      end
-    end
-
-    def find_buyer
-      return if self.buyer_id.nil?
-
-      begin
-        Person.find(self.buyer_id)
-      rescue ActiveResource::ResourceNotFound
-        return nil
       end
     end
 end

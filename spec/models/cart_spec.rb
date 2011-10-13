@@ -22,7 +22,7 @@ describe Cart do
   end
 
   describe "#add_tickets" do
-    let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }
+    let(:tickets) { 2.times.collect { Factory(:ticket) } }
 
     before(:each) do
       subject.stub(:create_lock).and_return(Factory(:lock, :tickets => tickets.collect {|t| t.id }))
@@ -52,7 +52,7 @@ describe Cart do
 
   describe "items" do
     it "should lock the first lockable item when it is added" do
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      tickets = 2.times.collect { Factory(:ticket) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
@@ -60,7 +60,7 @@ describe Cart do
     end
 
     it "should collect and lock the lockable items when they are added" do
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      tickets = 2.times.collect { Factory(:ticket) }
       lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       subject.add_tickets tickets
@@ -72,7 +72,7 @@ describe Cart do
     end
 
     it "should remove items that are no longer locked" do
-      tickets = 2.times.collect { Factory(:ticket_with_id) }
+      tickets = 2.times.collect { Factory(:ticket) }
       lock = Factory(:expired_lock, :tickets => tickets.collect {|t| t.id })
       FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
       FakeWeb.register_uri(:delete, "http://localhost/athena/locks/#{lock.id}.json", :status => 200)
@@ -161,7 +161,7 @@ describe Cart do
 
     it "includes the organizations for the included tickets" do
       Factory(:lock)
-      ticket = Factory(:ticket_with_id)
+      ticket = Factory(:ticket)
       organization = Event.find(ticket.event_id).organization
 
       subject.add_tickets([ticket])
@@ -199,7 +199,7 @@ describe Cart do
   end
 
   describe ".generate_donations" do
-    let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }
+    let(:tickets) { 2.times.collect { Factory(:ticket) } }
 
     before(:each) do
       @events = tickets.collect do |ticket|

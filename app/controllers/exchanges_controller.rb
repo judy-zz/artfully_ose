@@ -23,7 +23,7 @@ class ExchangesController < ApplicationController
   def create
     order = Order.find(params[:order_id])
     items = params[:items].collect { |item_id| Item.find(item_id) }
-    tickets = params[:tickets].collect { |ticket_id| AthenaTicket.find(ticket_id) } unless params[:tickets].nil?
+    tickets = params[:tickets].collect { |ticket_id| Ticket.find(ticket_id) } unless params[:tickets].nil?
     logger.debug("Beginning exchange")
     @exchange = Exchange.new(order, items, tickets)
 

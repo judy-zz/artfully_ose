@@ -11,7 +11,7 @@
           %tr{:id => "row_item_#{item.id}", :class => item.state }
             %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
             %td
-              - if item.product_type.eql?("AthenaTicket")
+              - if item.product_type.eql?("Ticket")
                 %span Ticket
                 %span
                   (
