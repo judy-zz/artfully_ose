@@ -1,5 +1,5 @@
 class Donation < ActiveRecord::Base
-  belongs_to :order
+  belongs_to :cart
   belongs_to :organization
 
   validates_numericality_of :amount, :greater_than => 0

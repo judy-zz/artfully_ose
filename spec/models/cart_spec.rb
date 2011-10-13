@@ -21,65 +21,8 @@ describe Cart do
     end
   end
 
-  describe "#add_tickets" do
-    let(:tickets) { 2.times.collect { Factory(:ticket) } }
-
-    before(:each) do
-      subject.stub(:create_lock).and_return(Factory(:lock, :tickets => tickets.collect {|t| t.id }))
-      subject.add_tickets tickets
-    end
-
-    it "should return the tickets added via add_tickets" do
-      subject.tickets.should eq tickets
-    end
-
-    it "should have PurchasableTickets when a tickets are added to the cart" do
-      subject.items.each { |item| item.should be_a PurchasableTicket }
-    end
-
-    it "should have the right PurchasableTickets when tickets are added to the cart" do
-      subject.items.each { |item| tickets.should include(item.ticket) }
-    end
-  end
-
-  describe "donations" do
-    it "should have a Donation when one is added to the cart" do
-      donation = Factory(:donation)
-      subject.donations << donation
-      subject.items.should include(donation)
-    end
-  end
-
   describe "items" do
-    it "should lock the first lockable item when it is added" do
-      tickets = 2.times.collect { Factory(:ticket) }
-      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      subject.add_tickets tickets
-      subject.items.first.should be_locked
-    end
-
-    it "should collect and lock the lockable items when they are added" do
-      tickets = 2.times.collect { Factory(:ticket) }
-      lock = Factory(:lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      subject.add_tickets tickets
-      lock = subject.items.first.lock
-      subject.items.each do | item |
-        item.should be_locked
-        item.lock.should eq lock
-      end
-    end
-
-    it "should remove items that are no longer locked" do
-      tickets = 2.times.collect { Factory(:ticket) }
-      lock = Factory(:expired_lock, :tickets => tickets.collect {|t| t.id })
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => lock.encode)
-      FakeWeb.register_uri(:delete, "http://localhost/athena/locks/#{lock.id}.json", :status => 200)
-      subject.add_tickets tickets
-      cart = Cart.find(subject.id)
-      cart.items.should be_empty
-    end
+    pending
   end
 
   describe "#total" do
@@ -160,12 +103,10 @@ describe Cart do
     end
 
     it "includes the organizations for the included tickets" do
-      Factory(:lock)
       ticket = Factory(:ticket)
-      organization = Event.find(ticket.event_id).organization
 
-      subject.add_tickets([ticket])
-      subject.organizations.should include organization
+      subject.tickets << ticket
+      subject.organizations.should include ticket.organization
     end
   end
 
@@ -202,20 +143,15 @@ describe Cart do
     let(:tickets) { 2.times.collect { Factory(:ticket) } }
 
     before(:each) do
-      @events = tickets.collect do |ticket|
-        Event.find(ticket.event_id)
-      end
+      @organizations = tickets.collect(&:organization)
 
-      @organizations = @events.collect(&:organization)
       @organizations.each do |org|
         org.kits << RegularDonationKit.new(:state => :activated)
       end
-
-      FakeWeb.register_uri(:post, "http://localhost/athena/locks.json", :status => 200, :body => Factory(:lock).encode)
     end
 
     it "should return a donation for the producer of a single ticket in the cart" do
-      subject.add_tickets tickets
+      subject.tickets << tickets
       donations = subject.generate_donations
       donations.each do |donation|
         @organizations.should include donation.organization
@@ -227,7 +163,7 @@ describe Cart do
     end
 
     it "should return one donation if the tickets are for the same producer" do
-      tickets.each { |ticket| ticket.event_id = @events.first.id }
+      tickets.each { |ticket| ticket.organization = @organization }
       subject.stub(:tickets).and_return(tickets)
       subject.generate_donations.should have(1).donation
     end

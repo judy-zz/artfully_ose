@@ -1,7 +1,9 @@
 class Event < ActiveRecord::Base
   belongs_to :organization
+
   has_many :charts
   has_many :shows, :order => :datetime
+  has_many :tickets, :through => :shows
 
   validates_presence_of :name, :venue, :city, :state, :producer, :organization_id, :time_zone
 

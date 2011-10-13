@@ -5,6 +5,8 @@ class Show < ActiveRecord::Base
   belongs_to :event
   belongs_to :chart
 
+  has_many :tickets
+
   validates_presence_of :datetime
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }

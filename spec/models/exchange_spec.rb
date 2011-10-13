@@ -3,14 +3,16 @@ require 'spec_helper'
 describe Exchange do
   let(:order)       { Factory(:order) }
   let(:items)       { 3.times.collect { Factory(:item) } }
-  let(:event)       { Factory(:event, :organization_id => order.organization.id) }
-  let(:tickets)     { 3.times.collect { Factory(:ticket, :state => "on_sale", :event_id => event.id) } }
+  let(:event)       { Factory(:event, :organization => order.organization) }
+  let(:tickets)     { 3.times.collect { Factory(:ticket, :state => :on_sale, :organization => order.organization) } }
 
   subject { Exchange.new(order, items, tickets) }
 
   it { should be_valid }
 
   it "should initialize with an order and items" do
+    ap subject.valid?
+    ap subject.errors
     subject.order.should be order
     subject.items.should be items
   end
@@ -43,7 +45,7 @@ describe Exchange do
     end
 
     it "should not be valid if any of the tickets belong to another organization" do
-      subject.tickets.first.event_id = Factory(:event).id
+      subject.tickets.first.organization = Factory(:organization)
       subject.should_not be_valid
     end
   end

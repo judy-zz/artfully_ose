@@ -32,8 +32,7 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_tickets(ids)
-      tickets = ids.collect { |id| Ticket.find(id) }
-      current_cart.add_tickets tickets
+      current_cart.tickets << Ticket.find(ids)
     end
 
     def handle_donation(data)
