@@ -15,8 +15,8 @@ class IndexController < ApplicationController
 
   def dashboard
     if current_user.is_in_organization?
-      @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
-      @people = Person.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}", :_limit => 5 })
+      @events = current_user.current_organization.events.paginate(:page => params[:page], :per_page => 10)
+      @people = current_user.current_organization.people.limit(5)
     end
   end
 

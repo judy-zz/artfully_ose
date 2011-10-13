@@ -1,12 +1,12 @@
 class ChartsController < ApplicationController
   def index
     authorize! :view, Chart
-    @charts = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @charts = current_organization.charts.template
   end
 
   def new
     authorize! :view, Chart
-    @chart = Chart.new
+    @chart = current_organization.charts.build(params[:chart])
   end
 
   def create
@@ -18,7 +18,7 @@ class ChartsController < ApplicationController
   end
 
   def show
-    @charts = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @charts = current_organization.charts.template
     @chart = Chart.find(params[:id])
     authorize! :view, @chart
   end

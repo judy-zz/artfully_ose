@@ -27,7 +27,7 @@ class EventsController < ApplicationController
 
   def index
     authorize! :view, Event
-    @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
+    @events = current_organization.events.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
@@ -54,10 +54,9 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = Event.new
+    @event = current_organization.events.build(:producer => current_organization.name)
     authorize! :new, @event
-    @event.producer = current_user.current_organization.name
-    @templates = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @templates = current_organization.charts.template
   end
 
   def edit

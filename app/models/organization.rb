@@ -1,4 +1,11 @@
 class Organization < ActiveRecord::Base
+  has_many :events
+  has_many :charts
+  has_many :shows
+  has_many :tickets
+
+  has_many :people
+
   has_many :memberships
   has_one  :bank_account
   has_one  :fiscally_sponsored_project

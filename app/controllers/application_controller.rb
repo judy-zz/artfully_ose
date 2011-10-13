@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   layout :specify_layout
 
+  delegate :current_organization, :to => :current_user
+
   rescue_from CanCan::AccessDenied do |exception|
     if current_user.is_in_organization?
       flash[:alert] = "Sorry, we couldn't find that page!"

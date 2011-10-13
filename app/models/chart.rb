@@ -10,6 +10,8 @@ class Chart < ActiveRecord::Base
     super({:methods => ['sections']}.merge(options))
   end
 
+  scope :template, where(:is_template => true)
+
   # copy! is when they're editing charts and want to create a copy of
   # this chart to modify further (weekday and weekend charts)
   # This method will copy chart.is_template
