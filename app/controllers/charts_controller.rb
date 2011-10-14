@@ -31,9 +31,9 @@ class ChartsController < ApplicationController
   def update
     @chart = Chart.find(params[:id])
     authorize! :edit, @chart
-    @chart.update_attributes(params[:athena_chart][:athena_chart])
+    @chart.update_attributes(params[:chart])
     if @chart.save
-      redirect_to chart_url(@chart)
+      redirect_to @chart
     else
       render :edit and return
     end
@@ -49,13 +49,10 @@ class ChartsController < ApplicationController
   private
 
   def new_chart(params)
-    @chart = Chart.new
-    @chart.update_attributes(params[:athena_chart][:athena_chart])
-    @chart.organization_id = current_user.current_organization.id
-    @chart.isTemplate = true
+    @chart = current_organization.charts.build(params[:chart].merge(:is_template => true))
 
     if @chart.save
-      redirect_to chart_url(@chart)
+      redirect_to @chart
     else
       render :new
     end
