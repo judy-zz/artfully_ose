@@ -26,6 +26,6 @@ class AddressesController < ApplicationController
   private
 
   def find_person
-    @person = AthenaPerson.find(params[:person_id])
+    @person = Person.find(params[:person_id])
   end
 end

@@ -9,7 +9,7 @@ class PeopleController < ApplicationController
   def create
     authorize! :create, Person
     @person = Person.new
-    person = params[:athena_person][:athena_person]
+    person = params[:person]
 
     @person.first_name      = person[:first_name] unless person[:first_name].blank?
     @person.last_name       = person[:last_name]  unless person[:last_name].blank?

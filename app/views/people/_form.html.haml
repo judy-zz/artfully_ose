@@ -1,12 +1,14 @@
-= parent_form.fields_for target do |action_form|
-  %li
-    .label= action_form.label :first_name, "First Name"
-    .element= action_form.text_field :first_name
-
-  %li
-    .label= action_form.label :last_name, "Last Name"
-    .element= action_form.text_field :last_name
-
-  %li
-    .label= action_form.label :email, "Email"
-    .element= action_form.text_field :email
+= form_for @person do |form|
+  %ul
+    %li
+      .label= form.label :first_name, "First Name"
+      .element= form.text_field :first_name
+    %li
+      .label= form.label :last_name, "Last Name"
+      .element= form.text_field :last_name
+    %li
+      .label= form.label :email, "Email"
+      .element= form.text_field :email
+  .cancel-submit
+    = link_to "Cancel", people_path
+    = form.submit

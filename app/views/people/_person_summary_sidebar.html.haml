@@ -29,15 +29,15 @@
     %li
       .hidden.label= label_tag(:phone_number, "New Phone")
       .full.paired.element
-        = select_tag(:type, options_for_select(Person::Phone.types), :class => :half)
+        = select_tag(:type, options_for_select([]), :class => :half)
         = text_field_tag(:number, "", :placeholder => "Ex: 555-123-1234", :class => :half)
         = submit_tag("Save")
 
 %h4 Mailing Address
-- if @person.address.persisted?
+- if @person.address.present?
   = render @person.address
   = button_to "Edit", "#", :id => "update-mailing-address"
 - else
   = button_to "Add", "#", :id => "create-mailing-address"
 
-= render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address }
+= render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address || @person.build_address }

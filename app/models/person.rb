@@ -5,7 +5,7 @@ class Person < ActiveRecord::Base
 
   belongs_to :organization
   has_many :actions
-  has_one :addresses
+  has_one :address
 
   validates_presence_of :organization_id
   validates_presence_of :person_info
@@ -22,6 +22,10 @@ class Person < ActiveRecord::Base
 
   #TODO
   def self.recent(organization)
+    []
+  end
+
+  def phones
     []
   end
 
