@@ -1,10 +1,12 @@
 class Order < ActiveRecord::Base
   include ActiveRecord::Transitions
 
+  attr_accessor :fee_in_cents
+
   has_many :purchasable_tickets, :dependent => :destroy
   has_many :donations, :dependent => :destroy
 
-  after_initialize :clean_order
+  after_initialize :clean_order, :update_ticket_fee
 
   state_machine do
     state :started
@@ -33,6 +35,10 @@ class Order < ActiveRecord::Base
   def tickets
     purchasable_tickets.collect(&:ticket)
   end
+  
+  def update_ticket_fee
+    @fee_in_cents = purchasable_tickets.size * 200
+  end
 
   def add_tickets(tkts)
     ptkts = tkts.collect { |ticket| PurchasableTicket.for(ticket) }
@@ -60,7 +66,7 @@ class Order < ActiveRecord::Base
   end
 
   def total
-    items.sum(&:price)
+    items.sum(&:price) + @fee_in_cents
   end
 
   def unfinished?

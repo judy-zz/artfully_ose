@@ -25,6 +25,7 @@ class Store::OrdersController < Store::StoreController
     def handle_order(params)
       handle_tickets(params[:tickets]) if params.has_key? :tickets
       handle_donation(params[:donation]) if params.has_key? :donation
+      current_order.update_ticket_fee
 
       unless current_order.save
         flash[:error] = current_order.errors
