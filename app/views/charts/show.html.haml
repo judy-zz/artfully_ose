@@ -20,6 +20,8 @@
           %li= pluralize(chart.sections.size, "Section")
 
 .document
-  %h3= "#{@chart.name} Sections"
+  %h3= "#{@chart.name}"
   = render :partial => 'sections/section_table', :locals => { :chart => @chart, :include_link => true }
+  .element
+    .description When purchasing tickets, patrons will see sections ordered by price starting with the highest price and descending to the lowest.
 

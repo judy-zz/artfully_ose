@@ -2,7 +2,7 @@ class Chart < ActiveRecord::Base
   belongs_to :event
   belongs_to :organization
   has_many :performances
-  has_many :sections
+  has_many :sections, :order => 'price DESC'
 
   validates :name, :presence => true, :length => { :maximum => 255 }
 

@@ -91,7 +91,7 @@ h5 {
   #heading > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -167,7 +167,7 @@ strong {
   .spread > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -186,7 +186,7 @@ strong {
   .compact-spread > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -203,7 +203,7 @@ strong {
   .context > *, .tip > *, .overview > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -220,7 +220,7 @@ strong {
   .dashboard > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -237,7 +237,7 @@ strong {
   .sideboard > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -255,7 +255,7 @@ strong {
   .document > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -275,7 +275,7 @@ strong {
   .of2 > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -295,7 +295,7 @@ strong {
   .of3 > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -315,7 +315,7 @@ strong {
   .of4 > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -332,7 +332,7 @@ strong {
   .drilldown.final > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -353,7 +353,7 @@ strong {
   .drilldown > * {
     margin: 0 12px 12px;
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -382,7 +382,7 @@ strong {
 
 .detailed-list > li {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left;
@@ -470,7 +470,7 @@ input.mini {
 
 .people-list li {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left;
@@ -529,7 +529,7 @@ input.mini {
   margin-bottom: 25px; }
   .calendar .day {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left;
@@ -776,7 +776,7 @@ ul.prices li div {
     font-size: 0.8em; }
     #new-actions > li a {
       display: block;
-      font-family: "Arimo", sans-serif;
+      font-family: "Arial", sans-serif;
       letter-spacing: normal;
       word-spacing: normal;
       text-align: left;
@@ -921,7 +921,7 @@ dl.table-display {
   vertical-align: top; }
   #main-menu > li > a, #main-menu > li .top-level {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left;
@@ -945,7 +945,7 @@ dl.table-display {
       text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3); }
   #main-menu li ul {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left;
@@ -982,7 +982,7 @@ dl.table-display {
   vertical-align: top; }
   #admin-menu > li > a, #admin-menu > li .top-level {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left;
@@ -1006,7 +1006,7 @@ dl.table-display {
       text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3); }
   #admin-menu li ul {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left;
@@ -1100,7 +1100,7 @@ form .description, form .form-error {
 
 .element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left; }
@@ -1112,7 +1112,7 @@ form .description, form .form-error {
     visibility: hidden; }
 .element > input, .element select, .label > input, .label select, .label-and-element > input, .label-and-element select, .cancel-submit > input, .cancel-submit select {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left; }
@@ -1174,7 +1174,7 @@ form .description, form .form-error {
   margin: 12px 0 0; }
   .cancel-submit a {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left;
@@ -1345,7 +1345,7 @@ tfoot tr {
 
 .flash {
   display: block;
-  font-family: "Arimo", sans-serif;
+  font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left;
@@ -1371,7 +1371,7 @@ tfoot tr {
     color: rgba(255, 255, 255, 0.97) !important; }
   .flash ul li {
     display: block;
-    font-family: "Arimo", sans-serif;
+    font-family: "Arial", sans-serif;
     letter-spacing: normal;
     word-spacing: normal;
     text-align: left; }
@@ -1405,7 +1405,7 @@ tfoot tr {
     .reports > li > * {
       margin: 0 12px 12px;
       display: block;
-      font-family: "Arimo", sans-serif;
+      font-family: "Arial", sans-serif;
       letter-spacing: normal;
       word-spacing: normal;
       text-align: left; }

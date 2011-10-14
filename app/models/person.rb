@@ -7,7 +7,6 @@ class Person < ActiveRecord::Base
   has_many :actions
   has_one :addresses
 
-  validates_presence_of :email
   validates_presence_of :organization_id
   validates_presence_of :person_info
 
@@ -66,6 +65,6 @@ class Person < ActiveRecord::Base
 
   private
     def person_info
-      first_name or last_name
+      !(first_name.blank? and last_name.blank? and email.blank?)
     end
 end

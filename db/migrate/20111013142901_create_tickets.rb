@@ -1,6 +1,6 @@
 class CreateTickets < ActiveRecord::Migration
   def self.up
-    drop_table :tickets
+    drop_table :tickets if table_exists? :tickets
     create_table :tickets do |t|
       t.string :venue
       t.string :section

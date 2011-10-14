@@ -20,6 +20,17 @@ describe Chart do
     end
   end
 
+  it "should always order sections by price descending" do
+    @chart = Factory(:chart)
+    @chart.name = 'Chartie'
+    @chart.sections << Section.new({:price => 30, :name => 'one', :capacity => 30})
+    @chart.sections << Section.new({:price => 40, :name => 'two', :capacity => 30})
+    @chart.sections << Section.new({:price => 25, :name => 'three', :capacity => 30})
+    @chart.save
+    sections = @chart.sections
+    sections[0].price.should eq 40
+  end
+
   it "creates a default based on an event" do
     @event = Factory(:event)
     @chart = Chart.default_chart_for(@event)
