@@ -3,11 +3,5 @@
   %h1 New Show
 
 .compact-spread
-  = render "shared/error_messages", :target => @performance
-  = form_for @performance, :url => event_shows_path(@event, @performance) do |form|
-    #performance
-      %h3= @event.name
-      %ul= render :partial => 'shows/form', :locals => { :performance_form => form, :target => @performance }
-      .cancel-submit
-        = link_to "Cancel", event_path(@event)
-        = form.submit "Create"
+  = render "shared/error_messages", :target => @show
+  = render :partial => 'form', :locals => { :show => @show }

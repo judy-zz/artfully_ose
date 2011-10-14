@@ -1,25 +1,25 @@
 - in_section :events
 - content_for :header do
   %h1= link_to @event.name, event_path(@event)
-  %h2= l @performance.datetime, :format => :long_with_day
+  %h2= l @show.datetime, :format => :long_with_day
 
 .context
   %ul.context-buttons
-    %li= button_to "Add Tickets", new_show_ticket_path(@performance), :method => :get
-    -# %li= button_to "Box Office", new_event_show_sales_path(@event,@performance), :method => :get
-    - if not @performance.played?
-      - if not @performance.published?
+    %li= button_to "Add Tickets", new_show_ticket_path(@show), :method => :get
+    -# %li= button_to "Box Office", new_event_show_sales_path(@event,@show), :method => :get
+    - if not @show.played?
+      - if not @show.published?
         %li
-          = form_tag published_event_shows_path(@performance.event) do
-            = hidden_field_tag :performance_id, @performance.id
+          = form_tag published_event_shows_path(@show.event) do
+            = hidden_field_tag :show_id, @show.id
             = submit_tag "Publish"
       - else
         %li
-          = form_tag unpublished_event_shows_path(@performance.event) do |form|
-            = hidden_field_tag :performance_id, @performance.id
+          = form_tag unpublished_event_shows_path(@show.event) do |form|
+            = hidden_field_tag :show_id, @show.id
             = submit_tag "Unpublish"
-    %li= button_to "Door List", door_list_event_show_path(@event,@performance), :method => :get
-  = render :partial => "glance", :locals => { :report => @performance.glance }
+    %li= button_to "Door List", door_list_event_show_path(@event,@show), :method => :get
+  = render :partial => "glance", :locals => { :report => @show.glance }
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
   %ul.kv
     %li
@@ -30,12 +30,12 @@
       .value= @event.producer
 
 .document
-  - if @performance.pending?
+  - if @show.pending?
     %h3 Tickets
-    %p= "You have not created tickets for this event.  Tickets will be created using the #{@performance.chart.name} seating chart."
-    = form_tag built_event_shows_path(@performance.event) do
-      = hidden_field_tag :performance_id, @performance.id
+    %p= "You have not created tickets for this event.  Tickets will be created using the #{@show.chart.name} seating chart."
+    = form_tag built_event_shows_path(@show.event) do
+      = hidden_field_tag :show_id, @show.id
       = submit_tag "Create Tickets"
 
   - else
-    = render :partial => 'ticket_table', :locals => { :performance => @performance, :tickets => @tickets }
+    = render :partial => 'ticket_table', :locals => { :show => @show, :tickets => @tickets }

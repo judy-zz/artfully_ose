@@ -40,10 +40,6 @@ class Show < ActiveRecord::Base
     @gross_sales ||= tickets_sold.inject(0) { |sum, ticket| sum += ticket.price.to_i }
   end
 
-  def tickets
-    @tickets ||= find_tickets.sort_by { |ticket| ticket.price }
-  end
-
   def tickets_sold
     @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
   end
@@ -154,11 +150,6 @@ class Show < ActiveRecord::Base
       return date if date > Time.now
       offset = date - date.beginning_of_day
       future(Time.now.beginning_of_day + offset + 1.day)
-    end
-
-    def find_tickets
-      return [] if new_record?
-      Ticket.find(:all, :params => { :performanceId => "eq#{self.id}" })
     end
 
     def bulk_comp(ids)
