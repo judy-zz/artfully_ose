@@ -1,29 +1,44 @@
-= parent_form.fields_for target do |event_form|
-  %li
-    .label= event_form.label :name, "Name"
-    .element= event_form.text_field :name
-  %li
-    .label= event_form.label :venue, "Venue"
-    .element= event_form.text_field :venue
-  %li
-    .label= event_form.label :producer, "Producer"
-    .element
-      = event_form.text_field :producer
-      .description Defaults to your organization's name
-  %li
-    .label= event_form.label :city, "City"
-    .element= event_form.text_field :city
-  %li
-    .label= event_form.label :state, "State"
-    .element= event_form.select :state, options_for_select( sorted_us_state_names, target.state )
-  %li
-    .label= event_form.label :time_zone, "Time Zone"
-    .element= event_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)"
-  - if can? :create, :paid_events
-    %li
-      .label=  event_form.label :is_free, "This is a free event"
-      .element= event_form.check_box( :is_free, {}, "true", "false" )
-  - else
-    %li
-      .label=  event_form.label :is_free, "This is a free event"
-      .element= event_form.check_box( :is_free, {:disabled => 'disabled', :checked => 'checked'}, "true", "false" )
+= form_for(event) do |form|
+  %fieldset
+    %legend Details
+    %ul
+      %li
+        .label= form.label :name, "Name"
+        .element= form.text_field :name
+      %li
+        .label= form.label :venue, "Venue"
+        .element= form.text_field :venue
+      %li
+        .label= form.label :producer, "Producer"
+        .element
+          = form.text_field :producer
+          .description Defaults to your organization's name
+      %li
+        .label= form.label :city, "City"
+        .element= form.text_field :city
+      %li
+        .label= form.label :state, "State"
+        .element= form.select :state, options_for_select( sorted_us_state_names, event.state )
+      %li
+        .label= form.label :time_zone, "Time Zone"
+        .element= form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)"
+      - if can? :create, :paid_events
+        %li
+          .label=  form.label :is_free, "This is a free event"
+          .element= form.check_box( :is_free, {}, "true", "false" )
+      - else
+        %li
+          .label=  form.label :is_free, "This is a free event"
+          .element= form.check_box( :is_free, {:disabled => 'disabled', :checked => 'checked'}, "true", "false" )
+
+  - if templates.present?
+    %fieldset
+      %legend Seat Charts
+      %ul
+        - templates.each do |template|
+          %li
+            .label= label_tag "charts[]", template.name
+            .element= check_box_tag "charts[]", template.id
+
+  = form.submit
+

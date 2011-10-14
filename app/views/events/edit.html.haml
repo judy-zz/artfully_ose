@@ -11,8 +11,6 @@
     %p= t(".create_free_events", :default => "You may create events with free tickets right away, or you can %{link} your account to start selling tickets.", :link => link_to("upgrade", organization_path(current_user.current_organization)))
 
 .document
-  = render "shared/error_messages", :target => @event
   %h3= "Edit #{@event.name}"
-  = form_for @event, :url => event_path(@event) do |form|
-    %ul= render :partial => 'events/form', :locals => { :parent_form => form, :target => @event }
-    = form.submit "Submit"
+  = render "shared/error_messages", :target => @event
+  = render :partial => 'form', :locals => { :event => @event, :templates => @templates }

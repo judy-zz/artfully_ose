@@ -39,10 +39,6 @@ class Chart < ActiveRecord::Base
     assigned.save
   end
 
-  def self.find_templates_by_organization(organization)
-    self.find(:all, :params => { :organizationId => "eq#{organization.id}", :isTemplate => 'eqtrue' })
-  end
-
   def self.get_default_name(prefix)
     prefix + ', default chart'
   end

@@ -5,8 +5,8 @@ class EventsController < ApplicationController
   before_filter :upcoming_performances, :only => :show
 
   def create
-    @event = Event.new(params[:athena_event][:athena_event])
-    @templates = Chart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @event = Event.new(params[:event])
+    @templates = current_organization.charts.template
     @event.organization_id = current_user.current_organization.id
     begin
       authorize! :create, @event
@@ -32,10 +32,10 @@ class EventsController < ApplicationController
 
   def show
     authorize! :view, @event
-    @performances = @event.performances.paginate(:page => params[:page], :per_page => 10)
-    @next_performance = @event.next_perf
-    @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
-    @charts = @event.filter_charts(Chart.find_templates_by_organization(current_user.current_organization))
+    @shows = @event.shows.paginate(:page => params[:page], :per_page => 10)
+    @next_show = @event.next_show
+
+    @charts = @event.charts.template
     @chart = Chart.new
 
     respond_to do |format|

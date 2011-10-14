@@ -29,8 +29,8 @@ class Event < ActiveRecord::Base
     played.take(limit)
   end
 
-  def next_perf
-    build_performance(:datetime => Show.next_datetime(shows.last))
+  def next_show
+    shows.build(:datetime => Show.next_datetime(shows.last))
   end
 
   def as_widget_json(options = {})
