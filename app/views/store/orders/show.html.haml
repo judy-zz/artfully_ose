@@ -12,7 +12,7 @@
   - if current_order.fee_in_cents > 0
     %li.ticket
       %span.price= number_as_cents current_order.fee_in_cents
-      %span.item= "Ticket fees, $2 per ticket"
+      %span.item.fee= "Service fee"
   - current_order.donations.each do |donation|
     %li.donation= render donation
 

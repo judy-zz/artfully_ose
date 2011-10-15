@@ -46,19 +46,11 @@
             %th{:style=>'width:100px'}
         %tbody
           - @statement.expenses.expenses.each do |row|
-            %tr
-              %td=row.description
-              %td=row.units
-              %td=row.rate
-              %td
-              %td=number_as_cents row.expense
-              %td
-          %tr
-            %td
-              %strong=@statement.expenses.total.description
-            %td
-            %td
-            %td
-            %td
-              %strong=number_as_cents @statement.expenses.total.expense
-            %td
+            - if row.description == 'Credit card processing'
+              %tr
+                %td=row.description
+                %td=row.units
+                %td=row.rate
+                %td
+                %td=number_as_cents row.expense
+                %td

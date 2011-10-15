@@ -406,6 +406,8 @@ p {
   line-height: 2em; }
   .item-list li .item {
     color: #333333; }
+  .item-list li .fee {
+    color: #0A99B3; }
   .item-list li .price {
     color: #666666;
     float: right; }
