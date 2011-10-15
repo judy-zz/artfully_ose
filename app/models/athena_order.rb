@@ -16,6 +16,7 @@ class AthenaOrder < AthenaResource::Base
     attribute :transaction_id,  :string
     attribute :parent_id,       :string
     attribute :price,           :integer
+    attribute :serviceFee,      :integer
     attribute :details,         :string
     attribute :timestamp,       :string
     
