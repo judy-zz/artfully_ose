@@ -16,7 +16,7 @@ class AthenaOrder < AthenaResource::Base
     attribute :transaction_id,  :string
     attribute :parent_id,       :string
     attribute :price,           :integer
-    attribute :serviceFee,      :integer
+    attribute :service_fee,      :integer
     attribute :details,         :string
     attribute :timestamp,       :string
     
@@ -235,7 +235,9 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def timestamp
-    attributes['timestamp'] = attributes['timestamp'].in_time_zone(Organization.find(organization_id).time_zone)
+    if !organization_id.nil?
+      attributes['timestamp'] = attributes['timestamp'].in_time_zone(Organization.find(organization_id).time_zone)
+    end
     return attributes['timestamp']
   end
   
