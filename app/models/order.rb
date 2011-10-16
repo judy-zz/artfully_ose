@@ -25,6 +25,7 @@ class Order < ActiveRecord::Base
   def clean_order
     return if approved?
     purchasable_tickets.delete(purchasable_tickets.select{ |item| !item.locked? })
+    update_ticket_fee
   end
 
   delegate :empty?, :to => :items
@@ -45,6 +46,7 @@ class Order < ActiveRecord::Base
     lock_lockables(ptkts)
 
     purchasable_tickets << ptkts
+    update_ticket_fee
   end
   
   def clear_donations
