@@ -1,0 +1,33 @@
+- in_section :imports
+
+- content_for :header do
+  %h1= t(".heading", :default => "Contact Import")
+  %h2= t(".subheading", :default => "Please validate that the contacts below are correct")
+
+.context
+  %h3 Validate Contacts
+
+  %p This import was created at #{@import.created_at}
+  %p #{number_with_delimiter @import.rows.count} contacts found in this import file
+
+  %p= link_to "Approve this import", approve_import_path(@import), :confirm => "Are you sure?"
+
+.document
+  %h3 Viewing contacts #{@offset + 1} through #{[ @import.rows.count, @offset + @length ].min}
+
+  .page-controller
+    - if @offset > 0
+      = link_to "Previous Page", import_path(@import, :offset => [ 0, @offset - @length ].max, :length => @length), :class => :previous
+    - if @offset + @length < @import.rows.count
+      = link_to "Next Page", import_path(@import, :offset => @offset + @length, :length => @length), :class => :next
+
+  %table.example-contact
+
+    - @import.headers.each_with_index do |field, index|
+
+      %tr
+
+        %td.label= field.capitalize
+
+        - @import.rows[@offset, @length].each do |row|
+          %td.value= row[index]

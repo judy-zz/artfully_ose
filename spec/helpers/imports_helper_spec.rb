@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe Import do
+describe ImportsHelper do
 end
