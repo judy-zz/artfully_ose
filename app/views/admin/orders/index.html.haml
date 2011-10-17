@@ -26,7 +26,7 @@
               %td=order.fa_id
               -unless order.timestamp.nil?
                 %td= l order.timestamp
-              %td= link_to "#{order.organization_id}", admin_organization_path(order.organization_id)
+              %td= link_to "#{Organization.find(order.organization_id).name}", admin_organization_path(order.organization_id)
               %td= number_to_currency (order.total.to_i / 100)
               %td= number_to_currency (order.service_fee.to_i / 100)
 
