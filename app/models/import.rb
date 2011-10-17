@@ -13,6 +13,7 @@ class Import < ActiveRecord::Base
 
   named_scope :pending, where(:status => "pending")
   named_scope :approved, where(:status => "approved")
+  named_scope :importing, where(:status => "importing")
   named_scope :imported, where(:status => "imported")
 
   def headers
@@ -26,6 +27,8 @@ class Import < ActiveRecord::Base
   end
 
   def perform
+    self.importing!
+
     rows.each do |row|
       ip = ImportPerson.new(headers, row)
       person = AthenaPerson.new \
@@ -57,8 +60,12 @@ class Import < ActiveRecord::Base
     self.update_attributes!(:status => "approved") if self.status == "pending"
   end
 
+  def importing!
+    self.update_attributes!(:status => "importing") if self.status == "approved"
+  end
+
   def imported!
-    self.update_attributes!(:status => "imported")
+    self.update_attributes!(:status => "imported") if self.status == "importing"
   end
 
   protected
