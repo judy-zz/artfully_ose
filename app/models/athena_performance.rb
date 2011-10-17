@@ -59,6 +59,10 @@ class AthenaPerformance < AthenaResource::Base
     @tickets_sold ||= tickets.select { |ticket| ticket.sold? }
   end
 
+  def tickets_comped
+    @tickets_comped ||= tickets.select { |ticket| ticket.comped? }
+  end
+
   def self.in_range(start, stop)
     start = "gt#{start.xmlschema}"
     stop = "lt#{stop.xmlschema}"
@@ -81,6 +85,8 @@ class AthenaPerformance < AthenaResource::Base
     @chart, self.chart_id = chart, chart.id
   end
 
+  delegate :free?, :to => :event
+
   def event
     @event ||= AthenaEvent.find(attributes["event_id"])
   end
@@ -89,9 +95,9 @@ class AthenaPerformance < AthenaResource::Base
     raise TypeError, "Expecting an AthenaEvent" unless event.kind_of? AthenaEvent
     @event, self.event_id = event, event.id
   end
-  
+
   def set_attributes(attrs)
-    attributes.merge!(prepare_attr! attrs)    
+    attributes.merge!(prepare_attr! attrs)
   end
 
   def has_door_list?
@@ -149,7 +155,7 @@ class AthenaPerformance < AthenaResource::Base
   end
 
   def live?
-    built? or published? or unpublished?
+    (tickets_comped + tickets_sold).any?
   end
 
   def played?
@@ -171,7 +177,7 @@ class AthenaPerformance < AthenaResource::Base
   def compable_tickets
     tickets.select(&:compable?)
   end
-  
+
   def create_tickets
     tickets = ActiveSupport::JSON.decode(post(:createtickets).body)
     build!

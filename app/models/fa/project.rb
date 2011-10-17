@@ -11,10 +11,10 @@ class FA::Project < FA::Base
     attribute 'applied_on',  :string
     attribute 'status',  :string
   end
-  
-  def self.find_by_member_id(member_id)
-    response = self.connection.get("/fs/projects.xml?member_id=#{member_id}")
+
+  def self.find_active_by_member_id(member_id)
+    response = self.connection.get("/fs/projects.xml?member_id=#{member_id}&status=Active")
     fs_project = FA::Project.new(response['fs_project'])
     fs_project
-  end  
+  end
 end

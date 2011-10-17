@@ -27,8 +27,7 @@
     #donations
       %table.standalone.zebra
         %thead
-          %tr
-            %th Item
+          %tr	
             %th Timestamp
             %th Person
             %th Amount
@@ -38,7 +37,6 @@
           - @search.results.each do |order|
             - order.items.select(&:donation?).each do |item|
               %tr
-                %td= item.id
                 %td= l order.timestamp
                 %td= link_to_person order.person
                 %td= number_as_cents item.price

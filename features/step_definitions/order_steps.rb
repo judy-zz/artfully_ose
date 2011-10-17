@@ -20,7 +20,7 @@ Given /^I enter my payment details$/ do
   with_scope('"#billing_address"') do
     fill_in("Street Address",:with => payment.billing_address.street_address1)
     fill_in("City",:with => payment.billing_address.city)
-    fill_in("State",:with => payment.billing_address.state)
+    select(payment.billing_address.state, :from => "State")
     fill_in("Postal Code",:with => payment.billing_address.postal_code)
   end
 

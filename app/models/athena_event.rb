@@ -75,16 +75,14 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def as_full_calendar_json
-    perfs = []
-    performances.each do |p|
-      phash = {}
-      phash['title'] = ''
-      phash['start'] = p.datetime
-      phash['allDay'] = false
-      phash['color'] = '#077083'
-      perfs << phash
+    performances.collect do |p|
+      { :title  => '',
+        :start  => p.datetime,
+        :allDay => false,
+        :color  => '#077083',
+        :id     => p.id
+      }
     end
-    perfs
   end
 
   def as_json(options = {})
@@ -96,7 +94,7 @@ class AthenaEvent < AthenaResource::Base
   end
 
   def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization.id })
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization_id })
   end
 
   def assign_chart(chart)

@@ -1,5 +1,5 @@
 class ProducerMailer < ActionMailer::Base
-  default :from => "noreply@artful.ly"
+  default :from => "support@artful.ly"
   layout "mail"
 
   def donation_kit_notification(kit, producer)

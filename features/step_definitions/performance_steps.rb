@@ -1,4 +1,5 @@
-When /^I delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|  FakeWeb.register_uri(:get, "http://localhost/athena/tickets.json?performanceId=eq#{current_performances[pos.to_i - 1].id}", :body => "[#{body}]")
+When /^I delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
+  FakeWeb.register_uri(:get, "http://localhost/athena/tickets.json?performanceId=eq#{current_performances[pos.to_i - 1].id}", :body => "[]")
   current_performances.delete_at(pos.to_i - 1)
   body = current_performances.collect { |p| p.encode }.join(",")
   FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
@@ -32,6 +33,19 @@ Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance has had tickets created$/ do |po
   FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
 end
 
+Given /^the (\d+)st performance has had tickets sold$/ do |pos|
+  current_performances[pos.to_i - 1].state = "built"
+  performance = current_performances[pos.to_i - 1]
+  FakeWeb.register_uri(:get, "http://localhost/athena/performances/#{performance.id}.json", :body => performance.encode)
+
+  tickets = 5.times.collect { Factory(:ticket_with_id, :event_id => current_event.id, :peformance_id => performance.id, :state => :sold) }
+  body = tickets.collect { |t| t.encode }.join(",")
+  FakeWeb.register_uri(:get, "http://localhost/athena/tickets.json?performanceId=eq#{performance.id}", :body => "[#{body}]")
+
+  body = current_performances.collect { |p| p.encode }.join(",")
+  FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
+end
+
 Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance is on sale$/ do |pos|
   current_performances[pos.to_i - 1].state = "on_sale"
   performance = current_performances[pos.to_i - 1]
@@ -46,11 +60,11 @@ Given /^the (\d+)(?:st|nd|rd|th) [Pp]erformance is on sale$/ do |pos|
   FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
 end
 
-Then /^I should see not be able to delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
-  page.should have_no_xpath "(//tr[position()=#{pos.to_i}]/td[@class='actions']/a[@title='Delete'])"
+Then /^I should not be able to delete the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
+  page.should have_no_xpath "(//ul[@id='of_performances']/li[position()=#{pos.to_i}]/ul[@class='controls']/li/a[@data-method='delete'])"
 end
 
-Then /^I should see not be able to edit the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
+Then /^I should not be able to edit the (\d+)(?:st|nd|rd|th) [Pp]erformance$/ do |pos|
   page.should have_no_xpath "(//tr[position()=#{pos.to_i}]/td[@class='actions']/a[@title='Edit'])"
 end
 
@@ -72,7 +86,7 @@ end
 When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
   fname, lname = name.split(" ")
   customer = Factory(:athena_person_with_id, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
-  FakeWeb.register_uri(:get, %r|http://localhost/athena/people\.json?.*_q.*|, :body => "[#{customer.encode}]")
+  # FakeWeb.register_uri(:get, %r|http://localhost/athena/people\.json?.*_q.*|, :body => "[#{customer.encode}]")
   FakeWeb.register_uri(:post, "http://localhost/athena/actions.json", :body => Factory(:athena_purchase_action).encode)
 
   When %{I fill in "Search" with "#{email}"}

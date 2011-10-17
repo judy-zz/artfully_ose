@@ -23,12 +23,12 @@ describe FiscallySponsoredProject do
 
   describe "#refresh" do
     it "fetches the latest project from Fractured Atlas" do
-      FA::Project.should_receive(:find_by_member_id).and_return(fa_project)
+      FA::Project.should_receive(:find_active_by_member_id).and_return(fa_project)
       subject.refresh
     end
 
     it "does not update attributes if the remote project is not found" do
-      FA::Project.stub(:find_by_member_id).and_raise(ActiveResource::ResourceNotFound.new("Not Found"))
+      FA::Project.stub(:find_active_by_member_id).and_raise(ActiveResource::ResourceNotFound.new("Not Found"))
       subject.should_not_receive(:update_attributes)
       lambda { subject.refresh }.should_not raise_error(ActiveResource::ResourceNotFound.new("Not Found"))
     end
@@ -37,6 +37,10 @@ describe FiscallySponsoredProject do
   describe "#active?" do
     it "is not active when the status of the project is anything other than \"Active\"" do
       subject.status = "Terminated"
+      subject.should_not be_active
+      subject.status = ""
+      subject.should_not be_active
+      subject.status = nil
       subject.should_not be_active
     end
 

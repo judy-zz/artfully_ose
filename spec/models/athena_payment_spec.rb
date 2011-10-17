@@ -29,7 +29,7 @@ describe AthenaPayment do
       subject.amount.should eq 10.00
     end
   end
-  
+
   describe "reduce amount" do
     it "should reduce the amount" do
       subject.amount = 1000
@@ -47,7 +47,7 @@ describe AthenaPayment do
     end
 
     it "should accept nested attributes for billing address" do
-      billing_address = Factory(:address)
+      billing_address = Factory(:athena_address)
       subject.billing_address = billing_address
       subject.billing_address.attributes.should == billing_address.attributes
     end

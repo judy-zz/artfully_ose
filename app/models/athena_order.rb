@@ -308,7 +308,6 @@ class AthenaOrder < AthenaResource::Base
     end
 
     def save_items
-      puts "Saving #{items.size} items"
       items.each do |item|
         item.order = self
         item.save

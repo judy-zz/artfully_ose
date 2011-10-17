@@ -1,5 +1,5 @@
 class SalesController < ApplicationController
-  before_filter :find_event, :find_show, :create_door_list, :find_dummy
+  before_filter :find_event, :find_show, :find_people, :create_door_list, :find_dummy
 
   def show
     redirect_to new_event_show_sales_path(@event, @show)
@@ -7,6 +7,7 @@ class SalesController < ApplicationController
 
   def new
     @sale = Sale.new(@show, @show.chart.sections)
+    setup_defaults
   end
 
   def create
@@ -22,6 +23,12 @@ class SalesController < ApplicationController
 
   private
 
+  def setup_defaults
+    params[:anonymous]   = true
+    params[:cash]        = true
+    params[:credit_card] = {}
+  end
+
   def find_event
     @event = AthenaEvent.find(params[:event_id])
   end
@@ -29,6 +36,14 @@ class SalesController < ApplicationController
   def find_show
     @show = AthenaPerformance.find(params[:show_id])
     authorize! :view, @show
+  end
+
+  def find_people
+    if params[:terms].present?
+      @people = AthenaPerson.search_index(params[:terms].dup, current_user.current_organization)
+    else
+      @people = []
+    end
   end
 
   def create_door_list

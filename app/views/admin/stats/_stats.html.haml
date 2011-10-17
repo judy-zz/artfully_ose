@@ -1,0 +1,39 @@
+.hr
+%ul.report
+  %li
+    %span.stat Users
+    %span.current= @stats.users
+  %li
+    %span.stat Signins > 1
+    %span.current= @stats.logged_in_more_than_once
+  %li
+    %span.stat Organizations
+    %span.current= @stats.organizations
+  %li
+    %span.stat FA connections
+    %span.current= @stats.fa_connected_orgs
+  %li
+    %span.stat Active FAFS
+    %span.current= @stats.active_fafs_projects
+.hr
+%ul.report
+  %li
+    %span.stat Ticketing Kits
+    %span.current= @stats.ticketing_kits
+  %li
+    %span.stat Donation Kits
+    %span.current= @stats.donation_kits
+.hr
+%ul.report
+  %li
+    %span.stat Tickets
+    %span.current= @stats.tickets
+  %li
+    %span.stat Tickets Sold
+    %span.current= @stats.tickets_sold
+  %li
+    %span.stat Donations
+    %span.current= @stats.donations
+  %li
+    %span.stat FAFS Donations
+    %span.current= @stats.fafs_donations

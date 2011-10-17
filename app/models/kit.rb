@@ -107,6 +107,10 @@ class Kit < ActiveRecord::Base
 
         event :activate do
           transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
+        end          
+        
+        event :activate_without_pending do
+          transitions :from => [:new, :pending, :cancelled], :to => :activated
         end
 
         event :approve do
@@ -114,7 +118,7 @@ class Kit < ActiveRecord::Base
         end
 
         event :cancel do
-          transitions :from => [:activated, :rejected ], :to => :cancelled
+          transitions :from => [:activated, :pending, :rejected ], :to => :cancelled
         end
 
         event :reactivate do

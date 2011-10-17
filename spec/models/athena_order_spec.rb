@@ -18,16 +18,16 @@ describe AthenaOrder do
     it "creates an order and an item from an fa_donation" do
       fa_donation = Factory(:fa_donation)
       organization = Factory(:organization)
-      
+
       stubbed_order = Factory(:athena_order_with_id)
       stubbed_order.stub(:save).and_return(stubbed_order)
       stubbed_order.stub(:items).and_return([])
       stubbed_order.should_receive(:save)
       AthenaOrder.stub(:find_by_fa_id).and_return(nil)
       AthenaOrder.stub(:new).and_return(stubbed_order)
-      
+
       order = AthenaOrder.from_fa_donation(fa_donation, organization)
-      
+
       order.organization_id.should eq organization.id
       order.price.should eq fa_donation.amount.to_f * 100
       order.timestamp.should eq fa_donation.date
@@ -36,10 +36,10 @@ describe AthenaOrder do
       order.email.should eq fa_donation.donor.email
       order.fa_id.should eq fa_donation.id
       order.should be_valid
-      
+
       order.items.size.should eq 1
       item = order.items[0]
-      
+
       item.price.should eq fa_donation.amount.to_f * 100
       item.realized_price.should eq fa_donation.amount.to_f * 100
       item.net.should eq ((fa_donation.amount.to_f * 100) * 0.94)
@@ -47,7 +47,7 @@ describe AthenaOrder do
       item.nongift_amount.should eq fa_donation.nongift.to_f * 100
       item.is_noncash.should eq fa_donation.is_noncash
       item.is_stock.should be_false
-      item.reversed_at.should eq fa_donation.reversed_at
+      item.reversed_at.should eq Time.at(fa_donation.reversed_at)
       item.reversed_note.should eq fa_donation.reversed_note
       item.fs_available_on.should eq fa_donation.fs_available_on
       item.is_anonymous.should eq fa_donation.is_anonymous
@@ -56,7 +56,7 @@ describe AthenaOrder do
     it "updates an order instead of creating a new one" do
       fa_donation = Factory(:fa_donation)
       fa_donation.nongift_amount = 1234.56
-      organization = Factory(:organization)      
+      organization = Factory(:organization)
       stubbed_item = Factory(:fa_item)
       stubbed_order = Factory(:athena_order_with_id)
       stubbed_order.stub(:save).and_return(stubbed_order)
@@ -67,11 +67,11 @@ describe AthenaOrder do
       AthenaOrder.should_receive(:find_by_fa_id).and_return(stubbed_order)
       AthenaOrder.should_not_receive(:new)
       AthenaItem.should_not_receive(:new)
-      
+
       order = AthenaOrder.from_fa_donation(fa_donation, organization)
       order.items.size.should eq 1
     end
-    
+
     it "can find a single order by fa_id" do
       order = Factory(:athena_order_with_id)
       order.fa_id = "400"
@@ -81,7 +81,7 @@ describe AthenaOrder do
       single_order = AthenaOrder.find_by_fa_id "400"
       single_order.class.name.should eq "AthenaOrder"
     end
-    
+
     it "returns null if it didn't find an order by fa_id" do
       AthenaOrder.should_receive(:find).and_return([])
       single_order = AthenaOrder.find_by_fa_id "400"

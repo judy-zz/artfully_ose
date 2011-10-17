@@ -2,7 +2,7 @@ class Contribution
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
-  attr_reader :contributor, :contributor_id, :subtype, :amount, :occurred_at, :details, :organization_id
+  attr_reader :contributor, :person_id, :subtype, :amount, :occurred_at, :details, :organization_id
 
   def initialize(params = {})
     load(params)
@@ -36,11 +36,11 @@ class Contribution
     @occurred_at     = Time.zone.parse(params[:occurred_at]) if params[:occurred_at].present?
     @details         = params[:details]
     @organization_id = params[:organization_id]
-    @contributor_id  = params[:contributor_id]
+    @person_id       = params[:person_id]
   end
 
   def find_contributor
-    AthenaPerson.find(@contributor_id) unless @contributor_id.blank?
+    AthenaPerson.find(@person_id) unless @person_id.blank?
   end
 
   def build_action
@@ -49,13 +49,13 @@ class Contribution
       :organization_id => @organization_id,
       :occurred_at     => @occurred_at,
       :details         => @details,
-      :person_id       => @contributor_id
+      :person_id       => @person_id
     })
   end
 
   def build_order
     attributes = {
-      :person_id       => @contributor_id,
+      :person_id       => @person_id,
       :organization_id => @organization_id
     }
 

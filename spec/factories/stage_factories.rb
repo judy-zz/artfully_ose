@@ -87,7 +87,8 @@ Factory.define :athena_performance_with_id, :parent => :athena_performance do |p
   p.chart_id "4"
   p.after_build do |performance|
     FakeWeb.register_uri(:any, "http://localhost/athena/performances/#{performance.id}.json", :body => performance.encode)
-    body= '{"revenue":{"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":0.0,"net":0.0},"originalPotential":{"gross":0.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"available":0}}'
+    body = '{"revenue":{"soldToday":{"gross":0.0,"net":0.0},"potentialRemaining":{"gross":0.0,"net":0.0},"originalPotential":{"gross":0.0,"net":0.0},"totalSales":{"gross":0.0,"net":0.0}},"tickets":{"sold":{"gross":0,"comped":0},"soldToday":{"gross":0,"comped":0},"available":0}}'
     FakeWeb.register_uri(:get, %r|http://localhost/athena/reports/glance/\.json\?.*performanceId=.*|, :body => body)
+    FakeWeb.register_uri(:get, "http://localhost/athena/tickets.json?performanceId=eq#{performance.id}", :body => "[]")
   end
 end

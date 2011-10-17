@@ -14,7 +14,7 @@ describe Organization do
   describe "importing donations" do
     before(:each) do
       fa_project = Factory(:fa_project)
-      FA::Project.stub(:find_by_member_id).and_return(fa_project)
+      FA::Project.stub(:find_active_by_member_id).and_return(fa_project)
       subject.fa_member_id = fa_project.member_id
 
       FA::Donation.stub(:find_by_member_id).and_return([])
@@ -28,7 +28,7 @@ describe Organization do
 
     it "should import all donations since the last refresh" do
       subject.refresh_active_fs_project
-      FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at)
+      FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at - 1.day)
       subject.import_recent_fa_donations
     end
 
@@ -137,15 +137,15 @@ describe Organization do
       subject.stub(:fsp).and_return(mock(:fsp, :active? => false, :inactive? => true))
       subject.stub(:sponsored_kit).and_return(kit)
 
-      kit.should_receive(:cancel!)
+      kit.should_receive(:cancel_with_authority!)
       subject.send(:update_kits)
     end
 
-    it "reactivates the kit if the FSP is active" do
+    it "activates the kit if the FSP is active" do
       subject.stub(:fsp).and_return(mock(:fsp, :active? => true, :inactive? => false))
       subject.stub(:sponsored_kit).and_return(kit)
 
-      kit.should_receive(:reactivate!)
+      kit.should_receive(:activate_without_prejudice!)
       subject.send(:update_kits)
     end
   end

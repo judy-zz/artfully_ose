@@ -1,4 +1,4 @@
-Factory.define :address, :class => AthenaAddress, :default_strategy => :build do |a|
+Factory.define :athena_address, :class => AthenaAddress, :default_strategy => :build do |a|
   a.first_name      { Faker::Name.first_name }
   a.last_name       { Faker::Name.last_name }
   a.company         { Faker::Company.name }
@@ -65,7 +65,7 @@ Factory.define :customer_with_credit_cards, :parent => :customer_with_id do |c|
 end
 Factory.define :payment, :class => AthenaPayment, :default_strategy => :build do |p|
   p.amount 100
-  p.billing_address { Factory(:address) }
+  p.billing_address { Factory(:athena_address) }
   p.credit_card { Factory(:credit_card) }
   p.customer { Factory(:customer) }
   p.transaction_id "j59qrb"
