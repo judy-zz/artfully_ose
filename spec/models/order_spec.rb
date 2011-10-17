@@ -44,9 +44,19 @@ describe Order do
   
   describe "ticket fee" do
     let(:tickets) { 2.times.collect { Factory(:ticket_with_id) } }
+    let(:free_tickets) { 2.times.collect { Factory(:free_ticket_with_id) } }
     
     it "should have a fee of 0 if there are no tickets" do
       subject.fee_in_cents.should eq 0
+    end
+    
+    it "should have a fee of 0 if there are free tickets" do
+      subject.stub(:create_lock).and_return(Factory(:lock, :tickets => free_tickets.collect {|t| t.id }))
+      subject.add_tickets free_tickets
+      subject.fee_in_cents.should eq 0
+      subject.stub(:create_lock).and_return(Factory(:lock, :tickets => tickets.collect {|t| t.id }))
+      subject.add_tickets tickets
+      subject.fee_in_cents.should eq 400
     end
     
     it "should keep the fee updated while tickets are added" do

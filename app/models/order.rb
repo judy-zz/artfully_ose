@@ -38,7 +38,7 @@ class Order < ActiveRecord::Base
   end
   
   def update_ticket_fee
-    @fee_in_cents = purchasable_tickets.size * 200
+    @fee_in_cents = purchasable_tickets.reject{|t| t.price == 0}.size * 200
   end
 
   def add_tickets(tkts)
