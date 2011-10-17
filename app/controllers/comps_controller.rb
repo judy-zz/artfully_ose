@@ -1,6 +1,6 @@
 class CompsController < ApplicationController
   def new
-    @performance = Show.find(params[:performance_id])
+    @performance = Show.find(params[:show_id])
     @selected_tickets = params[:selected_tickets]
 
     @comp = Comp.new(@performance, @selected_tickets, recipient)
@@ -14,7 +14,7 @@ class CompsController < ApplicationController
   end
 
   def create
-    @performance = Show.find(params[:performance_id])
+    @performance = Show.find(params[:show_id])
     @selected_tickets = params[:selected_tickets]
 
     @comp = Comp.new(@performance, @selected_tickets, recipient)

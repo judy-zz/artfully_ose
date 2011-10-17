@@ -113,7 +113,7 @@ class Show < ActiveRecord::Base
   end
 
   def settleables
-    Item.find_by_performance_id(self.id).reject(&:modified?)
+    Item.find_by_show_id(self.id).reject(&:modified?)
   end
 
   def live?

@@ -13,13 +13,13 @@ class Section < ActiveRecord::Base
     Section.new(self.attributes.reject { |key, value| key == 'id' })
   end
 
-  def summarize(performance_id)
-    tickets = Ticket.find(:all, :params => {:performanceId => "eq#{performance_id}", :section => "eq#{name}"})
+  def summarize(show_id)
+    tickets = Ticket.find(:all, :params => {:performanceId => "eq#{show_id}", :section => "eq#{name}"})
     summary = SectionSummary.for_tickets(tickets)
   end
 
-  def create_tickets(performance_id, new_capacity)
-    attributes['performance_id'] = performance_id
+  def create_tickets(show_id, new_capacity)
+    attributes['show_id'] = show_id
     attributes['capacity'] = new_capacity
     tickets = ActiveSupport::JSON.decode(post(:createtickets).body)
   end

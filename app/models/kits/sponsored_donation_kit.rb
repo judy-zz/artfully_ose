@@ -6,15 +6,15 @@ class SponsoredDonationKit < Kit
     when_active do |organization|
       organization.can :receive, Donation
     end
-    
+
     state_machine do
       event :activate_without_prejudice do
-        transitions :from => [:new, :activated, :pending, :cancelled], :to => :activated
-      end   
-           
+        transitions :from => [:fresh, :activated, :pending, :cancelled], :to => :activated
+      end
+
       event :cancel_with_authority do
-        transitions :from => [:new, :pending, :activated, :cancelled], :to => :cancelled
-      end   
+        transitions :from => [:fresh, :pending, :activated, :cancelled], :to => :cancelled
+      end
     end
   end
 
@@ -37,20 +37,20 @@ class SponsoredDonationKit < Kit
     errors.add(:requirements, "You need to specify a website for your organization.") unless !organization.website.blank?
     !organization.website.blank?
   end
-  
+
   def self.setup_state_machine
     state_machine do
-      state :new
+      state :fresh
       state :pending, :enter => :on_pending
       state :activated, :enter => :on_activation
       state :cancelled
 
       event :activate do
-        transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
-      end          
-      
+        transitions :from => [:fresh, :pending], :to => :activated, :guard => :activatable?
+      end
+
       event :activate_without_pending do
-        transitions :from => [:new, :pending, :cancelled], :to => :activated
+        transitions :from => [:fresh, :pending, :cancelled], :to => :activated
       end
     end
   end

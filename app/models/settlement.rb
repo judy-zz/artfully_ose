@@ -5,7 +5,7 @@ class Settlement < ActiveRecord::Base
   belongs_to :performance
   has_many :items
 
-  def self.submit(organization_id, items, bank_account, performance_id=nil)
+  def self.submit(organization_id, items, bank_account, show_id=nil)
     items = Array.wrap(items)
 
     if items.empty?
@@ -38,7 +38,7 @@ class Settlement < ActiveRecord::Base
       settlement.ach_response_code = ach_response_code
       settlement.transaction_id = transaction_id
       settlement.organization_id = organization_id
-      settlement.performance_id = performance_id
+      settlement.show_id = show_id
       settlement.fail_message = fail_message
       settlement.success = success
       settlement.save!
@@ -109,6 +109,7 @@ class Settlement < ActiveRecord::Base
   end
 
   def self.send_request(items, bank_account, memo)
+    ap items.collect(&:net)
     request = ACH::Request.for(items.sum{ |i| i.net.to_i }, bank_account, memo)
     request.submit
   end

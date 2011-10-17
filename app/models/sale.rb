@@ -71,7 +71,7 @@ class Sale::TicketRequest
     return [] if @quantity == 0
 
     @tickets ||= Ticket.available({
-      :performance_id => @show.id,
+      :show_id => @show.id,
       :section        => @section.name,
       :price          => @section.price,
       :limit          => @quantity

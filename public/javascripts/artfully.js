@@ -290,7 +290,7 @@ artfully.models = (function(){
           $form.submit(function(){
             var params = {
               'limit': $select.val(),
-              'performance_id': jQuery(this).closest('.performance').data('performance').id,
+              'show_id': jQuery(this).closest('.performance').data('performance').id,
               'price': obj.price
             };
 

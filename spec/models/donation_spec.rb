@@ -6,7 +6,7 @@ describe Donation do
   it { should be_valid }
 
   it { should respond_to :amount }
-  it { should respond_to :order }
+  it { should respond_to :cart }
 
   describe ".amount" do
     it "is not be valid without an amount" do

@@ -4,7 +4,7 @@
 .context
   %h3 Settlement
   - if @performance.settleables.any?
-    %p= link_to "Run Settlement", new_admin_settlement_path(:performance_id => @performance.id)
+    %p= link_to "Run Settlement", new_admin_settlement_path(:show_id => @performance.id)
   - else
     %p There are no items due for settlement.
 

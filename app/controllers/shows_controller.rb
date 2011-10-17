@@ -82,7 +82,7 @@ class ShowsController < ApplicationController
   end
 
   def published
-    @show = Show.find(params[:performance_id])
+    @show = Show.find(params[:show_id])
     authorize! :show, @show
 
     if @show.tickets.empty?
@@ -108,7 +108,7 @@ class ShowsController < ApplicationController
   end
 
   def unpublished
-    @show = Show.find(params[:performance_id])
+    @show = Show.find(params[:show_id])
     authorize! :hide, @show
 
     with_confirmation do
@@ -121,7 +121,7 @@ class ShowsController < ApplicationController
   end
 
   def built
-    @show = Show.find(params[:performance_id])
+    @show = Show.find(params[:show_id])
     authorize! :edit, @show
 
     @show.create_tickets
@@ -137,7 +137,7 @@ class ShowsController < ApplicationController
   def on_sale
     authorize! :bulk_edit, Ticket
     with_confirmation do
-      @show = Show.find(params[:performance_id])
+      @show = Show.find(params[:show_id])
 
       if @show.bulk_on_sale(:all)
         @show.publish!

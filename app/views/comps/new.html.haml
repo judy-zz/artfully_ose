@@ -9,7 +9,7 @@
     %h4= link_to "#{@comp.recipient.first_name} #{@comp.recipient.last_name}", person_path(@comp.recipient)
     %h5= @comp.recipient.email
     .hr
-    = hidden_field_tag :performance_id, @performance.id
+    = hidden_field_tag :show_id, @performance.id
     = hidden_field_tag :person_id, @comp.recipient.id
     - @selected_tickets.each do |st|
       = hidden_field_tag("selected_tickets[]", st)

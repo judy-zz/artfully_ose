@@ -28,7 +28,7 @@ class Item < ActiveRecord::Base
   def product=(product)
     set_product_details_from product
     set_prices_from product
-    set_performance_from product if product.respond_to? :performance_id
+    set_performance_from product if product.respond_to? :show_id
     self.state = "purchased"
     @product = product
   end
@@ -152,7 +152,7 @@ class Item < ActiveRecord::Base
     end
 
     def set_performance_from(prod)
-      self.performance_id = prod.performance_id
+      self.show_id = prod.show_id
     end
 
     def find_product

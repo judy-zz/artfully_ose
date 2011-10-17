@@ -8,11 +8,11 @@ class Admin::SettlementsController < Admin::AdminController
   end
 
   def new
-    @performance = Show.find(params[:performance_id])
+    @performance = Show.find(params[:show_id])
   end
 
   def create
-    @performance = Show.find(params[:performance_id])
+    @performance = Show.find(params[:show_id])
     Settlement.submit(@performance.organization.id, @performance.settleables, @performance.organization.bank_account, @performance.id)
     redirect_to admin_settlements_path, :notice => "Submitted settlement request."
   end

@@ -9,8 +9,8 @@ class ExchangesController < ApplicationController
       unless params[:event_id].blank?
         @event = Event.find(params[:event_id])
         @performances = @event.upcoming_performances(:all)
-        unless params[:performance_id].blank?
-          @performance = Show.find(params[:performance_id])
+        unless params[:show_id].blank?
+          @performance = Show.find(params[:show_id])
           @tickets = @performance.tickets.select(&:on_sale?)
         end
       end

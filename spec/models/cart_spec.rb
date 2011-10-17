@@ -4,7 +4,7 @@ describe Cart do
   subject { Factory(:cart) }
 
   it "should be marked as unfinished in the started state" do
-    subject.state = 'starteded'
+    subject.state = :started
     subject.should be_unfinished
   end
 
@@ -141,11 +141,10 @@ describe Cart do
 
   describe ".generate_donations" do
     let(:tickets) { 2.times.collect { Factory(:ticket) } }
+    let(:organizations) { tickets.collect(&:organization) }
 
     before(:each) do
-      @organizations = tickets.collect(&:organization)
-
-      @organizations.each do |org|
+      organizations.each do |org|
         org.kits << RegularDonationKit.new(:state => :activated)
       end
     end
@@ -154,7 +153,7 @@ describe Cart do
       subject.tickets << tickets
       donations = subject.generate_donations
       donations.each do |donation|
-        @organizations.should include donation.organization
+        organizations.should include donation.organization
       end
     end
 
@@ -163,7 +162,7 @@ describe Cart do
     end
 
     it "should return one donation if the tickets are for the same producer" do
-      tickets.each { |ticket| ticket.organization = @organization }
+      tickets.each { |ticket| ticket.organization = organizations.first }
       subject.stub(:tickets).and_return(tickets)
       subject.generate_donations.should have(1).donation
     end

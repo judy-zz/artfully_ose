@@ -2,30 +2,28 @@ require 'spec_helper'
 
 describe Job::Settlement do
   describe ".run" do
-    it "should settle performances for the date range" do
-      Job::Settlement.should_receive(:settle_performances_in).with(Settlement.range_for(DateTime.now))
+    it "should settle shows for the date range" do
+      Job::Settlement.should_receive(:settle_shows_in).with(Settlement.range_for(DateTime.now))
       Job::Settlement.should_receive(:settle_donations_in).with(Settlement.range_for(DateTime.now))
       Job::Settlement.run
     end
   end
 
-  describe ".settle_performances_in" do
-    let(:performances) { 3.times.collect{ Factory(:show) } }
+  describe ".settle_shows_in" do
     let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
+    let(:shows) { 3.times.collect{ Factory(:show, :organization => organization, :event => Factory(:event)) } }
     let(:settlement) { mock(:settlement, :submit => nil) }
 
     before(:each) do
-      performances.each { |performance| performance.stub(:organization).and_return(organization) }
-      performances.each { |performance| performance.stub(:id).and_return("12") }
-      performances.each { |performance| performance.stub(:settleables).and_return(5.times.collect{ Factory(:item) } ) }
-      Show.stub(:in_range).and_return(performances)
+      shows.each { |show| show.stub(:settleables).and_return(5.times.collect{ Factory(:item) } ) }
+      Show.stub(:in_range).and_return(shows)
     end
 
-    it "creates and submit a Settlement for each performance" do
-      performances.each do |performance|
-        Settlement.should_receive(:submit).with(organization.id, performance.settleables, organization.bank_account, performance.id).and_return(settlement)
+    it "creates and submit a Settlement for each show" do
+      shows.each do |show|
+        Settlement.should_receive(:submit).with(organization.id, show.settleables, organization.bank_account, show.id).and_return(settlement)
       end
-      Job::Settlement.settle_performances_in(Settlement.range_for(DateTime.now))
+      Job::Settlement.settle_shows_in(Settlement.range_for(DateTime.now))
     end
   end
 

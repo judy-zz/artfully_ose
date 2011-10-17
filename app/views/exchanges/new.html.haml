@@ -20,7 +20,7 @@
     - else
       %ul#performance-drilldown
         - @performances.each do |performance|
-          %li= link_to l(performance.datetime, :format => :short), params.merge({:performance_id => performance.id}), :title => 'performance-datetime'
+          %li= link_to l(performance.datetime, :format => :short), params.merge({:show_id => performance.id}), :title => 'performance-datetime'
 
 .drilldown.final
   - unless @performance.nil?

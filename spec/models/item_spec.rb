@@ -69,8 +69,8 @@ describe Item do
       let(:ticket) { Factory(:ticket) }
       before(:each) { subject.product = ticket }
 
-      it "sets the performance_id to the tickets performance id" do
-        subject.performance_id.should eq ticket.performance_id
+      it "sets the show_id to the tickets show id" do
+        subject.show_id.should eq ticket.show_id
       end
 
       it "sets the price to the price of the ticket" do
