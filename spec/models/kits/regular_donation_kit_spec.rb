@@ -10,8 +10,8 @@ describe RegularDonationKit do
     it { should respond_to :activated? }
 
 
-    it "should start in the new state" do
-      subject.should be_new
+    it "should start in the fresh state" do
+      subject.should be_fresh
     end
   end
 

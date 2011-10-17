@@ -12,10 +12,10 @@ describe SponsoredDonationKit do
     it { should respond_to :cancel_with_authority }
 
 
-    it "should start in the new state" do
-      subject.should be_new
+    it "should start in the fresh state" do
+      subject.should be_fresh
     end
-    
+
     it "should activate or cancel no matter the state" do
       subject.state = "cancelled"
       subject.activate_without_prejudice!
@@ -23,12 +23,12 @@ describe SponsoredDonationKit do
       subject.state = "activated"
       subject.activate_without_prejudice!
       subject.should be_activated
-      
+
       subject.cancel_with_authority!
       subject.should be_cancelled
       subject.cancel_with_authority!
       subject.should be_cancelled
-      
+
       subject.state = "pending"
       subject.activate_without_prejudice!
       subject.should be_activated

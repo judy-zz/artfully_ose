@@ -14,7 +14,7 @@ describe TicketingKit do
     it { should respond_to :activated? }
 
     it "should start in the new state" do
-      subject.should be_new
+      subject.should be_fresh
     end
   end
 
