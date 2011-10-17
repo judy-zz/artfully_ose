@@ -1,5 +1,8 @@
 class Import < ActiveRecord::Base
 
+  # Import status transitions:
+  #   pending -> approved -> imported
+
   belongs_to :user
 
   validates_presence_of :user
@@ -7,7 +10,10 @@ class Import < ActiveRecord::Base
   validates_presence_of :s3_bucket
   validates_presence_of :s3_key
   validates_presence_of :s3_etag
-  validates_presence_of :cached_data
+
+  named_scope :pending, where(:status => "pending")
+  named_scope :approved, where(:status => "approved")
+  named_scope :imported, where(:status => "imported")
 
   def headers
     cache_data!
@@ -17,6 +23,42 @@ class Import < ActiveRecord::Base
   def rows
     cache_data!
     @rows ||= Marshal::load(File.read import_rows_tmp_filename)
+  end
+
+  def perform
+    rows.each do |row|
+      ip = ImportPerson.new(headers, row)
+      person = AthenaPerson.new \
+        :email           => ip.email,
+        :first_name      => ip.first,
+        :last_name       => ip.last,
+        :company_name    => ip.company,
+        :website         => ip.website,
+        :organization_id => user.current_organization.id,
+        :import_id       => self.id
+
+      if !person.save
+        p person.errors.full_messages
+      else
+        p person.id
+      end
+    end
+
+    self.imported!
+  end
+
+  def destroy_people!
+    AthenaPerson.find_by_import(self).each do |person|
+      person.destroy
+    end
+  end
+
+  def approve!
+    self.update_attributes!(:status => "approved") if self.status == "pending"
+  end
+
+  def imported!
+    self.update_attributes!(:status => "imported")
   end
 
   protected

@@ -115,6 +115,12 @@ Artfully::Application.routes.draw do
   resources :comps, :only => [ :new, :create ]
   resources :pages
 
+  resources :imports do
+    member do
+      get :approve
+    end
+  end
+
   match '/events/:event_id/charts/' => 'events#assign', :as => :assign_chart, :via => "post"
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
   match '/people/:id/tag/' => 'people#tag', :as => :new_tag, :via => "post"

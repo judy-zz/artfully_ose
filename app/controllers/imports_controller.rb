@@ -1,6 +1,12 @@
 class ImportsController < ApplicationController
 
   def approve
+    @import = current_user.imports.find(params[:id])
+    @import.approve!
+    Delayed::Job.enqueue @import
+
+    flash[:notice] = "Your file has been entered in the import queue. This process may take some time."
+    redirect_to root_path
   end
 
   def show

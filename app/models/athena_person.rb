@@ -19,6 +19,7 @@ class AthenaPerson < AthenaResource::Base
     attribute 'tags',           :string
     attribute 'phones',         :string
     attribute 'dummy',          :string
+    attribute 'import_id',      :integer
   end
 
   comma do
@@ -57,6 +58,10 @@ class AthenaPerson < AthenaResource::Base
 
   def self.find_by_organization(organization)
     find_by_organization_id(organization.id)
+  end
+
+  def self.find_by_import(import)
+    find(:all, :params => { :importId => "eq#{import.id}" })
   end
 
   def organization
