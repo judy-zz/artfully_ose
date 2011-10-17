@@ -6,7 +6,7 @@ describe DoorList do
   subject { DoorList.new(performance) }
 
   before(:each) do
-    performance.stub(:tickets).and_return(5.times.collect { Factory(:ticket, :sold => true)})
+    performance.stub(:tickets).and_return(5.times.collect { Factory(:ticket, :state => :sold)})
     performance.tickets.each do |ticket|
       ticket.stub(:buyer).and_return(buyer)
     end
