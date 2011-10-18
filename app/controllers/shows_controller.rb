@@ -124,9 +124,11 @@ class ShowsController < ApplicationController
     @show = Show.find(params[:show_id])
     authorize! :edit, @show
 
-    @show.create_tickets
-    @event = Event.find(@show.event_id)
+    @event = @show.event
+    # TODO: The ability to create tickets is business logic, not authorization logic.
     authorize! :create_tickets, @show.chart.sections
+
+    @show.build!
 
     respond_to do |format|
       format.html { redirect_to event_show_url(@event, @show) }

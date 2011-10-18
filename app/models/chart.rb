@@ -1,7 +1,10 @@
 class Chart < ActiveRecord::Base
+  include Ticket::Foundry
+  foundry :using => :sections, :with => lambda { { :venue => event.venue } }
+
   belongs_to :event
   belongs_to :organization
-  has_many :performances
+  has_many :shows
   has_many :sections, :order => 'price DESC'
 
   validates :name, :presence => true, :length => { :maximum => 255 }
@@ -56,13 +59,15 @@ class Chart < ActiveRecord::Base
   end
 
   private
-    def duplicate(options = {})
-      rejections = Array.wrap(options[:without])
-      additions = options[:with] || {}
-      attrs = self.attributes.reject { |key, value| rejections.include?(key) }.merge(additions)
 
-      self.class.new(attrs).tap do |copy|
-        copy.sections = self.sections.collect { |section| section.dup! }
-      end
+  def duplicate(options = {})
+    rejections = Array.wrap(options[:without])
+    additions = options[:with] || {}
+    attrs = self.attributes.reject { |key, value| rejections.include?(key) }.merge(additions)
+
+    self.class.new(attrs).tap do |copy|
+      copy.sections = self.sections.collect { |section| section.dup! }
     end
+  end
+
 end

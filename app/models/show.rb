@@ -1,6 +1,4 @@
 class Show < ActiveRecord::Base
-  include ActiveRecord::Transitions
-
   belongs_to :organization
   belongs_to :event
   belongs_to :chart
@@ -11,23 +9,19 @@ class Show < ActiveRecord::Base
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }
 
+  include Ticket::Foundry
+  foundry :using => :chart, :with => lambda { {:show_id => id} }
+
+  include ActiveRecord::Transitions
   state_machine do
     state :pending
-    state :built
+    state :built, :enter => :create_tickets
     state :published
     state :unpublished
 
-    event :build do
-      transitions :from => :pending, :to => :built
-    end
-
-    event :publish do
-      transitions :from => [ :built, :unpublished ], :to => :published
-    end
-
-    event :unpublish do
-      transitions :from => :published, :to => :unpublished
-    end
+    event(:build)     { transitions :from => :pending, :to => :built }
+    event(:publish)   { transitions :from => [ :built, :unpublished ], :to => :published }
+    event(:unpublish) { transitions :from => :published, :to => :unpublished }
   end
 
   delegate :free?, :to => :event
@@ -140,31 +134,27 @@ class Show < ActiveRecord::Base
     tickets.select(&:compable?)
   end
 
-  def create_tickets
-    tickets = ActiveSupport::JSON.decode(post(:createtickets).body)
-    build!
+  private
+
+  def self.future(date)
+    return date if date > Time.now
+    offset = date - date.beginning_of_day
+    future(Time.now.beginning_of_day + offset + 1.day)
   end
 
-  private
-    def self.future(date)
-      return date if date > Time.now
-      offset = date - date.beginning_of_day
-      future(Time.now.beginning_of_day + offset + 1.day)
-    end
+  def bulk_comp(ids)
+    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
+  end
 
-    def bulk_comp(ids)
-      tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
+  def prepare_attr!(attrs)
+    attributes = attrs.with_indifferent_access
+    if attributes["datetime"].kind_of?(String) || attributes["datetime"].kind_of?(Time)
+      Time.zone = time_zone
+      offset = ActiveSupport::TimeZone.new(time_zone).formatted_offset
+      dt = Time.zone.parse("#{attributes["datetime"]}")
+      #dt -= 1.hour if dt.dst?
+      attributes["datetime"] = dt
     end
-
-    def prepare_attr!(attrs)
-      attributes = attrs.with_indifferent_access
-      if attributes["datetime"].kind_of?(String) || attributes["datetime"].kind_of?(Time)
-        Time.zone = time_zone
-        offset = ActiveSupport::TimeZone.new(time_zone).formatted_offset
-        dt = Time.zone.parse("#{attributes["datetime"]}")
-        #dt -= 1.hour if dt.dst?
-        attributes["datetime"] = dt
-      end
-      attributes
-    end
+    attributes
+  end
 end

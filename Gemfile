@@ -3,6 +3,7 @@ gem 'rake', '0.8.7'
 gem 'rails'
 
 gem 'athena_resource'
+gem 'activerecord-import'
 
 gem 'delayed_job'
 gem 'acts-as-taggable-on', '~>2.1.0'
