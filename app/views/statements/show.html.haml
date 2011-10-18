@@ -12,7 +12,6 @@
       Please select a show or a date range
   -else
     %h3="Statement Report: #{@event.name}"
-    %h4 Revenue
     #statement_table
       %table.standalone
         %thead
@@ -27,7 +26,7 @@
         %tbody
           - @statement.sales.performances.each do |row|
             %tr
-              %td=l row.datetime, :format => :long_with_day
+              %td=l row.datetime, :format => :short
               %td=row.tickets_sold
               %td=row.tickets_comped
               %td=number_as_cents row.potential_revenue

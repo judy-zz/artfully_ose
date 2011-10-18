@@ -20,7 +20,7 @@ class StatementsController < ApplicationController
     @event = @performance.event
     @played = @event.played_performances
     @statement = AthenaStatement.for_performance(params[:id], current_user.current_organization)
-
+    @statement.sales.performances[0].datetime = @performance.datetime
     if @event.free?
       @statement.expenses.expenses.first.rate = "$0.00"
       @statement.expenses.expenses.first.expense = 0
