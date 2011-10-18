@@ -38,9 +38,9 @@ class AdminStats < ActiveRecord::Base
 
   def self.ticket_stats
     {
-      #This doesn't work for a large # of tickets.  Stack overflow.  
+      #This doesn't work for a large # of tickets.  Stack overflow.
       #:tickets      => AthenaTicket.find_by_event_id("gt0").count,
-      
+
       :tickets      => 0,
       :tickets_sold => AthenaTicket.find_by_state("sold").count
     }
@@ -50,7 +50,7 @@ class AdminStats < ActiveRecord::Base
     donations = AthenaItem.find(:all, :params => { :productType => "Donation", :state => "in(settled, purchased)"})
     {
       :donations => donations.count,
-      :fafs_donations => donations.select{ |d| d.fs_project_id.present? }.count
+      :fafs_donations => donations.count{ |d| !d.fs_project_id.nil? }
     }
   end
 end
