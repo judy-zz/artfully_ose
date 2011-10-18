@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   respond_to :html, :json
 
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget ]
-  before_filter :upcoming_performances, :only => :show
+  before_filter :upcoming_shows, :only => :show
 
   def create
     @event = Event.new(params[:event])
@@ -35,7 +35,7 @@ class EventsController < ApplicationController
     @shows = @event.shows.paginate(:page => params[:page], :per_page => 10)
     @next_show = @event.next_show
 
-    @charts = @event.charts.template
+    @charts = current_organization.charts.template
     @chart = Chart.new
 
     respond_to do |format|
@@ -65,7 +65,7 @@ class EventsController < ApplicationController
 
   def assign
     @event = Event.find(params[:event_id])
-    @chart = Chart.find(params[:athena_chart][:id])
+    @chart = Chart.find(params[:chart][:id])
     @event.assign_chart(@chart)
 
     flash[:error] = @event.errors.full_messages.to_sentence unless @event.errors.empty?
@@ -106,7 +106,7 @@ class EventsController < ApplicationController
     ids.collect { |id| Chart.find(id) }
   end
 
-  def upcoming_performances
-    @upcoming = @event.upcoming_performances
+  def upcoming_shows
+    @upcoming = @event.upcoming_shows
   end
 end

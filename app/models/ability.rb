@@ -45,7 +45,7 @@ class Ability
 
     #This is the ability that the controller uses to authorize creating/editing an event
     can :manage, Event do |event|
-      event.is_free? && (user.current_organization.can? :manage, event)
+      event.free? && (user.current_organization.can? :manage, event)
     end
 
     can :new, Event do |event|
@@ -57,11 +57,11 @@ class Ability
     end
 
     can :create_tickets, Array do |sections|
-      sections.none? {|s| s.price.to_i > 0} || (user.current_organization.can? :access, :paid_ticketing)
+      sections.select {|s| s.price.to_i > 0}.empty? || (user.current_organization.can? :access, :paid_ticketing)
     end
 
     can [ :manage, :show, :hide, :duplicate ], Show do |show|
-      user.current_organization.can? :manage, show
+      user.current_organization.can?(:manage, show)
     end
 
     can :manage, Chart do |chart|

@@ -19,7 +19,7 @@ class Sale
 
   def sell(payment)
     if valid?
-      cart.tickets << tickets
+      cart.add_tickets(tickets)
       checkout = Checkout.new(cart, payment)
       checkout.finish.tap do |success|
         errors.add(:base, "payment was not accepted") and return if !success
@@ -29,7 +29,7 @@ class Sale
   end
 
   def cart
-    @cart ||= Cart.new
+    @cart ||= Order.new
   end
 
   def fulfilled?
@@ -49,7 +49,7 @@ class Sale
   end
 
   def settle(checkout, success)
-    Item.settle(checkout.order.items, Settlement.new)
+    AthenaItem.settle(checkout.athena_order.items, Settlement.new)
   end
 end
 

@@ -19,7 +19,7 @@
             = hidden_field_tag :show_id, @show.id
             = submit_tag "Unpublish"
     %li= button_to "Door List", door_list_event_show_path(@event,@show), :method => :get
-  = render :partial => "glance", :locals => { :report => @show.glance }
+  = # render :partial => "glance", :locals => { :report => @show.glance }
   = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
   %ul.kv
     %li

@@ -4,4 +4,4 @@
     - default_chart_id_as_s = show.chart_id.nil? ? nil : show.chart_id.to_s
     = f.select :chart_id, options_from_collection_for_select(event.charts, "id", "name", default_chart_id_as_s)
   %td
-    = f.submit(:class => [ :mini, :full ])
+    = f.submit "Create New", :class => [ :mini, :full ]

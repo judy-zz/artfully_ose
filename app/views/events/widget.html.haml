@@ -12,7 +12,7 @@
     %li= button_to "Store Front", store_event_path(@event), :method => :get
     %li= button_to "New Show", new_event_show_path(@event), :method => :get
 
-  = render :partial => "glance", :locals => { :report => @event.glance }
+  = # render :partial => "glance", :locals => { :report => @event.glance }
 
 .document
   #introduction

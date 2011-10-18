@@ -11,10 +11,10 @@
     %li= button_to "Edit Event", edit_event_path(@event), :method => :get
     %li= button_to "Store Front", store_event_path(@event), :method => :get
 
-  = render :partial => "glance", :locals => { :report => @event.glance }
+  = # render :partial => "glance", :locals => { :report => @event.glance }
 
 .document
-  %h3 Import seat chart
+  %h3 Import Seat Chart
   %p
     Before creating shows, you'll need to import seat charts to this event so Artfully knows how to generate tickets for your shows.
   - if @charts.empty?

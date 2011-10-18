@@ -34,9 +34,9 @@
               %tr
                 - if index == 0
                   - rowspan = order.items.select(&:ticket?).size
-                  %td{:rowspan => rowspan}= link_to l(order.created_at), order_path(order)
+                  %td{:rowspan => rowspan}= link_to l(order.timestamp), order_path(order)
                   %td{:rowspan => rowspan}= link_to "#{order.person.first_name} #{order.person.last_name}", person_path(order.person)
-                %td= "#{item.product.event}, #{l item.product.performance}"
+                %td= "#{item.product.event}, #{l item.product.show}"
                 %td= number_as_cents item.price
       = will_paginate(@search.results)
   - else

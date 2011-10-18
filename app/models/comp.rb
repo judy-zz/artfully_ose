@@ -2,11 +2,11 @@ class Comp
   include ActiveModel::Conversion
   extend ActiveModel::Naming
 
-  attr_accessor :performance, :tickets, :recipient, :reason
+  attr_accessor :show, :tickets, :recipient, :reason
   attr_accessor :comped_count, :uncomped_count
 
-  def initialize(performance, tickets, recipient)
-    self.performance = performance
+  def initialize(show, tickets, recipient)
+    self.show = show
     self.tickets = tickets
     self.recipient = recipient
   end
@@ -20,7 +20,7 @@ class Comp
   end
 
   def submit(benefactor)
-    comped_ids      = performance.bulk_comp_to(tickets, recipient)
+    comped_ids      = show.bulk_comp_to(tickets, recipient)
     comped_tickets  = comped_ids.collect{|id| Ticket.find(id)}
 
     create_order(comped_tickets, benefactor)
@@ -32,7 +32,7 @@ class Comp
   private
 
   def create_order(comped_tickets, benefactor)
-    order = Order.new.tap do |order|
+    order = AthenaCompOrder.new.tap do |order|
       order << comped_tickets
       order.person = recipient
       order.organization = benefactor.current_organization

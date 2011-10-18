@@ -1,9 +1,9 @@
 class CompsController < ApplicationController
   def new
-    @performance = Show.find(params[:show_id])
+    @show = Show.find(params[:show_id])
     @selected_tickets = params[:selected_tickets]
 
-    @comp = Comp.new(@performance, @selected_tickets, recipient)
+    @comp = Comp.new(@show, @selected_tickets, recipient)
     @recipients = recipients || []
     if @comp.has_recipient?
       render :new
@@ -14,10 +14,10 @@ class CompsController < ApplicationController
   end
 
   def create
-    @performance = Show.find(params[:show_id])
+    @show = Show.find(params[:show_id])
     @selected_tickets = params[:selected_tickets]
 
-    @comp = Comp.new(@performance, @selected_tickets, recipient)
+    @comp = Comp.new(@show, @selected_tickets, recipient)
     @comp.reason = params[:reason_for_comp]
 
     with_confirmation_comp do
@@ -28,7 +28,7 @@ class CompsController < ApplicationController
         flash[:notice] = "Comped #{to_plural(@comp.comped_count, 'ticket')}."
       end
 
-      redirect_to event_show_url(@performance.event, @performance)
+      redirect_to event_show_url(@show.event, @show)
     end
   end
 

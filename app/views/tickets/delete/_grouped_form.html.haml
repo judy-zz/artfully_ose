@@ -1,9 +1,9 @@
 #deletes.grouped-form
   %h3 Delete
-  = form_tag delete_show_tickets_path(performance), :method => :delete do
-    = hidden_field_tag :show_id, performance.id
+  = form_tag delete_show_tickets_path(show), :method => :delete do
+    = hidden_field_tag :show_id, show.id
     %ul
-      - performance.destroyable_tickets.each do |ticket|
+      - show.destroyable_tickets.each do |ticket|
         %li
           .label-and-element
             = check_box_tag "selected_tickets[]", ticket.id, false, :id => "delete_ticket_#{ticket.id}", :class => "item_#{ticket.id}"

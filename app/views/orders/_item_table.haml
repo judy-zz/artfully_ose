@@ -17,7 +17,7 @@
                   (
                   = link_to "#{item.product.event}", event_path(item.product.event_id)
                   ,
-                  = link_to "#{l item.product.performance}", event_show_path(item.product.event_id, item.product.show_id)
+                  = link_to "#{l item.product.show}", event_show_path(item.product.event_id, item.product.show_id)
                   )
               - if item.product_type.eql?("Donation")
                 %span Donation

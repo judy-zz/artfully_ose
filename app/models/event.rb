@@ -15,14 +15,14 @@ class Event < ActiveRecord::Base
     charts.reject { |chart| already_has_chart(chart) }
   end
 
-  def upcoming_performances(limit = 5)
+  def upcoming_shows(limit = 5)
     Time.zone = time_zone
     upcoming = shows.select { |show| show.datetime > DateTime.now.beginning_of_day }
     return upcoming if limit == :all
     upcoming.take(limit)
   end
 
-  def played_performances(limit = 5)
+  def played_shows(limit = 5)
     Time.zone = time_zone
     played = shows.select { |show| show.datetime < DateTime.now.beginning_of_day }
     return played if limit == :all
@@ -34,7 +34,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_performances(:all).each{|perf| perf.add_performance_time_string }.select(&:published?))
+    as_json(options).merge('shows' => upcoming_shows(:all).each{|perf| perf.add_show_time_string }.select(&:published?))
   end
 
   def as_full_calendar_json
@@ -49,7 +49,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super({ :methods => [ 'performances', 'charts' ]}.merge(options))
+    super({ :methods => [ 'shows', 'charts' ]}.merge(options))
   end
 
   def glance

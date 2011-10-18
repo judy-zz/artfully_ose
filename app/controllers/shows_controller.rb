@@ -1,7 +1,7 @@
 class ShowsController < ApplicationController
   before_filter :find_event, :only => [ :index, :show, :new, :edit ]
   before_filter :check_for_charts, :only => [ :index, :new ]
-  before_filter :upcoming_performances, :only => [ :index, :show ]
+  before_filter :upcoming_shows, :only => [ :index, :show ]
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
@@ -18,8 +18,8 @@ class ShowsController < ApplicationController
     @show = Show.find(params[:id])
     authorize! :duplicate, @show
 
-    @new_performance = @show.dup!
-    @new_performance.save
+    @new_show = @show.dup!
+    @new_show.save
     redirect_to event_path(@show.event)
   end
 
@@ -56,14 +56,7 @@ class ShowsController < ApplicationController
   def update
     @show = Show.find(params[:id])
     authorize! :edit, @show
-
-    without_tickets do
-      if @show.update_attributes(params[:athena_performance])
-        redirect_to event_path(@show.event)
-      else
-        render :edit
-      end
-    end
+    redirect_to @show.event
   end
 
   def destroy
@@ -88,11 +81,11 @@ class ShowsController < ApplicationController
     if @show.tickets.empty?
       respond_to do |format|
         format.html do
-          flash[:error] = 'Please create tickets for this performance before putting it on sale'
+          flash[:error] = 'Please create tickets for this show before putting it on sale'
           redirect_to event_show_url(@show.event, @show)
         end
 
-        format.json { render :json => { :errors => ['Please create tickets for this performance before putting it on sale'] } }
+        format.json { render :json => { :errors => ['Please create tickets for this show before putting it on sale'] } }
       end
 
       return
@@ -101,7 +94,7 @@ class ShowsController < ApplicationController
     with_confirmation do
       @show.publish!
       respond_to do |format|
-        format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your performance is now published.' }
+        format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your show is now published.' }
         format.json { render :json => @show.as_json.merge('glance' => @show.glance.as_json) }
       end
     end
@@ -114,7 +107,7 @@ class ShowsController < ApplicationController
     with_confirmation do
       @show.unpublish!
       respond_to do |format|
-        format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your performance is now unpublished.' }
+        format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your show is now unpublished.' }
         format.json { render :json => @show.as_json.merge('glance' => @show.glance.as_json) }
       end
     end
@@ -172,8 +165,8 @@ class ShowsController < ApplicationController
       @event = Event.find(params[:event_id])
     end
 
-    def upcoming_performances
-      @upcoming = @event.upcoming_performances
+    def upcoming_shows
+      @upcoming = @event.upcoming_shows
     end
 
     def with_confirmation
@@ -187,18 +180,9 @@ class ShowsController < ApplicationController
       end
     end
 
-    def without_tickets
-      if @show.tickets_created?
-        flash[:alert] = 'Tickets have already been created for this performance'
-        redirect_to event_url(@show.event) and return
-      else
-        yield
-      end
-    end
-
     def check_for_charts
       if @event.charts.empty?
-         flash[:error] = "Please import a chart to this event before working with performances."
+         flash[:error] = "Please import a chart to this event before working with shows."
          redirect_to event_path(@event)
       end
     end

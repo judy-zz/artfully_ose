@@ -10,7 +10,7 @@
   .hidden-target
     %span.name
     = form_tag new_comp_path, :method => :get do
-      = hidden_field_tag :show_id, @performance.id
+      = hidden_field_tag :show_id, @show.id
       = hidden_field_tag :person_id, nil, :id => "person_id"
       - @selected_tickets.each do |st|
         = hidden_field_tag("selected_tickets[]", st)
@@ -23,7 +23,7 @@
       %li
         %span.name= "#{recipient.first_name} #{recipient.last_name} (#{recipient.email})"
         = form_tag new_comp_path, :method => :get do
-          = hidden_field_tag :show_id, @performance.id
+          = hidden_field_tag :show_id, @show.id
           = hidden_field_tag :person_id, recipient.id
           - @selected_tickets.each do |st|
             = hidden_field_tag("selected_tickets[]", st)
@@ -31,7 +31,7 @@
 
 
   = form_tag new_comp_path, :method => :get do
-    = hidden_field_tag :show_id, @performance.id
+    = hidden_field_tag :show_id, @show.id
     - @selected_tickets.each do |st|
       = hidden_field_tag "selected_tickets[]", st
     %ul

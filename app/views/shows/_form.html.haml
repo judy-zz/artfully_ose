@@ -1,4 +1,4 @@
-= form_for show, :url => event_shows_path(@event, @show) do |form|
+= form_for [@event, show] do |form|
   %h3= @event.name
   %ul
     %li

@@ -48,8 +48,8 @@ class Show < ActiveRecord::Base
     instantiate_collection(query("datetime=#{start}&datetime=#{stop}"))
   end
 
-  def self.next_datetime(performance)
-    performance.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(performance.datetime + 1.day)
+  def self.next_datetime(show)
+    show.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(show.datetime + 1.day)
   end
 
   def set_attributes(attrs)
@@ -76,12 +76,12 @@ class Show < ActiveRecord::Base
     copy
   end
 
-  def add_performance_time_string
-    attributes['performance_time'] = I18n.l( attributes['datetime'].in_time_zone(time_zone), :format => :long_with_day)
+  def add_show_time_string
+    attributes['show_time'] = I18n.l( attributes['datetime'].in_time_zone(time_zone), :format => :long_with_day)
   end
 
   def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :performanceId => self.id, :organizationId => self.organization_id })
+    @glance ||= AthenaGlanceReport.find(nil, :params => { :showId => self.id, :organizationId => self.organization_id })
   end
 
   #return accepted id's

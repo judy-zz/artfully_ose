@@ -1,9 +1,38 @@
 require_or_load 'ach/exceptions'
 
-class Settlement < ActiveRecord::Base
-  belongs_to :organization
-  belongs_to :performance
-  has_many :items
+class Settlement < AthenaResource::Base
+  self.site = Artfully::Application.config.orders_component
+  self.element_name = 'settlements'
+  self.collection_name = 'settlements'
+
+  schema do
+    attribute :id,                :string
+    attribute :transaction_id,    :string
+    attribute :ach_response_code, :string
+    attribute :fail_message,      :string
+    attribute :success,           :string
+    attribute :organization_id,   :string
+    attribute :show_id,    :string
+    attribute :created_at,        :string
+
+    attribute :gross,             :integer
+    attribute :realized_gross,    :integer
+    attribute :net,               :integer
+    attribute :items_count,       :integer
+  end
+
+  def initialize(*)
+    super
+    self.created_at ||= Time.now
+  end
+
+  def items
+    @items ||= find_items
+  end
+
+  def items=(items)
+    @items = items
+  end
 
   def self.submit(organization_id, items, bank_account, show_id=nil)
     items = Array.wrap(items)
@@ -36,14 +65,14 @@ class Settlement < ActiveRecord::Base
 
     for_items(items) do |settlement|
       settlement.ach_response_code = ach_response_code
-      settlement.transaction_id = transaction_id
-      settlement.organization_id = organization_id
-      settlement.show_id = show_id
-      settlement.fail_message = fail_message
-      settlement.success = success
+      settlement.transaction_id    = transaction_id
+      settlement.organization_id   = organization_id
+      settlement.show_id    = show_id
+      settlement.fail_message      = fail_message
+      settlement.success           = success
       settlement.save!
       if settlement.success?
-        Item.settle(items, settlement)
+        AthenaItem.settle(items, settlement)
       end
 
       settlement
@@ -60,6 +89,10 @@ class Settlement < ActiveRecord::Base
 
       yield(settlement) if block_given?
     end
+  end
+
+  def success?
+    ActiveRecord::ConnectionAdapters::Column::TRUE_VALUES.include? success
   end
 
   def self.range_for(now)
@@ -108,8 +141,12 @@ class Settlement < ActiveRecord::Base
     end
   end
 
+  def find_items
+    return [] if new_record?
+    items ||= AthenaItem.find_by_settlement_id(self.id)
+  end
+
   def self.send_request(items, bank_account, memo)
-    ap items.collect(&:net)
     request = ACH::Request.for(items.sum{ |i| i.net.to_i }, bank_account, memo)
     request.submit
   end

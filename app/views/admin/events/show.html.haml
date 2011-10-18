@@ -4,5 +4,5 @@
 
 .spread
   %ul
-    - @event.performances.each do |performance|
-      %li= link_to l(performance.datetime), admin_organization_event_show_path(@event.organization_id, @event, performance)
+    - @event.shows.each do |show|
+      %li= link_to l(show.datetime), admin_organization_event_show_path(@event.organization_id, @event, show)

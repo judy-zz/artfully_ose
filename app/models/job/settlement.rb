@@ -8,7 +8,7 @@ class Job::Settlement < Job::Base
 
     def settle_shows_in(range)
       logger.info "Settling shows..."
-      Show.in_range(range[0], range[1]).each do |show|
+      Show.in_range(range[0], range[1]).reject(&:free?).each do |show|
         logger.info "Settling #{show.event.name}, #{show.datetime}"
 
         logger.error "#{show.organization.name} does not have a bank account." if show.organization.bank_account.nil?

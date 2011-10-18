@@ -1,7 +1,7 @@
-= render :partial => 'tickets/on_sale/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
-= render :partial => 'tickets/off_sale/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
-= render :partial => 'tickets/delete/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
-= render :partial => 'comps/grouped_form', :locals => { :performance => @performance, :tickets => @tickets }
+= render :partial => 'tickets/on_sale/grouped_form', :locals => { :show => @show, :tickets => @tickets }
+= render :partial => 'tickets/off_sale/grouped_form', :locals => { :show => @show, :tickets => @tickets }
+= render :partial => 'tickets/delete/grouped_form', :locals => { :show => @show, :tickets => @tickets }
+= render :partial => 'comps/grouped_form', :locals => { :show => @show, :tickets => @tickets }
 
 #tickets.grouped-form-target
   = form_tag do

@@ -5,7 +5,7 @@ class StatementsController < ApplicationController
     if params[:event_id].present?
       @event = Event.find(params[:event_id])
       authorize! :view, @event
-      @played = @event.played_performances(:all)
+      @played = @event.played_shows(:all)
       @statement = nil
       render :show and return
     else
@@ -15,12 +15,12 @@ class StatementsController < ApplicationController
   end
 
   def show
-    @performance = Show.find(params[:id])
-    authorize! :view, @performance
-    @event = @performance.event
-    @played = @event.played_performances
-    @statement = AthenaStatement.for_performance(params[:id], current_user.current_organization)
-
+    @show = Show.find(params[:id])
+    authorize! :view, @show
+    @event = @show.event
+    @played = @event.played_shows
+    @statement = AthenaStatement.for_show(params[:id], current_user.current_organization)
+    @statement.sales.shows[0].datetime = @show.datetime
     if @event.free?
       @statement.expenses.expenses.first.rate = "$0.00"
       @statement.expenses.expenses.first.expense = 0
@@ -31,7 +31,7 @@ class StatementsController < ApplicationController
 
       @statement.expenses.total.expense = 0
 
-      @statement.sales.performances.each {|performance| performance.net_revenue = 0 }
+      @statement.sales.shows.each {|show| show.net_revenue = 0 }
     end
 
   end

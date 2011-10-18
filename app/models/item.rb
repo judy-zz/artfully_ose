@@ -1,6 +1,6 @@
 class Item < ActiveRecord::Base
   belongs_to :order
-  belongs_to :performance
+  belongs_to :show
 
   validates_presence_of :order_id, :product_type, :price, :realized_price, :net
   validates_inclusion_of :product_type, :in => %( Ticket Donation )
@@ -28,7 +28,7 @@ class Item < ActiveRecord::Base
   def product=(product)
     set_product_details_from product
     set_prices_from product
-    set_performance_from product if product.respond_to? :show_id
+    set_show_from product if product.respond_to? :show_id
     self.state = "purchased"
     @product = product
   end
@@ -151,7 +151,7 @@ class Item < ActiveRecord::Base
       self.net            = (self.realized_price - (self.realized_price * 0.035)).floor
     end
 
-    def set_performance_from(prod)
+    def set_show_from(prod)
       self.show_id = prod.show_id
     end
 

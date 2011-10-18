@@ -156,14 +156,14 @@ class Ticket < ActiveRecord::Base
   def self.put_on_sale(tickets)
     return false if tickets.blank?
     attempt_transition(tickets, :on_sale) do
-      # patch(tickets, { :state => :on_sale })
+      Ticket.update_all({ :state => :on_sale }, { :id => tickets.collect(&:id)})
     end
   end
 
   def self.take_off_sale(tickets)
     return false if tickets.blank?
     attempt_transition(tickets, :off_sale) do
-      # patch(tickets, { :state => :off_sale })
+      Ticket.update_all({ :state => :off_sale }, { :id => tickets.collect(&:id)})
     end
   end
 

@@ -1,2 +1,2 @@
 %span.price= number_as_cents purchasable_ticket.price
-%span.item= "#{purchasable_ticket.ticket.event} at #{l purchasable_ticket.ticket.performance.in_time_zone(Event.find(purchasable_ticket.ticket.event_id).time_zone), :format => :short}"
+%span.item= "#{purchasable_ticket.ticket.event} at #{l purchasable_ticket.ticket.show.in_time_zone(Event.find(purchasable_ticket.ticket.event_id).time_zone), :format => :short}"

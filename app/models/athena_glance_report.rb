@@ -4,6 +4,6 @@ class AthenaGlanceReport < AthenaResource::Base
   self.collection_name = "glance"
 
   schema do
-    attribute 'performances_on_sale', :integer
+    attribute 'shows_on_sale', :integer
   end
 end

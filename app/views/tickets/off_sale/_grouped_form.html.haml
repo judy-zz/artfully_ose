@@ -1,9 +1,9 @@
 #off-sale.grouped-form
   %h3 Take off Sale
-  = form_tag off_sale_show_tickets_path(performance), :method => :put do
-    = hidden_field_tag :show_id, performance.id
+  = form_tag off_sale_show_tickets_path(show), :method => :put do
+    = hidden_field_tag :show_id, show.id
     %ul
-      - performance.off_saleable_tickets.each do |ticket|
+      - show.off_saleable_tickets.each do |ticket|
         %li
           .label-and-element
             = check_box_tag "selected_tickets[]", ticket.id, false, :id => "off_sale_ticket_#{ticket.id}", :class => "item_#{ticket.id}"

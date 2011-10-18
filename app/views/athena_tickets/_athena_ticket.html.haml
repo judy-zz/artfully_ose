@@ -1,6 +1,6 @@
 .athena-ticket
   .event= athena_ticket.event
   .venue= athena_ticket.venue
-  .performance= l athena_ticket.performance, :format => :short)
+  .show= l athena_ticket.show, :format => :short)
   .section-name= athena_ticket.section
   .price= number_as_cents athena_ticket.price

@@ -7,12 +7,12 @@
   %p
     = "Are you sure you want to comp #{pluralize(@selected_tickets.size, 'ticket')}"
     = " to \"#{@comp.recipient.first_name} #{@comp.recipient.last_name}\""
-    = " for the #{l @performance.datetime, :format=> :date_at_time} performance"
-    = " of #{@performance.event.name}?"
+    = " for the #{l @show.datetime, :format=> :date_at_time} show"
+    = " of #{@show.event.name}?"
   %p= "Reason for comp is: #{@comp.reason}"
   = form_for @comp do |form|
     = hidden_field_tag :confirmed, :true
-    = hidden_field_tag :show_id, @performance.id
+    = hidden_field_tag :show_id, @show.id
     - @selected_tickets.each do |st|
       =hidden_field_tag "selected_tickets[]", st
     = hidden_field_tag :person_id, @comp.recipient.id
@@ -20,4 +20,4 @@
     %p If this is correct, please click confirm it by clicking
     = submit_tag "Confirm"
 
-  %p= link_to "Cancel Ticket Comp", event_show_path(@performance.event, @performance)
+  %p= link_to "Cancel Ticket Comp", event_show_path(@show.event, @show)
