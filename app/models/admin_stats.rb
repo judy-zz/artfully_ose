@@ -38,9 +38,6 @@ class AdminStats < ActiveRecord::Base
 
   def self.ticket_stats
     {
-      #This doesn't work for a large # of tickets.  Stack overflow.  
-      #:tickets      => Ticket.find_by_event_id("gt0").count,
-      
       :tickets      => 0,
       :tickets_sold => Ticket.find_by_state("sold").count
     }

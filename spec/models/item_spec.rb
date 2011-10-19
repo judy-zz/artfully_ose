@@ -81,12 +81,12 @@ describe Item do
         subject.state.should eq "purchased"
       end
 
-      it "sets the realized price to the price of the ticket less $2 dollars (200)" do
-        subject.realized_price.should eq(ticket.price - 200)
+      it "sets the realized price to the price of the ticket" do
+        subject.realized_price.should eq(ticket.price - ticket.class.fee)
       end
 
       it "sets the net to 3.5% of the realized price" do
-        realized = (ticket.price - 200)
+        realized = (ticket.price - ticket.class.fee)
         net = (realized - (0.035 * realized)).floor
         subject.net.should eq net
       end

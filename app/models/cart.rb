@@ -3,6 +3,9 @@ class Cart < ActiveRecord::Base
 
   has_many :donations, :dependent => :destroy
   has_many :tickets
+  
+  attr_accessor :fee_in_cents
+  after_initialize :update_ticket_fee
 
   state_machine do
     state :started
@@ -17,6 +20,10 @@ class Cart < ActiveRecord::Base
   def items
     self.tickets + self.donations
   end
+  
+  def update_ticket_fee
+    @fee_in_cents = self.tickets.reject{|t| t.price == 0}.size * 200
+  end
 
   def clear_donations
     temp = []
@@ -27,9 +34,14 @@ class Cart < ActiveRecord::Base
     end
     temp
   end
+  
+  def <<(tkts)
+    tickets << tkts
+    update_ticket_fee
+  end
 
   def total
-    items.sum(&:price)
+    items.sum(&:price) + @fee_in_cents
   end
 
   def unfinished?
@@ -77,10 +89,9 @@ class Cart < ActiveRecord::Base
   end
 
   private
-
-  def pay_with_authorization(payment, options)
-    options[:settle] = true if options[:settle].nil?
-    payment.authorize! ? approve! : reject!
-    payment.settle! if options[:settle] and approved?
-  end
+    def pay_with_authorization(payment, options)
+      options[:settle] = true if options[:settle].nil?
+      payment.authorize! ? approve! : reject!
+      payment.settle! if options[:settle] and approved?
+    end
 end

@@ -99,15 +99,15 @@ class Checkout
     end
 
     def new_order(organization, order_timestamp, person)
-      Order.new.tap do |athena_order|
-        athena_order.organization    = organization
-        athena_order.created_at       = order_timestamp
-        athena_order.person          = @person
-        athena_order.transaction_id  = @payment.transaction_id
+      Order.new.tap do |o|
+        o.organization    = organization
+        o.created_at      = order_timestamp
+        o.person          = @person
+        o.transaction_id  = @payment.transaction_id
+        o.service_fee     = @order.fee_in_cents
 
-        #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
-        athena_order << @order.tickets.select { |ticket| Event.find(ticket.event_id).organization_id == organization.id.to_s }        
-        athena_order << @order.donations
+        o << @order.tickets.select { |ticket| Event.find(ticket.event_id).organization_id == organization.id.to_s }        
+        o << @order.donations
       end
     end
 end

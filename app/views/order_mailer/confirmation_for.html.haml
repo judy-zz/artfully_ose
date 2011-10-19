@@ -3,6 +3,7 @@
 %h5= "Order number: #{@order.id}"
 %h5= "Purchase Date: #{l(@order.created_at)}"
 %h5= "Order total: $#{format("%.2f", (@order.total/100.0))}"
+%h5= "Service fee: $#{format("%.2f", (@order.service_fee.to_i/100.0))}"
 
 - unless @order.tickets.empty?
   %h4 Tickets

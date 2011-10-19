@@ -20,6 +20,7 @@ Artfully::Application.routes.draw do
     end
 
     resources :settlements, :only => [ :index, :new, :create ]
+    resources :orders, :only => [ :index ]
     resources :organizations do
 
       resources :events, :only => :show do
