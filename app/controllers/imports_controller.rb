@@ -1,5 +1,9 @@
 class ImportsController < ApplicationController
 
+  def index
+    @imports = current_user.imports.all
+  end
+
   def approve
     @import = current_user.imports.find(params[:id])
     @import.approve!

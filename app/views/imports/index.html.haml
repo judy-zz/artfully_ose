@@ -1,0 +1,20 @@
+- in_section :imports
+
+- content_for :header do
+  %h1= t(".heading", :default => "Imports / Exports")
+
+.compact-spread
+
+  %h3 Imports
+  %ul.detailed-list
+    - @imports.each do |import|
+      %li
+        %h4= link_to File.basename(import.s3_key), import_path(import)
+        %ul.details-long
+          %li= describe_import_status import
+  %p
+    %h4= link_to "Upload a new file to import", new_import_path
+
+  %br
+
+  %h3 Exports
