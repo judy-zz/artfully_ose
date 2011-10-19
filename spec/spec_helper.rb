@@ -20,4 +20,11 @@ RSpec.configure do |config|
   config.before(:each) { FakeWeb.last_request = nil }
   config.before(:all) { FakeWeb.allow_net_connect = false }
 
+  # Set some dummy S3 values.
+  config.before(:all) do
+    ENV["S3_BUCKET"] = "rspec"
+    ENV["ACCESS_KEY_ID"] = "ABC1234567890DEFGHJK"
+    ENV["SECRET_ACCESS_KEY"] = "abcdef12345+abcdef1234512345123451234512"
+  end
+
 end
