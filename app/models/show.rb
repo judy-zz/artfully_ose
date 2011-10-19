@@ -90,20 +90,20 @@ class Show < ActiveRecord::Base
   end
 
   def bulk_on_sale(ids)
-    targets = (ids == :all) ? tickets : tickets.select { |t| ids.include? t.id }
+    targets = (ids == :all) ? tickets : tickets.where(:id => ids)
     Ticket.put_on_sale(targets)
   end
 
   def bulk_off_sale(ids)
-    Ticket.take_off_sale(tickets.select { |ticket| ids.include? ticket.id })
+    Ticket.take_off_sale(tickets.where(:id => ids))
   end
 
   def bulk_delete(ids)
-    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.destroy }.compact
+    tickets.where(:id => ids).collect{ |ticket| ticket.id if ticket.destroy }.compact
   end
 
   def bulk_change_price(ids, price)
-    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.change_price(price) }.compact
+    tickets.where(:id => ids).collect{ |ticket| ticket.id if ticket.change_price(price) }.compact
   end
 
   def settleables
