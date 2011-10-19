@@ -1,7 +1,7 @@
 Factory.define :section do |s|
   s.name "General"
-  s.capacity 1
-  s.price 0
+  s.capacity 5
+  s.price 1000
 end
 
 Factory.define :free_section, :class => Section do |section|

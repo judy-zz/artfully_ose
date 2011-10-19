@@ -1,48 +1,48 @@
 class Checkout
-  attr_accessor :order, :payment
-  attr_reader :athena_order
+  attr_accessor :cart, :payment
+  attr_reader :order
 
-  def initialize(order, payment)
-    @order = order
+  def initialize(cart, payment)
+    @cart = cart
     @payment = payment
     @customer = payment.customer
 
-    @payment.amount = @order.total
+    @payment.amount = @cart.total
   end
 
   def valid?
-    if order.nil?
-      return !!order
+    if cart.nil?
+      return !!cart
     else
-      return (!!order and !!payment and payment.valid?)
+      return (!!cart and !!payment and payment.valid?)
     end
   end
 
   def finish
-    @person = find_or_create_people_record    
+    @person = find_or_create_people_record
     prepare_fafs_donations
-    order.pay_with(@payment)
+    cart.pay_with(@payment)
     process_fafs_donations
 
-    if order.approved?
+    if cart.approved?
       order_timestamp = Time.now
       create_order(order_timestamp)
-      order.finish(@person, order_timestamp)
+      cart.finish(@person, order_timestamp)
     end
 
-    order.approved?
+    cart.approved?
   end
 
   #This is done in two steps so that we can process the tickets, ensure that the CC is valid etc...
   #Then process with FA
   def prepare_fafs_donations
-    organization = order.organizations.first
+    organization = cart.organizations.first
     return if organization.nil?
 
     ::Rails.logger.info "Processing FAFS donations"
     if !organization.nil? && organization.has_active_fiscally_sponsored_project?
       ::Rails.logger.info "Organization #{organization.id} has an active FSP"
-      @fafs_donations = order.clear_donations
+      @fafs_donations = cart.clear_donations
       donation_total = @fafs_donations.inject(0) { |sum, donation| sum += donation.amount }
       ::Rails.logger.info "Payment amount is #{@payment.amount}"
       @payment.reduce_amount_by(donation_total)
@@ -71,7 +71,7 @@ class Checkout
   private
 
     def find_or_create_people_record
-      organization = order.organizations.first
+      organization = cart.organizations.first
       person = Person.find_by_email_and_organization(@customer.email, organization)
 
       if person.nil?
@@ -79,7 +79,7 @@ class Checkout
           :first_name      => @customer.first_name,
           :last_name       => @customer.last_name,
           :email           => @customer.email,
-          :organization_id => organization.id # DEBT: This doesn't account for multiple organizations per order
+          :organization_id => organization.id # DEBT: This doesn't account for multiple organizations per cart
         }
         person = Person.create(params)
         address = Address.from_payment(payment)
@@ -90,24 +90,25 @@ class Checkout
     end
 
     def create_order(order_timestamp)
-      @order.organizations.each do |organization|
-        @athena_order = new_order(organization, order_timestamp, @person)
-        @athena_order.save!
-        OrderMailer.confirmation_for(athena_order).deliver unless @person.dummy?
-        @athena_order
+      cart.organizations.each do |organization|
+        @order = new_order(organization, order_timestamp, @person)
+        @order.save!
+        OrderMailer.confirmation_for(order).deliver unless @person.dummy?
+        @order
       end
     end
 
     def new_order(organization, order_timestamp, person)
-      Order.new.tap do |o|
-        o.organization    = organization
-        o.created_at      = order_timestamp
-        o.person          = @person
-        o.transaction_id  = @payment.transaction_id
-        o.service_fee     = @order.fee_in_cents
+      Order.new.tap do |order|
+        order.organization    = organization
+        order.created_at      = order_timestamp
+        order.person          = @person
+        order.transaction_id  = @payment.transaction_id
+        order.service_fee     = @cart.fee_in_cents
 
-        o << @order.tickets.select { |ticket| Event.find(ticket.event_id).organization_id == organization.id.to_s }        
-        o << @order.donations
+
+        order << @cart.tickets.select { |ticket| ticket.organization_id == organization.id }
+        order << @cart.donations
       end
     end
 end

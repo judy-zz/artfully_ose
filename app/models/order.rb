@@ -43,7 +43,7 @@ class Order < ActiveRecord::Base
   end
 
   def <<(products)
-    self.items += Array.wrap(products).collect { |product| Item.for(product) }
+    self.items << Array.wrap(products).collect { |product|  Item.for(product) }
   end
 
   def payment

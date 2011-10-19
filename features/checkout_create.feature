@@ -5,9 +5,10 @@ Feature: Order Checkout
   Background:
     Given I can authorize Credit Cards in ATHENA
     And I can settle Credit Cards in ATHENA
+    And there is an event called "Test Event" with 3 shows with tickets
 
   Scenario: A user checks out with tickets
-    Given I have added 2 tickets to my order
+    Given I have added 2 tickets to my order for "Test Event"
     And I am on the store order page
     And I follow "Checkout Now"
     When I check "athena_payment_user_agreement"
@@ -27,7 +28,7 @@ Feature: Order Checkout
     And an email confirmation for the order should have been sent
 
   Scenario: A user attempts to check out without agreeing to the user agreement
-    Given I have added 2 tickets to my order
+    Given I have added 2 tickets to my order for "Test Event"
     And I am on the store order page
     And I follow "Checkout Now"
     And I enter my payment details

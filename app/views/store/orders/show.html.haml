@@ -7,12 +7,12 @@
   #clear-cart= link_to "Clear My Cart", store_order_path(current_cart), :method => :delete, :confirm => 'Are you sure you want to empty your cart?' unless current_cart.empty?
 
 %ul.item-list
-  - current_cart.purchasable_tickets.each do |ticket|
-    %li.ticket= render ticket  
-  - if current_cart.fee_in_cents > 0
-    %li.ticket
-      %span.price= number_as_cents current_cart.fee_in_cents
-      %span.item.fee= "Service fee"
+  - current_cart.tickets.each do |ticket|
+    %li.ticket= render ticket
+    - if current_cart.fee_in_cents > 0
+      %li.ticket
+        %span.price= number_as_cents current_cart.fee_in_cents
+        %span.item.fee= "Service fee"
   - current_cart.donations.each do |donation|
     %li.donation= render donation
 

@@ -24,17 +24,16 @@ Given /^I enter my payment details$/ do
   click_button("Purchase")
 end
 
-Given /^I have added (\d+) tickets to my order$/ do |a_few|
-  producer = Factory(:user)
-  producer.organizations << Factory(:organization_with_donations)
-  event = Factory(:event, :organization_id => producer.current_organization.id )
-  tickets = a_few.to_i.times.collect { Factory(:ticket, :event_id => event.id) }
+Given /^I have added (\d+) tickets to my order for "([^"]*)"$/ do |quantity, name|
+  event = Event.find_by_name(name)
+  tickets = event.shows.first.tickets.take(quantity.to_i)
+  body = tickets.collect { |ticket| "tickets[]=#{ticket.id}" }.join("&")
   page.driver.post "/store/order", body
 end
 
-Given /^I have added (\d+) donations to my order$/ do |a_few|
+Given /^I have added (\d+) donations to my order$/ do |quantity|
   organization = Factory(:organization)
-  donations = a_few.to_i.times.collect { Factory.build(:donation, :organization => organization) }
+  donations = quantity.to_i.times.collect { Factory.build(:donation, :organization => organization) }
   donations.each do |donation|
     page.driver.post "/store/order", "donation[amount]=#{donation.amount}&donation[organization_id]=#{organization.id}"
   end

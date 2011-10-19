@@ -10,7 +10,7 @@ class Show < ActiveRecord::Base
   validates_datetime :datetime, :after => lambda { Time.now }
 
   include Ticket::Foundry
-  foundry :using => :chart, :with => lambda { {:show_id => id} }
+  foundry :using => :chart, :with => lambda {{:show_id => id, :organization_id => organization_id}}
 
   include ActiveRecord::Transitions
   state_machine do

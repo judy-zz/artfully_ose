@@ -10,6 +10,10 @@ Factory.define :chart_with_sections, :parent => :chart do |c|
   end
 end
 
+Factory.define(:assigned_chart, :parent => :chart_with_sections) do |c|
+  c.association :event
+end
+
 Factory.define :chart_template, :parent => :chart do |c|
   c.is_template true
 end
