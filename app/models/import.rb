@@ -23,34 +23,19 @@ class Import < ActiveRecord::Base
   serialize :import_headers
 
   def headers
-    cache_data!
     self.import_headers
   end
 
   def rows
-    cache_data!
-    self.import_rows
+    self.import_rows.map(&:content)
   end
 
   def perform
-    self.importing!
-    self.destroy_people!
-    self.import_errors.delete_all
-    self.import_rows.delete_all
-
-    rows.each do |row|
-      row = row.kind_of?(ImportRow) ? row.content : row
-      ip = ImportPerson.new(headers, row)
-      person = attach_person(ip)
-      if person.save
-        address = attach_address(person, ip)
-        address.save
-      else
-        self.import_errors.create! :row_data => row, :error_message => person.errors.full_messages.join(", ")
-      end
+    if status == "caching"
+      self.cache_data
+    elsif status == "approved"
+      self.import
     end
-
-    self.imported!
   end
 
   # Poll for people associated with this import in batches.
@@ -70,8 +55,18 @@ class Import < ActiveRecord::Base
     imported_people { |person| person.destroy }
   end
 
+  def caching!
+    self.update_attributes(:status => "caching")
+    Delayed::Job.enqueue self
+  end
+
+  def pending!
+    self.update_attributes(:status => "pending")
+  end
+
   def approve!
     self.update_attributes!(:status => "approved")
+    Delayed::Job.enqueue self
   end
 
   def importing!
@@ -82,11 +77,27 @@ class Import < ActiveRecord::Base
     self.update_attributes!(:status => "imported")
   end
 
-  protected
+  def import
+    self.importing!
 
-  def cache_data!(force = false)
-    return unless self.import_rows.blank? || force
+    self.destroy_people!
+    self.import_errors.delete_all
 
+    rows.each do |row|
+      ip = ImportPerson.new(headers, row)
+      person = attach_person(ip)
+      if person.save
+        address = attach_address(person, ip)
+        address.save
+      else
+        self.import_errors.create! :row_data => row, :error_message => person.errors.full_messages.join(", ")
+      end
+    end
+
+    self.imported!
+  end
+
+  def cache_data
     csv_data =
       if File.file?(self.s3_key)
         File.read(self.s3_key)
@@ -111,6 +122,8 @@ class Import < ActiveRecord::Base
         self.import_rows.create!(:content => row.to_a)
       end
     end
+
+    self.pending!
   end
 
   def s3_service
