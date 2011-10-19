@@ -6,7 +6,7 @@ class ImportPerson
 
     %w(
       email first last company
-      address1 address2 city state zip_code country
+      address1 address2 city state zip country
       phone1_type phone1_number phone2_type phone2_number phone3_type phone3_number
       website twitter_username facebook_page linkedin_page
       tags
@@ -19,6 +19,10 @@ class ImportPerson
 
     self.instance_variable_set("@#{field}", value)
     self.class.class_eval { attr_reader field }
+  end
+
+  def tags_list
+    @tags.to_s.strip.split(/[\s,|]+/)
   end
 
 end

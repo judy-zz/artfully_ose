@@ -6,7 +6,7 @@
 .compact-spread
   %h3 Please supply a file
   = render :partial => "shared/error_messages", :locals => { :target => @import }
-  = raw s3_http_upload_tag :key => "imports",
+  = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
       :content_type => "text/csv",
       :redirect => new_import_url,
       :acl => "public-read",

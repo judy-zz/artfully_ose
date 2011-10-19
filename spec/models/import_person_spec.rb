@@ -22,4 +22,16 @@ describe ImportPerson do
     end
   end
 
+  context "a person with tags" do
+    before do
+      @headers = [ "Tags" ]
+      @row = [ "one|two,three four" ]
+      @person = ImportPerson.new(@headers, @row)
+    end
+
+    it "should correctly split on spaces, bars or commas" do
+      @person.tags_list.should == %w( one two three four )
+    end
+  end
+
 end

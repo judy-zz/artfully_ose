@@ -11,6 +11,14 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
 
+    when /the import page/
+      @import.should_not be_nil
+      import_path @import
+
+    when /the approve import page/
+      @import.should_not be_nil
+      approve_import_path @import
+
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

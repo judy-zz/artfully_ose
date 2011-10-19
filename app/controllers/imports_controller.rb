@@ -33,6 +33,7 @@ class ImportsController < ApplicationController
 
   def create
     @import = Import.new(params[:import])
+    @import.user = current_user
 
     if @import.save
       redirect_to import_path(@import)

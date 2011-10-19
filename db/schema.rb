@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -10,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111007155926) do
+ActiveRecord::Schema.define(:version => 20111019143557) do
 
   create_table "admin_stats", :force => true do |t|
     t.integer  "users"
@@ -99,6 +100,19 @@ ActiveRecord::Schema.define(:version => 20111007155926) do
     t.datetime "updated_at"
   end
 
+  create_table "import_errors", :force => true do |t|
+    t.integer  "import_id"
+    t.text     "row_data"
+    t.text     "error_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "import_rows", :force => true do |t|
+    t.integer "import_id"
+    t.text    "content"
+  end
+
   create_table "imports", :force => true do |t|
     t.integer  "user_id"
     t.string   "s3_bucket"
@@ -106,6 +120,8 @@ ActiveRecord::Schema.define(:version => 20111007155926) do
     t.string   "s3_etag"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "status",         :default => "pending"
+    t.text     "import_headers"
   end
 
   create_table "kits", :force => true do |t|

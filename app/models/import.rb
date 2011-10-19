@@ -4,6 +4,8 @@ class Import < ActiveRecord::Base
   #   pending -> approved -> imported
 
   belongs_to :user
+  has_many :import_errors, :dependent => :delete_all
+  has_many :import_rows, :dependent => :delete_all
 
   validates_presence_of :user
   validates_associated :user
@@ -11,89 +13,103 @@ class Import < ActiveRecord::Base
   validates_presence_of :s3_key
   validates_presence_of :s3_etag
 
-  named_scope :pending, where(:status => "pending")
-  named_scope :approved, where(:status => "approved")
-  named_scope :importing, where(:status => "importing")
-  named_scope :imported, where(:status => "imported")
+  scope :pending, where(:status => "pending")
+  scope :approved, where(:status => "approved")
+  scope :importing, where(:status => "importing")
+  scope :imported, where(:status => "imported")
+
+  before_destroy :destroy_people!
+
+  serialize :import_headers
 
   def headers
     cache_data!
-    @headers ||= Marshal::load(File.read import_headers_tmp_filename)
+    self.import_headers
   end
 
   def rows
     cache_data!
-    @rows ||= Marshal::load(File.read import_rows_tmp_filename)
+    self.import_rows
   end
 
   def perform
     self.importing!
+    self.destroy_people!
+    self.import_errors.delete_all
+    self.import_rows.delete_all
 
     rows.each do |row|
+      row = row.kind_of?(ImportRow) ? row.content : row
       ip = ImportPerson.new(headers, row)
-      person = AthenaPerson.new \
-        :email           => ip.email,
-        :first_name      => ip.first,
-        :last_name       => ip.last,
-        :company_name    => ip.company,
-        :website         => ip.website,
-        :organization_id => user.current_organization.id,
-        :import_id       => self.id
-
-      if !person.save
-        p person.errors.full_messages
+      person = attach_person(ip)
+      if person.save
+        address = attach_address(person, ip)
+        address.save
       else
-        p person.id
+        self.import_errors.create! :row_data => row, :error_message => person.errors.full_messages.join(", ")
       end
     end
 
     self.imported!
   end
 
-  def destroy_people!
-    AthenaPerson.find_by_import(self).each do |person|
-      person.destroy
+  # Poll for people associated with this import in batches.
+  def imported_people
+    offset = 0
+    limit  = 500
+
+    loop do
+      query  = { :importId => self.id, :_start => offset, :_limit => limit }
+      people = AthenaPerson.find(:all, :params => query)
+      people.each { |person| yield person }
+      return if people.count < limit
     end
   end
 
+  def destroy_people!
+    imported_people { |person| person.destroy }
+  end
+
   def approve!
-    self.update_attributes!(:status => "approved") if self.status == "pending"
+    self.update_attributes!(:status => "approved")
   end
 
   def importing!
-    self.update_attributes!(:status => "importing") if self.status == "approved"
+    self.update_attributes!(:status => "importing")
   end
 
   def imported!
-    self.update_attributes!(:status => "imported") if self.status == "importing"
+    self.update_attributes!(:status => "imported")
   end
 
   protected
 
   def cache_data!(force = false)
-    FileUtils.mkdir_p(import_cache_path) unless File.directory?(import_cache_path)
-    return if !force && File.file?(import_headers_tmp_filename) && File.file?(import_rows_tmp_filename)
+    return unless self.import_rows.blank? || force
 
-    s3_bucket = s3_service.buckets.find(self.s3_bucket) if self.s3_bucket.present?
-    s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
-    csv_data = s3_object.content if s3_object
-
-    if csv_data.present?
-      @headers = nil
-      @rows = []
-
-      csv_data.gsub! /\\"(?!,)/, '""' # Fix improperly escaped quotes.
-
-      FasterCSV.parse(csv_data, :headers => false) do |row|
-        if headers.nil?
-          @headers = row.to_a
-        else
-          @rows << row.to_a
-        end
+    csv_data =
+      if File.file?(self.s3_key)
+        File.read(self.s3_key)
+      else
+        s3_bucket = s3_service.buckets.find(self.s3_bucket) if self.s3_bucket.present?
+        s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
+        s3_object.content if s3_object
       end
 
-      File.open(import_headers_tmp_filename, "w:ASCII-8BIT") { |f| f.write Marshal::dump(@headers) }
-      File.open(import_rows_tmp_filename, "w:ASCII-8BIT") { |f| f.write Marshal::dump(@rows) }
+    raise "cannot load csv data" unless csv_data.present?
+
+    self.import_headers = nil
+    self.import_rows.delete_all
+
+    csv_data.gsub!(/\\"(?!,)/, '""') # Fix improperly escaped quotes.
+
+    FasterCSV.parse(csv_data, :headers => false) do |row|
+      if self.import_headers.nil?
+        self.import_headers = row.to_a
+        self.save!
+      else
+        self.import_rows.create!(:content => row.to_a)
+      end
     end
   end
 
@@ -104,16 +120,39 @@ class Import < ActiveRecord::Base
     S3::Service.new(:access_key_id => access_key_id, :secret_access_key => secret_access_key)
   end
 
-  def import_cache_path
-    Rails.root.join("tmp", "imports", id.to_s)
+  def attach_person(import_person)
+    ip = import_person
+
+    person = AthenaPerson.new \
+      :email           => ip.email,
+      :first_name      => ip.first,
+      :last_name       => ip.last,
+      :company_name    => ip.company,
+      :website         => ip.website,
+      :twitterHandle   => ip.twitter_username,
+      :facebookUrl     => ip.facebook_page,
+      :linkedInUrl     => ip.linkedin_page,
+      :organization_id => user.current_organization.id,
+      :import_id       => self.id
+
+    ip.tags_list.each { |tag| person.tag! tag }
+
+    person.phones << AthenaPerson::Phone.new(ip.phone1_type, ip.phone1_number) if ip.phone1_type.present? && ip.phone1_number.present?
+    person.phones << AthenaPerson::Phone.new(ip.phone2_type, ip.phone2_number) if ip.phone2_type.present? && ip.phone2_number.present?
+    person.phones << AthenaPerson::Phone.new(ip.phone3_type, ip.phone3_number) if ip.phone3_type.present? && ip.phone3_number.present?
+
+    person
   end
 
-  def import_headers_tmp_filename
-    import_cache_path.join "headers.dump"
-  end
-
-  def import_rows_tmp_filename
-    import_cache_path.join "rows.dump"
+  def attach_address(person, import_person)
+    address = Address.new \
+      :address1  => import_person.address1,
+      :address2  => import_person.address2,
+      :city      => import_person.city,
+      :state     => import_person.state,
+      :zip       => import_person.zip,
+      :country   => import_person.country,
+      :person_id => person.id
   end
 
 end
