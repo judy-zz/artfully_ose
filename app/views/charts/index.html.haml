@@ -6,6 +6,8 @@
     %li= link_to "New Chart", new_chart_path
 
 .spread
+  = render :partial => 'return_to_event' 
+
   %h3 Charts
   - if @charts.empty?
     %p You have not created any chart templates.
