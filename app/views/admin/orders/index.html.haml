@@ -1,0 +1,34 @@
+.spread
+  - if !params["search"].nil? && @results.empty?
+    %p No orders matched your search.
+  - elsif @results.nil?
+    -#Case needed for Cucumber testing
+  - else
+    -if params["search"].nil?
+      %h3 Recent Orders
+    -else
+      %h3 Search Results
+
+    #orders
+      %table.standalone.zebra
+        %thead
+          %tr
+            %th ID
+            %th FA ID
+            %th Date
+            %th Organization
+            %th Total
+            %th Fee
+        %tbody
+          -@results.each do |order|
+            %tr
+              %td=order.id
+              %td=order.fa_id
+              -unless order.timestamp.nil?
+                %td= l order.timestamp
+              %td= link_to "#{Organization.find(order.organization_id).name}", admin_organization_path(order.organization_id)
+              %td= number_to_currency (order.total.to_i / 100)
+              %td= number_to_currency (order.service_fee.to_i / 100)
+
+      =will_paginate @results
+

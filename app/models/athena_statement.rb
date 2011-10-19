@@ -4,6 +4,12 @@ class AthenaStatement < AthenaResource::Base
   self.collection_name = "statement"
   
   def self.for_performance(performance_id, organization_id)
-    self.find(nil, :params => { :performanceId => performance_id, :organizationId => organization_id})
+    statement = self.find(nil, :params => { :performanceId => performance_id, :organizationId => organization_id})
+    
+    # Calling this a monkey-patch would be insulting to monkeys.  It's cool in light of bingo!
+    statement.expenses.expenses[1].units = statement.sales.performances[0].gross_revenue
+    statement.expenses.expenses[1].expense = (statement.sales.performances[0].gross_revenue - statement.sales.performances[0].net_revenue)
+    statement.sales.performances[0].processing = (statement.sales.performances[0].gross_revenue - statement.sales.performances[0].net_revenue)
+    statement
   end
 end

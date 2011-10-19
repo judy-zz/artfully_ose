@@ -84,7 +84,7 @@ class AthenaTicket < AthenaResource::Base
   end
 
   def self.fee
-    200 # $2.00 fee
+    0
   end
 
   def expired?

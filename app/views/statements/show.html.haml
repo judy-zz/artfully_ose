@@ -12,53 +12,25 @@
       Please select a show or a date range
   -else
     %h3="Statement Report: #{@event.name}"
-    %h4 Revenue
     #statement_table
       %table.standalone
         %thead
           %tr
             %th{:style=>'width:200px'} Shows
             %th{:style=>'width:100px'} Tickets Sold
-            %th{:style=>'width:100px'} Comps
+            %th{:style=>'width:50px'} Comps
             %th{:style=>'width:100px'} Potential
-            %th{:style=>'width:100px'} Gross Revenue
-            %th{:style=>'width:100px'} Net Revenue
+            %th{:style=>'width:100px'} Gross
+            %th{:style=>'width:100px'} Processing            
+            %th{:style=>'width:100px'} Net
         %tbody
           - @statement.sales.performances.each do |row|
             %tr
-              %td=l row.datetime, :format => :long_with_day
+              %td=l row.datetime, :format => :short
               %td=row.tickets_sold
               %td=row.tickets_comped
               %td=number_as_cents row.potential_revenue
               %td
                 %strong=number_as_cents row.gross_revenue
+              %td=number_as_cents row.processing
               %td=number_as_cents row.net_revenue
-    %h4 Expenses
-    #statement_table
-      %table.standalone
-        %thead
-          %tr
-            %th{:style=>'width:200px'}
-            %th{:style=>'width:100px'} Units
-            %th{:style=>'width:100px'} Rate
-            %th{:style=>'width:100px'}
-            %th{:style=>'width:100px'} Expense
-            %th{:style=>'width:100px'}
-        %tbody
-          - @statement.expenses.expenses.each do |row|
-            %tr
-              %td=row.description
-              %td=row.units
-              %td=row.rate
-              %td
-              %td=number_as_cents row.expense
-              %td
-          %tr
-            %td
-              %strong=@statement.expenses.total.description
-            %td
-            %td
-            %td
-            %td
-              %strong=number_as_cents @statement.expenses.total.expense
-            %td

@@ -104,6 +104,7 @@ class Checkout
         athena_order.timestamp       = order_timestamp
         athena_order.person          = @person
         athena_order.transaction_id  = @payment.transaction_id
+        athena_order.service_fee     = @order.fee_in_cents
 
         #This will break if ActiveResource properly interprets athena_event.organization_id as the integer that it is intended to be
         athena_order << @order.tickets.select { |ticket| AthenaEvent.find(ticket.event_id).organization_id == organization.id.to_s }        

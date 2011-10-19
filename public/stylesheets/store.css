@@ -397,15 +397,3 @@ p {
   -moz-border-radius: 0 4px 4px 0;
   -webkit-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0; }
-
-.upsell {
-  padding: 10px 0 0; }
-
-.item-list li {
-  border-bottom: 1px solid #dddddd;
-  line-height: 2em; }
-  .item-list li .item {
-    color: #333333; }
-  .item-list li .price {
-    color: #666666;
-    float: right; }
