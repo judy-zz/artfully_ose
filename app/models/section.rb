@@ -17,7 +17,7 @@ class Section < ActiveRecord::Base
   end
 
   def summarize(show_id)
-    tickets = Ticket.find(:all, :params => {:showId => "eq#{show_id}", :section => "eq#{name}"})
+    tickets = Show.find(show_id).tickets
     summary = SectionSummary.for_tickets(tickets)
   end
 end
