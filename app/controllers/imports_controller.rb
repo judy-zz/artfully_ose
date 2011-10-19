@@ -41,4 +41,10 @@ class ImportsController < ApplicationController
     end
   end
 
+  def destroy
+    @import = current_user.imports.find(params[:id])
+    @import.destroy
+    redirect_to imports_path
+  end
+
 end

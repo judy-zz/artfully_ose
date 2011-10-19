@@ -4,7 +4,9 @@
   %p This import was created at #{import.created_at}
   %p #{number_with_delimiter import.rows.count} contacts found in this import file
 
-  %p= link_to "Approve this import", approve_import_path(import), :confirm => "Are you sure?"
+  %p= link_to "Approve this import", approve_import_path(import), :confirm => "Are you sure you want to approve this import?"
+  %p= link_to "Delete this import", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete
+  %p= link_to "Back to imports/exports", imports_path
 
 .document
   %h3 Viewing contacts #{@offset + 1} through #{[ import.rows.count, @offset + @length ].min}
