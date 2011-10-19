@@ -99,7 +99,7 @@ class Show < ActiveRecord::Base
   end
 
   def bulk_delete(ids)
-    tickets.where(:id => ids).collect{ |ticket| ticket.id if ticket.destroy }.compact
+    tickets.where(:id => ids).collect{ |ticket| ticket.id if ticket.destroy }#.compact
   end
 
   def bulk_change_price(ids, price)

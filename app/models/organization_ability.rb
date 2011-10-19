@@ -16,11 +16,11 @@ class OrganizationAbility
     end
 
     can :manage, Show do |show|
-      show.organization_id.to_i == organization.id
+      show.organization_id == organization.id
     end
 
     can :manage, Ticket do |ticket|
-      can? :manage, Event.find(ticket.event_id)
+      ticket.organization_id == organization.id
     end
 
     can :manage, Chart do |chart|

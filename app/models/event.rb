@@ -34,7 +34,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('shows' => upcoming_shows(:all).each{|perf| perf.add_show_time_string }.select(&:published?))
+    as_json(options).merge('performances' => upcoming_shows(:all).each{|perf| perf.add_show_time_string }.select(&:published?))
   end
 
   def as_full_calendar_json

@@ -26,17 +26,17 @@ describe Event do
     subject.should_not be_valid
   end
 
-  describe "#upcoming_performances" do
+  describe "#upcoming_shows" do
     it "should default to a limit of 5 performances" do
       subject.shows = 10.times.collect { Factory(:show, :datetime => (DateTime.now + 1.day)) }
-      subject.upcoming_performances.should have(5).shows
+      subject.upcoming_shows.should have(5).shows
     end
 
     it "should fetch performances that occur after today at the beginning of the day" do
       test_performances = 3.times.collect { mock(:show, :datetime => (DateTime.now + 1.day)) }
       test_performances += 2.times.collect { mock(:show, :datetime => (DateTime.now - 1.day)) }
       subject.stub(:shows).and_return(test_performances)
-      subject.upcoming_performances.should have(3).shows
+      subject.upcoming_shows.should have(3).shows
     end
   end
 

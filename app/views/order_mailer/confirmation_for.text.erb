@@ -1,14 +1,14 @@
 Thank you for your order <%= @person.first_name %> <%= @person.last_name %>!
 
 Order number: <%= @order.id %>
-Purchase Date: <%= l(@order.timestamp)%>
+Purchase Date: <%= l(@order.created_at)%>
 Order total: $<%= format("%.2f", (@order.total/100.0)) %>
 
 <% unless @order.tickets.empty? %>
   Tickets
   <% @order.tickets.each do |item| %>
     <%- ticket = item.product %>
-    - <%= "$#{format("%.2f", (ticket.price/100.0))}: #{ticket.event} at #{l ticket.show, :format => :date_at_time}" %>
+    - <%= "$#{format("%.2f", (ticket.price/100.0))}: #{ticket.event} at #{l ticket.datetime, :format => :date_at_time}" %>
   <% end %>
 <% end %>
 

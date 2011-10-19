@@ -11,8 +11,6 @@ describe Exchange do
   it { should be_valid }
 
   it "should initialize with an order and items" do
-    ap subject.valid?
-    ap subject.errors
     subject.order.should be order
     subject.items.should be items
   end

@@ -1,26 +1,26 @@
 require 'spec_helper'
 
 describe DoorList do
-  let(:performance) { Factory(:show) }
+  let(:show) { Factory(:show) }
   let(:buyer) { Factory(:person) }
-  subject { DoorList.new(performance) }
+  subject { DoorList.new(show) }
 
   before(:each) do
-    performance.stub(:tickets).and_return(5.times.collect { Factory(:ticket, :state => :sold)})
-    performance.tickets.each do |ticket|
+    show.stub(:tickets).and_return(5.times.collect { Factory(:ticket, :state => :sold)})
+    show.tickets.each do |ticket|
       ticket.stub(:buyer).and_return(buyer)
     end
   end
 
-  it "should save a reference to the performance for which it was created" do
-    subject.performance.should eq performance
+  it "should save a reference to the show for which it was created" do
+    subject.show.should eq show
   end
 
   it "should return an array of Buyers and their tickets" do
     list = subject.items
     list.each do |item|
       item.buyer.should eq buyer
-      performance.tickets.should include item.ticket
+      show.tickets.should include item.ticket
     end
   end
 end
