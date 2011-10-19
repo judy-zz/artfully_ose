@@ -2,9 +2,6 @@ Feature: User registration
   In order to use the application
   a user wants to be able to register
 
-  Background:
-    Given I can save People to ATHENA
-
   Scenario: Register as a producer
     Given I am on the new user registration page
     When I fill in "Email" with "example@example.com"

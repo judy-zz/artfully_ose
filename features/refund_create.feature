@@ -3,9 +3,6 @@ Feature: Refund Tickets
   a producer wants to be able to select the tickets to refund
 
   Background:
-    Given I can refund tickets through ATHENA
-    And I can save purchase actions in ATHENA
-    And I can save Orders in ATHENA
     And I am logged in
     And I am part of an organization
     And there is an order with an ID of 1 and 2 tickets

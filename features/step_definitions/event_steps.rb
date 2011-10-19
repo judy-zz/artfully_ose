@@ -18,18 +18,10 @@ Given /^there is an [Ee]vent with (\d+) [Pp]erformances$/ do |performance_count|
   setup_event(event)
   charts = setup_charts([Factory(:chart, :organization_id => @current_user.current_organization.id)])
   setup_performances(performance_count.to_i.times.collect { Factory(:show, :event => current_event, :chart => charts.first, :organization_id => @current_user.current_organization.id) })
-
-#  visit events_path
-#  Given %{I follow "#{event.name}"}
 end
 
 Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
   within(:xpath, "(//ul[@class='detailed-list']/li)[#{pos.to_i}]") do
     click_link "event-name"
   end
-end
-
-Given /^I want to create a new event$/ do
-  FakeWeb.register_uri(:get, %r|http://localhost/athena/charts\.json\?isTemplate=eqtrue.*|, :body => "[]")
-  Given %{I am on the new event page}
 end

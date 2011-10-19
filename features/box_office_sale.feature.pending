@@ -3,8 +3,7 @@ Feature: Cash Sales
   a produce wants a box office interface that allows them to create new orders
 
   Background:
-    Given I can save Orders in ATHENA
-    And I am logged in
+    Given I am logged in
     And I am part of an organization with access to the ticketing kit
     And my organization has a dummy person record
     And there is an Event with 3 Performances

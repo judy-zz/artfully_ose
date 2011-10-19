@@ -9,8 +9,6 @@ Feature: Exchange Tickets
     And there is an event with 3 performances
     And the 1st performance has had tickets created
     And the 1st performance is on sale
-    And I can save Orders in ATHENA
-    And I can save purchase actions in ATHENA
 
   Scenario: A producer starts the exchange workflow by selecting tickets
     Given there is an order with an ID of 1 and 2 tickets
