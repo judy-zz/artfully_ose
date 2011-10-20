@@ -46,8 +46,8 @@ class AdminStats < ActiveRecord::Base
   def self.donation_stats
     donations = Item.find(:all, :params => { :productType => "Donation", :state => "in(settled, purchased)"})
     {
-      :donations => donations.count,
-      :fafs_donations => donations.select{ |d| d.fs_project_id.present? }.count
+      :donations => donations.select{ |d| d.fa_id.nil? }.count,
+      :fafs_donations => donations.select{ |d| !d.fa_id.nil? }.count
     }
   end
 end
