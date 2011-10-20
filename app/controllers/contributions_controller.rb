@@ -4,7 +4,7 @@ class ContributionsController < ApplicationController
     Time.zone = current_user.current_organization.time_zone
 
     @search = DonationSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
-      results.paginate(:page => params[:page], :per_page => 10)
+      results.sort{|a,b| b.timestamp <=> a.timestamp }.paginate(:page => params[:page], :per_page => 25)
     end
   end
 
