@@ -18,3 +18,6 @@
   %br
 
   %h3 Exports
+  %ul.detailed-list
+    %li
+      %h4= link_to "Export all people currently in Artful.ly", people_path(:export => :all, :format => :csv)

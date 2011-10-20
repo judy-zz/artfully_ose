@@ -20,7 +20,7 @@ describe Import do
       @address.stub(:save).and_return(true)
       @import.should_receive(:attach_person).exactly(3).times.and_return(@person)
       @import.should_receive(:attach_address).exactly(3).times.and_return(@address)
-      @import.perform
+      @import.import
       @import.import_errors.should be_empty
     end
   end

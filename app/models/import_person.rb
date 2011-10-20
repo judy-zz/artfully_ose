@@ -1,24 +1,51 @@
 class ImportPerson
 
+  # Define the list of fields known about a person and the various column names
+  # that might be used for that field.
+  FIELDS = {
+    :email            => [ "Email", "Email address" ],
+    :first            => [ "First", "First name" ],
+    :last             => [ "Last", "Last name" ],
+    :company          => [ "Company", "Company name" ],
+    :address1         => [ "Address1", "Address 1" ],
+    :address2         => [ "Address2", "Address 2" ],
+    :city             => [ "City" ],
+    :state            => [ "State" ],
+    :zip              => [ "Zip", "Zip code" ],
+    :country          => [ "Country" ],
+    :phone1_type      => [ "Phone 1 type" ],
+    :phone1_number    => [ "Phone 1", "Phone 1 number" ],
+    :phone2_type      => [ "Phone 2 type" ],
+    :phone2_number    => [ "Phone 2", "Phone 2 number" ],
+    :phone3_type      => [ "Phone 3 type" ],
+    :phone3_number    => [ "Phone 3", "Phone 3 number" ],
+    :website          => [ "Website" ],
+    :twitter_username => [ "Twitter", "Twitter handle", "Twitter username" ],
+    :facebook_page    => [ "Facebook", "Facebook url", "Facebook address", "Facebook page" ],
+    :linkedin_page    => [ "LinkedIn", "LinkedIn url", "LinkedIn address", "LinkedIn page" ],
+    :tags             => [ "Tags" ]
+  }
+
   def initialize(headers, row)
     @headers = headers
     @row = row
 
-    %w(
-      email first last company
-      address1 address2 city state zip country
-      phone1_type phone1_number phone2_type phone2_number phone3_type phone3_number
-      website twitter_username facebook_page linkedin_page
-      tags
-    ).each { |field| load_value field }
+    FIELDS.each do |field, columns|
+      columns.each do |column|
+        load_value field, column
+      end
+    end
   end
 
-  def load_value(field)
-    index = @headers.index { |h| h.to_s.downcase.strip == field.to_s.downcase.gsub("_", " ") }
+  def load_value(field, column)
+    index = @headers.index { |h| h.to_s.downcase.strip == column.downcase }
     value = @row[index] if index
+    exist = self.instance_variable_get("@#{field}")
 
-    self.instance_variable_set("@#{field}", value)
-    self.class.class_eval { attr_reader field }
+    if exist.blank?
+      self.instance_variable_set("@#{field}", value)
+      self.class.class_eval { attr_reader field }
+    end
   end
 
   def tags_list

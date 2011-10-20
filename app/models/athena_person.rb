@@ -20,6 +20,9 @@ class AthenaPerson < AthenaResource::Base
     attribute 'phones',         :string
     attribute 'dummy',          :string
     attribute 'import_id',      :integer
+    attribute 'twitter_handle', :string
+    attribute 'facebook_url',   :string
+    attribute 'linked_in_url',  :string
   end
 
   comma do
@@ -28,6 +31,15 @@ class AthenaPerson < AthenaResource::Base
     email
     company_name
     website
+    twitter_handle
+    facebook_url
+    linked_in_url
+    phones("Phone1 type") { |phones| phones[0] && phones[0].type }
+    phones("Phone1 number") { |phones| phones[0] && phones[0].number }
+    phones("Phone2 type") { |phones| phones[0] && phones[0].type }
+    phones("Phone2 number") { |phones| phones[0] && phones[0].number }
+    phones("Phone3 type") { |phones| phones[0] && phones[0].type }
+    phones("Phone3 number") { |phones| phones[0] && phones[0].number }
     tags { |tags| tags.join(" ") }
   end
 
