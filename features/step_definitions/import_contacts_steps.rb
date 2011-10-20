@@ -2,6 +2,7 @@ When /^I upload a new import file "([^"]*)"$/ do |filename|
   path = Rails.root.join("features", "support", filename)
   visit new_import_path(:bucket => "test", :key => path, :etag => "12345")
   @import = Import.last
+  @import.cache_data
 end
 
 Then /^the number of imports should change to (\d+)$/ do |arg1|

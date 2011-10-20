@@ -7,6 +7,7 @@ Feature: Import Contacts
 
   Scenario: A user uploads a valid csv file
     When I upload a new import file "simple-export.csv"
+    And I am on the import page
     Then the number of imports should change to 1
     And I should see "29 contacts found in this import file"
 
