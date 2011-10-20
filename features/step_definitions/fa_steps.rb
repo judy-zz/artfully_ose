@@ -8,3 +8,7 @@ end
 Given /^the credentials I'll enter are not valid$/ do
   FakeWeb.register_uri(:post, "http://staging.api.fracturedatlas.org/sessions.xml", :status => 403)
 end
+
+Given /^(\d+) days pass$/ do |d|
+  Timecop.travel(DateTime.now + d.to_i.days)
+end

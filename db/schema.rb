@@ -195,8 +195,8 @@ ActiveRecord::Schema.define(:version => 20111020170738) do
     t.integer  "order_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "fa_id"
     t.integer  "service_fee"
+    t.integer  "fa_id"
     t.string   "details"
   end
 
@@ -250,7 +250,7 @@ ActiveRecord::Schema.define(:version => 20111020170738) do
     t.string   "transaction_id"
     t.string   "ach_response_code"
     t.string   "fail_message"
-    t.datetime "created_at"
+    t.datetime "created_at",        :limit => 255
     t.boolean  "success"
     t.integer  "gross"
     t.integer  "realized_gross"

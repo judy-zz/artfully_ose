@@ -206,6 +206,7 @@ GEM
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
     thor (0.14.6)
+    timecop (0.3.5)
     timeliness (0.3.4)
     transitions (0.0.11)
     treetop (1.4.9)
@@ -268,6 +269,7 @@ DEPENDENCIES
   shoulda
   sqlite3-ruby
   thin
+  timecop
   transitions
   uuid
   validates_timeliness

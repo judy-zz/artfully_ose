@@ -41,6 +41,7 @@ gem 'transitions', :require => ['transitions', 'active_record/transitions']
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'timecop'
 end
 
 group :deployment do
