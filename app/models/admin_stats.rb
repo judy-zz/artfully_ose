@@ -49,7 +49,7 @@ class AdminStats < ActiveRecord::Base
   def self.donation_stats
     donations = AthenaItem.find(:all, :params => { :productType => "Donation", :state => "in(settled, purchased)"})
     {
-      :donations => donations.count,
+      :donations => donations.count{ |d| d.fs_project_id.nil? },
       :fafs_donations => donations.count{ |d| !d.fs_project_id.nil? }
     }
   end

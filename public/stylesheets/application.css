@@ -720,6 +720,9 @@ input.mini {
     padding: 5px 5px 5px 10px;
     border-bottom: 1px solid gray; }
 
+.clear {
+  clear: both; }
+
 .cta, .cta-left, .cta-left-125 {
   -moz-border-radius: 2px 2px 2px 2px;
   -webkit-border-radius: 2px 2px 2px 2px;

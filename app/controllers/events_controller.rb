@@ -3,6 +3,8 @@ class EventsController < ApplicationController
 
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget ]
   before_filter :upcoming_performances, :only => :show
+  after_filter :save_event_to_session, :except => [:destroy, :index]
+  after_filter :clear_event_from_session, :only => :destroy
 
   def create
     @event = AthenaEvent.new(params[:athena_event][:athena_event])
@@ -97,17 +99,24 @@ class EventsController < ApplicationController
   end
 
   private
+    def save_event_to_session
+      session[:event_id] = @event.id
+    end
+    
+    def clear_event_from_session
+      session[:event_id] = nil
+    end
 
-  def find_event
-    @event = AthenaEvent.find(params[:id])
-  end
+    def find_event
+      @event = AthenaEvent.find(params[:id])
+    end
 
-  def find_charts
-    ids = params[:charts] || []
-    ids.collect { |id| AthenaChart.find(id) }
-  end
+    def find_charts
+      ids = params[:charts] || []
+      ids.collect { |id| AthenaChart.find(id) }
+    end
 
-  def upcoming_performances
-    @upcoming = @event.upcoming_performances
-  end
+    def upcoming_performances
+      @upcoming = @event.upcoming_performances
+    end
 end
