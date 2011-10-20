@@ -2,9 +2,6 @@ When /^(?:|I )fill in the following event details:$/ do |table|
   event = event_from_table_row(table.hashes.first)
   setup_event(event)
 
-  setup_charts([Factory(:chart, :organization_id => event.organization_id)])
-  setup_performances([])
-
   When %{I fill in "Name" with "#{event.name}"}
   When %{I fill in "Venue" with "#{event.venue}"}
   When %{I fill in "Producer" with "#{event.producer}"}

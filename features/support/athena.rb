@@ -13,18 +13,7 @@ module AthenaHelpers
     @current_event = event
   end
 
-  def setup_charts(charts = [])
-    body = charts.collect { |p| p.encode }.join(",")
-    FakeWeb.register_uri(:get, "http://localhost/athena/charts.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
-    charts.each do |chart|
-      FakeWeb.register_uri(:get, "http://localhost/athena/sections.json?chartId=eq#{chart.id}", :body => "[#{Factory(:athena_section_with_id).encode}]")
-    end
-    charts
-  end
-
   def setup_performances(performances = [])
-    body = performances.collect { |p| p.encode }.join(",")
-    FakeWeb.register_uri(:get, "http://localhost/athena/performances.json?eventId=eq#{current_event.id}", :body => "[#{body}]")
     current_performances(performances)
   end
 

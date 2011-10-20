@@ -9,7 +9,7 @@ Feature: Event creation
     When I fill in the following event details:
     | name      | venue      | city     | state | producer      |
     | Some Name | Some Venue | New York | NY    | Some Producer |
-    And I press "Submit"
+    And I press "Create Event"
     And I should see "Some Name"
     And I should see "Some Venue"
     And I should see "New York, NY"
