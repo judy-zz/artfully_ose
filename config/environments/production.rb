@@ -66,7 +66,7 @@ Artfully::Application.configure do
   config.people_site = 'http://athena-production.elasticbeanstalk.com/'
   config.reports_site = 'http://athena-production.elasticbeanstalk.com/reports/'
 
-  config.payments_component = 'http://athena-payments-prod.elasticbeanstalk.com/'
+  config.payments_component = 'https://athena-payments-prod.elasticbeanstalk.com:443/'
   config.payments_element_name = ''
 
   AthenaResource::USER_AGENT = "artful.ly"
