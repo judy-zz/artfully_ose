@@ -5,7 +5,7 @@ Feature: Return Tickets
   Background:
     And I am logged in
     And I am part of an organization
-    And there is an order with an ID of 1 with 2 comps
+    And there is an order with 2 comps
 
   Scenario: A producer returns a ticket
     Given I check the 1st ticket for a return

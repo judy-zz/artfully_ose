@@ -25,7 +25,7 @@
             %tr{:class => settlement.success? ? "succeeded" : "failed" }
               %td= link_to settlement.id, settlement_path(settlement)
               %td= settlement.show_id
-              %td= l settlement.created_at, :format => :date
+              %td= l(settlement.created_at, :format => :date)
               %td
                 -if settlement.success?
                   =settlement.transaction_id
