@@ -5,7 +5,7 @@ When /^I check the (\d+)(?:st|nd|rd|th) ticket for an exchange$/ do |pos|
 end
 
 Given /^I have found (\d+) items to exchange$/ do |num|
-  Given %{there is an order with an ID of 1 and #{num} tickets}
+  Given %{there is an order with #{num} tickets}
   num.to_i.times do |n|
     Given %{I check the #{n+1}th ticket for an exchange}
   end
@@ -18,9 +18,9 @@ When /^I select the (\d+)(?:st|nd|rd|th) event$/ do |pos|
   end
 end
 
-When /^I select the (\d+)(?:st|nd|rd|th) performance$/ do |pos|
-  within(:xpath, "(//ul[@id='performance-drilldown']/li)[#{pos.to_i}]") do
-    click_link("performance-datetime")
+When /^I select the (\d+)(?:st|nd|rd|th) show$/ do |pos|
+  within(:xpath, "(//ul[@id='show-drilldown']/li)[#{pos.to_i}]") do
+    click_link("show-datetime")
   end
 end
 

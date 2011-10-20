@@ -40,7 +40,7 @@ Given /^I check the (\d+)(?:st|nd|rd|th) ticket to put on sale$/ do |pos|
   within(:xpath, "(//div[@id='on-sale']/form/ul/li)[#{pos.to_i}]") do
     check("selected_tickets[]")
   end
-  @performance.tickets[pos.to_i - 1].state = "on_sale"
+  @show.tickets[pos.to_i - 1].state = "on_sale"
 end
 
 Then /^the (\d+)(?:st|nd|rd|th) ticket should be on sale$/ do |pos|
@@ -53,7 +53,7 @@ Given /^I check the (\d+)(?:st|nd|rd|th) ticket to take off sale$/ do |pos|
   within(:xpath, "(//div[@id='off-sale']/form/ul/li)[#{pos.to_i}]") do
     check("selected_tickets[]")
   end
-  @performance.tickets[pos.to_i - 1].state = "off_sale"
+  @show.tickets[pos.to_i - 1].state = "off_sale"
 end
 
 Then /^the (\d+)st ticket should be off sale$/ do |pos|
@@ -65,5 +65,5 @@ end
 Given /^there are (\d+) tickets available$/ do |quantity|
   quantity = quantity.to_i
   Given "I can lock Tickets in ATHENA"
-  tickets = current_performances.first.tickets.take(quantity)
+  tickets = current_shows.first.tickets.take(quantity)
 end

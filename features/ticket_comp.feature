@@ -5,14 +5,14 @@ Feature: Ticket Comp
   Background:
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
-    And there is an Event with 1 Performances
-    And the 1st performance has had tickets created
-    And the 1st performance is on sale
+    And there is an Event with 1 Shows
+    And the 1st show has had tickets created
+    And the 1st show is on sale
 
   Scenario: A producer comps a ticket
     When I go to the events page
     And I view the 1st event
-    And I view the 1st performance
+    And I view the 1st show
     And I check the 1st ticket for a comp
     And I press "Comp"
     And I search for the patron named "Joe Producer" email "joe.producer@example.com"
