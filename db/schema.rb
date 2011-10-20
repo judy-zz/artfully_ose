@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111020143344) do
+ActiveRecord::Schema.define(:version => 20111020170738) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -250,7 +250,7 @@ ActiveRecord::Schema.define(:version => 20111020143344) do
     t.string   "transaction_id"
     t.string   "ach_response_code"
     t.string   "fail_message"
-    t.string   "created_at"
+    t.datetime "created_at"
     t.boolean  "success"
     t.integer  "gross"
     t.integer  "realized_gross"
