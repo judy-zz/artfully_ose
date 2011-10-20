@@ -17,21 +17,21 @@ Then /^I should see (\d+) [Ss]hows$/ do |count|
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how has had tickets created$/ do |pos|
-  current_shows[pos.to_i - 1].state = "built"
   show = current_shows[pos.to_i - 1]
+  show.build!
   show.create_tickets
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how has had tickets sold$/ do |pos|
   show = current_shows[pos.to_i - 1]
+  show.create_tickets if show.tickets.empty?
   show.tickets.first.sell_to(Factory(:person))
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how is on sale$/ do |pos|
-  current_shows[pos.to_i - 1].state = "on_sale"
   show = current_shows[pos.to_i - 1]
-  tickets = show.tickets
-  tickets.each { |ticket| ticket.state = "on_sale" }
+  show.publish
+  show.bulk_on_sale(:all)
 end
 
 Then /^I should not be able to delete the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |pos|

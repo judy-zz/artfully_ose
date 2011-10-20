@@ -4,6 +4,7 @@ Feature: Order creation
 
   Background:
    Given there is an event called "Test Event" with 3 shows with tickets
+   And the organization that owns "Test Event" has a donation kit
 
   Scenario: The user@example.com has added tickets to their order
     Given I have added 2 tickets to my order for "Test Event"

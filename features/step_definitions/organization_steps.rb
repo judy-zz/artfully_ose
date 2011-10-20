@@ -8,6 +8,11 @@ Given /^I am part of an organization$/ do
   @current_user.organizations << Factory(:organization)
 end
 
+Given /^the organization that owns "([^"]*)" has a donation kit$/ do |name|
+  organization = Event.find_by_name(name).organization
+  Factory(:regular_donation_kit, :state => :activated, :organization => organization)
+end
+
 Given /^I am part of an organization with access to the ticketing kit$/ do
   @current_user.organizations << Factory(:organization_with_ticketing)
 end

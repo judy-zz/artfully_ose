@@ -4,7 +4,7 @@ class ExchangesController < ApplicationController
     items = params[:items].collect { |item_id| Item.find(item_id) }
 
     if items.all?(&:exchangeable?)
-      @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" })
+      @events = current_organization.events
 
       unless params[:event_id].blank?
         @event = Event.find(params[:event_id])

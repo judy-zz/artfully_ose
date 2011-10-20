@@ -5,8 +5,17 @@
 .context
   %h3 New Recipient
   = form_for Person.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
-    %ul= render :partial => 'people/form', :locals => { :parent_form => form, :target => Person.new }
-    = form.submit "Save"
+    %ul
+      %li
+        .label= form.label :first_name, "First Name"
+        .element= form.text_field :first_name
+      %li
+        .label= form.label :last_name, "Last Name"
+        .element= form.text_field :last_name
+      %li
+        .label= form.label :email, "Email"
+        .element= form.text_field :email
+    = form.submit
   .hidden-target
     %span.name
     = form_tag new_comp_path, :method => :get do

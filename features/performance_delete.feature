@@ -15,6 +15,7 @@ Feature: Delete a show
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
     And there is an Event with 3 Shows
+    And the 1st show has had tickets created
     And the 1st show has had tickets sold
     And I follow "Events"
     When I view the 1st event

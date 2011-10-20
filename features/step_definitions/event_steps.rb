@@ -25,5 +25,5 @@ end
 
 Given /^there is an event called "([^"]*)" with (\d+) shows with tickets$/ do |name, quantity|
   event = Factory(:event, :name => name)
-  event.shows << quantity.to_i.times.collect { Factory(:show_with_tickets, :event => event) }
+  event.shows << quantity.to_i.times.collect { Factory(:show_with_tickets, :event => event, :organization => event.organization) }
 end
