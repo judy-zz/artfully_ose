@@ -49,8 +49,7 @@ Given /^a user@example.com named "([^"]*)" buys (\d+) tickets from the (\d+)(?:s
   show = current_shows[pos.to_i - 1]
   tickets = show.tickets
   tickets.reject { |t| t.state == "sold" }.first(wanted.to_i).each do |ticket|
-    ticket.buyer = customer
-    ticket.state = "sold"
+    ticket.sell_to(customer)
   end
 end
 
