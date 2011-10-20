@@ -16,6 +16,5 @@ Feature: Door List Creation
     And I view the 1st event
     And I view the 1st show
     And I press "Door List"
-    And show me the page
     Then I should see "Joe Patron"
     And I should see "Bob Patron"
