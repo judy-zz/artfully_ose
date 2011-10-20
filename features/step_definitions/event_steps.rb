@@ -11,10 +11,10 @@ end
 
 Given /^there is an [Ee]vent with (\d+) [Ss]hows$/ do |show_count|
   event = Factory(:event, :organization_id => @current_user.current_organization.id)
+  event.charts << Factory(:chart_with_sections)
 
   setup_event(event)
-  charts = setup_charts([Factory(:chart, :organization_id => @current_user.current_organization.id)])
-  setup_performances(show_count.to_i.times.collect { Factory(:show, :event => current_event, :chart => charts.first, :organization_id => @current_user.current_organization.id) })
+  setup_shows(show_count.to_i.times.collect { Factory(:show, :event => current_event, :organization_id => @current_user.current_organization.id) })
 end
 
 Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|

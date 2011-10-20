@@ -126,7 +126,7 @@ class AthenaOrder < AthenaResource::Base
   end
 
   def <<(products)
-    self.items += Array.wrap(products).collect { |product| AthenaItem.for(product) }
+    self.items += Array.wrap(products).collect { |product| Item.for(product) }
   end
 
   def payment
@@ -262,7 +262,7 @@ class AthenaOrder < AthenaResource::Base
     @order.email            = fa_donation.donor.email || ""
     
     if @order.items.blank?
-      @order.items << AthenaItem.from_fa_donation(fa_donation, organization, @order)
+      @order.items << Item.from_fa_donation(fa_donation, organization, @order)
     else
       item = @order.items.first.copy_fa_donation(fa_donation)
     end
@@ -349,7 +349,7 @@ class AthenaOrder < AthenaResource::Base
 
     def find_items
       return [] if new_record?
-      AthenaItem.find_by_order(self)
+      Item.find_by_order(self)
     end
 
     def set_timestamp

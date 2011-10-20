@@ -26,15 +26,6 @@ class Chart < ActiveRecord::Base
     duplicate(:without => "id", :with => { :is_template => false })
   end
 
-  def save
-    success = super
-    sections.each do |section|
-      section.chart_id = self.id
-      section.save
-    end
-    success
-  end
-
   def assign_to(event)
     raise TypeError, "Expecting an Event" unless event.kind_of? Event
     assigned = self.dup!

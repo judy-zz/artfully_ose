@@ -13,13 +13,13 @@ module AthenaHelpers
     @current_event = event
   end
 
-  def setup_performances(performances = [])
-    current_performances(performances)
+  def setup_shows(shows = [])
+    current_shows(shows)
   end
 
-  def current_performances(performances = [])
-    return @current_performances if performances.empty?
-    @current_performances = performances
+  def current_shows(shows = [])
+    return @current_shows if shows.empty?
+    @current_shows = shows
   end
 
   def us_states
