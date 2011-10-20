@@ -66,7 +66,7 @@ class Order < ActiveRecord::Base
   end
 
   def all_items
-    @all_items ||= merge_and_sort_items
+    merge_and_sort_items
   end
 
   def all_tickets

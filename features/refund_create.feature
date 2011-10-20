@@ -5,7 +5,8 @@ Feature: Refund Tickets
   Background:
     And I am logged in
     And I am part of an organization
-    And there is an order with an ID of 1 and 2 tickets
+    And I can refund tickets through ATHENA
+    And there is an order with 2 tickets
 
   Scenario: A producer is presented with the option to refund with or without returning to inventory
     Given I check the 1st ticket for a refund

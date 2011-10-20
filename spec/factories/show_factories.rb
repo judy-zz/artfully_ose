@@ -5,6 +5,7 @@ end
 Factory.define(:show) do |s|
   s.datetime { Factory.next :datetime }
   s.association :organization
+  s.association :event
   s.association :chart, :factory => :assigned_chart
 end
 
