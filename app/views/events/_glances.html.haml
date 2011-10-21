@@ -5,8 +5,8 @@
       %ul.report
         %li
           %span.stat Total Played
-          %span.current= number_as_cents(event.glance.revenue.total_played.gross)
+          %span.current= number_as_cents(event.glance.sales_played)
 
         %li
           %span.stat Advance Sales
-          %span.current= number_as_cents(event.glance.revenue.advance_sales.gross)
+          %span.current= number_as_cents(event.glance.sales_advance)

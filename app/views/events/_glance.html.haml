@@ -8,43 +8,43 @@
       %ul.report
         %li
           %span.stat On Sale
-          %span.current= report.tickets.available
+          %span.current= report.available_total
         %li
           %span.stat Sold
-          %span.current= report.tickets.sold.gross
-          %span.alternative= "(#{report.tickets.sold.comped} Comped)"
+          %span.current= report.sold_total
+          %span.alternative= "(#{report.comped_total} Comped)"
         %li
           %span.stat Sold Today
-          %span.current= report.tickets.sold_today.gross
-          %span.alternative= "(#{report.tickets.sold_today.comped} Comped)"
+          %span.current= report.sold_today
+          %span.alternative= "(#{report.comped_today} Comped)"
         %li
           %span.stat Total Played
-          %span.current= report.tickets.played.gross
-          %span.alternative= "(#{report.tickets.played.comped} Comped)"
+          %span.current= report.sold_played
+          %span.alternative= "(#{report.comped_played} Comped)"
     %li
       - if !@event.is_free?
         %h4 Revenue
         %ul.report
           %li
             %span.stat Total Sales
-            %span.current= number_as_cents(report.revenue.total_sales.gross)
+            %span.current= number_as_cents(report.sales_total)
 
           %li
             %span.stat Sold Today
-            %span.current= number_as_cents(report.revenue.sold_today.gross)
+            %span.current= number_as_cents(report.sales_today)
 
           %li
             %span.stat Advance Sales
-            %span.current= number_as_cents(report.revenue.advance_sales.gross)
+            %span.current= number_as_cents(report.sales_advance)
 
           %li
             %span.stat Total Played
-            %span.current= number_as_cents(report.revenue.total_played.gross)
+            %span.current= number_as_cents(report.sales_played)
 
           %li
             %span.stat Potential Remaining
-            %span.current= number_as_cents(report.revenue.potential_remaining.gross)
+            %span.current= number_as_cents(report.potential_remaining)
 
           %li
             %span.stat Original Potential
-            %span.current= number_as_cents(report.revenue.original_potential.gross)
+            %span.current= number_as_cents(report.potential_original)

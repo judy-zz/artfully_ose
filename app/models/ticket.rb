@@ -11,6 +11,17 @@ class Ticket < ActiveRecord::Base
   
   scope :sold, where('state = ?', :sold)
 
+  def self.sold_after(datetime)
+    sold.where("sold_at > ?", datetime)
+  end
+
+  def self.sold_before(datetime)
+    sold.where("sold_at < ?", datetime)
+  end
+
+  scope :played, joins(:show).merge(Show.played)
+  scope :unplayed, joins(:show).merge(Show.unplayed)
+
   state_machine do
     state :off_sale
     state :on_sale
@@ -24,7 +35,11 @@ class Ticket < ActiveRecord::Base
     event(:do_return) { transitions :from => [ :comped, :sold ],              :to => :on_sale   }
   end
 
-  def self.available(params)
+  def self.unsold
+    where(:state => [:off_sale, :on_sale])
+  end
+
+  def self.find_available(params)
     terms = params.dup.with_indifferent_access
     limit = terms.delete(:limit) || 4
     raise ArgumentError unless terms.all? { |key, value| known_attributes.include? key }

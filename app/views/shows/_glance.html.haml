@@ -8,27 +8,27 @@
       %ul.report
         %li
           %span.stat Total Sales
-          %span.current= number_as_cents(report.revenue.total_sales.gross)
+          %span.current= number_as_cents(report.sales_total)
         %li
           %span.stat Sold Today
-          %span.current= number_as_cents(report.revenue.sold_today.gross)
+          %span.current= number_as_cents(report.sales_today)
         %li
           %span.stat Potential Remaining
-          %span.current= number_as_cents(report.revenue.potential_remaining.gross)
+          %span.current= number_as_cents(report.potential_remaining)
         %li
           %span.stat Original Potential
-          %span.current= number_as_cents(report.revenue.original_potential.gross)
+          %span.current= number_as_cents(report.potential_original)
     %li
       %h4 Tickets
       %ul.report
         %li
           %span.stat On Sale
-          %span.current= report.tickets.available
+          %span.current= report.available_total
         %li
           %span.stat Sold
-          %span.current= report.tickets.sold.gross
-          %span.alternative= "(#{report.tickets.sold.comped} Comped)"
+          %span.current= report.sold_total
+          %span.alternative= "(#{report.comped_total} Comped)"
         %li
           %span.stat Sold Today
-          %span.current= report.tickets.sold_today.gross
-          %span.alternative= "(#{report.tickets.sold_today.comped} Comped)"
+          %span.current= report.sold_today
+          %span.alternative= "(#{report.comped_today} Comped)"
