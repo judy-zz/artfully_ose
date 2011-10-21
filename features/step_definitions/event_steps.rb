@@ -24,7 +24,7 @@ Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
 end
 
 Given /^there is an event called "([^"]*)" with (\d+) shows with tickets$/ do |name, quantity|
-  event = Factory(:event, :name => name)
+  event = Factory(:event, :name => name, :organization => @current_user.current_organization)
   event.shows << quantity.to_i.times.collect { Factory(:show_with_tickets, :event => event, :organization => event.organization) }
   current_shows(event.shows)
 end

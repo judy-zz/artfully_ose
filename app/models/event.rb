@@ -53,7 +53,7 @@ class Event < ActiveRecord::Base
   end
 
   def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization_id })
+    AthenaGlanceReport.new
   end
 
   def assign_chart(chart)

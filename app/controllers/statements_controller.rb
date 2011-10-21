@@ -9,7 +9,7 @@ class StatementsController < ApplicationController
       @statement = nil
       render :show and return
     else
-      @events = Event.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" })
+      @events = Event.all
       @events.each {|event| authorize! :view, event}
     end
   end
