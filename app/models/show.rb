@@ -32,6 +32,10 @@ class Show < ActiveRecord::Base
     where("shows.datetime < ?", Time.now)
   end
 
+  def self.unplayed
+    where("shows.datetime > ?", Time.now)
+  end
+
   def gross_potential
     @gross_potential ||= tickets.inject(0) { |sum, ticket| sum += ticket.price.to_i }
   end

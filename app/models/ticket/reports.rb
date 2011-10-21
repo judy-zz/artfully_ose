@@ -27,7 +27,7 @@ module Ticket::Reports
     end
 
     def today
-      tickets.sold.sold_before(Time.now.beginning_of_day).count
+      tickets.sold_after(Time.now.beginning_of_day).count
     end
 
     def played
@@ -41,7 +41,7 @@ module Ticket::Reports
     end
 
     def today
-      tickets.comped.sold_before(Time.now.beginning_of_day).count
+      tickets.comped.sold_after(Time.now.beginning_of_day).count
     end
 
     def played
@@ -50,14 +50,30 @@ module Ticket::Reports
   end
 
   class Sales < Base
-    def total; end
-    def today; end
-    def played; end
-    def advance; end
+    def total
+      tickets.sold.sum(:price)
+    end
+
+    def today
+      tickets.sold_after(Time.now.beginning_of_day).sum(:price)
+    end
+
+    def played
+      tickets.played.sum(:price)
+    end
+
+    def advance
+      tickets.unplayed.sum(:price)
+    end
   end
 
   class Potential < Base
-    def original; end
-    def remaining; end
+    def original
+      tickets.sum(:price)
+    end
+
+    def remaining
+      tickets.unsold.sum(:price)
+    end
   end
 end
