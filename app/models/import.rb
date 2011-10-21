@@ -13,11 +13,6 @@ class Import < ActiveRecord::Base
   validates_presence_of :s3_key
   validates_presence_of :s3_etag
 
-  scope :pending, where(:status => "pending")
-  scope :approved, where(:status => "approved")
-  scope :importing, where(:status => "importing")
-  scope :imported, where(:status => "imported")
-
   before_destroy :destroy_people!
 
   serialize :import_headers
@@ -77,6 +72,10 @@ class Import < ActiveRecord::Base
     self.update_attributes!(:status => "imported")
   end
 
+  def failed!
+    self.update_attributes!(:status => "failed")
+  end
+
   def import
     self.importing!
 
@@ -98,19 +97,13 @@ class Import < ActiveRecord::Base
   end
 
   def cache_data
-    csv_data =
-      if File.file?(self.s3_key)
-        File.read(self.s3_key)
-      else
-        s3_bucket = s3_service.buckets.find(self.s3_bucket) if self.s3_bucket.present?
-        s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
-        s3_object.content if s3_object
-      end
+    @csv_data = nil
 
-    raise "cannot load csv data" unless csv_data.present?
+    raise "Cannot load CSV data" unless csv_data.present?
 
     self.import_headers = nil
     self.import_rows.delete_all
+    self.import_errors.delete_all
 
     csv_data.gsub!(/\\"(?!,)/, '""') # Fix improperly escaped quotes.
 
@@ -124,6 +117,24 @@ class Import < ActiveRecord::Base
     end
 
     self.pending!
+  rescue FasterCSV::MalformedCSVError => e
+    error_message = "There was an error while parsing the CSV document: #{e.message}"
+    self.import_errors.create!(:error_message => error_message)
+    self.failed!
+  rescue Exception => e
+    self.import_errors.create!(:error_message => e.message)
+    self.failed!
+  end
+
+  def csv_data
+    @csv_data ||=
+      if File.file?(self.s3_key)
+        File.read(self.s3_key)
+      else
+        s3_bucket = s3_service.buckets.find(self.s3_bucket) if self.s3_bucket.present?
+        s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
+        s3_object.content if s3_object
+      end
   end
 
   def s3_service
