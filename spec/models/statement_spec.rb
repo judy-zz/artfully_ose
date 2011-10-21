@@ -14,10 +14,12 @@ describe Settlement do
   end
   
   it "should report the date of the show" do
+    pending
     statement.datetime.should eq show.datetime
   end
   
   it "should report how many tickets were sold" do
+    pending
     show.tickets.each do |t|
       puts t.state
       puts t.sold?
