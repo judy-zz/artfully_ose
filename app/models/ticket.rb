@@ -9,6 +9,12 @@ class Ticket < ActiveRecord::Base
 
   delegate :datetime, :event, :to => :show
 
+  def self.sold_before(datetime)
+    where("sold_at < ?", datetime)
+  end
+
+  scope :played, joins(:show).merge(Show.played)
+
   state_machine do
     state :off_sale
     state :on_sale

@@ -7,6 +7,8 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name, :venue, :city, :state, :producer, :organization_id, :time_zone
 
+  include Ticket::Reporting
+
   def free?
     is_free?
   end
@@ -50,10 +52,6 @@ class Event < ActiveRecord::Base
 
   def as_json(options = {})
     super({ :methods => [ 'shows', 'charts' ]}.merge(options))
-  end
-
-  def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :eventId => self.id, :organizationId => self.organization_id })
   end
 
   def assign_chart(chart)

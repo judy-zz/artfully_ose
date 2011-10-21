@@ -12,6 +12,8 @@ class Show < ActiveRecord::Base
   include Ticket::Foundry
   foundry :using => :chart, :with => lambda {{:show_id => id, :organization_id => organization_id}}
 
+  include Ticket::Reporting
+
   include ActiveRecord::Transitions
   state_machine do
     state :pending
@@ -25,6 +27,10 @@ class Show < ActiveRecord::Base
   end
 
   delegate :free?, :to => :event
+
+  def self.played
+    where("shows.datetime < ?", Time.now)
+  end
 
   def gross_potential
     @gross_potential ||= tickets.inject(0) { |sum, ticket| sum += ticket.price.to_i }
@@ -78,10 +84,6 @@ class Show < ActiveRecord::Base
 
   def add_show_time_string
     attributes['show_time'] = I18n.l( attributes['datetime'].in_time_zone(time_zone), :format => :long_with_day)
-  end
-
-  def glance
-    @glance ||= AthenaGlanceReport.find(nil, :params => { :showId => self.id, :organizationId => self.organization_id })
   end
 
   #return accepted id's

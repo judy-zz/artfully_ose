@@ -12,7 +12,7 @@
     %li= button_to "Store Front", store_event_path(@event), :method => :get, :class => "new-window"
     %li= button_to "New Show", new_event_show_path(@event), :method => :get
 
-  = # render :partial => "glance", :locals => { :report => @event.glance }
+  = render :partial => "glance", :locals => { :report => @event.glance }
   = render :partial => "shows/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
 
   %h3 Charts
@@ -46,9 +46,9 @@
         - @shows.each do |show|
           %tr{ :class => show.state }
             %td= link_to l(show.datetime, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
-            %td.available=# show.glance.tickets.available
-            %td.gross=# show.glance.tickets.sold.gross
-            %td.comped=# show.glance.tickets.sold.comped
+            %td.available= show.glance.available_total
+            %td.gross= show.glance.sold_total
+            %td.comped= show.glance.comped_total
             %td= render :partial => "shows/controls", :locals => { :show => show }
         %tr
           = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
