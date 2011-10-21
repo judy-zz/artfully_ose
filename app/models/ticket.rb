@@ -8,6 +8,8 @@ class Ticket < ActiveRecord::Base
   belongs_to :cart
 
   delegate :datetime, :event, :to => :show
+  
+  scope :sold, where('state = ?', :sold)
 
   state_machine do
     state :off_sale
