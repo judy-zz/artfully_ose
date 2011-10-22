@@ -22,3 +22,8 @@ Feature: Import Contacts
     When I upload a new import file "simple-export.csv"
     And the import is performed
     Then there should be no import errors
+
+  Scenario: A user provides an incorrect file
+    When I upload a new import file "athena.rb"
+    And I am on the import page
+    Then I should see "Import Failed"

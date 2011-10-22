@@ -43,6 +43,7 @@ class Import < ActiveRecord::Base
       people = AthenaPerson.find(:all, :params => query)
       people.each { |person| yield person }
       return if people.count < limit
+      offset += limit
     end
   end
 
