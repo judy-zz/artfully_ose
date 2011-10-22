@@ -149,4 +149,26 @@ describe Organization do
       subject.send(:update_kits)
     end
   end
+
+  describe "#all_donations" do
+    before do
+      @organization = Factory(:organization_with_id)
+      @orders = (1..10).map do |id|
+        Factory(:athena_order_with_id, :organization => @organization, :id => id)
+      end
+      @donations = @orders.map do |order|
+        Factory(:athena_donation, :order => order, :id => 100 + order.id)
+      end
+      body = "[" + @orders.map(&:encode).join(",") + "]"
+      body = @orders.to_json
+      FakeWeb.register_uri :get, %r|http://localhost/athena/orders.json\?_limit=100&_start=0&organizationId=#{@organization.id}|, :body => body
+      FakeWeb.register_uri :get, %r|http://localhost/athena/orders.json\?_limit=100&_start=100&organizationId=#{@organization.id}|, :body => "[]"
+      body = "[" + @donations.map { |don| don.encode(:except => "order") }.join(",") + "]"
+      FakeWeb.register_uri :get, %r{http://localhost/athena/items.json.*}, :body => body
+    end
+
+    it "should return all 10 donations" do
+      @organization.all_donations.count.should == 10
+    end
+  end
 end

@@ -84,6 +84,40 @@ class Organization < ActiveRecord::Base
     process_donations FA::Donation.find_by_member_id(fa_member_id, since)
   end
 
+  def all_items_of_type(product_type, &block)
+    offset    = 0
+    limit     = 100
+    all_items = [] if !block
+
+    loop do
+      query = { :organizationId => self.id, :_start => offset, :_limit => limit }
+      orders = AthenaOrder.find(:all, :params => query)
+      order_ids = "in(" + orders.map(&:id).join(",") + ")"
+      query = { :orderId => order_ids, :productType => product_type }
+      offset += limit
+
+      break if orders.count == 0
+
+      AthenaItem.find(:all, :params => query).each do |item|
+        if block
+          block.call item
+        else
+          all_items << item
+        end
+      end
+    end
+
+    all_items || self
+  end
+
+  def all_donations(&block)
+    all_items_of_type "Donation", &block
+  end
+
+  def all_ticket_sales(&block)
+    all_items_of_type "AthenaTicket", &block
+  end
+
   private
 
     def update_kits
