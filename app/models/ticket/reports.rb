@@ -4,6 +4,10 @@ module Ticket::Reports
       @parent = parent
     end
 
+    def self.reporting_methods
+      self.public_instance_methods - Object.public_instance_methods
+    end
+
     private
 
     def parent

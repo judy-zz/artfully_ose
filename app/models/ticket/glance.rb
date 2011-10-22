@@ -9,8 +9,7 @@ class Ticket::Glance
       EOS
 
       # Delegate methods to the created method
-      methods = klass.public_instance_methods - Object.public_instance_methods
-      delegate(*methods, :prefix => true, :to => mthd)
+      delegate(*klass.reporting_methods, :prefix => true, :to => mthd)
     end
   end
 
