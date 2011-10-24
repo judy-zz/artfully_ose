@@ -179,10 +179,6 @@ describe Show do
     end
   end
 
-  describe ".in_range" do
-    pending
-  end
-
   describe ".next_datetime" do
     context "without a starting performance datetime" do
       subject { Show.next_datetime(nil) }

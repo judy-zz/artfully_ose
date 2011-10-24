@@ -18,6 +18,10 @@ class Order < ActiveRecord::Base
   after_save :create_purchase_action, :unless => :skip_actions
   after_save :create_donation_actions, :unless => :skip_actions
 
+  scope :before, lambda { |time| where("created_at < ?", time) }
+  scope :after,  lambda { |time| where("created_at > ?", time) }
+  scope :in_range, lambda { |start, stop| after(start).before(stop) }
+
   def person_information_present?
     # !(first_name.nil? || last_name.nil? || email.nil?)
   end
@@ -54,15 +58,6 @@ class Order < ActiveRecord::Base
     items.each do |item|
       item.to_exchange!
     end
-  end
-
-  def self.in_range(start, stop, org_id=nil)
-    start = "gt#{start.xmlschema}"
-    stop = "lt#{stop.xmlschema}"
-
-    org_query = "organizationId=eq#{org_id}&" unless org_id.nil?
-
-    instantiate_collection(query("#{org_query}timestamp=#{start}&timestamp=#{stop}"))
   end
 
   def all_items

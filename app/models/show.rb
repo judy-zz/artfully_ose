@@ -26,15 +26,14 @@ class Show < ActiveRecord::Base
     event(:unpublish) { transitions :from => :published, :to => :unpublished }
   end
 
+  scope :before, lambda { |time| where("shows.datetime < ?", time) }
+  scope :after,  lambda { |time| where("shows.datetime > ?", time) }
+  scope :in_range, lambda { |start, stop| after(start).before(stop) }
+  scope :played, lambda { where("shows.datetime < ?", Time.now) }
+  scope :unplayed, lambda { where("shows.datetime > ?", Time.now) }
+
+
   delegate :free?, :to => :event
-
-  def self.played
-    where("shows.datetime < ?", Time.now)
-  end
-
-  def self.unplayed
-    where("shows.datetime > ?", Time.now)
-  end
 
   def gross_potential
     @gross_potential ||= tickets.inject(0) { |sum, ticket| sum += ticket.price.to_i }
@@ -50,12 +49,6 @@ class Show < ActiveRecord::Base
 
   def tickets_comped
     @tickets_comped ||= tickets.select { |ticket| ticket.comped? }
-  end
-
-  def self.in_range(start, stop)
-    start = "gt#{start.xmlschema}"
-    stop = "lt#{stop.xmlschema}"
-    instantiate_collection(query("datetime=#{start}&datetime=#{stop}"))
   end
 
   def self.next_datetime(show)
