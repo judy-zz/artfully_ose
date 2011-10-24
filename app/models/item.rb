@@ -104,7 +104,7 @@ class Item < ActiveRecord::Base
     end
 
     logger.debug("Settling items #{items.collect(&:id).join(',')}")
-    patch(items, { :settlementId => settlement.id, :state => :settled })
+    self.update_all({:settlement_id => settlement.id, :state => :settled }, { :id => items.collect(&:id)})
   end
 
   def self.find_by_fa_id(fa_id)

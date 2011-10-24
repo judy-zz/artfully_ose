@@ -5,6 +5,9 @@ class Show < ActiveRecord::Base
 
   has_many :tickets
 
+  has_one :settlement
+  has_many :items
+
   validates_presence_of :datetime
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }
@@ -106,7 +109,7 @@ class Show < ActiveRecord::Base
   end
 
   def settleables
-    Item.find_by_show_id(self.id).reject(&:modified?)
+    items.reject(&:modified?)
   end
 
   def live?

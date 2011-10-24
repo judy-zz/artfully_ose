@@ -6,7 +6,7 @@ class Settlement < ActiveRecord::Base
   belongs_to :show
   has_many :items
 
-  after_save { Item.settle(items) if success? }
+  after_save { Item.settle(items, self) if success? }
 
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }

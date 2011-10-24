@@ -5,6 +5,12 @@ Factory.define :organization do |o|
   end
 end
 
+Factory.define(:organization_with_bank_account, :parent => :organization) do |o|
+  o.after_create do |organization|
+    organization.bank_account = Factory(:bank_account)
+  end
+end
+
 Factory.define :organization_with_ticketing, :parent => :organization do |o|
   o.after_create { |organization| Factory(:ticketing_kit, :state => :activated, :organization => organization) }
 end
