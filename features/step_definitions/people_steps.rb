@@ -2,8 +2,9 @@ Given /^an athena person exists with an email of "([^"]*)"$/ do |email|
   Factory(:person, :email => email)
 end
 
-Given /^an athena person exists with an email of "([^"]*)" for my organization$/ do |email|
-  Factory(:person, :email => email, :organization => @current_user.current_organization)
+Given /^a person exists with an email of "([^"]*)" for my organization$/ do |email|
+  person = Factory(:person, :email => email, :organization => @current_user.current_organization)
+  visit(person_path(person))
 end
 
 Given /^I search for the person "([^"]*)"$/ do |email|
