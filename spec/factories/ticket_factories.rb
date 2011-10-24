@@ -13,7 +13,6 @@ Factory.define :free_ticket, :parent => :ticket do |t|
 end
 
 Factory.define :sold_ticket, :parent => :ticket do |t|
-  t.on_sale!
   t.state :sold
   t.after_create do |ticket|
     ticket.sell_to(Factory(:person))
