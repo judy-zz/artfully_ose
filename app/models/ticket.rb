@@ -8,8 +8,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :cart
 
   delegate :datetime, :event, :to => :show
-  
-  scope :sold, where('state = ?', :sold)
 
   def self.sold_after(datetime)
     sold.where("sold_at > ?", datetime)
