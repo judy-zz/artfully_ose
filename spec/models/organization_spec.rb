@@ -11,34 +11,6 @@ describe Organization do
     it { should respond_to :ability }
   end
 
-  describe "importing donations" do
-    before(:each) do
-      fa_project = Factory(:fa_project)
-      FA::Project.stub(:find_active_by_member_id).and_return(fa_project)
-      subject.fa_member_id = fa_project.member_id
-
-      FA::Donation.stub(:find_by_member_id).and_return([])
-    end
-
-    it "should import all donations" do
-      subject.refresh_active_fs_project
-      FA::Donation.should_receive(:find_by_member_id).with("1")
-      subject.import_all_fa_donations
-    end
-
-    it "should import all donations since the last refresh" do
-      subject.refresh_active_fs_project
-      FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at - 1.day)
-      subject.import_recent_fa_donations
-    end
-
-    it "shouldn't call anything if the fiscally_sponsored_project is nil" do
-      subject.fiscally_sponsored_project = nil
-      subject.import_all_fa_donations.should be_nil
-      subject.import_recent_fa_donations.should be_nil
-    end
-  end
-
   describe ".owner" do
     it "should return the first user as the owner of the organization" do
       user = Factory(:user)

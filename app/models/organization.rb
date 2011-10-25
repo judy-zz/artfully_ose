@@ -8,6 +8,9 @@ class Organization < ActiveRecord::Base
 
   has_many :memberships
   has_one  :bank_account
+  has_many :orders
+  has_many :items
+
   has_many :settlements
   has_one  :fiscally_sponsored_project
   has_many :users, :through => :memberships
@@ -22,6 +25,10 @@ class Organization < ActiveRecord::Base
 
   def owner
     users.first
+  end
+
+  def dummy
+    Person.dummy_for(self)
   end
 
   delegate :can?, :cannot?, :to => :ability
@@ -81,43 +88,26 @@ class Organization < ActiveRecord::Base
     end
   end
 
-  def import_all_fa_donations
-    return unless has_fiscally_sponsored_project?
-    process_donations FA::Donation.find_by_member_id(fa_member_id)
-  end
-
-  def import_recent_fa_donations(since=nil)
-    return unless has_fiscally_sponsored_project?
-    since ||= (fsp.updated_at - 1.day)
-    process_donations FA::Donation.find_by_member_id(fa_member_id, since)
-  end
-
   private
 
-    def update_kits
-      if fsp.active?
-        sponsored_kit.activate_without_prejudice!
-      else
-        sponsored_kit.cancel_with_authority!
-      end
+  def update_kits
+    if fsp.active?
+      sponsored_kit.activate_without_prejudice!
+    else
+      sponsored_kit.cancel_with_authority!
     end
+  end
 
-    def sponsored_kit
-      kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new({:organization => self})
-    end
+  def sponsored_kit
+    kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new({:organization => self})
+  end
 
-    def process_donations(fa_donations)
-      fa_donations.each do |fa_donation|
-        @order = Order.from_fa_donation(fa_donation, self)
-      end
-    end
+  def check_for_duplicates(kit)
+    raise Kit::DuplicateError if kits.where(:type => kit.type).any?
+  end
 
-    def check_for_duplicates(kit)
-      raise Kit::DuplicateError if kits.where(:type => kit.type).any?
-    end
-
-    def donation_type
-      return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
-      return :regular if kits.where(:type => "RegularDonationKit").any?
-    end
+  def donation_type
+    return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
+    return :regular if kits.where(:type => "RegularDonationKit").any?
+  end
 end

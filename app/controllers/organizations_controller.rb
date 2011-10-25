@@ -84,16 +84,16 @@ class OrganizationsController < ApplicationController
         @integration.save
         @organization.update_attribute(:fa_member_id, @fa_user.member_id)
         @organization.refresh_active_fs_project
-        @organization.delay.import_all_fa_donations
+        Donation::Importer.by_organization(@organization) if @organization.has_fiscally_sponsored_project?
         flash[:notice] = "Successfully connected to Fractured Atlas!"
       else
         flash[:error]= "Unable to connect to your Fractured Atlas account.  Please check your username and password."
-      end      
+      end
     rescue ActiveResource::BadRequest
-      #If FA already has an integration for this member_id, FA will return 400 
+      #If FA already has an integration for this member_id, FA will return 400
       flash[:error]= "Unable to connect to your Fractured Atlas account.  Please contact support."
     end
-    
+
     if params[:back]
       redirect_to :back
     else

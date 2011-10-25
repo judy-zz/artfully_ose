@@ -107,37 +107,6 @@ class Item < ActiveRecord::Base
     self.update_all({:settlement_id => settlement.id, :state => :settled }, { :id => items.collect(&:id)})
   end
 
-  def self.find_by_fa_id(fa_id)
-    find(:all, :params => { :faId => fa_id }).first
-  end
-
-  def self.from_fa_donation(fa_donation, organization, order)
-    @item = Item.new({
-                            :order_id       => order.id,
-                            :product_type   => "Donation",
-                            :state          => "settled"
-                          })
-
-    @item.organization_id   = organization.id
-    @item.copy_fa_donation(fa_donation)
-    @item
-  end
-
-  def copy_fa_donation(fa_donation)
-    self.state             = "settled"
-    self.price             = (fa_donation.amount.to_f * 100).to_i
-    self.realized_price    = (fa_donation.amount.to_f * 100).to_i
-    self.net               = ((fa_donation.amount.to_f * 100) * 0.94).to_i
-    self.fs_project_id     = fa_donation.fs_project_id
-    self.nongift_amount    = (fa_donation.nongift.to_f * 100).to_i
-    self.is_noncash        = fa_donation.is_noncash || false
-    self.is_stock          = fa_donation.is_stock || false
-    self.reversed_at       = Time.at(fa_donation.reversed_at.to_i) unless fa_donation.reversed_at.nil?
-    self.reversed_note     = fa_donation.reversed_note unless fa_donation.reversed_note.nil?
-    self.fs_available_on   = fa_donation.fs_available_on unless fa_donation.fs_available_on.nil?
-    self.is_anonymous      = fa_donation.is_anonymous || false
-  end
-
   private
 
     def set_product_details_from(prod)

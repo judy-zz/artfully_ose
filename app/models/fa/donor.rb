@@ -16,6 +16,10 @@ class FA::Donor < FA::Base
     end
   end
 
+  def has_information?
+    [ email, first_name, last_name ].any?
+  end
+
   #order matters here, we use these in to_xml to adhered to the FA schema which is an xs:sequence
   #see: http://api.fracturedatlas.org/donations.xsd
   #Note: Ruby 1.8.7 doens't preserve hash order.  FA validation will fail.

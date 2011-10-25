@@ -15,8 +15,8 @@ class Order < ActiveRecord::Base
   validates_presence_of :person_id, :unless => lambda { person_information_present? }
   validates_presence_of :organization_id
 
-  after_save :create_purchase_action, :unless => :skip_actions
-  after_save :create_donation_actions, :unless => :skip_actions
+  after_create :create_purchase_action, :unless => :skip_actions
+  after_create :create_donation_actions, :unless => :skip_actions
 
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
@@ -144,36 +144,6 @@ class Order < ActiveRecord::Base
 
   def returnable_items
     items.select { |i| i.returnable? and not i.refundable? }
-  end
-
-  def self.find_by_fa_id(fa_id)
-    o = find(:all, :params => { :faId => fa_id }).first
-    return if o.nil?
-    o.skip_actions = true
-    o
-  end
-
-  def self.from_fa_donation(fa_donation, organization)
-    @order = Order.find_by_fa_id(fa_donation.id) || Order.new
-
-    @order.organization_id  = organization.id
-    @order.created_at        = DateTime.parse fa_donation.date
-    @order.price            = (fa_donation.amount.to_f * 100).to_i
-    @order.first_name       = fa_donation.donor.first_name || ""
-    @order.last_name        = fa_donation.donor.last_name || ""
-    @order.fa_id            = fa_donation.id
-
-    #This should go to the anonymous record
-    @order.email            = fa_donation.donor.email || ""
-
-    if @order.items.blank?
-      @order.items << Item.from_fa_donation(fa_donation, organization, @order)
-    else
-      item = @order.items.first.copy_fa_donation(fa_donation)
-    end
-
-    @order.save
-    @order
   end
 
   private
