@@ -160,21 +160,21 @@ describe Show do
 
   describe "#settleables" do
     let(:items) { 10.times.collect{ Factory(:item, :show_id => subject.id) } }
+    before(:each) do
+      subject.items = items
+    end
 
     it "finds the settleable line items for the performance" do
-      Item.stub(:find_by_show_id).and_return(items)
       subject.settleables.should eq items
     end
 
     it "rejects line items that have been modified in some way" do
       items.first.state = "returned"
-      Item.stub(:find_by_show_id).and_return(items)
       subject.settleables.should have(9).items
     end
 
     it "rejects line items that have been settled already" do
       items.first.state = "settled"
-      Item.stub(:find_by_show_id).and_return(items)
       subject.settleables.should have(9).items
     end
   end
