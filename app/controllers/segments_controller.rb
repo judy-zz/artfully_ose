@@ -1,7 +1,7 @@
 class SegmentsController < ApplicationController
   def index
     authorize! :view, Segment
-    @segments = Segment.find_by_organization_id(current_user.current_organization)
+    @segments = current_organization.segments
   end
 
   def show
@@ -15,14 +15,12 @@ class SegmentsController < ApplicationController
 
   def new
     authorize! :create, Segment
-    @segment = Segment.new(params[:segment])
-    @segment.organization = current_user.current_organization
+    @segment = current_organization.segments.build(params[:segment])
   end
 
   def create
     authorize! :create, Segment
-    @segment = Segment.new(params[:segment])
-    @segment.organization = current_user.current_organization
+    @segment = current_organization.segments.build(params[:segment])
     if @segment.save
       redirect_to @segment
     else
