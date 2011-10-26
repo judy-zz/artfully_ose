@@ -13,6 +13,12 @@ class Show < ActiveRecord::Base
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }
 
+  scope :before, lambda { |time| where("shows.datetime < ?", time) }
+  scope :after,  lambda { |time| where("shows.datetime > ?", time) }
+  scope :in_range, lambda { |start, stop| after(start).before(stop) }
+  scope :played, lambda { where("shows.datetime < ?", Time.now) }
+  scope :unplayed, lambda { where("shows.datetime > ?", Time.now) }
+
   include Ticket::Foundry
   foundry :using => :chart, :with => lambda {{:show_id => id, :organization_id => organization_id}}
 
@@ -29,13 +35,6 @@ class Show < ActiveRecord::Base
     event(:publish)   { transitions :from => [ :built, :unpublished ], :to => :published }
     event(:unpublish) { transitions :from => :published, :to => :unpublished }
   end
-
-  scope :before, lambda { |time| where("shows.datetime < ?", time) }
-  scope :after,  lambda { |time| where("shows.datetime > ?", time) }
-  scope :in_range, lambda { |start, stop| after(start).before(stop) }
-  scope :played, lambda { where("shows.datetime < ?", Time.now) }
-  scope :unplayed, lambda { where("shows.datetime > ?", Time.now) }
-
 
   delegate :free?, :to => :event
 
