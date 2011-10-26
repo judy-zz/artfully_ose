@@ -5,6 +5,7 @@ class Organization < ActiveRecord::Base
   has_many :tickets
 
   has_many :people
+  has_many :segments
 
   has_many :memberships
   has_one  :bank_account
