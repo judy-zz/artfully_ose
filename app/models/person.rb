@@ -1,11 +1,10 @@
-#TODO: tags, phones
-
 class Person < ActiveRecord::Base
   acts_as_taggable
 
   belongs_to :organization
   has_many :actions
   has_one :address
+  has_many :phones
 
   validates_presence_of :organization_id
   validates_presence_of :person_info
@@ -22,10 +21,6 @@ class Person < ActiveRecord::Base
 
   #TODO
   def self.recent(organization)
-    []
-  end
-
-  def phones
     []
   end
 
