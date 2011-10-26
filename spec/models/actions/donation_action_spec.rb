@@ -17,12 +17,10 @@ describe DonationAction do
 
   describe "subject" do
     it "should return a Donation as the subject" do
-      pending
       subject.subject.should be_a Donation
     end
 
     it "should fetch the Donation if not cached" do
-      pending
       donation = subject.subject
       subject.instance_variable_set(:@subject, nil)
       subject.subject.should eq donation

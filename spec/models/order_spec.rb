@@ -11,14 +11,13 @@ describe Order do
   end
 
   describe "#save" do
-    subject { Factory.build(:order) }
+    subject { Factory.build(:order, :created_at => Time.now) }
     it "creates a purchase action after save" do
       subject.should_receive(:create_purchase_action)
       subject.save
     end
 
     it "generates a valid donation action for each donation" do
-      pending
       donations = 2.times.collect { Factory(:donation) }
       subject << donations
       actions = subject.send(:create_donation_actions)
@@ -59,15 +58,6 @@ describe Order do
       subject.items.select(&:donation?).each do |item|
         donations.collect(&:id).should include item.product_id
       end
-    end
-  end
-
-  describe ".in_range" do
-    it "composes a GET request for a given set of Time objects" do
-      pending
-      start = Time.now.beginning_of_day
-      stop = start.end_of_day
-      Order.in_range(start, stop)
     end
   end
 end

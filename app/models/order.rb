@@ -12,7 +12,7 @@ class Order < ActiveRecord::Base
 
   attr_accessor :skip_actions
 
-  validates_presence_of :person_id, :unless => lambda { person_information_present? }
+  validates_presence_of :person_id
   validates_presence_of :organization_id
 
   after_create :create_purchase_action, :unless => :skip_actions
@@ -21,10 +21,6 @@ class Order < ActiveRecord::Base
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
   scope :in_range, lambda { |start, stop| after(start).before(stop) }
-
-  def person_information_present?
-    # !(first_name.nil? || last_name.nil? || email.nil?)
-  end
 
   def total
     all_items.inject(0) {|sum, item| sum + item.price.to_i }

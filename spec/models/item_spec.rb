@@ -123,14 +123,9 @@ describe Item do
 
   describe "#dup!" do
     it "creates a duplicate item without the id and state" do
-      pending
       old_attr = subject.attributes.dup
-      old_attr.delete(:id)
-      old_attr.delete(:state)
-
-      new_attr = subject.dup!.attributes
-
-      old_attr.should eq new_attr
+      Item.should_receive(:new).with(old_attr.reject { |key, value| %w( id state ).include? key })
+      subject.dup!
     end
   end
 
@@ -207,15 +202,11 @@ describe Item do
   end
 
   describe ".settle" do
-    let(:settlement) { Factory(:settlement_with_id) }
+    let(:settlement) { Factory(:settlement) }
     let(:items) { 3.times.collect { Factory(:item) } }
     it "marks all items as settled" do
-      pending
-    end
-
-    it "updates the state of each item to settled" do
-      pending
       Item.settle(items, settlement)
+      items.each { |item| item.reload; item.should be_settled }
     end
   end
 

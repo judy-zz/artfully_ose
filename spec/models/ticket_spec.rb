@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Ticket do
-
   subject { Factory(:ticket) }
 
   describe "attributes" do
@@ -12,15 +11,24 @@ describe Ticket do
   end
 
   describe "available tickets" do
-    it "adds _limit to the query string when included in the arguments" do
-      pending
-      params = { "limit" => "4" }
-      Ticket.available(params)
+    let(:conditions) { Factory.attributes_for(:ticket, :state => :on_sale) }
+
+    before(:each) do
+      10.times.collect { Factory(:ticket, conditions) }
+    end
+
+    it "adds a limit of 4 tickets if no limit is specified" do
+      Ticket.available(conditions).should have(4).tickets
+    end
+
+    it "uses the limit when specified" do
+      Ticket.available(conditions, 6).should have(6).tickets
     end
 
     it "defaults to searching for tickets marked as on sale" do
-      pending
-      Ticket.available({})
+      ticket = Ticket.find(:first, :conditions => conditions)
+      ticket.update_attribute(:state, :off_sale)
+      Ticket.available().should_not include(ticket)
     end
   end
 
@@ -232,12 +240,10 @@ describe Ticket do
     let(:tickets) { 5.times.collect { Factory(:ticket, :state => :off_sale) } }
 
     it "sends a request to patch the state of all tickets" do
-      pending
       Ticket.put_on_sale(tickets)
     end
 
     it "does not issue the request if any of the tickets can not be put on sale" do
-      pending
       tickets.first.state = :comped
       Ticket.should_not_receive(:patch)
       Ticket.put_on_sale(tickets)
@@ -255,18 +261,15 @@ describe Ticket do
     let(:tickets) { 5.times.collect { Factory(:ticket, :state => :on_sale) } }
 
     it "sends a request to patch the state of all tickets" do
-      pending
       Ticket.take_off_sale(tickets)
     end
 
     it "does not issue the request if any of the tickets can not be put on sale" do
-      pending
       tickets.first.state = :off_sale
       Ticket.take_off_sale(tickets)
     end
 
     it "updates the attributes for each ticket" do
-      pending
       Ticket.take_off_sale(tickets)
       tickets.each do |ticket|
         ticket.should be_off_sale

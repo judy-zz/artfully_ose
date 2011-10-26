@@ -10,14 +10,4 @@ describe PurchaseAction do
       subject.should_not be_valid
     end
   end
-
-  describe "subject" do
-    it "should return an Order as the subject" do
-      pending
-    end
-
-    it "should fetch the Order if not cached" do
-      pending
-    end
-  end
 end

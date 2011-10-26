@@ -72,8 +72,7 @@ describe Show do
   end
 
   describe "bulk edit tickets" do
-    let(:tickets) { 3.times.collect { Factory(:ticket) } }
-    subject { Factory(:show, :tickets => tickets) }
+    subject { Factory(:show_with_tickets) }
 
     describe "#bulk_on_sale" do
       it "puts all tickets on sale when :all is specified" do
@@ -82,35 +81,33 @@ describe Show do
       end
 
       it "can put a ticket on sale that is already on_sale" do
-        tickets.first.state = :on_sale
-        outcome = subject.bulk_on_sale(tickets.collect(&:id))
+        subject.tickets.first.state = :on_sale
+        outcome = subject.bulk_on_sale(subject.tickets.collect(&:id))
         outcome.should_not be true
       end
 
       it "fails by returning false if any of the tickets can not be put on sale" do
-        tickets.first.state = :comped
-        outcome = subject.bulk_on_sale(tickets.collect(&:id))
+        subject.tickets.first.update_attribute(:state, :comped)
+        outcome = subject.bulk_on_sale(subject.tickets.collect(&:id))
         outcome.should be false
       end
     end
 
     describe "bulk_off_sale" do
       it "takes tickets off sale" do
-        pending
         Ticket.should_receive(:take_off_sale).with(subject.tickets)
-        subject.bulk_off_sale(tickets.collect(&:id))
+        subject.bulk_off_sale(subject.tickets.collect(&:id))
       end
 
       it "fails by returning false if any of the tickets can not be taken off sale" do
-        tickets.first.state = :off_sale
-        outcome = subject.bulk_off_sale(tickets.collect(&:id))
+        subject.tickets.first.state = :off_sale
+        outcome = subject.bulk_off_sale(subject.tickets.collect(&:id))
         outcome.should be false
       end
     end
 
     describe "bulk_delete" do
       it "should return the ids of tickets that were destroyed" do
-        pending
         rejected_ids = subject.bulk_delete(subject.tickets.collect(&:id))
         rejected_ids.should eq subject.tickets.collect(&:id)
       end

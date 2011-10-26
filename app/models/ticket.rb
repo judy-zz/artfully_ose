@@ -37,15 +37,11 @@ class Ticket < ActiveRecord::Base
     where(:state => [:off_sale, :on_sale])
   end
 
-  def self.find_available(params)
-    terms = params.dup.with_indifferent_access
-    limit = terms.delete(:limit) || 4
-    raise ArgumentError unless terms.all? { |key, value| known_attributes.include? key }
+  def self.available(params = {}, limit = 4)
+    conditions = params.dup
+    conditions[:state] ||= :on_sale
 
-    terms[:state] ||= "on_sale"
-    terms[:_limit] = limit
-
-    Ticket.find(:all, :from => :available, :params => parameterize(terms)) unless terms.empty?
+    where(conditions).limit(limit)
   end
 
   def items

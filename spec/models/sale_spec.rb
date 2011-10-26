@@ -59,14 +59,11 @@ describe Sale do
 
     let(:payment) { mock(:payment, :customer => Factory(:customer_with_id), :amount= => nil, :requires_settlement? => false) }
     it "adds the tickest to the cart" do
-      pending
       Checkout.stub(:new).and_return(mock(:checkout, :finish => true, :order => order))
       subject.sell(payment)
     end
 
     it "creates a new Checkout" do
-      pending
-      subject.cart.stub(:add_tickets)
       Checkout.should_receive(:new).and_return(mock(:checkout, :finish => true, :order => order))
       subject.sell(payment)
     end

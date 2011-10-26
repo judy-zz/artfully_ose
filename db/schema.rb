@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111021164439) do
+ActiveRecord::Schema.define(:version => 20111026154558) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -24,6 +24,8 @@ ActiveRecord::Schema.define(:version => 20111021164439) do
     t.datetime "updated_at"
     t.string   "type"
     t.string   "subtype"
+    t.integer  "subject_id"
+    t.string   "subject_type"
   end
 
   create_table "addresses", :force => true do |t|
@@ -195,8 +197,8 @@ ActiveRecord::Schema.define(:version => 20111021164439) do
     t.integer  "order_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "service_fee"
     t.integer  "fa_id"
+    t.integer  "service_fee"
     t.string   "details"
   end
 
@@ -250,7 +252,7 @@ ActiveRecord::Schema.define(:version => 20111021164439) do
     t.string   "transaction_id"
     t.string   "ach_response_code"
     t.string   "fail_message"
-    t.datetime "created_at",        :limit => 255
+    t.datetime "created_at"
     t.boolean  "success"
     t.integer  "gross"
     t.integer  "realized_gross"

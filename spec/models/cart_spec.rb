@@ -21,10 +21,6 @@ describe Cart do
     end
   end
 
-  describe "items" do
-    pending
-  end
-
   describe "#total" do
     let(:items) { 10.times.collect{ mock(:item, :price => 10) }}
     it "should sum up the price of the tickets via total" do
@@ -32,27 +28,27 @@ describe Cart do
       subject.total.should eq 100
     end
   end
-  
+
   describe "ticket fee" do
     let(:tickets) { 2.times.collect { Factory(:ticket) } }
     let(:free_tickets) { 2.times.collect { Factory(:free_ticket) } }
-    
+
     it "should have a fee of 0 if there are no tickets" do
       subject.fee_in_cents.should eq 0
     end
-    
+
     it "should have a fee of 0 if there are free tickets" do
       subject << free_tickets
       subject.fee_in_cents.should eq 0
       subject << tickets
       subject.fee_in_cents.should eq 400
     end
-    
+
     it "should keep the fee updated while tickets are added" do
       subject << tickets
       subject.fee_in_cents.should eq 400
     end
-    
+
     it "should have a 0 fee if there is a donation" do
       donation = Factory(:donation)
       subject.donations << donation
@@ -60,7 +56,7 @@ describe Cart do
       subject << tickets
       subject.fee_in_cents.should eq 400
     end
-    
+
     it "should include the fee in the total" do
       subject << tickets
       subject.fee_in_cents.should eq 400
