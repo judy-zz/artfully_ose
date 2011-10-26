@@ -7,6 +7,7 @@
     %li= link_to "New Section", new_chart_section_path(@chart)
 
 .context
+  = render :partial => 'return_to_event' 
   %h3 Charts
   %ul.detailed-list
     - @charts.each do |chart|
