@@ -7,3 +7,6 @@ Factory.define :cart_with_items, :parent => :cart do |o|
     order.donations << Factory(:donation)
   end
 end
+
+Factory.define :cart_with_only_tickets, :parent => :cart do |o|
+end

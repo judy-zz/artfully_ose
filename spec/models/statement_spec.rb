@@ -2,13 +2,22 @@ require 'spec_helper'
 
 describe Settlement do
   let(:organization) { Factory(:organization) }
-  let(:tickets) { 10.times.collect { Factory(:ticket) } }
-  let(:show) { Factory(:show, :tickets => tickets) }
+  let(:show) { Factory(:show) }
+  let(:tickets) { 10.times.collect { Factory(:ticket, :show => show) } }
+  let(:payment) { Factory(:payment) }
+  let(:cart) { Factory(:cart_with_only_tickets, :tickets => tickets[6..8]) }
+
+  let(:checkout) { Checkout.new(cart, payment) }  
   let(:statement) { Statement.for_show(show, organization) }
     
   before(:each) do
-    sell_tickets
+    FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => "{ success:true, transaction_id:'j59qrb' }")
+    FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => "{ success : true }")
+    tickets.each do |ticket|
+      ticket.on_sale!
+    end
     comp_tickets
+    checkout.finish
   end
   
   it "should return an empty statement if the show is nil" do
@@ -22,7 +31,7 @@ describe Settlement do
   end
   
   it "should report how many tickets were sold" do
-    statement.tickets_sold.should eq 2
+    statement.tickets_sold.should eq 3
   end
   
   it "should report the potential revenue of the show" do
@@ -33,20 +42,16 @@ describe Settlement do
     statement.tickets_comped.should eq 3
   end
   
-  it "should report the gross as num items sold times the gross price of the items"
-  it "should report processing as 3.5% of the gross"
-  
-  it "should report the net as gross - processing" do
-    pending
-    statement.net_revenue.should eq statement.gross - statement.processing
+  it "should report the gross as num items sold times the gross price of the items" do
+    statement.gross_revenue.should eq 15000
+  end  
+    
+  it "should report processing as 3.5% of the gross" do
+    statement.processing.should eq (15000 * 0.035)
   end
   
-  def sell_tickets
-    2.times do |i|
-      tickets[i].on_sale!
-      tickets[i].sell!
-      tickets[i].save
-    end
+  it "should report the net as gross - processing" do
+    statement.net_revenue.should eq (statement.gross_revenue - statement.processing)
   end
   
   def comp_tickets

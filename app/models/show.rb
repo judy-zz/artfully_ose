@@ -5,6 +5,7 @@ class Show < ActiveRecord::Base
 
   has_many :tickets
 
+  #TODO: A show can be settled several times, change this to has_many
   has_one :settlement
   has_many :items
 
