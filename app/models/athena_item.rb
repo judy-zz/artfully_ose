@@ -11,7 +11,7 @@ class AthenaItem < AthenaResource::Base
     attribute 'settlement_id',  :string
     attribute 'state',          :string
 
-    attribute 'price',          :integer
+    attribute 'price',          :integer   # gift amount
     attribute 'realized_price', :integer
     attribute 'net',            :integer
 
@@ -23,7 +23,25 @@ class AthenaItem < AthenaResource::Base
     attribute 'reversed_note',  :string
     attribute 'fs_available_on',:string
     attribute 'is_anonymous',   :string
-    attribute 'nongift_amount',   :string
+    attribute 'nongift_amount', :string    # non-gift amount
+  end
+
+  comma :donation do
+    order("First Name") { |order| order.first_name.present? ? order.first_name : order.person.first_name }
+    order("Last Name") { |order| order.last_name.present? ? order.last_name : order.person.last_name }
+    order("Company Name") { |order| order.person.company_name }
+    order("Donation Date") { |order| order.timestamp }
+    price("Gift Amount")
+    nongift_amount("Non-gift Amount")
+  end
+
+  comma :ticket_sale do
+    order("Date of Purchase") { |order| order.timestamp }
+    order("First Name") { |order| order.first_name.present? ? order.first_name : order.person.first_name }
+    order("Last Name") { |order| order.last_name.present? ? order.last_name : order.person.last_name }
+    performance("Performance Title") { |performance| performance.event.name }
+    performance("Performance Date-Time") { |performance| performance.datetime }
+    price("Ticket Price")
   end
 
   validates_presence_of :order_id, :product_type, :price, :realized_price, :net

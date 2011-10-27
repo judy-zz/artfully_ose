@@ -53,7 +53,7 @@ Factory.define :athena_item_for_comped_ticket, :default_strategy => :build, :cla
   end
 end
 
-Factory.define :athena_donation, :parent => :athena_order_with_id do |i|
+Factory.define :athena_donation, :parent => :athena_item_with_id do |i|
   i.product_type "Donation"
   i.price 50000
   i.realized_price 50000

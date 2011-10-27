@@ -100,7 +100,7 @@ class Organization < ActiveRecord::Base
 
       AthenaItem.find(:all, :params => query).each do |item|
         if block
-          block.call item
+          block.call item.order, item
         else
           all_items << item
         end

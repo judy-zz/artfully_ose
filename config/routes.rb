@@ -48,6 +48,14 @@ Artfully::Application.routes.draw do
     end
   end
 
+  resources :export do
+    collection do
+      get :contacts
+      get :donations
+      get :ticket_sales
+    end
+  end
+
   resources :kits, :except => :index do
     get :alternatives, :on => :collection
   end

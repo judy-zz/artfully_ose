@@ -20,4 +20,8 @@
   %h3 Exports
   %ul.detailed-list
     %li
-      %h4= link_to "Export all people currently in Artful.ly", people_path(:export => :all, :format => :csv)
+      %h4= link_to "Export all people currently in Artful.ly", contacts_export_index_path
+    %li
+      %h4= link_to "Export all donations currently in Artful.ly", donations_export_index_path
+    %li
+      %h4= link_to "Export all ticket sales currently in Artful.ly", ticket_sales_export_index_path
