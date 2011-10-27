@@ -38,16 +38,16 @@ class AdminStats < ActiveRecord::Base
 
   def self.ticket_stats
     {
-      :tickets      => 0,
-      :tickets_sold => Ticket.find_by_state("sold").count
+      :tickets      => Ticket.count,
+      :tickets_sold => Ticket.sold.count
     }
   end
 
   def self.donation_stats
-    donations = Item.find(:all, :params => { :productType => "Donation", :state => "in(settled, purchased)"})
+    donations = Item.donation.where(:state => [:settled, :purchased])
     {
-      :donations => donations.select{ |d| d.fa_id.nil? }.count,
-      :fafs_donations => donations.select{ |d| !d.fa_id.nil? }.count
+      :donations => donations.not_imported.count,
+      :fafs_donations => donations.imported.count
     }
   end
 end

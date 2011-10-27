@@ -22,6 +22,9 @@ class Order < ActiveRecord::Base
   scope :after,  lambda { |time| where("created_at > ?", time) }
   scope :in_range, lambda { |start, stop| after(start).before(stop) }
 
+  scope :imported, where("fa_id IS NOT NULL")
+  scope :not_imported, where("fa_id IS NULL")
+
   def total
     all_items.inject(0) {|sum, item| sum + item.price.to_i }
   end

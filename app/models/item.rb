@@ -5,6 +5,11 @@ class Item < ActiveRecord::Base
   validates_presence_of :product_type, :price, :realized_price, :net
   validates_inclusion_of :product_type, :in => %( Ticket Donation )
 
+  scope :donation, where(:product_type => "Donation")
+
+  scope :imported, joins(:order).merge(Order.imported)
+  scope :not_imported, joins(:order).merge(Order.not_imported)
+
   def ticket?
     product_type == "Ticket"
   end
