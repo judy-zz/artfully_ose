@@ -18,7 +18,7 @@ When /^the settlement job runs$/ do
 end
 
 Then /^there should be a settlement for the show$/ do
-  @settleable_show.settlement.should_not be_nil
+  @settleable_show.settlements.should_not be_empty
 end
 
 Then /^the shows sales should be settled$/ do
