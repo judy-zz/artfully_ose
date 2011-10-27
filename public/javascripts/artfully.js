@@ -24,7 +24,7 @@ artfully.utils = (function(){
   function ticket_uri(params){
     var u = artfully.config.base_uri + 'tickets.jsonp?callback=?';
     jQuery.each(params, function(k,v){
-      u += "&" + k + (k === "limit" ? "=" : "=eq") + v;
+      u += "&" + k + "=" + v;
     });
     return u;
   }

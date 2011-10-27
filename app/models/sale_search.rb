@@ -10,7 +10,7 @@ class SaleSearch
   end
 
   def results
-    @results ||= Order.in_range(@start, @stop, @organization.id).select(&:has_ticket?).sort_by(&:timestamp)
+    @results ||= Order.in_range(@start, @stop, @organization.id).select(&:has_ticket?)
   end
 
   private

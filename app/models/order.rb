@@ -20,7 +20,7 @@ class Order < ActiveRecord::Base
 
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
-  scope :in_range, lambda { |start, stop| after(start).before(stop) }
+  scope :in_range, lambda { |start, stop, organization_id| after(start).before(stop).where('organization_id = ?', organization_id).order("created_at DESC") }
 
   scope :imported, where("fa_id IS NOT NULL")
   scope :not_imported, where("fa_id IS NULL")

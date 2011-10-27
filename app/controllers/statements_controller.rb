@@ -19,20 +19,6 @@ class StatementsController < ApplicationController
     authorize! :view, @show
     @event = @show.event
     @played = @event.played_shows
-    @statement = AthenaStatement.for_show(params[:id], current_user.current_organization)
-    @statement.sales.shows[0].datetime = @show.datetime
-    if @event.free?
-      @statement.expenses.expenses.first.rate = "$0.00"
-      @statement.expenses.expenses.first.expense = 0
-
-      @statement.expenses.expenses.second.rate = "0"
-      @statement.expenses.expenses.second.units = "0"
-      @statement.expenses.expenses.second.expense = 0
-
-      @statement.expenses.total.expense = 0
-
-      @statement.sales.shows.each {|show| show.net_revenue = 0 }
-    end
-
+    @statement = Statement.for_show(@show, current_user.current_organization)
   end
 end

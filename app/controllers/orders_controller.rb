@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
       @results = search(params[:search]).paginate(:page => params[:page], :per_page => 25)
       redirect_to order_path(@results.first.id) if @results.length == 1
     else
-      @results = Order.find(:all, :params =>{ :organizationId => "eq#{current_user.current_organization.id}"}).sort{|a,b| b.timestamp <=> a.timestamp }.paginate(:page => params[:page], :per_page => 25)
+      @results = current_organization.orders.all.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
     end
   end
 
@@ -21,7 +21,7 @@ class OrdersController < ApplicationController
     Time.zone = current_user.current_organization.time_zone
 
     @search = SaleSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
-      results.sort{|a,b| b.timestamp <=> a.timestamp }.paginate(:page => params[:page], :per_page => 25)
+      results.paginate(:page => params[:page], :per_page => 25)
     end
   end
 
