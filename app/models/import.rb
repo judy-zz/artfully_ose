@@ -158,6 +158,7 @@ class Import < ActiveRecord::Base
       :facebookUrl     => ip.facebook_page,
       :linkedInUrl     => ip.linkedin_page,
       :organization_id => user.current_organization.id,
+      :personType      => ip.person_type,
       :import_id       => self.id
 
     ip.tags_list.each { |tag| person.tag! tag }

@@ -23,7 +23,13 @@ class ImportPerson
     :twitter_username => [ "Twitter", "Twitter handle", "Twitter username" ],
     :facebook_page    => [ "Facebook", "Facebook url", "Facebook address", "Facebook page" ],
     :linkedin_page    => [ "LinkedIn", "LinkedIn url", "LinkedIn address", "LinkedIn page" ],
-    :tags             => [ "Tags" ]
+    :tags             => [ "Tags" ],
+    :person_type      => [ "Type", "Person Type", "Contact Type" ]
+  }
+
+  # Enumerated columns default to the last value if the data value is not valid.
+  ENUMERATIONS = {
+    :person_type => [ "Individual", "Corporation", "Foundation", "Government", "Other" ]
   }
 
   def initialize(headers, row)
@@ -43,6 +49,8 @@ class ImportPerson
     exist = self.instance_variable_get("@#{field}")
 
     if exist.blank?
+      value = check_enumeration(field, value)
+
       self.instance_variable_set("@#{field}", value)
       self.class.class_eval { attr_reader field }
     end
@@ -50,6 +58,18 @@ class ImportPerson
 
   def tags_list
     @tags.to_s.strip.split(/[\s,|]+/)
+  end
+
+  def check_enumeration(field, value)
+    if enum = ENUMERATIONS[field]
+      if index = enum.map(&:downcase).index(value.to_s.downcase)
+        enum[index]
+      else
+        enum.last
+      end
+    else
+      value
+    end
   end
 
 end

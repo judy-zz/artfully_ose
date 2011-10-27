@@ -23,6 +23,7 @@ class AthenaPerson < AthenaResource::Base
     attribute 'twitter_handle', :string
     attribute 'facebook_url',   :string
     attribute 'linked_in_url',  :string
+    attribute 'person_type',    :string
   end
 
   comma do

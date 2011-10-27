@@ -34,4 +34,16 @@ describe ImportPerson do
     end
   end
 
+  context "a person with a type" do
+    before do
+      @headers = [ "Type" ]
+      @types = [ "individual", "corporation", "FOUNDATION", "GovernMENT", "nonsense", "other" ]
+      @people = @types.map { |type| ImportPerson.new(@headers, [type]) }
+    end
+
+    it "should correctly load the enumerated types" do
+      @people.map(&:person_type).should == %w( Individual Corporation Foundation Government Other Other )
+    end
+  end
+
 end
