@@ -80,9 +80,11 @@ class Show < ActiveRecord::Base
     copy.datetime = copy.datetime + 1.day
     copy
   end
-
-  def add_show_time_string
-    attributes['show_time'] = I18n.l( attributes['datetime'].in_time_zone(time_zone), :format => :long_with_day)
+  
+  def as_json(options={})
+    { "id" => id,
+      "chart_id" => chart.id,
+      "show_time" => I18n.l( datetime.in_time_zone(time_zone), :format => :long_with_day) } 
   end
 
   #return accepted id's

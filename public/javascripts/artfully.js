@@ -322,9 +322,11 @@ artfully.models = (function(){
           $t = jQuery(document.createElement('li')).addClass('performance').appendTo(target);
           $t.data('performance', this);
 
+		  console.log(this)
+
           jQuery(document.createElement('span'))
           .addClass('performance-datetime')
-          .text(this.performance_time)
+          .text(this.show_time)
           .appendTo($t);
 
           jQuery(document.createElement('a'))
