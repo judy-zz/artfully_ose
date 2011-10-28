@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Item do
-
+  disconnect_sunspot
   subject { Factory(:item) }
 
   %w( order_id product_type product_id price ).each do |attribute|

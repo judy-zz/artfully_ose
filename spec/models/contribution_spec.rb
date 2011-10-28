@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Contribution do
+  disconnect_sunspot
   let(:organization){ Factory(:organization) }
   let(:person) { Factory(:person) }
   let(:attributes) do

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
-describe Settlement do
+describe Statement do
+  disconnect_sunspot  
   let(:organization) { Factory(:organization) }
   let(:show) { Factory(:show) }
   let(:tickets) { 10.times.collect { Factory(:ticket, :show => show) } }

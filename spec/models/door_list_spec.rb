@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe DoorList do
+  disconnect_sunspot  
   let(:show) { Factory(:show) }
   let(:buyer) { Factory(:person) }
   subject { DoorList.new(show) }

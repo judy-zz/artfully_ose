@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Cart do
+  disconnect_sunspot
   subject { Factory(:cart) }
 
   it "should be marked as unfinished in the started state" do

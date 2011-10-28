@@ -7,6 +7,7 @@
 require 'cucumber/rails'
 require 'cucumber/rspec/doubles'
 require 'factory_girl/step_definitions'
+require 'sunspot/rails/spec_helper'
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
@@ -42,4 +43,8 @@ end
 
 Before do
   FakeWeb.clean_registry
+end
+
+Before do
+  Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
 end

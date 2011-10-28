@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Settlement do
+  disconnect_sunspot  
   let(:items) { 10.times.collect { Factory(:item) } }
   let(:total) { items.sum(&:net) }
 

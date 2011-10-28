@@ -1,9 +1,7 @@
 require 'spec_helper'
 
-require 'spec_helper'
-
 describe DonationAction do
-
+  disconnect_sunspot
   subject { Factory(:donation_action) }
 
   it { should be_valid }

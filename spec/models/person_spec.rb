@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Person do
+  disconnect_sunspot
   subject { Factory(:person) }
 
   describe "#valid?" do

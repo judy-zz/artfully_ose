@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Order do
+  disconnect_sunspot
   subject { Factory(:order) }
 
   describe "payment" do

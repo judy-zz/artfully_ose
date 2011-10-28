@@ -1,7 +1,7 @@
 class StatementsController < ApplicationController
 
   def index
-    authorize! :view, AthenaStatement.new
+    authorize! :view, Statement
     if params[:event_id].present?
       @event = Event.find(params[:event_id])
       authorize! :view, @event
@@ -9,7 +9,7 @@ class StatementsController < ApplicationController
       @statement = nil
       render :show and return
     else
-      @events = Event.all
+      @events = current_organization.events
       @events.each {|event| authorize! :view, event}
     end
   end

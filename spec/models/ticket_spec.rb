@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Ticket do
+  disconnect_sunspot
   subject { Factory(:ticket) }
 
   describe "attributes" do

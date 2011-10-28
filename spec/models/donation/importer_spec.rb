@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Donation::Importer do
+  disconnect_sunspot
   subject { Donation::Importer }
   let(:organization) { Factory(:connected_organization) }
 

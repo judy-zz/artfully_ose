@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Job::Settlement do
+  disconnect_sunspot
   describe ".run" do
     it "should settle shows for the date range" do
       Job::Settlement.should_receive(:settle_shows_in).with(Settlement.range_for(DateTime.now))

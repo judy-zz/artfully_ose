@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Checkout do
+  disconnect_sunspot
   let(:payment) { Factory(:payment) }
   let(:order) { Factory(:cart) }
 

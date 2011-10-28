@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Show do
+  disconnect_sunspot  
   subject { Factory(:show) }
 
   it { should be_valid }
