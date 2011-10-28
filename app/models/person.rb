@@ -10,7 +10,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :person_info
 
   validates :email, :uniqueness => true
-  after_save { Sunspot.delay.commit }
+  after_commit { Sunspot.commit }
 
   searchable do
     text :first_name, :last_name, :email
