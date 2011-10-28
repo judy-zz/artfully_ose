@@ -9,3 +9,5 @@ nbproject
 *.*~
 config/database.yml
 public/assets
+log/
+solr/

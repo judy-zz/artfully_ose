@@ -38,6 +38,7 @@ gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transitions', :require => ['transitions', 'active_record/transitions']
+gem 'sunspot_rails'
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
