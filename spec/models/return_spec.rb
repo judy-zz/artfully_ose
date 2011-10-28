@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Return do
+  disconnect_sunspot
   let(:order) { Factory(:order) }
   let(:items) { 3.times.collect { Factory(:item) } }
   subject { Return.new(order, items) }

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Exchange do
+  disconnect_sunspot  
   let(:order)       { Factory(:order) }
   let(:items)       { 3.times.collect { Factory(:item) } }
   let(:event)       { Factory(:event, :organization => order.organization) }

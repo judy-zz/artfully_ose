@@ -33,7 +33,7 @@ class Ability
       user.is_in_organization?
     end
 
-    can :view, AthenaStatement do |statement|
+    can :view, Statement do |statement|
       user.is_in_organization?
     end
   end

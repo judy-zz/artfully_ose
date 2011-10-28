@@ -1,6 +1,7 @@
 require "spec_helper"
 
 describe OrderMailer do
+  disconnect_sunspot
   describe "order confirmation email" do
     let(:order) { Factory(:order) }
     subject { OrderMailer.confirmation_for(order) }
