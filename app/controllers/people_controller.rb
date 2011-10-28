@@ -73,7 +73,6 @@ class PeopleController < ApplicationController
 
     if is_search(params)
       @people = Person.search_index(params[:search].dup, current_user.current_organization)
-
       respond_with do |format|
         format.csv  { render :csv => @people, :filename => "SearchResults-#{DateTime.now.strftime("%m-%d-%y")}.csv" }
         format.html { render :partial => 'list', :layout => false, :locals => { :people => @people } if request.xhr? }

@@ -66,6 +66,10 @@ class Person < ActiveRecord::Base
   def unstarred_actions
     actions.select { |action| action.unstarred? }
   end
+  
+  def self.search_index(query, organization)
+    search{ keywords query }.results
+  end
 
   private
     def person_info
