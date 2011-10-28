@@ -14,6 +14,9 @@ class Person < ActiveRecord::Base
 
   searchable do
     text :first_name, :last_name, :email
+    string :organization_id do
+      organization.id
+    end
   end
 
   comma do
@@ -68,7 +71,10 @@ class Person < ActiveRecord::Base
   end
   
   def self.search_index(query, organization)
-    search{ keywords query }.results
+    self.search do
+      keywords query
+      with(:organization_id).equal_to(organization.id)     
+    end.results
   end
 
   private
