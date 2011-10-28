@@ -1,5 +1,6 @@
 class Action < ActiveRecord::Base
   belongs_to :person
+  belongs_to :creator, :class_name => "User"
   belongs_to :organization
 
   validates_presence_of :occurred_at
