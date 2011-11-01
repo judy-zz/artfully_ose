@@ -2,8 +2,8 @@ class Cart < ActiveRecord::Base
   include ActiveRecord::Transitions
 
   has_many :donations, :dependent => :destroy
-  has_many :tickets
-  
+  has_many :tickets, :after_add => :set_timeout
+
   attr_accessor :fee_in_cents
   after_initialize :update_ticket_fee
 
@@ -20,7 +20,15 @@ class Cart < ActiveRecord::Base
   def items
     self.tickets + self.donations
   end
-  
+
+  def set_timeout(ticket)
+    self.delay(:run_at => Time.now + 10.minutes).expire_ticket(ticket)
+  end
+
+  def expire_ticket(ticket)
+    tickets.delete(ticket)
+  end
+
   def update_ticket_fee
     @fee_in_cents = self.tickets.reject{|t| t.price == 0}.size * 200
   end
@@ -34,7 +42,7 @@ class Cart < ActiveRecord::Base
     end
     temp
   end
-  
+
   def <<(tkts)
     tickets << tkts
     update_ticket_fee
