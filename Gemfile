@@ -55,11 +55,14 @@ group :test, :development do
   gem 'factory_girl_rails'
   gem 'nokogiri'
   gem 'capybara'
-  gem 'cucumber-rails'
-  gem 'database_cleaner'
   gem 'launchy'
   gem 'awesome_print', :require => 'ap'
   gem 'uuid'
   gem 'faker'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
+end
+
+group :test do
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
 end
