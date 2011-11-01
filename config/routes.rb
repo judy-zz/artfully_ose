@@ -128,6 +128,9 @@ Artfully::Application.routes.draw do
     member do
       get :approve
     end
+    collection do
+      get :template
+    end
   end
 
   match '/events/:event_id/charts/' => 'events#assign', :as => :assign_chart, :via => "post"

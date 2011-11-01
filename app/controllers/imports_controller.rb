@@ -49,4 +49,10 @@ class ImportsController < ApplicationController
     redirect_to imports_path
   end
 
+  def template
+    columns = ImportPerson::FIELDS.map { |field, names| names.first }
+    csv_string = FasterCSV.generate { |csv| csv << columns }
+    send_data csv_string, :filename => "Artfully-Import-Template.csv", :type => "text/csv", :disposition => "attachment"
+  end
+
 end
