@@ -80,11 +80,12 @@ class Show < ActiveRecord::Base
     copy.datetime = copy.datetime + 1.day
     copy
   end
-  
+
   def as_json(options={})
     { "id" => id,
       "chart_id" => chart.id,
-      "show_time" => I18n.l( datetime.in_time_zone(time_zone), :format => :long_with_day) } 
+      "state" => state,
+      "show_time" => I18n.l( datetime.in_time_zone(time_zone), :format => :long_with_day) }
   end
 
   #return accepted id's
