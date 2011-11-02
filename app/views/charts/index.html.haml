@@ -1,13 +1,13 @@
 - in_section :events
 - content_for :header do
   %h1 Chart Templates
-  %h2 Create and manage seat charts and their sections.
-  %ul.from-here
-    %li= link_to "New Chart", new_chart_path
 
-.spread
+.context
+  %ul.context-buttons
+    %li= button_to "New Chart", new_chart_path, :method => :get
+
+.document
   = render :partial => 'return_to_event' 
-
   %h3 Charts
   - if @charts.empty?
     %p You have not created any chart templates.

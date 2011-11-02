@@ -1,0 +1,2 @@
+%span.price= number_as_cents ticket.price
+%span.item= "#{ticket.event.name} at #{l ticket.datetime.in_time_zone(ticket.event.time_zone), :format => :short}"

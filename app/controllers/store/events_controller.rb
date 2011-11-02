@@ -1,5 +1,5 @@
 class Store::EventsController < Store::StoreController
   def show
-    @event = AthenaEvent.find(params[:id])
+    @event = Event.find(params[:id])
   end
 end

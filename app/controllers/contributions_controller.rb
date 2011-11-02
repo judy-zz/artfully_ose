@@ -1,6 +1,6 @@
 class ContributionsController < ApplicationController
   def index
-    authorize! :manage, AthenaOrder
+    authorize! :manage, Order
     Time.zone = current_user.current_organization.time_zone
 
     @search = DonationSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
@@ -28,7 +28,7 @@ class ContributionsController < ApplicationController
 
   def contributors
     if params[:terms].present?
-      people = AthenaPerson.search_index(params[:terms].dup, current_user.current_organization)
+      people = Person.search_index(params[:terms].dup, current_user.current_organization)
       flash[:error] = "No people matched your search terms." if people.empty?
     end
     people || []

@@ -11,34 +11,6 @@ describe Organization do
     it { should respond_to :ability }
   end
 
-  describe "importing donations" do
-    before(:each) do
-      fa_project = Factory(:fa_project)
-      FA::Project.stub(:find_active_by_member_id).and_return(fa_project)
-      subject.fa_member_id = fa_project.member_id
-
-      FA::Donation.stub(:find_by_member_id).and_return([])
-    end
-
-    it "should import all donations" do
-      subject.refresh_active_fs_project
-      FA::Donation.should_receive(:find_by_member_id).with("1")
-      subject.import_all_fa_donations
-    end
-
-    it "should import all donations since the last refresh" do
-      subject.refresh_active_fs_project
-      FA::Donation.should_receive(:find_by_member_id).with("1", subject.fiscally_sponsored_project.updated_at - 1.day)
-      subject.import_recent_fa_donations
-    end
-
-    it "shouldn't call anything if the fiscally_sponsored_project is nil" do
-      subject.fiscally_sponsored_project = nil
-      subject.import_all_fa_donations.should be_nil
-      subject.import_recent_fa_donations.should be_nil
-    end
-  end
-
   describe ".owner" do
     it "should return the first user as the owner of the organization" do
       user = Factory(:user)
@@ -147,28 +119,6 @@ describe Organization do
 
       kit.should_receive(:activate_without_prejudice!)
       subject.send(:update_kits)
-    end
-  end
-
-  describe "#all_donations" do
-    before do
-      @organization = Factory(:organization_with_id)
-      @orders = (1..10).map do |id|
-        Factory(:athena_order_with_id, :organization => @organization, :id => id)
-      end
-      @donations = @orders.map do |order|
-        Factory(:athena_donation, :order => order, :id => 100 + order.id)
-      end
-      body = "[" + @orders.map(&:encode).join(",") + "]"
-      body = @orders.to_json
-      FakeWeb.register_uri :get, %r|http://localhost/athena/orders.json\?_limit=100&_start=0&organizationId=#{@organization.id}|, :body => body
-      FakeWeb.register_uri :get, %r|http://localhost/athena/orders.json\?_limit=100&_start=100&organizationId=#{@organization.id}|, :body => "[]"
-      body = "[" + @donations.map { |don| don.encode(:except => "order") }.join(",") + "]"
-      FakeWeb.register_uri :get, %r{http://localhost/athena/items.json.*}, :body => body
-    end
-
-    it "should return all 10 donations" do
-      @organization.all_donations.count.should == 10
     end
   end
 end

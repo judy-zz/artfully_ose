@@ -36,16 +36,16 @@ class Contribution
     @occurred_at     = Time.zone.parse(params[:occurred_at]) if params[:occurred_at].present?
     @details         = params[:details]
     @organization_id = params[:organization_id]
-    @person_id       = params[:person_id]
+    @person_id  = params[:person_id]
   end
 
   def find_contributor
-    AthenaPerson.find(@person_id) unless @person_id.blank?
+    Person.find(@person_id) unless @person_id.blank?
   end
 
   def build_action
-    AthenaDonationAction.new({
-      :action_subtype  => @subtype,
+    DonationAction.new({
+      :subtype  => @subtype,
       :organization_id => @organization_id,
       :occurred_at     => @occurred_at,
       :details         => @details,
@@ -59,13 +59,13 @@ class Contribution
       :organization_id => @organization_id
     }
 
-    AthenaOrder.new(attributes).tap do |order|
+    Order.new(attributes).tap do |order|
       order.skip_actions = true
     end
   end
 
   def build_item(order, price)
-    AthenaItem.new({
+    Item.new({
       :order_id       => order.id,
       :product_type   => "Donation",
       :state          => "settled",

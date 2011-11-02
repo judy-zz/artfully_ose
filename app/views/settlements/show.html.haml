@@ -30,13 +30,13 @@
           %tr
             %td=link_to "#{item.order.id}", order_path(item.order)
             %td
-              - if item.product.kind_of? AthenaTicket
+              - if item.product.kind_of? Ticket
                 %span Ticket
                 %span
                   (
                   = link_to "#{item.product.event}", event_path(item.product.event_id)
                   ,
-                  = link_to "#{l item.product.performance}", event_show_path(item.product.event_id, item.product.performance_id)
+                  = link_to "#{l item.product.show}", event_show_path(item.product.event_id, item.product.show_id)
                   )
               - if item.product.kind_of? Donation
                 %span Donation

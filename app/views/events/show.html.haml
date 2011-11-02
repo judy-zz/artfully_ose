@@ -32,8 +32,8 @@
             = form.submit "Import"
 
 .document
-  %h3 Performances
-  #performances
+  %h3 Shows
+  #shows
     %table.standalone.zebra
       %thead
         %tr
@@ -43,16 +43,16 @@
           %th Comped
           %th Actions
       %tbody
-        - @performances.each do |perf|
-          %tr{ :class => perf.state }
-            %td= link_to l(perf.datetime, :format => :short), event_show_path(@event, perf), :title => 'performance-datetime'
-            %td.available= perf.glance.tickets.available
-            %td.gross= perf.glance.tickets.sold.gross
-            %td.comped= perf.glance.tickets.sold.comped
-            %td= render :partial => "shows/controls", :locals => { :performance => perf }
+        - @shows.each do |show|
+          %tr{ :class => show.state }
+            %td= link_to l(show.datetime, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
+            %td.available= show.glance.available_total
+            %td.gross= show.glance.sold_total
+            %td.comped= show.glance.comped_total
+            %td= render :partial => "shows/controls", :locals => { :show => show }
         %tr
-          = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :performance => @next_performance }
-    = will_paginate @performances
+          = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
+    = will_paginate @shows
   %h3 This Week
   #this-week
     #calendar{ :"data-event" => @event.id }

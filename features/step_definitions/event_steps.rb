@@ -2,9 +2,6 @@ When /^(?:|I )fill in the following event details:$/ do |table|
   event = event_from_table_row(table.hashes.first)
   setup_event(event)
 
-  setup_charts([Factory(:athena_chart, :organization_id => event.organization_id)])
-  setup_performances([])
-
   When %{I fill in "Name" with "#{event.name}"}
   When %{I fill in "Venue" with "#{event.venue}"}
   When %{I fill in "Producer" with "#{event.producer}"}
@@ -12,15 +9,12 @@ When /^(?:|I )fill in the following event details:$/ do |table|
   When %{I select "#{us_states.invert[event.state]}" from "State"}
 end
 
-Given /^there is an [Ee]vent with (\d+) [Pp]erformances$/ do |performance_count|
-  event = Factory(:athena_event_with_id, :organization_id => @current_user.current_organization.id)
+Given /^there is an [Ee]vent with (\d+) [Ss]hows$/ do |show_count|
+  event = Factory(:event, :organization_id => @current_user.current_organization.id)
+  event.charts << Factory(:chart_with_sections)
 
   setup_event(event)
-  charts = setup_charts([Factory(:athena_chart, :organization_id => @current_user.current_organization.id)])
-  setup_performances(performance_count.to_i.times.collect { Factory(:athena_performance_with_id, :event => current_event, :chart => charts.first, :organization_id => @current_user.current_organization.id) })
-
-#  visit events_path
-#  Given %{I follow "#{event.name}"}
+  setup_shows(show_count.to_i.times.collect { Factory(:show, :event => current_event, :organization_id => @current_user.current_organization.id) })
 end
 
 Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
@@ -29,7 +23,9 @@ Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
   end
 end
 
-Given /^I want to create a new event$/ do
-  FakeWeb.register_uri(:get, %r|http://localhost/athena/charts\.json\?isTemplate=eqtrue.*|, :body => "[]")
-  Given %{I am on the new event page}
+Given /^there is an event called "([^"]*)" with (\d+) shows with tickets$/ do |name, quantity|
+  @current_user ||= Factory(:user_in_organization)
+  event = Factory(:event, :name => name, :organization => @current_user.current_organization)
+  event.shows << quantity.to_i.times.collect { Factory(:show_with_tickets, :event => event, :organization => event.organization) }
+  current_shows(event.shows)
 end

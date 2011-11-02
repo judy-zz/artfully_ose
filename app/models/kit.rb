@@ -12,8 +12,28 @@ class Kit < ActiveRecord::Base
 
   def self.acts_as_kit(options, &block)
     self.requires_approval = options.delete(:with_approval) || false
-    setup_state_machine
+
+    state_machine do
+      state :fresh
+      state :pending, :enter => :on_pending
+      state :activated, :enter => :on_activation
+      state :cancelled
+
+      event(:activate)   { transitions :from => [:fresh, :pending], :to => :activated, :guard => :activatable? }
+      event(:approve)    { transitions :from => :pending, :to => :activated, :guard => :approvable? }
+      event(:cancel)     { transitions :from => [:activated, :pending, :rejected ], :to => :cancelled }
+      event(:reactivate) { transitions :from => :cancelled, :to => :activated, :guard => :activatable? }
+      event(:activate_without_pending) { transitions :from => [:fresh, :pending, :cancelled], :to => :activated }
+    end
+
+    if self.requires_approval
+      state_machine do
+        event(:submit_for_approval) { transitions :from => :fresh, :to => :pending }
+      end
+    end
+
     class_eval(&block)
+    self
   end
 
   def self.activate(options)
@@ -98,43 +118,6 @@ class Kit < ActiveRecord::Base
       check_unlesses(self.class.approval_requirements[:unless]) and check_ifs(self.class.approval_requirements[:if])
     end
 
-    def self.setup_state_machine
-      state_machine do
-        state :new
-        state :pending, :enter => :on_pending
-        state :activated, :enter => :on_activation
-        state :cancelled
-
-        event :activate do
-          transitions :from => [:new, :pending], :to => :activated, :guard => :activatable?
-        end          
-        
-        event :activate_without_pending do
-          transitions :from => [:new, :pending, :cancelled], :to => :activated
-        end
-
-        event :approve do
-          transitions :from => :pending, :to => :activated, :guard => :approvable?
-        end
-
-        event :cancel do
-          transitions :from => [:activated, :pending, :rejected ], :to => :cancelled
-        end
-
-        event :reactivate do
-          transitions :from => :cancelled, :to => :activated, :guard => :activatable?
-        end
-      end
-
-      if requires_approval
-        state_machine do
-          event :submit_for_approval do
-            transitions :from => :new, :to => :pending
-          end
-        end
-      end
-    end
-
     def check_unlesses(unlesses)
       return true if unlesses.empty?
       unlesses.all? { |req| !self.send(req) }
@@ -146,7 +129,6 @@ class Kit < ActiveRecord::Base
     end
 
     def needs_approval?
-      self.class.requires_approval and new?
+      self.class.requires_approval and fresh?
     end
-
 end

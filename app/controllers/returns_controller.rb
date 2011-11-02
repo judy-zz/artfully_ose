@@ -1,7 +1,7 @@
 class ReturnsController < ApplicationController
   def create
-    order = AthenaOrder.find(params[:order_id])
-    items = params[:items].collect { |item_id| AthenaItem.find(item_id) }
+    order = Order.find(params[:order_id])
+    items = params[:items].collect { |item_id| Item.find(item_id) }
 
     @return = Return.new(order, items)
     @return.submit

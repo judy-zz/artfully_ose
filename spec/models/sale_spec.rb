@@ -1,14 +1,15 @@
 require 'spec_helper'
 
 describe Sale do
-  let(:show){Factory(:athena_performance_with_id)}
-  let(:chart){Factory(:athena_chart)}
+  let(:show){Factory(:show)}
+  let(:chart){Factory(:chart_with_sections)}
   let(:quantities){{chart.sections.first.id => "2"}}
+
   subject { Sale.new(show, chart.sections, quantities)}
 
   describe "requests" do
     it "generates a new Sale::TicketRequest for each section" do
-      subject.send(:requests).should have(2).request
+      subject.send(:requests).should have(chart.sections.count).requests
     end
 
     it "requests available tickets" do
@@ -49,7 +50,8 @@ describe Sale do
   end
 
   describe "#sell" do
-    let(:athena_order) { mock(:athena_order, :items => []) }
+    let(:order) { mock(:order, :items => []) }
+
     before(:each) do
       subject.stub(:fulfilled?).and_return(true)
       subject.stub(:tickets).and_return(Array.wrap(mock(:ticket, :id => 1)))
@@ -57,14 +59,12 @@ describe Sale do
 
     let(:payment) { mock(:payment, :customer => Factory(:customer_with_id), :amount= => nil, :requires_settlement? => false) }
     it "adds the tickest to the cart" do
-      subject.cart.should_receive(:add_tickets).with(subject.tickets)
-      Checkout.stub(:new).and_return(mock(:checkout, :finish => true, :athena_order => athena_order))
+      Checkout.stub(:new).and_return(mock(:checkout, :finish => true, :order => order))
       subject.sell(payment)
     end
 
     it "creates a new Checkout" do
-      subject.cart.stub(:add_tickets)
-      Checkout.should_receive(:new).and_return(mock(:checkout, :finish => true, :athena_order => athena_order))
+      Checkout.should_receive(:new).and_return(mock(:checkout, :finish => true, :order => order))
       subject.sell(payment)
     end
   end

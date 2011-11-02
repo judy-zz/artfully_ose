@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Contribution do
+  disconnect_sunspot
   let(:organization){ Factory(:organization) }
-  let(:person) { Factory(:athena_person_with_id) }
+  let(:person) { Factory(:person) }
   let(:attributes) do
     {
       :subtype         => "Donation (Cash)",
@@ -10,7 +11,7 @@ describe Contribution do
       :occurred_at     => "2011-08-17 02:28 pm",
       :details         => "Some details.",
       :organization_id => organization.id,
-      :person_id  => person.id
+      :person_id       => person.id
     }
   end
 
@@ -56,7 +57,7 @@ describe Contribution do
   end
 
   describe "build_item" do
-    let(:order) { Factory(:athena_order_with_id) }
+    let(:order) { Factory(:order) }
     let(:item) { subject.send(:build_item, order, 100 )}
 
     it "sets the order id for the item to the given order" do
@@ -83,7 +84,7 @@ describe Contribution do
     let(:action) { subject.send(:build_action)}
 
     it "maps attributes onto the Action" do
-      action.action_subtype.should eq subject.subtype
+      action.subtype.should eq subject.subtype
       action.organization_id.should eq subject.organization_id
       action.occurred_at.should eq subject.occurred_at
       action.details.should eq subject.details

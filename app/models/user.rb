@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :performances
+  has_many :shows
   has_many :orders
   has_many :imports
 

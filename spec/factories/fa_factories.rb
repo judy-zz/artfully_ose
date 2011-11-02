@@ -30,7 +30,7 @@ Factory.define :fa_donor, :class => FA::Donor, :default_strategy => :build do |d
 end
 
 Factory.define :fa_donation, :class => FA::Donation, :default_strategy => :build do |d|
-  d.id              "345"
+  d.id              345
   d.amount          "40.00"
   d.nongift         "10.00"
   d.fs_project_id   "10000"
@@ -42,5 +42,5 @@ Factory.define :fa_donation, :class => FA::Donation, :default_strategy => :build
   d.fs_available_on "2010-09-03"
   d.is_anonymous    "1"
 
-  d.donor Factory(:fa_donor)
+  d.donor { Factory(:fa_donor) }
 end

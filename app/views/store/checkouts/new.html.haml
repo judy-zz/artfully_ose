@@ -1,16 +1,16 @@
 - content_for :controls do
-  - unless current_order.empty?
+  - unless current_cart.empty?
     #total
       %span Your total is
-      .price= number_as_cents current_order.total
+      .price= number_as_cents current_cart.total
     %ol#steps
       %li Customer Information
-      -unless current_order.total.zero?
+      -unless current_cart.total.zero?
         %li Credit Card Information
       %li Billing Address
       %li Confirmation
     #checkout-now.disabled
-    #clear-cart= link_to "Back to Cart", store_order_path(current_order)
+    #clear-cart= link_to "Back to Cart", store_order_path(current_cart)
 
 = form_tag store_checkout_path, :class => "sliding-wizard" do
   - if @needs_confirmation

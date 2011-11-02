@@ -12,18 +12,17 @@ describe Ability do
 
     #this is for events_controller.new, not .create
     describe "who are creating an event" do
-      it { should be_able_to(:new, AthenaEvent) }
+      it { should be_able_to(:new, Event) }
     end
 
     describe "and are creating tickets with priced sections" do
-      sections = Array.new
-      sections << Factory(:athena_section)
+      sections =  Array.wrap(Factory(:section, :price => 1000))
       it { should_not be_able_to(:create_tickets, sections) }
     end
 
     describe "and are creating tickets with free sections" do
       sections = Array.new
-      sections << Factory(:athena_free_section)
+      sections << Factory(:free_section)
       it { should be_able_to(:create_tickets, sections) }
     end
   end
@@ -38,45 +37,39 @@ describe Ability do
     end
 
     describe "and events" do
-      it { should be_able_to(:manage, Factory(:athena_event, :organization_id => organization.id)) }
-      it { should be_able_to(:create, AthenaEvent) }
+      it { should be_able_to(:manage, Factory(:event, :organization_id => organization.id)) }
+      it { should be_able_to(:create, Event) }
 
-      it { should_not be_able_to(:manage, Factory(:athena_event, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:manage, Factory(:event, :organization_id => organization.id + 1)) }
 
-      it "should not be able to delete an event where the performances cannot be deleted also" do
-        performances = 3.times.collect { mock(:performance, :live? => true) }
-        event = Factory(:athena_event, :organization_id => organization.id)
-        event.stub(:performances).and_return(performances)
+      it "should not be able to delete an event where the shows cannot be deleted also" do
+        event = Factory(:event, :organization_id => organization.id)
+        event.stub(:shows).and_return(3.times.collect { mock(:show, :live? => true) })
         subject.should_not be_able_to(:destroy, event)
       end
     end
 
-    describe "and performances" do
-      it { should be_able_to(:manage, Factory(:athena_performance, :organization_id => organization.id)) }
-      it { should be_able_to(:create, AthenaPerformance) }
+    describe "and shows" do
+      it { should be_able_to(:manage, Factory(:show, :organization_id => organization.id)) }
+      it { should be_able_to(:create, Show) }
 
-      it { should_not be_able_to(:manage, Factory(:athena_performance, :organization_id => organization.id + 1)) }
-
-      it { should_not be_able_to(:edit, Factory(:athena_performance, :state => "on_sale")) }
-      it { should_not be_able_to(:destroy, Factory(:athena_performance, :state => "on_sale")) }
-      it { should_not be_able_to(:destroy, Factory(:athena_performance, :state => "built")) }
+      it { should_not be_able_to(:manage, Factory(:show, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:edit, Factory(:show).stub(:live? => true)) }
     end
 
     describe "and charts" do
-      let(:chart) { Factory(:athena_chart, :organization_id => organization.id) }
+      let(:chart) { Factory(:chart, :organization_id => organization.id) }
 
       it { should be_able_to :view, chart }
       it { should be_able_to :manage, chart }
-      it { should_not be_able_to(:manage, Factory(:athena_chart, :organization_id => organization.id + 1)) }
-      it { should_not be_able_to(:view, Factory(:athena_chart, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:manage, Factory(:chart, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:view, Factory(:chart, :organization_id => organization.id + 1)) }
     end
 
     describe "and tickets" do
-      let(:event) { Factory(:athena_event_with_id, :organization_id => organization.id) }
-
-      it { should be_able_to(:manage, Factory(:ticket_with_id, :event_id => event.id)) }
-      it { should be_able_to(:manage, AthenaTicket) }
-      it { should be_able_to(:bulk_edit, AthenaTicket) }
+      it { should be_able_to(:manage, Factory(:ticket, :organization => organization)) }
+      it { should be_able_to(:manage, Ticket) }
+      it { should be_able_to(:bulk_edit, Ticket) }
     end
   end
 
@@ -85,21 +78,21 @@ describe Ability do
     subject { Ability.new(user) }
 
     describe "working with events" do
-      it { should_not be_able_to :create, AthenaEvent }
-      it { should_not be_able_to :edit, AthenaEvent }
-      it { should_not be_able_to :delete, AthenaEvent }
+      it { should_not be_able_to :create, Event }
+      it { should_not be_able_to :edit, Event }
+      it { should_not be_able_to :delete, Event }
     end
 
-    describe "working with performances" do
-      it { should_not be_able_to :create, AthenaPerformance }
-      it { should_not be_able_to :edit, AthenaPerformance }
-      it { should_not be_able_to :delete, AthenaPerformance }
+    describe "working with shows" do
+      it { should_not be_able_to :create, Show }
+      it { should_not be_able_to :edit, Show }
+      it { should_not be_able_to :delete, Show }
     end
 
     describe "working with charts" do
-      it { should_not be_able_to :create, AthenaChart }
-      it { should_not be_able_to :edit, AthenaChart }
-      it { should_not be_able_to :delete, AthenaChart }
+      it { should_not be_able_to :create, Chart }
+      it { should_not be_able_to :edit, Chart }
+      it { should_not be_able_to :delete, Chart }
     end
   end
 end

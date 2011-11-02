@@ -14,7 +14,7 @@ describe Import do
     end
 
     it "should import a total of three records" do
-      @person = AthenaPerson.new
+      @person = Person.new
       @person.stub(:save).and_return(true)
       @address = Address.new
       @address.stub(:save).and_return(true)

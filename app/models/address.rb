@@ -1,16 +1,5 @@
-class Address < AthenaResource::Base
-  self.site = Artfully::Application.config.people_site
-
-  schema do
-    attribute 'address1',  :string
-    attribute 'address2',  :string
-    attribute 'city',      :string
-    attribute 'state',     :string
-    attribute 'zip',       :string
-    attribute 'country',   :string
-
-    attribute 'person_id', :string
-  end
+class Address < ActiveRecord::Base
+  belongs_to :person
 
   validates :person_id, :presence => true
 

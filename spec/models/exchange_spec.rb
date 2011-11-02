@@ -1,10 +1,11 @@
 require 'spec_helper'
 
 describe Exchange do
-  let(:order)       { Factory(:athena_order_with_id) }
-  let(:items)       { 3.times.collect { Factory(:athena_item) } }
-  let(:event)       { Factory(:athena_event_with_id, :organization_id => order.organization.id) }
-  let(:tickets)     { 3.times.collect { Factory(:ticket_with_id, :state => "on_sale", :event_id => event.id) } }
+  disconnect_sunspot  
+  let(:order)       { Factory(:order) }
+  let(:items)       { 3.times.collect { Factory(:item) } }
+  let(:event)       { Factory(:event, :organization => order.organization) }
+  let(:tickets)     { 3.times.collect { Factory(:ticket, :state => :on_sale, :organization => order.organization) } }
 
   subject { Exchange.new(order, items, tickets) }
 
@@ -43,7 +44,7 @@ describe Exchange do
     end
 
     it "should not be valid if any of the tickets belong to another organization" do
-      subject.tickets.first.event_id = Factory(:athena_event_with_id).id
+      subject.tickets.first.organization = Factory(:organization)
       subject.should_not be_valid
     end
   end

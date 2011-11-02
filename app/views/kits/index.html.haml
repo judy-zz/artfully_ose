@@ -20,7 +20,7 @@
           %tr
             %td= t(kit.type.underscore)
             -if can? :manage, current_user.current_organization
-              - if kit.new?
+              - if kit.fresh?
                 - if kit.has_alternatives?
                   %td= link_to "Activate #{t(kit.type.underscore)}", alternatives_kits_path(:type => kit.type.underscore)
                 - else
@@ -30,7 +30,7 @@
               - else
                 %td= kit.state.titleize
             -else
-              - if kit.new?
+              - if kit.fresh?
                 %td= "Not active"
               - elsif kit.cancelled?
                 %td= "Cancelled"

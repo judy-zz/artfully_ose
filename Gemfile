@@ -3,8 +3,10 @@ gem 'rake', '0.8.7'
 gem 'rails'
 
 gem 'athena_resource'
+gem 'activerecord-import'
 
 gem 'delayed_job'
+gem 'acts-as-taggable-on', '~>2.1.0'
 
 # Views and Rendering
 gem 'haml'
@@ -36,12 +38,12 @@ gem 'httparty'
 gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'exceptional'
 gem 'newrelic_rpm'
-gem 'transitions',
-    :require => ['transitions','active_record/transitions','active_resource/transitions'],
-    :path => "#{File.expand_path(__FILE__)}/../vendor/gems/transitions-0.0.9"
+gem 'transitions', :require => ['transitions', 'active_record/transitions']
+gem 'sunspot_rails'
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'timecop'
 end
 
 group :deployment do

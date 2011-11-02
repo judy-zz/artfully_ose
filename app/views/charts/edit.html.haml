@@ -7,8 +7,4 @@
   = link_to "Edit Sections", chart_path(@chart) if can?(:view, @chart)
 .document
   = render "shared/error_messages", :target => @chart
-  = form_for @chart, :url => chart_path(@chart) do |form|
-    %h3 Edit Chart
-    %ul
-      = render :partial => 'charts/form', :locals => { :parent_form => form, :target => @chart, :new => false }
-      = form.submit "Submit"
+  = render :partial => 'form', :locals => { :chart => @chart }

@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe Refund do
-  let(:order) { Factory(:athena_order_with_id) }
-  let(:items) { 3.times.collect { Factory(:athena_item)}}
+  disconnect_sunspot
+  let(:order) { Factory(:order) }
+  let(:items) { 3.times.collect { Factory(:item)}}
   subject { Refund.new(order, items) }
 
   describe "#submit" do

@@ -5,8 +5,4 @@
 .compact-spread
   %h3="#{@person.first_name} #{@person.last_name}"
   = render :partial => "shared/error_messages", :locals => { :target => @person }
-  = form_for @person, :url => person_path(@person) do |form|
-    %ul= render :partial => 'people/form', :locals => { :parent_form => form, :target => @person }
-    .cancel-submit
-      = link_to "Cancel", person_path(@person)
-      = form.submit "Update"
+  = render :partial => 'form', :locals => { :person => @person }

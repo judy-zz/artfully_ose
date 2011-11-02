@@ -9,7 +9,7 @@
 .document
   -if @statement.nil?
     %p
-      Please select a show or a date range
+      Please select a show
   -else
     %h3="Statement Report: #{@event.name}"
     #statement_table
@@ -24,13 +24,12 @@
             %th{:style=>'width:100px'} Processing            
             %th{:style=>'width:100px'} Net
         %tbody
-          - @statement.sales.performances.each do |row|
-            %tr
-              %td=l row.datetime, :format => :short
-              %td=row.tickets_sold
-              %td=row.tickets_comped
-              %td=number_as_cents row.potential_revenue
-              %td
-                %strong=number_as_cents row.gross_revenue
-              %td=number_as_cents row.processing
-              %td=number_as_cents row.net_revenue
+          %tr
+            %td=l @statement.datetime, :format => :short
+            %td=@statement.tickets_sold
+            %td=@statement.tickets_comped
+            %td=number_as_cents @statement.potential_revenue
+            %td
+              %strong=number_as_cents @statement.gross_revenue
+            %td=number_as_cents @statement.processing
+            %td=number_as_cents @statement.net_revenue

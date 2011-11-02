@@ -1,147 +1,141 @@
 class ShowsController < ApplicationController
   before_filter :find_event, :only => [ :index, :show, :new, :edit ]
   before_filter :check_for_charts, :only => [ :index, :new ]
-  before_filter :upcoming_performances, :only => [ :index, :show ]
+  before_filter :upcoming_shows, :only => [ :index, :show ]
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
-    redirect_to event_url(@performance.event)
+    redirect_to event_url(@show.event)
   end
 
   def index
-    @performances = @event.performances.paginate(:page => params[:page], :per_page => 10)
-    @next_performance = @event.next_perf
+    authorize :manage, @event
+    @shows = @event.shows.paginate(:page => params[:page], :per_page => 10)
+    @next_show = @event.next_show
   end
 
   def duplicate
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :duplicate, @performance
+    @show = Show.find(params[:id])
+    authorize! :duplicate, @show
 
-    @new_performance = @performance.dup!
-    @new_performance.save
-    redirect_to event_path(@performance.event)
+    @new_show = @show.dup!
+    @new_show.save
+    redirect_to event_path(@show.event)
   end
 
   def new
-    @performance = @event.next_perf
+    @show = @event.next_show
   end
 
   def create
-    @performance = AthenaPerformance.new
-    @event = AthenaEvent.find(params[:event_id])
-    @performance.event = @event
-    @performance.set_attributes params[:athena_performance]
-    @performance.organization_id = current_user.current_organization.id
-    if @performance.valid? && @performance.save
-      flash[:notice] = "Show created on #{l @performance.datetime, :format => :date_at_time}"
-      redirect_to event_path(@performance.event)
+    @event = Event.find(params[:event_id])
+    @show = @event.shows.build(params[:show].merge(:organization => current_organization))
+
+    if @show.save
+      flash[:notice] = "Show created on #{l @show.datetime, :format => :date_at_time}"
+      redirect_to event_path(@event)
     else
       flash[:error] = "There was a problem creating your show."
-      redirect_to event_path(@performance.event)
+      render :new
     end
   end
 
   def show
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :view, @performance
+    @show = Show.find(params[:id])
+    authorize! :view, @show
 
-    @performance.tickets = @performance.tickets
-    @tickets = @performance.tickets
+    @show.tickets = @show.tickets
+    @tickets = @show.tickets
   end
 
   def edit
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :edit, @performance
+    @show = Show.find(params[:id])
+    authorize! :edit, @show
   end
 
   def update
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :edit, @performance
-
-    without_tickets do
-      if @performance.update_attributes(params[:athena_performance])
-        redirect_to event_path(@performance.event)
-      else
-        render :edit
-      end
-    end
+    @show = Show.find(params[:id])
+    authorize! :edit, @show
+    redirect_to @show.event
   end
 
   def destroy
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :destroy, @performance
+    @show = Show.find(params[:id])
+    authorize! :destroy, @show
 
-    @performance.destroy
-    redirect_to event_url(@performance.event)
+    @show.destroy
+    redirect_to @show.event
   end
 
   def door_list
-    @performance = AthenaPerformance.find(params[:id])
-    authorize! :view, @performance
-    @current_time = DateTime.now.in_time_zone(@performance.event.time_zone)
-    @door_list = DoorList.new(@performance)
+    @show = Show.find(params[:id])
+    authorize! :view, @show
+    @current_time = DateTime.now.in_time_zone(@show.event.time_zone)
+    @door_list = DoorList.new(@show)
   end
 
   def published
-    @performance = AthenaPerformance.find(params[:performance_id])
-    authorize! :show, @performance
+    @show = Show.find(params[:show_id])
+    authorize! :show, @show
 
-    if @performance.tickets.empty?
+    if @show.tickets.empty?
       respond_to do |format|
         format.html do
-          flash[:error] = 'Please create tickets for this performance before putting it on sale'
-          redirect_to event_show_url(@performance.event, @performance)
+          flash[:error] = 'Please create tickets for this show before putting it on sale'
+          redirect_to event_show_url(@show.event, @show)
         end
 
-        format.json { render :json => { :errors => ['Please create tickets for this performance before putting it on sale'] } }
+        format.json { render :json => { :errors => ['Please create tickets for this show before putting it on sale'] } }
       end
 
       return
     end
 
     with_confirmation do
-      @performance.publish!
+      @show.publish!
       respond_to do |format|
-        format.html { redirect_to event_show_url(@performance.event, @performance), :notice => 'Your performance is now published.' }
-        format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
+        format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your show is now published.' }
+        format.json { render :json => @show.as_json.merge('glance' => @show.glance.as_json) }
       end
     end
   end
 
   def unpublished
-    @performance = AthenaPerformance.find(params[:performance_id])
-    authorize! :hide, @performance
+    @show = Show.find(params[:show_id])
+    authorize! :hide, @show
 
     with_confirmation do
-      @performance.unpublish!
+      @show.unpublish!
       respond_to do |format|
-        format.html { redirect_to event_show_url(@performance.event, @performance), :notice => 'Your performance is now unpublished.' }
-        format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
+        format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your show is now unpublished.' }
+        format.json { render :json => @show.as_json.merge('glance' => @show.glance.as_json) }
       end
     end
   end
 
   def built
-    @performance = AthenaPerformance.find(params[:performance_id])
-    authorize! :edit, @performance
+    @show = Show.find(params[:show_id])
+    authorize! :edit, @show
 
-    @performance.create_tickets
-    @event = AthenaEvent.find(@performance.event_id)
-    authorize! :create_tickets, @performance.chart.sections
+    @event = @show.event
+    # TODO: The ability to create tickets is business logic, not authorization logic.
+    authorize! :create_tickets, @show.chart.sections
+
+    @show.build!
 
     respond_to do |format|
-      format.html { redirect_to event_show_url(@event, @performance) }
-      format.json { render :json => @performance.as_json.merge('glance' => @performance.glance.as_json) }
+      format.html { redirect_to event_show_url(@event, @show) }
+      format.json { render :json => @show.as_json.merge('glance' => @show.glance.as_json) }
     end
   end
 
   def on_sale
-    authorize! :bulk_edit, AthenaTicket
+    authorize! :bulk_edit, Ticket
     with_confirmation do
-      @performance = AthenaPerformance.find(params[:performance_id])
+      @show = Show.find(params[:show_id])
 
-      if @performance.bulk_on_sale(:all)
-        @performance.publish!
+      if @show.bulk_on_sale(:all)
+        @show.publish!
         notice = "Put all tickets on sale."
       else
         error = "Tickets that have been sold or comped can't be put on or taken off sale. A ticket that is already on sale or off sale can't be put on or off sale again."
@@ -151,12 +145,12 @@ class ShowsController < ApplicationController
         format.html do
           flash[:notice] = notice
           flash[:error] = error
-          redirect_to event_show_url(@performance.event, @performance)
+          redirect_to event_show_url(@show.event, @show)
         end
 
         format.json do
           if error.blank?
-            render :json => @performance.as_json.merge('glance' => @performance.glance.as_json)
+            render :json => @show.as_json.merge('glance' => @show.glance.as_json)
           else
             render :json => { :errors => [ error ] }, :status => 409
           end
@@ -168,11 +162,11 @@ class ShowsController < ApplicationController
 
   private
     def find_event
-      @event = AthenaEvent.find(params[:event_id])
+      @event = Event.find(params[:event_id])
     end
 
-    def upcoming_performances
-      @upcoming = @event.upcoming_performances
+    def upcoming_shows
+      @upcoming = @event.upcoming_shows
     end
 
     def with_confirmation
@@ -186,18 +180,9 @@ class ShowsController < ApplicationController
       end
     end
 
-    def without_tickets
-      if @performance.tickets_created?
-        flash[:alert] = 'Tickets have already been created for this performance'
-        redirect_to event_url(@performance.event) and return
-      else
-        yield
-      end
-    end
-
     def check_for_charts
       if @event.charts.empty?
-         flash[:error] = "Please import a chart to this event before working with performances."
+         flash[:error] = "Please import a chart to this event before working with shows."
          redirect_to event_path(@event)
       end
     end

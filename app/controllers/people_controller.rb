@@ -2,14 +2,14 @@ class PeopleController < ApplicationController
   respond_to :html, :json
 
   def new
-    authorize! :create, AthenaPerson
-    @person = AthenaPerson.new
+    authorize! :create, Person
+    @person = Person.new
   end
 
   def create
-    authorize! :create, AthenaPerson
-    @person = AthenaPerson.new
-    person = params[:athena_person][:athena_person]
+    authorize! :create, Person
+    @person = Person.new
+    person = params[:person]
 
     @person.first_name      = person[:first_name] unless person[:first_name].blank?
     @person.last_name       = person[:last_name]  unless person[:last_name].blank?
@@ -40,7 +40,7 @@ class PeopleController < ApplicationController
   end
 
   def update
-    @person = AthenaPerson.find(params[:id])
+    @person = Person.find(params[:id])
     authorize! :edit, @person
 
     results = @person.update_attributes(params[:athena_person][:athena_person])
@@ -68,12 +68,11 @@ class PeopleController < ApplicationController
   end
 
   def index
-    authorize! :manage, AthenaPerson
+    authorize! :manage, Person
     @people = []
 
     if is_search(params)
-      @people = AthenaPerson.search_index(params[:search].dup, current_user.current_organization)
-
+      @people = Person.search_index(params[:search].dup, current_user.current_organization)
       respond_with do |format|
         format.csv  { render :csv => @people, :filename => "SearchResults-#{DateTime.now.strftime("%m-%d-%y")}.csv" }
         format.html { render :partial => 'list', :layout => false, :locals => { :people => @people } if request.xhr? }
@@ -88,14 +87,14 @@ class PeopleController < ApplicationController
       end
 
     else
-      @people = AthenaPerson.recent(current_user.current_organization)
+      @people = Person.recent(current_user.current_organization)
     end
 
     @people = @people.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
-    @person = AthenaPerson.find(params[:id])
+    @person = Person.find(params[:id])
     authorize! :view, @person
   end
 
@@ -117,20 +116,20 @@ class PeopleController < ApplicationController
   end
 
   def edit
-    @person = AthenaPerson.find(params[:id])
+    @person = Person.find(params[:id])
     authorize! :edit, @person
   end
 
   def tag
-    @person = AthenaPerson.find(params[:id])
-    @person.tag! params[:tag]
+    @person = Person.find(params[:id])
+    @person.tag_list << params[:tag]
     @person.save
     render :nothing => true
   end
 
   def untag
-    @person = AthenaPerson.find(params[:id])
-    @person.untag! params[:tag]
+    @person = Person.find(params[:id])
+    @person.tag_list.remove
     @person.save
     render :nothing => true
   end

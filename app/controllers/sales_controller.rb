@@ -30,17 +30,17 @@ class SalesController < ApplicationController
   end
 
   def find_event
-    @event = AthenaEvent.find(params[:event_id])
+    @event = Event.find(params[:event_id])
   end
 
   def find_show
-    @show = AthenaPerformance.find(params[:show_id])
+    @show = Show.find(params[:show_id])
     authorize! :view, @show
   end
 
   def find_people
     if params[:terms].present?
-      @people = AthenaPerson.search_index(params[:terms].dup, current_user.current_organization)
+      @people = Person.search_index(params[:terms].dup, current_user.current_organization)
     else
       @people = []
     end
@@ -51,11 +51,11 @@ class SalesController < ApplicationController
   end
 
   def find_dummy
-    @dummy = AthenaPerson.dummy_for(current_user.current_organization)
+    @dummy = Person.dummy_for(current_user.current_organization)
   end
 
   def person
-    AthenaPerson.find(params[:person_id])
+    Person.find(params[:person_id])
   end
 
   def payment

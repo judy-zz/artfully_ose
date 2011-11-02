@@ -11,3 +11,5 @@ config/database.yml
 public/assets
 .rvmrc
 .rbenv-version
+log/
+solr/

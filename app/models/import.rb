@@ -39,8 +39,7 @@ class Import < ActiveRecord::Base
     limit  = 500
 
     loop do
-      query  = { :importId => self.id, :_start => offset, :_limit => limit }
-      people = AthenaPerson.find(:all, :params => query)
+      people = Person.where(:import_id => self.id).offset(offset).limit(limit)
       people.each { |person| yield person }
       return if people.count < limit
       offset += limit

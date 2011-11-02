@@ -5,6 +5,4 @@
 .spread
   %h3 New Chart
   = render "shared/error_messages", :target => @chart
-  = form_for @chart, :url => charts_path(@chart) do |form|
-    %ul= render :partial => 'charts/form', :locals => { :parent_form => form, :target => @chart }
-    = form.submit "Submit"
+  = render :partial => 'form', :locals => { :chart => @chart }

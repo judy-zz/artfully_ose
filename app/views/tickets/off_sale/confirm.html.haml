@@ -4,7 +4,7 @@
 
 .context
 .document
-  %p= "You are about to take #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @performance.datetime } showing of #{@performance.event.name} off sale."
+  %p= "You are about to take #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @show.datetime } showing of #{@show.event.name} off sale."
 
   = form_tag off_sale_show_tickets_path, :method => :put do
     = hidden_field_tag :confirmed, :true
@@ -15,4 +15,4 @@
 
   %p
     If this is not correct,
-    = link_to "cancel this action and return to the show page", event_show_url(@performance.event, @performance)
+    = link_to "cancel this action and return to the show page", event_show_url(@show.event, @show)

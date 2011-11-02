@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -11,7 +10,36 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111019143557) do
+ActiveRecord::Schema.define(:version => 20111102154844) do
+
+  create_table "actions", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.integer  "user_id"
+    t.datetime "occurred_at"
+    t.string   "details"
+    t.boolean  "starred"
+    t.integer  "dollar_amount"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "type"
+    t.string   "subtype"
+    t.integer  "subject_id"
+    t.string   "subject_type"
+    t.integer  "creator_id"
+  end
+
+  create_table "addresses", :force => true do |t|
+    t.string   "address1"
+    t.string   "address2"
+    t.string   "city"
+    t.string   "state"
+    t.string   "zip"
+    t.string   "country"
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "admin_stats", :force => true do |t|
     t.integer  "users"
@@ -63,6 +91,20 @@ ActiveRecord::Schema.define(:version => 20111019143557) do
     t.datetime "updated_at"
   end
 
+  create_table "carts", :force => true do |t|
+    t.string   "state"
+    t.string   "transaction_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "charts", :force => true do |t|
+    t.string  "name"
+    t.boolean "is_template"
+    t.integer "event_id"
+    t.integer "organization_id"
+  end
+
   create_table "delayed_jobs", :force => true do |t|
     t.integer  "priority",   :default => 0
     t.integer  "attempts",   :default => 0
@@ -80,7 +122,20 @@ ActiveRecord::Schema.define(:version => 20111019143557) do
 
   create_table "donations", :force => true do |t|
     t.integer  "amount"
-    t.integer  "order_id"
+    t.integer  "cart_id"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "events", :force => true do |t|
+    t.string   "name"
+    t.string   "venue"
+    t.string   "state"
+    t.string   "city"
+    t.string   "time_zone"
+    t.string   "producer"
+    t.boolean  "is_free"
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -124,6 +179,28 @@ ActiveRecord::Schema.define(:version => 20111019143557) do
     t.text     "import_headers"
   end
 
+  create_table "items", :force => true do |t|
+    t.string   "state"
+    t.string   "product_type"
+    t.integer  "product_id"
+    t.integer  "price"
+    t.integer  "realized_price"
+    t.integer  "net"
+    t.string   "settlement_id"
+    t.string   "fs_project_id"
+    t.string   "nongift_amount"
+    t.boolean  "is_noncash"
+    t.boolean  "is_stock"
+    t.boolean  "is_anonymous"
+    t.datetime "fs_available_on"
+    t.datetime "reversed_at"
+    t.string   "reversed_note"
+    t.integer  "order_id"
+    t.integer  "show_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "kits", :force => true do |t|
     t.string   "state"
     t.string   "type"
@@ -138,10 +215,16 @@ ActiveRecord::Schema.define(:version => 20111019143557) do
   end
 
   create_table "orders", :force => true do |t|
-    t.string   "state"
     t.string   "transaction_id"
+    t.integer  "price"
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.integer  "order_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "service_fee"
+    t.integer  "fa_id"
+    t.string   "details"
   end
 
   create_table "organizations", :force => true do |t|
@@ -155,13 +238,110 @@ ActiveRecord::Schema.define(:version => 20111019143557) do
     t.datetime "updated_at"
   end
 
+  create_table "people", :force => true do |t|
+    t.integer  "organization_id"
+    t.string   "state"
+    t.string   "type"
+    t.string   "email"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "company_name"
+    t.string   "website"
+    t.boolean  "dummy"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "person_type"
+    t.string   "twitter_handle"
+    t.string   "facebook_url"
+    t.string   "linked_in_url"
+    t.integer  "import_id"
+  end
+
+  create_table "phones", :force => true do |t|
+    t.string   "kind"
+    t.string   "number"
+    t.integer  "person_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "purchasable_tickets", :force => true do |t|
-    t.integer  "order_id"
+    t.integer  "cart_id"
     t.string   "ticket_id"
     t.string   "lock_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sections", :force => true do |t|
+    t.string  "name"
+    t.integer "capacity"
+    t.integer "price"
+    t.integer "chart_id"
+  end
+
+  create_table "segments", :force => true do |t|
+    t.string  "name"
+    t.string  "terms"
+    t.integer "organization_id"
+  end
+
+  create_table "settlements", :force => true do |t|
+    t.string   "transaction_id"
+    t.string   "ach_response_code"
+    t.string   "fail_message"
+    t.datetime "created_at",        :limit => 255
+    t.boolean  "success"
+    t.integer  "gross"
+    t.integer  "realized_gross"
+    t.integer  "net"
+    t.integer  "items_count"
+    t.integer  "organization_id"
+    t.integer  "show_id"
+    t.datetime "updated_at"
+  end
+
+  create_table "shows", :force => true do |t|
+    t.string   "state"
+    t.datetime "datetime"
+    t.integer  "event_id"
+    t.integer  "chart_id"
+    t.integer  "organization_id"
+  end
+
+  create_table "taggings", :force => true do |t|
+    t.integer  "tag_id"
+    t.integer  "taggable_id"
+    t.string   "taggable_type"
+    t.integer  "tagger_id"
+    t.string   "tagger_type"
+    t.string   "context"
+    t.datetime "created_at"
+  end
+
+  add_index "taggings", ["tag_id"], :name => "index_taggings_on_tag_id"
+  add_index "taggings", ["taggable_id", "taggable_type", "context"], :name => "index_taggings_on_taggable_id_and_taggable_type_and_context"
+
+  create_table "tags", :force => true do |t|
+    t.string "name"
+  end
+
+  create_table "tickets", :force => true do |t|
+    t.string   "venue"
+    t.string   "section"
+    t.string   "state"
+    t.integer  "price"
+    t.integer  "sold_price"
+    t.datetime "sold_at"
+    t.integer  "buyer_id"
+    t.integer  "show_id"
+    t.integer  "organization_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "cart_id"
+  end
+
+  add_index "tickets", ["state"], :name => "index_tickets_on_state"
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false

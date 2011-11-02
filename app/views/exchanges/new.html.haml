@@ -13,17 +13,17 @@
       %li= link_to event.name, params.merge({:event_id => event.id}), :title => 'event-name'
 
 .drilldown
-  - unless @performances.nil?
+  - unless @shows.nil?
     %h3 Choose a Show
-    - if @performances.empty?
+    - if @shows.empty?
       %p Sorry, there are no shows that meet the requirements for an exchange.
     - else
-      %ul#performance-drilldown
-        - @performances.each do |performance|
-          %li= link_to l(performance.datetime, :format => :short), params.merge({:performance_id => performance.id}), :title => 'performance-datetime'
+      %ul#show-drilldown
+        - @shows.each do |show|
+          %li= link_to l(show.datetime, :format => :short), params.merge({:show_id => show.id}), :title => 'show-datetime'
 
 .drilldown.final
-  - unless @performance.nil?
+  - unless @show.nil?
     %h3 Select Tickets
     - if @tickets.empty?
       %p Sorry, there are no tickets that meet the requirements for an exchange.

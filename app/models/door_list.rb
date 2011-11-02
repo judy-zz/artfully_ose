@@ -1,12 +1,12 @@
 class DoorList
-  attr_accessor :performance
+  attr_accessor :show
 
-  def initialize(performance)
-    self.performance = performance
+  def initialize(show)
+    self.show = show
   end
 
   def items
-    @items ||= performance.tickets.select(&:committed?).collect do |ticket|
+    @items ||= show.tickets.select(&:committed?).collect do |ticket|
       Item.new(ticket, ticket.buyer)
     end.sort{ |a,b| a.ticket.buyer.email <=> b.ticket.buyer.email }
   end

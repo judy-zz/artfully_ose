@@ -24,7 +24,7 @@ artfully.utils = (function(){
   function ticket_uri(params){
     var u = artfully.config.base_uri + 'tickets.jsonp?callback=?';
     jQuery.each(params, function(k,v){
-      u += "&" + k + (k === "limit" ? "=" : "=eq") + v;
+      u += "&" + k + "=" + v;
     });
     return u;
   }
@@ -290,7 +290,7 @@ artfully.models = (function(){
           $form.submit(function(){
             var params = {
               'limit': $select.val(),
-              'performance_id': jQuery(this).closest('.performance').data('performance').id,
+              'show_id': jQuery(this).closest('.performance').data('performance').id,
               'price': obj.price
             };
 
@@ -322,9 +322,11 @@ artfully.models = (function(){
           $t = jQuery(document.createElement('li')).addClass('performance').appendTo(target);
           $t.data('performance', this);
 
+		  console.log(this)
+
           jQuery(document.createElement('span'))
           .addClass('performance-datetime')
-          .text(this.performance_time)
+          .text(this.show_time)
           .appendTo($t);
 
           jQuery(document.createElement('a'))

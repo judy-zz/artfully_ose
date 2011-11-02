@@ -19,7 +19,7 @@ class Sale
 
   def sell(payment)
     if valid?
-      cart.add_tickets(tickets)
+      cart.tickets << tickets
       checkout = Checkout.new(cart, payment)
       checkout.finish.tap do |success|
         errors.add(:base, "payment was not accepted") and return if !success
@@ -49,7 +49,7 @@ class Sale
   end
 
   def settle(checkout, success)
-    AthenaItem.settle(checkout.athena_order.items, Settlement.new)
+    Item.settle(checkout.order.items, Settlement.new)
   end
 end
 
@@ -70,11 +70,12 @@ class Sale::TicketRequest
   def tickets
     return [] if @quantity == 0
 
-    @tickets ||= AthenaTicket.available({
-      :performance_id => @show.id,
+    conditions = {
+      :show_id        => @show.id,
       :section        => @section.name,
       :price          => @section.price,
-      :limit          => @quantity
-    })
+    }
+
+    @tickets ||= Ticket.available(conditions, @quantity)
   end
 end

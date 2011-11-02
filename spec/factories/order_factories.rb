@@ -1,11 +1,6 @@
-Factory.define :order do |o|
-end
-
-Factory.define :order_with_items, :parent => :order do |o|
-  o.after_create do |order|
-    tickets = 3.times.collect { Factory(:ticket_with_id) }
-    Factory(:lock, :tickets => tickets.collect(&:id))
-    order.add_tickets tickets
-    order.donations << Factory(:donation)
-  end
+Factory.define(:order) do |o|
+  o.transaction_id "j59qrb"
+  o.price 50
+  o.association :person
+  o.association :organization
 end

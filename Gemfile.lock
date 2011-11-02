@@ -13,11 +13,6 @@ PATH
       ruby-hmac
       s3 (>= 0.3.7)
 
-PATH
-  remote: vendor/gems/transitions-0.0.9
-  specs:
-    transitions (0.0.9)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -48,10 +43,15 @@ GEM
       activesupport (= 3.0.9)
       arel (~> 2.0.10)
       tzinfo (~> 0.3.23)
+    activerecord-import (0.2.8)
+      activerecord (~> 3.0pre)
+      activerecord (~> 3.0pre)
     activeresource (3.0.9)
       activemodel (= 3.0.9)
       activesupport (= 3.0.9)
     activesupport (3.0.9)
+    acts-as-taggable-on (2.1.1)
+      rails
     arel (2.0.10)
     athena_resource (0.0.1)
     awesome_print (0.4.0)
@@ -99,6 +99,7 @@ GEM
     dynamic_form (1.1.4)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    escape (0.0.4)
     escape_utils (0.2.3)
     eventmachine (0.12.10)
     exceptional (2.0.32)
@@ -146,6 +147,7 @@ GEM
     open4 (1.1.0)
     orm_adapter (0.0.5)
     polyglot (0.3.1)
+    pr_geohash (1.0.0)
     proxies (0.2.1)
     rack (1.2.3)
     rack-jsonp-middleware (0.0.5)
@@ -173,6 +175,8 @@ GEM
     rdoc (3.6.1)
     rest-client (1.6.3)
       mime-types (>= 1.16)
+    rsolr (0.12.1)
+      builder (>= 2.1.2)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
@@ -200,13 +204,22 @@ GEM
     sqlite3 (1.3.3)
     sqlite3-ruby (1.3.3)
       sqlite3 (>= 1.3.3)
+    sunspot (1.2.1)
+      escape (= 0.0.4)
+      pr_geohash (~> 1.0)
+      rsolr (= 0.12.1)
+    sunspot_rails (1.2.1)
+      nokogiri
+      sunspot (= 1.2.1)
     term-ansicolor (1.0.5)
     thin (1.2.11)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
     thor (0.14.6)
+    timecop (0.3.5)
     timeliness (0.3.4)
+    transitions (0.0.11)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
     tzinfo (0.3.28)
@@ -226,6 +239,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-import
+  acts-as-taggable-on (~> 2.1.0)
   athena_resource
   awesome_print
   cancan
@@ -265,8 +280,10 @@ DEPENDENCIES
   sass
   shoulda
   sqlite3-ruby
+  sunspot_rails
   thin
-  transitions!
+  timecop
+  transitions
   uuid
   validates_timeliness
   will_paginate (~> 3.0.beta)

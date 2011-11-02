@@ -1,6 +1,18 @@
 class Organization < ActiveRecord::Base
+  has_many :events
+  has_many :charts
+  has_many :shows
+  has_many :tickets
+
+  has_many :people
+  has_many :segments
+
   has_many :memberships
   has_one  :bank_account
+  has_many :orders
+  has_many :items
+
+  has_many :settlements
   has_one  :fiscally_sponsored_project
   has_many :users, :through => :memberships
   has_many :kits, :before_add => :check_for_duplicates,
@@ -13,7 +25,11 @@ class Organization < ActiveRecord::Base
   scope :linked_to_fa, where("fa_member_id is not null")
 
   def owner
-    @owner ||= users.first
+    users.first
+  end
+
+  def dummy
+    Person.dummy_for(self)
   end
 
   delegate :can?, :cannot?, :to => :ability
@@ -73,17 +89,6 @@ class Organization < ActiveRecord::Base
     end
   end
 
-  def import_all_fa_donations
-    return unless has_fiscally_sponsored_project?
-    process_donations FA::Donation.find_by_member_id(fa_member_id)
-  end
-
-  def import_recent_fa_donations(since=nil)
-    return unless has_fiscally_sponsored_project?
-    since ||= (fsp.updated_at - 1.day)
-    process_donations FA::Donation.find_by_member_id(fa_member_id, since)
-  end
-
   def all_items_of_type(product_type, &block)
     offset    = 0
     limit     = 100
@@ -115,7 +120,7 @@ class Organization < ActiveRecord::Base
   end
 
   def all_ticket_sales(&block)
-    all_items_of_type "AthenaTicket", &block
+    all_items_of_type "Ticket", &block
   end
 
   private
@@ -130,12 +135,6 @@ class Organization < ActiveRecord::Base
 
     def sponsored_kit
       kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new({:organization => self})
-    end
-
-    def process_donations(fa_donations)
-      fa_donations.each do |fa_donation|
-        @order = AthenaOrder.from_fa_donation(fa_donation, self)
-      end
     end
 
     def check_for_duplicates(kit)

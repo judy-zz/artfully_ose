@@ -1,10 +1,10 @@
 - content_for :header do
-  %h1= l(@performance.datetime)
+  %h1= l(@show.datetime)
 
 .context
   %h3 Settlement
-  - if @performance.settleables.any?
-    %p= link_to "Run Settlement", new_admin_settlement_path(:performance_id => @performance.id)
+  - if @show.settleables.any?
+    %p= link_to "Run Settlement", new_admin_settlement_path(:show_id => @show.id)
   - else
     %p There are no items due for settlement.
 
@@ -17,7 +17,7 @@
         %th Price
         %th Settlement
     %tbody
-      - @performance.tickets.each do |ticket|
+      - @show.tickets.each do |ticket|
         %tr
           %td= ticket.section
           %td= number_as_cents ticket.price

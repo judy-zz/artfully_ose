@@ -1,14 +1,11 @@
 Factory.define :organization do |o|
   o.name { Faker::Company.name }
-  o.after_create do |organization|
-    FakeWeb.register_uri(:get, "http://localhost/athena/events.json?organizationId=#{organization.id}", :body => "[]")
-    FakeWeb.register_uri(:get, "http://localhost/athena/events.json?organizationId=eq#{organization.id}", :body => "[]")
-    FakeWeb.register_uri(:get, "http://localhost/athena/people.json?_limit=5&organizationId=eq#{organization.id}", :body => "[]")
-  end
 end
 
-Factory.define :organization_with_id, :parent => :organization do |o|
-  o.id 19
+Factory.define(:organization_with_bank_account, :parent => :organization) do |o|
+  o.after_create do |organization|
+    organization.bank_account = Factory(:bank_account)
+  end
 end
 
 Factory.define :organization_with_ticketing, :parent => :organization do |o|
@@ -19,5 +16,7 @@ Factory.define :organization_with_donations, :parent => :organization do |o|
   o.after_create { |organization| Factory(:regular_donation_kit, :state => :activated, :organization => organization) }
 end
 
-Factory.define :fiscally_sponsored_project do |fsp|
+Factory.define(:connected_organization, :parent => :organization) do |o|
+  o.association :fiscally_sponsored_project
+  o.fa_member_id "1"
 end

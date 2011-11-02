@@ -1,7 +1,7 @@
 #update-price.grouped-form
   %h3 Update Price
   = form_tag set_new_price_show_tickets_path, :method => :get do
-    = hidden_field_tag :performance_id, performance.id
+    = hidden_field_tag :show_id, show.id
     %ul
       - tickets.each do |ticket|
         %li

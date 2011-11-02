@@ -2,7 +2,7 @@ class AddressesController < ApplicationController
   before_filter :find_person
 
   def create
-    address = Address.new(params[:address].merge({:person_id => @person.id}))
+    address = @person.build_address(params[:address])
     if address.save
       flash[:notice] = "Successfully added an address for #{@person.first_name} #{@person.last_name}."
     else
@@ -26,6 +26,6 @@ class AddressesController < ApplicationController
   private
 
   def find_person
-    @person = AthenaPerson.find(params[:person_id])
+    @person = Person.find(params[:person_id])
   end
 end

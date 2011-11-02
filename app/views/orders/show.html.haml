@@ -12,7 +12,7 @@
       .value=link_to_person @person
     %li
       .key Date
-      .value #{(l @order.timestamp) unless @order.timestamp.nil?}
+      .value #{(l @order.created_at) unless @order.created_at.nil?}
     %li
       .key Total
       .value #{number_as_cents(@total)}

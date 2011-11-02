@@ -7,7 +7,7 @@ class ActionsController < ApplicationController
 
   def new
     @action = AthenaAction.new
-    @person = AthenaPerson.find(params[:person_id])
+    @person = Person.find(params[:person_id])
 
     @action.creator = nil
     @action.occurred_at = DateTime.now.in_time_zone(current_user.current_organization.time_zone)
@@ -16,14 +16,14 @@ class ActionsController < ApplicationController
 
   def edit
     @action = AthenaAction.find(params[:id])
-    @person = AthenaPerson.find(params[:person_id])
+    @person = Person.find(params[:person_id])
 
     @action.creator = User.find(@action.creator_id).email
     render :layout => false
   end
 
   def create
-    @person = AthenaPerson.find(params[:person_id])
+    @person = Person.find(params[:person_id])
 
     @action = AthenaAction.create_of_type(params[:action_type])
     @action.set_params(params[:athena_action][:athena_action], @person, current_user)
@@ -42,7 +42,7 @@ class ActionsController < ApplicationController
   end
 
   def update
-    @person = AthenaPerson.find params[:person_id]
+    @person = Person.find params[:person_id]
 
     @action = AthenaAction.find params[:id]
     @action.set_params(params[:athena_action][:athena_action], @person, current_user)

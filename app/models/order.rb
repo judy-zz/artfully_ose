@@ -1,138 +1,184 @@
 class Order < ActiveRecord::Base
-  include ActiveRecord::Transitions
+  include ActionView::Helpers::NumberHelper
+  include ApplicationHelper
 
-  attr_accessor :fee_in_cents
+  belongs_to :person
+  belongs_to :organization
 
-  has_many :purchasable_tickets, :dependent => :destroy
-  has_many :donations, :dependent => :destroy
+  belongs_to :parent, :class_name => "Order"
+  has_many :children, :class_name => "Order"
 
-  after_initialize :clean_order, :update_ticket_fee
+  has_many :items
 
-  state_machine do
-    state :started
-    state :approved
-    state :rejected
+  attr_accessor :skip_actions
 
-    event :approve do
-      transitions :from => [ :started, :rejected ], :to => :approved
-    end
+  validates_presence_of :person_id
+  validates_presence_of :organization_id
 
-    event :reject do
-      transitions :from => [ :started, :rejected ], :to => :rejected
-    end
+  after_create :create_purchase_action, :unless => :skip_actions
+  after_create :create_donation_actions, :unless => :skip_actions
+
+  scope :before, lambda { |time| where("created_at < ?", time) }
+  scope :after,  lambda { |time| where("created_at > ?", time) }
+  scope :in_range, lambda { |start, stop, organization_id| after(start).before(stop).where('organization_id = ?', organization_id).order("created_at DESC") }
+
+  scope :imported, where("fa_id IS NOT NULL")
+  scope :not_imported, where("fa_id IS NULL")
+
+  def total
+    all_items.inject(0) {|sum, item| sum + item.price.to_i }
   end
 
-  def clean_order
-    return if approved?
-    purchasable_tickets.delete(purchasable_tickets.select{ |item| !item.locked? })
-    update_ticket_fee
-  end
-
-  delegate :empty?, :to => :items
-  def items
-    self.purchasable_tickets + self.donations
+  def nongift_amount
+    all_items.inject(0) {|sum, item| sum + item.nongift_amount.to_i }
   end
 
   def tickets
-    purchasable_tickets.collect(&:ticket)
-  end
-  
-  def update_ticket_fee
-    @fee_in_cents = purchasable_tickets.reject{|t| t.price == 0}.size * 200
+    items.select(&:ticket?)
   end
 
-  def add_tickets(tkts)
-    ptkts = tkts.collect { |ticket| PurchasableTicket.for(ticket) }
-    lock_lockables(ptkts)
-
-    purchasable_tickets << ptkts
-    update_ticket_fee
-  end
-  
-  def clear_donations
-    temp = []
-    
-    #This won't work if there is more than 1 FAFS donation on the order
-    donations.each do |donation|
-      temp = donations.delete(donations)
-    end
-    temp
+  def donations
+    items.select(&:donation?)
   end
 
-  def lock_lockables(line_items)
-    lock = create_lock(line_items.collect { |i| i.item_id })
-    line_items.each do |i|
-      i.lock = lock
-      i.save
+  def for_organization(org)
+    self.organization = org
+  end
+
+  def <<(products)
+    self.items << Array.wrap(products).collect { |product|  Item.for(product) }
+  end
+
+  def payment
+    AthenaPayment.new(:transaction_id => transaction_id)
+  end
+
+  def record_exchange!
+    items.each do |item|
+      item.to_exchange!
     end
   end
 
-  def total
-    items.sum(&:price) + @fee_in_cents
+  def all_items
+    merge_and_sort_items
   end
 
-  def unfinished?
-    started? or rejected?
+  def all_tickets
+    all_items.select(&:ticket?)
   end
 
-  def completed?
-    approved?
+  def all_donations
+    all_items.select(&:donation?)
   end
 
-  def pay_with(payment, options = {})
-    @payment = payment
+  def settleable_donations
+    all_donations.reject(&:modified?)
+  end
 
-    if payment.requires_authorization?
-      pay_with_authorization(payment, options)
+  def refundable_items
+    items.select(&:refundable?)
+  end
+
+  def exchangeable_items
+    items.select(&:exchangeable?)
+  end
+
+  def items_detail
+    num_tickets = 0
+    sum_donations = 0
+
+    all_items.each{ |item|
+      if item.ticket?
+        num_tickets += 1
+      elsif item.donation?
+        sum_donations += item.price.to_i
+      end }
+
+    tickets = "#{num_tickets} ticket(s)"
+    donations = "$#{sum_donations/100.00} donation"
+
+    if num_tickets == 0
+      result = "#{[donations].to_sentence}"
+    elsif sum_donations == 0.0
+      result = "#{[tickets].to_sentence}"
     else
-      approve!
+      result = "#{[tickets, donations].to_sentence}"
+    end
+
+    result.to_sentence
+  end
+
+  def num_tickets
+    all_tickets.size
+  end
+
+  def has_ticket?
+    items.select(&:ticket?).present?
+  end
+
+  def has_donation?
+    items.select(&:donation?).present?
+  end
+
+  def sum_donations
+    all_donations.collect{|item| item.price.to_i}.sum
+  end
+
+  def ticket_details
+    "#{num_tickets} ticket(s)"
+  end
+
+  def is_fafs?
+    !fa_id.nil?
+  end
+
+  def donation_details
+    if is_fafs?
+      o = Organization.find(organization_id)
+      "#{number_as_cents sum_donations} donation via Fractured Atlas for the benefit of #{o.fiscally_sponsored_project.name}"
+    else
+      "#{number_as_cents sum_donations} donation"
     end
   end
 
-  def finish(person, order_timestamp)
-    purchasable_tickets.each { |ticket| ticket.sell_to(person, order_timestamp) }
-  end
-
-  def generate_donations
-    organizations_from_tickets.collect do |organization|
-      if organization.can?(:receive, Donation)
-        donation = Donation.new
-        donation.organization = organization
-        donation
-      end
-    end.compact
-  end
-
-  def organizations
-    (organizations_from_donations + organizations_from_tickets).uniq
-  end
-
-  def organizations_from_donations
-    donations.collect(&:organization)
-  end
-
-  def organizations_from_tickets
-    return @organizations unless @organizations.nil?
-
-    events = tickets.collect(&:event_id).uniq.collect! { |id| AthenaEvent.find(id) }
-    @organizations = events.collect(&:organization_id).uniq.collect! { |id| Organization.find(id) }
+  def returnable_items
+    items.select { |i| i.returnable? and not i.refundable? }
   end
 
   private
 
-    def pay_with_authorization(payment, options)
-      options[:settle] = true if options[:settle].nil?
-      payment.authorize! ? approve! : reject!
-      payment.settle! if options[:settle] and approved?
+    def merge_and_sort_items
+      items.concat(children.collect(&:items).flatten)
     end
 
-    #TODO: Debt: Move this out of order into PurchasableCollection
-    def create_lock(ids)
-      begin
-        lock = AthenaLock.create(:tickets => ids)
-      rescue ActiveResource::ResourceConflict
-        self.errors.add(:items, "could not be locked")
+    def create_purchase_action
+      unless all_tickets.empty?
+        action                 = PurchaseAction.new
+        action.person          = person
+        action.subject         = self
+        action.organization_id = organization.id
+        action.details         = ticket_details
+        action.occurred_at     = created_at
+        action.subtype  = "Purchase"
+
+        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
+        logger.debug("Action: #{action.attributes}")
+        action.save!
+        action
       end
-      lock
+    end
+
+    def create_donation_actions
+      items.select(&:donation?).collect do |item|
+        action                 = DonationAction.new
+        action.person          = person
+        action.subject         = item.product
+        action.organization_id = organization.id
+        action.details         = donation_details
+        action.occurred_at     = created_at
+        action.subtype  = "Donation"
+        action.save!
+        action
+      end
     end
 end

@@ -11,10 +11,10 @@ class Ability
   end
 
   def default_abilities_for(user)
-    cannot [ :edit, :destroy ], AthenaPerformance, :live? => true
+    cannot [ :edit, :destroy ], Show, :live? => true
 
-    cannot :destroy, AthenaEvent do |event|
-      event.performances.any?{ |performance| cannot? :destroy, performance }
+    cannot :destroy, Event do |event|
+      event.shows.any?{ |show| cannot? :destroy, show }
     end
 
     can :manage, Organization do |organization|
@@ -33,22 +33,22 @@ class Ability
       user.is_in_organization?
     end
 
-    can :view, AthenaStatement do |statement|
+    can :view, Statement do |statement|
       user.is_in_organization?
     end
   end
 
   def ticketing_abilities_for(user)
-    can [:manage, :bulk_edit ], AthenaTicket do |ticket|
+    can [:manage, :bulk_edit ], Ticket do |ticket|
       user.current_organization.can? :manage, ticket
     end
 
     #This is the ability that the controller uses to authorize creating/editing an event
-    can :manage, AthenaEvent do |event|
+    can :manage, Event do |event|
       event.free? && (user.current_organization.can? :manage, event)
     end
 
-    can :new, AthenaEvent do |event|
+    can :new, Event do |event|
       user.is_in_organization?
     end
 
@@ -60,30 +60,30 @@ class Ability
       sections.select {|s| s.price.to_i > 0}.empty? || (user.current_organization.can? :access, :paid_ticketing)
     end
 
-    can [ :manage, :show, :hide, :duplicate ], AthenaPerformance do |performance|
-      user.current_organization.can?(:manage, performance)
+    can [ :manage, :show, :hide, :duplicate ], Show do |show|
+      user.current_organization.can?(:manage, show)
     end
 
-    can :manage, AthenaChart do |chart|
+    can :manage, Chart do |chart|
       user.current_organization.can? :manage, chart
     end
   end
 
   def paid_ticketing_abilities_for(user)
     #This is the ability that the controller uses to authorize creating/editing an event
-    can :manage, AthenaEvent do |event|
+    can :manage, Event do |event|
       user.current_organization.can? :manage, event
     end
   end
 
   def order_ablilities_for(user)
-    can :manage, AthenaOrder do |order|
+    can :manage, Order do |order|
       user.current_organization.can? :manage, order
     end
   end
 
   def person_abilities_for(user)
-    can :manage, AthenaPerson do |person|
+    can :manage, Person do |person|
       (user.current_organization.can? :manage, person)
     end
 

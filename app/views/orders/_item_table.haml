@@ -11,13 +11,13 @@
           %tr{:id => "row_item_#{item.id}", :class => item.state }
             %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
             %td
-              - if item.product_type.eql?("AthenaTicket")
+              - if item.product_type.eql?("Ticket")
                 %span Ticket
                 %span
                   (
-                  = link_to "#{item.product.event}", event_path(item.product.event_id)
+                  = link_to "#{item.product.event}", event_path(item.product.event)
                   ,
-                  = link_to "#{l item.product.performance}", event_show_path(item.product.event_id, item.product.performance_id)
+                  = link_to "#{l item.product.datetime}", event_show_path(item.product.show.event, item.product.show)
                   )
               - if item.product_type.eql?("Donation")
                 %span Donation

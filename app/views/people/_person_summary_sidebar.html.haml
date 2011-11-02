@@ -19,25 +19,26 @@
 %ul.kv
   - person.phones.each do |phone|
     %li
-      .key= phone.type
+      .key= phone.kind
       .value
-        = phone.formatted_number
+        = phone.number
         = link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :confirm => "Are you sure you want to delete #{phone.number}?"
 
-= form_tag(person_phones_path(@person)) do
+= form_for([person, Phone.new]) do |form|
   %ul
     %li
-      .hidden.label= label_tag(:phone_number, "New Phone")
+      .hidden.label= form.label(:number, "Number")
+      .hidden.label= form.label(:kind, "Kind")
       .full.paired.element
-        = select_tag(:type, options_for_select(AthenaPerson::Phone.types), :class => :half)
-        = text_field_tag(:number, "", :placeholder => "Ex: 555-123-1234", :class => :half)
-        = submit_tag("Save")
+        = form.select(:kind, options_for_select(Phone.kinds), {}, {:class => :half})
+        = form.text_field(:number, :placeholder => "Ex: 555-123-1234", :class => :half)
+        = form.submit
 
 %h4 Mailing Address
-- if @person.address.persisted?
+- if @person.address.present?
   = render @person.address
   = button_to "Edit", "#", :id => "update-mailing-address"
 - else
   = button_to "Add", "#", :id => "create-mailing-address"
 
-= render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address }
+= render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address || @person.build_address }

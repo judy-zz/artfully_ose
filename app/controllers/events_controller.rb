@@ -2,13 +2,13 @@ class EventsController < ApplicationController
   respond_to :html, :json
 
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget ]
-  before_filter :upcoming_performances, :only => :show
+  before_filter :upcoming_shows, :only => :show
   after_filter :save_event_to_session, :except => [:destroy, :index]
   after_filter :clear_event_from_session, :only => :destroy
 
   def create
-    @event = AthenaEvent.new(params[:athena_event][:athena_event])
-    @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @event = Event.new(params[:event])
+    @templates = current_organization.charts.template
     @event.organization_id = current_user.current_organization.id
     begin
       authorize! :create, @event
@@ -28,22 +28,23 @@ class EventsController < ApplicationController
   end
 
   def index
-    authorize! :view, AthenaEvent
-    @events = AthenaEvent.find(:all, :params => { :organizationId => "eq#{current_user.current_organization.id}" }).paginate(:page => params[:page], :per_page => 10)
+    authorize! :view, Event
+    @events = current_organization.events.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
     authorize! :view, @event
-    @performances = @event.performances.paginate(:page => params[:page], :per_page => 10)
-    @next_performance = @event.next_perf
-    @performance = session[:performance].nil? ? @event.next_perf : session[:performance]
-    @charts = @event.filter_charts(AthenaChart.find_templates_by_organization(current_user.current_organization))
-    @chart = AthenaChart.new
+    @shows = @event.shows.paginate(:page => params[:page], :per_page => 10)
+    @next_show = @event.next_show
+
+    @charts = current_organization.charts.template
+    @chart = Chart.new
 
     respond_to do |format|
       format.json do
-        render :json => @event.as_full_calendar_json.to_json
+        render :json => @event.as_full_calendar_json
       end
+
       format.html do
         if @event.charts.empty?
           render :show_with_chart_select
@@ -56,10 +57,9 @@ class EventsController < ApplicationController
   end
 
   def new
-    @event = AthenaEvent.new
+    @event = current_organization.events.build(:producer => current_organization.name)
     authorize! :new, @event
-    @event.producer = current_user.current_organization.name
-    @templates = AthenaChart.find_templates_by_organization(current_user.current_organization).sort_by { |chart| chart.name }
+    @templates = current_organization.charts.template
   end
 
   def edit
@@ -67,8 +67,8 @@ class EventsController < ApplicationController
   end
 
   def assign
-    @event = AthenaEvent.find(params[:event_id])
-    @chart = AthenaChart.find(params[:athena_chart][:id])
+    @event = Event.find(params[:event_id])
+    @chart = Chart.find(params[:chart][:id])
     @event.assign_chart(@chart)
 
     flash[:error] = @event.errors.full_messages.to_sentence unless @event.errors.empty?
@@ -102,21 +102,21 @@ class EventsController < ApplicationController
     def save_event_to_session
       session[:event_id] = @event.id
     end
-    
+
     def clear_event_from_session
       session[:event_id] = nil
     end
 
-    def find_event
-      @event = AthenaEvent.find(params[:id])
-    end
+  def find_event
+    @event = Event.find(params[:id])
+  end
 
-    def find_charts
-      ids = params[:charts] || []
-      ids.collect { |id| AthenaChart.find(id) }
-    end
+  def find_charts
+    ids = params[:charts] || []
+    ids.collect { |id| Chart.find(id) }
+  end
 
-    def upcoming_performances
-      @upcoming = @event.upcoming_performances
-    end
+  def upcoming_shows
+    @upcoming = @event.upcoming_shows
+  end
 end

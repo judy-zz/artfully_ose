@@ -6,44 +6,15 @@ class OrganizationAbility
       kit.abilities.arity < 1 ? instance_eval(&kit.abilities) : kit.abilities.call(self)
     end
 
-#    TODO: Use these when ids on ATHENA are actually integers
-#    can :manage, AthenaEvent, :organization_id => organization.id
-#    can :manage, AthenaPerformance, :organization_id => organization.id
-#    can :manage, AthenaChart, :organization_id => organization.id
+    can :manage, Event, :organization_id => organization.id
+    can :manage, Show, :organization_id => organization.id
+    can :manage, Chart, :organization_id => organization.id
+    can :manage, Ticket, :organization_id => organization.id
 
-    can :manage, AthenaEvent do |event|
-      event.organization_id.to_i == organization.id
-    end
+    can :manage, Person, :organization_id => organization.id
+    can :manage, Segment, :organization_id => organization.id
+    can :manage, Order, :organization_id => organization.id
 
-    can :manage, AthenaPerformance do |performance|
-      performance.organization_id.to_i == organization.id
-    end
-
-    can :manage, AthenaTicket do |ticket|
-      can? :manage, AthenaEvent.find(ticket.event_id)
-    end
-
-    can :manage, AthenaChart do |chart|
-      chart.organization_id.to_i == organization.id
-    end
-
-    can :manage, AthenaPerson do |person|
-      person.organization_id.to_i == organization.id
-    end
-
-    can :manage, Segment do |segment|
-      segment.organization_id.to_i == organization.id
-    end
-
-    can :manage, AthenaOrder do |order|
-      order.organization_id.to_i == organization.id
-    end
-
-    can :manage, Organization do |org|
-      org.id.to_i == organization.id
-    end
-
-
-
+    can :manage, Organization, :id => organization.id
   end
 end
