@@ -89,38 +89,12 @@ class Organization < ActiveRecord::Base
     end
   end
 
-  def all_items_of_type(product_type, &block)
-    offset    = 0
-    limit     = 100
-    all_items = [] if !block
-
-    loop do
-      query = { :organizationId => self.id, :_start => offset, :_limit => limit }
-      orders = AthenaOrder.find(:all, :params => query)
-      order_ids = "in(" + orders.map(&:id).join(",") + ")"
-      query = { :orderId => order_ids, :productType => product_type }
-      offset += limit
-
-      break if orders.count == 0
-
-      AthenaItem.find(:all, :params => query).each do |item|
-        if block
-          block.call item.order, item
-        else
-          all_items << item
-        end
-      end
-    end
-
-    all_items || self
+  def donations
+    Item.joins(:order).where(:product_type => "Donation", :orders => { :organization_id => id })
   end
 
-  def all_donations(&block)
-    all_items_of_type "Donation", &block
-  end
-
-  def all_ticket_sales(&block)
-    all_items_of_type "Ticket", &block
+  def ticket_sales
+    Item.joins(:order).where(:product_type => "Ticket", :orders => { :organization_id => id })
   end
 
   private
