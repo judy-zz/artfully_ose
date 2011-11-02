@@ -268,7 +268,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.string   "transaction_id"
     t.string   "ach_response_code"
     t.string   "fail_message"
-    t.datetime "created_at",        :limit => 255
+    t.datetime "created_at"
     t.boolean  "success"
     t.integer  "gross"
     t.integer  "realized_gross"

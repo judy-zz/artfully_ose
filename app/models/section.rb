@@ -10,7 +10,7 @@ class Section < ActiveRecord::Base
                     :numericality => true
 
   validates :capacity,  :presence => true,
-                        :numericality => { :less_than_or_equal_to => 1000 }
+                        :numericality => { :less_than_or_equal_to => 2000 }
 
   def dup!
     Section.new(self.attributes.reject { |key, value| key == 'id' })
