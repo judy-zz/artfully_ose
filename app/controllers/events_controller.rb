@@ -42,8 +42,9 @@ class EventsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render :json => @event.as_full_calendar_json.to_json
+        render :json => @event.as_full_calendar_json
       end
+
       format.html do
         if @event.charts.empty?
           render :show_with_chart_select
@@ -101,7 +102,7 @@ class EventsController < ApplicationController
     def save_event_to_session
       session[:event_id] = @event.id
     end
-    
+
     def clear_event_from_session
       session[:event_id] = nil
     end

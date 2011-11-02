@@ -40,6 +40,7 @@ class Ticket < ActiveRecord::Base
   def self.available(params = {}, limit = 4)
     conditions = params.dup
     conditions[:state] ||= :on_sale
+    conditions[:cart_id] = nil
 
     where(conditions).limit(limit)
   end

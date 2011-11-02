@@ -9,7 +9,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :organization_id
   validates_presence_of :person_info
 
-  validates :email, :uniqueness => true
+  validates :email, :uniqueness => true, :allow_blank => true
   after_commit { Sunspot.commit }
 
   searchable do
@@ -69,11 +69,11 @@ class Person < ActiveRecord::Base
   def unstarred_actions
     actions.select { |action| action.unstarred? }
   end
-  
+
   def self.search_index(query, organization)
     self.search do
       keywords query
-      with(:organization_id).equal_to(organization.id)     
+      with(:organization_id).equal_to(organization.id)
     end.results
   end
 

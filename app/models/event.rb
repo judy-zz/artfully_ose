@@ -33,6 +33,7 @@ class Event < ActiveRecord::Base
 
   def next_show
     shows.build(:datetime => Show.next_datetime(shows.last))
+    shows.pop
   end
 
   def as_widget_json(options = {})
