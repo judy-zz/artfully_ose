@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.integer  "subject_id"
     t.string   "subject_type"
     t.integer  "creator_id"
+    t.string   "old_mongo_id"
   end
 
   create_table "addresses", :force => true do |t|
@@ -39,6 +40,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
   end
 
   create_table "admin_stats", :force => true do |t|
@@ -203,6 +205,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.integer  "service_fee"
     t.integer  "fa_id"
     t.string   "details"
+    t.string   "old_mongo_id"
   end
 
   create_table "organizations", :force => true do |t|
@@ -274,6 +277,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.integer  "organization_id"
     t.integer  "show_id"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
   end
 
   create_table "shows", :force => true do |t|
@@ -282,6 +286,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.integer  "event_id"
     t.integer  "chart_id"
     t.integer  "organization_id"
+    t.string   "old_mongo_id"
   end
 
   create_table "taggings", :force => true do |t|

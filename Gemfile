@@ -2,6 +2,10 @@ source 'http://rubygems.org'
 gem 'rake', '0.8.7'
 gem 'rails'
 
+gem 'mongo'
+gem 'bson'
+gem 'bson_ext'
+
 gem 'athena_resource'
 gem 'activerecord-import'
 
