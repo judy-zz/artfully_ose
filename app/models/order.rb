@@ -18,12 +18,16 @@ class Order < ActiveRecord::Base
   after_create :create_purchase_action, :unless => :skip_actions
   after_create :create_donation_actions, :unless => :skip_actions
 
+  default_scope :order => 'created_at DESC'
+
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
   scope :in_range, lambda { |start, stop, organization_id| after(start).before(stop).where('organization_id = ?', organization_id).order("created_at DESC") }
 
   scope :imported, where("fa_id IS NOT NULL")
   scope :not_imported, where("fa_id IS NULL")
+
+  scope :processed, where("transaction_id IS NOT NULL")
 
   def total
     all_items.inject(0) {|sum, item| sum + item.price.to_i }

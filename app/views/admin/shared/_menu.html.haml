@@ -1,0 +1,10 @@
+%ul#main-menu
+  %li= link_to "Home", admin_root_path
+  %li= link_to "Users", admin_users_path
+  %li= link_to "Organizations", admin_organizations_path
+  %li= link_to "Kits", admin_kits_path
+  %li= link_to "Settlements", admin_settlements_path
+  %li
+    = link_to "Orders", admin_orders_path
+    %ul
+      %li= link_to "Artfully Processed", admin_orders_path(:filter => "processed")
