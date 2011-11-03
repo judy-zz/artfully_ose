@@ -3,7 +3,7 @@ class BankAccount < ActiveRecord::Base
 
   before_validation :clean_phone
 
-  ACCOUNT_TYPES = ["Business Checking", "Personal Checking", "Personal Savings"].freeze
+  ACCOUNT_TYPES = ["Personal Checking", "Personal Savings"].freeze
 
   validates :routing_number,  :presence => true, :length => { :is => 9 }
   validates :number,          :presence => true
