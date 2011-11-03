@@ -7,10 +7,17 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name, :venue, :city, :state, :producer, :organization_id, :time_zone
 
+  default_scope where(:deleted_at => nil)
+
   include Ticket::Reporting
 
   def free?
     is_free?
+  end
+
+  alias :destroy! :destroy
+  def destroy
+    update_attribute(:deleted_at, Time.now)
   end
 
   def filter_charts(charts)
