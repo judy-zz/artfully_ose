@@ -41,7 +41,7 @@ describe BankAccount do
   describe "#valid?" do
     it { should be_valid }
 
-    it "isn't valid if the account type is not Business Checking, Personal Checking, or Personal Savings" do
+    it "isn't valid if the account type is not Personal Checking or Personal Savings" do
       subject.account_type = "Mutual Fund"
       subject.should_not be_valid
     end
