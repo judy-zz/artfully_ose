@@ -14,7 +14,7 @@ namespace :athena do
     STDOUT.write "\t\t\tCOUNT\tMIGRATED\tERRORS\n"
     STDOUT.write "\t\t\t-----\t--------\t------\n"
     
-    errors << migrate_collection("EVENTS", db.collection("event")) do |mongo_record|
+    errors << migrate_collection("EVENTS", db.collection("event").find()) do |mongo_record|
       event = Event.new({
                 :name => mongo_record['props']['name'],
                 :venue => mongo_record['props']['venue'],
@@ -30,7 +30,7 @@ namespace :athena do
       event
     end  
     
-    errors << migrate_collection("CHARTS", db.collection("chart")) do |mongo_record|
+    errors << migrate_collection("CHARTS", db.collection("chart").find()) do |mongo_record|
       chart = Chart.new({
                 :name => mongo_record['props']['name'],
                 :is_template => mongo_record['props']['isTemplate'],
@@ -44,7 +44,7 @@ namespace :athena do
       chart
     end   
     
-    errors << migrate_collection("SECTIONS", db.collection("section")) do |mongo_record|
+    errors << migrate_collection("SECTIONS", db.collection("section").find()) do |mongo_record|
       section = Section.new({
                 :name => mongo_record['props']['name'],
                 :capacity => mongo_record['props']['capacity'],
@@ -55,7 +55,7 @@ namespace :athena do
       section
     end    
     
-    errors << migrate_collection("PEOPLE", db.collection("person")) do |mongo_record|
+    errors << migrate_collection("PEOPLE", db.collection("person").find()) do |mongo_record|
       person = Person.new({
                 :first_name => mongo_record['props']['firstName'],
                 :last_name => mongo_record['props']['lastName'],
@@ -67,14 +67,13 @@ namespace :athena do
               })
       #tags
       #phones
-      #addresses?
       #import/export fields
               
       person.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
       person
     end 
     
-    errors << migrate_collection("ADDRESS", db.collection("address")) do |mongo_record|
+    errors << migrate_collection("ADDRESS", db.collection("address").find()) do |mongo_record|
       address = Address.new({
                 :address1 => mongo_record['props']['address1'],
                 :address2 => mongo_record['props']['address2'],
@@ -89,7 +88,7 @@ namespace :athena do
       address
     end  
     
-    errors << migrate_collection("ORDERS", db.collection("order")) do |mongo_record|
+    errors << migrate_collection("ORDERS", db.collection("order").find()) do |mongo_record|
       order = Order.new({
                 :transaction_id => mongo_record['props']['transactionId'],
                 :price => mongo_record['props']['orderTotal'],
@@ -101,26 +100,20 @@ namespace :athena do
               })
       order.person = Person.find_by_old_mongo_id(mongo_record['props']['personId'])
       
-      #TODO: Will have to do this after all orders are imported
-      #order.parent = Order..find_by_old_mongo_id(mongo_record['props']['personId'])
-      
       order.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
       order
     end   
     
-    errors << migrate_collection("ORDER PARENTS", db.collection("order")) do |mongo_record|
+    errors << migrate_collection("ORDER PARENTS", db.collection("order").find()) do |mongo_record|
       child_order = Order.find_by_old_mongo_id(mongo_record['_id'].to_s)
       unless mongo_record['props']['parentId'].nil?
         parent_order = Order.find_by_old_mongo_id(mongo_record['props']['parentId'])
         child_order.parent = parent_order
-        puts child_order.id
-        puts child_order.parent.id
       end
       child_order
     end   
-       
     
-    errors << migrate_collection("ACTIONS", db.collection("action")) do |mongo_record|
+    errors << migrate_collection("ACTIONS", db.collection("action").find()) do |mongo_record|
       action = Action.new({
                 :type => mongo_record['props']['actionType'],
                 :subtype => mongo_record['props']['actionSubType'],
@@ -142,7 +135,7 @@ namespace :athena do
       action
     end     
     
-    errors << migrate_collection("SHOWS", db.collection("performance"), false) do |mongo_record|
+    errors << migrate_collection("SHOWS", db.collection("performance").find(), false) do |mongo_record|
       show = Show.new({
                 :datetime => mongo_record['props']['datetime'],
                 :state => mongo_record['props']['state'],
@@ -154,7 +147,7 @@ namespace :athena do
       show
     end        
     
-    errors << migrate_collection("SETTLEMENTS", db.collection("settlement")) do |mongo_record|
+    errors << migrate_collection("SETTLEMENTS", db.collection("settlement").find()) do |mongo_record|
       settlement = Settlement.new({
                 :transaction_id => mongo_record['props']['transactionId'],
                 :created_at => mongo_record['props']['createdAt'],
@@ -168,11 +161,61 @@ namespace :athena do
                 :old_mongo_id => mongo_record['_id'].to_s
               })
       unless mongo_record['props']['performanceId'].blank?
-        settlement.show = Show.find(mongo_record['props']['performanceId'])    
+        settlement.show = Show.find_by_old_mongo_id(mongo_record['props']['performanceId'])    
       end   
       settlement.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
       settlement
     end  
+    
+    errors << migrate_collection("ITEMS", db.collection("item").find()) do |mongo_record|
+      item = Item.new({
+                :state => mongo_record['props']['state'],
+                :price => mongo_record['props']['price'],
+                :realized_price => mongo_record['props']['realizedPrice'],
+                :net => mongo_record['props']['net'],
+                :fs_project_id => mongo_record['props']['fsProjectId'],
+                :nongift_amount => mongo_record['props']['nongiftAmount'],
+                :is_noncash => mongo_record['props']['isNoncash'],
+                :is_stock => mongo_record['props']['isStock'],
+                :is_anonymous => mongo_record['props']['isAnonymous'],
+                :fs_available_on => mongo_record['props']['fsAvailableOn'],
+                :reversed_at => mongo_record['props']['reversedAt'],
+                :reversed_note => mongo_record['props']['reversedNote'],
+                :old_mongo_id => mongo_record['_id'].to_s
+              })
+      #product (PITA)  
+      
+      item.product_type = (mongo_record['props']['productType'] == 'AthenaTicket' ? 'Ticket' : mongo_record['props']['productType'])
+      
+      item.order = Order.find_by_old_mongo_id(mongo_record['props']['orderId'])
+      item.settlement = Settlement.find_by_old_mongo_id(mongo_record['props']['settlementId']) unless mongo_record['props']['settlementId'].nil?
+      item.show = Show.find_by_old_mongo_id(mongo_record['props']['performanceId']) unless mongo_record['props']['performanceId'].nil?      
+      item
+    end 
+    
+    #db.collection("ticket").find("props.eventId" => "4e972df12b039dff53e7bc76")
+    errors << migrate_collection("TICKETS", db.collection("ticket").find()) do |mongo_record|
+      ticket = Ticket.new({
+                :venue => mongo_record['props']['venue'],
+                :state => mongo_record['props']['state'],
+                :price => mongo_record['props']['price'],
+                
+                #Athena never used sold_price, so just set this to price for now
+                :sold_price => mongo_record['props']['price'],
+                
+                :sold_at => mongo_record['props']['soldAt'],
+                :old_mongo_id => mongo_record['_id'].to_s
+              })
+      #buyer
+      ticket.buyer = Person.find_by_old_mongo_id(mongo_record['props']['buyerId'])
+      #show
+      ticket.show = Show.find_by_old_mongo_id(mongo_record['props']['performanceId']) 
+      #section_id
+      ticket.section = ticket.show.chart.sections.where(:name => mongo_record['props']['section']).first
+              
+      ticket.organization = Organization.find(mongo_record['props']['organizationId'].to_i)     
+      ticket
+    end 
 
     errors.each do |error|
       puts error
@@ -189,54 +232,20 @@ namespace :athena do
   def migrate_collection(row_label, db_collection, validate = true)
     errors = []
     count = db_collection.count()
-    records = db_collection.find()
+    records = db_collection
     i = 0
     records.each do |mongo_record|
-      #begin
+      begin
         new_model = yield(mongo_record)
         if new_model.save(:validate => validate)
           i+=1
         else
           errors << "Could not migrate #{row_label} #{mongo_record['_id'].to_s}: #{new_model.errors.first}"
         end
-      #rescue => e
-      #  errors << "Could not migrate #{row_label} #{mongo_record['_id'].to_s}: #{e.to_s}"
-      #end
-      update_display(row_label, count, i, errors.size)
-    end
-    STDOUT.write "\n"
-    errors
-  end
-  
-  def migrate_tickets(db)
-    errors = []
-    tickets = db.collection("ticket")
-    ticket_count = tickets.count()
-    all_tickets = tickets.find({"props.price" => {"$gt" => -1}}, {:limit => 20})
-    all_tickets.each_with_index do |mongo_ticket, index|
-      begin
-        new_ticket = Ticket.new({
-          :venue => mongo_ticket['props']['venue'],
-          :state => mongo_ticket['props']['state'],
-          :price => mongo_ticket['props']['price'],
-          :sold_price => mongo_ticket['props']['soldPrice'],
-          :sold_at => mongo_ticket['props']['soltAt'],
-          
-          #show
-          :buyer_id => mongo_ticket['props']['buyerId'],
-          
-          #show
-          :show_id => mongo_ticket['props']['showId'],
-          :organization_id => mongo_ticket['props']['organizationId'],
-          :old_mongo_id => mongo_ticket['_id'].to_s
-          
-          #will need to look up section
-        })
-        new_ticket.save
-        update_display("TICKETS", ticket_count, index+1, errors.size)
-      rescue
-        errors << "Could not migrate #{mongo_ticket['_id'].to_s}"
+      rescue => e
+        errors << "Could not migrate #{row_label} #{mongo_record['_id'].to_s}: #{e.to_s}"
       end
+      update_display(row_label, count, i, errors.size)
     end
     STDOUT.write "\n"
     errors

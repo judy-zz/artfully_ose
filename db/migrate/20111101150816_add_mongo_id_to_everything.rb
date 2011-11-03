@@ -10,6 +10,7 @@ class AddMongoIdToEverything < ActiveRecord::Migration
     add_column :actions, :old_mongo_id, :string
     add_column :shows, :old_mongo_id, :string
     add_column :settlements, :old_mongo_id, :string
+    add_column :items, :old_mongo_id, :string
   end
 
   def self.down
@@ -23,5 +24,6 @@ class AddMongoIdToEverything < ActiveRecord::Migration
     remove_column :actions, :old_mongo_id
     remove_column :shows, :old_mongo_id
     remove_column :settlements, :old_mongo_id
+    remove_column :items, :old_mongo_id
   end
 end

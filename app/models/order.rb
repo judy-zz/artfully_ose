@@ -5,8 +5,8 @@ class Order < ActiveRecord::Base
   belongs_to :person
   belongs_to :organization
 
-  belongs_to :parent, :class_name => "Order"
-  has_many :children, :class_name => "Order"
+  belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
+  has_many :children, :class_name => "Order", :foreign_key => "parent_id"
 
   has_many :items
 

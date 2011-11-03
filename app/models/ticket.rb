@@ -4,6 +4,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :buyer, :class_name => "Person"
   belongs_to :show
   belongs_to :organization
+  belongs_to :section
 
   belongs_to :cart
 

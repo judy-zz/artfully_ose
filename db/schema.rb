@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111101150816) do
+ActiveRecord::Schema.define(:version => 20111103180757) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -179,6 +179,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.integer  "show_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
   end
 
   create_table "kits", :force => true do |t|
@@ -199,7 +200,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.integer  "price"
     t.integer  "organization_id"
     t.integer  "person_id"
-    t.integer  "order_id"
+    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "service_fee"
@@ -308,7 +309,6 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
 
   create_table "tickets", :force => true do |t|
     t.string   "venue"
-    t.string   "section"
     t.string   "state"
     t.integer  "price"
     t.integer  "sold_price"
@@ -320,6 +320,7 @@ ActiveRecord::Schema.define(:version => 20111101150816) do
     t.datetime "updated_at"
     t.integer  "cart_id"
     t.string   "old_mongo_id"
+    t.integer  "section_id"
   end
 
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
