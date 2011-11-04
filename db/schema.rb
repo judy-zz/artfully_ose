@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(:version => 20111103180757) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
+    t.datetime "deleted_at"
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|

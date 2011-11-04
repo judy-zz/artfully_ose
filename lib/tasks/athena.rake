@@ -15,45 +15,45 @@ namespace :athena do
     STDOUT.write "\t\t\t-----\t--------\t------\n"
     
     errors << migrate_collection("EVENTS", db.collection("event").find()) do |mongo_record|
-      event = Event.new({
-                :name => mongo_record['props']['name'],
-                :venue => mongo_record['props']['venue'],
-                :state => mongo_record['props']['state'],
-                :city => mongo_record['props']['city'],
-                :time_zone => mongo_record['props']['timeZone'],
-                :producer => mongo_record['props']['producer'],
-                :is_free => mongo_record['props']['isFree'],
-                :old_mongo_id => mongo_record['_id'].to_s
-              })
-      
-      event.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
-      event
-    end  
-    
-    errors << migrate_collection("CHARTS", db.collection("chart").find()) do |mongo_record|
-      chart = Chart.new({
-                :name => mongo_record['props']['name'],
-                :is_template => mongo_record['props']['isTemplate'],
-                :organization_id => mongo_record['props']['organizationId'],
-                :old_mongo_id => mongo_record['_id'].to_s
-              })
-      unless mongo_record['props']['eventId'].nil?
-        chart.event = Event.find_by_old_mongo_id(mongo_record['props']['eventId'])
-      end
-      chart.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
-      chart
-    end   
-    
-    errors << migrate_collection("SECTIONS", db.collection("section").find()) do |mongo_record|
-      section = Section.new({
-                :name => mongo_record['props']['name'],
-                :capacity => mongo_record['props']['capacity'],
-                :price => mongo_record['props']['price'],
-                :old_mongo_id => mongo_record['_id'].to_s
-              })
-      section.chart = Chart.find_by_old_mongo_id(mongo_record['props']['chartId'])
-      section
-    end    
+       event = Event.new({
+                 :name => mongo_record['props']['name'],
+                 :venue => mongo_record['props']['venue'],
+                 :state => mongo_record['props']['state'],
+                 :city => mongo_record['props']['city'],
+                 :time_zone => mongo_record['props']['timeZone'],
+                 :producer => mongo_record['props']['producer'],
+                 :is_free => mongo_record['props']['isFree'],
+                 :old_mongo_id => mongo_record['_id'].to_s
+               })
+       
+       event.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
+       event
+     end  
+     
+     errors << migrate_collection("CHARTS", db.collection("chart").find()) do |mongo_record|
+       chart = Chart.new({
+                 :name => mongo_record['props']['name'],
+                 :is_template => mongo_record['props']['isTemplate'],
+                 :organization_id => mongo_record['props']['organizationId'],
+                 :old_mongo_id => mongo_record['_id'].to_s
+               })
+       unless mongo_record['props']['eventId'].nil?
+         chart.event = Event.find_by_old_mongo_id(mongo_record['props']['eventId'])
+       end
+       chart.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
+       chart
+     end   
+     
+     errors << migrate_collection("SECTIONS", db.collection("section").find()) do |mongo_record|
+       section = Section.new({
+                 :name => mongo_record['props']['name'],
+                 :capacity => mongo_record['props']['capacity'],
+                 :price => mongo_record['props']['price'],
+                 :old_mongo_id => mongo_record['_id'].to_s
+               })
+       section.chart = Chart.find_by_old_mongo_id(mongo_record['props']['chartId'])
+       section
+     end    
     
     errors << migrate_collection("PEOPLE", db.collection("person").find()) do |mongo_record|
       person = Person.new({
@@ -66,12 +66,29 @@ namespace :athena do
                 :old_mongo_id => mongo_record['_id'].to_s
               })
       #tags
-      #phones
-      #import/export fields
-              
+      unless mongo_record['props']['tags'].nil?
+        Array.wrap(mongo_record['props']['tags']).each do |tag|
+          person.tag_list << tag
+        end
+      end
+      
       person.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
       person
     end 
+    
+    #person must be saved before hpnes are added
+    errors << migrate_collection("PEOPLE PHONES", db.collection("person").find()) do |mongo_record|  
+      person = Person.find_by_old_mongo_id(mongo_record['_id'].to_s)
+      unless mongo_record['props']['phones'].nil?
+        Array.wrap(mongo_record['props']['phones']).each do |phone|
+          phone = Phone.from_athena(phone)
+          phone.person = person
+          phone.save
+        end
+      end
+      
+      person
+    end
     
     errors << migrate_collection("ADDRESS", db.collection("address").find()) do |mongo_record|
       address = Address.new({
