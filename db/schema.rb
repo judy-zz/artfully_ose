@@ -10,14 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111103180757) do
+ActiveRecord::Schema.define(:version => 20111104205717) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
     t.integer  "person_id"
-    t.integer  "user_id"
     t.datetime "occurred_at"
-    t.string   "details"
+    t.text     "details"
     t.boolean  "starred"
     t.integer  "dollar_amount"
     t.datetime "created_at"

@@ -1,4 +1,4 @@
-class PurchaseAction < Action
+class GetAction < Action
   def action_type
     "Get"
   end

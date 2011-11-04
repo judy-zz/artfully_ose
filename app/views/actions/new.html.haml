@@ -1,5 +1,20 @@
 .spread
-  = form_for @action, :url => person_actions_path do |form|
+  = form_for @action, :url => person_actions_path, :as => :artfully_action do |form|
     = hidden_field_tag "action_type", params[:type]
-    %ul= render :partial => 'actions/form_hear', :locals => { :parent_form => form, :target => @action } if params[:type] == "hear"
+    %ul
+      %li
+        .label= form.label :subtype, "Action Type"
+        .element= form.select :subtype, options_for_select( @action.hear_action_subtypes, @action.subtype )
+
+      %li
+        .label= form.label :occurred_at, "Action date/time"
+        .element
+          = form.text_field :occurred_at, :value => l(@action.occurred_at, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+
+      %li
+        .label= form.label :details, "Details"
+        .element= form.text_area :details, :size => "25x5"
+
+    -unless @action.created_at.nil? or @action.creator.nil?
+      %h4= "Action created by #{@action.creator.email} on #{(l @action.created_at, :format => :long)}"
     = form.submit "Save #{params[:type].titleize} action"

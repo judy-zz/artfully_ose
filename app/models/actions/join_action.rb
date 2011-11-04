@@ -1,4 +1,4 @@
-class MembershipAction < Action
+class JoinAction < Action
   def action_type
     "Join"
   end

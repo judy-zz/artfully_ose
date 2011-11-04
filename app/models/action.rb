@@ -1,6 +1,6 @@
 class Action < ActiveRecord::Base
   belongs_to :person
-  belongs_to :creator, :class_name => "User"
+  belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :organization
 
   validates_presence_of :occurred_at
@@ -14,14 +14,14 @@ class Action < ActiveRecord::Base
 
   def self.create_of_type(type)
     case type
-      when "hear" then CommunicationAction.new
-      when "give" then DonationAction.new
+      when "hear" then HearAction.new
+      when "give" then GiveAction.new
     end
   end
 
   def set_params(params, person, curr_user)
     params ||= {}
-    params = prepare_datetime(params,curr_user.current_organization.time_zone)
+    #params = prepare_datetime(params,curr_user.current_organization.time_zone)
     self.creator_id = curr_user.id
     self.organization_id = curr_user.current_organization.id
 
@@ -31,20 +31,10 @@ class Action < ActiveRecord::Base
 
     self.person = person
     self.subject_id = person.id
-
-    self.timestamp = DateTime.now
   end
 
   def unstarred?
     !starred?
-  end
-
-  def subject
-    # raise ApplicationError
-  end
-
-  def subject=(subject)
-    # raise ApplicationError
   end
 
   def hear_action_subtypes

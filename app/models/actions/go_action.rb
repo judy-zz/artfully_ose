@@ -1,4 +1,4 @@
-class EventAction < Action
+class GoAction < Action
   def action_type
     "Go"
   end

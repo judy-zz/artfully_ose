@@ -151,7 +151,7 @@ $(document).ready(function() {
       cssclass: "jeditable",
       height: "15px",
       width: "90px",
-      name: "athena_person[athena_person][" + name + "]",
+      name: "person[" + name + "]",
       callback: function(value, settings){
         $(this).html(value[name]);
         $(this).trigger('done')
