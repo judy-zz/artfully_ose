@@ -10,8 +10,8 @@ Feature: Door List Creation
     And the 1st show is on sale
 
   Scenario: A producer views the door list for a show
-    Given a user@example.com named "Joe Patron" buys 2 tickets from the 1st show
-    And a user@example.com named "Bob Patron" buys 3 tickets from the 1st show
+    Given a user named "Joe Patron" buys 2 tickets from the 1st show
+    And a user named "Bob Patron" buys 3 tickets from the 1st show
     When I go to the events page
     And I view the 1st event
     And I view the 1st show

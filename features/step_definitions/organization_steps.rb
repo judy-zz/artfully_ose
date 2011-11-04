@@ -71,3 +71,7 @@ end
 Given /^my organization has tax information$/ do
   @current_user.current_organization.update_attributes({:ein => "111-1234", :legal_organization_name => "Some Organization"})
 end
+
+Given /^there is no organization with a name of "([^"]*)"$/ do |name|
+  Organization.find_by_name(name).should be_blank
+end

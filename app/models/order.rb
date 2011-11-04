@@ -22,12 +22,20 @@ class Order < ActiveRecord::Base
 
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
-  scope :in_range, lambda { |start, stop, organization_id| after(start).before(stop).where('organization_id = ?', organization_id).order("created_at DESC") }
 
   scope :imported, where("fa_id IS NOT NULL")
   scope :not_imported, where("fa_id IS NULL")
 
   scope :processed, where("transaction_id IS NOT NULL")
+
+  def self.in_range(start, stop, organization_id = nil)
+    query = after(start).before(stop).order("created_at DESC")
+    if organization_id.present?
+      query.where('organization_id = ?', organization_id)
+    else
+      query
+    end
+  end
 
   def total
     all_items.inject(0) {|sum, item| sum + item.price.to_i }

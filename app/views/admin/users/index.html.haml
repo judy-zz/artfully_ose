@@ -7,9 +7,9 @@
     = form_tag admin_users_path, :method => :get do
       %ul
         %li
-          .hidden.label= label_tag :email, "Email"
+          .hidden.label= label_tag :query, "Query"
           .full.paired.element
-            = text_field_tag :email, "", :placeholder => "Email address..."
+            = text_field_tag :query, params[:query], :placeholder => "Email address or organization name..."
             = submit_tag "Search"
   = link_to "Invite User", new_admin_user_path
   = render :partial => "admin/stats/stats"
@@ -32,5 +32,5 @@
               - user.memberships.each do |m|
                 =link_to m.organization.name, admin_organization_path(m.organization)
             %td=user.sign_in_count
-            %td= user.last_sign_in_at
+            %td= l(user.last_sign_in_at) if user.last_sign_in_at.present?
             %td= button_to "Sign in", sessions_admin_user_path(user), :class => :mini

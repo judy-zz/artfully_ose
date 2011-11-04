@@ -15,10 +15,12 @@ Given /^there are (\d+) people tagged with "([^"]*)"$/ do |quantity, tag|
   @people = quantity.to_i.times.collect do
     person = Factory(:person, :organization => @current_user.current_organization)
     person.tag_list = Array.wrap(tag)
+    person
   end
 end
 
 Given /^I search for people tagged with "([^"]*)"$/ do |tag|
+  Person.stub(:search_index).and_return(@people)
   visit people_path
   fill_in("search", :with => tag)
   click_button("Search")

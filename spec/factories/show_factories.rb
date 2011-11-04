@@ -1,5 +1,5 @@
 Factory.sequence :datetime do |n|
-  (DateTime.now + n.days)
+  DateTime.now + 7.days + n.minutes
 end
 
 Factory.define(:show) do |s|

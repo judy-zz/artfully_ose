@@ -6,8 +6,9 @@ Feature: Become User Feature
     Given I am logged in as an admin
     And a user exists with an email of "user@example.com"
     And I follow "Users"
-    And I fill in "Email" with "user@example.com"
+    And I fill in "Query" with "user@example.com"
     And I press "Search"
+    And I follow "user@example.com"
     When I press "Sign in as user@example.com"
     Then I should be on the root page
     And I should see "user@example.com"

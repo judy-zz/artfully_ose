@@ -1,6 +1,6 @@
 Feature: Order creation
   In order to buy items and make donations
-  a user@example.com wants to be able to add items to their order
+  a user wants to be able to add items to their order
 
   Background:
    Given there is an event called "Test Event" with 3 shows with tickets

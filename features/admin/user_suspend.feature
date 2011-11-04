@@ -7,7 +7,7 @@ Feature: User suspension
     And I am on the admin root page
     And a user exists with an email of "user@example.com"
     When I follow "Users"
-    And I fill in "Email" with "user@example.com"
+    And I fill in "Query" with "user@example.com"
     And I press "Search"
     Then I should see "user@example.com"
 
