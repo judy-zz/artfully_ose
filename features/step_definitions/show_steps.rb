@@ -16,6 +16,10 @@ Then /^I should see (\d+) [Ss]hows$/ do |count|
   page.should have_xpath("//ul[@id='of_shows']/li", :count => count.to_i)
 end
 
+Then /^I should see a list of played shows$/ do
+  page.should have_xpath("//ul[@id='of_shows']/li")
+end
+
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how has had tickets created$/ do |pos|
   show = current_shows[pos.to_i - 1]
   show.build!
@@ -42,7 +46,7 @@ Then /^I should not be able to edit the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |pos|
   page.should have_no_xpath "(//tr[position()=#{pos.to_i}]/td[@class='actions']/a[@title='Edit'])"
 end
 
-Given /^a user@example.com named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |name, wanted, pos|
+Given /^a user named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |name, wanted, pos|
   fname, lname = name.split(" ")
   customer = Factory(:person, :first_name => fname, :last_name => lname)
 
@@ -56,6 +60,7 @@ end
 When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
   fname, lname = name.split(" ")
   customer = Factory(:person, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
+  Person.stub(:search_index).and_return(Array.wrap(customer))
   When %{I fill in "Search" with "#{email}"}
   And %{I press "Search"}
 end

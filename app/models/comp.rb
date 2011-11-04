@@ -32,7 +32,7 @@ class Comp
   private
 
   def create_order(comped_tickets, benefactor)
-    order = AthenaCompOrder.new.tap do |order|
+    order = Order.new.tap do |order|
       order << comped_tickets
       order.person = recipient
       order.organization = benefactor.current_organization
