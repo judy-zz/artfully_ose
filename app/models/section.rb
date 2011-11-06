@@ -1,6 +1,6 @@
 class Section < ActiveRecord::Base
   include Ticket::Foundry
-  foundry :with => lambda { { :section => name, :price => price, :count => capacity } }
+  foundry :with => lambda { { :section_id => id, :price => price, :count => capacity } }
 
   belongs_to :chart
 

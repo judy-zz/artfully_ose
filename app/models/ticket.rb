@@ -122,7 +122,8 @@ class Ticket < ActiveRecord::Base
       self.sold_price = 0
       self.sold_at = time
       self.comp!
-    rescue Transitions::InvalidTransition
+    rescue Transitions::InvalidTransition => e
+      puts e
       return false
     end
   end

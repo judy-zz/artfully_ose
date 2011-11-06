@@ -231,9 +231,7 @@ namespace :athena do
                 :venue => mongo_record['props']['venue'],
                 :state => mongo_record['props']['state'],
                 :price => mongo_record['props']['price'],
-                
-                #Athena never used sold_price, so just set this to price for now
-                :sold_price => mongo_record['props']['price'],
+                :sold_price => mongo_record['props']['soldPrice'],
                 
                 :sold_at => mongo_record['props']['soldAt'],
                 :old_mongo_id => mongo_record['_id'].to_s

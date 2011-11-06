@@ -21,9 +21,14 @@ class Comp
 
   def submit(benefactor)
     comped_ids      = show.bulk_comp_to(tickets, recipient)
+    puts "@@@@@@@@@@@@"
+    puts tickets
+    puts "@@@@@@@@@@@@"
     comped_tickets  = comped_ids.collect{|id| Ticket.find(id)}
-
     create_order(comped_tickets, benefactor)
+    puts "@@@@@@@@@@@@"
+    puts comped_tickets
+    puts "@@@@@@@@@@@@"
 
     self.comped_count    = comped_tickets.size
     self.uncomped_count  = self.tickets.size - self.comped_count

@@ -19,7 +19,9 @@ class TicketsController < ApplicationController
     @quantity = params[:quantity].to_i
 
     if @quantity > 0
-      tickets = @section.create_tickets(@show.id, @quantity)
+      #Hack 
+      @section.capacity = @quantity
+      tickets = @section.create_tickets
       flash[:notice] = "Successfully added #{to_plural(tickets.size, 'tickets')}."
       redirect_to event_show_path(@show.event_id, @show)
     else

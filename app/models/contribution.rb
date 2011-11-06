@@ -44,12 +44,12 @@ class Contribution
   end
 
   def build_action
-    DonationAction.new({
-      :subtype  => @subtype,
-      :organization_id => @organization_id,
-      :occurred_at     => @occurred_at,
-      :details         => @details,
-      :person_id       => @person_id
+    GiveAction.new({
+      :subtype          => @subtype,
+      :organization_id  => @organization_id,
+      :occurred_at      => @occurred_at,
+      :details          => @details,
+      :person_id        => @person_id
     })
   end
 

@@ -97,11 +97,7 @@ class PeopleController < ApplicationController
   def star
     render :nothing => true
     type = params[:type]
-    if type == 'action'
-      starable = AthenaAction.find(params[:action_id])
-    else
-      starable = AthenaRelationship.find(params[:action_id])
-    end
+    starable = Action.find(params[:action_id])
 
     if starable.starred?
       starable.starred = false

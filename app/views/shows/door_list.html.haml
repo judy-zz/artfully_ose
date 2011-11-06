@@ -24,6 +24,6 @@
               %td= "☐"
               %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
               %td= item.buyer.email
-              %td= item.ticket.section
+              %td= item.ticket.section.name
               %td= number_as_cents(item.ticket.price)
 
