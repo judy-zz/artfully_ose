@@ -4,6 +4,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :buyer, :class_name => "Person"
   belongs_to :show
   belongs_to :organization
+  belongs_to :section
 
   belongs_to :cart
 
@@ -121,7 +122,8 @@ class Ticket < ActiveRecord::Base
       self.sold_price = 0
       self.sold_at = time
       self.comp!
-    rescue Transitions::InvalidTransition
+    rescue Transitions::InvalidTransition => e
+      puts e
       return false
     end
   end

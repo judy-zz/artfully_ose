@@ -20,7 +20,7 @@ class SaleSearch
   end
 
   def stop_with(stop)
-    stop.present? ? Time.zone.parse(stop) : default_stop
+    stop.present? ? Time.zone.parse(stop) + 1.day - 1.minute : default_stop
   end
 
   def default_start

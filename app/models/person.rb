@@ -9,7 +9,7 @@ class Person < ActiveRecord::Base
   validates_presence_of :organization_id
   validates_presence_of :person_info
 
-  validates :email, :uniqueness => true, :allow_blank => true
+  validates :email, :uniqueness => {:scope => :organization_id}, :allow_blank => true
   after_commit { Sunspot.commit }
 
   searchable do

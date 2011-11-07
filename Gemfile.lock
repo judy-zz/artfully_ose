@@ -56,6 +56,8 @@ GEM
     athena_resource (0.0.1)
     awesome_print (0.4.0)
     bcrypt-ruby (2.1.4)
+    bson (1.3.1)
+    bson_ext (1.3.1)
     builder (2.1.2)
     cancan (1.6.5)
     capybara (1.1.1)
@@ -140,6 +142,8 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.17.2)
     mimemagic (0.1.8)
+    mongo (1.3.1)
+      bson (>= 1.3.1)
     mysql2 (0.2.11)
     newrelic_rpm (3.1.1)
     nokogiri (1.5.0)
@@ -199,6 +203,7 @@ GEM
       ffi (= 1.0.9)
       json_pure
       rubyzip
+    sequel (3.29.0)
     shoulda (2.11.3)
     sqlite3 (1.3.3)
     sqlite3-ruby (1.3.3)
@@ -242,6 +247,8 @@ DEPENDENCIES
   acts-as-taggable-on (~> 2.1.0)
   athena_resource
   awesome_print
+  bson
+  bson_ext
   cancan
   capybara
   comma!
@@ -267,6 +274,7 @@ DEPENDENCIES
   jquery-rails (>= 1.0.12)
   launchy
   mail
+  mongo
   mysql2 (< 0.3)
   newrelic_rpm
   nokogiri
@@ -277,6 +285,7 @@ DEPENDENCIES
   rspec-rails (>= 2.1)
   s3 (>= 0.3.8)
   sass
+  sequel
   shoulda
   sqlite3-ruby
   sunspot_rails

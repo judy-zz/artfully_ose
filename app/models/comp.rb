@@ -20,19 +20,23 @@ class Comp
   end
 
   def submit(benefactor)
-    comped_ids      = show.bulk_comp_to(tickets, recipient)
-    comped_tickets  = comped_ids.collect{|id| Ticket.find(id)}
-
-    create_order(comped_tickets, benefactor)
-
-    self.comped_count    = comped_tickets.size
-    self.uncomped_count  = self.tickets.size - self.comped_count
+    ActiveRecord::Base.transaction do
+      comped_tickets = []
+      tickets.each do |ticket_id|
+        t = Ticket.find ticket_id
+        t.comp_to recipient
+        comped_tickets << t
+      end
+      create_order(comped_tickets, benefactor)
+      self.comped_count    = tickets.size
+      self.uncomped_count  = 0
+    end
   end
 
   private
 
   def create_order(comped_tickets, benefactor)
-    order = AthenaCompOrder.new.tap do |order|
+    order = Order.new.tap do |order|
       order << comped_tickets
       order.person = recipient
       order.organization = benefactor.current_organization

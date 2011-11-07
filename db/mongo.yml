@@ -1,0 +1,13 @@
+local:
+  adapter: mongodb
+  host: localhost
+  port: 27017
+  database: tix
+
+staging:
+  adapter: mongodb
+  host: staff.mongohq.com
+  port: 10004
+  database: athena-staging
+  username: athena-test
+  password: MArktwAIN99

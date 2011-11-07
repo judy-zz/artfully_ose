@@ -5,8 +5,8 @@ class Order < ActiveRecord::Base
   belongs_to :person
   belongs_to :organization
 
-  belongs_to :parent, :class_name => "Order"
-  has_many :children, :class_name => "Order"
+  belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
+  has_many :children, :class_name => "Order", :foreign_key => "parent_id"
 
   has_many :items
 
@@ -18,12 +18,24 @@ class Order < ActiveRecord::Base
   after_create :create_purchase_action, :unless => :skip_actions
   after_create :create_donation_actions, :unless => :skip_actions
 
+  default_scope :order => 'created_at DESC'
+
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
-  scope :in_range, lambda { |start, stop, organization_id| after(start).before(stop).where('organization_id = ?', organization_id).order("created_at DESC") }
 
   scope :imported, where("fa_id IS NOT NULL")
   scope :not_imported, where("fa_id IS NULL")
+
+  scope :processed, where("transaction_id IS NOT NULL")
+
+  def self.in_range(start, stop, organization_id = nil)
+    query = after(start).before(stop).order("created_at DESC")
+    if organization_id.present?
+      query.where('organization_id = ?', organization_id)
+    else
+      query
+    end
+  end
 
   def total
     all_items.inject(0) {|sum, item| sum + item.price.to_i }
@@ -153,13 +165,13 @@ class Order < ActiveRecord::Base
 
     def create_purchase_action
       unless all_tickets.empty?
-        action                 = PurchaseAction.new
-        action.person          = person
-        action.subject         = self
-        action.organization_id = organization.id
-        action.details         = ticket_details
-        action.occurred_at     = created_at
-        action.subtype  = "Purchase"
+        action                  = GetAction.new
+        action.person           = person
+        action.subject_id       = self.id
+        action.organization_id  = organization.id
+        action.details          = ticket_details
+        action.occurred_at      = created_at
+        action.subtype          = "Purchase"
 
         logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
         logger.debug("Action: #{action.attributes}")
@@ -170,13 +182,13 @@ class Order < ActiveRecord::Base
 
     def create_donation_actions
       items.select(&:donation?).collect do |item|
-        action                 = DonationAction.new
-        action.person          = person
-        action.subject         = item.product
-        action.organization_id = organization.id
-        action.details         = donation_details
-        action.occurred_at     = created_at
-        action.subtype  = "Donation"
+        action                    = GiveAction.new
+        action.person             = person
+        action.subject_id         = item.product_id
+        action.organization_id    = organization.id
+        action.details            = donation_details
+        action.occurred_at        = created_at
+        action.subtype            = "Donation"
         action.save!
         action
       end

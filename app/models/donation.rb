@@ -1,3 +1,7 @@
+#
+# This is the donation represented in a user's cart.  
+# This is NOT the persisted item that is attached to the order
+#
 class Donation < ActiveRecord::Base
   belongs_to :cart
   belongs_to :organization

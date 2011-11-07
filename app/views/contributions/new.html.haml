@@ -16,7 +16,7 @@
     %ul
       %li
         .label= form.label :subtype, "Type"
-        .element= form.select :subtype, options_for_select(AthenaAction::GIVE_TYPES)
+        .element= form.select :subtype, options_for_select(Action::GIVE_TYPES)
       %li
         .label= form.label :amount, "Dollar Value"
         .element= form.text_field :amount, :class => :currency

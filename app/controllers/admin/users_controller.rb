@@ -14,11 +14,7 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def index
-    @users = User.all
-    unless params[:email].blank?
-      @user = User.find_by_email(params[:email])
-      redirect_to admin_user_path(@user) unless @user.nil?
-    end
+    @users = find_users || User.all
   end
 
   def show
@@ -52,5 +48,13 @@ class Admin::UsersController < Admin::AdminController
   def sessions
     sign_in(:user, User.find(params[:id]))
     redirect_to root_path
+  end
+
+  private
+
+  def find_users
+    return if params[:query].blank?
+    q = "%#{params[:query]}%"
+    User.joins("LEFT OUTER JOIN memberships ON memberships.id = users.id").joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id").where("email like ? or organizations.name like ?", q, q)
   end
 end

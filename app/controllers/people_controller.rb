@@ -43,13 +43,16 @@ class PeopleController < ApplicationController
     @person = Person.find(params[:id])
     authorize! :edit, @person
 
-    results = @person.update_attributes(params[:athena_person][:athena_person])
+    results = @person.update_attributes(params[:person])
 
     respond_to do |format|
       format.html do
         if results
           flash[:notice] = "Person updated successfully!"
-          redirect_to person_url(@person)
+          
+          #TODO: should be render
+          @person = Person.find(params[:id])
+          render :show
         else
           flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
           render :edit
@@ -101,11 +104,7 @@ class PeopleController < ApplicationController
   def star
     render :nothing => true
     type = params[:type]
-    if type == 'action'
-      starable = AthenaAction.find(params[:action_id])
-    else
-      starable = AthenaRelationship.find(params[:action_id])
-    end
+    starable = Action.find(params[:action_id])
 
     if starable.starred?
       starable.starred = false
@@ -129,7 +128,7 @@ class PeopleController < ApplicationController
 
   def untag
     @person = Person.find(params[:id])
-    @person.tag_list.remove
+    @person.tag_list.remove(params[:tag])
     @person.save
     render :nothing => true
   end

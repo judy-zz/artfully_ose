@@ -1,6 +1,6 @@
 Feature: Order deletion
   In order to start over
-  a user@example.com wants to be able to clear the items from their order
+  a user wants to be able to clear the items from their order
 
   Background:
    Given there is an event called "Test Event" with 3 shows with tickets

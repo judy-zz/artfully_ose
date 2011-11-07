@@ -16,6 +16,6 @@
         - tickets.each do |ticket|
           %tr{:id => "row_item_#{ticket.id}", :class => ticket.state }
             %td.grouped-checkbox= check_box_tag "item_#{ticket.id}", ticket.id, false, :disabled => true
-            %td= ticket.section
+            %td= ticket.section.name
             %td= number_as_cents ticket.price
             %td= ticket.state.titleize

@@ -1,4 +1,4 @@
-class DonationAction < Action
+class GiveAction < Action
   def action_type
     "Give"
   end

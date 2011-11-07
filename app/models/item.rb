@@ -1,6 +1,7 @@
 class Item < ActiveRecord::Base
   belongs_to :order
   belongs_to :show
+  belongs_to :settlement
 
   validates_presence_of :product_type, :price, :realized_price, :net
   validates_inclusion_of :product_type, :in => %( Ticket Donation )

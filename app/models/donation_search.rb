@@ -10,7 +10,7 @@ class DonationSearch
   end
 
   def results
-    @results ||= Order.in_range(@start, @stop, @organization.id).select(&:has_donation?).sort_by(&:timestamp)
+    @results ||= Order.in_range(@start, @stop, @organization.id).select(&:has_donation?).sort_by(&:created_at)
   end
 
   private

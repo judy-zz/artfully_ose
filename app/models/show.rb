@@ -85,12 +85,8 @@ class Show < ActiveRecord::Base
     { "id" => id,
       "chart_id" => chart.id,
       "state" => state,
-      "show_time" => I18n.l( datetime.in_time_zone(time_zone), :format => :long_with_day) }
-  end
-
-  #return accepted id's
-  def bulk_comp_to(ids, buyer)
-    tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id if ticket.comp_to(buyer) }.compact
+      "show_time" => I18n.l( datetime.in_time_zone(time_zone), :format => :long_with_day)
+    }
   end
 
   def bulk_on_sale(ids)
