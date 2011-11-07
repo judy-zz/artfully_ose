@@ -1,9 +1,16 @@
 class Donation::Importer
   class << self
-    def for_organization(organization, since = nil)
+    def import_recent_fa_donations(organization, since=nil)
       if organization.has_fiscally_sponsored_project?
         since ||= (organization.fiscally_sponsored_project.updated_at - 1.day)
         donations = FA::Donation.find_by_member_id(organization.fa_member_id, since)
+        process(donations, organization)
+      end
+    end
+    
+    def import_all_fa_donations(organization)
+      if organization.has_fiscally_sponsored_project?
+        donations = FA::Donation.find_by_member_id(organization.fa_member_id, nil)
         process(donations, organization)
       end
     end

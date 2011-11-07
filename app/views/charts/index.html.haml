@@ -4,10 +4,10 @@
 
 .context
   %ul.context-buttons
+    %li= button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
     %li= button_to "New Chart", new_chart_path, :method => :get
 
 .document
-  = render :partial => 'return_to_event' 
   %h3 Charts
   - if @charts.empty?
     %p You have not created any chart templates.
