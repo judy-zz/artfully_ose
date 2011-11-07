@@ -10,14 +10,13 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111102154844) do
+ActiveRecord::Schema.define(:version => 20111104205717) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
     t.integer  "person_id"
-    t.integer  "user_id"
     t.datetime "occurred_at"
-    t.string   "details"
+    t.text     "details"
     t.boolean  "starred"
     t.integer  "dollar_amount"
     t.datetime "created_at"
@@ -27,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer  "subject_id"
     t.string   "subject_type"
     t.integer  "creator_id"
+    t.string   "old_mongo_id"
   end
 
   create_table "addresses", :force => true do |t|
@@ -39,6 +39,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
   end
 
   create_table "admin_stats", :force => true do |t|
@@ -103,6 +104,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.boolean "is_template"
     t.integer "event_id"
     t.integer "organization_id"
+    t.string  "old_mongo_id"
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -139,6 +141,8 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
+    t.datetime "deleted_at"
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -199,6 +203,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer  "show_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
   end
 
   create_table "kits", :force => true do |t|
@@ -219,12 +224,13 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer  "price"
     t.integer  "organization_id"
     t.integer  "person_id"
-    t.integer  "order_id"
+    t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "service_fee"
     t.integer  "fa_id"
     t.string   "details"
+    t.string   "old_mongo_id"
   end
 
   create_table "organizations", :force => true do |t|
@@ -250,6 +256,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.boolean  "dummy"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
     t.string   "person_type"
     t.string   "twitter_handle"
     t.string   "facebook_url"
@@ -278,6 +285,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer "capacity"
     t.integer "price"
     t.integer "chart_id"
+    t.string  "old_mongo_id"
   end
 
   create_table "segments", :force => true do |t|
@@ -290,7 +298,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.string   "transaction_id"
     t.string   "ach_response_code"
     t.string   "fail_message"
-    t.datetime "created_at",        :limit => 255
+    t.datetime "created_at"
     t.boolean  "success"
     t.integer  "gross"
     t.integer  "realized_gross"
@@ -299,6 +307,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer  "organization_id"
     t.integer  "show_id"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
   end
 
   create_table "shows", :force => true do |t|
@@ -307,6 +316,7 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.integer  "event_id"
     t.integer  "chart_id"
     t.integer  "organization_id"
+    t.string   "old_mongo_id"
   end
 
   create_table "taggings", :force => true do |t|
@@ -328,7 +338,6 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
 
   create_table "tickets", :force => true do |t|
     t.string   "venue"
-    t.string   "section"
     t.string   "state"
     t.integer  "price"
     t.integer  "sold_price"
@@ -339,6 +348,8 @@ ActiveRecord::Schema.define(:version => 20111102154844) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cart_id"
+    t.string   "old_mongo_id"
+    t.integer  "section_id"
   end
 
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
