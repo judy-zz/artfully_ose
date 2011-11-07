@@ -7,8 +7,8 @@ class Admin::OrdersController < Admin::AdminController
 
   def filtered_orders
     case params[:filter]
-      when "processed" then Order.processed
-      else Order.all
+      when "all" then Order.all
+      else Order.processed
     end
   end
 end

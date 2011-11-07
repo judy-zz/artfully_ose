@@ -1,5 +1,10 @@
+- content_for :header do
+  %h1 Orders
+  %ul.from-here
+    %li= link_to "Processed by Artfully", processed_admin_orders_path
+    %li= link_to "All", all_admin_orders_path
+    
 .spread
-  %h3 Recent Orders
   #orders
     %table.standalone.zebra
       %thead
