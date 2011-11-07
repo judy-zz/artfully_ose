@@ -22,4 +22,15 @@ class Ticket::Glance
   def initialize(parent)
     @parent = parent
   end
+  
+  def as_json(options ={})
+    { :tickets => 
+      { :comped => comped.total,
+        :available => available.total,
+        :sold => {
+          :gross => sales.total
+        }
+      }
+    }
+  end
 end

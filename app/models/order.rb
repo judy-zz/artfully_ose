@@ -165,13 +165,13 @@ class Order < ActiveRecord::Base
 
     def create_purchase_action
       unless all_tickets.empty?
-        action                 = PurchaseAction.new
-        action.person          = person
-        action.subject         = self
-        action.organization_id = organization.id
-        action.details         = ticket_details
-        action.occurred_at     = created_at
-        action.subtype  = "Purchase"
+        action                  = GetAction.new
+        action.person           = person
+        action.subject_id       = self.id
+        action.organization_id  = organization.id
+        action.details          = ticket_details
+        action.occurred_at      = created_at
+        action.subtype          = "Purchase"
 
         logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
         logger.debug("Action: #{action.attributes}")
@@ -182,13 +182,13 @@ class Order < ActiveRecord::Base
 
     def create_donation_actions
       items.select(&:donation?).collect do |item|
-        action                 = DonationAction.new
-        action.person          = person
-        action.subject         = item.product
-        action.organization_id = organization.id
-        action.details         = donation_details
-        action.occurred_at     = created_at
-        action.subtype  = "Donation"
+        action                    = GiveAction.new
+        action.person             = person
+        action.subject_id         = item.product_id
+        action.organization_id    = organization.id
+        action.details            = donation_details
+        action.occurred_at        = created_at
+        action.subtype            = "Donation"
         action.save!
         action
       end
