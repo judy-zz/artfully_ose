@@ -147,24 +147,28 @@ class Import < ActiveRecord::Base
   def attach_person(import_person)
     ip = import_person
 
-    person = AthenaPerson.new \
+    person = Person.new \
       :email           => ip.email,
       :first_name      => ip.first,
       :last_name       => ip.last,
       :company_name    => ip.company,
       :website         => ip.website,
-      :twitterHandle   => ip.twitter_username,
-      :facebookUrl     => ip.facebook_page,
-      :linkedInUrl     => ip.linkedin_page,
+      :twitter_handle  => ip.twitter_username,
+      :facebook_url    => ip.facebook_page,
+      :linked_in_url   => ip.linkedin_page,
       :organization_id => user.current_organization.id,
-      :personType      => ip.person_type,
+      :person_type     => ip.person_type,
       :import_id       => self.id
 
-    ip.tags_list.each { |tag| person.tag! tag }
+    person.tag_list = ip.tags_list.join(", ")
 
-    person.phones << AthenaPerson::Phone.new(ip.phone1_type, ip.phone1_number) if ip.phone1_type.present? && ip.phone1_number.present?
-    person.phones << AthenaPerson::Phone.new(ip.phone2_type, ip.phone2_number) if ip.phone2_type.present? && ip.phone2_number.present?
-    person.phones << AthenaPerson::Phone.new(ip.phone3_type, ip.phone3_number) if ip.phone3_type.present? && ip.phone3_number.present?
+    1.upto(3) do |n|
+      kind = ip.send("phone#{n}_type")
+      number = ip.send("phone#{n}_number")
+      if kind.present? && number.present?
+        person.phones << Phone.new(kind: kind, number: number)
+      end
+    end
 
     person
   end

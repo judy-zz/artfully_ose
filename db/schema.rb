@@ -256,12 +256,12 @@ ActiveRecord::Schema.define(:version => 20111104205717) do
     t.boolean  "dummy"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_mongo_id"
     t.string   "person_type"
     t.string   "twitter_handle"
     t.string   "facebook_url"
     t.string   "linked_in_url"
     t.integer  "import_id"
+    t.string   "old_mongo_id"
   end
 
   create_table "phones", :force => true do |t|
