@@ -5,7 +5,8 @@ namespace :athena do
   task :migrate => :environment do
     errors = []
     puts RAILS_ENV
-    mysql_config = YAML::load(File.read(::Rails.root.to_s + "/config/database.yml"))[RAILS_ENV]
+    #mysql_config = YAML::load(File.read(::Rails.root.to_s + "/config/database.yml"))[RAILS_ENV]
+    
     db_config = YAML::load(File.read(::Rails.root.to_s + "/db/mongo.yml"))
     mongo_config = db_config["staging"]
     db = Mongo::Connection.new(mongo_config['host'], mongo_config['port']).db(mongo_config['database'])
@@ -124,11 +125,12 @@ namespace :athena do
           
       #This is a hacky way to reset the created_at field on order to the former timestamp field
       records = db.collection("order").find()
-      mysql_db = Sequel.connect(:adapter=>mysql_config['adapter'],
-                          :host=>mysql_config['host'], 
-                          :database=>mysql_config['database'], 
-                          :user=>mysql_config['username'], 
-                          :password=>mysql_config['password'])
+      # mysql_db = Sequel.connect(:adapter=>mysql_config['adapter'],
+      #                     :host=>mysql_config['host'], 
+      #                     :database=>mysql_config['database'], 
+      #                     :user=>mysql_config['username'], 
+      #                     :password=>mysql_config['password'])
+      mysql_db = Sequel.connect(ENV['DATABASE_URL'])
       dataset = mysql_db[:orders]
       records.each do |mongo_record|      
         order_dataset = dataset.filter(:old_mongo_id=>mongo_record['_id'].to_s)
