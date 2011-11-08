@@ -44,8 +44,8 @@
           -@settlements.each do |settlement|
             %tr{:class => settlement.success? ? "succeeded" : "failed" }
               %td= settlement.id
-              %td= link_to settlement.organization_id, admin_organization_path(settlement.organization_id)
-              %td= settlement.show_id
+              %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
+              %td= l(settlement.show.datetime, :format => :short) unless settlement.show.nil?
               %td= l settlement.created_at, :format => :short
               %td
                 -if settlement.success?
