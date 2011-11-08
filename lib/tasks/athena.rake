@@ -13,11 +13,8 @@ namespace :athena do
     unless mongo_config['username'].nil?
       auth = db.authenticate(mongo_config['username'], mongo_config['password'])
     end
-  
-  
     STDOUT.write "\t\t\tCOUNT\tMIGRATED\tERRORS\n"
     STDOUT.write "\t\t\t-----\t--------\t------\n"
-    
     time = Benchmark.measure do
        errors << migrate_collection("EVENTS", db.collection("event").find()) do |mongo_record|
          event = Event.new({
