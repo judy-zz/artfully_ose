@@ -67,9 +67,10 @@ class OrganizationsController < ApplicationController
 
     unless @organization.update_tax_info(params[:organization])
       flash[:error] = @organization.errors.full_messages.to_sentence
+      redirect_to :back and return 
     end
-
-    redirect_to :back and return if params[:back]
+    
+    redirect_to params[:next] and return if params[:next]
   end
 
   def connect

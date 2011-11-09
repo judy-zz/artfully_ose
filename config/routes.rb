@@ -55,6 +55,8 @@ Artfully::Application.routes.draw do
 
   resources :kits, :except => :index do
     get :alternatives, :on => :collection
+    post :requirements, :on => :collection
+    get :requirements, :on => :collection
   end
 
   resources :reports, :only => :index

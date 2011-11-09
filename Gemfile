@@ -6,7 +6,6 @@ gem 'rails'
 gem 'mongo'
 gem 'bson'
 gem 'bson_ext'
-gem 'sequel'
 
 gem 'athena_resource'
 gem 'activerecord-import'

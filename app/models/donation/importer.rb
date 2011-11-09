@@ -16,8 +16,11 @@ class Donation::Importer
     end
 
     def process(fa_donations, organization)
+      ::Rails.logger.debug "Processing: #{fa_donations.size} fafs donations for org #{organization.id}"
       fa_donations.each do |fa_donation|
+        ::Rails.logger.debug "Processing: Donation with fa_id #{fa_donation.id} fafs donations for org #{organization.id}"
         donor = create_person(fa_donation.donor, organization)
+        ::Rails.logger.debug "Using donor id #{donor.id}"
         create_order(fa_donation, organization, donor)
       end
     end
@@ -26,11 +29,13 @@ class Donation::Importer
 
     def create_person(donor, organization)
       if donor.has_information?
-        conditions = { :email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name }
-        organization.people.find(:first, :conditions => conditions) || organization.people.create(conditions)
+        conditions = { :email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name, :organization_id => organization.id }
+        person = organization.people.find(:first, :conditions => { :email => donor.email }) || organization.people.create(conditions)
       else
-        organization.dummy
+        person = organization.dummy
       end
+      ::Rails.logger.debug "Person.errors: #{person.errors}"
+      person
     end
 
     def create_order(fa_donation, organization, donor)
@@ -41,6 +46,10 @@ class Donation::Importer
         :price      => (fa_donation.amount.to_f * 100).to_i,
         :fa_id      => fa_donation.id
       })
+      order.save
+      ::Rails.logger.debug "#{order.errors}"
+      
+      ::Rails.logger.debug "Order has id of #{order.id}"
 
       create_or_update_items(order, fa_donation, organization)
       order

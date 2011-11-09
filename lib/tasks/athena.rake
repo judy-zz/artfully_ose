@@ -3,10 +3,7 @@ require "benchmark"
 namespace :athena do
   desc "Migrate data from Athena to ActiveRecord"
   task :migrate => :environment do
-    errors = []
-    puts RAILS_ENV
-    #mysql_config = YAML::load(File.read(::Rails.root.to_s + "/config/database.yml"))[RAILS_ENV]
-    
+    errors = []    
     db_config = YAML::load(File.read(::Rails.root.to_s + "/db/mongo.yml"))
     mongo_config = db_config["staging"]
     db = Mongo::Connection.new(mongo_config['host'], mongo_config['port']).db(mongo_config['database'])
@@ -122,20 +119,12 @@ namespace :athena do
         order.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
         order
       end   
-          
-      #This is a hacky way to reset the created_at field on order to the former timestamp field
-      records = db.collection("order").find()
-      # mysql_db = Sequel.connect(:adapter=>mysql_config['adapter'],
-      #                     :host=>mysql_config['host'], 
-      #                     :database=>mysql_config['database'], 
-      #                     :user=>mysql_config['username'], 
-      #                     :password=>mysql_config['password'])
-      mysql_db = Sequel.connect(ENV['DATABASE_URL'])
-      dataset = mysql_db[:orders]
-      records.each do |mongo_record|      
-        order_dataset = dataset.filter(:old_mongo_id=>mongo_record['_id'].to_s)
-        order_dataset.update(:created_at => mongo_record['props']['timestamp'])
-      end 
+      
+      errors << migrate_collection("ORDER CREATED", db.collection("order").find()) do |mongo_record|   
+        order = Order.find_by_old_mongo_id(mongo_record['_id'].to_s)
+        order.update_attribute(:created_at, mongo_record['props']['timestamp'])
+        order
+      end
           
       errors << migrate_collection("ORDER PARENTS", db.collection("order").find()) do |mongo_record|
         child_order = Order.find_by_old_mongo_id(mongo_record['_id'].to_s)
@@ -145,7 +134,6 @@ namespace :athena do
         end
         child_order
       end 
-        
           
       errors << migrate_collection("ACTIONS", db.collection("action").find()) do |mongo_record|
         action = Action.new({
@@ -181,9 +169,15 @@ namespace :athena do
           action.creator = User.find(mongo_record['props']['creatorId'].to_i)
         end
         action.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
-      
+    
         action
-      end     
+      end  
+      
+      errors << migrate_collection("ACTION CREATED", db.collection("action").find()) do |mongo_record|   
+        action = Action.find_by_old_mongo_id(mongo_record['_id'].to_s)
+        action.update_attribute(:created_at, mongo_record['props']['timestamp']) unless mongo_record['props']['timestamp'].nil?
+        action
+      end
           
       errors << migrate_collection("SHOWS", db.collection("performance").find(), false) do |mongo_record|
         show = Show.new({
@@ -216,6 +210,12 @@ namespace :athena do
         settlement.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
         settlement
       end  
+      
+      errors << migrate_collection("STLMENT CREATED", db.collection("settlement").find()) do |mongo_record|   
+        settlement = Settlement.find_by_old_mongo_id(mongo_record['_id'].to_s)
+        settlement.update_attribute(:created_at, mongo_record['props']['createdAt'])
+        settlement
+      end
           
       db.collection("ticket").find("props.eventId" => "4e972df12b039dff53e7bc76")
       errors << migrate_collection("TICKETS", db.collection("ticket").find()) do |mongo_record|

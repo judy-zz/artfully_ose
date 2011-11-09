@@ -1419,21 +1419,24 @@ tfoot tr {
         clear: both;
         visibility: hidden; }
 
-.report {
+.report, .report-medium {
   margin-bottom: 12px; }
-  .report li {
+  .report li, .report-medium li {
     font-weight: bold;
     line-height: 24px;
     font-size: 0.875em;
     color: #594b43;
     text-align: right; }
-  .report .stat {
+  .report .stat, .report-medium .stat {
     float: left;
     text-transform: uppercase; }
-  .report .current {
+  .report .current, .report-medium .current {
     color: #666666; }
-  .report .total, .report .alternative {
+  .report .total, .report-medium .total, .report .alternative, .report-medium .alternative {
     color: #888888; }
+
+.report-medium {
+  width: 400px; }
 
 form.sprited {
   display: none; }
