@@ -2,7 +2,7 @@ class ExportController < ApplicationController
 
   def contacts
     @organization = current_user.current_organization
-    @people = AthenaPerson.find_by_organization(@organization)
+    @people = @organization.people
     @filename = "Artfully-People-Export-#{DateTime.now.strftime("%m-%d-%y")}.csv"
     render :csv => @people, :filename => @filename
   end
