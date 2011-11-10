@@ -1,10 +1,9 @@
 - in_section :reports
 - content_for :header do
-  %h1= "#{@settlement.id}"
-  %h2= "Settled on #{l(@settlement.created_at, :format => :date)}"
+  %h1= "Settlement #{@settlement.id}"
+  %h2= "#{l(@settlement.created_at, :format => :date)}"
 
 .overview
-  #overview
   %h3 Overview
   %ul.kv
     %li
@@ -18,6 +17,7 @@
       .value= number_as_cents(@settlement.net)
 
 .document
+  %h3 Details
   #items
     %table.standalone.zebra
       %thead
@@ -34,9 +34,9 @@
                 %span Ticket
                 %span
                   (
-                  = link_to "#{item.product.event}", event_path(item.product.event_id)
+                  = link_to "#{item.product.event.name}", event_path(item.product.event)
                   ,
-                  = link_to "#{l item.product.show}", event_show_path(item.product.event_id, item.product.show_id)
+                  = link_to "#{l item.product.show.datetime}", event_show_path(item.product.event, item.product.show)
                   )
               - if item.product.kind_of? Donation
                 %span Donation
