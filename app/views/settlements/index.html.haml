@@ -26,8 +26,8 @@
           - @settlements.each do |settlement|
             %tr{:class => settlement.success? ? "succeeded" : "failed" }
               %td= link_to settlement.id, settlement_path(settlement)
-              %td= link_to settlement.show.event.name, event_path(settlement.show.event)
-              %td= link_to l(settlement.show.datetime, :format => :short), event_show_path(settlement.show.event, settlement.show)
+              %td= link_to settlement.show.event.name, event_path(settlement.show.event) unless settlement.show.nil?
+              %td= link_to l(settlement.show.datetime, :format => :short), event_show_path(settlement.show.event, settlement.show) unless settlement.show.nil?
               %td= l(settlement.created_at, :format => :date)
               %td
                 -if settlement.success?
