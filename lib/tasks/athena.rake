@@ -5,7 +5,7 @@ namespace :athena do
   task :migrate => :environment do
     errors = []    
     db_config = YAML::load(File.read(::Rails.root.to_s + "/db/mongo.yml"))
-    mongo_config = db_config["staging"]
+    mongo_config = db_config["production"]
     db = Mongo::Connection.new(mongo_config['host'], mongo_config['port']).db(mongo_config['database'])
   
     unless mongo_config['username'].nil?
