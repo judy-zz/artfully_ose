@@ -1,14 +1,41 @@
 - in_section :people
 - content_for :header do
-  %h1 Orders & Donations
+  %h1 Returns
 
-.context
-  %p= "Refunding #{pluralize(params[:items].length, 'item')}."
-.document
+.compact-spread
   = form_tag refunds_path do
     = hidden_field_tag :order_id, @order.id
     - @items.each do |item|
       = hidden_field_tag "items[]", item.id
-
-    = submit_tag "Refund and Return" if @items.all?(&:returnable?)
-    = submit_tag "Just Refund"
+    %h3 Tickets
+    %table.standalone
+      %thead
+        %tr
+          %th
+            Event
+          %th
+            Show
+          %th
+            Price
+          %th
+            Sold
+      - @items.each do |item|
+        - if item.ticket?
+          %tr
+            %td=item.product.show.event.name
+            %td=l item.product.show.datetime, :format => :short
+            %td=number_to_currency (item.product.price / 100)
+            %td=number_to_currency (item.price / 100)
+    %p
+      %br
+    -if @items.all?(&:returnable?)
+      %p
+        Refund these tickets and return them to inventory
+        %br
+        = submit_tag "Issue Refund and Return"
+    %p
+      %br
+    %p
+      Refund these tickets and keep the tickets marked as sold.
+      %br
+      = submit_tag "Issue Refund"

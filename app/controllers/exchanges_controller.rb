@@ -11,7 +11,10 @@ class ExchangesController < ApplicationController
         @shows = @event.upcoming_shows(:all)
         unless params[:show_id].blank?
           @show = Show.find(params[:show_id])
-          @tickets = @show.tickets.select(&:on_sale?)
+          unless params[:section_id].blank?
+            @section = Section.find(params[:section_id])
+            @tickets = @show.tickets.unsold.where(:section_id => @section.id)
+          end
         end
       end
     else
@@ -30,10 +33,13 @@ class ExchangesController < ApplicationController
     if tickets.nil?
       flash[:error] = "Please select tickets to exchange."
       redirect_to :back
+    elsif tickets.size > items.size
+      flash[:error] = "You are exchanging #{self.class.helpers.pluralize(items.length, 'ticket')} but selected #{self.class.helpers.pluralize(tickets.size, 'ticket')}.  Please select #{self.class.helpers.pluralize(items.length, 'ticket')} to exchange."
+      redirect_to :back
     elsif @exchange.valid?
       logger.debug("Submitting exchange")
       @exchange.submit
-      redirect_to order_url(order), :notice => "Successfully exchanged #{self.class.helpers.pluralize(items.length, 'item')}"
+      redirect_to order_url(order), :notice => "Successfully exchanged #{self.class.helpers.pluralize(items.length, 'ticket')}"
     else
       flash[:error] = "Unable to process exchange."
       redirect_to :back
