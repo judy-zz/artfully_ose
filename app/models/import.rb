@@ -6,6 +6,7 @@ class Import < ActiveRecord::Base
   belongs_to :user
   has_many :import_errors, :dependent => :delete_all
   has_many :import_rows, :dependent => :delete_all
+  has_many :people, :dependent => :destroy
 
   validates_presence_of :user
   validates_associated :user
