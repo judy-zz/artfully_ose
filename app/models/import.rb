@@ -85,10 +85,7 @@ class Import < ActiveRecord::Base
     rows.each do |row|
       ip = ImportPerson.new(headers, row)
       person = attach_person(ip)
-      if person.save
-        address = attach_address(person, ip)
-        address.save
-      else
+      if !person.save
         self.import_errors.create! :row_data => row, :error_message => person.errors.full_messages.join(", ")
       end
     end
@@ -160,6 +157,14 @@ class Import < ActiveRecord::Base
       :person_type     => ip.person_type,
       :import_id       => self.id
 
+    person.address = Address.new \
+      :address1  => ip.address1,
+      :address2  => ip.address2,
+      :city      => ip.city,
+      :state     => ip.state,
+      :zip       => ip.zip,
+      :country   => ip.country
+
     person.tag_list = ip.tags_list.join(", ")
 
     1.upto(3) do |n|
@@ -171,17 +176,6 @@ class Import < ActiveRecord::Base
     end
 
     person
-  end
-
-  def attach_address(person, import_person)
-    address = Address.new \
-      :address1  => import_person.address1,
-      :address2  => import_person.address2,
-      :city      => import_person.city,
-      :state     => import_person.state,
-      :zip       => import_person.zip,
-      :country   => import_person.country,
-      :person_id => person.id
   end
 
 end

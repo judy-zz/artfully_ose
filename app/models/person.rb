@@ -35,6 +35,12 @@ class Person < ActiveRecord::Base
     phones("Phone3 type") { |phones| phones[0] && phones[0].kind }
     phones("Phone3 number") { |phones| phones[0] && phones[0].number }
     tags { |tags| tags.join(" ") }
+    address("Address 1") { |address| address.address1 }
+    address("Address 2") { |address| address.address2 }
+    address("City") { |address| address.city }
+    address("State") { |address| address.state }
+    address("Zip") { |address| address.zip }
+    address("Country") { |address| address.country }
   end
 
   def self.find_by_import(import)
