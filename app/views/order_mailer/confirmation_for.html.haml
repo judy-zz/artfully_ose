@@ -12,7 +12,7 @@
       - ticket = item.product
       %li
         %span.price= "$#{format("%.2f", (ticket.price/100.0))}:"
-        %span.name= "#{ticket.event} on #{l ticket.datetime, :format => :date_at_time}"
+        %span.name= "#{ticket.event.name} on #{ticket.datetime.strftime('%m/%d/%Y %l:%m %P'))}"
 
 - unless @order.donations.empty?
   %h4 Donations
