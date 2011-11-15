@@ -26,7 +26,7 @@ class Order < ActiveRecord::Base
   scope :imported, where("fa_id IS NOT NULL")
   scope :not_imported, where("fa_id IS NULL")
 
-  scope :processed, where("transaction_id IS NOT NULL")
+  scope :artfully, where("transaction_id IS NOT NULL")
 
   def self.in_range(start, stop, organization_id = nil)
     query = after(start).before(stop).order("created_at DESC")

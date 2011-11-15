@@ -25,10 +25,11 @@
           %span.stat On Sale
           %span.current= report.available_total
         %li
+          %span.stat Comped
+          %span.current= report.comped_total
+        %li
           %span.stat Sold
           %span.current= report.sold_total
-          %span.alternative= "(#{report.comped_total} Comped)"
         %li
           %span.stat Sold Today
           %span.current= report.sold_today
-          %span.alternative= "(#{report.comped_today} Comped)"

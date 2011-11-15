@@ -67,9 +67,10 @@ class OrganizationsController < ApplicationController
 
     unless @organization.update_tax_info(params[:organization])
       flash[:error] = @organization.errors.full_messages.to_sentence
+      redirect_to :back and return 
     end
-
-    redirect_to :back and return if params[:back]
+    
+    redirect_to params[:next] and return if params[:next]
   end
 
   def connect
@@ -84,7 +85,7 @@ class OrganizationsController < ApplicationController
         @integration.save
         @organization.update_attribute(:fa_member_id, @fa_user.member_id)
         @organization.refresh_active_fs_project
-        Donation::Importer.by_organization(@organization) if @organization.has_fiscally_sponsored_project?
+        Donation::Importer.delay.import_all_fa_donations(@organization) if @organization.has_fiscally_sponsored_project?
         flash[:notice] = "Successfully connected to Fractured Atlas!"
       else
         flash[:error]= "Unable to connect to your Fractured Atlas account.  Please check your username and password."

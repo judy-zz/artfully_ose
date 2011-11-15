@@ -3,6 +3,7 @@ class Cart < ActiveRecord::Base
 
   has_many :donations, :dependent => :destroy
   has_many :tickets, :after_add => :set_timeout
+  after_destroy :release_tickets
 
   attr_accessor :fee_in_cents
   after_initialize :update_ticket_fee
@@ -19,6 +20,10 @@ class Cart < ActiveRecord::Base
   delegate :empty?, :to => :items
   def items
     self.tickets + self.donations
+  end
+
+  def release_tickets
+    tickets.each { |ticket| ticket.update_attribute(:cart, nil) }
   end
 
   def set_timeout(ticket)

@@ -46,6 +46,12 @@ class User < ActiveRecord::Base
   def credit_cards
     customer.nil? ? [] : delegated_credit_cards
   end
+  
+  def self.like(query = "")
+    return if query.blank?
+    q = "%#{query}%"
+    self.joins("LEFT OUTER JOIN memberships ON memberships.user_id = users.id").joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id").where("email like ? or organizations.name like ?", q, q)
+  end
 
   private
     def find_customer

@@ -21,7 +21,7 @@
         .element= form.select :state, options_for_select( sorted_us_state_names, event.state )
       %li
         .label= form.label :time_zone, "Time Zone"
-        .element= form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)"
+        .element= form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => current_user.current_organization.time_zone
       - if can? :create, :paid_events
         %li
           .label=  form.label :is_free, "This is a free event"

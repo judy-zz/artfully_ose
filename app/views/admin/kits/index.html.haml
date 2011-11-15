@@ -1,18 +1,16 @@
 - content_for :header do
   %h1 Kits Administration
 
-.context
-
-.document
+.spread
   %h3 Kits Awaiting Approval
 
   #kits
     %table.standalone
       %thead
         %tr
-          %th Created
           %th Kit
           %th Org Name
+          %th Created
           %th Legal Name
           %th EIN
           %th
@@ -20,9 +18,25 @@
         -@pending_kits.each do |kit|
         -org = kit.organization
           %tr
-            %td= l kit.updated_at, :format => :short
             %td= t(kit.type.underscore)
             %td= link_to kit.organization.name, admin_organization_path(org)
+            %td= l kit.updated_at, :format => :short
             %td= kit.organization.legal_organization_name
             %td= kit.organization.ein
             %td= link_to "Approve", activate_admin_organization_kit_path(org, kit), :method => :put
+  
+  %h3 All Kits
+  #kits
+    %table.standalone
+      %thead
+        %tr
+          %th Kit
+          %th Org Name
+          %th Created
+      %tbody
+        -@kits.each do |kit|
+        -org = kit.organization
+          %tr
+            %td= t(kit.type.underscore)
+            %td= link_to kit.organization.name, admin_organization_path(org)
+            %td= l kit.updated_at, :format => :short

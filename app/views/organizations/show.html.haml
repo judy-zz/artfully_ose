@@ -65,4 +65,3 @@
     - else
       %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits."
     = render :partial => "kits/list", :locals => { :kits => @kits }
-    %p More coming soon!

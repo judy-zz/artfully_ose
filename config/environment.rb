@@ -10,3 +10,6 @@ ActiveResource::Base.logger = ActiveRecord::Base.logger
 # Turn off field_with_errors wrapping
 # See: http://d.strelau.net/post/163547069/remove-div-fieldwitherrors-from-rails-forms
 ActionView::Base.field_error_proc = proc {|html, instance| html }
+
+
+Sunspot.config.solr.url = ENV['WEBSOLR_URL'] || 'http://localhost:8982/solr'

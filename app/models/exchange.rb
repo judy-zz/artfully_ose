@@ -45,10 +45,10 @@ class Exchange
   def sell_new_items
     exchange_order_timestamp = Time.now
     tickets.each { |ticket| ticket.exchange_to(order.person, exchange_order_timestamp) }
-    create_athena_order(exchange_order_timestamp)
+    create_order(exchange_order_timestamp)
   end
 
-  def create_athena_order(time=Time.now)
+  def create_order(time=Time.now)
     ::Rails.logger.debug("CREATING EXCHANGE ORDER")
     exchange_order = Order.new.tap do |exchange_order|
       exchange_order.person = order.person
@@ -59,6 +59,9 @@ class Exchange
     end
     ::Rails.logger.debug("RECORDING EXCHANGE")
     exchange_order.record_exchange!
+    ::Rails.logger.debug("SAVING ORDER")
     exchange_order.save!
+    
+    ::Rails.logger.debug("ORDER SAV'D: " + exchange_order.to_s)
   end
 end

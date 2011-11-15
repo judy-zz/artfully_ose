@@ -79,7 +79,7 @@ class EventsController < ApplicationController
   def update
     authorize! :edit, @event
 
-    @event.update_attributes(params[:athena_event][:athena_event])
+    @event.update_attributes(params[:event])
     if @event.save
       flash[:notice] = "Your event has been updated."
       redirect_to event_url(@event)

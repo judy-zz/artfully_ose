@@ -14,6 +14,14 @@ class KitsController < ApplicationController
       render "#{@kit.type.underscore.pluralize}/requirements"
     end
   end
+  
+  def requirements
+    authorize! :edit, current_user.current_organization
+    @kit = Kernel.const_get(params[:type].camelize).new
+    @kit.organization = current_user.current_organization
+    
+    render "#{@kit.type.underscore.pluralize}/requirements"
+  end
 
   def alternatives
     authorize! :view, current_user.current_organization

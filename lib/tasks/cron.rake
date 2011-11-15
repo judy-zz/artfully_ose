@@ -6,6 +6,9 @@ task :cron => :environment do
     Job::Settlement.run
   end
   
+  #Reindex people every hour
+  People.delay.reindex
+  
   #AdminStats runs during the day
   if (7..18).include? Time.now.hour
     Job::AdminStats.run

@@ -40,5 +40,6 @@ Artfully::Application.configure do
   AthenaResource::USER = nil
   AthenaResource::PASSWORD = nil
   AthenaResource::AUTH_TYPE = nil
+  
 end
 

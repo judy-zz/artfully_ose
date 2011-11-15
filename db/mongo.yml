@@ -11,3 +11,11 @@ staging:
   database: athena-staging
   username: athena-test
   password: MArktwAIN99
+
+production:
+  adapter: mongodb
+  host: tempest.mongohq.com
+  port: 10086
+  database: athena-production
+  username: athena
+  password: IJFwdq9C4Dcq8ke0yk5S

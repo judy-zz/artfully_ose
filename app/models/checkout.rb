@@ -22,9 +22,9 @@ class Checkout
     @person = find_or_create_people_record
     prepare_fafs_donations
     cart.pay_with(@payment)
-    process_fafs_donations
 
     if cart.approved?
+      process_fafs_donations
       order_timestamp = Time.now
       create_order(order_timestamp)
       cart.finish(@person, order_timestamp)

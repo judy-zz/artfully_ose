@@ -6,6 +6,10 @@ class Address < ActiveRecord::Base
   def address
     "#{address1} #{address2}"
   end
+  
+  def to_s
+    "#{address1} #{address2} #{city} #{state} #{zip} #{country}"
+  end
 
   def self.from_payment(payment)
     billing_address = payment.billing_address

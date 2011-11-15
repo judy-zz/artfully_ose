@@ -3,21 +3,16 @@ require "benchmark"
 namespace :athena do
   desc "Migrate data from Athena to ActiveRecord"
   task :migrate => :environment do
-    errors = []
-    puts RAILS_ENV
-    mysql_config = YAML::load(File.read(::Rails.root.to_s + "/config/database.yml"))[RAILS_ENV]
+    errors = []    
     db_config = YAML::load(File.read(::Rails.root.to_s + "/db/mongo.yml"))
-    mongo_config = db_config["staging"]
+    mongo_config = db_config["production"]
     db = Mongo::Connection.new(mongo_config['host'], mongo_config['port']).db(mongo_config['database'])
   
     unless mongo_config['username'].nil?
       auth = db.authenticate(mongo_config['username'], mongo_config['password'])
     end
-  
-  
     STDOUT.write "\t\t\tCOUNT\tMIGRATED\tERRORS\n"
     STDOUT.write "\t\t\t-----\t--------\t------\n"
-    
     time = Benchmark.measure do
        errors << migrate_collection("EVENTS", db.collection("event").find()) do |mongo_record|
          event = Event.new({
@@ -60,7 +55,7 @@ namespace :athena do
          section
        end    
           
-      errors << migrate_collection("PEOPLE", db.collection("person").find()) do |mongo_record|
+      errors << migrate_collection("PEOPLE", db.collection("person").find(), false) do |mongo_record|
         person = Person.new({
                   :first_name => mongo_record['props']['firstName'],
                   :last_name => mongo_record['props']['lastName'],
@@ -81,7 +76,7 @@ namespace :athena do
       end 
           
       #person must be saved before phones are added
-      errors << migrate_collection("PEOPLE PHONES", db.collection("person").find()) do |mongo_record|  
+      errors << migrate_collection("PEOPLE PHONES", db.collection("person").find(), false) do |mongo_record|  
         person = Person.find_by_old_mongo_id(mongo_record['_id'].to_s)
         unless mongo_record['props']['phones'].nil?
           Array.wrap(mongo_record['props']['phones']).each do |phone|
@@ -124,19 +119,12 @@ namespace :athena do
         order.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
         order
       end   
-          
-      #This is a hacky way to reset the created_at field on order to the former timestamp field
-      records = db.collection("order").find()
-      mysql_db = Sequel.connect(:adapter=>mysql_config['adapter'],
-                          :host=>mysql_config['host'], 
-                          :database=>mysql_config['database'], 
-                          :user=>mysql_config['username'], 
-                          :password=>mysql_config['password'])
-      dataset = mysql_db[:orders]
-      records.each do |mongo_record|      
-        order_dataset = dataset.filter(:old_mongo_id=>mongo_record['_id'].to_s)
-        order_dataset.update(:created_at => mongo_record['props']['timestamp'])
-      end 
+      
+      errors << migrate_collection("ORDER CREATED", db.collection("order").find()) do |mongo_record|   
+        order = Order.find_by_old_mongo_id(mongo_record['_id'].to_s)
+        order.update_attribute(:created_at, mongo_record['props']['timestamp'])
+        order
+      end
           
       errors << migrate_collection("ORDER PARENTS", db.collection("order").find()) do |mongo_record|
         child_order = Order.find_by_old_mongo_id(mongo_record['_id'].to_s)
@@ -146,7 +134,6 @@ namespace :athena do
         end
         child_order
       end 
-        
           
       errors << migrate_collection("ACTIONS", db.collection("action").find()) do |mongo_record|
         action = Action.new({
@@ -182,9 +169,15 @@ namespace :athena do
           action.creator = User.find(mongo_record['props']['creatorId'].to_i)
         end
         action.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
-      
+          
         action
-      end     
+      end  
+      
+      errors << migrate_collection("ACTION CREATED", db.collection("action").find()) do |mongo_record|   
+        action = Action.find_by_old_mongo_id(mongo_record['_id'].to_s)
+        action.update_attribute(:created_at, mongo_record['props']['timestamp']) unless mongo_record['props']['timestamp'].nil?
+        action
+      end
           
       errors << migrate_collection("SHOWS", db.collection("performance").find(), false) do |mongo_record|
         show = Show.new({
@@ -217,6 +210,12 @@ namespace :athena do
         settlement.organization = Organization.find(mongo_record['props']['organizationId'].to_i)
         settlement
       end  
+      
+      errors << migrate_collection("STLMENT CREATED", db.collection("settlement").find()) do |mongo_record|   
+        settlement = Settlement.find_by_old_mongo_id(mongo_record['_id'].to_s)
+        settlement.update_attribute(:created_at, mongo_record['props']['createdAt'])
+        settlement
+      end
           
       db.collection("ticket").find("props.eventId" => "4e972df12b039dff53e7bc76")
       errors << migrate_collection("TICKETS", db.collection("ticket").find()) do |mongo_record|
@@ -284,26 +283,48 @@ namespace :athena do
     end
     STDOUT.write "#{row_label}\t\t#{count}\t#{progress}\t\t#{errors}\r"
   end
-  
+
   def migrate_collection(row_label, db_collection, validate = true)
     errors = []
     count = db_collection.count()
     records = db_collection
     i = 0
-    new_models = []
     records.each do |mongo_record|
-      new_models << yield(mongo_record)
-      i+=1
-      if (i % 100) == 0
-        new_models.first.class.import new_models, :validate => validate
-        update_display(row_label, count, i, errors.size)
-        new_models = []
+      begin
+        new_model = yield(mongo_record)
+        if new_model.save(:validate => validate)
+          i+=1
+        else
+          errors << "Could not migrate #{row_label} #{mongo_record['_id'].to_s}: #{new_model.errors.first}"
+        end
+      rescue => e
+        errors << "Could not migrate #{row_label} #{mongo_record['_id'].to_s}: #{e.to_s}"
       end
+      update_display(row_label, count, i, errors.size)
     end
-    
-    new_models.first.class.import new_models, :validate => validate unless new_models.empty?
-    update_display(row_label, count, i, errors.size)
     STDOUT.write "\n"
     errors
   end
+  
+  # def migrate_collection(row_label, db_collection, validate = true)
+  #   errors = []
+  #   count = db_collection.count()
+  #   records = db_collection
+  #   i = 0
+  #   new_models = []
+  #   records.each do |mongo_record|
+  #     new_models << yield(mongo_record)
+  #     i+=1
+  #     if (i % 100) == 0
+  #       new_models.first.class.import new_models, :validate => validate
+  #       update_display(row_label, count, i, errors.size)
+  #       new_models = []
+  #     end
+  #   end
+  #   
+  #   new_models.first.class.import new_models, :validate => validate unless new_models.empty?
+  #   update_display(row_label, count, i, errors.size)
+  #   STDOUT.write "\n"
+  #   errors
+  # end
 end

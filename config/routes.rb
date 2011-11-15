@@ -23,7 +23,7 @@ Artfully::Application.routes.draw do
     resources :orders, :only => [ :index ] do
       collection do
         get 'all' 
-        get 'processed'
+        get 'artfully'
       end
     end
     resources :organizations do
@@ -63,6 +63,8 @@ Artfully::Application.routes.draw do
 
   resources :kits, :except => :index do
     get :alternatives, :on => :collection
+    post :requirements, :on => :collection
+    get :requirements, :on => :collection
   end
 
   resources :reports, :only => :index

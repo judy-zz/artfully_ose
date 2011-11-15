@@ -14,6 +14,11 @@ class Person < ActiveRecord::Base
 
   searchable do
     text :first_name, :last_name, :email
+    text :address do
+      address.to_s unless address.nil?
+    end
+    
+    string :first_name, :last_name, :email
     string :organization_id do
       organization.id
     end

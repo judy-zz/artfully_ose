@@ -3,17 +3,16 @@
 
 .compact-spread
   #requirements
-    %h3 Requirements
+    %h3 Tax Information
 
-    - unless @kit.organization.has_tax_info?
-      = form_for @kit.organization, :url => tax_info_organization_path(@kit.organization) do |form|
-        = hidden_field_tag :back, true
-        %ul
-          %li
-            .label= form.label :legal_organization_name, "Legal Organization Name"
-            .element= form.text_field :legal_organization_name
-          %li
-            .label= form.label :ein, "EIN"
-            .element= form.text_field :ein
-        = form.submit "Update Tax Information"
+    = form_for @kit.organization, :url => tax_info_organization_path(@kit.organization) do |form|
+      = hidden_field_tag :next, new_kit_path(:type => @kit.type.underscore)
+      %ul
+        %li
+          .label= form.label :legal_organization_name, "Legal Organization Name"
+          .element= form.text_field :legal_organization_name
+        %li
+          .label= form.label :ein, "EIN"
+          .element= form.text_field :ein
+      = form.submit "Update Tax Information"
 
