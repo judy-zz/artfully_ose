@@ -51,10 +51,8 @@ class Admin::UsersController < Admin::AdminController
   end
 
   private
-
-  def find_users
-    return if params[:query].blank?
-    q = "%#{params[:query]}%"
-    User.joins("LEFT OUTER JOIN memberships ON memberships.id = users.id").joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id").where("email like ? or organizations.name like ?", q, q)
-  end
+    def find_users
+      return if params[:query].blank?
+      User.like(params[:query])
+    end
 end
