@@ -18,7 +18,7 @@ class StatementsController < ApplicationController
     @show = Show.find(params[:id])
     authorize! :view, @show
     @event = @show.event
-    @played = @event.played_shows
+    @played = @event.played_shows(:all)
     @statement = Statement.for_show(@show, current_user.current_organization)
   end
 end

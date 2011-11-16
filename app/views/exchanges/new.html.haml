@@ -16,7 +16,7 @@
     - else
       %ul#show-drilldown
         - @shows.each do |show|
-          %li= link_to l(show.datetime, :format => :short), params.merge({:show_id => show.id}), :title => 'show-datetime'
+          %li= link_to l(show.datetime_local_to_event, :format => :short), params.merge({:show_id => show.id}), :title => 'show-datetime'
 
 .drilldown
   - unless @show.nil?

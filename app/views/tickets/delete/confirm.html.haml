@@ -3,7 +3,7 @@
   %h1 Delete
 
 .spread
-  %p= "You are about to delete #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @show.datetime } show of #{@show.event.name}."
+  %p= "You are about to delete #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @show.datetime_local_to_event } show of #{@show.event.name}."
 
   = form_tag delete_show_tickets_path, :method => :delete do
     = hidden_field_tag :confirmed, :true

@@ -54,11 +54,15 @@ class Show < ActiveRecord::Base
   end
 
   def self.next_datetime(show)
-    show.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(show.datetime_local_to_organization + 1.day)
+    show.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(show.datetime_local_to_event + 1.day)
   end
   
   def datetime_local_to_organization
     datetime.in_time_zone(organization.time_zone)
+  end
+  
+  def datetime_local_to_event
+    datetime.in_time_zone(event.time_zone)
   end
 
   def has_door_list?
@@ -85,7 +89,7 @@ class Show < ActiveRecord::Base
     { "id" => id,
       "chart_id" => chart.id,
       "state" => state,
-      "show_time" => I18n.l( datetime.in_time_zone(time_zone), :format => :long_with_day)
+      "show_time" => I18n.l( datetime_local_to_event, :format => :long_with_day)
     }
   end
 

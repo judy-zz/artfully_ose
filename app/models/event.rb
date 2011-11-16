@@ -48,7 +48,7 @@ class Event < ActiveRecord::Base
   def as_full_calendar_json
     shows.collect do |p|
       { :title  => '',
-        :start  => p.datetime,
+        :start  => p.datetime_local_to_event,
         :allDay => false,
         :color  => '#077083',
         :id     => p.id

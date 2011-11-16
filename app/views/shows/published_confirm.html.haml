@@ -5,8 +5,8 @@
 
 .spread
   %h3= @show.event.name
-  %h4= l(@show.datetime)
-  %p= "You are showing the #{l @show.datetime} showing of #{@show.event.name}."
+  %h4= l(@show.datetime_local_to_event)
+  %p= "You are showing the #{l @show.datetime_local_to_event} showing of #{@show.event.name}."
 
   = form_tag published_event_shows_path(@show.event) do |form|
     = hidden_field_tag :confirm, :true

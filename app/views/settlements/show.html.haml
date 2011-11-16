@@ -36,7 +36,7 @@
                   (
                   = link_to "#{item.product.event.name}", event_path(item.product.event)
                   ,
-                  = link_to "#{l item.product.show.datetime}", event_show_path(item.product.event, item.product.show)
+                  = link_to "#{l item.product.show.datetime_local_to_event}", event_show_path(item.product.event, item.product.show)
                   )
               - if item.product.kind_of? Donation
                 %span Donation

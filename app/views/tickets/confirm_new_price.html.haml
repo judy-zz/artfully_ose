@@ -17,7 +17,7 @@
                 %div= "#{pluralize tickets.count, "ticket"}, at #{number_as_cents price} would change to #{number_as_cents @price}"
 
   %p
-    = "Are you sure you want to change the price of these tickets from their current price to #{number_as_cents @price} for the #{l @show.datetime} show of #{@show.event.name}?"
+    = "Are you sure you want to change the price of these tickets from their current price to #{number_as_cents @price} for the #{l @show.datetime_local_to_event} show of #{@show.event.name}?"
 
   =form_tag change_prices_show_tickets_path, :method=>:put do
     = hidden_field_tag :confirmed, :true

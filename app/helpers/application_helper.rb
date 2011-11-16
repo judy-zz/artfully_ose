@@ -1,8 +1,8 @@
 module ApplicationHelper
   include LinkHelper
 
-  def org_local_time(t)
-    t.in_time_zone(current_user.current_organization.time_zone)
+  def time_zone_description(tz)
+    ActiveSupport::TimeZone.create(tz)
   end
 
   def contextual_menu(&block)
