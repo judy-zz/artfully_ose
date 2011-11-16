@@ -44,7 +44,7 @@
       %tbody
         - @shows.each do |show|
           %tr{ :class => show.state }
-            %td= link_to l(show.datetime, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
+            %td= link_to l(show.datetime_local_to_organization, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
             %td.available= show.glance.available_total
             %td.gross= show.glance.sold_total
             %td.comped= show.glance.comped_total

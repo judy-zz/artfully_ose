@@ -18,8 +18,6 @@ class OrdersController < ApplicationController
 
   def sales
     authorize! :view, Order
-    Time.zone = current_user.current_organization.time_zone
-
     @search = SaleSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
       results.paginate(:page => params[:page], :per_page => 25)
     end

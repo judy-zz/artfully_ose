@@ -1,6 +1,10 @@
 module ApplicationHelper
   include LinkHelper
 
+  def org_local_time(t)
+    t.in_time_zone(current_user.current_organization.time_zone)
+  end
+
   def contextual_menu(&block)
     menu = ContextualMenu.new(self)
     block.call(menu)

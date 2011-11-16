@@ -33,9 +33,9 @@ class Contribution
   def load(params)
     @subtype         = params[:subtype]
     @amount          = params[:amount]
-    @occurred_at     = Time.zone.parse(params[:occurred_at]) if params[:occurred_at].present?
-    @details         = params[:details]
     @organization_id = params[:organization_id]
+    @occurred_at     = Organization.find(@organization_id).time_zone.parse(params[:occurred_at]) if params[:occurred_at].present?
+    @details         = params[:details]
     @person_id  = params[:person_id]
   end
 

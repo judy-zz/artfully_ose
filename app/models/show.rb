@@ -54,11 +54,11 @@ class Show < ActiveRecord::Base
   end
 
   def self.next_datetime(show)
-    show.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(show.datetime + 1.day)
+    show.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(show.datetime_local_to_organization + 1.day)
   end
-
-  def set_attributes(attrs)
-    attributes.merge!(prepare_attr! attrs)
+  
+  def datetime_local_to_organization
+    datetime.in_time_zone(organization.time_zone)
   end
 
   def has_door_list?
@@ -144,17 +144,5 @@ class Show < ActiveRecord::Base
 
   def bulk_comp(ids)
     tickets.select { |ticket| ids.include? ticket.id }.collect{ |ticket| ticket.id unless ticket.comp_to }.compact
-  end
-
-  def prepare_attr!(attrs)
-    attributes = attrs.with_indifferent_access
-    if attributes["datetime"].kind_of?(String) || attributes["datetime"].kind_of?(Time)
-      Time.zone = time_zone
-      offset = ActiveSupport::TimeZone.new(time_zone).formatted_offset
-      dt = Time.zone.parse("#{attributes["datetime"]}")
-      #dt -= 1.hour if dt.dst?
-      attributes["datetime"] = dt
-    end
-    attributes
   end
 end

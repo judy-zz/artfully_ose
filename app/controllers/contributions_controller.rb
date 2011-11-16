@@ -1,7 +1,6 @@
 class ContributionsController < ApplicationController
   def index
     authorize! :manage, Order
-    Time.zone = current_user.current_organization.time_zone
 
     @search = DonationSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
       results.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)

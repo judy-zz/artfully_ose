@@ -25,14 +25,12 @@ class Event < ActiveRecord::Base
   end
 
   def upcoming_shows(limit = 5)
-    Time.zone = time_zone
     upcoming = shows.select { |show| show.datetime > DateTime.now.beginning_of_day }
     return upcoming if limit == :all
     upcoming.take(limit)
   end
 
   def played_shows(limit = 5)
-    Time.zone = time_zone
     played = shows.select { |show| show.datetime < DateTime.now.beginning_of_day }
     return played if limit == :all
     played.take(limit)
