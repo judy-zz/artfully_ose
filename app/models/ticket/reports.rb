@@ -63,11 +63,11 @@ module Ticket::Reports
     end
 
     def played
-      tickets.played.sum(:price)
+      tickets.sold.played.sum(:price)
     end
 
     def advance
-      tickets.unplayed.sum(:price)
+      tickets.sold.unplayed.sum(:price)
     end
   end
 

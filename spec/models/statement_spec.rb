@@ -29,7 +29,7 @@ describe Statement do
     end
     
     it "should report the date of the show" do
-      statement.datetime.should eq show.datetime
+      statement.datetime.should eq show.datetime_local_to_event
     end
   
     it "should report how many tickets were sold" do

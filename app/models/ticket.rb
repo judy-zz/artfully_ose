@@ -8,7 +8,7 @@ class Ticket < ActiveRecord::Base
 
   belongs_to :cart
 
-  delegate :datetime, :event, :to => :show
+  delegate :event, :to => :show
 
   def self.sold_after(datetime)
     sold.where("sold_at > ?", datetime)
@@ -33,6 +33,10 @@ class Ticket < ActiveRecord::Base
     event(:sell)      { transitions :from => :on_sale,                        :to => :sold      }
     event(:comp)      { transitions :from => [ :on_sale, :off_sale ],         :to => :comped    }
     event(:do_return) { transitions :from => [ :comped, :sold ],              :to => :on_sale   }
+  end
+
+  def datetime
+    show.datetime_local_to_event
   end
 
   def self.unsold

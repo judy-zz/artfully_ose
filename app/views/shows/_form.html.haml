@@ -4,7 +4,7 @@
     %li
       .label= form.label :datetime, "Show date/time"
       .element
-        = form.text_field :datetime, :value => l(show.datetime, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+        = form.text_field :datetime, :value => l(show.datetime_local_to_event, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
         = form.hidden_field :time_zone, { :value => show.event.time_zone }
     %li
       .label= form.label :chart_id, "Seating chart"

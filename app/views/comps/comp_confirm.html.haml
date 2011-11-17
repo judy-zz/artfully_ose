@@ -7,7 +7,7 @@
   %p
     = "Are you sure you want to comp #{pluralize(@selected_tickets.size, 'ticket')}"
     = " to \"#{@comp.recipient.first_name} #{@comp.recipient.last_name}\""
-    = " for the #{l @show.datetime, :format=> :date_at_time} show"
+    = " for the #{l @show.datetime_local_to_event, :format=> :date_at_time} show"
     = " of #{@show.event.name}?"
   %p= "Reason for comp is: #{@comp.reason}"
   = form_for @comp do |form|

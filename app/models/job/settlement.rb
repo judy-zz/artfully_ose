@@ -9,7 +9,7 @@ class Job::Settlement < Job::Base
     def settle_shows_in(range)
       logger.info "Settling shows..."
       Show.in_range(range[0], range[1]).reject(&:free?).each do |show|
-        logger.info "Settling #{show.event.name}, #{show.datetime}"
+        logger.info "Settling #{show.event.name}, #{show.datetime_local_to_organization}"
 
         logger.error "#{show.organization.name} does not have a bank account." if show.organization.bank_account.nil?
         Settlement.submit(show.organization.id, show.settleables, show.organization.bank_account, show.id)

@@ -30,9 +30,10 @@ class ShowsController < ApplicationController
   def create
     @event = Event.find(params[:event_id])
     @show = @event.shows.build(params[:show].merge(:organization => current_organization))
+    @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 
     if @show.save
-      flash[:notice] = "Show created on #{l @show.datetime, :format => :date_at_time}"
+      flash[:notice] = "Show created on #{l @show.datetime_local_to_organization, :format => :date_at_time}"
       redirect_to event_path(@event)
     else
       flash[:error] = "There was a problem creating your show."
@@ -56,7 +57,19 @@ class ShowsController < ApplicationController
   def update
     @show = Show.find(params[:id])
     authorize! :edit, @show
-    redirect_to @show.event
+    if @show.live?
+      flash[:alert] = 'Tickets have already been created for this performance'
+      redirect_to event_url(@performance.event) and return
+    else
+      @show.datetime = ActiveSupport::TimeZone.create(@show.event.time_zone).parse(params[:show][:datetime])
+      @show.chart_id = params[:show][:chart_id]
+      if @show.save
+        redirect_to event_path(@show.event)
+      else
+        flash[:alert] = 'This performance cannot be edited'
+        render :edit
+      end
+    end
   end
 
   def destroy

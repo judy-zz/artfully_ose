@@ -14,7 +14,7 @@
   - else
     #section
       %h3= @section.name
-      %p= "This will add tickets to the #{@section.name} section of the #{l(@show.datetime, :format => :short)} showing."
+      %p= "This will add tickets to the #{@section.name} section of the #{l(@show.datetime_local_to_event, :format => :short)} showing."
       = form_tag show_tickets_path, :class => :single_field do
         = hidden_field_tag :section_id, @section.id
         .stack

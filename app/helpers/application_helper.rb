@@ -1,6 +1,10 @@
 module ApplicationHelper
   include LinkHelper
 
+  def time_zone_description(tz)
+    ActiveSupport::TimeZone.create(tz)
+  end
+
   def contextual_menu(&block)
     menu = ContextualMenu.new(self)
     block.call(menu)

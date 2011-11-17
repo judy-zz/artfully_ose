@@ -4,7 +4,7 @@ class SettlementsController < ApplicationController
       @settlements = current_organization.settlements
       @settlements.each{|settlement| authorize! :view, settlement}
       @settlements = @settlements.sort{|a,b| b.created_at <=> a.created_at }
-      @settlements = @settlements.paginate(:page => params[:page], :per_page => 10)
+      @settlements = @settlements.paginate(:page => params[:page], :per_page => 25)
     else
       @settlements = nil
       authorize! :view, @settlements

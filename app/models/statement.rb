@@ -13,7 +13,7 @@ class Statement
     end
     
     new.tap do |statement|
-      statement.datetime          = show.datetime
+      statement.datetime          = show.datetime_local_to_event
       statement.tickets_sold      = show.tickets.select{|t| t.sold?}.size
       statement.tickets_comped    = show.tickets.select{|t| t.comped?}.size
       statement.potential_revenue = show.tickets.inject(0) { |total_price, ticket| total_price += ticket.price }

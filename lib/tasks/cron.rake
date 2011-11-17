@@ -7,7 +7,7 @@ task :cron => :environment do
   end
   
   #Reindex people every hour
-  People.delay.reindex
+  Person.delay.reindex
   
   #AdminStats runs during the day
   if (7..18).include? Time.now.hour

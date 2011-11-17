@@ -4,7 +4,7 @@
 
 .context
 .document
-  %p= "You are about to put #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @show.datetime } showing of #{@show.event.name} on sale."
+  %p= "You are about to put #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @show.datetime_local_to_event } showing of #{@show.event.name} on sale."
 
   = form_tag on_sale_show_tickets_path, :method => :put do
     = hidden_field_tag :confirmed, :true

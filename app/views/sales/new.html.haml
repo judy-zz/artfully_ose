@@ -1,7 +1,7 @@
 - in_section :events
 - content_for :header do
   %h1 Box Office
-  %h2="#{@event.name}, #{l(@show.datetime, :format => :long_with_day)}"
+  %h2="#{@event.name}, #{l(@show.datetime_local_to_event, :format => :long_with_day)}"
 
 .document
   %h3 Door List

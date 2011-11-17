@@ -5,7 +5,7 @@
 
 .spread
   %h3 Schedule
-  %p Settlement happens 2 business days after the show plays or the donation occurs. For example, a show on Monday night will be settled on Thursday.
+  %p Settlements are issued two business days after the show plays or the donation occurs. For example, a show on Monday night will be settled on Thursday.
   %h3 Settlements
   #settlements
     - if @settlements.empty?
@@ -27,7 +27,7 @@
             %tr{:class => settlement.success? ? "succeeded" : "failed" }
               %td= link_to settlement.id, settlement_path(settlement)
               %td= link_to settlement.show.event.name, event_path(settlement.show.event) unless settlement.show.nil?
-              %td= link_to l(settlement.show.datetime, :format => :short), event_show_path(settlement.show.event, settlement.show) unless settlement.show.nil?
+              %td= link_to l(settlement.show.datetime_local_to_event, :format => :short), event_show_path(settlement.show.event, settlement.show) unless settlement.show.nil?
               %td= l(settlement.created_at, :format => :date)
               %td
                 -if settlement.success?
