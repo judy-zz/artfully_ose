@@ -139,6 +139,12 @@ class Order < ActiveRecord::Base
   def ticket_details
     "#{num_tickets} ticket(s)"
   end
+  
+  def to_comp!
+    items.each do |item|
+      item.to_comp!
+    end
+  end
 
   def is_fafs?
     !fa_id.nil?
