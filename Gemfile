@@ -36,6 +36,7 @@ gem 'cancan'
 # Validations
 gem 'validates_timeliness'
 
+gem 'uuid'
 gem 'thin'
 gem 'mysql2', '< 0.3'
 gem 'escape_utils'
@@ -64,7 +65,6 @@ group :test, :development do
   gem 'capybara'
   gem 'launchy'
   gem 'awesome_print', :require => 'ap'
-  gem 'uuid'
   gem 'faker'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
 end
