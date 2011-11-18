@@ -4,7 +4,8 @@ class ExportController < ApplicationController
     @organization = current_user.current_organization
     @people = @organization.people
     @filename = "Artfully-People-Export-#{DateTime.now.strftime("%m-%d-%y")}.csv"
-    render :csv => @people, :filename => @filename
+    @csv_string = @people.to_comma
+    send_data @csv_string, :filename => @filename, :type => "text/csv", :disposition => "attachment"
   end
 
   def donations
