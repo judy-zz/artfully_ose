@@ -1,5 +1,5 @@
 class Refund
-  attr_accessor :order, :items
+  attr_accessor :order, :items, :gateway_error_message
 
   def initialize(order, items)
     self.order = order
@@ -15,6 +15,9 @@ class Refund
       items.each(&:return!) if should_return
       items.each(&:refund!)
       create_refund_order
+    else
+      puts payment.message
+      @gateway_error_message = payment.message
     end
   end
 
