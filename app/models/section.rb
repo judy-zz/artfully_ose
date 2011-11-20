@@ -18,6 +18,10 @@ class Section < ActiveRecord::Base
 
   def summarize(show_id)
     tickets = Show.find(show_id).tickets
-    summary = SectionSummary.for_tickets(tickets)
+    @summary = SectionSummary.for_tickets(tickets)
+  end
+  
+  def summary(show_id)
+    @summary || summarize(show_id)
   end
 end

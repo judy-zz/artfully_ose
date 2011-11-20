@@ -1046,6 +1046,8 @@ dl.table-display {
 
 form fieldset {
   margin-bottom: 12px; }
+form fieldset.floater {
+  float: left; }
 form legend {
   line-height: 36px;
   color: #666666;
@@ -1080,8 +1082,6 @@ form ul li {
       width: 48%;
       display: inline;
       margin-right: 2%; }
-  form ul li .label label {
-    font-family: "Raleway"; }
   form ul li .hidden.label {
     display: none; }
   form ul li .label-and-element {

@@ -3,6 +3,58 @@
   %h1 Box Office
   %h2="#{@event.name}, #{l(@show.datetime_local_to_event, :format => :long_with_day)}"
 
+.spread
+  = form_tag event_show_sales_path do
+    %fieldset.floater{:style=>'width:300px'}
+      %h4 Sections
+      %ul#section-list
+        - @sale.sections.each do |section|
+          %li
+            .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_to_currency section.price/100} (#{section.summary(@show.id).available})"
+            .quantity.element= select_tag "quantities[#{section.id}]", options_for_select(0..20, @sale.quantities[section.id])
+    %fieldset.floater{:style=>'width:300px'}
+      %h4 Customer
+      %ul.radio-list
+        %li
+          .radio= check_box_tag(:anonymous, nil, params[:anonymous])
+          .label= label_tag(:anonymous, "Anonymous")
+        %li.hidden
+          .radio= radio_button_tag(:person_id, @dummy.id, true, :id => "dummy")
+          .label= label_tag(:person_id, "Anonymous Sale")
+      %ul#person-search
+        %li
+          .full.paired.element
+            = text_field_tag(:terms, params[:terms], :id => "terms")
+            = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
+      %ul.radio-list.target
+        - @people.each do |person|
+          %li
+            .radio= radio_button_tag(:person_id, person.id, params[:person_id] == person.id)
+            .label= label_tag(:person_id, "#{person.first_name} #{person.last_name}")
+        %li.template.hidden
+          .radio
+          .label
+
+    %fieldset.floater{:style=>'width:300px'}
+      %h4 Payment
+      %ul.radio-list
+        %li
+          .radio= check_box_tag(:cash, nil, params[:cash])
+          .label= label_tag(:cash, "Cash")
+      %ul#payment-info
+        %li
+          .label= label_tag("credit_card[card_number]", "Card Number")
+          .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
+        %li
+          .label= label_tag("credit_card[expiration_date]", "Expiration Date")
+          .element.date_field
+            = hidden_field_tag("credit_card[expiration_date(3i)]", 1)
+            = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
+            = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
+    %fieldset.floater{:width=>'100px'}
+      #checkout= submit_tag "Checkout"
+  .clear
+      
 .document
   %h3 Door List
   - unless @door_list.items.empty?
@@ -21,56 +73,5 @@
               %td= "☐"
               %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
               %td= item.buyer.email
-              %td= item.ticket.section
+              %td= item.ticket.section.name
               %td= number_as_cents(item.ticket.price)
-.context
-  %h3 New Sale
-  = form_tag event_show_sales_path do
-    %fieldset
-      %h4 Sections
-      %ul#section-list
-        - @sale.sections.each do |section|
-          %li
-            .label= label_tag "quantities[#{section.id}]", section.name
-            .quantity.element= select_tag "quantities[#{section.id}]", options_for_select(0..20, @sale.quantities[section.id])
-    %fieldset
-      %h4 Customer Information
-      %ul.radio-list
-        %li
-          .radio= check_box_tag(:anonymous, nil, params[:anonymous])
-          .label= label_tag(:anonymous, "Anonymous Sale")
-        %li.hidden
-          .radio= radio_button_tag(:person_id, @dummy.id, true, :id => "dummy")
-          .label= label_tag(:person_id, "Anonymous Sale")
-      %ul#person-search
-        %li
-          .full.paired.element
-            = text_field_tag(:terms, params[:terms], :id => "terms")
-            = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
-      %ul.radio-list.target
-        - @people.each do |person|
-          %li
-            .radio= radio_button_tag(:person_id, person.id, params[:person_id] == person.id)
-            .label= label_tag(:person_id, "#{person.first_name} #{person.last_name}")
-        %li.template.hidden
-          .radio
-          .label
-
-    %fieldset
-      %h4 Payment Information
-      %ul.radio-list
-        %li
-          .radio= check_box_tag(:cash, nil, params[:cash])
-          .label= label_tag(:cash, "Cash Payment")
-      %ul#payment-info
-        %li
-          .label= label_tag("credit_card[card_number]", "Card Number")
-          .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
-        %li
-          .label= label_tag("credit_card[expiration_date]", "Expiration Date")
-          .element.date_field
-            = hidden_field_tag("credit_card[expiration_date(3i)]", 1)
-            = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
-            = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
-    %fieldset
-      #checkout= submit_tag "Checkout"
