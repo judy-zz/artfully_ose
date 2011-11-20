@@ -14,7 +14,7 @@ class SalesController < ApplicationController
     @sale = Sale.new(@show, @show.chart.sections, params[:quantities])
 
     if @sale.sell(payment)
-      redirect_to new_event_show_sales_path(@event, @show), :notice => 'Items successfully purchased.'
+      redirect_to new_event_show_sales_path(@event, @show), :notice => "Sold #{@sale.tickets.length} tickets"
     else
       flash[:error] = "#{@sale.errors.full_messages.to_sentence.capitalize}."
       render :new

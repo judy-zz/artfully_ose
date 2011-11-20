@@ -9,6 +9,8 @@ class Sale
   def initialize(show, sections, quantities = {})
     @show       = show
     @sections   = sections
+    
+    #When coming from a browser, all keys and values in @quantities are STRINGS
     @quantities = quantities
     @tickets     = []
   end

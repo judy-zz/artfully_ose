@@ -11,7 +11,7 @@
         - @sale.sections.each do |section|
           %li
             .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_to_currency section.price/100} (#{section.summary(@show.id).available})"
-            .quantity.element= select_tag "quantities[#{section.id}]", options_for_select(0..20, @sale.quantities[section.id])
+            .quantity.element= select_tag "quantities[#{section.id}]", options_for_select(0..section.summary(@show.id).available, @sale.quantities[section.id])
     %fieldset.floater{:style=>'width:300px'}
       %h4 Customer
       %ul.radio-list
