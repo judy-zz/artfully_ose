@@ -19,7 +19,7 @@ class Sale
     load_tickets
     if valid?
       cart.tickets << tickets
-      checkout = BoxOfficeCheckout.new(cart, payment)
+      checkout = Checkout.new(cart, payment)
       checkout.finish.tap do |success|
         errors.add(:base, "payment was not accepted") and return if !success
         settle(checkout, success) if (success and !payment.requires_settlement?)
@@ -40,7 +40,7 @@ class Sale
   end
 
   def cart
-    @cart ||= Cart.new
+    @cart ||= BoxOfficeCart.new
   end
 
   def has_tickets?

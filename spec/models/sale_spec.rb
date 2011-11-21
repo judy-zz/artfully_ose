@@ -58,8 +58,8 @@ describe Sale do
       Ticket.stub(:available).and_return(tix)
     end
         
-    it "creates a new BoxOfficeCheckout" do
-      BoxOfficeCheckout.should_receive(:new).and_return(checkout)
+    it "creates a new Checkout and a new BoxOfficeCart" do
+      Checkout.should_receive(:new).and_return(checkout)
       checkout.should_receive(:finish).and_return(true)
       subject.sell(payment)
     end

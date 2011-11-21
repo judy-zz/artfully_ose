@@ -1,2 +1,0 @@
-class BoxOfficeCheckout < Checkout
-end
