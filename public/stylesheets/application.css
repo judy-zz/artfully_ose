@@ -899,16 +899,12 @@ dl.table-display {
     content: "OR";
     padding: 12px; }
 
-table.example-contact {
-  margin-bottom: 25px; }
-  table.example-contact td.label {
-    width: 150px;
-    font-weight: bold; }
-
-.page-controller .previous {
-  float: left; }
-.page-controller .next {
-  float: right; }
+.page-controller {
+  border-bottom: 1px solid #cccccc; }
+  .page-controller .previous {
+    float: left; }
+  .page-controller .next {
+    float: right; }
 
 .hr {
   border-bottom: 1px solid #eeeeee;
@@ -1307,6 +1303,13 @@ table {
 
 table.standalone {
   border: 1px solid #cccccc; }
+
+table.example-contact {
+  margin-bottom: 25px;
+  border-width: 0px; }
+  table.example-contact td.label {
+    width: 150px;
+    font-weight: bold; }
 
 td.numeric {
   width: auto;
