@@ -1,0 +1,2 @@
+class BoxOfficeCheckout < Checkout
+end

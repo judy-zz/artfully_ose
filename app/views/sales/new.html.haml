@@ -11,7 +11,13 @@
         - @sale.sections.each do |section|
           %li
             .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_to_currency section.price/100} (#{section.summary(@show.id).available})"
-            .quantity.element= select_tag "quantities[#{section.id}]", options_for_select(0..section.summary(@show.id).available, @sale.quantities[section.id])
+            .quantity.element
+              - if section.summary(@show.id).available > 0
+                = select_tag "quantities[#{section.id}]", options_for_select(0..[section.summary(@show.id).available,10].min, @sale.quantities[section.id])
+              - else
+                .sold-out
+                  sold out
+                
     %fieldset.floater{:style=>'width:300px'}
       %h4 Customer
       %ul.radio-list
@@ -51,8 +57,12 @@
             = hidden_field_tag("credit_card[expiration_date(3i)]", 1)
             = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
             = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
+            
     %fieldset.floater{:width=>'100px'}
-      #checkout= submit_tag "Checkout"
+      #total
+        %span total
+        .price= number_as_cents 0
+      #checkout-now= submit_tag "Checkout Now"
   .clear
       
 .document
