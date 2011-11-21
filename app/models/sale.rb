@@ -1,7 +1,7 @@
 class Sale
   include ActiveModel::Validations
 
-  attr_accessor :sections, :quantities, :tickets
+  attr_accessor :sections, :quantities, :tickets, :cart
   attr_accessor :person
 
   validate :has_tickets?
@@ -12,18 +12,22 @@ class Sale
     
     #When coming from a browser, all keys and values in @quantities are STRINGS
     @quantities = quantities
+    @cart       = BoxOfficeCart.new
     @tickets     = []
+    
+    #This is irritating, it means you can't add tickets to a sale later
+    load_tickets
+    cart.tickets << tickets
   end
 
   def sell(payment)
-    load_tickets
     if valid?
-      cart.tickets << tickets
-      checkout = Checkout.new(cart, payment)
-      checkout.finish.tap do |success|
-        errors.add(:base, "payment was not accepted") and return if !success
-        settle(checkout, success) if (success and !payment.requires_settlement?)
-      end
+      # cart.tickets << tickets
+      # checkout = Checkout.new(cart, payment)
+      # checkout.finish.tap do |success|
+      #   errors.add(:base, "payment was not accepted") and return if !success
+      #   settle(checkout, success) if (success and !payment.requires_settlement?)
+      # end
       true
     end
   end
@@ -37,10 +41,6 @@ class Sale
         @tickets = @tickets + tickets_available_in_section
       end
     end
-  end
-
-  def cart
-    @cart ||= BoxOfficeCart.new
   end
 
   def has_tickets?
