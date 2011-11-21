@@ -57,7 +57,7 @@ class ImportPerson
   end
 
   def tags_list
-    @tags.to_s.strip.split(/[\s,|]+/)
+    @tags.to_s.strip.gsub(/\s+/, "-").split(/[,|]+/)
   end
 
   def check_enumeration(field, value)
