@@ -12,23 +12,23 @@ class Item < ActiveRecord::Base
   scope :not_imported, joins(:order).merge(Order.not_imported)
 
   comma :donation do
-    order("First Name") { |order| order.first_name.present? ? order.first_name : order.person.first_name }
-    order("Last Name") { |order| order.last_name.present? ? order.last_name : order.person.last_name }
-    order("Company Name") { |order| order.person.company_name }
-    order("Donation Date") { |order| order.timestamp }
+    order("First Name") { |order| order.person.first_name if order.person }
+    order("Last Name") { |order| order.person.last_name if order.person }
+    order("Company Name") { |order| order.person.company_name if order.person }
+    order("Donation Date") { |order| order.created_at }
     price("Gift Amount")
     nongift_amount("Non-gift Amount")
   end
 
   comma :ticket_sale do
-    order("Date of Purchase") { |order| order.timestamp }
-    order("First Name") { |order| order.first_name.present? ? order.first_name : order.person.first_name }
-    order("Last Name") { |order| order.last_name.present? ? order.last_name : order.person.last_name }
-    performance("Performance Title") { |performance| performance.event.name }
-    performance("Performance Date-Time") { |performance| performance.datetime }
+    order("Date of Purchase") { |order| order.created_at }
+    order("First Name") { |order| order.person.first_name if order.person }
+    order("Last Name") { |order| order.person.last_name if order.person }
+    show("Performance Title") { |show| show.event.name if show }
+    show("Performance Date-Time") { |show| show.datetime if show }
     price("Ticket Price")
   end
-  
+
   def ticket?
     product_type == "Ticket"
   end
