@@ -1,81 +1,56 @@
 class Sale
   include ActiveModel::Validations
 
-  attr_accessor :sections, :quantities
+  attr_accessor :sections, :quantities, :tickets, :cart
   attr_accessor :person
 
-  validate :fulfilled?
   validate :has_tickets?
 
   def initialize(show, sections, quantities = {})
     @show       = show
     @sections   = sections
+    
+    #When coming from a browser, all keys and values in @quantities are STRINGS
     @quantities = quantities
-  end
-
-  def tickets
-    requests.collect(&:tickets).flatten
+    @cart       = BoxOfficeCart.new
+    @tickets     = []
+    
+    #This is irritating, it means you can't add tickets to a sale later
+    load_tickets
+    cart.tickets << tickets
   end
 
   def sell(payment)
     if valid?
-      cart.tickets << tickets
-      checkout = Checkout.new(cart, payment)
-      checkout.finish.tap do |success|
-        errors.add(:base, "payment was not accepted") and return if !success
-        settle(checkout, success) if (success and !payment.requires_settlement?)
+      # cart.tickets << tickets
+      # checkout = Checkout.new(cart, payment)
+      # checkout.finish.tap do |success|
+      #   errors.add(:base, "payment was not accepted") and return if !success
+      #   settle(checkout, success) if (success and !payment.requires_settlement?)
+      # end
+      true
+    end
+  end
+
+  def load_tickets
+    sections.each do |section|
+      tickets_available_in_section = Ticket.available({:section_id => section.id, :show_id => @show.id}, @quantities[section.id.to_s])
+      if tickets_available_in_section.length != @quantities[section.id.to_s].to_i
+        errors.add(:base, "Not enough tickets in section")
+      else
+        @tickets = @tickets + tickets_available_in_section
       end
     end
   end
 
-  def cart
-    @cart ||= Order.new
-  end
-
-  def fulfilled?
-    errors.add(:base, "some of the requested sections were not available") unless requests.all?(&:fulfilled?)
-    requests.all?(&:fulfilled?)
-  end
-
   def has_tickets?
-    errors.add(:base, "no tickets were added") unless tickets.size > 0
-    tickets.size > 0
+    errors.add(:base, "no tickets were added") unless @tickets.size > 0
+    @tickets.size > 0
   end
 
   private
 
-  def requests
-    @requests ||= sections.collect { |section| Sale::TicketRequest.new(@show, section, @quantities[section.id]) }
-  end
-
-  def settle(checkout, success)
-    Item.settle(checkout.order.items, Settlement.new)
-  end
-end
-
-
-class Sale::TicketRequest
-  attr_reader :quantity
-
-  def initialize(show, section, quantity)
-    @show     = show
-    @section  = section
-    @quantity = quantity.to_i
-  end
-
-  def fulfilled?
-    tickets.size == @quantity
-  end
-
-  def tickets
-    return [] if @quantity == 0
-
-    conditions = {
-      :show_id        => @show.id,
-      :section        => @section.name,
-      :price          => @section.price,
-    }
-
-    @tickets ||= Ticket.available(conditions, @quantity)
-  end
+    def settle(checkout, success)
+      Item.settle(checkout.order.items, Settlement.new)
+    end
 end

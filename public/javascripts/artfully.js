@@ -81,10 +81,10 @@ artfully.utils = (function(){
 }());
 
 artfully.widgets = (function(){
-  var event, cart, donation,
+  var artfully_event, cart, donation,
       widgetCache = {};
 
-  event = function(){
+  artfully_event = function(){
     function prep(data){
       var charts = artfully.utils.keyOnId(data.charts);
 
@@ -95,11 +95,10 @@ artfully.widgets = (function(){
       //since charts are hashed, we can't pass in the whole hash because modelize expects and Array
       //and we can't check for a hash because it's impossible in javascript
         jQuery.each(charts, function(index, chart){
-          artfully.utils.modelize(chart, artfully.models.chart,
-            function(chart){
-        artfully.utils.modelize(chart.sections, artfully.models.section);
-      }
-
+          	artfully.utils.modelize(chart, artfully.models.chart,
+            	function(chart){
+        			artfully.utils.modelize(chart.sections, artfully.models.section);
+      			}
             );
         });
 
@@ -109,7 +108,7 @@ artfully.widgets = (function(){
         performance.chart = charts[performance.chart_id];
       });
 
-      return artfully.utils.modelize(data, artfully.models.event);
+      return artfully.utils.modelize(data, artfully.models.artfully_event);
     }
 
     function render(data){
@@ -117,8 +116,8 @@ artfully.widgets = (function(){
       e.render(jQuery('#event'));
     }
 
-    if(widgetCache.event === undefined){
-      widgetCache.event = {
+    if(widgetCache.artfully_event === undefined){
+      widgetCache.artfully_event = {
         display: function(id){
           artfully.widgets.cart().display();
           jQuery.getJSON(artfully.utils.event_uri(id), function(data){
@@ -128,7 +127,7 @@ artfully.widgets = (function(){
       };
     }
 
-    return widgetCache.event;
+    return widgetCache.artfully_event;
   };
   cart = function(){
     function hiddenFormFor(tickets){
@@ -226,7 +225,7 @@ artfully.widgets = (function(){
   };
 
   return {
-    event: event,
+    event: artfully_event,
     cart: cart,
     donation: donation
   };
@@ -234,7 +233,7 @@ artfully.widgets = (function(){
 
 artfully.models = (function(){
 
-  var chart, section, performance, event,
+  var chart, section, performance, artfully_event, donation
       modelCache = {};
 
   chart = function(){
@@ -322,8 +321,6 @@ artfully.models = (function(){
           $t = jQuery(document.createElement('li')).addClass('performance').appendTo(target);
           $t.data('performance', this);
 
-		  console.log(this)
-
           jQuery(document.createElement('span'))
           .addClass('performance-datetime')
           .text(this.show_time)
@@ -346,9 +343,9 @@ artfully.models = (function(){
     return modelCache.performance;
   };
 
-  event = function(){
-    if(modelCache.event === undefined){
-      modelCache.event = {
+  artfully_event = function(){
+    if(modelCache.artfully_event === undefined){
+      modelCache.artfully_event = {
         render: function($target){
           // Tech Debt: only really need to store the three properties.
           $target.data('event', this);
@@ -367,7 +364,7 @@ artfully.models = (function(){
         }
       };
     }
-    return modelCache.event;
+    return modelCache.artfully_event;
   };
 
   donation = function(){
@@ -424,7 +421,7 @@ artfully.models = (function(){
     chart: chart,
     section: section,
     performance: performance,
-    event: event,
+    artfully_event: artfully_event,
     donation: donation
   };
 }());

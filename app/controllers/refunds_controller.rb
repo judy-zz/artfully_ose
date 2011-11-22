@@ -18,7 +18,11 @@ class RefundsController < ApplicationController
         flash[:notice] = "Successfully refunded #{@refund.items.size} items."
       end
     else
-      flash[:error] = "Unable to refund items."
+      if @refund.gateway_error_message.nil?
+        flash[:error] = "Unable to refund items.  Please contact support and we'll try to help!"
+      else
+        flash[:error] = "Unable to refund items: " + @refund.gateway_error_message
+      end
     end
 
     redirect_to order_url(@order)
