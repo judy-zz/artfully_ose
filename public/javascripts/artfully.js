@@ -95,11 +95,11 @@ artfully.widgets = (function(){
       //since charts are hashed, we can't pass in the whole hash because modelize expects and Array
       //and we can't check for a hash because it's impossible in javascript
         jQuery.each(charts, function(index, chart){
-          artfully.utils.modelize(chart, artfully.models.chart,
-            function(chart){
-        artfully.utils.modelize(chart.sections, artfully.models.section);
-      }
-
+			console.log(chart)
+          	artfully.utils.modelize(chart, artfully.models.chart,
+            	function(chart){
+        			artfully.utils.modelize(chart.sections, artfully.models.section);
+      			}
             );
         });
 
@@ -321,8 +321,6 @@ artfully.models = (function(){
           var $t;
           $t = jQuery(document.createElement('li')).addClass('performance').appendTo(target);
           $t.data('performance', this);
-
-		  console.log(this)
 
           jQuery(document.createElement('span'))
           .addClass('performance-datetime')
