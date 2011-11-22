@@ -81,10 +81,10 @@ artfully.utils = (function(){
 }());
 
 artfully.widgets = (function(){
-  var event, cart, donation,
+  var artfully_event, cart, donation,
       widgetCache = {};
 
-  event = function(){
+  artfully_event = function(){
     function prep(data){
       var charts = artfully.utils.keyOnId(data.charts);
 
@@ -225,7 +225,7 @@ artfully.widgets = (function(){
   };
 
   return {
-    artfully_event: artfully_event,
+    event: artfully_event,
     cart: cart,
     donation: donation
   };
