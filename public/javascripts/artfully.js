@@ -233,7 +233,7 @@ artfully.widgets = (function(){
 
 artfully.models = (function(){
 
-  var chart, section, performance, artfully_event,
+  var chart, section, performance, artfully_event, donation
       modelCache = {};
 
   chart = function(){
