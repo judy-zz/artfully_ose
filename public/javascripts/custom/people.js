@@ -70,7 +70,6 @@ $(document).ready(function() {
 
     $(this).bind('done', function(){
       $link.remove();
-      console.log($(field).html());
       generateLink(field, $link);
     });
   });
