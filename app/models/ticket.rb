@@ -190,6 +190,23 @@ class Ticket < ActiveRecord::Base
   def repriceable?
     not committed?
   end
+  
+  #Bulk creation of tickets should use this method to ensure all tickets are created the same
+  #Reminder that this returns a ActiveRecord::Import::Result, not an array of tickets
+  def self.create_many(show, section, quantity=section.capacity)
+    new_tickets = []
+    (0..quantity-1).each do 
+      new_tickets << Ticket.new({
+        :venue => show.event.venue,
+        :price => section.price,
+        :show => show,
+        :organization => show.organization,
+        :section => section
+      })
+    end
+    result = Ticket.import(new_tickets)
+    result
+  end
 
   private
     def self.attempt_transition(tickets, state)
