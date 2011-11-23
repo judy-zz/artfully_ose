@@ -4,7 +4,7 @@
   %ul.detailed-list
     - events.each do |event|
       %li
-        %h3= link_to event.name, event_path(event), :title => 'Click to view details'
+        %h4= link_to event.name, event_path(event), :title => 'event-name'
         %ul.controls
           %li= link_to "Edit", edit_event_path(event) if can?(:edit, event)
           %li= link_to "Delete", event_path(event), :method => :delete, :confirm => "Are you sure you want to delete #{event.name}?" if can?(:destroy, event)
@@ -15,13 +15,3 @@
           %li
             .key Producer
             .value= event.producer
-        %ul.report-medium
-          %li
-            %span.stat Total Played
-            %span.current= number_as_cents(event.glance.sales_played)
-
-          %li
-            %span.stat Advance Sales
-            %span.current= number_as_cents(event.glance.sales_advance)
-
-  = link_to "Create a new event", new_event_path, :class => 'cta-left-125'
