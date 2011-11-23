@@ -33,7 +33,7 @@ class ShowsController < ApplicationController
     @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 
     if @show.save
-      flash[:notice] = "Show created on #{l @show.datetime_local_to_organization, :format => :date_at_time}"
+      flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
       redirect_to event_path(@event)
     else
       flash[:error] = "There was a problem creating your show."
