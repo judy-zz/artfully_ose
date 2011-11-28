@@ -7,10 +7,19 @@ class TicketsController < ApplicationController
 
   def new
     @show = Show.find(params[:show_id])
-    if !params[:section_id].blank?
+    when_section_selected do
       @section = Section.find(params[:section_id])
       @summary = @section.summarize(@show.id)
     end 
+  end
+  
+  def when_section_selected
+    if !params[:section_id].blank?
+      yield
+    elsif @show.chart.sections.length == 1
+      params[:section_id] = @show.chart.sections.first.id
+      yield
+    end
   end
 
   def create
@@ -18,15 +27,16 @@ class TicketsController < ApplicationController
     @section = Section.find(params[:section_id])
     @quantity = params[:quantity].to_i
 
-    if @quantity > 0
-      #Hack 
-      @section.capacity = @quantity
-      tickets = @section.create_tickets
-      flash[:notice] = "Successfully added #{to_plural(tickets.size, 'tickets')}."
+    if @quantity > 1000
+      flash[:error] = "You cannot add more than 1000 tickets at a time."
+      redirect_to new_show_ticket_path(@show, {:section_id => @section.id})      
+    elsif @quantity > 0
+      result = Ticket.create_many(@show, @section, @quantity)
+      flash[:notice] = "Successfully added #{to_plural(@quantity, 'tickets')}."
       redirect_to event_show_path(@show.event_id, @show)
     else
       flash[:error] = "Enter a number greater than 0 to add tickets to the show."
-      render :new
+      redirect_to new_show_ticket_path(@show, {:section_id => @section.id})
     end
   end
 

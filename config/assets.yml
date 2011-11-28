@@ -30,6 +30,10 @@ javascripts:
   application:
     - public/javascripts/jquery_ujs.js
     - public/javascripts/application.js
+    - public/javascripts/box_office.js
+
+  box_office:
+    - public/javascripts/box_office.js
 
   custom:
     - public/javascripts/custom/**/*.js
