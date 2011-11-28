@@ -1,4 +1,5 @@
 class Item < ActiveRecord::Base
+
   belongs_to :order
   belongs_to :show
   belongs_to :settlement
@@ -16,8 +17,8 @@ class Item < ActiveRecord::Base
     order("Last Name") { |order| order.person.last_name if order.person }
     order("Company Name") { |order| order.person.company_name if order.person }
     order("Donation Date") { |order| order.created_at }
-    price("Gift Amount")
-    nongift_amount("Non-gift Amount")
+    price("Gift Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
+    nongift_amount("Non-gift Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
   end
 
   comma :ticket_sale do
@@ -25,8 +26,8 @@ class Item < ActiveRecord::Base
     order("First Name") { |order| order.person.first_name if order.person }
     order("Last Name") { |order| order.person.last_name if order.person }
     show("Performance Title") { |show| show.event.name if show }
-    show("Performance Date-Time") { |show| show.datetime if show }
-    price("Ticket Price")
+    show("Performance Date-Time") { |show| show.datetime_local_to_event if show }
+    price("Ticket Price") { |cents| number_to_currency(cents.to_f/100) if cents }
   end
 
   def ticket?
