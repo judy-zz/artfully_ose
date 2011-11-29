@@ -8,7 +8,7 @@ class DoorList
   def items
     @items ||= show.tickets.select(&:committed?).collect do |ticket|
       Item.new(ticket, ticket.buyer)
-    end.sort{ |a,b| a.ticket.buyer.email <=> b.ticket.buyer.email }
+    end.sort{ |a,b| (a.ticket.buyer.email || "") <=> (b.ticket.buyer.email || "") }
   end
 
   private
