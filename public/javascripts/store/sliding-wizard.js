@@ -168,7 +168,6 @@ $(document).ready(function(){
   });
 });
 
-// Tech Debt
 function updateConfirmation(){
   $confirmation = $("#confirmation");
 

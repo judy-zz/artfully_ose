@@ -1,7 +1,7 @@
 class Sale
   include ActiveModel::Validations
 
-  attr_accessor :sections, :quantities, :tickets, :cart
+  attr_accessor :sections, :quantities, :tickets, :cart, :message
   attr_accessor :person
 
   validate :has_tickets?

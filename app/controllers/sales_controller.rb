@@ -12,13 +12,14 @@ class SalesController < ApplicationController
 
   def create
     @sale = Sale.new(@show, @show.chart.sections, params[:quantities])
-
     if checking_out?
       if @sale.sell(payment)
-        redirect_to new_event_show_sales_path(@event, @show), :notice => "Sold #{@sale.tickets.length} tickets"
+        @sale = Sale.new(@show, @show.chart.sections)
+        @sale.message = "Sold #{@sale.tickets.length} tickets"
+        render :json => @sale.as_json.merge(:total => @sale.cart.total), :status => 200
       else
-        flash[:error] = "#{@sale.errors.full_messages.to_sentence.capitalize}."
-        render :new
+        @sale.message =  "#{@sale.errors.full_messages.to_sentence.capitalize}."
+        render :json => @sale.as_json.merge(:total => @sale.cart.total), :status => 200
       end
     else
       render :json => @sale.as_json.merge(:total => @sale.cart.total), :status => 200

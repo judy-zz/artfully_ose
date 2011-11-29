@@ -15,6 +15,24 @@ function bulletedListItem(person){
 }
 
 $("document").ready(function(){
+	
+	$('.ticket-quantity-select').change(function(){
+	   	$(this).closest("form").submit()
+	});
+
+	$('.ticket-quantity-select').closest("form")
+		.bind("ajax:success", function(xhr, sale){
+	   		$('#total').find('.price').html(sale.total / 100).formatCurrency();
+			$("#total").removeClass("loading");
+    		$('input[type="submit"]').removeAttr('disabled');
+    		$('input[type="submit"]').removeClass('disabled');
+		})
+		.bind("ajax:beforeSend", function(){
+    		$("#total").addClass("loading");
+    		$('input[type="submit"]').addClass('disabled');
+    		$('input[type="submit"]').attr('disabled', 'disabled');
+  		});
+	
   $("#terms").keypress(function(e){
     if (e.which == 13) {
       e.stopImmediatePropagation();
