@@ -5,7 +5,9 @@
 .context
   %h3 Charts
   %ul.context-buttons
-    %li= button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
+    - unless session[:event_id].nil?
+      %li
+        = button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
     %li= button_to "Copy Chart", charts_path(:chart_id => @chart.id), :method => :post
     %li= button_to "New Section", new_chart_section_path(@chart), :method => :get
   %ul.detailed-list

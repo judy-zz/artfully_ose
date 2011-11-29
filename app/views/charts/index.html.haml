@@ -4,7 +4,9 @@
 
 .context
   %ul.context-buttons
-    %li= button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
+    - unless session[:event_id].nil?
+      %li
+        = button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
     %li= button_to "New Chart", new_chart_path, :method => :get
 
 .document
