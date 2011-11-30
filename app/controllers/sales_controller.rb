@@ -14,7 +14,6 @@ class SalesController < ApplicationController
     @sale = Sale.new(@show, @show.chart.sections, params[:quantities])
     if checking_out?
       if @sale.sell(payment)
-        @sale = Sale.new(@show, @show.chart.sections)
         @sale.message = "Sold #{@sale.tickets.length} tickets"
         render :json => @sale.as_json.merge(:total => @sale.cart.total), :status => 200
       else

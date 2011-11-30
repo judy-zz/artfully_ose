@@ -47,7 +47,6 @@ class Ticket < ActiveRecord::Base
     conditions = params.dup
     conditions[:state] ||= :on_sale
     conditions[:cart_id] = nil
-
     where(conditions).limit(limit)
   end
 

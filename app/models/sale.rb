@@ -1,7 +1,7 @@
 class Sale
   include ActiveModel::Validations
 
-  attr_accessor :sections, :quantities, :tickets, :cart, :message
+  attr_accessor :sections, :quantities, :tickets, :cart, :message, :sale_made
   attr_accessor :person
 
   validate :has_tickets?
@@ -28,19 +28,26 @@ class Sale
       #   errors.add(:base, "payment was not accepted") and return if !success
       #   settle(checkout, success) if (success and !payment.requires_settlement?)
       # end
-      true
+      self.sale_made = true
+      self.sale_made
     end
   end
 
   def load_tickets
     sections.each do |section|
       tickets_available_in_section = Ticket.available({:section_id => section.id, :show_id => @show.id}, @quantities[section.id.to_s])
+      puts "SHITTTTT"
+      puts @quantities[section.id.to_s].to_i
+      puts section.id.to_s
+      puts tickets_available_in_section.length
+      puts "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
       if tickets_available_in_section.length != @quantities[section.id.to_s].to_i
         errors.add(:base, "Not enough tickets in section")
       else
         @tickets = @tickets + tickets_available_in_section
       end
     end
+      puts "***********************"
   end
 
   def has_tickets?

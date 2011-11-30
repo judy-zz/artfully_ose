@@ -21,17 +21,26 @@ $("document").ready(function(){
 	});
 
 	$('.ticket-quantity-select').closest("form")
+		.bind("ajax:beforeSend", function(){
+    		$("#total").addClass("loading");
+    		$('input[type="submit"]').addClass('disabled');
+    		$('input[type="submit"]').attr('disabled', 'disabled');
+			$('.flash').remove()
+  		})
 		.bind("ajax:success", function(xhr, sale){
 	   		$('#total').find('.price').html(sale.total / 100).formatCurrency();
 			$("#total").removeClass("loading");
     		$('input[type="submit"]').removeAttr('disabled');
     		$('input[type="submit"]').removeClass('disabled');
-		})
-		.bind("ajax:beforeSend", function(){
-    		$("#total").addClass("loading");
-    		$('input[type="submit"]').addClass('disabled');
-    		$('input[type="submit"]').attr('disabled', 'disabled');
-  		});
+			
+			if(sale.sale_made == true) {
+				$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(sale.message));
+				$.each($('.ticket-quantity-select'), function() {
+					$('option[value="0"]', this).attr('selected','selected')
+   				});
+	   			$('#total').find('.price').html(0).formatCurrency();
+			}	
+		});
 	
   $("#terms").keypress(function(e){
     if (e.which == 13) {

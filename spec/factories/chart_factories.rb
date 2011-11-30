@@ -6,7 +6,9 @@ end
 
 Factory.define :chart_with_sections, :parent => :chart do |c|
   c.after_create do |chart|
-    chart.sections << Factory(:section)
+    2.times do
+      chart.sections << Factory(:section)
+    end
   end
 end
 
