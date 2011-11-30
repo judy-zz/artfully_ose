@@ -18,6 +18,8 @@ class Organization < ActiveRecord::Base
   has_many :kits, :before_add => :check_for_duplicates,
                   :after_add => lambda { |u,k| k.activate! unless k.activated? }
 
+  has_many :imports
+
   validates_presence_of :name
   validates :ein, :presence => true, :if => :updating_tax_info
   validates :legal_organization_name, :presence => true, :if => :updating_tax_info
