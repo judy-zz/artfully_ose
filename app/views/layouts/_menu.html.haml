@@ -3,7 +3,8 @@
     = link_to "Dashboard", root_path
     %ul
       %li= link_to "My Organization", organizations_path
-      %li= link_to "Imports / Exports", imports_path
+      - if current_user.current_organization.id.present?
+        %li= link_to "Imports / Exports", imports_path
       %li= link_to "Sign Out", destroy_user_session_path
 
   %li{ :class => active?(:events) }

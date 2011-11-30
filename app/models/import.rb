@@ -14,8 +14,6 @@ class Import < ActiveRecord::Base
   validates_presence_of :s3_key
   validates_presence_of :s3_etag
 
-  before_destroy :destroy_people!
-
   serialize :import_headers
 
   def headers
@@ -32,23 +30,6 @@ class Import < ActiveRecord::Base
     elsif status == "approved"
       self.import
     end
-  end
-
-  # Poll for people associated with this import in batches.
-  def imported_people
-    offset = 0
-    limit  = 500
-
-    loop do
-      people = Person.where(:import_id => self.id).offset(offset).limit(limit)
-      people.each { |person| yield person }
-      return if people.count < limit
-      offset += limit
-    end
-  end
-
-  def destroy_people!
-    imported_people { |person| person.destroy }
   end
 
   def caching!
@@ -77,10 +58,14 @@ class Import < ActiveRecord::Base
     self.update_attributes!(:status => "failed")
   end
 
+  def failed?
+    self.status == "failed"
+  end
+
   def import
     self.importing!
 
-    self.destroy_people!
+    self.people.destroy_all
     self.import_errors.delete_all
 
     rows.each do |row|
@@ -88,10 +73,16 @@ class Import < ActiveRecord::Base
       person = attach_person(ip)
       if !person.save
         self.import_errors.create! :row_data => row, :error_message => person.errors.full_messages.join(", ")
+        self.reload
+        self.failed!
       end
     end
 
-    self.imported!
+    if failed?
+      self.people.destroy_all
+    else
+      self.imported!
+    end
   end
 
   def cache_data
@@ -145,7 +136,7 @@ class Import < ActiveRecord::Base
   def attach_person(import_person)
     ip = import_person
 
-    person = Person.new \
+    person = self.people.build \
       :email           => ip.email,
       :first_name      => ip.first,
       :last_name       => ip.last,
@@ -155,8 +146,7 @@ class Import < ActiveRecord::Base
       :facebook_url    => ip.facebook_page,
       :linked_in_url   => ip.linkedin_page,
       :organization_id => user.current_organization.id,
-      :person_type     => ip.person_type,
-      :import_id       => self.id
+      :person_type     => ip.person_type
 
     person.address = Address.new \
       :address1  => ip.address1,
