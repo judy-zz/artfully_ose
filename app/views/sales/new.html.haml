@@ -10,7 +10,7 @@
       %ul#section-list
         - @sale.sections.each do |section|
           %li
-            .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_to_currency section.price/100} (#{section.summary(@show.id).available})"
+            .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_to_currency section.price/100}"
             .quantity.element
               - if section.summary(@show.id).available > 0
                 = select_tag "quantities[#{section.id}]", options_for_select(0..[section.summary(@show.id).available,10].min, @sale.quantities[section.id]), :class => 'ticket-quantity-select'
@@ -67,21 +67,20 @@
       
 .document
   %h3 Door List
-  - unless @door_list.items.empty?
-    #door-list
-      %table.standalone
-        %thead
+  #door-list
+    %table.standalone
+      %thead
+        %tr
+          %th
+          %th Buyer
+          %th Email
+          %th Section
+          %th Price
+      %tbody
+        - @door_list.items.each do |item|
           %tr
-            %th
-            %th Buyer
-            %th Email
-            %th Section
-            %th Price
-        %tbody
-          - @door_list.items.each do |item|
-            %tr
-              %td= "☐"
-              %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
-              %td= item.buyer.email
-              %td= item.ticket.section.name
-              %td= number_as_cents(item.ticket.price)
+            %td= "☐"
+            %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
+            %td= item.buyer.email
+            %td= item.ticket.section.name
+            %td= number_as_cents(item.ticket.price)

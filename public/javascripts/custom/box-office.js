@@ -29,16 +29,29 @@ $("document").ready(function(){
   		})
 		.bind("ajax:success", function(xhr, sale){
 	   		$('#total').find('.price').html(sale.total / 100).formatCurrency();
-			$("#total").removeClass("loading");
+			  $("#total").removeClass("loading");
     		$('input[type="submit"]').removeAttr('disabled');
     		$('input[type="submit"]').removeClass('disabled');
 			
 			if(sale.sale_made == true) {
+			  
+      $.each(sale.door_list_rows, function () {
+        $("#door-list").find('tbody')
+          .append($('<tr>')
+            .append($('<td>').html(''))
+            .append($('<td>').html(this.buyer))
+            .append($('<td>').html(this.email))
+            .append($('<td>').html(this.section))
+            .append($('<td>').html(this.price / 100).formatCurrency())
+        );        
+      });
+
+			  
 				$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(sale.message));
 				$.each($('.ticket-quantity-select'), function() {
 					$('option[value="0"]', this).attr('selected','selected')
-   				});
-	   			$('#total').find('.price').html(0).formatCurrency();
+   			});
+	   		$('#total').find('.price').html(0).formatCurrency();
 			}	
 		});
 	

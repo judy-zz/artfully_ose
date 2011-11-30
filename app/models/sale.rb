@@ -2,7 +2,7 @@ class Sale
   include ActiveModel::Validations
 
   attr_accessor :sections, :quantities, :tickets, :cart, :message, :sale_made
-  attr_accessor :person
+  attr_reader :buyer
 
   validate :has_tickets?
 
@@ -22,14 +22,13 @@ class Sale
 
   def sell(payment)
     if valid?
-      # cart.tickets << tickets
-      # checkout = Checkout.new(cart, payment)
-      # checkout.finish.tap do |success|
-      #   errors.add(:base, "payment was not accepted") and return if !success
-      #   settle(checkout, success) if (success and !payment.requires_settlement?)
-      # end
-      self.sale_made = true
-      self.sale_made
+      cart.tickets << tickets
+      checkout = Checkout.new(cart, payment)
+      @sale_made = checkout.finish
+      @buyer = checkout.person
+      errors.add(:base, "payment was not accepted") and return if !@sale_made
+      settle(checkout, @sale_made) if (@sale_made and !payment.requires_settlement?)
+      @sale_made
     end
   end
 
@@ -43,7 +42,7 @@ class Sale
       end
     end
   end
-
+  
   def has_tickets?
     errors.add(:base, "no tickets were added") unless @tickets.size > 0
     @tickets.size > 0

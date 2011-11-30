@@ -1,6 +1,6 @@
 class Checkout
   attr_accessor :cart, :payment
-  attr_reader :order
+  attr_reader :order, :person
 
   def initialize(cart, payment)
     @cart = cart
