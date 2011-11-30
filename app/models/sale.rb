@@ -36,18 +36,12 @@ class Sale
   def load_tickets
     sections.each do |section|
       tickets_available_in_section = Ticket.available({:section_id => section.id, :show_id => @show.id}, @quantities[section.id.to_s])
-      puts "SHITTTTT"
-      puts @quantities[section.id.to_s].to_i
-      puts section.id.to_s
-      puts tickets_available_in_section.length
-      puts "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
       if tickets_available_in_section.length != @quantities[section.id.to_s].to_i
         errors.add(:base, "Not enough tickets in section")
       else
         @tickets = @tickets + tickets_available_in_section
       end
     end
-      puts "***********************"
   end
 
   def has_tickets?
