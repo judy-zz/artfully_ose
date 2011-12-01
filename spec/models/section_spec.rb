@@ -36,8 +36,8 @@ describe Section do
       subject.should_not be_valid
     end
 
-    it "is not valid with a capacity over 1000" do
-      subject.capacity = 1001
+    it "is not valid with a capacity over 2000" do
+      subject.capacity = 2001
       subject.should_not be_valid
     end
   end
