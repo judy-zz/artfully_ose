@@ -30,6 +30,26 @@ class Person < ActiveRecord::Base
     email
     company_name
     website
+    twitter_handle
+    facebook_url
+    linked_in_url
+    phones("Phone1 type") { |phones| phones[0] && phones[0].kind }
+    phones("Phone1 number") { |phones| phones[0] && phones[0].number }
+    phones("Phone2 type") { |phones| phones[1] && phones[1].kind }
+    phones("Phone2 number") { |phones| phones[1] && phones[1].number }
+    phones("Phone3 type") { |phones| phones[2] && phones[2].kind }
+    phones("Phone3 number") { |phones| phones[2] && phones[2].number }
+    tags { |tags| tags.join("|") }
+    address("Address 1") { |address| address && address.address1 }
+    address("Address 2") { |address| address && address.address2 }
+    address("City") { |address| address && address.city }
+    address("State") { |address| address && address.state }
+    address("Zip") { |address| address && address.zip }
+    address("Country") { |address| address && address.country }
+  end
+
+  def self.find_by_import(import)
+    where('import_id = ?', import.id)
   end
 
   #TODO

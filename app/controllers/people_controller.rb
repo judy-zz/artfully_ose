@@ -82,6 +82,13 @@ class PeopleController < ApplicationController
         format.json { render :json => @people }
       end
 
+    elsif params[:export] == "all"
+      respond_with do |format|
+        @people = AthenaPerson.find_by_organization(current_user.current_organization)
+        @filename = "Artfuly-People-Export-#{DateTime.now.strftime("%m-%d-%y")}.csv"
+        format.csv { render :csv => @people, :filename => @filename }
+      end
+
     else
       @people = Person.recent(current_user.current_organization)
     end

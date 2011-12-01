@@ -18,6 +18,8 @@ class Organization < ActiveRecord::Base
   has_many :kits, :before_add => :check_for_duplicates,
                   :after_add => lambda { |u,k| k.activate! unless k.activated? }
 
+  has_many :imports
+
   validates_presence_of :name
   validates :ein, :presence => true, :if => :updating_tax_info
   validates :legal_organization_name, :presence => true, :if => :updating_tax_info
@@ -89,26 +91,34 @@ class Organization < ActiveRecord::Base
     end
   end
 
+  def donations
+    Item.joins(:order).where(:product_type => "Donation", :orders => { :organization_id => id })
+  end
+
+  def ticket_sales
+    Item.joins(:order).where(:product_type => "Ticket", :orders => { :organization_id => id })
+  end
+
   private
 
-  def update_kits
-    if fsp.active?
-      sponsored_kit.activate_without_prejudice!
-    else
-      sponsored_kit.cancel_with_authority!
+    def update_kits
+      if fsp.active?
+        sponsored_kit.activate_without_prejudice!
+      else
+        sponsored_kit.cancel_with_authority!
+      end
     end
-  end
 
-  def sponsored_kit
-    kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new({:organization => self})
-  end
+    def sponsored_kit
+      kits.where(:type => "SponsoredDonationKit").first || SponsoredDonationKit.new({:organization => self})
+    end
 
-  def check_for_duplicates(kit)
-    raise Kit::DuplicateError if kits.where(:type => kit.type).any?
-  end
+    def check_for_duplicates(kit)
+      raise Kit::DuplicateError if kits.where(:type => kit.type).any?
+    end
 
-  def donation_type
-    return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
-    return :regular if kits.where(:type => "RegularDonationKit").any?
-  end
+    def donation_type
+      return :sponsored if kits.where(:type => "SponsoredDonationKit").any?
+      return :regular if kits.where(:type => "RegularDonationKit").any?
+    end
 end

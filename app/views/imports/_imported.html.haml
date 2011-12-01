@@ -1,0 +1,11 @@
+.context
+  %h3 Imported Contacts
+
+  %p This import was created at #{@import.created_at}
+  %p #{pluralize @import.rows.count, "contact"} found in this import file
+
+  %p= link_to "Back to imports/exports", imports_path
+
+.document
+
+  %h3 This file has been imported into Artful.ly.

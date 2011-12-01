@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111110222649) do
+ActiveRecord::Schema.define(:version => 20111130014119) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(:version => 20111110222649) do
   end
 
   create_table "admins", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
+    t.string   "email",                                              :null => false
+    t.string   "encrypted_password",   :limit => 128,                :null => false
     t.integer  "sign_in_count",                       :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -159,6 +159,31 @@ ActiveRecord::Schema.define(:version => 20111110222649) do
     t.datetime "updated_at"
   end
 
+  create_table "import_errors", :force => true do |t|
+    t.integer  "import_id"
+    t.text     "row_data"
+    t.text     "error_message"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "import_rows", :force => true do |t|
+    t.integer "import_id"
+    t.text    "content"
+  end
+
+  create_table "imports", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "s3_bucket"
+    t.string   "s3_key"
+    t.string   "s3_etag"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "status",          :default => "pending"
+    t.text     "import_headers"
+    t.integer  "organization_id"
+  end
+
   create_table "items", :force => true do |t|
     t.string   "state"
     t.string   "product_type"
@@ -233,6 +258,11 @@ ActiveRecord::Schema.define(:version => 20111110222649) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
+    t.string   "person_type"
+    t.string   "twitter_handle"
+    t.string   "facebook_url"
+    t.string   "linked_in_url"
+    t.integer  "import_id"
   end
 
   create_table "phones", :force => true do |t|
@@ -326,8 +356,8 @@ ActiveRecord::Schema.define(:version => 20111110222649) do
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => ""
+    t.string   "email",                                              :null => false
+    t.string   "encrypted_password",   :limit => 128
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"

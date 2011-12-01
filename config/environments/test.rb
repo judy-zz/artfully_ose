@@ -33,7 +33,7 @@ Artfully::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
-  
+
   #Fractured Atlas
   config.fractured_atlas = 'http://staging.api.fracturedatlas.org/'
 
@@ -50,4 +50,9 @@ Artfully::Application.configure do
   AthenaResource::USER = nil
   AthenaResource::PASSWORD = nil
   AthenaResource::AUTH_TYPE = nil
+
+  # Set some dummy S3 values.
+  ENV["S3_BUCKET"] = "test"
+  ENV["ACCESS_KEY_ID"] = "ABC1234567890DEFGHJK"
+  ENV["SECRET_ACCESS_KEY"] = "abcdef12345+abcdef1234512345123451234512"
 end

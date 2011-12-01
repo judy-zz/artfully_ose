@@ -258,25 +258,26 @@ describe Ticket do
   #   end
   # end
   # 
-  # describe "#take_off_sale" do
-  #   let(:tickets) { 5.times.collect { Factory(:ticket, :state => :on_sale) } }
-  # 
-  #   it "sends a request to patch the state of all tickets" do
-  #     Ticket.take_off_sale(tickets)
-  #   end
-  # 
-  #   it "does not issue the request if any of the tickets can not be put on sale" do
-  #     tickets.first.state = :off_sale
-  #     Ticket.take_off_sale(tickets)
-  #   end
-  # 
-  #   it "updates the attributes for each ticket" do
-  #     Ticket.take_off_sale(tickets)
-  #     tickets.each do |ticket|
-  #       ticket.should be_off_sale
-  #     end
-  #   end
-  # end
+  describe "#take_off_sale" do
+    let(:tickets) { 5.times.collect { Factory(:ticket, :state => :on_sale) } }
+  
+    it "takes tickets off sale" do
+      Ticket.take_off_sale(tickets)
+      tickets.each { |t| t.should be_off_sale }
+    end
+  
+    # it "does not issue the request if any of the tickets can not be put on sale" do
+    #   tickets.first.state = :off_sale
+    #   Ticket.take_off_sale(tickets)
+    # end
+    #   
+    # it "updates the attributes for each ticket" do
+    #   Ticket.take_off_sale(tickets)
+    #   tickets.each do |ticket|
+    #     ticket.should be_off_sale
+    #   end
+    # end
+  end
   
   describe "create_many" do
     let(:organization) { Factory(:organization) }

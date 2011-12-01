@@ -1,0 +1,11 @@
+.context
+  %h3 Pending Contacts
+
+  %p This import was created at #{@import.created_at}
+  %p #{pluralize @import.rows.count, "contact"} found in this import file
+
+  %p= link_to "Back to imports/exports", imports_path
+
+.document
+
+  %h3 This file is waiting to be imported into Artful.ly.

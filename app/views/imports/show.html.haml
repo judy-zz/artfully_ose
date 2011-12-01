@@ -1,0 +1,6 @@
+- in_section :imports
+
+- content_for :header do
+  %h1= t(".heading", :default => "Contact Import")
+
+= render @import.status, :import => @import

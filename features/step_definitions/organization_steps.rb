@@ -5,7 +5,8 @@ Given /^"([^"]*)" is part of an organization$/ do |email|
 end
 
 Given /^I am part of an organization$/ do
-  @current_user.organizations << Factory(:organization)
+  @organization = Factory(:organization)
+  @current_user.organizations << @organization
 end
 
 Given /^the organization that owns "([^"]*)" has a donation kit$/ do |name|
