@@ -1,4 +1,4 @@
-Factory.define(:purchase_action) do |a|
+Factory.define(:get_action) do |a|
   a.association :person
   a.occurred_at { DateTime.now }
 end
