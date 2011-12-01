@@ -187,14 +187,14 @@ describe Show do
 
     context "given a starting performance datetime" do
       let(:base) { Time.now.beginning_of_day }
-      subject { Show.next_datetime(mock(:performance, :datetime => base)) }
+      subject { Show.next_datetime(mock(:performance, :datetime_local_to_event => base)) }
 
       it { should eq base + 1.day }
     end
 
     context "given a starting performance datetime in the past" do
       let(:base) { Time.now.beginning_of_day - 1.week }
-      subject { Show.next_datetime(mock(:performance, :datetime => base)) }
+      subject { Show.next_datetime(mock(:performance, :datetime_local_to_event => base)) }
 
       it { should eq base + 1.week + 1.day }
     end
