@@ -58,7 +58,7 @@
             = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
             = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
             
-    %fieldset.floater{:width=>'100px'}
+    %fieldset.floater{:width=>'200px'}
       #total
         %span total
         .price= number_as_cents 0
