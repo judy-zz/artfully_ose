@@ -10,7 +10,7 @@
       %ul#section-list
         - @sale.sections.each do |section|
           %li
-            .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_to_currency section.price/100}"
+            .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_as_cents(section.price)}"
             .quantity.element
               - if section.summary(@show.id).available > 0
                 = select_tag "quantities[#{section.id}]", options_for_select(0..[section.summary(@show.id).available,10].min, @sale.quantities[section.id]), :class => 'ticket-quantity-select'

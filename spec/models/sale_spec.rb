@@ -29,6 +29,15 @@ describe Sale do
   #   end
   # end
 
+  describe "non_zero_quantities" do
+    let(:quantities) {{chart.sections.first.id.to_s => "0"}}
+      
+    it "should tell me if they selected any tickets" do
+      @empty_sale = Sale.new(show, chart.sections, quantities)
+      @empty_sale.non_zero_quantities?.should be_false
+    end
+  end
+
   describe "load tickets" do
     before(:each) do
       tix = Array.new(2)

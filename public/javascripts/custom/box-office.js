@@ -25,7 +25,7 @@ $("document").ready(function(){
     		$("#total").addClass("loading");
     		$('input[type="submit"]').addClass('disabled');
     		$('input[type="submit"]').attr('disabled', 'disabled');
-			$('.flash').remove()
+			  $('.flash').remove()
   		})
 		.bind("ajax:success", function(xhr, sale){
 	   		$('#total').find('.price').html(sale.total / 100).formatCurrency();
@@ -34,25 +34,25 @@ $("document").ready(function(){
     		$('input[type="submit"]').removeClass('disabled');
 			
 			if(sale.sale_made == true) {
-			  
-      $.each(sale.door_list_rows, function () {
-        $("#door-list").find('tbody')
-          .append($('<tr>')
-            .append($('<td>').html(''))
-            .append($('<td>').html(this.buyer))
-            .append($('<td>').html(this.email))
-            .append($('<td>').html(this.section))
-            .append($('<td>').html(this.price / 100).formatCurrency())
-        );        
-      });
-
+        $.each(sale.door_list_rows, function () {
+          $("#door-list").find('tbody')
+            .append($('<tr>')
+              .append($('<td>').html(''))
+              .append($('<td>').html(this.buyer))
+              .append($('<td>').html(this.email))
+              .append($('<td>').html(this.section))
+              .append($('<td>').html(this.price / 100).formatCurrency())
+          );        
+        });
 			  
 				$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(sale.message));
 				$.each($('.ticket-quantity-select'), function() {
 					$('option[value="0"]', this).attr('selected','selected')
    			});
 	   		$('#total').find('.price').html(0).formatCurrency();
-			}	
+			}	else if (sale.sale_made == false) {
+			  $('#heading').after($(document.createElement('div')).addClass('flash').addClass('error').html(sale.message));
+			}
 		});
 	
   $("#terms").keypress(function(e){

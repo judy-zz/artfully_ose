@@ -29,7 +29,16 @@ class Sale
       errors.add(:base, "payment was not accepted") and return if !@sale_made
       settle(checkout, @sale_made) if (@sale_made and !payment.requires_settlement?)
       @sale_made
+    else
+      @sale_made = false
     end
+  end
+
+  def non_zero_quantities?
+    @quantities.each do |k,v|
+      return true if (v.to_i > 0)
+    end
+    false
   end
 
   def load_tickets
@@ -44,6 +53,9 @@ class Sale
   end
   
   def has_tickets?
+    unless non_zero_quantities?
+      errors.add(:base, "Please select a number of tickets to purchase") and return false
+    end
     errors.add(:base, "no tickets were added") unless @tickets.size > 0
     @tickets.size > 0
   end

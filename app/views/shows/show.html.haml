@@ -7,7 +7,7 @@
   %ul.context-buttons
     - unless @show.pending?
       %li= button_to "Add Tickets", new_show_ticket_path(@show), :method => :get
-    -# %li= button_to "Box Office", new_event_show_sales_path(@event,@show), :method => :get
+      %li= button_to "Box Office", new_event_show_sales_path(@event,@show), :method => :get
     - if not @show.played?
       - if not @show.published?
         %li
