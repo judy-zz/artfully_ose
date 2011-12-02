@@ -32,29 +32,31 @@ $("document").ready(function(){
 			  $("#total").removeClass("loading");
     		$('input[type="submit"]').removeAttr('disabled');
     		$('input[type="submit"]').removeClass('disabled');
+    		
+    		$('input[name="payment_method"]').attr('disabled', (sale.total == 0))
 			
-			if(sale.sale_made == true) {
-        $.each(sale.door_list_rows, function () {
-          $("#door-list").find('tbody')
-            .append($('<tr>')
-              .append($('<td>').html(''))
-              .append($('<td>').html(this.buyer))
-              .append($('<td>').html(this.email))
-              .append($('<td>').html(this.section))
-              .append($('<td>').html(this.price / 100).formatCurrency())
-          );         
-          $("#payment_method_cash").click()
-          $('#anonymous').click()
-        });
+  			if(sale.sale_made == true) {
+          $.each(sale.door_list_rows, function () {
+            $("#door-list").find('tbody')
+              .append($('<tr>')
+                .append($('<td>').html(''))
+                .append($('<td>').html(this.buyer))
+                .append($('<td>').html(this.email))
+                .append($('<td>').html(this.section))
+                .append($('<td>').html(this.price / 100).formatCurrency())
+            );         
+            $("#payment_method_cash").click()
+            $('#anonymous').click()
+          });
 			  
-				$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(sale.message));
-				$.each($('.ticket-quantity-select'), function() {
-					$('option[value="0"]', this).attr('selected','selected')
-   			});
-	   		$('#total').find('.price').html(0).formatCurrency();
-			}	else if (sale.sale_made == false) {
-			  $('#heading').after($(document.createElement('div')).addClass('flash').addClass('error').html(sale.message));
-			}
+  				$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(sale.message));
+  				$.each($('.ticket-quantity-select'), function() {
+  					$('option[value="0"]', this).attr('selected','selected')
+     			});
+  	   		$('#total').find('.price').html(0).formatCurrency();
+  			}	else if (sale.sale_made == false) {
+  			  $('#heading').after($(document.createElement('div')).addClass('flash').addClass('error').html(sale.message));
+  			}
 		});
 	
   $("#terms").keypress(function(e){
@@ -97,6 +99,7 @@ $("document").ready(function(){
   });
 
   $("#people-for-sales").bind("click", function(){
+    $(this).parent().addClass('loading')
     $(".target li:visible").remove();
     var input = $(this).siblings("#terms"),
         terms = input.val(),
@@ -108,6 +111,7 @@ $("document").ready(function(){
 
     if("" !== terms){
       $.getJSON(url, params, function(people){
+        $("#people-for-sales").parent().removeClass('loading')
         $(".target li:visible").remove();
         $.each(people, function(index, person){
           bulletedListItem(person);
