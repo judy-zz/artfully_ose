@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Contribution do
   disconnect_sunspot
-  let(:organization){ Factory(:organization) }
+  let(:organization){ Factory(:organization_with_timezone) }
   let(:person) { Factory(:person) }
   let(:attributes) do
     {
@@ -21,10 +21,6 @@ describe Contribution do
     it "loads the #{attribute} when created" do
       subject.send(attribute).should eq attributes[attribute]
     end
-  end
-
-  it "parses occurred_at when it is loaded" do
-    subject.occurred_at.should eq Time.zone.parse(attributes[:occurred_at])
   end
 
   it "fetches the person record for the given contributor id" do

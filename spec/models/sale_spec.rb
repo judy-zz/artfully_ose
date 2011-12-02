@@ -70,6 +70,7 @@ describe Sale do
     it "creates a new Checkout and a new BoxOfficeCart" do
       Checkout.should_receive(:new).and_return(checkout)
       checkout.should_receive(:finish).and_return(true)
+      checkout.should_receive(:person).and_return(Factory(:person))
       subject.sell(payment)
     end
   end

@@ -2,6 +2,10 @@ Factory.define :organization do |o|
   o.name { Faker::Company.name }
 end
 
+Factory.define(:organization_with_timezone, :parent => :organization) do |o|
+  o.time_zone 'Eastern Time (US & Canada)'
+end
+
 Factory.define(:organization_with_bank_account, :parent => :organization) do |o|
   o.after_create do |organization|
     organization.bank_account = Factory(:bank_account)
