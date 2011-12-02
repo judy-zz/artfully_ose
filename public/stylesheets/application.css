@@ -1059,6 +1059,14 @@ form fieldset {
   margin-bottom: 12px; }
 form fieldset.floater {
   float: left; }
+form fieldset.thirdish {
+  width: 28%;
+  margin-right: 5px;
+  min-height: 200px; }
+form fieldset.slim {
+  width: 14%;
+  margin-right: 5px;
+  min-height: 200px; }
 form legend {
   line-height: 36px;
   color: #666666;

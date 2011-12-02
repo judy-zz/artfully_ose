@@ -5,7 +5,7 @@
 
 .spread
   = form_tag event_show_sales_path, :remote => true do
-    %fieldset.floater{:style=>'width:300px'}
+    %fieldset.floater.thirdish
       %h4 Sections
       %ul#section-list
         - @sale.sections.each do |section|
@@ -18,7 +18,7 @@
                 .sold-out
                   sold out
                 
-    %fieldset.floater{:style=>'width:300px'}
+    %fieldset.floater.thirdish
       %h4 Customer
       %ul.radio-list
         %li
@@ -41,13 +41,19 @@
           .radio
           .label
 
-    %fieldset.floater{:style=>'width:300px'}
+    %fieldset.floater.thirdish
       %h4 Payment
       %ul.radio-list
         %li
-          .radio= check_box_tag(:cash, nil, params[:cash])
-          .label= label_tag(:cash, "Cash")
-      %ul#payment-info
+          .radio= radio_button_tag(:payment_method, :cash, true, :class => 'payment-method')
+          .label= label_tag(:payment_method, "Cash")
+        %li
+          .radio= radio_button_tag(:payment_method, :credit_card, false, :class => 'payment-method')
+          .label= label_tag(:payment_method, "Credit")
+      %ul#payment-info.hidden
+        %li
+          .label= label_tag("credit_card[cardholder_name]", "Name on Card")
+          .element= text_field_tag("credit_card[cardholder_name]", params[:credit_card][:cardholder_name])
         %li
           .label= label_tag("credit_card[card_number]", "Card Number")
           .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
@@ -58,11 +64,11 @@
             = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
             = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
             
-    %fieldset.floater{:width=>'200px'}
+    %fieldset.floater.slim
       #total
         %span total
         .price= number_as_cents 0
-      #checkout-now= submit_tag "Checkout Now"
+      #checkout-now= submit_tag "Checkout Now", :style => 'width:100%'
   .clear
       
 .document

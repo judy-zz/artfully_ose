@@ -42,7 +42,9 @@ $("document").ready(function(){
               .append($('<td>').html(this.email))
               .append($('<td>').html(this.section))
               .append($('<td>').html(this.price / 100).formatCurrency())
-          );        
+          );         
+          $("#payment_method_cash").click()
+          $('#anonymous').click()
         });
 			  
 				$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(sale.message));
@@ -65,8 +67,7 @@ $("document").ready(function(){
   });
 
   var mappings = {
-    "#anonymous": "#person-search",
-    "#cash": "#payment-info"
+    "#anonymous": "#person-search"
   }
 
   $.each(mappings, function(checkbox, section){
@@ -86,8 +87,8 @@ $("document").ready(function(){
     }
   });
 
-  $("#cash").change(function(){
-    if($(this).is(":checked")){
+  $(".payment-method").change(function(){
+    if($(this).attr('value') == 'cash'){
       $("#payment-info").addClass("hidden");
       $("#credit_card_card_number").val("")
     } else {
@@ -107,6 +108,7 @@ $("document").ready(function(){
 
     if("" !== terms){
       $.getJSON(url, params, function(people){
+        $(".target li:visible").remove();
         $.each(people, function(index, person){
           bulletedListItem(person);
         });

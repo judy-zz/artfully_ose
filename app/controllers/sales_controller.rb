@@ -15,7 +15,7 @@ class SalesController < ApplicationController
     @sale = Sale.new(@show, @show.chart.sections, params[:quantities])
     if checking_out?
       if @sale.sell(payment)
-        @sale.message = "Sold self.class.helpers.pluralize(@sale.tickets.length, 'ticket').  Order total was #{self.class.helpers.number_as_cents @sale.cart.total}"
+        @sale.message = "Sold #{self.class.helpers.pluralize(@sale.tickets.length, 'ticket')}.  Order total was #{self.class.helpers.number_as_cents @sale.cart.total}"
         render :json => @sale.as_json.merge(:total => @sale.cart.total).merge(:door_list_rows => door_list_rows), :status => 200
       else
         @sale.message =  "#{@sale.errors.full_messages.to_sentence.capitalize}."
