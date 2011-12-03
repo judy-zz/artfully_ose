@@ -12,6 +12,8 @@ class Show < ActiveRecord::Base
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }
 
+  set_watch_for :datetime, :local_to => :organization
+
   scope :before, lambda { |time| where("shows.datetime < ?", time) }
   scope :after,  lambda { |time| where("shows.datetime > ?", time) }
   scope :in_range, lambda { |start, stop| after(start).before(stop) }
@@ -57,9 +59,9 @@ class Show < ActiveRecord::Base
     show.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(show.datetime_local_to_event + 1.day)
   end
   
-  def datetime_local_to_organization
-    datetime.in_time_zone(organization.time_zone)
-  end
+  # def datetime_local_to_organization
+  #   datetime.in_time_zone(organization.time_zone)
+  # end
   
   def datetime_local_to_event
     datetime.in_time_zone(event.time_zone)

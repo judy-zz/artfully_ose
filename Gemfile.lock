@@ -13,6 +13,11 @@ PATH
       ruby-hmac
       s3 (>= 0.3.7)
 
+PATH
+  remote: vendor/gems/set_watch_for-0.0.1
+  specs:
+    set_watch_for (0.0.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -284,6 +289,7 @@ DEPENDENCIES
   rspec-rails (>= 2.1)
   s3 (>= 0.3.8)
   sass
+  set_watch_for!
   shoulda
   sqlite3-ruby
   sunspot_rails
