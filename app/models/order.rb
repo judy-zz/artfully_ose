@@ -4,13 +4,13 @@ class Order < ActiveRecord::Base
 
   belongs_to :person
   belongs_to :organization
-
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
-
   has_many :items
 
   attr_accessor :skip_actions
+
+  set_watch_for :created_at, :local_to => :organization
 
   validates_presence_of :person_id
   validates_presence_of :organization_id

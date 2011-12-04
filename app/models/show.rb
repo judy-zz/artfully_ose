@@ -13,6 +13,7 @@ class Show < ActiveRecord::Base
   validates_datetime :datetime, :after => lambda { Time.now }
 
   set_watch_for :datetime, :local_to => :organization
+  set_watch_for :datetime, :local_to => :event
 
   scope :before, lambda { |time| where("shows.datetime < ?", time) }
   scope :after,  lambda { |time| where("shows.datetime > ?", time) }
@@ -57,14 +58,6 @@ class Show < ActiveRecord::Base
 
   def self.next_datetime(show)
     show.nil? ? future(Time.now.beginning_of_day + 20.hours) : future(show.datetime_local_to_event + 1.day)
-  end
-  
-  # def datetime_local_to_organization
-  #   datetime.in_time_zone(organization.time_zone)
-  # end
-  
-  def datetime_local_to_event
-    datetime.in_time_zone(event.time_zone)
   end
 
   def has_door_list?

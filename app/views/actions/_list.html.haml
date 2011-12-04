@@ -18,7 +18,7 @@
       - actions.each do |action|
         %tr
           %td.starred.starable{"data-person-id" => person.id, "data-type" => 'action', "data-action-id" => action.id }= (action.starred? ? "&#10029;" : "&#10025;").html_safe
-          %td= l action.occurred_at.in_time_zone(current_user.current_organization.time_zone), :format => :short unless action.occurred_at.nil?
+          %td= l action.occurred_at_local_to_organization, :format => :short unless action.occurred_at.nil?
           %td="#{action.action_type.capitalize} - #{action.subtype unless action.subtype.nil?}"
           %td= truncate(action.details, :length => 80, :separator => ' ', :omission => '...')
           %td

@@ -6,6 +6,7 @@ class Action < ActiveRecord::Base
   validates_presence_of :occurred_at
   validates_presence_of :person_id
 
+  set_watch_for :occurred_at, :local_to => :organization
   #
   # Action types: give, go, do, get, join, hear
   #
