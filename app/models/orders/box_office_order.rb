@@ -1,0 +1,2 @@
+class BoxOfficeOrder < Order
+end

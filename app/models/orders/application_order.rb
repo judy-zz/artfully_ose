@@ -1,0 +1,2 @@
+class ApplicationOrder < Order
+end
