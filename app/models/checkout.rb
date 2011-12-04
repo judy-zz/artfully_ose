@@ -98,14 +98,18 @@ class Checkout
       end
     end
 
+    def order_class
+      WebOrder
+    end
+
     def new_order(organization, order_timestamp, person)
-      Order.new.tap do |order|
+      order_class.new.tap do |order|
         order.organization    = organization
         order.created_at      = order_timestamp
         order.person          = @person
         order.transaction_id  = @payment.transaction_id
         order.service_fee     = @cart.fee_in_cents
-
+        order.payment_method  = @payment.payment_method
 
         order << @cart.tickets.select { |ticket| ticket.organization_id == organization.id }
         order << @cart.donations

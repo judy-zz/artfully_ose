@@ -30,6 +30,10 @@ class AthenaPayment < AthenaResource::Base
     attribute 'transaction_id',   :string
   end
 
+  def payment_method
+    'Credit card'
+  end
+
   def load(attributes = [])
     @attributes['billing_address'] = AthenaAddress.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
     @attributes['credit_card'] = AthenaCreditCard.new(attributes.delete('athena_credit_card')) if attributes.has_key? 'athena_credit_card'

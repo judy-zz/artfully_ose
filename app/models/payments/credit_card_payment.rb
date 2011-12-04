@@ -3,7 +3,11 @@ class CreditCardPayment < AthenaResource::Base
 
   self.site = Artfully::Application.config.payments_component
   self.element_name = Artfully::Application.config.payments_element_name
-
+  
+  def payment_method
+    'credit_card'
+  end
+  
   attr_accessor :customer
 
   schema do

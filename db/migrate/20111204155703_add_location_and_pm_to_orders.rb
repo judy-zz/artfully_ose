@@ -6,7 +6,7 @@ class AddLocationAndPmToOrders < ActiveRecord::Migration
     Order.all.each do |order|
       if !order.transaction_id.nil?
         order.type = 'WebOrder'
-        order.payment_method = 'credit_card'
+        order.payment_method = 'Credit card'
       elsif !order.fa_id.nil?
         order.type = 'FaOrder'
         order.payment_method = nil

@@ -12,7 +12,7 @@ class Sale
     
     #When coming from a browser, all keys and values in @quantities are STRINGS
     @quantities = quantities
-    @cart       = BoxOfficeCart.new
+    @cart       = BoxOffice::Cart.new
     @tickets     = []
     
     #This is irritating, it means you can't add tickets to a sale later
@@ -23,7 +23,7 @@ class Sale
   def sell(payment)
     if valid?
       cart.tickets << tickets
-      checkout = Checkout.new(cart, payment)
+      checkout = BoxOffice::Checkout.new(cart, payment)
       @sale_made = checkout.finish
       @buyer = checkout.person
       errors.add(:base, "payment was not accepted") and return if !@sale_made

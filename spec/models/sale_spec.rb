@@ -8,27 +8,6 @@ describe Sale do
 
   subject { Sale.new(show, chart.sections, quantities) }
 
-  # describe "#has_tickets?" do
-  #   it "returns false without tickets" do
-  #     subject.should_not have_tickets
-  #   end
-  # 
-  #   it "returns true with tickets" do
-  #     tix = Array.new(2)
-  #     tix.collect! {Ticket.new}
-  #     Ticket.stub(:available).and_return(tix)
-  #     subject.load_tickets
-  #     subject.should have_tickets
-  #   end
-  # end
-  # 
-  # describe "#cart" do
-  #   it "should create and reuse the same cart" do
-  #     cart = subject.cart
-  #     subject.cart.should == cart
-  #   end
-  # end
-
   describe "non_zero_quantities" do
     let(:quantities) {{chart.sections.first.id.to_s => "0"}}
       
@@ -67,8 +46,8 @@ describe Sale do
       Ticket.stub(:available).and_return(tix)
     end
         
-    it "creates a new Checkout and a new BoxOfficeCart" do
-      Checkout.should_receive(:new).and_return(checkout)
+    it "creates a new BoxOffice::Checkout and a new BoxOfficeCart" do
+      BoxOffice::Checkout.should_receive(:new).and_return(checkout)
       checkout.should_receive(:finish).and_return(true)
       checkout.should_receive(:person).and_return(Factory(:person))
       subject.sell(payment)

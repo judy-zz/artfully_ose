@@ -1,6 +1,10 @@
 class CashPayment
   attr_accessor :amount, :customer
 
+  def payment_method
+    'cash'
+  end
+
   def initialize(customer)
     @customer = customer
   end

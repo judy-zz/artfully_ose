@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe BoxOfficeCart do
+describe BoxOffice::Cart do
   disconnect_sunspot
 
   describe "ticket fee" do
     before(:each) do
-      subject = BoxOfficeCart.new
+      subject = BoxOffice::Cart.new
     end
 
     let(:tickets) { 2.times.collect { Factory(:ticket) } }

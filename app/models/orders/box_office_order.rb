@@ -1,2 +1,0 @@
-class BoxOfficeOrder < Order
-end

@@ -1,3 +1,6 @@
+#Subclasses should define a type.
+#Subclasses (and their type) should speak to the *location* of the order, not exactly the type
+# WebOrder, BoxOfficeOrder for example.  NOT DonationOrder, since orders may contain items of multiple types
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include ApplicationHelper
