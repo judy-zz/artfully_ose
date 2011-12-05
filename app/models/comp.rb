@@ -36,7 +36,7 @@ class Comp
   private
 
   def create_order(comped_tickets, benefactor)
-    @order = Order.new
+    @order = CompOrder.new
     @order << comped_tickets
     @order.person = recipient
     @order.organization = benefactor.current_organization

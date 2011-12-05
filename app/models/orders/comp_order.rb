@@ -1,0 +1,2 @@
+class CompOrder < Order
+end

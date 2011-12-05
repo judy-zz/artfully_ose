@@ -41,10 +41,10 @@ describe Checkout do
   describe "cash payments" do
     let(:payment)         { CashPayment.new(Factory(:person)) }
     let(:cart_with_item)  { Factory(:cart_with_items) }
-    subject               { Checkout.new(cart_with_item, payment) }
+    subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
 
     it "should always approve orders with cash payments" do
-      subject.stub(:create_order).and_return(Order.new)
+      subject.stub(:create_order).and_return(BoxOffice::Order.new)
       subject.stub(:find_or_create_people_record).and_return(Factory(:person))
       subject.finish.should be_true
     end

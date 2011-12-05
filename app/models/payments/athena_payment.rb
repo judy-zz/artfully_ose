@@ -32,6 +32,10 @@ class AthenaPayment < AthenaResource::Base
 
   def payment_method
     'Credit card'
+  end  
+  
+  def per_item_processing_charge
+    lambda { |item| item.realized_price * 0.035 }
   end
 
   def load(attributes = [])

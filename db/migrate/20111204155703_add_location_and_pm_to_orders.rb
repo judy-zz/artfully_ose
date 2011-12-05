@@ -7,8 +7,11 @@ class AddLocationAndPmToOrders < ActiveRecord::Migration
       if !order.transaction_id.nil?
         order.type = 'WebOrder'
         order.payment_method = 'Credit card'
-      elsif !order.fa_id.nil?
+      elsif order.is_fafs?
         order.type = 'FaOrder'
+        order.payment_method = nil
+      elsif !order.items.select { |i| i.state == 'comped' }.empty?
+        order.type = 'CompOrder'
         order.payment_method = nil
       else
         order.type = 'ApplicationOrder'

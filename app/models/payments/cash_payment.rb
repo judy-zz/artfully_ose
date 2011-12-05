@@ -2,7 +2,7 @@ class CashPayment
   attr_accessor :amount, :customer
 
   def payment_method
-    'cash'
+    'Cash'
   end
 
   def initialize(customer)
@@ -23,6 +23,10 @@ class CashPayment
 
   def reduce_amount_by(amount_in_cents)
     self.amount=((amount * 100) - amount_in_cents)
+  end
+  
+  def per_item_processing_charge
+    lambda { |item| 0 }
   end
 
   # DEBT: Because Orders are creating Orders for record keeping,

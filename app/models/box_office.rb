@@ -12,8 +12,5 @@ module BoxOffice
   end
   
   class Order < Order
-    def type
-      "Box"
-    end
   end
 end

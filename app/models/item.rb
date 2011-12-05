@@ -3,6 +3,9 @@ class Item < ActiveRecord::Base
   belongs_to :order
   belongs_to :show
   belongs_to :settlement
+  
+  #This is a lambda used to by the items to calculate their net
+  attr_accessor :per_item_processing_charge
 
   validates_presence_of :product_type, :price, :realized_price, :net
   validates_inclusion_of :product_type, :in => %( Ticket Donation )
@@ -38,8 +41,15 @@ class Item < ActiveRecord::Base
     product_type == "Donation"
   end
 
-  def self.for(prod)
-    new.tap { |this| this.product = prod }
+  def self.for(prod, &per_item_processing_charge)
+      puts "??????????????????????"
+      puts per_item_processing_charge
+    i = Item.new 
+      i.product = prod 
+      i.per_item_processing_charge = per_item_processing_charge
+      puts ":))))))))))))))))))))))"
+      puts i.per_item_processing_charge
+    i
   end
 
   def self.find_by_product(product)
@@ -142,7 +152,7 @@ class Item < ActiveRecord::Base
     def set_prices_from(prod)
       self.price          = prod.price
       self.realized_price = prod.price - prod.class.fee
-      self.net            = (self.realized_price - (self.realized_price * 0.035)).floor
+      self.net            = (item.realized_price - per_item_processing_charge.call(self)).floor
     end
 
     def set_show_from(prod)

@@ -1,18 +1,16 @@
-#Subclasses should define a type.
-#Subclasses (and their type) should speak to the *location* of the order, not exactly the type
-# WebOrder, BoxOfficeOrder for example.  NOT DonationOrder, since orders may contain items of multiple types
+#Subclasses (and their type) should speak to the *location* or *nature* of the order, not the contents of the items
+# WebOrder, BoxOfficeOrder for example.  NOT DonationOrder, since orders may contain multiple different item types
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include ApplicationHelper
-
-  PAYMENT_METHODS = %w( credit_card cash )
+  
+  #This is a lambda used to by the items to calculate their net
+  attr_accessor :per_item_processing_charge
 
   belongs_to :person
   belongs_to :organization
-
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
-
   has_many :items
 
   attr_accessor :skip_actions
@@ -24,13 +22,10 @@ class Order < ActiveRecord::Base
   after_create :create_donation_actions, :unless => :skip_actions
 
   default_scope :order => 'created_at DESC'
-
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
-
   scope :imported, where("fa_id IS NOT NULL")
   scope :not_imported, where("fa_id IS NULL")
-
   scope :artfully, where("transaction_id IS NOT NULL")
 
   def self.in_range(start, stop, organization_id = nil)
@@ -63,7 +58,10 @@ class Order < ActiveRecord::Base
   end
 
   def <<(products)
-    self.items << Array.wrap(products).collect { |product|  Item.for(product) }
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3333333333333"
+    puts @per_item_processing_charge
+    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3333333333333"
+    self.items << Array.wrap(products).collect { |product|  Item.for(product, @per_item_processing_charge) }
   end
 
   def payment

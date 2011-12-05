@@ -59,7 +59,7 @@ class Contribution
       :organization_id => @organization_id
     }
 
-    Order.new(attributes).tap do |order|
+    ApplicationOrder.new(attributes).tap do |order|
       order.skip_actions = true
     end
   end

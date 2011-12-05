@@ -110,6 +110,7 @@ class Checkout
         order.transaction_id  = @payment.transaction_id
         order.service_fee     = @cart.fee_in_cents
         order.payment_method  = @payment.payment_method
+        order.per_item_processing_charge = @payment.per_item_processing_charge
 
         order << @cart.tickets.select { |ticket| ticket.organization_id == organization.id }
         order << @cart.donations

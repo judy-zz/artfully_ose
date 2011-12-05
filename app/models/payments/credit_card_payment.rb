@@ -5,7 +5,7 @@ class CreditCardPayment < AthenaResource::Base
   self.element_name = Artfully::Application.config.payments_element_name
   
   def payment_method
-    'credit_card'
+    'Credit card'
   end
   
   attr_accessor :customer
@@ -21,6 +21,10 @@ class CreditCardPayment < AthenaResource::Base
     new(:credit_card => card).tap do |payment|
       payment.customer = customer
     end
+  end
+
+  def per_item_processing_charge
+    lambda { |item| item.realized_price * 0.035 }
   end
 
   def requires_authorization?

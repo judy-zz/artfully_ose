@@ -50,7 +50,7 @@ class Exchange
 
   def create_order(time=Time.now)
     ::Rails.logger.debug("CREATING EXCHANGE ORDER")
-    exchange_order = Order.new.tap do |exchange_order|
+    exchange_order = ApplicationOrder.new.tap do |exchange_order|
       exchange_order.person = order.person
       exchange_order.parent = order
       exchange_order.created_at = time
