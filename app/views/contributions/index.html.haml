@@ -37,7 +37,7 @@
           - @search.results.each do |order|
             - order.items.select(&:donation?).each do |item|
               %tr
-                %td= l order.created_at
+                %td= l order.created_at_local_to_organization
                 %td= link_to_person order.person
                 %td= number_as_cents item.price
                 %td= number_as_cents item.nongift_amount

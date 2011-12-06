@@ -15,6 +15,8 @@ class Order < ActiveRecord::Base
 
   attr_accessor :skip_actions
 
+  set_watch_for :created_at, :local_to => :organization
+
   validates_presence_of :person_id
   validates_presence_of :organization_id
 
