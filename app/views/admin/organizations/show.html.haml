@@ -77,4 +77,4 @@
   %h3 Events
   %ul
     - @events.each do |event|
-      %li= link_to event.name, admin_organization_event_path(@organization, event)
+      %li= event.name
