@@ -58,9 +58,6 @@ class Order < ActiveRecord::Base
   end
 
   def <<(products)
-    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3333333333333"
-    puts @per_item_processing_charge
-    puts "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3333333333333"
     self.items << Array.wrap(products).collect { |product|  Item.for(product, @per_item_processing_charge) }
   end
 

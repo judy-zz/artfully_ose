@@ -41,15 +41,11 @@ class Item < ActiveRecord::Base
     product_type == "Donation"
   end
 
-  def self.for(prod, &per_item_processing_charge)
-      puts "??????????????????????"
-      puts per_item_processing_charge
-    i = Item.new 
+  def self.for(prod, per_item_lambda)
+    Item.new.tap do |i|
+      i.per_item_processing_charge = per_item_lambda
       i.product = prod 
-      i.per_item_processing_charge = per_item_processing_charge
-      puts ":))))))))))))))))))))))"
-      puts i.per_item_processing_charge
-    i
+    end
   end
 
   def self.find_by_product(product)
@@ -152,7 +148,7 @@ class Item < ActiveRecord::Base
     def set_prices_from(prod)
       self.price          = prod.price
       self.realized_price = prod.price - prod.class.fee
-      self.net            = (item.realized_price - per_item_processing_charge.call(self)).floor
+      self.net            = (self.realized_price - per_item_processing_charge.call(self)).floor
     end
 
     def set_show_from(prod)
