@@ -27,6 +27,7 @@ class AthenaPayment < AthenaResource::Base
     attribute 'credit_card',      :string
     attribute 'customer',         :string
     attribute 'success',          :string
+    attribute 'message',          :string
     attribute 'transaction_id',   :string
   end
 

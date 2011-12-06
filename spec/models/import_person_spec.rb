@@ -30,7 +30,7 @@ describe ImportPerson do
     end
 
     it "should correctly split on spaces, bars or commas" do
-      @person.tags_list.should == %w( one two three four )
+      @person.tags_list.should == %w( one two three-four )
     end
   end
 

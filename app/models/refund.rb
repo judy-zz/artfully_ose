@@ -16,7 +16,6 @@ class Refund
       items.each(&:refund!)
       create_refund_order
     else
-      puts payment.message
       @gateway_error_message = payment.message
     end
   end

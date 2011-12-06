@@ -74,7 +74,7 @@ describe Exchange do
 
       it "should create an exchange order if all of the tickets are sold successfully" do
         subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
-        subject.should_receive(:create_athena_order)
+        subject.should_receive(:create_order)
         subject.submit
       end
     end

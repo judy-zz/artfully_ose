@@ -148,7 +148,7 @@ class Item < ActiveRecord::Base
     def set_prices_from(prod)
       self.price          = prod.price
       self.realized_price = prod.price - prod.class.fee
-      self.net            = (self.realized_price - per_item_processing_charge.call(self)).floor
+      self.net            = (self.realized_price - (per_item_processing_charge || lambda { |item| 0 }).call(self)).floor
     end
 
     def set_show_from(prod)
