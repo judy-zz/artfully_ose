@@ -11,7 +11,6 @@ describe Refund do
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/refund", :body => "{ success: true }")
       subject.items.each { |i| i.stub(:return!) }
       subject.items.each { |i| i.stub(:refund!) }
-      subject.stub(:create_refund_order)
     end
 
     it "should attempt to refund the payment made for the order" do
@@ -24,6 +23,24 @@ describe Refund do
       total = subject.refund_amount / 100.0
       subject.submit
       FakeWeb.last_request.body.should match Regexp.new(/\"amount\":#{total}/)
+    end
+    
+    it "should create a refund_order with refunded items" do
+      subject.submit
+      subject.refund_order.should_not be_nil
+      subject.refund_order.items.should_not be_empty
+      subject.refund_order.items.size.should eq 3
+      subject.refund_order.items.each do |item|
+        item.order.should eq subject.refund_order
+        item.price.should eq (items.first.price * -1)
+        item.realized_price.should eq (items.first.realized_price * -1)
+        item.net.should eq (items.first.net * -1)
+      end
+      
+      #and don't touch the original items
+      items.each do |original_item|
+        original_item.order.should eq order     
+      end
     end
   end
 
@@ -77,6 +94,7 @@ describe Refund do
       partial_refund = Refund.new(order, refundable_items)
       partial_refund.submit
       (FakeWeb.last_request.body.include? "20.0").should be_true
+      partial_refund.items.length.should eq 2
     end
   end
 

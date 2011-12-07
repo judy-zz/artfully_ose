@@ -1,5 +1,5 @@
 class Refund
-  attr_accessor :order, :items, :gateway_error_message
+  attr_accessor :order, :refund_order, :items, :gateway_error_message
 
   def initialize(order, items)
     self.order = order
@@ -37,14 +37,15 @@ class Refund
   end
 
   def create_refund_order
-    refund_order = ApplicationOrder.new.tap do |refund_order|
+    @refund_order = ApplicationOrder.new.tap do |refund_order|
       refund_order.person = order.person
       refund_order.transaction_id = payment.transaction_id
       refund_order.parent = order
       refund_order.for_organization order.organization
       refund_order.items = items.collect(&:to_refund)
+      refund_order.items.each {|i| i.order = refund_order}
     end
 
-    refund_order.save!
+    @refund_order.save!
   end
 end
