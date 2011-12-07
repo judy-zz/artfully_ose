@@ -41,6 +41,7 @@ describe Refund do
       items.each do |original_item|
         original_item.order.should eq order     
       end
+      subject.refund_order.parent.should eq order
     end
   end
 
