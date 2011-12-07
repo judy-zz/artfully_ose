@@ -18,8 +18,8 @@ class Statement
       statement.tickets_comped    = show.tickets.select{|t| t.comped?}.size
       statement.potential_revenue = show.tickets.inject(0) { |total_price, ticket| total_price += ticket.price }
       statement.gross_revenue     = show.items.inject(0) { |gross, item| gross += item.price }
-      statement.processing        = statement.gross_revenue * 0.035
-      statement.net_revenue       = statement.gross_revenue - statement.processing
+      statement.net_revenue       = show.items.inject(0) { |net, item| net += item.net }
+      statement.processing        = statement.gross_revenue - statement.net_revenue
     end
   end
 end
