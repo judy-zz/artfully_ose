@@ -11,6 +11,9 @@ module BoxOffice
     end
   end
   
-  class Order < Order
+  class Order < Order  
+    def location
+      "Box office"
+    end
   end
 end
