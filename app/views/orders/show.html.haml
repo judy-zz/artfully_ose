@@ -35,3 +35,22 @@
 
     %h3 Items
     = render :partial=>'item_table', :locals => { :order => @order }
+- unless @order.children.empty?
+  - @order.children.each do |child|
+    .context
+      %ul.kv
+        %li
+          .key ID
+          .value=child.id
+        %li
+          .key Date
+          .value #{(l child.created_at_local_to_organization) unless child.created_at.nil?}
+        %li
+          .key Total
+          .value #{number_as_cents(child.total)}
+        %li
+          .key Details
+          .value #{child.details}
+    .document
+      - unless child.items.empty?
+        = render :partial => 'item_table', :locals => { :order => child }
