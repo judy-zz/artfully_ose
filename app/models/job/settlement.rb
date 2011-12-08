@@ -14,6 +14,7 @@ class Job::Settlement < Job::Base
         logger.error "#{show.organization.name} does not have a bank account." if show.organization.bank_account.nil?
         Settlement.submit(show.organization.id, show.settleables, show.organization.bank_account, show.id)
       end
+      AdminMailer.settlement_summary.deliver
     end
 
     def settle_donations_in(range)

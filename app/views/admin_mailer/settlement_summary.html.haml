@@ -1,0 +1,10 @@
+%p
+  Good morning, here is your daily settlement summary:
+%table
+  %thead
+    %th
+      Response Code
+  %tbody
+    - @settlements.each do |settlement|
+      %tr
+        %td="#{settlement.ach_response_code}"
