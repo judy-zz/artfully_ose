@@ -1,0 +1,2 @@
+class RefundOrder < Order
+end
