@@ -39,7 +39,7 @@ $("document").ready(function(){
           $.each(sale.door_list_rows, function () {
             $("#door-list").find('tbody')
               .append($('<tr>')
-                .append($('<td>').html(''))
+                .append($('<td>').html("☐"))
                 .append($('<td>').html(this.buyer))
                 .append($('<td>').html(this.email))
                 .append($('<td>').html(this.section))
@@ -113,9 +113,15 @@ $("document").ready(function(){
       $.getJSON(url, params, function(people){
         $("#people-for-sales").parent().removeClass('loading')
         $(".target li:visible").remove();
-        $.each(people, function(index, person){
-          bulletedListItem(person);
-        });
+        
+        if(people.length == 0) {
+          $(".people-search-message").html('No people found')
+        } else {        
+          $(".people-search-message").html('')
+          $.each(people, function(index, person){
+            bulletedListItem(person);
+          });
+        }
       });
     }
   });
