@@ -93,6 +93,7 @@ $("document").ready(function(){
     if($(this).attr('value') == 'cash'){
       $("#payment-info").addClass("hidden");
       $("#credit_card_card_number").val("")
+      $("#credit_card_cardholder_name").val("")
     } else {
       $("#payment-info").removeClass("hidden");
     }
