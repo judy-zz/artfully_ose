@@ -38,6 +38,10 @@ class Order < ActiveRecord::Base
       query
     end
   end
+  
+  def location
+    ""
+  end
 
   def total
     all_items.inject(0) {|sum, item| sum + item.price.to_i }
