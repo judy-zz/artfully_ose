@@ -8,13 +8,16 @@ class Job::Settlement < Job::Base
 
     def settle_shows_in(range)
       logger.info "Settling shows..."
-      Show.in_range(range[0], range[1]).reject(&:free?).each do |show|
+      shows_to_settle = Show.in_range(range[0], range[1]).reject(&:free?)
+      settlements = []
+      
+      shows_to_settle.each do |show|
         logger.info "Settling #{show.event.name}, #{show.datetime_local_to_organization}"
 
         logger.error "#{show.organization.name} does not have a bank account." if show.organization.bank_account.nil?
-        Settlement.submit(show.organization.id, show.settleables, show.organization.bank_account, show.id)
+        settlements << Settlement.submit(show.organization.id, show.settleables, show.organization.bank_account, show.id)
       end
-      AdminMailer.settlement_summary.deliver
+      AdminMailer.settlement_summary(shows_to_settle, settlements).deliver
     end
 
     def settle_donations_in(range)

@@ -1,10 +1,12 @@
 class AdminMailer < ActionMailer::Base
   default :from => "support@artful.ly"
   layout "mail"
+  add_template_helper(ApplicationHelper)
 
-  def settlement_summary(settlements = [])
+  def settlement_summary(shows, settlements = [])
+    @shows = shows
     @settlements = settlements
-    mail :to => "support@artful.ly", :subject => "Artful.ly: Settlement report for #{DateTime.now.strftime("%m/%d/%y")}"
+    mail :to => "gary.moore@fracturedatlas.org", :subject => "Artful.ly: Settlement report for #{DateTime.now.strftime("%m/%d/%y")}"
   end
 
   def ticketing_kit_notification(kit)
