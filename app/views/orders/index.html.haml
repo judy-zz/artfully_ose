@@ -57,7 +57,7 @@
               -details << pluralize(order.num_tickets, "ticket") unless order.num_tickets <= 0
               -details << " #{number_as_cents(order.sum_donations)} donation" unless order.sum_donations <= 0.0
               %td= details.compact.to_sentence
-              %td= number_to_currency (order.total/100)
+              %td= number_as_cents order.total
 
       =will_paginate @results
 

@@ -20,6 +20,12 @@
       %li
         .key Nongift
         .value #{number_as_cents(@order.nongift_amount)}
+    %li
+      .key Payment method
+      .value=(@order.payment_method || "")
+    %li
+      .key Order location
+      .value=(@order.location || "")
     - if !@order.fa_id.nil?
       %li
         .key FA ID

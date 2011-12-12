@@ -33,6 +33,7 @@
             = text_field_tag(:terms, params[:terms], :id => "terms")
             = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
       %ul.radio-list.target
+        .people-search-message
         - @people.each do |person|
           %li
             .radio= radio_button_tag(:person_id, person.id, params[:person_id] == person.id)
