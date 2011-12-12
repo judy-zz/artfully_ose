@@ -1101,6 +1101,8 @@ form ul li {
       width: 48%;
       display: inline;
       margin-right: 2%; }
+  form ul li .eighty {
+    width: 80%; }
   form ul li .hidden.label {
     display: none; }
   form ul li .label-and-element {
