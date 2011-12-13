@@ -85,12 +85,13 @@
     #tabs-6
       %h3= "Edit #{@event.name}"
       = render "shared/error_messages", :target => @event
-      .stack1of2
+      .left-side
         = render :partial => 'form', :locals => { :event => @event, :templates => @templates }
-      .stack1of3
+      .right-side
         = image_tag "theevent.jpg"
+      .clear
     #tabs-7
-      .stack1of2
+      .left-side
         = form_for(@event) do |form|
           %fieldset
             %ul
@@ -117,6 +118,7 @@
                 .element= text_field_tag "email", ""
 
           = form.submit 
-      .stack1of3{:style => 'height: 300px'}
+      .right-side{:style => 'height: 300px'}
         #map-canvas{:style => 'height: 300px'}
+      .clear
 .clear
