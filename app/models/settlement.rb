@@ -1,4 +1,4 @@
-# require_or_load 'ach/exceptions'
+require_or_load 'ach/exceptions'
 class Settlement < ActiveRecord::Base
   include Settlement::RangeFinding
 

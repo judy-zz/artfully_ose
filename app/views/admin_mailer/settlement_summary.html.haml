@@ -1,0 +1,47 @@
+%p
+  Good morning, here is your daily settlement summary:
+%p="#{pluralize(@shows.length, 'show')} scheduled for settlement.  Showtimes are localized to the event in which they are performed."
+%table
+  %thead
+    %th
+      ID
+    %th
+      Organization
+    %th
+      Show date
+  %tbody
+    -@shows.each do |show|
+      %tr
+        %td="#{show.id}"
+        %td="#{show.organization.name}"
+        %td="#{l show.datetime_local_to_event, :format => :short}"
+        
+%p="#{pluralize(@settlements.length, 'settlement')} were processed."
+%table.standalone.zebra
+  %thead
+    %tr
+      %th ID
+      %th Event
+      %th Show
+      %th Show ID
+      %th Date
+      %th Transaction ID
+      %th Gross
+      %th Realized
+      %th Net
+  %tbody
+    - @settlements.each do |settlement|
+      %tr
+        %td= settlement.id
+        %td= settlement.show.event.name
+        %td= settlement.show.datetime_local_to_event
+        %td= settlement.show.id
+        %td= l(settlement.created_at, :format => :date)
+        %td
+          -if settlement.success?
+            =settlement.transaction_id
+          -else
+            FAILED (#{settlement.ach_response_code})
+        %td= number_as_cents(settlement.gross)
+        %td= number_as_cents(settlement.realized_gross)
+        %td= number_as_cents(settlement.net)
