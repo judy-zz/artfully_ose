@@ -1,24 +1,16 @@
 = form_for(event) do |form|
   %fieldset
-    %legend Details
     %ul
       %li
         .label= form.label :name, "Name"
         .element= form.text_field :name
       %li
-        .label= form.label :venue, "Venue"
-        .element= form.text_field :venue
-      %li
         .label= form.label :producer, "Producer"
         .element
           = form.text_field :producer
-          .description Defaults to your organization's name
       %li
-        .label= form.label :city, "City"
-        .element= form.text_field :city
-      %li
-        .label= form.label :state, "State"
-        .element= form.select :state, options_for_select( sorted_us_state_names, event.state )
+        .label= form.label :venue, "Description"
+        .element= text_area_tag "description"
       %li
         .label= form.label :time_zone, "Time Zone"
         .element= form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => current_user.current_organization.time_zone

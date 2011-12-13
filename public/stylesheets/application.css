@@ -330,6 +330,15 @@ strong {
       clear: both;
       visibility: hidden; }
 
+.left-side {
+  width: 45%;
+  margin-right: 2px;
+  float: left; }
+
+.right-side {
+  width: 45%;
+  float: right; }
+
 .drilldown.final {
   position: relative;
   padding-bottom: 12px; }

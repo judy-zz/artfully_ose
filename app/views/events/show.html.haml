@@ -8,62 +8,115 @@
   %h6
     = "#{@event.city}, #{@event.state} [#{time_zone_description(@event.time_zone)}]"
 
-.context
-  %ul.context-buttons
-    %li= button_to "Edit Event", edit_event_path(@event), :method => :get
-    %li= button_to "Store Front", store_event_path(@event), :method => :get, :class => "new-window"
-    
-  = render :partial => "glance", :locals => { :report => @event.glance }
-  = render :partial => "shows/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
-
-  %h3 Charts
-  %ul.detailed-list
-    - @event.charts.each do |chart|
-      %li
-        %h4= chart.name
-        %ul.details
-          %li= pluralize(chart.sections.size, "Section")
-  - unless @charts.empty?
-    = form_for @chart, :url => assign_chart_path(@event) do |form|
-      %ul
-        %li
-          .hidden.label= form.label :id, "Chart"
-          .full.paired.element
-            = form.select :id, options_from_collection_for_select(@charts, "id", "name")
-            = form.submit "Import"
-
 .document
-  %h3 Shows
-  #shows
-    %table.standalone.zebra
-      %thead
-        %tr
-          %th Show
-          %th Available
-          %th Sold
-          %th Comped
-          %th Actions
-      %tbody
-        - @shows.each do |show|
-          %tr{ :class => show.state }
-            %td= link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
-            %td.available= show.glance.available_total
-            %td.gross= show.glance.sold_total
-            %td.comped= show.glance.comped_total
-            %td= render :partial => "shows/controls", :locals => { :show => show }
-        %tr
-          = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
-    = will_paginate @shows
-  %h3 This Week
-  #this-week
-    #calendar{ :"data-event" => @event.id }
+  #tabs
+    %ul
+      %li
+        %a{ :href => '#tabs-1'}
+          At a Glance
+      %li
+        %a{ :href => '#tabs-2'}
+          Charts
+      %li
+        %a{ :href => '#tabs-3'}
+          Shows
+      %li
+        %a{ :href => '#tabs-4'}
+          Calendar
+      %li
+        %a{ :href => '#tabs-5'}
+          Sell
+      %li
+        %a{ :href => '#tabs-6'}
+          Event
+      %li
+        %a{ :href => '#tabs-7'}
+          Venue
+  
+    #tabs-1
+      = render :partial => "glance", :locals => { :report => @event.glance }
+    #tabs-2  
+      - unless @charts.empty?
+        %h3 Import charts
+        = form_for @chart, :url => assign_chart_path(@event) do |form|
+          %ul
+            %li
+              .hidden.label= form.label :id, "Chart"
+              .full.paired.element
+                = form.select :id, options_from_collection_for_select(@charts, "id", "name")
+                = form.submit "Import"
+      %ul.detailed-list
+        %h3 Charts
+        - @event.charts.each do |chart|
+          %li
+            %h4= chart.name
+            = render :partial => 'sections/section_table', :locals => { :chart => chart, :include_link => false }
+    #tabs-3
+      #shows
+        %table.standalone.zebra
+          %thead
+            %tr
+              %th Show
+              %th Available
+              %th Sold
+              %th Comped
+              %th Actions
+          %tbody
+            - @shows.each do |show|
+              %tr{ :class => show.state }
+                %td= link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
+                %td.available= show.glance.available_total
+                %td.gross= show.glance.sold_total
+                %td.comped= show.glance.comped_total
+                %td= render :partial => "shows/controls", :locals => { :show => show }
+            %tr
+              = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
+        = will_paginate @shows 
+    #tabs-4
+      #this-week
+        #calendar{ :"data-event" => @event.id }
+    #tabs-5    
+      #widget
+        %h4 Quick and Easy
+        %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
 
+        %h4 Sell Anywhere
+        %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe
+    #tabs-6
+      %h3= "Edit #{@event.name}"
+      = render "shared/error_messages", :target => @event
+      .stack1of2
+        = render :partial => 'form', :locals => { :event => @event, :templates => @templates }
+      .stack1of3
+        = image_tag "theevent.jpg"
+    #tabs-7
+      .stack1of2
+        = form_for(@event) do |form|
+          %fieldset
+            %ul
+              %li
+                .label= form.label :venue, "Name"
+                .element= form.text_field :venue
+              %li
+                .label= form.label :venue, "Address"
+                .element= text_field_tag "address1", "248 W 35th St"
+              %li
+                .label= form.label :venue, "Address 2"
+                .element= text_field_tag "address1", "10th Floor"
+              %li
+                .label= form.label :city, "City"
+                .element= form.text_field :city
+              %li
+                .label= form.label :state, "State"
+                .element= form.select :state, options_for_select( sorted_us_state_names, @event.state )
+              %li
+                .label= form.label :venue, "Phone"
+                .element= text_field_tag "Phone", "410-433-3341"
+              %li
+                .label= form.label :venue, "Email"
+                .element= text_field_tag "email", ""
 
-  #widget
-    %h3 Sell Tickets
-
-    %h4 Quick and Easy
-    %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
-
-    %h4 Sell Anywhere
-    %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe
+          = form.submit 
+      .stack1of3{:style => 'height: 300px'}
+        #map-canvas{:style => 'height: 300px'}
+.clear
