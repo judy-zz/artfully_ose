@@ -14,7 +14,6 @@ bindControlsToListElements = function () {
 }
 
 $(document).ready(function() {
-  $( "#tabs" ).tabs();
     
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({
@@ -103,6 +102,7 @@ $(document).ready(function() {
     }
   });
   $('#calendar').fullCalendar( 'changeView', 'month' )
+  $( "#tabs" ).tabs();
 
 
   $('.subject-tag').each(function() {

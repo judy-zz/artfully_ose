@@ -45,7 +45,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_shows(:all).select(&:published?).as_json)
+    as_json(options).merge('performances' => upcoming_shows(:all).select(&:published?).as_json).merge('venue' => venue.as_json)
   end
 
   def as_full_calendar_json

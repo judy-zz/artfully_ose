@@ -3,7 +3,7 @@ class MigrateVenues < ActiveRecord::Migration
     Event.all.each do |event|
       venue = Venue.new({:name              => event.venue_name, 
                          :organization_id   => event.organization_id,
-                         :time_zone         => event.time_zone,
+                         :time_zone         => event.attributes['time_zone'],
                          :state             => event.state,
                          :city              => event.city})
       venue.save

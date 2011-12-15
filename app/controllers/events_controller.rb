@@ -30,12 +30,12 @@ class EventsController < ApplicationController
 
   def index
     authorize! :view, Event
-    @events = current_organization.events.paginate(:page => params[:page], :per_page => 10)
+    @events = current_organization.events.paginate(:page => params[:page], :per_page => 25)
   end
 
   def show
     authorize! :view, @event
-    @shows = @event.shows.paginate(:page => params[:page], :per_page => 10)
+    @shows = @event.shows.paginate(:page => params[:page], :per_page => 25)
     @next_show = @event.next_show
 
     @charts = current_organization.charts.template
