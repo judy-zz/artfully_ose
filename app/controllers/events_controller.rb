@@ -10,6 +10,7 @@ class EventsController < ApplicationController
     @event = Event.new(params[:event])
     @templates = current_organization.charts.template
     @event.organization_id = current_user.current_organization.id
+    @event.venue.organization_id = current_user.current_organization.id
     begin
       authorize! :create, @event
     rescue CanCan::AccessDenied
@@ -58,6 +59,7 @@ class EventsController < ApplicationController
 
   def new
     @event = current_organization.events.build(:producer => current_organization.name)
+    @event.venue = Venue.new
     authorize! :new, @event
     @templates = current_organization.charts.template
   end

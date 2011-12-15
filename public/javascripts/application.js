@@ -14,30 +14,7 @@ bindControlsToListElements = function () {
 }
 
 $(document).ready(function() {
-
-    if($('#map-canvas').length) {
-    var latlng = new google.maps.LatLng(40.714623,-74.006605);
-    var myOptions = {
-      zoom: 16,
-      center: latlng,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };    
-    var map = new google.maps.Map(document.getElementById("map-canvas"), myOptions); 
-    var marker = new google.maps.Marker({
-              map: map, 
-              position: new google.maps.LatLng(40.714623,-74.006605)
-          });
-   }      
-  
-
   $( "#tabs" ).tabs();
-  
-  $('#tabs').bind('tabsshow', function(event, ui) {
-    console.log('fire!')
-    google.maps.event.trigger(map, 'resize'); 
-    map.panTo(latlng)
-
-  });
     
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({

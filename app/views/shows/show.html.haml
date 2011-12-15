@@ -25,7 +25,7 @@
   %ul.kv
     %li
       .key Venue
-      .value= "#{@event.venue} #{@event.city}, #{@event.state}"
+      .value= "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state}"
     %li
       .key Producer
       .value= @event.producer

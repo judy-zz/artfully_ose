@@ -1,6 +1,6 @@
 class Chart < ActiveRecord::Base
   include Ticket::Foundry
-  foundry :using => :sections, :with => lambda { { :venue => event.venue } }
+  foundry :using => :sections, :with => lambda { { :venue => event.venue.name } }
 
   belongs_to :event
   belongs_to :organization
