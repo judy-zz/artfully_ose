@@ -307,21 +307,34 @@ form.jeditable button {
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083)); }
 
 body {
-  font-size: 11pt;
-  font-family: Arimo, sans-serif; }
+  font-size: 10pt;
+  font-family: sans-serif; }
 
 a {
   color: #077083;
   text-decoration: none; }
 
-h1, h2, h3, h4 {
-  font-family: "Raleway" !important;
+h1 {
+  font-family: "Helvetica" !important;
   display: block;
   font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
   text-align: left; }
-  h1:after, h2:after, h3:after, h4:after {
+  h1:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+
+h2, h3, h4 {
+  display: block;
+  font-family: "Arial", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left; }
+  h2:after, h3:after, h4:after {
     content: ".";
     display: block;
     height: 0;
@@ -329,15 +342,12 @@ h1, h2, h3, h4 {
     visibility: hidden; }
 
 h1 {
-  font-size: 3.5em;
+  font-size: 2.5em;
   color: #077083; }
 
-h2 {
-  margin-bottom: 3em; }
-
 h3 {
-  font-size: 2em;
-  color: #f08204;
+  font-size: 1em;
+  color: #666666;
   margin-bottom: 0.5em; }
 
 h4 {
@@ -345,10 +355,10 @@ h4 {
   font-size: 1.25em;
   margin-bottom: 0.5em; }
 
-p {
-  font-size: 0.9em;
-  margin-bottom: 1em;
-  color: #666666; }
+.event-venue {
+  color: #666666;
+  font-size: 1.25em;
+  margin-bottom: 0.5em; }
 
 #content {
   margin: 10px 2%;
@@ -395,7 +405,6 @@ p {
       visibility: hidden; }
 
 .sections .section-name {
-  font-family: "Raleway" !important;
   color: #077083; }
 
 #donation input[type="text"] {

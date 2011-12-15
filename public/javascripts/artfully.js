@@ -351,7 +351,6 @@ artfully.models = (function(){
           $target.data('event', this);
 
           $target.append(jQuery(document.createElement('h1')).addClass('event-name').text(this.name))
-                .append(jQuery(document.createElement('h2')).addClass('event-venue').text(this.venue))
                 .append(jQuery(document.createElement('h3')).addClass('event-producer').text(this.producer));
 
           this.render_performances($target);

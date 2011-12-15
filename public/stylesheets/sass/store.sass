@@ -5,30 +5,29 @@
 @import "forms"
 @import "flash"
 
-
 body
   font:
-    size: 11pt
-    family: Arimo, sans-serif
+    size: 10pt
+    family: sans-serif
 
 a
   color: $compliment
   text-decoration: none
 
-h1, h2, h3, h4
-  font-family: "Raleway" !important
-  @include stack-content
-
 h1
-  font-size: 3.5em
+  font-family: "Helvetica" !important
+  @include stack-content
+  
+h2, h3, h4
+  @include stack-content
+  
+h1
+  font-size: 2.5em
   color: $compliment
-
-h2
-  margin-bottom: 3em
-
+  
 h3
-  font-size: 2em
-  color: $primary
+  font-size: 1em
+  color: #666
   margin-bottom: .5em
 
 h4
@@ -36,11 +35,11 @@ h4
   font-size: 1.25em
   margin-bottom: .5em
 
-p
-  font-size: .9em
-  margin-bottom: 1em
+.event-venue
   color: #666
-
+  font-size: 1.25em
+  margin-bottom: .5em
+  
 #content
   margin: 10px 2%
   width: 96%
@@ -55,7 +54,6 @@ p
   @extend .stack2of3
 
 .sections .section-name
-  font-family: "Raleway" !important
   color: $compliment
 
 #donation

@@ -7,15 +7,22 @@
     #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
     #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
   });
-
-- if @event.organization.can?(:receive, Donation)
-  #sidebar
-    #donation
-      %h1 Donate
-      %h2 Add a donation
-
-      %p Help support the show by adding a donation to your order!
-
 #store
   #artfully-alert.flash.error
   #event
+  
+#sidebar
+  %h1 About
+  %p Lorem ipsum about t3h show dolphins and unicorns and whatnot a valor and dlor and him too. Lorem ipsum about t3h show dolphins and unicorns and whatnot a valor and dlor and him too.
+  %h1 Venue
+  .event-venue
+    %div=@event.venue.name
+    %div=@event.venue.street_as_string
+    %div=@event.venue.city_state_zip_as_string
+    %div
+      %a.map-link{:href=> "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15", :target => "_blank"} map
+  - if @event.organization.can?(:receive, Donation)
+    #donation
+      %h1 Donate
+
+      %p Help support the show by adding a donation to your order!
