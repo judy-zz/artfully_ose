@@ -168,6 +168,14 @@ class Order < ActiveRecord::Base
   def returnable_items
     items.select { |i| i.returnable? and not i.refundable? }
   end
+  
+  def ticket_summary
+    summary = TicketSummary.new
+    items.select(&:ticket?).each do |item|
+      summary << item.product
+    end
+    summary
+  end
 
   private
 
