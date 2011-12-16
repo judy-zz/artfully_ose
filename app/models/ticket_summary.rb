@@ -4,24 +4,26 @@ class TicketSummary
   def initialize
     @rows = []
   end
-  
-  def has_show?(show)
-    false
+
+  def row_for_this(show)
+    @rows.find {|row| row.show == show} || (@rows << TicketSummary::Row.new).last
   end
   
   def <<(ticket)
-    @rows << TicketSummary::Row.new(ticket) unless has_show?(ticket.show)
+    row_for_this(ticket.show) << ticket
   end
   
   class TicketSummary::Row
-    attr_accessor :quantity, :show, :event, :price, :ticket
+    attr_accessor :show, :tickets
     
-    def initialize(ticket)
-      @quantity = 1
-      @ticket = ticket
+    def initialize
+      @tickets = []
+    end
+    
+    def <<(ticket)
+      @tickets << ticket
       @show = ticket.show
-      @event = ticket.show.event
-      @price = ticket.sold_price
+      self
     end
   end
 end

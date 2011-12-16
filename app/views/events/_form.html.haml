@@ -4,10 +4,10 @@
   %fieldset
     %ul
       %li
-        .label= form.label :name, "Name"
+        .label=form.label :name, "Name*"
         .element= form.text_field :name
       %li
-        .label= form.label :producer, "Producer"
+        .label= form.label :producer, "Producer*"
         .element
           = form.text_field :producer
       %li
@@ -21,7 +21,7 @@
           .description Contact phone and email will be displayed to patrons and included in confirmation emails
       %li
         .label= form.label :venue, "Description"
-        .element= form.text_area :description
+        .element= form.text_area :description, :rows => 6
       - if can? :create, :paid_events
         %li
           .label=  form.label :is_free, "This is a free event"
@@ -36,7 +36,7 @@
     %fieldset
       %ul
         %li
-          .label= venue_form.label :name, "Name"
+          .label= venue_form.label :name, "Name*"
           .element= venue_form.text_field :name    
         %li
           .label= venue_form.label :address1, "Address"
@@ -45,16 +45,16 @@
           .label= venue_form.label :address2, "Secondary"
           .element= venue_form.text_field :address2
         %li
-          .label= venue_form.label :city, "City"
+          .label= venue_form.label :city, "City*"
           .element= venue_form.text_field :city
         %li
-          .label= venue_form.label :state, "State / Province"
+          .label= venue_form.label :state, "State / Province*"
           .element= venue_form.select(:state, options_for_select(sorted_us_state_names, event.venue.state))
         %li
           .label= venue_form.label :zip, "Zip / Postal Code"
           .element= venue_form.text_field :zip
         %li
-          .label= venue_form.label :time_zone, "Time Zone"
+          .label= venue_form.label :time_zone, "Time Zone*"
           .element= venue_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => current_user.current_organization.time_zone
 
   - if templates.present?
