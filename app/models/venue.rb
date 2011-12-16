@@ -13,6 +13,6 @@ class Venue < ActiveRecord::Base
   end
   
   def address_as_url_query
-    URI::escape(name + " " + street_as_string + " " + city_state_zip_as_string)
+    URI::escape(street_as_string + " " + city_state_zip_as_string)
   end
 end

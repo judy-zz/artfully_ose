@@ -11,8 +11,17 @@
         .element
           = form.text_field :producer
       %li
+        .label= form.label :contact_email, "Contact email"
+        .element
+          = form.text_field :contact_email
+      %li
+        .label= form.label :contact_phone, "Contact phone"
+        .element
+          = form.text_field :contact_phone
+          .description Contact phone and email will be displayed to patrons and included in confirmation emails
+      %li
         .label= form.label :venue, "Description"
-        .element= text_area_tag "description"
+        .element= form.text_area :description
       - if can? :create, :paid_events
         %li
           .label=  form.label :is_free, "This is a free event"
