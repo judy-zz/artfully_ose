@@ -13,9 +13,9 @@
   
 #sidebar
   - unless @event.description.blank?
-    %h1 About
+    %h2 About
     %p=@event.description
-  %h1 Venue
+  %h2 Venue
   .event-venue
     %div=@event.venue.name
     %div=@event.venue.street_as_string
@@ -23,7 +23,7 @@
     %div
       %a.map-link{:href=> "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15", :target => "_blank"} map
   - unless @event.contact_email.blank? && @event.contact_phone.blank?
-    %h1 Contact
+    %h2 Contact
     %ul.kv
       %li
         .key Email
@@ -33,6 +33,6 @@
         .value= @event.contact_phone    
   - if @event.organization.can?(:receive, Donation)
     #donation
-      %h1 Donate
+      %h2 Donate
 
       %p Help support the show by adding a donation to your order!

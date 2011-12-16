@@ -314,13 +314,28 @@ a {
   color: #077083;
   text-decoration: none; }
 
+h1, h2, h3, h4 {
+  display: block;
+  font-family: "Arial", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left; }
+  h1:after, h2:after, h3:after, h4:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
+
 h1 {
   font-family: "Helvetica" !important;
   display: block;
   font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
-  text-align: left; }
+  text-align: left;
+  font-size: 2.5em;
+  color: #077083; }
   h1:after {
     content: ".";
     display: block;
@@ -328,22 +343,21 @@ h1 {
     clear: both;
     visibility: hidden; }
 
-h2, h3, h4 {
+h2 {
+  font-family: "Helvetica" !important;
   display: block;
   font-family: "Arial", sans-serif;
   letter-spacing: normal;
   word-spacing: normal;
-  text-align: left; }
-  h2:after, h3:after, h4:after {
+  text-align: left;
+  font-size: 1.5em;
+  color: #077083; }
+  h2:after {
     content: ".";
     display: block;
     height: 0;
     clear: both;
     visibility: hidden; }
-
-h1 {
-  font-size: 2.5em;
-  color: #077083; }
 
 h3 {
   font-size: 1em;
@@ -357,7 +371,7 @@ h4 {
 
 .event-venue {
   color: #666666;
-  font-size: 1.25em;
+  font-size: 1.1em;
   margin-bottom: 0.5em; }
 
 #content {
@@ -406,6 +420,15 @@ h4 {
 
 .sections .section-name {
   color: #077083; }
+
+.kv li {
+  line-height: 24px; }
+.kv .key, .kv .value {
+  display: inline-block;
+  color: #666666; }
+.kv .key {
+  font-weight: bold;
+  width: 30%; }
 
 #donation input[type="text"] {
   width: 50%; }

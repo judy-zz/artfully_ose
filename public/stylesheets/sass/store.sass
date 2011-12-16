@@ -14,15 +14,19 @@ a
   color: $compliment
   text-decoration: none
 
+h1, h2, h3, h4
+  @include stack-content
+  
 h1
   font-family: "Helvetica" !important
   @include stack-content
-  
-h2, h3, h4
-  @include stack-content
-  
-h1
   font-size: 2.5em
+  color: $compliment
+ 
+h2
+  font-family: "Helvetica" !important
+  @include stack-content
+  font-size: 1.5em
   color: $compliment
   
 h3
@@ -37,7 +41,7 @@ h4
 
 .event-venue
   color: #666
-  font-size: 1.25em
+  font-size: 1.1em
   margin-bottom: .5em
   
 #content
@@ -55,6 +59,16 @@ h4
 
 .sections .section-name
   color: $compliment
+
+.kv
+  li
+    line-height: 2 * $line_height
+  .key, .value
+    display: inline-block
+    color: #666
+  .key
+    font-weight: bold
+    width: 30%
 
 #donation
   input[type="text"]
