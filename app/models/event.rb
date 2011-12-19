@@ -6,7 +6,7 @@ class Event < ActiveRecord::Base
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
 
-  validates_presence_of :name, :producer, :organization_id, :venue_id
+  validates_presence_of :name, :producer, :organization_id
 
   default_scope where(:deleted_at => nil)
 
