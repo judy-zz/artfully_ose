@@ -12,6 +12,8 @@
   = "Service fee: $#{format("%.2f", (@order.service_fee.to_i/100.0))}"
   %br
 
+%p="==================="
+
 - unless @order.tickets.empty?
   %h4 Tickets
   - @order.ticket_summary.rows.each do |row|
@@ -21,10 +23,10 @@
       =l row.show.datetime_local_to_event
       %br
       -unless row.show.event.contact_email.blank?
-        ="Contact email: #{row.show.event.contact_email}"
+        ="Event contact email: #{row.show.event.contact_email}"
         %br
       -unless row.show.event.contact_phone.blank?
-        ="Contact phone: #{row.show.event.contact_phone}"
+        ="Event contact phone: #{row.show.event.contact_phone}"
         %br
       %br
       ="#{row.show.event.venue.name}"

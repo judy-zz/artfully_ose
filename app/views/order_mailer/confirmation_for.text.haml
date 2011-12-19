@@ -7,6 +7,7 @@ Order confirmation
 = "Order total: $#{format("%.2f", (@order.total/100.0))}"
 = "Service fee: $#{format("%.2f", (@order.service_fee.to_i/100.0))}"
 
+="==================="
 
 - unless @order.tickets.empty?
   Tickets
@@ -14,9 +15,9 @@ Order confirmation
     ="#{row.show.event.name}"
     =l row.show.datetime_local_to_event
     -unless row.show.event.contact_email.blank?
-      ="Contact email: #{row.show.event.contact_email}"
+      ="Event contact email: #{row.show.event.contact_email}"
     -unless row.show.event.contact_phone.blank?
-      ="Contact phone: #{row.show.event.contact_phone}"
+      ="Event contact phone: #{row.show.event.contact_phone}"
 
     ="#{row.show.event.venue.name}"
     -unless row.show.event.venue.street_as_string.blank?
