@@ -12,7 +12,9 @@
           = form.text_field :producer
       %li
         .label= form.label :venue, "Description"
-        .element= form.text_area :description, :rows => 6
+        .element
+          = form.text_area :description, :rows => 6
+          .description This will be displayed to patrons when purchasing tickets
       %li
         .label= form.label :contact_email, "Contact email"
         .element
