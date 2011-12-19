@@ -121,6 +121,10 @@ form .description, form .form-error {
   width: 75%;
   color: #999999; }
 
+form .description {
+  margin-top: -3px;
+  width: 100%; }
+
 .element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
   display: block;
   font-family: "Arial", sans-serif;
