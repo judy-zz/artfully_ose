@@ -376,7 +376,6 @@ h4 {
   margin-bottom: 0.5em; }
 
 .event-venue {
-  color: #666666;
   font-size: 1em;
   margin-bottom: 0.5em; }
 
@@ -430,12 +429,15 @@ h4 {
 .kv li {
   line-height: 24px; }
 .kv .key, .kv .value {
-  display: inline-block;
-  color: #666666; }
+  display: inline-block; }
 .kv .key {
   font-weight: bold;
   width: 30%; }
 
+#donation h2 {
+  margin-bottom: 12px; }
+#donation p {
+  margin-bottom: 5px; }
 #donation input[type="text"] {
   width: 50%; }
 #donation input[type="submit"] {
