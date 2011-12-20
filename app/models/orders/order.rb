@@ -179,8 +179,9 @@ class Order < ActiveRecord::Base
 
   private
 
+    #this used to do more.  Now it only does this
     def merge_and_sort_items
-      items.concat(children.collect(&:items).flatten)
+      items
     end
 
     def create_purchase_action
