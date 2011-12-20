@@ -4,7 +4,7 @@ describe Statement do
   disconnect_sunspot  
   let(:organization) { Factory(:organization) }
   let(:show) { Factory(:show) }
-  let(:tickets) { 10.times.collect { Factory(:ticket, :show => show) } }
+  let(:tickets) { 10.times.collect { Factory(:ticket, :show => show, :section => Factory(:section)) } }
   let(:payment) { Factory(:payment) }
   let(:cart) { Factory(:cart_with_only_tickets, :tickets => tickets[6..8]) }
 

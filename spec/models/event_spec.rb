@@ -14,10 +14,12 @@ describe Event do
     subject.should_not be_valid
   end
 
-  it "should be invalid for with an empty venue" do
-    subject.venue = nil
-    subject.should_not be_valid
-  end
+  #The reason this is out is because validating on the venue left the user with a confounding
+  #"Venue can't be blank" error message.  When we move to selecting venues from a list, we can re-enable this
+  # it "should be invalid for with an empty venue" do
+  #   subject.venue = nil
+  #   subject.should_not be_valid
+  # end
 
   it "should be invalid for with an empty producer" do
     subject.producer = nil
