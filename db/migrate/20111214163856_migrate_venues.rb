@@ -1,6 +1,6 @@
 class MigrateVenues < ActiveRecord::Migration
   def self.up
-    Event.all.each do |event|
+    Event.unscoped.all.each do |event|
       venue = Venue.new({:name              => event.venue_name, 
                          :organization_id   => event.organization_id,
                          :time_zone         => event.attributes['time_zone'],
