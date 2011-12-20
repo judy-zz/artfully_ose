@@ -101,9 +101,11 @@ $(document).ready(function() {
       window.location = '/events/'+ eventId + '/shows/' + calEvent.id
     }
   });
-  $('#calendar').fullCalendar( 'changeView', 'month' )
-  $( "#tabs" ).tabs();
-
+  $('#tabs').tabs({
+      show: function(event, ui) {
+          $('#calendar').fullCalendar('render');
+      }
+  });
 
   $('.subject-tag').each(function() {
 	createControlsForTag($(this));
