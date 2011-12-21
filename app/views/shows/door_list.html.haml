@@ -1,7 +1,7 @@
 - in_section :events
 - content_for :header do
   %h1 Tickets & Events
-  %h2= "Door List for #{l @show.datetime_local_to_event, :format => :long_with_day} show of #{@show.event.name} at #{@show.event.venue}"
+  %h2= "Door List for #{l @show.datetime_local_to_event, :format => :long_with_day} show of #{@show.event.name} at #{@show.event.venue.name}"
 
   %ul.from-here
     %li= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')

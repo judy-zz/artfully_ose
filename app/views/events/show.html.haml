@@ -3,67 +3,75 @@
   %h1= link_to @event.name, event_path(@event)
   %h6
     = "#{@event.producer}"
-    &mdash; 
-    = "#{@event.venue}"
-  %h6
-    = "#{@event.city}, #{@event.state} [#{time_zone_description(@event.time_zone)}]"
+    &mdash;
+    = "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state} [#{time_zone_description(@event.venue.time_zone)}]"
 
 .context
   %ul.context-buttons
     %li= button_to "Edit Event", edit_event_path(@event), :method => :get
     %li= button_to "Store Front", store_event_path(@event), :method => :get, :class => "new-window"
-    
   = render :partial => "glance", :locals => { :report => @event.glance }
-  = render :partial => "shows/upcoming", :locals => { :event => @event, :upcoming => @upcoming }
-
-  %h3 Charts
-  %ul.detailed-list
-    - @event.charts.each do |chart|
-      %li
-        %h4= chart.name
-        %ul.details
-          %li= pluralize(chart.sections.size, "Section")
-  - unless @charts.empty?
-    = form_for @chart, :url => assign_chart_path(@event) do |form|
-      %ul
-        %li
-          .hidden.label= form.label :id, "Chart"
-          .full.paired.element
-            = form.select :id, options_from_collection_for_select(@charts, "id", "name")
-            = form.submit "Import"
 
 .document
-  %h3 Shows
-  #shows
-    %table.standalone.zebra
-      %thead
-        %tr
-          %th Show
-          %th Available
-          %th Sold
-          %th Comped
-          %th Actions
-      %tbody
-        - @shows.each do |show|
-          %tr{ :class => show.state }
-            %td= link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
-            %td.available= show.glance.available_total
-            %td.gross= show.glance.sold_total
-            %td.comped= show.glance.comped_total
-            %td= render :partial => "shows/controls", :locals => { :show => show }
-        %tr
-          = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
-    = will_paginate @shows
-  %h3 This Week
-  #this-week
-    #calendar{ :"data-event" => @event.id }
+  #tabs
+    %ul
+      %li
+        %a{ :href => '#tabs-1'}
+          Shows
+      %li
+        %a{ :href => '#tabs-2'}
+          Calendar
+      %li
+        %a{ :href => '#tabs-3'}
+          Charts
+      %li
+        %a{ :href => '#tabs-4'}
+          Sell
 
+    #tabs-1
+      #shows
+        %table.standalone.zebra
+          %thead
+            %tr
+              %th Show
+              %th Available
+              %th Sold
+              %th Comped
+              %th Actions
+          %tbody
+            - @shows.each do |show|
+              %tr{ :class => show.state }
+                %td= link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
+                %td.available= show.glance.available_total
+                %td.gross= show.glance.sold_total
+                %td.comped= show.glance.comped_total
+                %td= render :partial => "shows/controls", :locals => { :show => show }
+            %tr
+              = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
+        = will_paginate @shows   
+    #tabs-2
+      #this-week
+        #calendar{ :"data-event" => @event.id }        
+    #tabs-3
+      - unless @charts.empty?
+        %h3 Import charts
+        = form_for @chart, :url => assign_chart_path(@event) do |form|
+          %ul
+            %li
+              .hidden.label= form.label :id, "Chart"
+              .full.paired.element
+                = form.select :id, options_from_collection_for_select(@charts, "id", "name")
+                = form.submit "Import"
+      %ul.detailed-list
+        %h3 Charts
+        - @event.charts.each do |chart|
+          %li
+            %h4= chart.name
+            = render :partial => 'sections/section_table', :locals => { :chart => chart, :include_link => false }
+    #tabs-4    
+      #widget
+        %h4 Quick and Easy
+        %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
 
-  #widget
-    %h3 Sell Tickets
-
-    %h4 Quick and Easy
-    %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
-
-    %h4 Sell Anywhere
-    %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe
+        %h4 Sell Anywhere
+        %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe

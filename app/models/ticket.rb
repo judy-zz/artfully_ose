@@ -196,7 +196,7 @@ class Ticket < ActiveRecord::Base
     new_tickets = []
     (0..quantity-1).each do 
       new_tickets << Ticket.new({
-        :venue => show.event.venue,
+        :venue => show.event.venue.name,
         :price => section.price,
         :show => show,
         :organization => show.organization,

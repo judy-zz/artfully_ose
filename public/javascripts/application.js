@@ -14,6 +14,7 @@ bindControlsToListElements = function () {
 }
 
 $(document).ready(function() {
+    
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({
       dropboxID:   "20016501",
@@ -92,17 +93,17 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).ready(function() {
-    var eventId = $("#calendar").attr("data-event");
-    $('#calendar').fullCalendar({
-      height: 150,
-      events: '/events/'+ eventId + '.json',
-      eventClick: function(calEvent, jsEvent, view){
-        window.location = '/events/'+ eventId + '/shows/' + calEvent.id
-      }
-    });
-    $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
+  var eventId = $("#calendar").attr("data-event");
+  $('#calendar').fullCalendar({
+    height: 500,
+    events: '/events/'+ eventId + '.json',
+    eventClick: function(calEvent, jsEvent, view){
+      window.location = '/events/'+ eventId + '/shows/' + calEvent.id
+    }
   });
+  $('#calendar').fullCalendar( 'changeView', 'month' )
+  $( "#tabs" ).tabs();
+
 
   $('.subject-tag').each(function() {
 	createControlsForTag($(this));

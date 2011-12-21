@@ -4,7 +4,7 @@
   %h2
     = @event.producer
     &mdash;
-    = "#{@event.venue} #{@event.city}, #{@event.state}"
+    = "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state} [#{time_zone_description(@event.venue.time_zone)}]"
 
 .context
   %ul.context-buttons
@@ -25,12 +25,3 @@
     %p="Or, click this button to create a new chart"
     = link_to 'Create a new chart', new_chart_path, :class => 'cta-left-125'
     .clear
-
-  #widget
-    %h3 Sell Tickets
-
-    %h4 Quick and Easy
-    %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
-
-    %h4 Sell Anywhere
-    %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe

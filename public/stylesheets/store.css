@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, form ul li .label-and-element, .full.element, .stack1of2, .stack1of3, form ul li .label, #sidebar, .stack2of3, form ul li .element, #store, .stack1of4, .quarter.element, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .stackAuto {
+.stack, form ul li .label span.required, form ul li .label-and-element, .full.element, .stack1of2, .stack1of3, form ul li .label, #sidebar, .stack2of3, form ul li .element, #store, .stack1of4, .quarter.element, .stack3of4, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -9,7 +9,7 @@
   text-align: center;
   vertical-align: top; }
 
-.stack, form ul li .label-and-element, .full.element {
+.stack, form ul li .label span.required, form ul li .label-and-element, .full.element {
   width: 100%; }
 
 .stack1of2 {
@@ -61,7 +61,7 @@ form fieldset.slim {
   margin-right: 5px;
   min-height: 200px; }
 form legend {
-  line-height: 36px;
+  line-height: 12px;
   color: #666666;
   font-size: 1.5em;
   font-family: Raleway, sans-serif; }
@@ -94,6 +94,8 @@ form ul li {
       width: 48%;
       display: inline;
       margin-right: 2%; }
+  form ul li .label span.required {
+    color: red; }
   form ul li .eighty {
     width: 80%; }
   form ul li .hidden.label {
@@ -118,6 +120,10 @@ form .description, form .form-error {
   line-height: 12px;
   width: 75%;
   color: #999999; }
+
+form .description {
+  margin-top: -3px;
+  width: 100%; }
 
 .element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
   display: block;
@@ -308,14 +314,13 @@ form.jeditable button {
 
 body {
   font-size: 11pt;
-  font-family: Arimo, sans-serif; }
+  font-family: sans-serif; }
 
 a {
   color: #077083;
   text-decoration: none; }
 
 h1, h2, h3, h4 {
-  font-family: "Raleway" !important;
   display: block;
   font-family: "Arial", sans-serif;
   letter-spacing: normal;
@@ -329,15 +334,40 @@ h1, h2, h3, h4 {
     visibility: hidden; }
 
 h1 {
-  font-size: 3.5em;
+  font-family: "Helvetica" !important;
+  display: block;
+  font-family: "Arial", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left;
+  font-size: 2.5em;
   color: #077083; }
+  h1:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
 
 h2 {
-  margin-bottom: 3em; }
+  font-family: "Helvetica" !important;
+  display: block;
+  font-family: "Arial", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left;
+  font-size: 1.5em;
+  color: #077083; }
+  h2:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden; }
 
 h3 {
-  font-size: 2em;
-  color: #f08204;
+  font-size: 1em;
+  color: #666666;
   margin-bottom: 0.5em; }
 
 h4 {
@@ -345,10 +375,9 @@ h4 {
   font-size: 1.25em;
   margin-bottom: 0.5em; }
 
-p {
-  font-size: 0.9em;
-  margin-bottom: 1em;
-  color: #666666; }
+.event-venue {
+  font-size: 1em;
+  margin-bottom: 0.5em; }
 
 #content {
   margin: 10px 2%;
@@ -395,9 +424,20 @@ p {
       visibility: hidden; }
 
 .sections .section-name {
-  font-family: "Raleway" !important;
   color: #077083; }
 
+.kv li {
+  line-height: 24px; }
+.kv .key, .kv .value {
+  display: inline-block; }
+.kv .key {
+  font-weight: bold;
+  width: 30%; }
+
+#donation h2 {
+  margin-bottom: 12px; }
+#donation p {
+  margin-bottom: 5px; }
 #donation input[type="text"] {
   width: 50%; }
 #donation input[type="submit"] {

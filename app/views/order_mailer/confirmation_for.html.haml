@@ -1,18 +1,48 @@
-%h3="Thank you for your order #{@person.first_name} #{@person.last_name}!"
+%h2 Order confirmation
 
-%h5= "Order number: #{@order.id}"
-%h5= "Purchase Date: #{l(@order.created_at)}"
-%h5= "Order total: $#{format("%.2f", (@order.total/100.0))}"
-%h5= "Service fee: $#{format("%.2f", (@order.service_fee.to_i/100.0))}"
+%p="Thank you for your order, #{@person.first_name} #{@person.last_name}!"
+
+%p="This is not a ticket. Please use your order number to check in at the event."
+
+%p
+  = "Order number: #{@order.id}"
+  %br
+  = "Purchase Date: #{l(@order.created_at)}"
+  %br
+  = "Order total: $#{format("%.2f", (@order.total/100.0))}"
+  %br
+  = "Service fee: $#{format("%.2f", (@order.service_fee.to_i/100.0))}"
+  %br
+
+%p="==================="
 
 - unless @order.tickets.empty?
   %h4 Tickets
-  %ul.ticket-list
-    - @order.tickets.each do |item|
-      - ticket = item.product
-      %li
-        %span.price= "$#{format("%.2f", (ticket.price/100.0))}:"
-        %span.name= "#{ticket.event.name} on #{ticket.datetime.strftime('%m/%d/%Y %l:%M %P')}"
+  - @order.ticket_summary.rows.each do |row|
+    %p
+      =row.show.event.name
+      %br
+      =l row.show.datetime_local_to_event
+      %br
+      -unless row.show.event.contact_email.blank?
+        ="Event contact email: #{row.show.event.contact_email}"
+        %br
+      -unless row.show.event.contact_phone.blank?
+        ="Event contact phone: #{row.show.event.contact_phone}"
+        %br
+      %br
+      ="#{row.show.event.venue.name}"
+      %br
+      -unless row.show.event.venue.street_as_string.blank?
+        ="#{row.show.event.venue.street_as_string}" 
+        %br
+      -unless row.show.event.venue.city_state_zip_as_string.blank?  
+        ="#{row.show.event.venue.city_state_zip_as_string}"
+        %br
+    %ul.ticket-list
+      - row.tickets.each do |ticket|
+        %li
+          %span.price= "#{ticket.section.name}: $#{format("%.2f", (ticket.price/100.0))}"
 
 - unless @order.donations.empty?
   %h4 Donations

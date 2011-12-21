@@ -25,6 +25,7 @@
         #current-user= current_user.email
         #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
+    = javascript_include_tag "http://maps.googleapis.com/maps/api/js?key=AIzaSyAueFBorPUCXLYMPJq24_LrAcDMUj-bAWY&sensor=true"
     / = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
     = render :partial => "shared/help_tab" unless Rails.env.development?
     = include_javascripts :vendor, :application, :custom

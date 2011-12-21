@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, #heading, .spread, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .of4, .drilldown, .quarter.element, #section-list .element, .stack3of4, #section-list .label, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, #admin-menu > li, .stackAuto {
+.stack, #heading, .spread, form ul li .label span.required, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .of4, .drilldown, .quarter.element, #section-list .element, .stack3of4, #section-list .label, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #new-actions > li, #main-menu > li, #admin-menu > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -9,7 +9,7 @@
   text-align: center;
   vertical-align: top; }
 
-.stack, #heading, .spread, form ul li .label-and-element, .full.element {
+.stack, #heading, .spread, form ul li .label span.required, form ul li .label-and-element, .full.element {
   width: 100%; }
 
 .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li {
@@ -330,6 +330,15 @@ strong {
       clear: both;
       visibility: hidden; }
 
+.left-side {
+  width: 45%;
+  margin-right: 2px;
+  float: left; }
+
+.right-side {
+  width: 45%;
+  float: right; }
+
 .drilldown.final {
   position: relative;
   padding-bottom: 12px; }
@@ -466,7 +475,7 @@ ul.selection li.unselected a:hover {
   border-radius: 2px 2px 2px 2px; }
 
 input.mini {
-  font-size: 0.75em;
+  font-size: 0.88em;
   -moz-border-radius: 2px 2px 2px 2px;
   -webkit-border-radius: 2px 2px 2px 2px;
   border-radius: 2px 2px 2px 2px;
@@ -1068,7 +1077,7 @@ form fieldset.slim {
   margin-right: 5px;
   min-height: 200px; }
 form legend {
-  line-height: 36px;
+  line-height: 12px;
   color: #666666;
   font-size: 1.5em;
   font-family: Raleway, sans-serif; }
@@ -1101,6 +1110,8 @@ form ul li {
       width: 48%;
       display: inline;
       margin-right: 2%; }
+  form ul li .label span.required {
+    color: red; }
   form ul li .eighty {
     width: 80%; }
   form ul li .hidden.label {
@@ -1125,6 +1136,10 @@ form .description, form .form-error {
   line-height: 12px;
   width: 75%;
   color: #999999; }
+
+form .description {
+  margin-top: -3px;
+  width: 100%; }
 
 .element > div, .element label, .label > div, .label label, .label-and-element > div, .label-and-element label, .cancel-submit > div, .cancel-submit label {
   display: block;

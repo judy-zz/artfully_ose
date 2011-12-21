@@ -3,7 +3,7 @@
   %h1= link_to @event.name, event_path(@event)
   %h6= l @show.datetime_local_to_event, :format => :long_with_day
 
-.context
+.context  
   %ul.context-buttons
     - unless @show.pending?
       %li= button_to "Add Tickets", new_show_ticket_path(@show), :method => :get
@@ -20,15 +20,14 @@
             = hidden_field_tag :show_id, @show.id
             = submit_tag "Unpublish"
     %li= button_to "Door List", door_list_event_show_path(@event,@show), :method => :get
-  = render :partial => "glance", :locals => { :report => @show.glance }
-  = render :partial => "upcoming", :locals => { :event => @event, :upcoming => @upcoming }
   %ul.kv
     %li
       .key Venue
-      .value= "#{@event.venue} #{@event.city}, #{@event.state}"
+      .value= "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state}"
     %li
       .key Producer
       .value= @event.producer
+  = render :partial => "glance", :locals => { :report => @show.glance }
 
 .document
   - if @show.pending?

@@ -4,7 +4,7 @@
   %h2
     = @event.producer
     &mdash;
-    = "#{@event.venue} #{@event.city}, #{@event.state}"
+    = "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state}"
 
 .context
   %ul.context-buttons

@@ -299,7 +299,7 @@ describe Ticket do
       quantity = 13
       tickets = Ticket.create_many(show, section, quantity)
       tickets.num_inserts.should eq quantity
-      check_tix(quantity, :venue => show.event.venue, 
+      check_tix(quantity, :venue => show.event.venue.name, 
                            :show_id => show.id, 
                            :organization_id => show.organization.id, 
                            :price => section.price,
@@ -310,7 +310,7 @@ describe Ticket do
       section.price = rand(40000)
       tickets = Ticket.create_many(show, section)
       tickets.num_inserts.should eq section.capacity
-      check_tix(section.capacity, :venue => show.event.venue, 
+      check_tix(section.capacity, :venue => show.event.venue.name, 
                                  :show_id => show.id, 
                                  :organization_id => show.organization.id, 
                                  :price => section.price,
