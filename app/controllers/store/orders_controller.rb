@@ -46,6 +46,6 @@ class Store::OrdersController < Store::StoreController
     end
     
     def add_p3p_header
-      response.headers["P3P"] = "IDC DSP COR IVAi IVDi OUR TST"
+      response.headers["P3P"] = "CP=\"IDC DSP COR IVAi IVDi OUR TST\""
     end
 end
