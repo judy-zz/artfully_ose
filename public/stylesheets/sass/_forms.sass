@@ -15,7 +15,7 @@ form
     margin-right: 5px
     min-height: 200px
   legend
-    line-height: 3 * $line_height
+    line-height: $line_height
     color: #666
     font-size: 1.5em
     font-family: Raleway, sans-serif
@@ -49,6 +49,9 @@ form ul li
 
   .label
     @extend .stack1of3
+    span.required
+      @extend .stack
+      color: red
   .eighty
     width: 80%
   .hidden.label
@@ -75,6 +78,11 @@ form
     line-height: $line_height
     width: 75%
     color: #999
+
+form
+  .description
+    margin-top: -3px
+    width: 100%
 
 .element, .label, .label-and-element, .cancel-submit
   > div, label

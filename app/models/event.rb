@@ -1,13 +1,16 @@
 class Event < ActiveRecord::Base
   belongs_to :organization
-
+  belongs_to :venue
+  accepts_nested_attributes_for :venue
   has_many :charts
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
 
-  validates_presence_of :name, :venue, :city, :state, :producer, :organization_id, :time_zone
+  validates_presence_of :name, :producer, :organization_id
 
   default_scope where(:deleted_at => nil)
+
+  delegate :time_zone, :to => :venue
 
   include Ticket::Reporting
 
@@ -42,7 +45,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_shows(:all).select(&:published?).as_json)
+    as_json(options).merge('performances' => upcoming_shows(:all).select(&:published?).as_json).merge('venue' => venue.as_json)
   end
 
   def as_full_calendar_json

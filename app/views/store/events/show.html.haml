@@ -7,15 +7,32 @@
     #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
     #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
   });
-
-- if @event.organization.can?(:receive, Donation)
-  #sidebar
-    #donation
-      %h1 Donate
-      %h2 Add a donation
-
-      %p Help support the show by adding a donation to your order!
-
 #store
   #artfully-alert.flash.error
   #event
+  
+#sidebar
+  - unless @event.description.blank?
+    %h2 About
+    %p=@event.description
+  %h2 Venue
+  .event-venue
+    %div=@event.venue.name
+    %div=@event.venue.street_as_string
+    %div=@event.venue.city_state_zip_as_string
+    %div
+      %a.map-link{:href=> "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15", :target => "_blank"} map
+  - unless @event.contact_email.blank? && @event.contact_phone.blank?
+    %h2 Contact
+    %ul.kv
+      - unless @event.contact_email.blank?
+        %li
+          .key Email
+          .value= @event.contact_email 
+      - unless @event.contact_phone.blank?
+        %li
+          .key Phone
+          .value= @event.contact_phone    
+  - if @event.organization.can?(:receive, Donation)
+    #donation
+      %h2 Donate

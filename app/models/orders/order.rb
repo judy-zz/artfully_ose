@@ -168,11 +168,20 @@ class Order < ActiveRecord::Base
   def returnable_items
     items.select { |i| i.returnable? and not i.refundable? }
   end
+  
+  def ticket_summary
+    summary = TicketSummary.new
+    items.select(&:ticket?).each do |item|
+      summary << item.product
+    end
+    summary
+  end
 
   private
 
+    #this used to do more.  Now it only does this
     def merge_and_sort_items
-      items.concat(children.collect(&:items).flatten)
+      items
     end
 
     def create_purchase_action

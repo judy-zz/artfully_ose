@@ -1,6 +1,7 @@
 class Store::OrdersController < Store::StoreController
   layout "cart"
   skip_before_filter :verify_authenticity_token
+  after_filter :add_p3p_header
 
   def show
     @donations = current_cart.generate_donations
@@ -42,5 +43,9 @@ class Store::OrdersController < Store::StoreController
       donation.organization = Organization.find(data.delete(:organization_id))
 
       current_cart.donations << donation
+    end
+    
+    def add_p3p_header
+      response.headers["P3P"] = "CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT\""
     end
 end

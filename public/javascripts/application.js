@@ -14,6 +14,7 @@ bindControlsToListElements = function () {
 }
 
 $(document).ready(function() {
+    
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({
       dropboxID:   "20016501",
@@ -92,16 +93,18 @@ $(document).ready(function() {
     return false;
   });
 
-  $(document).ready(function() {
-    var eventId = $("#calendar").attr("data-event");
-    $('#calendar').fullCalendar({
-      height: 150,
-      events: '/events/'+ eventId + '.json',
-      eventClick: function(calEvent, jsEvent, view){
-        window.location = '/events/'+ eventId + '/shows/' + calEvent.id
+  var eventId = $("#calendar").attr("data-event");
+  $('#calendar').fullCalendar({
+    height: 500,
+    events: '/events/'+ eventId + '.json',
+    eventClick: function(calEvent, jsEvent, view){
+      window.location = '/events/'+ eventId + '/shows/' + calEvent.id
+    }
+  });
+  $('#tabs').tabs({
+      show: function(event, ui) {
+          $('#calendar').fullCalendar('render');
       }
-    });
-    $('#calendar').fullCalendar( 'changeView', 'basicWeek' )
   });
 
   $('.subject-tag').each(function() {

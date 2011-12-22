@@ -1,12 +1,12 @@
 - in_section :events
 - content_for :header do
   %h1= t('.heading', :default => "Events")
-  %h2= t('.subheading', :default => "Manage your events")
 
 .context
   %h3 Creating an Event
   - if can? :create, :paid_events
     %p= t(".create_paid_events", :default => "If this is an event that you will not be charging for, check Free Event.")
+    %p= "Required fields are marked with an asterisk"
   - else
     %p= t(".create_free_events", :default => "You may create events with free tickets right away, or you can %{link} your account to start selling tickets.", :link => link_to("upgrade", organization_path(current_user.current_organization)))
 
