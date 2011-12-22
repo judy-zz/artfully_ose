@@ -257,6 +257,9 @@ form.jeditable button {
   display: inline-block;
   width: 36px; }
 
+#reseller-profile textarea {
+  height: 100px; }
+
 .flash {
   display: block;
   font-family: "Arial", sans-serif;

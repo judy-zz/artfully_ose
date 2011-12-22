@@ -23,6 +23,9 @@
         .key Time Zone
         .value= @organization.time_zone
 
+  - if @reseller_profile
+    = render "reseller_profiles/form"
+
   - unless @organization.connected?
     %h3 Connect to Fractured Atlas
     %p This organization has not been connected to a Fractured Atlas membership.  Enter your Fractured Atlas username and password below to connect.

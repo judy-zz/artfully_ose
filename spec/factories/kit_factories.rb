@@ -9,3 +9,7 @@ end
 Factory.define :sponsored_donation_kit do |t|
   t.association :organization
 end
+
+Factory.define :reseller_kit do |t|
+  t.association :organization
+end

@@ -1,0 +1,15 @@
+#reseller-profile
+
+  %h3 Reseller Profile
+
+  = form_for [ @organization, @reseller_profile ] do |f|
+
+    %ul
+      %li
+        .label= f.label :url
+        .element= f.text_field :url
+      %li
+        .label= f.label :description
+        .element= f.text_area :description
+
+    = f.submit "Update Profile"

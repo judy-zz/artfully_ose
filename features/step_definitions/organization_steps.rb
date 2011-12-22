@@ -18,6 +18,11 @@ Given /^I am part of an organization with access to the ticketing kit$/ do
   @current_user.organizations << Factory(:organization_with_ticketing)
 end
 
+Given /^I am part of an organization with access to the reselling kit$/ do
+  @current_user.organizations << Factory(:organization_with_reselling)
+  @current_user.current_organization.reload
+end
+
 Given /^I am part of an organization "([^"]*)"$/ do |name|
   @current_user.organizations << Organization.new(:name => name)
 end

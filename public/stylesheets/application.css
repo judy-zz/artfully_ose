@@ -1264,6 +1264,9 @@ form.jeditable button {
   display: inline-block;
   width: 36px; }
 
+#reseller-profile textarea {
+  height: 100px; }
+
 .table-controls {
   -moz-border-radius: 3px 3px 0 0;
   -webkit-border-radius: 3px 3px 0 0;

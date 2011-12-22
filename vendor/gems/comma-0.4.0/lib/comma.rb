@@ -8,7 +8,7 @@ end
 # load the right csv library
 if RUBY_VERSION >= '1.9'
   require 'csv'
-  FasterCSV = CSV
+  FasterCSV = CSV unless defined?(FasterCSV)
 else
   begin
     # try faster csv
@@ -20,7 +20,7 @@ else
       puts "FasterCSV not installed, falling back on CSV"
     end
     require 'csv'
-    FasterCSV = CSV
+    FasterCSV = CSV unless defined?(FasterCSV)
   end
 end
 

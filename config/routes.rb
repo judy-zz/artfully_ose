@@ -46,6 +46,7 @@ Artfully::Application.routes.draw do
   devise_for :admins
 
   resources :organizations do
+    resources :reseller_profiles
     put :tax_info, :on => :member
     resources :memberships
     member do

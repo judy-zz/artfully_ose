@@ -19,6 +19,8 @@ class Organization < ActiveRecord::Base
                   :after_add => lambda { |u,k| k.activate! unless k.activated? }
 
   has_many :imports
+  
+  has_one :reseller_profile
 
   validates_presence_of :name
   validates :ein, :presence => true, :if => :updating_tax_info
@@ -97,6 +99,10 @@ class Organization < ActiveRecord::Base
 
   def ticket_sales
     Item.joins(:order).where(:product_type => "Ticket", :orders => { :organization_id => id })
+  end
+
+  def has_kit?(name)
+    kits.where(:state => "activated").map(&:class).map(&:name).include?(name.to_s.camelize + "Kit")
   end
 
   private
