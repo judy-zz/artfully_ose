@@ -11,5 +11,8 @@
       %li
         .label= f.label :description
         .element= f.text_area :description
+      %li
+        .label= f.label :fee
+        .element= f.select :fee, ResellerProfile::FEE_OPTIONS
 
     = f.submit "Update Profile"

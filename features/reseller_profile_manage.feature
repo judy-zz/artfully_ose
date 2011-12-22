@@ -10,11 +10,13 @@ Feature: Resellers have profiles
     When I follow "My Organization"
     Then I should see "Url"
     And I should see "Description"
-  
+
   Scenario: A user wants to update their reseller profile
     When I follow "My Organization"
     And I fill in "Url" with "http://example.com"
     And I fill in "Description" with "a great example"
+    And I select "$0.50" from "Fee"
     And I press "Update Profile"
     Then the "Url" field should contain "http://example.com"
     And the "Description" field should contain "a great example"
+    And the "Fee" field should contain "50"
