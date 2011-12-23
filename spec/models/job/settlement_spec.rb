@@ -13,9 +13,10 @@ describe Job::Settlement do
   describe ".settle_shows_in" do
     let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
     let(:shows) { 3.times.collect{ Factory(:show, :organization => organization, :event => Factory(:event)) } }
-    let(:settlement) { mock(:settlement, :submit => nil) }
+    let(:settlement) { Factory (:settlement) }
 
     before(:each) do
+      settlement.stub(:submit).and_return(nil)
       shows.each { |show| show.stub(:settleables).and_return(5.times.collect{ Factory(:item) } ) }
       Show.stub(:in_range).and_return(shows)
     end
