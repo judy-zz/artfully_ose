@@ -162,6 +162,10 @@ class Ticket < ActiveRecord::Base
     on_sale? or off_sale?
   end
 
+  def resellable?
+    on_sale?
+  end
+
   def destroy
     super if destroyable?
   end
