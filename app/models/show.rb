@@ -15,8 +15,8 @@ class Show < ActiveRecord::Base
   set_watch_for :datetime, :local_to => :organization
   set_watch_for :datetime, :local_to => :event
 
-  scope :before, lambda { |time| where("shows.datetime < ?", time) }
-  scope :after,  lambda { |time| where("shows.datetime > ?", time) }
+  scope :before, lambda { |time| where("shows.datetime <= ?", time) }
+  scope :after,  lambda { |time| where("shows.datetime >= ?", time) }
   scope :in_range, lambda { |start, stop| after(start).before(stop) }
   scope :played, lambda { where("shows.datetime < ?", Time.now) }
   scope :unplayed, lambda { where("shows.datetime > ?", Time.now) }
@@ -39,6 +39,14 @@ class Show < ActiveRecord::Base
   end
 
   delegate :free?, :to => :event
+
+  def unscoped_event
+    ::Event.unscoped.find(event_id)
+  end
+  
+  def event_deleted?
+    !unscoped_event.deleted_at.nil?
+  end
 
   def gross_potential
     @gross_potential ||= tickets.inject(0) { |sum, ticket| sum += ticket.price.to_i }

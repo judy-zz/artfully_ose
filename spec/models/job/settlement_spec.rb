@@ -3,9 +3,36 @@ require 'spec_helper'
 describe Job::Settlement do
   disconnect_sunspot
   describe ".run" do
-    it "should settle shows for the date range" do
+    let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
+    let(:settlement) { Factory (:settlement) }
+    
+    it "should call the methods using a date range" do
       Job::Settlement.should_receive(:settle_shows_in).with(Settlement.range_for(DateTime.now))
       Job::Settlement.should_receive(:settle_donations_in).with(Settlement.range_for(DateTime.now))
+      Job::Settlement.run
+    end
+    
+    it "should settle a show on the edge of the date range" do
+      settlement.stub(:submit).and_return(nil)
+      range = Settlement.range_for(DateTime.now)   
+      show = Factory(:show, :organization => organization, :event => Factory(:event))
+      show.datetime = range[0]
+      show.save(:validate => false)
+
+      Job::Settlement.should_receive(:settle_donations_in)
+      Settlement.should_receive(:submit).with(organization.id, show.settleables, organization.bank_account, show.id).and_return(settlement)
+      Job::Settlement.run
+    end
+    
+    it "should not settle a show outside of the date range" do
+      settlement.stub(:submit).and_return(nil)
+      range = Settlement.range_for(DateTime.now)   
+      show = Factory(:show, :organization => organization, :event => Factory(:event))
+      show.datetime = range[0] - 1.minute
+      show.save(:validate => false)
+
+      Job::Settlement.should_receive(:settle_donations_in)
+      Settlement.should_not_receive(:submit)
       Job::Settlement.run
     end
   end
@@ -19,6 +46,14 @@ describe Job::Settlement do
       settlement.stub(:submit).and_return(nil)
       shows.each { |show| show.stub(:settleables).and_return(5.times.collect{ Factory(:item) } ) }
       Show.stub(:in_range).and_return(shows)
+    end
+
+    it "should not settle a show if it is part of a deleted event" do
+      shows.first.event.destroy
+      shows.reject(&:event_deleted?).each do |show|
+        Settlement.should_receive(:submit).with(organization.id, show.settleables, organization.bank_account, show.id).and_return(settlement)
+      end
+      Job::Settlement.settle_shows_in(Settlement.range_for(DateTime.now))
     end
 
     it "creates and submit a Settlement for each show" do
