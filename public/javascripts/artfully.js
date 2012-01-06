@@ -284,7 +284,7 @@ artfully.models = (function(){
             jQuery(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
           }
 
-          jQuery(document.createElement('input')).attr('type','submit').val('Buy').appendTo($form);
+          jQuery(document.createElement('input')).attr('type','submit').val('Go').appendTo($form);
 
           $form.submit(function(){
             var params = {
@@ -316,27 +316,27 @@ artfully.models = (function(){
   performance = function(){
     if(modelCache.performance === undefined){
       modelCache.performance = {
-        render: function(target){
+        render: function(target, expanded){
           var $t;
           $t = jQuery(document.createElement('li')).addClass('performance').appendTo(target);
           $t.data('performance', this);
 
-          jQuery(document.createElement('span'))
+          performance_link = jQuery(document.createElement('a'))
           .addClass('performance-datetime')
           .text(this.show_time)
-          .appendTo($t);
-
-          jQuery(document.createElement('a'))
-          .addClass('ticket-search')
-          .text('Buy Tickets')
           .attr("href","#")
           .click(function(){
             jQuery(this).closest(".performance").children(".sections").slideToggle();
             return false;
           })
           .appendTo($t);
+
           this.chart.render($t);
           this.$target = $t;
+          
+          if(expanded == true) {
+            performance_link.trigger('click')
+          }
         }
       };
     }
@@ -357,9 +357,14 @@ artfully.models = (function(){
         },
         render_performances: function($target){
           $ul = jQuery(document.createElement('ul')).addClass('performances').appendTo($target);
-          jQuery.each(this.performances, function(index, performance){
-            performance.render($ul);
-          });
+          
+          if(this.performances.length == 1) {
+            this.performances[0].render($ul, true)
+          } else {
+            jQuery.each(this.performances, function(index, performance){
+              performance.render($ul, false);
+            });
+          }
         }
       };
     }
