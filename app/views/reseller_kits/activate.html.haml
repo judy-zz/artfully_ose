@@ -4,8 +4,7 @@
 .dashboard
   - if current_user.current_organization.bank_account
     %p
-      We have your ACH authorization on file. Please click the button below to
-      notify us of your request.
+      =t(".ach_on_file", :default => "We have your ACH authorization on file. Please click the button below to notify us of your request.")
   - else
     %p
       To activate reselling for your organization, please download the ACH
