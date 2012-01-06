@@ -239,8 +239,9 @@ artfully.models = (function(){
   chart = function(){
     if(modelCache.chart === undefined){
       modelCache.chart = {
-        render: function($target){
-          this.container().hide().appendTo($target);
+        render: function($target, expanded){
+          res = this.container().appendTo($target);
+          if(expanded == false) { res.hide() }
         },
         container: function(){
           var $c = jQuery(document.createElement('ul')).addClass('sections');
@@ -278,7 +279,7 @@ artfully.models = (function(){
               obj = this,
               i;
 
-          $select = jQuery(document.createElement('select')).attr({'name':'ticket_count'}).appendTo($form);
+          $select = jQuery(document.createElement('select')).attr({'name':'ticket_count'}).addClass('ticket_count').appendTo($form);
           jQuery(document.createElement('option')).text("1 Ticket").attr('value', 1).appendTo($select);
           for(i = 2; i <= 10; i++){
             jQuery(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
@@ -325,18 +326,17 @@ artfully.models = (function(){
           .addClass('performance-datetime')
           .text(this.show_time)
           .attr("href","#")
-          .click(function(){
-            jQuery(this).closest(".performance").children(".sections").slideToggle();
-            return false;
-          })
           .appendTo($t);
-
-          this.chart.render($t);
-          this.$target = $t;
           
-          if(expanded == true) {
-            performance_link.trigger('click')
+          if(expanded == false) {            
+            performance_link.click(function(){
+              jQuery(this).closest(".performance").children(".sections").slideToggle();
+              return false;
+            })
           }
+
+          this.chart.render($t, expanded);
+          this.$target = $t;
         }
       };
     }
