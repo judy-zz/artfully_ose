@@ -239,8 +239,9 @@ artfully.models = (function(){
   chart = function(){
     if(modelCache.chart === undefined){
       modelCache.chart = {
-        render: function($target){
-          this.container().hide().appendTo($target);
+        render: function($target, expanded){
+          res = this.container().appendTo($target);
+          if(expanded == false) { res.hide() }
         },
         container: function(){
           var $c = jQuery(document.createElement('ul')).addClass('sections');
@@ -278,13 +279,13 @@ artfully.models = (function(){
               obj = this,
               i;
 
-          $select = jQuery(document.createElement('select')).attr({'name':'ticket_count'}).appendTo($form);
+          $select = jQuery(document.createElement('select')).attr({'name':'ticket_count'}).addClass('ticket_count').appendTo($form);
           jQuery(document.createElement('option')).text("1 Ticket").attr('value', 1).appendTo($select);
           for(i = 2; i <= 10; i++){
             jQuery(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
           }
 
-          jQuery(document.createElement('input')).attr('type','submit').val('Buy').appendTo($form);
+          jQuery(document.createElement('input')).attr('type','submit').val('Go').appendTo($form);
 
           $form.submit(function(){
             var params = {
@@ -299,7 +300,6 @@ artfully.models = (function(){
                   artfully.alert("Only " + data.length + " ticket(s) could be found for this performance.");
                 }
                 artfully.widgets.cart().add(data);
-                jQuery('.sections').slideUp();
               } else {
                 artfully.alert("Sorry! No tickets were available for purchase at this time.");
               }
@@ -316,26 +316,25 @@ artfully.models = (function(){
   performance = function(){
     if(modelCache.performance === undefined){
       modelCache.performance = {
-        render: function(target){
+        render: function(target, expanded){
           var $t;
           $t = jQuery(document.createElement('li')).addClass('performance').appendTo(target);
           $t.data('performance', this);
 
-          jQuery(document.createElement('span'))
+          performance_link = jQuery(document.createElement('a'))
           .addClass('performance-datetime')
           .text(this.show_time)
-          .appendTo($t);
-
-          jQuery(document.createElement('a'))
-          .addClass('ticket-search')
-          .text('Buy Tickets')
           .attr("href","#")
-          .click(function(){
-            jQuery(this).closest(".performance").children(".sections").slideToggle();
-            return false;
-          })
           .appendTo($t);
-          this.chart.render($t);
+          
+          if(expanded == false) {            
+            performance_link.click(function(){
+              jQuery(this).closest(".performance").children(".sections").slideToggle();
+              return false;
+            })
+          }
+
+          this.chart.render($t, expanded);
           this.$target = $t;
         }
       };
@@ -357,9 +356,14 @@ artfully.models = (function(){
         },
         render_performances: function($target){
           $ul = jQuery(document.createElement('ul')).addClass('performances').appendTo($target);
-          jQuery.each(this.performances, function(index, performance){
-            performance.render($ul);
-          });
+          
+          if(this.performances.length == 1) {
+            this.performances[0].render($ul, true)
+          } else {
+            jQuery.each(this.performances, function(index, performance){
+              performance.render($ul, false);
+            });
+          }
         }
       };
     }

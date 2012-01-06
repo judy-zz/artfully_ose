@@ -8,7 +8,7 @@ class Job::Settlement < Job::Base
 
     def settle_shows_in(range)
       logger.info "Settling shows..."
-      shows_to_settle = Show.in_range(range[0], range[1]).reject(&:free?)
+      shows_to_settle = Show.in_range(range[0], range[1]).reject(&:event_deleted?).reject(&:free?)
       settlements = []
       
       shows_to_settle.each do |show|
