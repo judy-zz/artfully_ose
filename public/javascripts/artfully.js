@@ -300,7 +300,6 @@ artfully.models = (function(){
                   artfully.alert("Only " + data.length + " ticket(s) could be found for this performance.");
                 }
                 artfully.widgets.cart().add(data);
-                jQuery('.sections').slideUp();
               } else {
                 artfully.alert("Sorry! No tickets were available for purchase at this time.");
               }
