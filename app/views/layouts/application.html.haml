@@ -29,3 +29,4 @@
     / = javascript_include_tag "http://www.denoteapp.com/js/allow.js" if Rails.env.demo?
     = render :partial => "shared/help_tab" unless Rails.env.development?
     = include_javascripts :vendor, :application, :custom
+    = yield :custom_js

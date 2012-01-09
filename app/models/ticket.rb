@@ -20,6 +20,7 @@ class Ticket < ActiveRecord::Base
 
   scope :played, joins(:show).merge(Show.played)
   scope :unplayed, joins(:show).merge(Show.unplayed)
+  scope :resellable, where(:state => "on_sale")
 
   state_machine do
     state :off_sale

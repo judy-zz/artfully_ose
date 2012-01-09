@@ -3,6 +3,7 @@ class Organization < ActiveRecord::Base
   has_many :charts
   has_many :shows
   has_many :tickets
+  has_many :ticket_offers
 
   has_many :people
   has_many :segments

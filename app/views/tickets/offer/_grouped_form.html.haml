@@ -1,0 +1,11 @@
+#offer-tickets.grouped-form
+  %h3 Create Offer
+  = form_tag offer_show_tickets_path(show), :method => :put do
+    = hidden_field_tag :show_id, show.id
+    %ul
+      - show.offerable_tickets.each do |ticket|
+        %li
+          .label-and-element
+            = check_box_tag "selected_tickets[]", ticket.id, false, :id => "off_sale_ticket_#{ticket.id}", :class => "item_#{ticket.id}"
+            = label_tag "item_#{ticket.id}", ticket.id
+    = submit_tag "Create Offer"

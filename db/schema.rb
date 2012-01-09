@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111222144442) do
+ActiveRecord::Schema.define(:version => 20111230190920) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -346,6 +346,19 @@ ActiveRecord::Schema.define(:version => 20111222144442) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
+  end
+
+  create_table "ticket_offers", :force => true do |t|
+    t.integer  "organization_id"
+    t.integer  "show_id"
+    t.integer  "section_id"
+    t.integer  "reseller_profile_id"
+    t.string   "status",              :default => "creating", :null => false
+    t.integer  "count",               :default => 0,          :null => false
+    t.integer  "available",           :default => 0,          :null => false
+    t.integer  "sold",                :default => 0,          :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tickets", :force => true do |t|

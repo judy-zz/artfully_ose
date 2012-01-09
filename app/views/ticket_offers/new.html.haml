@@ -1,0 +1,19 @@
+- content_for :header do
+  %h1 Create a new ticket offer
+
+.compact-spread
+
+  - @reseller_profiles.each do |profile|
+
+    .reseller-profile
+
+      - form_for [ @organization, @ticket_offer ] do |f|
+
+        = f.hidden_field :organization_id, :value => @organization.id
+        = f.hidden_field :reseller_profile_id, :value => profile.id
+        = f.hidden_field :show_id, :value => @ticket_offer.show_id
+
+        %h3 #{profile.organization.name} (#{number_to_currency profile.fee/100.0} fee)
+        %h4= link_to profile.url
+        = simple_format profile.description
+        = f.submit "Offer tickets to this reseller"

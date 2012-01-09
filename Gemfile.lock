@@ -25,6 +25,7 @@ GEM
       Platform (>= 0.4.0)
       open4
     Platform (0.4.0)
+    ZenTest (4.6.2)
     abstract (1.0.0)
     actionmailer (3.0.9)
       actionpack (= 3.0.9)
@@ -59,6 +60,10 @@ GEM
       rails
     arel (2.0.10)
     athena_resource (0.0.1)
+    autotest (4.4.6)
+      ZenTest (>= 4.4.1)
+    autotest-fsevent (0.2.7)
+      sys-uname
     awesome_print (0.4.0)
     bcrypt-ruby (2.1.4)
     bson (1.3.1)
@@ -219,6 +224,8 @@ GEM
     sunspot_rails (1.2.1)
       nokogiri
       sunspot (= 1.2.1)
+    sys-uname (0.9.0)
+      ffi (>= 1.0.0)
     term-ansicolor (1.0.7)
     thin (1.2.11)
       daemons (>= 1.0.9)
@@ -250,6 +257,8 @@ DEPENDENCIES
   activerecord-import
   acts-as-taggable-on (~> 2.1.0)
   athena_resource
+  autotest
+  autotest-fsevent
   awesome_print
   bson
   bson_ext

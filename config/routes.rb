@@ -1,4 +1,5 @@
 Artfully::Application.routes.draw do
+
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index
@@ -49,6 +50,11 @@ Artfully::Application.routes.draw do
     resources :reseller_profiles
     put :tax_info, :on => :member
     resources :memberships
+    resources :ticket_offers do
+      collection do
+        post "/new", :to => "ticket_offers#new"
+      end
+    end
     member do
       post :connect
     end

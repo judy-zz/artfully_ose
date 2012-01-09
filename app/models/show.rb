@@ -88,11 +88,15 @@ class Show < ActiveRecord::Base
     copy
   end
 
+  def show_time
+    I18n.l(datetime_local_to_event, :format => :long_with_day)
+  end
+
   def as_json(options={})
     { "id" => id,
       "chart_id" => chart.id,
       "state" => state,
-      "show_time" => I18n.l( datetime_local_to_event, :format => :long_with_day)
+      "show_time" => show_time
     }
   end
 
