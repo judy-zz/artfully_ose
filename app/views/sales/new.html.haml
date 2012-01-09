@@ -49,8 +49,11 @@
           .radio= radio_button_tag(:payment_method, :cash, true, :class => 'payment-method', :disabled => 'true')
           .label= label_tag(:payment_method, "Cash")
         %li
-          .radio= radio_button_tag(:payment_method, :credit_card, false, :class => 'payment-method', :disabled => 'true')
-          .label= label_tag(:payment_method, "Credit")
+          .radio= radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true')
+          .label= label_tag(:payment_method, "Credit (Swipe)")
+        %li
+          .radio= radio_button_tag(:payment_method, :credit_card_manual, false, :class => 'payment-method', :disabled => 'true')
+          .label= label_tag(:payment_method, "Credit (Manual)")
       %ul#payment-info.hidden
         %li
           .label= label_tag("credit_card[cardholder_name]", "Name on Card")
@@ -66,10 +69,12 @@
             = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
             
     %fieldset.floater.slim
-      #total
+      #total.total
         %span total
         .price= number_as_cents 0
-      #checkout-now= submit_tag "Checkout Now", :style => 'width:100%'
+      #checkout-now
+        %button#checkout-now-button{:style => 'width:100%'}
+          Checkout
   .clear
       
 .document
@@ -91,3 +96,26 @@
             %td= item.buyer.email
             %td= item.ticket.section.name
             %td= number_as_cents(item.ticket.price)
+            
+#sell-popup
+  #top-container
+    #sell-total.total{:style => 'float:left'}
+      %span total
+      .price= number_as_cents 0
+    #sell-container{:style => 'float:right'}
+      %button#sell-button
+        Sell
+      #swipe-now.hidden
+        "Swipe card to complete transaction"
+    .clear
+  #popup-ticket-list
+    %table
+      %thead
+        %tr
+          %th
+            Section
+          %th
+            Price
+      %tbody
+  %button#cancel-button
+    Cancel

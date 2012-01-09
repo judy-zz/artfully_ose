@@ -1574,3 +1574,20 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #dddddd), color-stop(100%, #cccccc));
   border: 1px solid #cccccc;
   cursor: default; }
+
+#sell-popup #sell-total {
+  text-align: center;
+  font-weight: bold;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #dddddd; }
+  #sell-popup #sell-total span {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: #cccccc; }
+  #sell-popup #sell-total .price {
+    color: #999999;
+    font-size: 2.5em; }
+#sell-popup #popup-ticket-list {
+  height: 325px;
+  overflow: scroll; }

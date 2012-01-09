@@ -16,6 +16,24 @@ function bulletedListItem(person){
 
 $("document").ready(function(){
 	
+  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:500})
+  $("#checkout-now-button").click(function(){
+    if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
+      $('#sell-button').hide()
+      $('#swipe-now').show()
+    } else {
+      $('#sell-button').show()
+      $('#swipe-now').hide()      
+    }
+    
+    $("#sell-popup").dialog("open")
+    return false;
+  });
+  
+  $("#cancel-button").click(function(){
+    $("#sell-popup").dialog("close")
+  });
+	
 	$('.ticket-quantity-select').change(function(){
 	   	$(this).closest("form").submit()
 	});
@@ -28,12 +46,20 @@ $("document").ready(function(){
 			  $('.flash').remove()
   		})
 		.bind("ajax:success", function(xhr, sale){
-	   		$('#total').find('.price').html(sale.total / 100).formatCurrency();
+	   		$('.total').find('.price').html(sale.total / 100).formatCurrency();
 			  $("#total").removeClass("loading");
     		$('input[type="submit"]').removeAttr('disabled');
     		$('input[type="submit"]').removeClass('disabled');
     		
     		$('input[name="payment_method"]').attr('disabled', (sale.total == 0))
+
+        $.each(sale.tickets, function () {
+          $("#popup-ticket-list").find('tbody')
+            .append($('<tr>')
+              .append($('<td>').html(this.section.name))
+              .append($('<td>').html(this.price / 100).formatCurrency())
+          );         
+        });
 			
   			if(sale.sale_made == true) {
           $.each(sale.door_list_rows, function () {
@@ -42,7 +68,7 @@ $("document").ready(function(){
                 .append($('<td>').html("☐"))
                 .append($('<td>').html(this.buyer))
                 .append($('<td>').html(this.email))
-                .append($('<td>').html(this.section))
+                .append($('<td>').html(this.section.name))
                 .append($('<td>').html(this.price / 100).formatCurrency())
             );         
             $("#payment_method_cash").click()
@@ -90,7 +116,7 @@ $("document").ready(function(){
   });
 
   $(".payment-method").change(function(){
-    if($(this).attr('value') == 'cash'){
+    if($(this).attr('value') != 'credit_card_manual'){
       $("#payment-info").addClass("hidden");
       $("#credit_card_card_number").val("")
       $("#credit_card_cardholder_name").val("")

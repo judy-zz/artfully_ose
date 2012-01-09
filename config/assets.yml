@@ -30,7 +30,6 @@ javascripts:
   application:
     - public/javascripts/jquery_ujs.js
     - public/javascripts/application.js
-    - public/javascripts/box-office.js
 
   custom:
     - public/javascripts/custom/**/*.js
