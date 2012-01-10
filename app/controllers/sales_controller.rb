@@ -27,7 +27,7 @@ class SalesController < ApplicationController
   end
 
   def checking_out?
-    !params[:commit].nil?
+    !params[:commit].blank?
   end
   
   def door_list_rows
