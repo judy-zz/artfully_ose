@@ -53,6 +53,7 @@ Artfully::Application.routes.draw do
     resources :ticket_offers do
       collection do
         post "/new", :to => "ticket_offers#new"
+        get "/create", :to => "ticket_offers#create"
       end
     end
     member do
