@@ -23,7 +23,11 @@
 
       %li
         .label= f.label :section_id
-        .element= f.select :section_id, []
+        .element
+          - if @ticket_offer.show && @sections[@ticket_offer.show_id]
+            = f.select :section_id, options_from_collection_for_select(@sections[@ticket_offer.show_id], :id, :name, @ticket_offer.section_id)
+          - else
+            = f.select :section_id, []
 
       %li
         .label= f.label :count
@@ -91,5 +95,7 @@
       eventSelector.change(loadShowOptions);
       showSelector.change(loadSectionOptions);
       sectionSelector.change(loadCount);
+
+      loadCount();
 
     });
