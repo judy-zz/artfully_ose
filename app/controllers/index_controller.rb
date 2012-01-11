@@ -17,6 +17,11 @@ class IndexController < ApplicationController
     if current_user.is_in_organization?
       @events = current_user.current_organization.events.paginate(:page => params[:page], :per_page => 10)
       @people = current_user.current_organization.people.limit(5)
+      @reseller_profile = current_user.current_organization.reseller_profile
+
+      if @reseller_profile
+        @ticket_offers = @reseller_profile.ticket_offers.offered.all
+      end
     end
   end
 

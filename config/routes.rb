@@ -55,6 +55,11 @@ Artfully::Application.routes.draw do
         post "/new", :to => "ticket_offers#new"
         get "/create", :to => "ticket_offers#create"
       end
+      member do
+        get :accept
+        get :decline
+        get :confirm_decline
+      end
     end
     member do
       post :connect

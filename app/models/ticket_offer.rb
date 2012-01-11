@@ -18,13 +18,29 @@ class TicketOffer < ActiveRecord::Base
   scope :rejected, where(:status => "rejected")
   scope :completed, where(:status => "completed")
 
-  def offer!
-    if %w( creating offered ).include?(self.status)
-      self.update_attribute :status, :offered
+  ## State Transitions ##
+
+  def transition_to_status!(valid_prestatus, status)
+    if valid_prestatus.include?(self.status)
+      self.update_attribute :status, status
     else
       raise TicketOfferError.new("incorrect ticket offer sequence")
     end
   end
+
+  def offer!
+    transition_to_status! %w( creating offered ), "offered"
+  end
+
+  def accept!
+    transition_to_status! %w( offered accepted ), "accepted"
+  end
+
+  def decline!
+    transition_to_status! %w( offered rejected ), "rejected"
+  end
+
+  ## Associations ##
 
   def event_id
     show.event.id if show && show.event
@@ -33,6 +49,8 @@ class TicketOffer < ActiveRecord::Base
   def event
     show.event if show
   end
+
+  ## Supporting Classes ##
 
   class TicketOfferError < StandardError; end
 

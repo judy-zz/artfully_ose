@@ -1,7 +1,7 @@
 class TicketOffersController < ApplicationController
 
   before_filter :find_organization
-  before_filter :find_ticket_offer, :only => [ :show, :edit, :update, :destroy ]
+  before_filter :find_ticket_offer, :only => [ :show, :edit, :update, :destroy, :accept, :decline, :confirm_decline ]
 
   def index
     @ticket_offers = TicketOffer.all
@@ -96,6 +96,21 @@ class TicketOffersController < ApplicationController
       format.html { redirect_to(ticket_offers_url) }
       format.xml  { head :ok }
     end
+  end
+
+  def accept
+    @ticket_offer.accept!
+
+    redirect_to root_path, :notice => "You have accepted this ticket offer."
+  end
+
+  def decline
+    @ticket_offer.decline!
+
+    redirect_to root_path, :notice => "You have rejected this ticket offer."
+  end
+
+  def confirm_decline
   end
 
   protected

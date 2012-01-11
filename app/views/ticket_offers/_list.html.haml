@@ -1,0 +1,29 @@
+- if ticket_offers.present?
+
+  #ticket-offers
+
+    %h3 Tickets offered to your organization for resale
+
+    %table.ticket-offers-list
+
+      %thead
+        %th Organization
+        %th Event
+        %th Show
+        %th Section
+        %th Tickets
+        %th &nbsp;
+        %th &nbsp;
+
+      %tbody
+
+        - ticket_offers.each do |ticket_offer|
+
+          %tr
+            %td.organization-name= ticket_offer.organization.name
+            %td.event-name= ticket_offer.event.name
+            %td.show-name= ticket_offer.show.show_time
+            %td.section= ticket_offer.section.name
+            %td.ticket-count= ticket_offer.count
+            %td.accept.button= link_to "Accept", accept_organization_ticket_offer_path(ticket_offer.organization, ticket_offer)
+            %td.decline.button= link_to "Decline", confirm_decline_organization_ticket_offer_path(ticket_offer.organization, ticket_offer)

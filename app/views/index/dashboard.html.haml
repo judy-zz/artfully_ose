@@ -31,6 +31,8 @@
     - else
       = render :partial => 'people/list', :locals => { :people => @people }
 
+  = render :partial => "ticket_offers/list", :locals => { :ticket_offers => @ticket_offers }
+
 .sideboard
   - if !@events.blank?
     %h3 Overview
