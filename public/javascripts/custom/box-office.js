@@ -21,13 +21,25 @@ $("document").ready(function(){
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
       $('#sell-button').hide()
       $('#swipe-now').show()
-	  $('input[id=commit]').focus()
     } else {
       $('#sell-button').show()
       $('#swipe-now').hide()      
     }
     
     $("#sell-popup").dialog("open")
+
+    if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
+	  $("#hack-cc-number").removeClass("hidden")
+	  $("#hack-cc-number").focus()
+	  $("#hack-cc-number").change(function(){
+	    $("#credit_card_card_number").val($("#hack-cc-number").val())
+		$('.ticket-quantity-select').closest("form").submit()
+		$("#sell-popup").dialog("close")
+	  });
+    } else {
+	  $("#hack-cc-number").addClass("hidden")
+	}
+
     return false;
   });
   

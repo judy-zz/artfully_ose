@@ -8,6 +8,16 @@ describe AthenaCreditCard do
     it { should respond_to attribute.underscore + '=' }
   end
 
+  describe "parsing track data" do
+    it "should parse swiped track data" do
+      cc = AthenaCreditCard.new({:card_number => '%B0123456789012345^MOORE/GARY S^1409101000000000000000000000000?;0123456789012345=15021010000000000869?'})
+      cc.parse_card_number
+      cc.card_number.should eq '0123456789012345'
+      cc.cardholder_name.should eq 'GARY S MOORE'
+      cc.expirationd_date.should eq '09/2014'
+    end
+  end
+  
   it "should not be valid with a credit card with letters" do
     p subject.new_record?
     subject.card_number << "A"

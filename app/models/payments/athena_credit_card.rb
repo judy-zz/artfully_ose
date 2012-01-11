@@ -48,7 +48,29 @@ class AthenaCreditCard < AthenaResource::Base
 
   def valid?
     clean_card_number
+    parse_card_number
     super
+  end
+  
+  ###################  
+  #
+  #For swiped cards, some measure of cleanup is necessary before submission
+  #this method will parse a mag-swiped card number which is submitted in this format:
+  #
+  # %BNNNNNNNNNNNNNNNN^LLLLL/FFFFF^YYMM101000000000086900869000000?
+  #
+  # Where 
+  # NNN... is the 16 digit number
+  # LLL... is the cardholders last name
+  # FFF... is the cardholder's first name (and possible middle initial)
+  # YY     is the two-digit year of expiration
+  # MM     is the two-digit month of expiration
+  #
+  #################
+  def parse_card_number
+    if(attributes['card_number'].starts_with? '%B')
+      puts 'SWIPING'
+    end
   end
 
   private
