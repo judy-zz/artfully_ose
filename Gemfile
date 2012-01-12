@@ -25,6 +25,7 @@ gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.12'
 gem 's3', '>= 0.3.8'
 gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
+gem 'swiper', :path => "vendor/gems/swiper-0.0.1"
 gem 'jammit'
 gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
 gem 'comma',     :path => "vendor/gems/comma-0.4.0"

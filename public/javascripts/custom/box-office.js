@@ -14,6 +14,43 @@ function bulletedListItem(person){
   $li.appendTo($(".target"));
 }
 
+function showError(message) {
+	$('#heading').after($(document.createElement('div')).addClass('flash').addClass('error').html(message));
+}
+
+function showMessage(message) {
+	$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(message));
+}
+
+function resetPerson() {
+	$('#anonymous').attr('checked','checked');
+	$('#person-search').addClass("hidden");
+    $("#person-results li:visible").remove();
+	$('#terms').val('')	
+}
+
+function resetPayment() {
+	$("#payment_method_cash").click()
+	$("#credit_card_card_number").val()
+	$("#credit_card_cardholder_name").val()
+	$("#credit_card_expiration_date_2i_").val($('option:first', $("#credit_card_expiration_date_2i_")).val())
+	$("#credit_card_expiration_date_1i_").val($('option:first', $("#credit_card_expiration_date_1i_")).val())
+	$('input[name="commit"]').val('')
+}
+
+function resetQuantites() {
+	$.each($('.ticket-quantity-select'), function() {
+		$('option[value="0"]', this).attr('selected','selected')
+	});	
+}
+
+function setPriceDisplay(amountInCents) {
+	if (amountInCents > 0) {
+		amountInCents = amountInCents / 100;
+	}
+	$('#total').find('.price').html(amountInCents).formatCurrency();	
+}
+
 $("document").ready(function(){
 	
   $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:500})
@@ -29,18 +66,22 @@ $("document").ready(function(){
     $("#sell-popup").dialog("open")
 
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
-	  $("#hack-cc-number").removeClass("hidden")
-	  $("#hack-cc-number").focus()
-	  $("#hack-cc-number").change(function(){
-	    $("#credit_card_card_number").val($("#hack-cc-number").val())
-		$('.ticket-quantity-select').closest("form").submit()
-		$("#sell-popup").dialog("close")
-	  });
+	  $("input[name=hack-cc-number]").removeClass("hidden")
+	  $("input[name=hack-cc-number]").focus()
     } else {
 	  $("#hack-cc-number").addClass("hidden")
 	}
 
     return false;
+  });
+
+  $("input[name=hack-cc-number]").change(function(){
+    $("#credit_card_card_number").val($("input[name=hack-cc-number]").val())
+	form = $('.ticket-quantity-select').closest("form")
+	form.find('input[name="commit"]').val('submit')
+	$("input[name=hack-cc-number]").val('')
+	$("#sell-popup").dialog("close")
+	form.submit()
   });
   
   $("#cancel-button").click(function(){
@@ -62,10 +103,16 @@ $("document").ready(function(){
     		$("#total").addClass("loading");
     		$('input[type="submit"]').addClass('disabled');
     		$('input[type="submit"]').attr('disabled', 'disabled');
-			  $('.flash').remove()
+			$('.flash').remove()
   		})
+		.bind("ajax:failure", function(){
+			showError("Sorry, but Artful.ly could not process the payment.  An error report has been recorded.")
+			resetPayment()
+		})
 		.bind("ajax:success", function(xhr, sale){
-	   		$('.total').find('.price').html(sale.total / 100).formatCurrency();
+			
+			resetPayment();
+	   		setPriceDisplay(sale.total)
 			$("#total").removeClass("loading");
     		$('input[type="submit"]').removeAttr('disabled');
     		$('input[type="submit"]').removeClass('disabled');
@@ -83,27 +130,23 @@ $("document").ready(function(){
 			$("#sell-popup").dialog("close")
 	  		
 			if(sale.sale_made == true) {
-	          $.each(sale.door_list_rows, function () {
-	            $("#door-list").find('tbody')
-	              .append($('<tr>')
-	                .append($('<td>').html("☐"))
-	                .append($('<td>').html(this.buyer))
-	                .append($('<td>').html(this.email))
-	                .append($('<td>').html(this.section))
-	                .append($('<td>').html(this.price / 100).formatCurrency())
-	            );         
-	            $("#payment_method_cash").click()
-	            $('#anonymous').click()
-				$('input[name="commit"]').val('')
-	          });
-			  
-			$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(sale.message));
-			$.each($('.ticket-quantity-select'), function() {
-				$('option[value="0"]', this).attr('selected','selected')
-  			});
-  	   		$('#total').find('.price').html(0).formatCurrency();
-  			}	else if (sale.sale_made == false) {
-  			  $('#heading').after($(document.createElement('div')).addClass('flash').addClass('error').html(sale.message));
+				$.each(sale.door_list_rows, function () {
+					$("#door-list").find('tbody')
+					  .append($('<tr>')
+					    .append($('<td>').html("☐"))
+					    .append($('<td>').html(this.buyer))
+					    .append($('<td>').html(this.email))
+					    .append($('<td>').html(this.section))
+					    .append($('<td>').html(this.price / 100).formatCurrency())
+					);         	
+				});
+				resetPerson();
+			  	resetQuantites();
+				setPriceDisplay(0);
+				showMessage(sale.message);
+  	   		
+  			} else if (sale.sale_made == false) {
+  			  showError(sale.message);
   			}
 		});
 	

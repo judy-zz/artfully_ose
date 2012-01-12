@@ -52,25 +52,13 @@ class AthenaCreditCard < AthenaResource::Base
     super
   end
   
-  ###################  
-  #
-  #For swiped cards, some measure of cleanup is necessary before submission
-  #this method will parse a mag-swiped card number which is submitted in this format:
-  #
-  # %BNNNNNNNNNNNNNNNN^LLLLL/FFFFF^YYMM101000000000086900869000000?
-  #
-  # Where 
-  # NNN... is the 16 digit number
-  # LLL... is the cardholders last name
-  # FFF... is the cardholder's first name (and possible middle initial)
-  # YY     is the two-digit year of expiration
-  # MM     is the two-digit month of expiration
-  #
-  #################
-  def parse_card_number
-    if(attributes['card_number'].starts_with? '%B')
-      puts 'SWIPING'
-    end
+  def self.from_swipe(swipe_data)
+    card = AthenaCreditCard.new
+    swiped_data = Swiper.parse swipe_data
+    card.card_number = swiped_data.track1.primary_account_number
+    card.cardholder_name = swiped_data.track1.cardholder_name
+    card.expiration_date = swiped_data.track1.expiration_month + '/20' + swiped_data.track1.expiration_year    
+    card
   end
 
   private

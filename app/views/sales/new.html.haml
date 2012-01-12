@@ -33,7 +33,7 @@
           .full.paired.element
             = text_field_tag(:terms, params[:terms], :id => "terms")
             = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
-      %ul.radio-list.target
+      %ul.radio-list.target#person-results
         .people-search-message
         - @people.each do |person|
           %li

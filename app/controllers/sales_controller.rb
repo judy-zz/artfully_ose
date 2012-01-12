@@ -79,14 +79,17 @@ class SalesController < ApplicationController
     end
 
     def payment
-      if has_card_info?
+      if has_card_info? && (Swiper.can_parse? params[:credit_card][:card_number])
+        card = AthenaCreditCard.from_swipe(params[:credit_card][:card_number])
+        CreditCardPayment.for_card_and_customer(card, person.to_customer)
+      elsif has_card_info?
         card = AthenaCreditCard.new(params[:credit_card])
         CreditCardPayment.for_card_and_customer(card, person.to_customer)
       else
         CashPayment.new(person.to_customer)
       end
     end
-
+  
     def has_card_info?
       params[:credit_card].present? and params[:credit_card][:card_number].present?
     end
