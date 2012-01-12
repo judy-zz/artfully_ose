@@ -67,11 +67,11 @@ $("document").ready(function(){
     $("#sell-popup").dialog("open")
 
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
-	  $("input[name=hack-cc-number]").removeClass("hidden")
-	  $("input[name=hack-cc-number]").focus()
+	    $("input[name=hack-cc-number]").removeClass("hidden")
+	    $("input[name=hack-cc-number]").focus()
     } else {
-	  $("#hack-cc-number").addClass("hidden")
-	}
+	    $("#hack-cc-number").addClass("hidden")
+	  }
 
     return false;
   });
@@ -79,17 +79,17 @@ $("document").ready(function(){
   //copy the hack CC number (swiped data) into the actual CC number field
   $("input[name=hack-cc-number]").change(function(){
     $("#credit_card_card_number").val($("input[name=hack-cc-number]").val())
-	form = $('.ticket-quantity-select').closest("form")
-	form.find('input[name="commit"]').val('submit')
-	$("input[name=hack-cc-number]").val('')
-	$("#sell-popup").dialog("close")
-	form.submit()
+    form = $('.ticket-quantity-select').closest("form")
+    form.find('input[name="commit"]').val('submit')
+    $("input[name=hack-cc-number]").val('')
+    $("#sell-popup").dialog("close")
+    form.submit()
   });
 
   //Force the hack CC field to never lose focus in an attempt to 
   //ensure the swiped data always lands in the field
   $("input[name=hack-cc-number]").blur(function(){
-    $("input[name=hack-cc-number]").focus()
+    setTimeout( function(){ $("input[name=hack-cc-number]").focus(); }, 100 );
   });
   
   $("#cancel-button").click(function(){
@@ -98,8 +98,11 @@ $("document").ready(function(){
 
   $("#sell-button").click(function(){
     form = $('.ticket-quantity-select').closest("form")
-	form.find('input[name="commit"]').val('submit')
-	form.submit()
+	  form.find('input[name="commit"]').val('submit')
+	  $("#sell-button").addClass('disabled')
+  	$('#sell-button').attr('disabled', true)
+	  $('#sell-button').html('Processing...')
+	  form.submit()
   });
 	
 	$('.ticket-quantity-select').change(function(){
@@ -109,8 +112,8 @@ $("document").ready(function(){
 	$('.ticket-quantity-select').closest("form")
 		.bind("ajax:beforeSend", function(){
     		$("#total").addClass("loading");
-    		$('input[type="submit"]').addClass('disabled');
-    		$('input[type="submit"]').attr('disabled', 'disabled');
+    	  $("#checkout-now-button").addClass('disabled')
+    	  $('#checkout-now-button').attr('disabled', true)
 			$('.flash').remove()
   		})
 		.bind("ajax:failure", function(){
@@ -120,8 +123,6 @@ $("document").ready(function(){
 		.bind("ajax:success", function(xhr, sale){
 	   		setPriceDisplay(sale.total)
 			$("#total").removeClass("loading");
-    		$('input[type="submit"]').removeAttr('disabled');
-    		$('input[type="submit"]').removeClass('disabled');
     		
     		$('input[name="payment_method"]').attr('disabled', (sale.total == 0))
 			$('#popup-ticket-list tbody tr').remove()
@@ -132,29 +133,34 @@ $("document").ready(function(){
 	              .append($('<td>').html(this.price / 100).formatCurrency())
 	          );         
 	        });
+  	  $("#checkout-now-button").removeClass('disabled')
+  	  $('#checkout-now-button').attr('disabled', false)
 	
 			$("#sell-popup").dialog("close")
+  	  $("#sell-button").removeClass('disabled')
+  	  $('#sell-button').attr('disabled', false)
+	    $('#sell-button').html('Sell')
 	  		
 			if(sale.sale_made == true) {
-				$.each(sale.door_list_rows, function () {
-					$("#door-list").find('tbody')
-					  .append($('<tr>')
-					    .append($('<td>').html("☐"))
-					    .append($('<td>').html(this.buyer))
-					    .append($('<td>').html(this.email))
-					    .append($('<td>').html(this.section))
-					    .append($('<td>').html(this.price / 100).formatCurrency())
-					);         	
-				});
-				resetPayment();
-				resetPerson();
-			  	resetQuantites();
-				setPriceDisplay(0);
-				showMessage(sale.message);
+  				$.each(sale.door_list_rows, function () {
+  					$("#door-list").find('tbody')
+  					  .append($('<tr>')
+  					    .append($('<td>').html("☐"))
+  					    .append($('<td>').html(this.buyer))
+  					    .append($('<td>').html(this.email))
+  					    .append($('<td>').html(this.section))
+  					    .append($('<td>').html(this.price / 100).formatCurrency())
+  					);         	
+  				});
+  				resetPayment();
+  				resetPerson();
+  			  resetQuantites();
+  				setPriceDisplay(0);
+  				showMessage(sale.message);
   	   		
   			} else if (sale.sale_made == false) {
-				showError(sale.message);
-				resetPayment();
+  				showError(sale.message);
+  				resetPayment();
   			}
 		});
 	

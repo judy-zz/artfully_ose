@@ -1583,7 +1583,11 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   text-align: center;
   font-weight: bold;
   line-height: 40px;
-  width: 200px; }
+  width: 200px;
+  font-size: 18pt; }
+
+.disabled {
+  background: #eeeeee; }
 
 #checkout-now.disabled a {
   background: #dddddd;
