@@ -34,12 +34,14 @@ class TicketOffer < ActiveRecord::Base
 
   def accept!
     transition_to_status! %w( offered accepted ), "accepted"
+
+    ProducerMailer.ticket_offer_accepted(self).deliver
   end
 
   def decline!(reason)
     transition_to_status! %w( offered rejected ), "rejected"
-
     self.update_attribute :rejection_reason, reason
+    ProducerMailer.ticket_offer_rejected(self).deliver
   end
 
   ## Associations ##
