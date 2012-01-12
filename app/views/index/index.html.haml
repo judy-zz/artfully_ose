@@ -1,106 +1,223 @@
-%h1 Grow Your Audience by Organizing Your Data
-%h2 Artfully is an online system to manage your tickets, donations and contacts.
-%h3 It’s a simple, elegant way to keep track of events, people, and your everyday work.
+:css
+  .hero-unit {
+    color: #fff;
+    background-image: url('#{image_path('index/hero.jpg')}');
+    margin-top: -25px;
+  }
+  
+  .hero-unit h1, .hero-unit h2, .hero-unit h3, .hero-unit h4, .hero-unit p {
+    color: white;
+    text-shadow: 1px 1px 6px #000;
+    font-family: Helvetica, Arial, sans-serif;
+  }
 
-//
+  .hero-unit h1 {
+    margin-bottom: 20px;
+  }
 
-%h4 Go with the Good Guys
+  .landing-section {
+    margin-bottom: 150px;
+  }
 
-%h5 Start with 19,000 Artists.
-%p If we know anything, it’s artists. At Fractured Atlas, we help thousands of members navigate insurance, fundraising, and technology for their arts businesses. We’ve learned a lot  from a decade of hearing about their daily challenges and celebrating their successes. With 19,000 members in 50 states and many countries, we understand what you need – sell tickets, accept donations, and keep track of your own contacts in one place. Whether you are a choreographer, gallery, theater company, band, filmmaker, writer, craft artist, or all of the above, we are here to help.
- 
-%h5 Listen Closely.
-%p We didn’t just stop with our members – we took it on the road. Artful.ly was designed by artists and administrators from across the country. Design participants in New York, San Francisco, Philadelphia and Minneapolis / St. Paul told us what they needed, and we listened. Artful.ly’s original requirements came directly from the mouths of artists. We’re excited to give you what you want, and even more excited to roll out a wish list of new features built on best practices over the coming years!
- 
-%h5 Add a Bunch of Geeks.
-%p Fractured Atlas has a secret weapon – we speak geek. We have a stellar team of software developers who are focused solely on creating products for you. Our staff works to translate artist needs into software code. You can be sure that you’re getting the most up-to-date, innovative technology solutions from us.
- 
-%h5 Work Like Hell.
-%p We’ve been working hard to make these ideas a reality. Our team has dreamt, planned, prioritized, implemented, tested, and retested to make sure you’re getting the best system possible. We never sit back on our heels – we’ll be making improvements and updates all the time.
- 
-%h5 Best. Service. Ever.
-%p Sooner or later, something’s going to go wrong. Don’t panic! Our online knowledge base includes articles and tips to get you back on track without a hitch. And if you can’t figure it out yourself, the same stellar service that you have come to enjoy with Fractured Atlas’s other programs is just an email or phone call away.
+  .center {
+    text-align: center;
+  }
 
-//
+  .row.good-guys {
+    margin-bottom: 30px;
+  }
 
-%h4 Don’t just take our word for it! Our members say:
+  .hero-unit {
+    text-align: center;
+  }
 
-%blockquote
-  %p “This is one of the greatest organizations I've ever been part of.”
-  %small John Turnbull, writer & editor, GA
+  p.ps {
+    margin-top: 150px;
+    color: #666;
+  }
 
-%blockquote
-  %p “I'm a member of many arts organizations that were created to 'support' the indie filmmaker and NONE of them begin to compare. Finally after years of struggling to find resources everything became available to me when I joined Fractured Atlas.”
-  %small Paul Bright, filmmaker, TX
+.hero-unit
+  %h1.raleway Grow Your Audience by Organizing Your Data
+  %p
+    Artful.ly is an online system to manage your tickets, donations and contacts. <br />
+    It’s a simple, elegant way to keep track of events, people, and your everyday work.
 
-%blockquote
-  %p “It's very obvious that it has a great deal of potential from an already solid starting base. I truly appreciate the clean aesthetic of the software. Directors, like myself, don't have time for a great deal of clutter. Artful.ly gets straight to the punch. I'm also impressed with how quickly changes/upgrades based on user recommendations have been made. It shows the Fractured Atlas staff is open to opinions of the user base.”
-  %small Doc Waller, Executive Artistic Director, The Layman Group, GA
+.landing-section
+  %h1 How to Work Artful.ly
+  .row
+    .span8
+      %h5 Sell Where You Are.
+      %p Artful.ly lets you sell tickets and take donations on your own website. No more redirecting your patrons to other sites for transactions, no log-ins, no more losing customers in between the transfers. Our widget drops onto your site, so visitors are looking at your events, images, words, and videos. You can keep the focus and the web traffic where they belong – on you!
 
-//
+      %h5 Make Giving Easy.
+      %p Selling tickets is one way to get revenue, but donations are another. Artful.ly lets you do it all: ticketing, fundraising, or a donation added on to a ticket. If you are fiscally sponsored by Fractured Atlas or a registered 501(c)3, your donations will be tax-deductible. Make it easier for your supporters to contribute in every way!
 
-%h4 10 ways Artful.ly gives you the keys to your own success:
+      %h5 Search at the Speed of Thought.
+      %p How do you find what you need in a sea of data? Artful.ly lets you tag contacts and actions for easy retrieval (like you already do on Twitter or Wordpress). With your personalized tags, you can run a search or create a report based on your own criteria. You know your data needs better than we do, so we’ll skip the canned reports that no one uses.
 
-%ol
-  %li 
-    %h5 Sell tickets on your own site.
-    %p No ugly pop ups.  No sending your patrons away to another site.
+    .span8.center
+      = image_tag('index/screenshot-display.png')
 
-  %li 
-    %h5 See the big picture.
-    %p View a patron’s entire history on a single dashboard interface—ticket purchases, donations, solicitations, and more.
+  .row
+    .span6
+      %h5 Don’t Waste Money.
+      %p If you’re not selling tickets, you aren’t getting charged. It’s that simple. No need to commit to a contract before you’ve planned your season. It’s free to set up ticketing, donations, or contact management.  The credit card companies assess processing fees which we have to pass along; these amount to 3.5% of ticket sales or donations processed by Artful.ly. But that’s it! No fine print. We know your money is precious, so we aren’t going to waste it. 
 
-  %li 
-    %h5 Recognize relationships, not just transactions.
-    %p Create tags, define connections, and sort notes to suit your needs.
+    .span5
+      %h5 Keep it All in One Place.
+      %p Artful.ly isn’t just about tickets. It’s about supporters in all forms: audiences, donors, friends, and colleagues. You can finally keep contacts in one place, instead of scattered in your email, spreadsheets, paper files, business cards, social networks, post its, or even written on your hand. And now you can integrate contacts with their actions – no more scrambling to remember how many shows your star donor has seen in the past year.
 
-  %li 
-    %h5 Work intuitively
-    %p with a clean design that’s uncluttered by tools you don’t need.
+    .span5
+      %h5 Keep Sensitive Data Safe.
+      %p We take security very seriously. You can trust that your data – and your customers’ data – is safe, private, and protected. Artful.ly is hosted in Amazon’s industry-leading data centers (the same used by Netflix, FourSquare and HootSuite), where the smartest people in the business are responsible for hardware and network-level security. Sensitive information, like credit card numbers, is transmitted using banking-grade encryption.
 
-  %li 
-    %h5 Use it now.
-    %p No sign up fees. No installation. No week-long trainings. Easy imports.
+  .row
+    .span6
+      %h5 Simple to Use.
+      %p Artful.ly is all online – all you need is a browser - and takes just a few seconds to sign up. We’ve worked hard to make the simple things easy and the complicated things possible. Your art is what matters – software shouldn’t get in the way.
 
-  %li 
-    %h5 Access anywhere.
-    %p Log in at the office, at home, at the show, or on the road.
+    .span5
+      %h5 Be Creative.
+      %p It’s not just about data! It’s about creative, ingenious, life-changing art that you make. Data, records, and tracking are just what helps you get people to that art.  Fractured Atlas exists to support your work!
 
-  %li 
-    %h5 Own your data.
-    %p Your data belongs to you forever, no matter what. Exports are easy, fast, and free.
+    .span5
+      %h5 Keep it Yours.
+      %p Your data is yours to keep, period. It’s yours to use when you want, as you want. We guarantee that you’ll always be able to get an export from Artful.ly.
 
-  %li 
-    %h5 Rest easy
-    %p knowing that you’ve partnered with Fractured Atlas, a national non-profit that’s been serving the arts community since 1998.
+.landing-section
+  %h1 Go with the Good Guys
 
-//
+  .row.good-guys
+    .span8
+      %h5 Start with 19,000 Artists.
+      %p If we know anything, it’s artists. At Fractured Atlas, we help thousands of members navigate insurance, fundraising, and technology for their arts businesses. We’ve learned a lot  from a decade of hearing about their daily challenges and celebrating their successes. With 19,000 members in 50 states and many countries, we understand what you need – sell tickets, accept donations, and keep track of your own contacts in one place. Whether you are a choreographer, gallery, theater company, band, filmmaker, writer, craft artist, or all of the above, we are here to help.
+    .span8
+      = image_tag('index/good-guys-artists.jpg')
 
-%h4 What Artful.ly Is Not
+  .row.good-guys
+    .span8
+      = image_tag('index/good-guys-listen.png')
 
-%p It’s not a system that’s too complicated to find what you need, too expensive for your organization, too general for the arts, or too inflexible for your staff. Or, as our friend, Ian Garret, said so nicely:
+    .span8
+      %h5 Listen Closely.
+      %p We didn’t just stop with our members – we took it on the road. Artful.ly was designed by artists and administrators from across the country. Design participants in New York, San Francisco, Philadelphia and Minneapolis / St. Paul told us what they needed, and we listened. Artful.ly’s original requirements came directly from the mouths of artists. We’re excited to give you what you want, and even more excited to roll out a wish list of new features built on best practices over the coming years!
 
-%blockquote
-  %p This isn’t a complicated merchant services account adapted to a shopping cart for tickets, it’s not an expensive massive patron services database one hosts on site, it’s not a sports ticket system pushed into use for a performance venue, it’s not software adapted from another sales system. It’s a ground-up, powerful yet light-weight, user friendly arts centered system with strong commitment from a service oriented developer.
+  .row.good-guys
+    .span8
+      %h5 Add a Bunch of Geeks.
+      %p Fractured Atlas has a secret weapon – we speak geek. We have a stellar team of software developers who are focused solely on creating products for you. Our staff works to translate artist needs into software code. You can be sure that you’re getting the most up-to-date, innovative technology solutions from us.
 
-//
+    .span8
+      = image_tag('index/good-guys-geeks.gif')
 
-%h4 Are You Ready to Work Artful.ly?
+  .row.good-guys
+    .span8
+      = image_tag('index/good-guys-work.jpg')
 
-%p We’ve used your insights to create a ticketing and contact management system tailored to your needs. Manage the essentials of your arts business in one place!
+    .span8
+      %h5 Work Like Hell.
+      %p We’ve been working hard to make these ideas a reality. Our team has dreamt, planned, prioritized, implemented, tested, and retested to make sure you’re getting the best system possible. We never sit back on our heels – we’ll be making improvements and updates all the time.
 
-%p= link_to 'Register for your FREE account'
+  .row.good-guys
+    .span8
+      %h5 Best. Service. Ever.
+      %p Sooner or later, something’s going to go wrong. Don’t panic! Our online knowledge base includes articles and tips to get you back on track without a hitch. And if you can’t figure it out yourself, the same stellar service that you have come to enjoy with Fractured Atlas’s other programs is just an email or phone call away.
 
-%p We are here to help you run the best arts business possible!
+    .span8
+      = image_tag('index/good-guys-service.png')
 
-%p= image_tag('fractured_atlas_signature.png')
+.landing-section
+  %h1 Don’t just take our word for it!
 
-%p PS: We created Artful.ly because we know and serve 19,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can make. 
+  .row
+    .span5
+      %blockquote
+        %p “This is one of the greatest organizations I've ever been part of.”
+        %small John Turnbull, writer & editor, GA
 
-%p 
-  PPS.  Artful.ly is web-based software so there’s no installation, no updates, no need to call the tech guy. 
-  = link_to 'Sign up to try it today!'
+    .span5
+      %blockquote
+        %p “I'm a member of many arts organizations that were created to 'support' the indie filmmaker and NONE of them begin to compare. Finally after years of struggling to find resources everything became available to me when I joined Fractured Atlas.”
+        %small Paul Bright, filmmaker, TX
 
-%p
-  PPS.  You obviously like to be thorough and read a lot.  We love that!  Want more?
-  = link_to 'Check out Some FAQs.'
+    .span6
+      %blockquote
+        %p “It's very obvious that it has a great deal of potential from an already solid starting base. I truly appreciate the clean aesthetic of the software. Directors, like myself, don't have time for a great deal of clutter. Artful.ly gets straight to the punch. I'm also impressed with how quickly changes/upgrades based on user recommendations have been made. It shows the Fractured Atlas staff is open to opinions of the user base.”
+        %small Doc Waller, Executive Artistic Director, The Layman Group, GA
+
+.landing-section
+  .row
+    .span8.offset4
+      %h1.center 8 ways Artful.ly gives you the keys to your own success:
+
+      %ol
+        %li
+          %h4 Sell tickets on your own site.
+          %p No ugly pop ups.  No sending your patrons away to another site.
+
+        %li 
+          %h4 See the big picture.
+          %p View a patron’s entire history on a single dashboard interface—ticket purchases, donations, solicitations, and more.
+
+        %li 
+          %h4 Recognize relationships, not just transactions.
+          %p Create tags, define connections, and sort notes to suit your needs.
+
+        %li 
+          %h4 Work intuitively
+          %p with a clean design that’s uncluttered by tools you don’t need.
+
+        %li 
+          %h4 Use it now.
+          %p No sign up fees. No installation. No week-long trainings. Easy imports.
+
+        %li 
+          %h4 Access anywhere.
+          %p Log in at the office, at home, at the show, or on the road.
+
+        %li 
+          %h4 Own your data.
+          %p Your data belongs to you forever, no matter what. Exports are easy, fast, and free.
+
+        %li 
+          %h4 Rest easy
+          %p knowing that you’ve partnered with Fractured Atlas, a national non-profit that’s been serving the arts community since 1998.
+
+.landing-section
+  .row
+    .span6
+      %h1 What Artful.ly Is Not
+
+    .span10
+      %p It’s not a system that’s too complicated to find what you need, too expensive for your organization, too general for the arts, or too inflexible for your staff. Or, as our friend, Ian Garret, said so nicely:
+
+      %blockquote
+        %p This isn’t a complicated merchant services account adapted to a shopping cart for tickets, it’s not an expensive massive patron services database one hosts on site, it’s not a sports ticket system pushed into use for a performance venue, it’s not software adapted from another sales system. It’s a ground-up, powerful yet light-weight, user friendly arts centered system with strong commitment from a service oriented developer.
+
+.landing-section
+  %h1.center Are You Ready to Work Artful.ly?
+
+  .row
+    .span8.offset4
+
+      %p We’ve used your insights to create a ticketing and contact management system tailored to your needs. Manage the essentials of your arts business in one place!
+
+      %div{:style => 'margin-top: 50px; text-align:center'}
+        %p We are here to help you run the best arts business possible!
+
+        %p{:style => 'margin-bottom: 50px'}
+          = image_tag('index/fa-signature.png')
+          %br
+          Fractured Atlas founded 1998
+        
+        %p= link_to 'Register for your FREE account', '', :class => 'btn primary'
+
+      %p.ps PS: We created Artful.ly because we know and serve 19,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can make. 
+
+      %p.ps
+        PPS.  Artful.ly is web-based software so there’s no installation, no updates, no need to call the tech guy. 
+        = link_to 'Sign up to try it today!'
+
+      %p.ps
+        PPS.  You obviously like to be thorough and read a lot.  We love that!  Want more?
+        = link_to 'Check out Some FAQs.'

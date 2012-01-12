@@ -1,151 +1,192 @@
-.question
-  %h5 There are a lot of ticketing and CRM tools already available.  Why did you build a new one?
-  %p Fractured Atlas works with over 20,000 artists and arts groups, and a lot of them weren't happy with their software options.  Over the years we’ve built several bits of software to manage our own business.  Since we understand both the arts and technology, we thought we’d make something better.
+:css
+  .question {
+    padding-top: 60px;
+  }
+  .question h3 {
+    line-height: 24px;
+    margin-bottom: 10px;
+  }
+  ul#faqs li {
+    margin-bottom: 10px;
+  }
 
-  %p Artful.ly was made to be different.  It lets you sell tickets on your own site.  It integrates sales and donations in one customer record.  It’s more nimble and customizable than other systems.  You are charged only for what you need—there’s no licensing fee just to keep the system running. And that’s just the beginning.
+%h1.raleway Frequently Asked Questions
 
-.question
-  %h5 Is Artful.ly right for me?
-  %p Every organization has different needs and aptitudes so we won’t say Artful.ly will work for everyone.
+.row
+  .span8
+    .question#why{:style => 'padding:0;'}
+      %h3 There are a lot of ticketing and CRM tools already available. Why did you build a new one?
+      %p Fractured Atlas works with over 20,000 artists and arts groups, and a lot of them weren't happy with their software options.  Over the years we’ve built several bits of software to manage our own business.  Since we understand both the arts and technology, we thought we’d make something better.
 
-  %p It’s probably best for individual artists or small arts organizations with budgets less than $500,000/year.  It’s good for organizations ticketing dozens of events per year or just a few workshops.
+      %p Artful.ly was made to be different.  It lets you sell tickets on your own site.  It integrates sales and donations in one customer record.  It’s more nimble and customizable than other systems.  You are charged only for what you need—there’s no licensing fee just to keep the system running. And that’s just the beginning.
 
-  %p If your organization tickets several dozen events per year, offers tiered memberships or subscriptions, or requires extensive customization then a custom ATHENA implementation is probably better for you.
+    .question#right
+      %h3 Is Artful.ly right for me?
+      %p Every organization has different needs and aptitudes so we won’t say Artful.ly will work for everyone.
 
-.question
-  %h5 How much does Artful.ly cost?
-  %p It’s free to set up ticketing, donations, and contact management.  Ticket buyers pay a $2 per ticket fee.  The credit card companies charge a 3.5% processing fee for tickets and donations which we pass on to you, the producer.
+      %p It’s probably best for individual artists or small arts organizations with budgets less than $500,000/year.  It’s good for organizations ticketing dozens of events per year or just a few workshops.
 
-  %p A Ticket Sale Example: 
-  %p A ticket to your production of Hamlet costs $15.  A ticket buyer uses her Visa to buy a ticket through Artful.ly and is charged $17.  We keep $2 of that. Visa charges 3.5% of the $15—that’s $0.53. You get $14.47.
-  %p A Donation to a 501(c)(3) Example: 
-  %p A friend can’t make it to your production of Hamlet but decides to make a $100 donation to your organization online.  His MasterCard is charged $100.  MasterCard charges a 3.5% processing fee on that transaction.  You get $96.50.
+      %p If your organization tickets several dozen events per year, offers tiered memberships or subscriptions, or requires extensive customization then a custom ATHENA implementation is probably better for you.
 
-.question
-  %h5 A Donation to Fractured Atlas Fiscally Sponsored Project Example:
-  %p Your biggest fan donates $100 to your project’s campaign through Artful.ly. Her Visa is charged $100.  Fractured Atlas assesses the standard fiscal sponsorship fee of 6%.  Your fiscal sponsorship account is credited with $94. There is no additional 3.5% processing fee. Learn more about fiscal sponsorship.
+    .question#cost
+      %h3 How much does Artful.ly cost?
+      %p It’s free to set up ticketing, donations, and contact management.  Ticket buyers pay a $2 per ticket fee.  The credit card companies charge a 3.5% processing fee for tickets and donations which we pass on to you, the producer.
 
-  %p See our pricing chart for more explanation.  
+      %h5 A Ticket Sale Example: 
+      %p A ticket to your production of Hamlet costs $15.  A ticket buyer uses her Visa to buy a ticket through Artful.ly and is charged $17.  We keep $2 of that. Visa charges 3.5% of the $15—that’s $0.53. You get $14.47.
 
-.question
-  %h5 Do I have to sign a contract?	
-  %p No. There’s no obligation to stick with Artful.ly. If it’s not working for you, you can export your data and leave (although we hope you’d first give us feedback and a chance to make things right.) 
+      %h5 A Donation to a 501(c)(3) Example: 
+      %p A friend can’t make it to your production of Hamlet but decides to make a $100 donation to your organization online.  His MasterCard is charged $100.  MasterCard charges a 3.5% processing fee on that transaction.  You get $96.50.
 
-.question
-  %h5 What are the technical requirements?
-  %p There’s nothing to install.  It lives on the Internet like Gmail or Facebook. So it's always there when you need it on any computer. You just need an Internet connection.  
+      %h5 A Donation to Fractured Atlas Fiscally Sponsored Project Example:
+      %p Your biggest fan donates $100 to your project’s campaign through Artful.ly. Her Visa is charged $100.  Fractured Atlas assesses the standard fiscal sponsorship fee of 6%.  Your fiscal sponsorship account is credited with $94. There is no additional 3.5% processing fee. Learn more about fiscal sponsorship.
+      %p See our pricing chart for more explanation.  
 
-.question
-  %h5 “Beta” makes me nervous.  When will it be done?
-  %p Well, never actually.  We plan to continually develop features for Artful.ly so it will never be done.  However, most of the core features are already available and ready for you to use.  The best part about continual development is that you get to have a say in what additional features we build and how we do it.
+    .question#contract
+      %h3 Do I have to sign a contract?	
+      %p No. There’s no obligation to stick with Artful.ly. If it’s not working for you, you can export your data and leave (although we hope you’d first give us feedback and a chance to make things right.) 
 
-.question
-  %h5 How long will it take me to learn it and set it up?
-  %p Not long! Sign-up takes less than 5 minutes.  It takes 10 minutes to submit what we need to set up electronic fund transfers.  Importing a list of patrons from Excel or an old database might take 10 minutes or an hour depending on how many you have. Creating a new event for ticketing could take 10-30 minutes depending on the number of price points you want to offer.  Putting the transaction widget on your site takes maybe 15 minutes. 
+    .question#requirements
+      %h3 What are the technical requirements?
+      %p There’s nothing to install.  It lives on the Internet like Gmail or Facebook. So it's always there when you need it on any computer. You just need an Internet connection.  
 
-  %p The Artful.ly Knowledgebase has lots of helpful articles about how to do things.  
+    .question#beta
+      %h3 “Beta” makes me nervous.  When will it be done?
+      %p Well, never actually.  We plan to continually develop features for Artful.ly so it will never be done.  However, most of the core features are already available and ready for you to use.  The best part about continual development is that you get to have a say in what additional features we build and how we do it.
 
-  %p We’ve designed Artful.ly to be a very intuitive and self-evident tool that you can master.  Your shows, your data, your tool.  We don’t want you to have to depend on us but we're always here to help.
+    .question#setup
+      %h3 How long will it take me to learn it and set it up?
+      %p Not long! Sign-up takes less than 5 minutes.  It takes 10 minutes to submit what we need to set up electronic fund transfers.  Importing a list of patrons from Excel or an old database might take 10 minutes or an hour depending on how many you have. Creating a new event for ticketing could take 10-30 minutes depending on the number of price points you want to offer.  Putting the transaction widget on your site takes maybe 15 minutes. 
 
-  %p First thing you need to do is sign up for an account here.
+      %p The Artful.ly Knowledgebase has lots of helpful articles about how to do things.  
 
-.question
-  %h5 Where’s the ticket?
-  %p Artful.ly does not generate a physical ticket. It does however automatically send a confirmation email to every ticket buyer with a unique order number and purchase details.  As a producer, you can run an up-to-date door list and check ticket buyers in at the box office. Artful.ly does not generate physical ticket.
+      %p We’ve designed Artful.ly to be a very intuitive and self-evident tool that you can master.  Your shows, your data, your tool.  We don’t want you to have to depend on us but we're always here to help.
 
-.question
-  %h5 How do we get donations?
-  %p If you're a registered as charity with the IRS, you can accept donations through Artful.ly by registering for the Charity Donations Kit. You'll also need to submit a copy of the Electronic Fund Transfer (EFT) form, a voided check, and a copy of your organization's IRS Determination letter. 
+      %p First thing you need to do is sign up for an account here.
 
-  %p Once these forms have been received, your kit will be approved (usually in about 1 business day) and you'll be able to start accepting donations. A 3.5% transaction fee is passed on from the merchant account charges. No additional fees are applied to donations.
+    .question#ticket
+      %h3 Where’s the ticket?
+      %p Artful.ly does not generate a physical ticket. It does however automatically send a confirmation email to every ticket buyer with a unique order number and purchase details.  As a producer, you can run an up-to-date door list and check ticket buyers in at the box office. Artful.ly does not generate physical ticket.
 
-  %p If you are a fiscally sponsored project see “What about donations to fiscally sponsored projects?”
+    .question#donations
+      %h3 How do we get donations?
+      %p If you're a registered as charity with the IRS, you can accept donations through Artful.ly by registering for the Charity Donations Kit. You'll also need to submit a copy of the Electronic Fund Transfer (EFT) form, a voided check, and a copy of your organization's IRS Determination letter. 
 
-.question
-  %h5 What about donations to fiscally sponsored projects?
-  %p If you are fiscally sponsored by Fractured Atlas you can connect your project to Artful.ly, import your donor history, and manage donations through Artful.ly. 
+      %p Once these forms have been received, your kit will be approved (usually in about 1 business day) and you'll be able to start accepting donations. A 3.5% transaction fee is passed on from the merchant account charges. No additional fees are applied to donations.
 
-  %p Only the standard 6% fiscal sponsorship administration fee is applied to these donations. We don’t tack on an extra 3.5%. If you choose to ticket your events with Artful.ly, your ticket buyers will pay the standard $2 per ticket.  
+      %p If you are a fiscally sponsored project see “What about donations to fiscally sponsored projects?”
 
-  %p Refer to the Artful.ly Knowledgebase for instructions on how connect your fiscal sponsorship account and Artful.ly.
+    .question#sponsored
+      %h3 What about donations to fiscally sponsored projects?
+      %p If you are fiscally sponsored by Fractured Atlas you can connect your project to Artful.ly, import your donor history, and manage donations through Artful.ly. 
+
+      %p Only the standard 6% fiscal sponsorship administration fee is applied to these donations. We don’t tack on an extra 3.5%. If you choose to ticket your events with Artful.ly, your ticket buyers will pay the standard $2 per ticket.  
+
+      %p Refer to the Artful.ly Knowledgebase for instructions on how connect your fiscal sponsorship account and Artful.ly.
  
-  %p Learn more about Fiscal Sponsorship.
+      %p Learn more about Fiscal Sponsorship.
 
-.question
-  %h5 Do donors get receipts?
-  %p Receipts will automatically be issued to your donors after they've completed their transaction.
+    .question#receipts
+      %h3 Do donors get receipts?
+      %p Receipts will automatically be issued to your donors after they've completed their transaction.
 
-  %p If ticket buyer adds a donation to her order, the two transactions are included in one receipt. You will need to provide the donor with any necessary tax documentation separately.
+      %p If ticket buyer adds a donation to her order, the two transactions are included in one receipt. You will need to provide the donor with any necessary tax documentation separately.
 
-  %p For Fractured Atlas Fiscally Sponsored Projects, the donation receipt is issued by Fractured Atlas, separately from any receipts for ticketing transactions, so your donors will receive two—one from Fractured Atlas with tax information, and one from Artful.ly for any ticketing transactions. 
+      %p For Fractured Atlas Fiscally Sponsored Projects, the donation receipt is issued by Fractured Atlas, separately from any receipts for ticketing transactions, so your donors will receive two—one from Fractured Atlas with tax information, and one from Artful.ly for any ticketing transactions. 
 
-.question
-  %h5 When and how do I get my money?
-  %p When you set up paid event ticketing or donations you send us information to set up electronic fund transfers.  Artful.ly transfers funds to your bank account two business days after your performance takes place or a donation was made. Settlements after each performance mean you don’t have to wait for the whole run to be over to get your money. 
+    .question#money
+      %h3 When and how do I get my money?
+      %p When you set up paid event ticketing or donations you send us information to set up electronic fund transfers.  Artful.ly transfers funds to your bank account two business days after your performance takes place or a donation was made. Settlements after each performance mean you don’t have to wait for the whole run to be over to get your money. 
 
-.question
-  %h5 Does it integrate with my old database and mail systems?	
-  %p Not yet. We are working on integrations that will be ready later this year—stay tuned! We know how important these will be, but for now, it is really easy to pull lists for use with other systems.
+    .question#integration
+      %h3 Does it integrate with my old database and mail systems?	
+      %p Not yet. We are working on integrations that will be ready later this year—stay tuned! We know how important these will be, but for now, it is really easy to pull lists for use with other systems.
 
-.question
-  %h5 What’s this “widget” of which you speak?  
-  %p You can sell tickets just through the Artful.ly storefront that’s automatically generated when you put tickets on sale.  Or you can kick it up a notch and install a little bit of Javascript code on your website and get a sleek shopping cart widget to appear over your web page when someone clicks “Buy” or “Donate”.  This is the Artful.ly widget.
+    .question#widget
+      %h3 What’s this “widget” of which you speak?
+      %p You can sell tickets just through the Artful.ly storefront that’s automatically generated when you put tickets on sale.  Or you can kick it up a notch and install a little bit of Javascript code on your website and get a sleek shopping cart widget to appear over your web page when someone clicks “Buy” or “Donate”.  This is the Artful.ly widget.
 
-  %p The clean widget design works with most web designs and means ticket buyers don’t have to get directed off your site.  Meanwhile, their financial information is securely collected and transactions quickly processed.
+      %p The clean widget design works with most web designs and means ticket buyers don’t have to get directed off your site.  Meanwhile, their financial information is securely collected and transactions quickly processed.
  
-  %p Refer to the Artful.ly Knowledgebase for instructions on how to install the widget.
+      %p Refer to the Artful.ly Knowledgebase for instructions on how to install the widget.
 
-.question
-  %h5 As a fiscally sponsored project, can I connect my Artful.ly data to my Fractured Atlas fund history?	
-  %p You can connect your Fractured Atlas fiscally sponsored project to your Organization's profile page on Artful.ly. This will import your donor history from your fiscally sponsored project into your Artful.ly Transactions and People records. 
+    .question#history
+      %h3 As a fiscally sponsored project, can I connect my Artful.ly data to my Fractured Atlas fund history?
+      %p You can connect your Fractured Atlas fiscally sponsored project to your Organization's profile page on Artful.ly. This will import your donor history from your fiscally sponsored project into your Artful.ly Transactions and People records. 
 
-  %p Donations through Artful.ly will automatically appear on your Fractured Atlas fund history. Ticket sales and donations manually entered into Artful.ly do not appear on the Fractured Atlas fund history. 
+      %p Donations through Artful.ly will automatically appear on your Fractured Atlas fund history. Ticket sales and donations manually entered into Artful.ly do not appear on the Fractured Atlas fund history. 
 
-.question
-  %h5 What support will you provide my patrons?	
-	%p Artful.ly support is available to your patrons, but just as we want you to have access to your 
-data, we want you to have control over your transactions. If a patron has technical trouble our support team is available to help sort it out, but for refunds, exchanges or questions regarding your show or work, your patrons should contact you first. After all, no one knows your work, your mission or your patrons better than you.
+    .question#patron-support
+      %h3 What support will you provide my patrons?
+      %p Artful.ly support is available to your patrons, but just as we want you to have access to your 
+    data, we want you to have control over your transactions. If a patron has technical trouble our support team is available to help sort it out, but for refunds, exchanges or questions regarding your show or work, your patrons should contact you first. After all, no one knows your work, your mission or your patrons better than you.
 
-.question
-  %h5 Are you using my customers’ information?	
-  %p We access only the information we need to settle your transactions and help you fix things.
+    .question#privacy
+      %h3 Are you using my customers’ information?	
+      %p We access only the information we need to settle your transactions and help you fix things.
 
-  %p We will never try to sell anything to your customers.
+      %p We will never try to sell anything to your customers.
 
-  %p We cannot see your customers’ credit card numbers--that information is managed by third-party credit card processing vendors with bank-level security protection.  
+      %p We cannot see your customers’ credit card numbers--that information is managed by third-party credit card processing vendors with bank-level security protection.  
 
-  %p Since we’re a non-profit organization whose mission is to support the arts and cultural sector, we may use aggregate transaction data to conduct research for the benefit of the field, but anytime we do that it will be purged of personally identifying information. 
+      %p Since we’re a non-profit organization whose mission is to support the arts and cultural sector, we may use aggregate transaction data to conduct research for the benefit of the field, but anytime we do that it will be purged of personally identifying information. 
 
-  %p Read the relatively brief fine print--Privacy Policy, Terms of Use, and User Agreement.
+      %p Read the relatively brief fine print--Privacy Policy, Terms of Use, and User Agreement.
 
-.question
-  %h5 What new features are planned? When when will they be ready?
-  %p We're rolling out new features in ticketing, fundraising, and more throughout this year and into the next. We want Artful.ly to be a complete system for managing your arts-based business, but we can't do it all at once.
+    .question#roadmap
+      %h3 What new features are planned? When when will they be ready?
+      %p We're rolling out new features in ticketing, fundraising, and more throughout this year and into the next. We want Artful.ly to be a complete system for managing your arts-based business, but we can't do it all at once.
 
-  %p For more about what’s new and on the way, check out our Updates page.
+      %p For more about what’s new and on the way, check out our Updates page.
 
-.question
-  %h5 How do I suggest a new feature?
-  %p Though our Feature Request Forum of course!  Check there to see what’s on the way and weigh in on what you think is a high priority for development.  
+    .question#feature
+      %h3 How do I suggest a new feature?
+      %p Though our Feature Request Forum of course!  Check there to see what’s on the way and weigh in on what you think is a high priority for development.  
 
-.question
-  %h5 I'm confused, what's the difference between ATHENA and Artful.ly?	
-  %p ATHENA is the framework that makes Artful.ly run. Artful.ly is one version of arts management software created with ATHENA, but there are many more possibilities. If you like to play with software code, you can create a customized version of ATHENA. Get more information here.
+    .question#athena
+      %h3 I'm confused, what's the difference between ATHENA and Artful.ly?	
+      %p ATHENA is the framework that makes Artful.ly run. Artful.ly is one version of arts management software created with ATHENA, but there are many more possibilities. If you like to play with software code, you can create a customized version of ATHENA. Get more information here.
 
-.question
-  %h5 What’s “open source” and why should I care?
-  %p When software is “open source”, that means that it is free to download, including the underlying software code, and that anyone is allowed to modify it to suit their own needs. This is in contrast to most commercial software products, which cost money to license and which can’t be modified by the end user. Advocates of open source software (including us!) argue that it results in better quality code, increased reliability, greater flexibility, a lower total cost of ownership, and freedom from predatory vendor lock-in. 
+    .question#opensource
+      %h3 What’s “open source” and why should I care?
+      %p When software is “open source”, that means that it is free to download, including the underlying software code, and that anyone is allowed to modify it to suit their own needs. This is in contrast to most commercial software products, which cost money to license and which can’t be modified by the end user. Advocates of open source software (including us!) argue that it results in better quality code, increased reliability, greater flexibility, a lower total cost of ownership, and freedom from predatory vendor lock-in. 
 
-  %p ATHENA has been fully open source from day one, but we didn’t stop there. We’re aiming for radical transparency at all stages from design to distribution. Since the earliest requirement gathering phases, we’ve used community design sessions to hear from our colleagues in the arts community.  And of course, the ATHENA code and documentation are free and publicly available, so anyone is free to build custom implementations, or to extend it with new modules or features.
+      %p ATHENA has been fully open source from day one, but we didn’t stop there. We’re aiming for radical transparency at all stages from design to distribution. Since the earliest requirement gathering phases, we’ve used community design sessions to hear from our colleagues in the arts community.  And of course, the ATHENA code and documentation are free and publicly available, so anyone is free to build custom implementations, or to extend it with new modules or features.
 
-  %p This matters to Artful.ly because there’s a positive feedback loop between the two sister projects. As we (and others) continue to improve the ATHENA code base, those enhancements will be integrated into Artful.ly. Likewise, if we develop something really cool for Artful.ly, we’ll almost always incorporate it into the open source ATHENA code. 
+      %p This matters to Artful.ly because there’s a positive feedback loop between the two sister projects. As we (and others) continue to improve the ATHENA code base, those enhancements will be integrated into Artful.ly. Likewise, if we develop something really cool for Artful.ly, we’ll almost always incorporate it into the open source ATHENA code. 
 
-  %p Read more about the Open Source Initiative.
+      %p Read more about the Open Source Initiative.
 
-.question
-  %h5 How do I ____?
-  %p The Artful.ly Knowledgebase offers instructions and tips on every Artful.ly feature and task.  
+    .question#how
+      %h3 How do I ____?
+      %p The Artful.ly Knowledgebase offers instructions and tips on every Artful.ly feature and task.  
 
-.question
-  %h5 What if something goes wrong or I need more help?
-  %p Email support@artful.ly.  We’ll respond within one business day.
+    .question#support
+      %h3 What if something goes wrong or I need more help?
+      %p Email support@artful.ly.  We’ll respond within one business day.
+
+  .span6.offset1
+    %ul#faqs
+      %li= link_to "There are a lot of ticketing and CRM tools already available. Why did you build a new one?", '#why'
+      %li= link_to "Is Artful.ly right for me?", '#right'
+      %li= link_to "How much does Artful.ly cost?", '#cost'
+      %li= link_to "Do I have to sign a contract?	", '#contract'
+      %li= link_to "What are the technical requirements?", '#requirements'
+      %li= link_to "“Beta” makes me nervous. When will it be done?", '#beta'
+      %li= link_to "How long will it take me to learn it and set it up?", '#setup'
+      %li= link_to "Where’s the ticket?", '#ticket'
+      %li= link_to "How do we get donations?", '#donations'
+      %li= link_to "What about donations to fiscally sponsored projects?", '#sponsored'
+      %li= link_to "Do donors get receipts?", '#receipts'
+      %li= link_to "When and how do I get my money?", '#money'
+      %li= link_to "Does it integrate with my old database and mail systems?	", '#integration'
+      %li= link_to "What’s this “widget” of which you speak?", '#widget'
+      %li= link_to "As a fiscally sponsored project, can I connect my Artful.ly data to my Fractured Atlas fund history?", '#history'
+      %li= link_to "What support will you provide my patrons?", '#patron-support'
+      %li= link_to "Are you using my customers’ information?	", '#privacy'
+      %li= link_to "What new features are planned? When when will they be ready?", '#roadmap'
+      %li= link_to "How do I suggest a new feature?", '#feature'
+      %li= link_to "I'm confused, what's the difference between ATHENA and Artful.ly?	", '#athena'
+      %li= link_to "What’s “open source” and why should I care?", '#opensource'
+      %li= link_to "How do I ____?", '#how'
+      %li= link_to "What if something goes wrong or I need more help?", '#support'

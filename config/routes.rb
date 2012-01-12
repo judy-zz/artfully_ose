@@ -147,5 +147,8 @@ Artfully::Application.routes.draw do
 
   root :to => 'index#dashboard', :constraints => lambda{|r| r.env["warden"].authenticate?}
   root :to => 'index#index'
-
+  match '/faq' => 'index#faq'
+  match '/pricing' => 'index#pricing'
+  match '/features' => 'index#features'
+  match '/updates' => 'index#updates'
 end
