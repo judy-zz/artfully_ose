@@ -36,8 +36,10 @@ class TicketOffer < ActiveRecord::Base
     transition_to_status! %w( offered accepted ), "accepted"
   end
 
-  def decline!
+  def decline!(reason)
     transition_to_status! %w( offered rejected ), "rejected"
+
+    self.update_attribute :rejection_reason, reason
   end
 
   ## Associations ##

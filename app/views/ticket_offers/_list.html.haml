@@ -2,7 +2,7 @@
 
   #ticket-offers
 
-    %h3 Tickets offered to your organization for resale
+    %h3 Pending ticket offers
 
     %table.ticket-offers-list
 
@@ -26,4 +26,4 @@
             %td.section= ticket_offer.section.name
             %td.ticket-count= ticket_offer.count
             %td.accept.button= link_to "Accept", accept_organization_ticket_offer_path(ticket_offer.organization, ticket_offer)
-            %td.decline.button= link_to "Decline", confirm_decline_organization_ticket_offer_path(ticket_offer.organization, ticket_offer)
+            %td.decline.button= link_to "Decline", decline_organization_ticket_offer_path(ticket_offer.organization, ticket_offer)

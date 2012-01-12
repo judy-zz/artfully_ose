@@ -58,7 +58,6 @@ Artfully::Application.routes.draw do
       member do
         get :accept
         get :decline
-        get :confirm_decline
       end
     end
     member do

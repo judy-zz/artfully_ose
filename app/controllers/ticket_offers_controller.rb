@@ -1,7 +1,7 @@
 class TicketOffersController < ApplicationController
 
-  before_filter :find_organization
-  before_filter :find_ticket_offer, :only => [ :show, :edit, :update, :destroy, :accept, :decline, :confirm_decline ]
+  before_filter :find_organization, :except => [ :accept, :decline ]
+  before_filter :find_ticket_offer, :only => [ :show, :edit, :update, :destroy, :accept, :decline ]
 
   def index
     @ticket_offers = TicketOffer.all
@@ -75,6 +75,12 @@ class TicketOffersController < ApplicationController
   end
 
   def update
+    if params[:ticket_offer][:status] == "rejected"
+      @ticket_offer.decline! params[:ticket_offer][:rejection_reason]
+      redirect_to root_path, :notice => "You have rejected this ticket offer."
+      return
+    end
+
     respond_to do |format|
       if @ticket_offer.update_attributes(params[:ticket_offer])
         @ticket_offer.offer!
@@ -105,12 +111,6 @@ class TicketOffersController < ApplicationController
   end
 
   def decline
-    @ticket_offer.decline!
-
-    redirect_to root_path, :notice => "You have rejected this ticket offer."
-  end
-
-  def confirm_decline
   end
 
   protected
@@ -121,7 +121,9 @@ class TicketOffersController < ApplicationController
   end
 
   def find_ticket_offer
+    @organization ||= Organization.find(params[:organization_id])
     @ticket_offer = @organization.ticket_offers.find(params[:id])
+    authorize! :edit, @ticket_offer
   end
 
 end

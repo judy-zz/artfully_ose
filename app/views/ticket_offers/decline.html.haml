@@ -1,0 +1,26 @@
+- in_section :events
+
+- content_for :header do
+  %h1 Decline a Ticket Offer
+
+.compact-spread
+
+  %h3
+    #{@ticket_offer.organization.name} has offered you
+    #{pluralize @ticket_offer.count, "ticket"} to
+    #{@ticket_offer.event.name},
+    are you sure you want to decline them?
+
+  = form_for [ @ticket_offer.organization, @ticket_offer ] do |f|
+
+    = f.hidden_field :status, :value => "rejected"
+
+    %ul
+
+      %li
+        .label= f.label :rejection_reason, "Send a note explaining why you're declining these tickets (optional)"
+        .element= f.text_area :rejection_reason
+
+    .cancel-submit
+      = link_to "Cancel", root_path
+      = f.submit "Reject this offer"
