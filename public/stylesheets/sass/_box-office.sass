@@ -38,7 +38,7 @@
     text-align: center
     font-weight: bold
     line-height: 40px
-  input
+  button
     display: block
     @include rounded-corners(2px, 2px, 2px, 2px)
     @include inset-text
@@ -48,6 +48,21 @@
     text-align: center
     font-weight: bold
     line-height: 40px
+    
+#checkout-now-button
+    
+#sell-button
+  display: block
+  @include rounded-corners(2px, 2px, 2px, 2px)
+  @include inset-text
+  @include gradient($compliment_highlight, $compliment, 14%, 100%)
+  border: 1px solid $compliment_shadow
+  font-size: 1em
+  text-align: center
+  font-weight: bold
+  line-height: 40px
+  width: 200px
+    
 
 #checkout-now.disabled a
   @include gradient(#ddd, #ccc, 14%, 100%)
@@ -60,7 +75,6 @@
     font-weight: bold
     padding-bottom: 20px
     margin-bottom: 20px
-    border-bottom: 1px solid #ddd
     span
       text-transform: uppercase
       font-size: .8em
@@ -72,6 +86,10 @@
     height: 325px
     overflow: scroll
     
+#swipe-now
+  font-size: 16pt
+  color: $compliment
+
 #hack-cc-number
   border: 0px
   color: #EEE

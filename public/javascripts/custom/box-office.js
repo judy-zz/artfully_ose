@@ -49,6 +49,7 @@ function setPriceDisplay(amountInCents) {
 		amountInCents = amountInCents / 100;
 	}
 	$('#total').find('.price').html(amountInCents).formatCurrency();	
+	$('#sell-total').find('.price').html(amountInCents).formatCurrency();
 }
 
 $("document").ready(function(){
@@ -75,6 +76,7 @@ $("document").ready(function(){
     return false;
   });
 
+  //copy the hack CC number (swiped data) into the actual CC number field
   $("input[name=hack-cc-number]").change(function(){
     $("#credit_card_card_number").val($("input[name=hack-cc-number]").val())
 	form = $('.ticket-quantity-select').closest("form")
@@ -82,6 +84,12 @@ $("document").ready(function(){
 	$("input[name=hack-cc-number]").val('')
 	$("#sell-popup").dialog("close")
 	form.submit()
+  });
+
+  //Force the hack CC field to never lose focus in an attempt to 
+  //ensure the swiped data always lands in the field
+  $("input[name=hack-cc-number]").blur(function(){
+    $("input[name=hack-cc-number]").focus()
   });
   
   $("#cancel-button").click(function(){
@@ -110,8 +118,6 @@ $("document").ready(function(){
 			resetPayment()
 		})
 		.bind("ajax:success", function(xhr, sale){
-			
-			resetPayment();
 	   		setPriceDisplay(sale.total)
 			$("#total").removeClass("loading");
     		$('input[type="submit"]').removeAttr('disabled');
@@ -140,13 +146,15 @@ $("document").ready(function(){
 					    .append($('<td>').html(this.price / 100).formatCurrency())
 					);         	
 				});
+				resetPayment();
 				resetPerson();
 			  	resetQuantites();
 				setPriceDisplay(0);
 				showMessage(sale.message);
   	   		
   			} else if (sale.sale_made == false) {
-  			  showError(sale.message);
+				showError(sale.message);
+				resetPayment();
   			}
 		});
 	
