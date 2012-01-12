@@ -1321,6 +1321,8 @@ table {
       width: 1em; }
   table td {
     color: #666666; }
+  table td.supplement {
+    color: #888888; }
   table th {
     color: #666666;
     background: #eeeeee;

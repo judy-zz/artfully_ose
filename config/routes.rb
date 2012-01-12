@@ -19,6 +19,7 @@ Artfully::Application.routes.draw do
       post :sessions, :on => :member
     end
 
+    resources :finances, :only => [ :index ]
     resources :settlements, :only => [ :index, :new, :create ]
     resources :orders, :only => [ :index ] do
       collection do

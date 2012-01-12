@@ -1,0 +1,155 @@
+%style(type="text/css") 
+  :sass
+    .inline
+      li
+        float: left
+        margin-right: 10px
+    .rowline
+      border: 0 !important
+      width: 75%
+      tr
+        border-bottom: 1px solid #aaa
+      td
+        text-align: right
+        font-weight: bold
+
+- content_for :header do
+  %h1 Finance Report
+.spread
+  %ul.inline
+    =form_tag admin_settlements_path, :method => :get do
+      %li
+        .key= label_tag :start_date
+        .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
+      %li
+        .key= label_tag :end_date
+        .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
+      %li{:style => 'padding-top:14px'}
+        = submit_tag "Search"
+  .clear
+.spread
+  %h3 Summary
+  %table.standalone.rowline
+    %tbody
+      %tr
+        %td{:style=>'width:40px'}="Tickets"
+        %td{:style=>'width:100px'}="$34,130.22"
+        %td.supplement{:style=>'width:150px'}="812 sold"
+        %td.supplement{:style=>'width:150px'}="199 free"
+        %td.supplement{:style=>'width:150px'}="204 comp"
+      %tr
+        %td="Donations"
+        %td="$1,000.00"
+        %td.supplement="10 donations"
+        %td.supplement=""
+        %td.supplement=""
+      %tr
+        %td="Surcharges"
+        %td="$3,430.00"
+        %td.supplement="812 tickets"
+        %td.supplement=""
+        %td.supplement=""
+      %tr
+        %td="CC Fees"
+        %td="$1,926.00"
+        %td.supplement="$1409.99 tickets"
+        %td.supplement="$355.54 donations"
+        %td.supplement=""
+      %tr
+        %td="Settled"
+        %td="$19,823.11"
+        %td.supplement="35 settlements"
+        %td.supplement=""
+        %td.supplement=""
+  %h3 Ticket Sales
+  %table.standalone.zebra#ticket-sales-table
+    %thead
+      %tr
+        %th ID
+        %th Date
+        %th Person
+        %th Organization
+        %th Total
+        %th Fee
+    %tbody
+      - @orders.each do |order|
+        %tr
+          %td=order.id
+          -unless order.created_at.nil?
+            %td= l order.created_at, :format => :short
+          %td=" #{order.person_last_name}, #{order.person_first_name}"
+          %td= link_to order.organization_name, admin_organization_path(order.organization_id)
+          %td= number_as_cents order.total
+          %td= number_as_cents order.service_fee
+
+  = will_paginate @orders
+
+  #donations
+    %h3 Artful.ly Donations
+    %table.standalone.zebra#donation-table
+      %thead
+        %tr
+          %th ID
+          %th Date
+          %th Person
+          %th Organization
+          %th Total
+          %th Fee
+      %tbody
+        - @orders.each do |order|
+          %tr
+            %td=order.id
+            -unless order.created_at.nil?
+              %td= l order.created_at, :format => :short
+            %td=" #{order.person_last_name}, #{order.person_first_name}"
+            %td= link_to order.organization_name, admin_organization_path(order.organization_id)
+            %td= number_as_cents order.total
+            %td= number_as_cents order.service_fee
+
+    = will_paginate @orders
+
+  %h3 Settlements
+  %table.standalone#settlement-table
+    %thead
+      %tr
+        %th ID
+        %th Org
+        %th Show
+        %th Date
+        %th Transaction ID
+        %th Gross
+        %th Realized
+        %th Net
+        %th
+    %tbody
+      -if @settlements.nil?
+        %td= "No settlements found for this date range"
+        %td
+        %td
+        %td
+        %td
+        %td
+        %td
+        %td
+        %td
+      -else
+        -@settlements.each do |settlement|
+          %tr{:class => settlement.success? ? "succeeded" : "failed" }
+            %td= settlement.id
+            %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
+            %td= l(settlement.show.datetime_local_to_event, :format => :short) unless settlement.show.nil?
+            %td= l settlement.created_at, :format => :short
+            %td
+              -if settlement.success?
+                =settlement.transaction_id
+              -else
+                FAILED (#{settlement.ach_response_code})
+            %td= number_as_cents(settlement.gross)
+            %td= number_as_cents(settlement.realized_gross)
+            %td= number_as_cents(settlement.net)
+            %td
+              -if !settlement.success?
+                = form_tag new_admin_settlement_path, :method=>'get' do
+                  = hidden_field_tag "show_id", settlement.show_id
+                  = submit_tag "Re-settle", :class => [ :mini, :full ]
+  =will_paginate @settlements unless @settlements.nil?
