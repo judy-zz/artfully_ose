@@ -39,6 +39,10 @@ class Order < ActiveRecord::Base
     end
   end
   
+  def artfully?
+    !transaction_id.nil?
+  end
+  
   def location
     ""
   end

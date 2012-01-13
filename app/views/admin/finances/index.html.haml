@@ -32,11 +32,17 @@
   %table.standalone.rowline
     %tbody
       %tr
-        %td{:style=>'width:40px'}="Tickets"
-        %td{:style=>'width:100px'}="$34,130.22"
-        %td.supplement{:style=>'width:150px'}="812 sold"
-        %td.supplement{:style=>'width:150px'}="199 free"
-        %td.supplement{:style=>'width:150px'}="204 comp"
+        %td{:style=>'width:40px'}="All Tickets"
+        %td{:style=>'width:100px'}=number_as_cents @summary.all_tickets.gross_sales
+        %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.sold.length} sold"
+        %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.free.length} free"
+        %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.comped.length} comp"
+      %tr
+        %td{:style=>'width:40px'}="Artful.ly Tickets"
+        %td{:style=>'width:100px'}=number_as_cents @summary.artfully_tickets.gross_sales
+        %td.supplement{:style=>'width:150px'}="#{@summary.artfully_tickets.sold.length} sold"
+        %td.supplement=""
+        %td.supplement=""
       %tr
         %td="Donations"
         %td="$1,000.00"
@@ -65,48 +71,32 @@
   %table.standalone.zebra#ticket-sales-table
     %thead
       %tr
-        %th ID
+        %th{:style=>'width:40px'} ID
+        %th{:style=>'width:30px'} Tix
+        %th{:style=>'width:30px'} Don
         %th Date
         %th Person
         %th Organization
         %th Total
         %th Fee
     %tbody
-      - @orders.each do |order|
+      - @artfully_orders.each do |order|
         %tr
           %td=order.id
+          %td
+            - if order.has_ticket?
+              =check_mark
+              .hidden="ticket"
+          %td
+            - if order.has_donation?
+              =check_mark
+              .hidden="donation"
           -unless order.created_at.nil?
             %td= l order.created_at, :format => :short
           %td=" #{order.person_last_name}, #{order.person_first_name}"
           %td= link_to order.organization_name, admin_organization_path(order.organization_id)
           %td= number_as_cents order.total
           %td= number_as_cents order.service_fee
-
-  = will_paginate @orders
-
-  #donations
-    %h3 Artful.ly Donations
-    %table.standalone.zebra#donation-table
-      %thead
-        %tr
-          %th ID
-          %th Date
-          %th Person
-          %th Organization
-          %th Total
-          %th Fee
-      %tbody
-        - @orders.each do |order|
-          %tr
-            %td=order.id
-            -unless order.created_at.nil?
-              %td= l order.created_at, :format => :short
-            %td=" #{order.person_last_name}, #{order.person_first_name}"
-            %td= link_to order.organization_name, admin_organization_path(order.organization_id)
-            %td= number_as_cents order.total
-            %td= number_as_cents order.service_fee
-
-    = will_paginate @orders
 
   %h3 Settlements
   %table.standalone#settlement-table
@@ -120,36 +110,23 @@
         %th Gross
         %th Realized
         %th Net
-        %th
     %tbody
-      -if @settlements.nil?
-        %td= "No settlements found for this date range"
-        %td
-        %td
-        %td
-        %td
-        %td
-        %td
-        %td
-        %td
-      -else
-        -@settlements.each do |settlement|
-          %tr{:class => settlement.success? ? "succeeded" : "failed" }
-            %td= settlement.id
-            %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
-            %td= l(settlement.show.datetime_local_to_event, :format => :short) unless settlement.show.nil?
-            %td= l settlement.created_at, :format => :short
-            %td
-              -if settlement.success?
-                =settlement.transaction_id
-              -else
-                FAILED (#{settlement.ach_response_code})
-            %td= number_as_cents(settlement.gross)
-            %td= number_as_cents(settlement.realized_gross)
-            %td= number_as_cents(settlement.net)
-            %td
-              -if !settlement.success?
-                = form_tag new_admin_settlement_path, :method=>'get' do
-                  = hidden_field_tag "show_id", settlement.show_id
-                  = submit_tag "Re-settle", :class => [ :mini, :full ]
-  =will_paginate @settlements unless @settlements.nil?
+      -@settlements.each do |settlement|
+        %tr{:class => settlement.success? ? "succeeded" : "failed" }
+          %td= settlement.id
+          %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
+          %td= l(settlement.show.datetime_local_to_event, :format => :short) unless settlement.show.nil?
+          %td= l settlement.created_at, :format => :short
+          %td
+            -if settlement.success?
+              =settlement.transaction_id
+            -else
+              FAILED (#{settlement.ach_response_code})
+          %td= number_as_cents(settlement.gross)
+          %td= number_as_cents(settlement.realized_gross)
+          %td= number_as_cents(settlement.net)
+          %td
+            -if !settlement.success?
+              = form_tag new_admin_settlement_path, :method=>'get' do
+                = hidden_field_tag "show_id", settlement.show_id
+                = submit_tag "Re-settle", :class => [ :mini, :full ]

@@ -9,7 +9,19 @@ class OrderView < ActiveRecord::Base
   scope :not_imported, where("fa_id IS NULL")
   scope :artfully, where("transaction_id IS NOT NULL")
   
+  def artfully?
+    !transaction_id.nil?
+  end
+  
   def total
     items.inject(0) {|sum, item| sum + item.price.to_i }
+  end
+
+  def has_ticket?
+    items.select(&:ticket?).present?
+  end
+
+  def has_donation?
+    items.select(&:donation?).present?
   end
 end
