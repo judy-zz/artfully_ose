@@ -1,8 +1,17 @@
+:css
+  ul.available {
+    list-style: none;
+    margin-left: 0;
+  }
+  ul.available li {
+    padding-left: 23px;
+    background: url('#{image_path('index/todo.png')}') no-repeat;
+    padding-bottom: 20px;
+  }
 %h1.raleway Features
 .row
   .span8
-    %h5 Available Today
-    %ul
+    %ul.available
       %li Sell tickets on your site or through an Artful.ly storefront
       %li Process credit cards and track cash sales at the box office
       %li Accept donations on your site
@@ -15,11 +24,12 @@
       %li Provide ticket buyers and donors with automatic email receipts
       %li Integrate Artful.ly data with fiscal sponsorship records
 
-    %h5 Coming Soon
+    %h5 Features Coming Soon
     %ul
       %li Integrate MailChimp campaigns and analytics with other contact details
       %li Offer multiple discount codes
       %li Designate tickets for a reseller or papering company
 
-  .span4.offset1
-    %p Want to suggest a new feature? Use the #{link_to 'Feature Request Forum'}. We love feedback!
+  .span5.offset1
+    %p
+      Want to suggest a new feature? Use the #{link_to 'Feature Request Forum', 'http://artfully.zendesk.com/forums/318163-feature-requests'}. We love feedback!

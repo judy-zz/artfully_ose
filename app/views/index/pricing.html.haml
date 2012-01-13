@@ -1,3 +1,8 @@
+:css
+  h5 {
+    line-height: 24px;
+  }
+
 %h1.raleway Pricing
 .row
   .span8
@@ -5,13 +10,13 @@
       %tbody
         %tr
           %td
-            People Management Kit
+            %h5 People Management Kit
           %td
             %ul
               %li FREE
         %tr
           %td
-            Charity Donation Kit
+            %h5 Charity Donation Kit
           %td
             %ul
               %li FREE
@@ -19,21 +24,21 @@
               %li Requires proof of 501(c)(3) status
         %tr
           %td
-            Charity Donation Kit for Fiscal Sponsees
+            %h5 Charity Donation Kit for Fiscal Sponsees
           %td
             %ul
               %li FREE
-              %li No 3.5% credit card processing fee
+              %li NO credit card processing fee
               %li 6% standard Fiscal Sponsorship administration fee
         %tr
           %td
-            Free Ticketing Kit
+            %h5 Free Ticketing Kit
           %td
             %ul
               %li FREE
         %tr
           %td
-            Paid Event Ticketing Kit
+            %h5 Paid Event Ticketing Kit
           %td
             %ul
               %li FREE to install
@@ -42,15 +47,16 @@
               %li Cash sales are free
         %tr
           %td
-            Box Office Kit
+            %h5 Box Office Kit
           %td
             %ul
               %li FREE to install
               %li 3.5% credit card processing fee
               %li Cash sales are free
 
-  .span4.offset1
+  .span5.offset1
     %p
+      = image_tag('index/pricetag.png', :style => 'vertical-align:text-bottom;')
       Basic Artful.ly accounts are <strong>FREE</strong>. They allow you to track your relationships and manage free events.
 
     %p{:style => 'margin-bottom:50px;'}

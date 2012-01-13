@@ -16,7 +16,9 @@
   }
 
   .landing-section {
-    margin-bottom: 150px;
+    padding-bottom: 40px;
+    margin-top: 50px;
+    border-bottom: 5px solid #eee;
   }
 
   .center {
@@ -32,7 +34,7 @@
   }
 
   p.ps {
-    margin-top: 150px;
+    margin-bottom: 150px;
     color: #666;
   }
 
@@ -212,6 +214,9 @@
         
         %p= link_to 'Register for your FREE account', '', :class => 'btn primary'
 
+.landing-section
+  .row
+    .span8.offset4
       %p.ps PS: We created Artful.ly because we know and serve 19,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can make. 
 
       %p.ps
@@ -220,4 +225,4 @@
 
       %p.ps
         PPS.  You obviously like to be thorough and read a lot.  We love that!  Want more?
-        = link_to 'Check out Some FAQs.'
+        = link_to 'Check out Some FAQs.', faq_path
