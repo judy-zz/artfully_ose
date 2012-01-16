@@ -28,6 +28,7 @@ gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
 gem 'jammit'
 gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
 gem 'comma',     :path => "vendor/gems/comma-0.4.0"
+gem 'nokogiri' # for pulling in blog posts on index#updates
 
 # Authentication and Roles
 gem 'devise'

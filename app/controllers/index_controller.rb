@@ -16,4 +16,20 @@ class IndexController < ApplicationController
     end
   end
 
+  def updates
+    require 'open-uri'
+    require 'nokogiri'
+
+    @posts = []
+    doc = Nokogiri::HTML(open('http://www.fracturedatlas.org/site/blog/tag/artfully/'))
+
+    doc.css('.post').each do |post|
+      content = {}
+      content[:title] = post.css('h1').first.content
+      content[:link] = post.css('h1 a').first['href']
+      content[:byline] = post.css('.byline').first.content
+      content[:entry] = post.css('.entry').first.content
+      @posts << content
+    end
+  end
 end

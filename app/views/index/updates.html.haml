@@ -5,50 +5,24 @@
   .post h6, .post h5 {
     line-height: 24px;
   }
+  .post h5 a {
+    color: #333;
+  }
+  .post h5 a:hover {
+    color: #0069D6;
+  }
 
 %h1.page-title Updates
 
 .row
   .span8
-    .post
-      %h5 Help Us Help You: Fundraisers, Benefits, and Galas
-      %h6 Selena Juneau-Vogel | Jan 9, 2012 11:40 am
-      %p
-        Ah, January. The month for new beginnings, putting things in order, getting in shape, and geeking-out about fundraisers. Wait…what?
-      %p
-        But really, what are your business resolutions for 2012? Keep better track of your ticket buyers? Sell some tickets with a papering service? Remind your patrons about your work more often so they don’t ignore your year-end [...]
-      %p
-        = link_to 'read more »'
-
-    .post
-      %h5 Help Us Help You: Fundraisers, Benefits, and Galas
-      %h6 Selena Juneau-Vogel | Jan 9, 2012 11:40 am
-      %p
-        Ah, January. The month for new beginnings, putting things in order, getting in shape, and geeking-out about fundraisers. Wait…what?
-      %p
-        But really, what are your business resolutions for 2012? Keep better track of your ticket buyers? Sell some tickets with a papering service? Remind your patrons about your work more often so they don’t ignore your year-end [...]
-      %p
-        = link_to 'read more »'
-
-    .post
-      %h5 Help Us Help You: Fundraisers, Benefits, and Galas
-      %h6 Selena Juneau-Vogel | Jan 9, 2012 11:40 am
-      %p
-        Ah, January. The month for new beginnings, putting things in order, getting in shape, and geeking-out about fundraisers. Wait…what?
-      %p
-        But really, what are your business resolutions for 2012? Keep better track of your ticket buyers? Sell some tickets with a papering service? Remind your patrons about your work more often so they don’t ignore your year-end [...]
-      %p
-        = link_to 'read more »'
-
-    .post
-      %h5 Help Us Help You: Fundraisers, Benefits, and Galas
-      %h6 Selena Juneau-Vogel | Jan 9, 2012 11:40 am
-      %p
-        Ah, January. The month for new beginnings, putting things in order, getting in shape, and geeking-out about fundraisers. Wait…what?
-      %p
-        But really, what are your business resolutions for 2012? Keep better track of your ticket buyers? Sell some tickets with a papering service? Remind your patrons about your work more often so they don’t ignore your year-end [...]
-      %p
-        = link_to 'read more »'
+    -@posts.each do |post|
+      .post
+        %h5=link_to post[:title], post[:link]
+        %h6= post[:byline]
+        = simple_format post[:entry].gsub('Read More »', '').gsub("\n","\n\n")
+        %p
+          = link_to 'Read More »', post[:link]
 
   .span4.offset1
     %p
