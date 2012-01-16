@@ -10,10 +10,36 @@
     margin-bottom: 10px;
   }
 
-%h1.raleway Frequently Asked Questions
+%h1.page-title Frequently Asked Questions
 
 .row
-  .span8
+  .span6
+    %ul#faqs
+      %li= link_to "There are a lot of ticketing and CRM tools already available. Why did you build a new one?", '#why'
+      %li= link_to "Is Artful.ly right for me?", '#right'
+      %li= link_to "How much does Artful.ly cost?", '#cost'
+      %li= link_to "Do I have to sign a contract?	", '#contract'
+      %li= link_to "What are the technical requirements?", '#requirements'
+      %li= link_to "“Beta” makes me nervous. When will it be done?", '#beta'
+      %li= link_to "How long will it take me to learn it and set it up?", '#setup'
+      %li= link_to "Where’s the ticket?", '#ticket'
+      %li= link_to "How do we get donations?", '#donations'
+      %li= link_to "What about donations to fiscally sponsored projects?", '#sponsored'
+      %li= link_to "Do donors get receipts?", '#receipts'
+      %li= link_to "When and how do I get my money?", '#money'
+      %li= link_to "Does it integrate with my old database and mail systems?	", '#integration'
+      %li= link_to "What’s this “widget” of which you speak?", '#widget'
+      %li= link_to "As a fiscally sponsored project, can I connect my Artful.ly data to my Fractured Atlas fund history?", '#history'
+      %li= link_to "What support will you provide my patrons?", '#patron-support'
+      %li= link_to "Are you using my customers’ information?	", '#privacy'
+      %li= link_to "What new features are planned? When when will they be ready?", '#roadmap'
+      %li= link_to "How do I suggest a new feature?", '#feature'
+      %li= link_to "I'm confused, what's the difference between ATHENA and Artful.ly?	", '#athena'
+      %li= link_to "What’s “open source” and why should I care?", '#opensource'
+      %li= link_to "How do I ____?", '#how'
+      %li= link_to "What if something goes wrong or I need more help?", '#support'
+
+  .span8.offset1
     .question#why{:style => 'padding:0;'}
       %h3 There are a lot of ticketing and CRM tools already available. Why did you build a new one?
       %p Fractured Atlas works with over 20,000 artists and arts groups, and a lot of them weren't happy with their software options.  Over the years we’ve built several bits of software to manage our own business.  Since we understand both the arts and technology, we thought we’d make something better.
@@ -32,15 +58,18 @@
       %h3 How much does Artful.ly cost?
       %p It’s free to set up ticketing, donations, and contact management.  Ticket buyers pay a $2 per ticket fee.  The credit card companies charge a 3.5% processing fee for tickets and donations which we pass on to you, the producer.
 
-      %h5 A Ticket Sale Example: 
-      %p A ticket to your production of Hamlet costs $15.  A ticket buyer uses her Visa to buy a ticket through Artful.ly and is charged $17.  We keep $2 of that. Visa charges 3.5% of the $15—that’s $0.53. You get $14.47.
+      %p
+        %strong A Ticket Sale Example: <br />
+        A ticket to your production of Hamlet costs $15.  A ticket buyer uses her Visa to buy a ticket through Artful.ly and is charged $17.  We keep $2 of that. Visa charges 3.5% of the $15—that’s $0.53. You get $14.47.
 
-      %h5 A Donation to a 501(c)(3) Example: 
-      %p A friend can’t make it to your production of Hamlet but decides to make a $100 donation to your organization online.  His MasterCard is charged $100.  MasterCard charges a 3.5% processing fee on that transaction.  You get $96.50.
+      %p
+        %strong A Donation to a 501(c)(3) Example: <br />
+        A friend can’t make it to your production of Hamlet but decides to make a $100 donation to your organization online.  His MasterCard is charged $100.  MasterCard charges a 3.5% processing fee on that transaction.  You get $96.50.
 
-      %h5 A Donation to Fractured Atlas Fiscally Sponsored Project Example:
-      %p Your biggest fan donates $100 to your project’s campaign through Artful.ly. Her Visa is charged $100.  Fractured Atlas assesses the standard fiscal sponsorship fee of 6%.  Your fiscal sponsorship account is credited with $94. There is no additional 3.5% processing fee. #{link_to 'Learn more about fiscal sponsorship', 'http://www.fracturedatlas.org/site/fiscal/'}.
-      %p {link_to 'See our pricing chart for more explanation', pricing_path}.
+      %p
+        %strong A Donation to Fractured Atlas Fiscally Sponsored Project Example: <br />
+        Your biggest fan donates $100 to your project’s campaign through Artful.ly. Her Visa is charged $100.  Fractured Atlas assesses the standard fiscal sponsorship fee of 6%.  Your fiscal sponsorship account is credited with $94. There is no additional 3.5% processing fee. #{link_to 'Learn more about fiscal sponsorship', 'http://www.fracturedatlas.org/site/fiscal/'}.
+      %p #{link_to 'See our pricing chart for more explanation', pricing_path}.
 
     .question#contract
       %h3 Do I have to sign a contract?	
@@ -62,7 +91,7 @@
 
       %p We’ve designed Artful.ly to be a very intuitive and self-evident tool that you can master.  Your shows, your data, your tool.  We don’t want you to have to depend on us but we're always here to help.
 
-      %p First thing you need to do is sign up for an account here.
+      %p First thing you need to do is #{link_to 'sign up for an account here'}.
 
     .question#ticket
       %h3 Where’s the ticket?
@@ -164,29 +193,3 @@
     .question#support
       %h3 What if something goes wrong or I need more help?
       %p Email support@artful.ly.  We’ll respond within one business day.
-
-  .span6.offset1
-    %ul#faqs
-      %li= link_to "There are a lot of ticketing and CRM tools already available. Why did you build a new one?", '#why'
-      %li= link_to "Is Artful.ly right for me?", '#right'
-      %li= link_to "How much does Artful.ly cost?", '#cost'
-      %li= link_to "Do I have to sign a contract?	", '#contract'
-      %li= link_to "What are the technical requirements?", '#requirements'
-      %li= link_to "“Beta” makes me nervous. When will it be done?", '#beta'
-      %li= link_to "How long will it take me to learn it and set it up?", '#setup'
-      %li= link_to "Where’s the ticket?", '#ticket'
-      %li= link_to "How do we get donations?", '#donations'
-      %li= link_to "What about donations to fiscally sponsored projects?", '#sponsored'
-      %li= link_to "Do donors get receipts?", '#receipts'
-      %li= link_to "When and how do I get my money?", '#money'
-      %li= link_to "Does it integrate with my old database and mail systems?	", '#integration'
-      %li= link_to "What’s this “widget” of which you speak?", '#widget'
-      %li= link_to "As a fiscally sponsored project, can I connect my Artful.ly data to my Fractured Atlas fund history?", '#history'
-      %li= link_to "What support will you provide my patrons?", '#patron-support'
-      %li= link_to "Are you using my customers’ information?	", '#privacy'
-      %li= link_to "What new features are planned? When when will they be ready?", '#roadmap'
-      %li= link_to "How do I suggest a new feature?", '#feature'
-      %li= link_to "I'm confused, what's the difference between ATHENA and Artful.ly?	", '#athena'
-      %li= link_to "What’s “open source” and why should I care?", '#opensource'
-      %li= link_to "How do I ____?", '#how'
-      %li= link_to "What if something goes wrong or I need more help?", '#support'

@@ -3,20 +3,31 @@
     line-height: 24px;
   }
 
-%h1.raleway Pricing
+%h1.page-title Pricing
 .row
-  .span8
+  .span5
+    %p
+      Basic Artful.ly accounts are <strong>FREE</strong>. They allow you to track your relationships and manage free events.
+
+    %p{:style => 'margin-bottom:50px;'}
+      You can add additional functionality by purchasing “Kits.” Some Kits are free, some Kits have transaction fees, and (in the future) some Kits will come with a monthly subscription charge.
+  
+  .span9.offset1
     %table
       %tbody
         %tr
           %td
-            %h5 People Management Kit
+            %h5
+              = image_tag('index/group.png', :style => 'vertical-align:text-bottom;')
+              People Management Kit
           %td
             %ul
               %li FREE
         %tr
           %td
-            %h5 Charity Donation Kit
+            %h5
+              = image_tag('index/piggy-bank.png', :style => 'vertical-align:text-bottom;')
+              Charity Donation Kit
           %td
             %ul
               %li FREE
@@ -24,7 +35,9 @@
               %li Requires proof of 501(c)(3) status
         %tr
           %td
-            %h5 Charity Donation Kit for Fiscal Sponsees
+            %h5
+              = image_tag('index/piggy-bank-fa.png', :style => 'vertical-align:text-bottom;')
+              Charity Donation Kit for Fiscal Sponsees
           %td
             %ul
               %li FREE
@@ -32,13 +45,17 @@
               %li 6% standard Fiscal Sponsorship administration fee
         %tr
           %td
-            %h5 Free Ticketing Kit
+            %h5
+              = image_tag('index/ticket.png', :style => 'vertical-align:text-bottom;')
+              Free Ticketing Kit
           %td
             %ul
               %li FREE
         %tr
           %td
-            %h5 Paid Event Ticketing Kit
+            %h5
+              = image_tag('index/pricetag.png', :style => 'vertical-align:text-bottom;')
+              Paid Event Ticketing Kit
           %td
             %ul
               %li FREE to install
@@ -47,17 +64,11 @@
               %li Cash sales are free
         %tr
           %td
-            %h5 Box Office Kit
+            %h5
+              = image_tag('index/shopping-cart.png', :style => 'vertical-align:text-bottom;')
+              Box Office Kit
           %td
             %ul
               %li FREE to install
               %li 3.5% credit card processing fee
               %li Cash sales are free
-
-  .span5.offset1
-    %p
-      = image_tag('index/pricetag.png', :style => 'vertical-align:text-bottom;')
-      Basic Artful.ly accounts are <strong>FREE</strong>. They allow you to track your relationships and manage free events.
-
-    %p{:style => 'margin-bottom:50px;'}
-      You can add additional functionality by purchasing “Kits.” Some Kits are free, some Kits have transaction fees, and (in the future) some Kits will come with a monthly subscription charge.

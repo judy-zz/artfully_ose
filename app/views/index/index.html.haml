@@ -33,9 +33,33 @@
     text-align: center;
   }
 
-  p.ps {
-    margin-bottom: 150px;
-    color: #666;
+  ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  ol#success li {
+    clear: both;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  
+  ol#success li p {
+    margin: 0;
+  }
+
+  ol#success li .number {
+    color: #2086a6;
+    font-family: 'Bree Serif', Helvetica, Arial, sans-serif !important;
+    font-size: 35px;
+    background: url(#{image_path('index/number.png')}) no-repeat;
+    width: 66px;
+    height: 43px;
+    float: left;
+    margin-right: 10px;
+    text-align: center;
+    padding-top: 23px;
   }
 
 .hero-unit
@@ -145,45 +169,61 @@
     .span6
       %blockquote
         %p “It's very obvious that it has a great deal of potential from an already solid starting base. I truly appreciate the clean aesthetic of the software. Directors, like myself, don't have time for a great deal of clutter. Artful.ly gets straight to the punch. I'm also impressed with how quickly changes/upgrades based on user recommendations have been made. It shows the Fractured Atlas staff is open to opinions of the user base.”
-        %small Doc Waller, Executive Artistic Director, The Layman Group, GA
+        %small Doc Waller, The Layman Group, GA
 
 .landing-section
   .row
-    .span8.offset4
+    .span10.offset3
       %h1.center 8 ways Artful.ly gives you the keys to your own success:
 
-      %ol
+      %ol#success
         %li
+          .number
+            1
           %h4 Sell tickets on your own site.
           %p No ugly pop ups.  No sending your patrons away to another site.
 
-        %li 
+        %li
+          .number
+            2
           %h4 See the big picture.
           %p View a patron’s entire history on a single dashboard interface—ticket purchases, donations, solicitations, and more.
 
-        %li 
+        %li
+          .number
+            3
           %h4 Recognize relationships, not just transactions.
           %p Create tags, define connections, and sort notes to suit your needs.
 
-        %li 
-          %h4 Work intuitively
-          %p with a clean design that’s uncluttered by tools you don’t need.
+        %li
+          .number
+            4
+          %h4 Work intuitively.
+          %p Artful.ly's clean design that’s uncluttered by tools you don’t need.
 
-        %li 
+        %li
+          .number
+            5
           %h4 Use it now.
           %p No sign up fees. No installation. No week-long trainings. Easy imports.
 
-        %li 
+        %li
+          .number
+            6
           %h4 Access anywhere.
           %p Log in at the office, at home, at the show, or on the road.
 
-        %li 
+        %li
+          .number
+            7
           %h4 Own your data.
           %p Your data belongs to you forever, no matter what. Exports are easy, fast, and free.
 
-        %li 
-          %h4 Rest easy
-          %p knowing that you’ve partnered with Fractured Atlas, a national non-profit that’s been serving the arts community since 1998.
+        %li
+          .number
+            8
+          %h4 Rest easy.
+          %p You’ve partnered with Fractured Atlas, a national non-profit that’s been serving the arts community since 1998.
 
 .landing-section
   .row
@@ -191,38 +231,61 @@
       %h1 What Artful.ly Is Not
 
     .span10
-      %p It’s not a system that’s too complicated to find what you need, too expensive for your organization, too general for the arts, or too inflexible for your staff. Or, as our friend, Ian Garret, said so nicely:
-
       %blockquote
         %p This isn’t a complicated merchant services account adapted to a shopping cart for tickets, it’s not an expensive massive patron services database one hosts on site, it’s not a sports ticket system pushed into use for a performance venue, it’s not software adapted from another sales system. It’s a ground-up, powerful yet light-weight, user friendly arts centered system with strong commitment from a service oriented developer.
+        %small Ian Garret, Fresh Arts, TX
+
+<link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
+:css
+  #letter {
+    width: 450px;
+    padding: 15px;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 1px #ddd;
+    background: -webkit-linear-gradient(top left, white, #eee);
+    -webkit-transform: rotateZ(1deg);
+  }
+  
+  #letter-head, #letter p{
+    font-family: 'Special Elite', 'American Typewriter', Georgia, serif;
+    font-size: 15px;
+    line-height: 20px;
+  }
+  
+  #letter p {
+    margin-bottom: 10px;
+  }
+
+  #letter p.ps {
+    color: #666;
+    font-size: 13px;
+  }
 
 .landing-section
-  %h1.center Are You Ready to Work Artful.ly?
+  #letter
+    %p{:style => 'margin-bottom: 20px;'}
+      = image_tag('index/fa-logo.png')
+      <br />Fractured Atlas<br />
+      New York, NY
 
-  .row
-    .span8.offset4
+    %p
+      %strong Are You Ready to Work Artful.ly?
 
-      %p We’ve used your insights to create a ticketing and contact management system tailored to your needs. Manage the essentials of your arts business in one place!
+    %p We’ve used your insights to create a ticketing and contact management system tailored to your needs. Manage the essentials of your arts business in one place!
 
-      %div{:style => 'margin-top: 50px; text-align:center'}
-        %p We are here to help you run the best arts business possible!
+    .div{:style => 'margin-bottom: 20px;'}
+      = image_tag('index/fa-signature.png')
 
-        %p{:style => 'margin-bottom: 50px'}
-          = image_tag('index/fa-signature.png')
-          %br
-          Fractured Atlas founded 1998
-        
-        %p= link_to 'Register for your FREE account', '', :class => 'btn primary'
+    .div{:style => 'margin-bottom: 20px;'}
+      = link_to 'Register for your FREE account', '', :class => 'btn primary'
+    
+    %p.ps PS: We created Artful.ly because we know and serve 19,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can make. 
 
-.landing-section
-  .row
-    .span8.offset4
-      %p.ps PS: We created Artful.ly because we know and serve 19,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can make. 
+    %p.ps
+      PPS:  Artful.ly is web-based software so there’s no installation, no updates, no need to call the tech guy. 
+      = link_to 'Sign up to try it today!'
 
-      %p.ps
-        PPS.  Artful.ly is web-based software so there’s no installation, no updates, no need to call the tech guy. 
-        = link_to 'Sign up to try it today!'
-
-      %p.ps
-        PPS.  You obviously like to be thorough and read a lot.  We love that!  Want more?
-        = link_to 'Check out Some FAQs.', faq_path
+    %p.ps
+      PPS:  You obviously like to be thorough and read a lot.  We love that!  Want more?
+      = link_to 'Check out Some FAQs.', faq_path

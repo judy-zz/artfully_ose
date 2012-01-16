@@ -1,17 +1,21 @@
 :css
-  ul.available {
+  ul.features {
     list-style: none;
     margin-left: 0;
   }
-  ul.available li {
+  ul.features li {
     padding-left: 23px;
     background: url('#{image_path('index/todo.png')}') no-repeat;
+    padding-top: 3px;
     padding-bottom: 20px;
   }
-%h1.raleway Features
+  ul.features li.soon {
+    background: url('#{image_path('index/todo-soon.png')}') no-repeat;
+  }
+%h1.page-title Features
 .row
   .span8
-    %ul.available
+    %ul.features
       %li Sell tickets on your site or through an Artful.ly storefront
       %li Process credit cards and track cash sales at the box office
       %li Accept donations on your site
@@ -23,13 +27,11 @@
       %li Save seating and pricing brackets
       %li Provide ticket buyers and donors with automatic email receipts
       %li Integrate Artful.ly data with fiscal sponsorship records
-
-    %h5 Features Coming Soon
-    %ul
-      %li Integrate MailChimp campaigns and analytics with other contact details
-      %li Offer multiple discount codes
-      %li Designate tickets for a reseller or papering company
+      %li.soon Offer multiple discount codes (coming soon)
+      %li.soon Designate tickets for a reseller or papering company (coming soon)
+      %li.soon Integrate #{link_to 'MailChimp', 'http://www.mailchimp.com', :target => '_blank'} campaigns and analytics with other <br />contact details (coming soon)
 
   .span5.offset1
     %p
+      = image_tag('index/pencil.png', :style => 'vertical-align:text-bottom;')
       Want to suggest a new feature? Use the #{link_to 'Feature Request Forum', 'http://artfully.zendesk.com/forums/318163-feature-requests'}. We love feedback!
