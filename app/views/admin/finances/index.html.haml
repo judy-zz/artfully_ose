@@ -17,7 +17,7 @@
   %h1 Finance Report
 .spread
   %ul.inline
-    =form_tag admin_settlements_path, :method => :get do
+    =form_tag admin_finances_path, :method => :get do
       %li
         .key= label_tag :start_date
         .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
@@ -45,26 +45,26 @@
         %td.supplement=""
       %tr
         %td="Donations"
-        %td="$1,000.00"
-        %td.supplement="10 donations"
+        %td=number_as_cents @summary.donations.gross_donations
+        %td.supplement="#{@summary.donations.num_donations} donations"
         %td.supplement=""
         %td.supplement=""
       %tr
-        %td="Surcharges"
-        %td="$3,430.00"
-        %td.supplement="812 tickets"
+        %td="Service Fees"
+        %td=number_as_cents @summary.service_fees.gross_fees
+        %td.supplement="#{@summary.service_fees.num_tickets} tickets"
         %td.supplement=""
         %td.supplement=""
       %tr
-        %td="CC Fees"
-        %td="$1,926.00"
-        %td.supplement="$1409.99 tickets"
-        %td.supplement="$355.54 donations"
+        %td="Processing Fees"
+        %td=number_as_cents @summary.processing_fees.gross_fees
+        %td.supplement="#{@summary.processing_fees.num_tickets} tickets"
+        %td.supplement="#{@summary.processing_fees.num_donations} donations"
         %td.supplement=""
       %tr
         %td="Settled"
-        %td="$19,823.11"
-        %td.supplement="35 settlements"
+        %td=number_as_cents @summary.settlements.net_settlements
+        %td.supplement="#{@summary.settlements.num_settlements} settlements"
         %td.supplement=""
         %td.supplement=""
   %h3 Ticket Sales

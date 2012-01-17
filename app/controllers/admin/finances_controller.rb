@@ -6,6 +6,6 @@ class Admin::FinancesController < Admin::AdminController
     @artfully_orders = OrderView.artfully.after(@start).before(@stop)
     settlements_in_range = Settlement.in_range(@start, @stop)
     @settlements = settlements_in_range.sort{|a,b| b.created_at <=> a.created_at }
-    @summary = FinanceSummary.new(@orders)
+    @summary = FinanceSummary.new(@orders, @settlements)
   end
 end
