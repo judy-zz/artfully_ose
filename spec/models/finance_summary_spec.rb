@@ -25,6 +25,9 @@ describe FinanceSummary do
       orders[5].transaction_id = nil
       orders[5].fa_id = "34gfoin"
     
+      #fail one of the settlements
+      settlements[3] = Factory(:failed_settlement)
+    
       @finance_summary = FinanceSummary.new(orders, settlements)
     end
   
@@ -33,8 +36,12 @@ describe FinanceSummary do
         @finance_summary.settlements.net_settlements.should eq 300000
       end
     
-      it "should report the number of settlements" do
+      it "should report the number of successful settlements" do
         @finance_summary.settlements.num_settlements.should eq 3
+      end
+      
+      it "should report the number of failed settlements" do
+        @finance_summary.settlements.num_failed_settlements.should eq 1
       end
     end
   

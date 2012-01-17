@@ -43,7 +43,7 @@ $(document).ready( function(){
 	    "bJQueryUI": true,
 	    "sDom": '<"H"lf>t<"F"ip>'
 	});
-	$('#settlement-table').dataTable({
+	$('#finance-settlement-table').dataTable({
 	    "iDisplayLength": 100,
 	    "bPaginate": true,
 	    "bJQueryUI": true,

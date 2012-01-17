@@ -11,14 +11,19 @@ class FinanceSummary
   end
   
   class Settlements
-    attr_accessor :net_settlements, :num_settlements
+    attr_accessor :net_settlements, :num_settlements, :num_failed_settlements
     
     def initialize(settlements)
       @net_settlements = 0
       @num_settlements = 0
+      @num_failed_settlements = 0
       settlements.each do |settlement|
-        @net_settlements += settlement.net
-        @num_settlements += 1
+        if settlement.success?
+          @net_settlements += settlement.net
+          @num_settlements += 1
+        else
+          @num_failed_settlements += 1
+        end
       end  
     end
   end

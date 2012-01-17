@@ -65,9 +65,9 @@
         %td="Settled"
         %td=number_as_cents @summary.settlements.net_settlements
         %td.supplement="#{@summary.settlements.num_settlements} settlements"
+        %td.supplement="#{@summary.settlements.num_failed_settlements} failed"
         %td.supplement=""
-        %td.supplement=""
-  %h3 Ticket Sales
+  %h3 Artful.ly Processed Orders
   %table.standalone.zebra#ticket-sales-table
     %thead
       %tr
@@ -99,7 +99,7 @@
           %td= number_as_cents order.service_fee
 
   %h3 Settlements
-  %table.standalone#settlement-table
+  %table.standalone#finance-settlement-table
     %thead
       %tr
         %th ID
@@ -110,6 +110,7 @@
         %th Gross
         %th Realized
         %th Net
+        %th
     %tbody
       -@settlements.each do |settlement|
         %tr{:class => settlement.success? ? "succeeded" : "failed" }
