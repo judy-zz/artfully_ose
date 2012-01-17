@@ -22,6 +22,7 @@ class Organization < ActiveRecord::Base
   has_many :imports
   
   has_one :reseller_profile
+  has_many :reseller_events, :through => :reseller_profile
 
   validates_presence_of :name
   validates :ein, :presence => true, :if => :updating_tax_info

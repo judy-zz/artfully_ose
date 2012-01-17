@@ -15,6 +15,7 @@
       - if current_user.current_organization.has_kit?(:reseller)
         - if current_user.current_organization.reseller_profile
           %li= link_to "Reseller Settings", edit_organization_reseller_profile_path(current_user.current_organization, current_user.current_organization.reseller_profile)
+          %li= link_to "Reseller Events", organization_reseller_events_path(current_user.current_organization)
         - else
           %li= link_to "Reseller Settings", new_organization_reseller_profile_path(current_user.current_organization)
 

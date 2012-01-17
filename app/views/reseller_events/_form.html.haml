@@ -1,0 +1,24 @@
+= render "shared/error_messages", :target => event
+
+= form_for([ organization, event ]) do |form|
+
+  %legend Reseller Event
+
+  .hr
+
+  %fieldset
+    %ul
+      %li
+        .label= form.label :name, "Name*"
+        .element= form.text_field :name
+      %li
+        .label= form.label :datetime, "Date/Time*"
+        .element= form.text_field :datetime, :class => "datetimepicker"
+      %li
+        .label= form.label :venue, "Venue"
+        .element= form.text_field :venue
+      %li
+        .label= form.label :description, "Description"
+        .element= form.text_area :description, :rows => 6
+
+  = form.submit

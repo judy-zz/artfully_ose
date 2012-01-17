@@ -48,6 +48,7 @@ Artfully::Application.routes.draw do
 
   resources :organizations do
     resources :reseller_profiles
+    resources :reseller_events
     put :tax_info, :on => :member
     resources :memberships
     resources :ticket_offers do

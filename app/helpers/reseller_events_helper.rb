@@ -1,0 +1,2 @@
+module ResellerEventsHelper
+end
