@@ -3,4 +3,5 @@ Factory.define(:settlement) do |s|
   
   s.association :show
   s.association :organization
+  s.net         100000
 end

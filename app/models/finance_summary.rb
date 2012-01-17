@@ -1,9 +1,47 @@
 class FinanceSummary  
-  attr_accessor :all_tickets, :artfully_tickets, :donations, :surcharges, :cc_fees, :settled
+  attr_accessor :all_tickets, :artfully_tickets, :donations, :service_fees, :processing_fees, :settled
   
   def initialize(orders)
     @all_tickets = Tickets.new(orders)
     @artfully_tickets = Tickets.new(orders.select(&:artfully?))
+    @donations = Donations.new(orders.select(&:artfully?))
+    @processing_fees = ProcessingFees.new(orders.select(&:artfully?), @artfully_tickets.sold, @donations.num_donations)
+    @service_fees = ServiceFees.new(orders.select(&:artfully?))
+  end
+  
+  class ServiceFees
+    attr_accessor :gross_fees, :num_tickets
+    
+    def initialize(orders)
+      @gross_fees = 0
+      orders.each do |order| 
+        @gross_fees += order.service_fee unless order.service_fee.nil?
+      end
+      @num_tickets = FinanceSummary.select_items(orders, :ticket?).select{ |item| item.product.sold? }
+    end    
+  end
+  
+  class ProcessingFees
+    attr_accessor :gross_fees, :num_tickets, :num_donations
+    
+    def initialize(orders, tickets_sold, num_donations)
+      items = FinanceSummary.select_items(orders, nil)
+      @gross_fees  = items.inject(0) { |sum, item| sum += (item.price - item.net) }
+      @num_tickets = tickets_sold
+      @num_donations = num_donations
+    end
+  end
+  
+  class Donations
+    attr_accessor :gross_donations, :num_donations
+    
+    def initialize(orders)
+      @gross_donations = 0
+      @num_donations = 0
+      items = FinanceSummary.select_items(orders, :donation?)
+      @gross_donations  = items.inject(0) { |sum, item| sum += item.price }
+      @num_donations = items.length
+    end
   end
   
   class Tickets
@@ -12,16 +50,20 @@ class FinanceSummary
     def initialize(orders)
       @gross_sales = 0
       
-      items = []
-      orders.each do |order|
-        items << order.items.select(&:ticket?)
-      end
-      items.flatten!
+      items = FinanceSummary.select_items(orders, :ticket?)
       @gross_sales  = items.inject(0) { |sum, item| sum += item.price }
       @sold         = items.select{ |item| item.product.sold? }
       @comped       = items.select{ |item| item.product.comped? }
       @free         = items.select{ |item| item.product.price == 0 }
       @comped       = items.select{ |item| item.product.comped? }
     end
+  end
+  
+  def self.select_items(orders, proc)
+    items = []
+    orders.each do |order|
+      items << order.items.select(&proc)
+    end
+    items.flatten!    
   end
 end
