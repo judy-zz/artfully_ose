@@ -1,0 +1,52 @@
+%h1.page-title Sign up
+.row
+  .span8
+    %h4
+      Artful.ly is currently in private beta.
+    %p
+      Sign up for an account invitation:
+
+    =javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', 'splash/mailchimp.js'
+    %form{:action => "http://fracturedatlas.us1.list-manage.com/subscribe/post?u=0454e774224b3cc25494dab27&id=3ba751346f", :method => "post", :id => "mc-embedded-subscribe-form", :name => "mc-embedded-subscribe-form", :target => "_blank", :class => "validate"}
+      %section.form
+        .clearfix
+          <label for="mce-EMAIL">Email Address <strong class="note-required">*</strong></label>
+          .input
+            <input type="text" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+
+        .clearfix
+          <label for="mce-FNAME">First Name </label>
+          .input
+            <input type="text" value="" name="FNAME" class="" id="mce-FNAME">
+
+        .clearfix
+          <label for="mce-LNAME">Last Name </label>
+          .input
+            <input type="text" value="" name="LNAME" class="" id="mce-LNAME">
+
+        .clearfix
+          <label for="mce-MMERGE3">State </label>
+          .input
+            <input type="text" value="" name="MMERGE3" class="" id="mce-MMERGE3">
+
+        .clearfix
+          <label for="mce-MMERGE5">Country </label>
+          .input
+            <input type="text" value="" name="MMERGE5" class="" id="mce-MMERGE5">
+
+      #mce-success-response
+        %p Subscribing...
+
+      .actions
+        <input type="submit" class="btn primary" value="Sign Up" />
+
+
+:javascript
+  $(document).ready(function(){
+
+    $("#mce-success-response").hide();
+    $("#mc-embedded-subscribe-form").submit(function(){
+      $("#mce-success-response").show();
+      $(".form, #hide-form").hide();
+    });
+  });

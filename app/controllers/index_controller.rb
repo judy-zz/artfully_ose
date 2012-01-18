@@ -1,5 +1,5 @@
 class IndexController < ApplicationController
-  skip_before_filter :authenticate_user!, :only => [:index, :faq, :pricing, :features, :updates]
+  skip_before_filter :authenticate_user!, :only => [:index, :faq, :pricing, :features, :updates, :sign_up]
 
   def index
     redirect_to admin_root_path if admin_signed_in?
