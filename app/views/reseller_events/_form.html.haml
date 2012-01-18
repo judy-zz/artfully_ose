@@ -13,7 +13,11 @@
         .element= form.text_field :name
       %li
         .label= form.label :datetime, "Date/Time*"
-        .element= form.text_field :datetime, :class => "datetimepicker"
+        .element
+          - if event.datetime && event.organization
+            = form.text_field :datetime, :value => event.datetime_local_to_organization.to_s(:datetimepicker), :class => "datetimepicker"
+          - else
+            = form.text_field :datetime, :class => "datetimepicker"
       %li
         .label= form.label :venue, "Venue"
         .element= form.text_field :venue
