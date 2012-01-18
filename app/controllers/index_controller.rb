@@ -23,13 +23,18 @@ class IndexController < ApplicationController
     @posts = []
     doc = Nokogiri::HTML(open('http://www.fracturedatlas.org/site/blog/tag/artfully/'))
 
-    doc.css('.post').each do |post|
-      content = {}
-      content[:title] = post.css('h1').first.content
-      content[:link] = post.css('h1 a').first['href']
-      content[:byline] = post.css('.byline').first.content
-      content[:entry] = post.css('.entry').first.content
-      @posts << content
+    begin
+      doc.css('.post').each do |post|
+        content = {}
+        content[:title] = post.css('h2').first.content
+        content[:link] = post.css('h2 a').first['href']
+        content[:byline] = post.css('.byline').first.content
+        content[:entry] = post.css('.entry').first.content
+        @posts << content
+      end
+    rescue
+      logger.info "Pulling in updates from the FA blog on index#updates failed."
+      # todo: send to airbrake or exceptional
     end
   end
 end
