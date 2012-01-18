@@ -2,7 +2,16 @@
 %html{:lang => 'en'}
   %head
     %meta{:charset => 'utf-8'}
-    <link href='http://fonts.googleapis.com/css?family=Bree+Serif' rel='stylesheet' type='text/css'>
+    :css
+      @font-face {
+        font-family: Harabara;
+        src: url("#{image_path('index/Harabara.eot')}"); // EOT file for IE
+      }
+      @font-face {
+        font-family: Harabara;
+        src: url("#{image_path('index/Harabara.ttf')}"); // TTF file for CSS3 browsers
+      }
+
     %title Artful.ly
     %link{:rel => 'stylesheet', :href => "http://twitter.github.com/bootstrap/1.4.0/bootstrap.css"}
     :css
@@ -46,21 +55,25 @@
         padding-top: 5px;
         padding-bottom: 5px;
       }
-      
+
       .page-title, h1 {
-        font-family: 'Bree Serif', Helvetica, Arial, sans-serif !important;
+        font-family: Harabara, Helvetica, Arial, sans-serif !important;
         font-weight: normal;
+        letter-spacing: 1px;
+        word-spacing: -1px;
         // Lora, Yanone+Kaffeesatz, Tienne, Kreon
       }
-      
+
       .page-title {
         margin-bottom: 30px;
       }
-      
+
       p {
         margin-bottom: 20px;
+        font-size: 14px;
+        line-height: 19px;
       }
-      
+
       h1 {
         font-size: 35px;
       }
@@ -72,6 +85,24 @@
       body {
         margin-top: 60px;
       }
+
+      blockquote small {
+        text-align: right;
+      }
+
+      div.icon {
+        float: left;
+        margin-right: 10px;
+      }
+
+      .sub-text {
+        float: left;
+        width: 250px;
+      }
+
+      img.icon {
+        vertical-align: text-bottom;
+      }
   %body
     .topbar
       .topbar-inner
@@ -82,7 +113,7 @@
             = active_link_to 'Pricing', pricing_path
             = active_link_to 'Features', features_path
             = active_link_to 'Updates', updates_path
-            %li= link_to 'Sign Up', '', :class => 'btn primary'
+            %li= link_to 'Sign Up', sign_up_path, :class => 'btn primary'
             = active_link_to 'Sign in', new_user_session_path
     .container
       =yield

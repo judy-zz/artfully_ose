@@ -18,14 +18,19 @@
   .span8
     -@posts.each do |post|
       .post
-        %h5=link_to post[:title], post[:link]
+        %h5=link_to post[:title], post[:link], :target => '_blank'
         %h6= post[:byline]
         = simple_format post[:entry].gsub('Read More »', '').gsub("\n","\n\n")
         %p
-          = link_to 'Read More »', post[:link]
+          = link_to 'Read More »', post[:link], :target => '_blank'
 
-  .span4.offset1
-    %p
-      = image_tag('index/envelope.png', :style => 'vertical-align:text-bottom;')
-      #{link_to 'Subscribe'} to the Artful.ly e-news list for other updates, tips, and news.
-    %p Currently available planned features are listed on the #{link_to 'Features Page', features_path}.
+  .span6.offset1
+    .icon
+      = image_tag('index/envelope.png', :class => 'icon')
+    .sub-text
+      %p #{link_to 'Subscribe'} to the Artful.ly e-news list for other updates, tips, and news.
+      %p Currently available and planned features are listed on the #{link_to 'Features Page', features_path}.
+
+.row
+  %p=link_to 'All Artful.ly posts on the Fractured Atlas Blog »', 'http://www.fracturedatlas.org/site/blog/tag/artfully/'
+

@@ -22,7 +22,7 @@
       %li Import contact records from Excel, Access, Salesforce, or other databases
       %li Offer online RSVP for free events
       %li Export ticket sales, donation reports, and contact information
-      %li Attach multiple tags to contact records 
+      %li Attach multiple tags to contact records
       %li Create new list segments with any search or tag
       %li Save seating and pricing brackets
       %li Provide ticket buyers and donors with automatic email receipts
@@ -31,7 +31,8 @@
       %li.soon Designate tickets for a reseller or papering company (coming soon)
       %li.soon Integrate #{link_to 'MailChimp', 'http://www.mailchimp.com', :target => '_blank'} campaigns and analytics with other <br />contact details (coming soon)
 
-  .span5.offset1
-    %p
-      = image_tag('index/pencil.png', :style => 'vertical-align:text-bottom;')
-      Want to suggest a new feature? Use the #{link_to 'Feature Request Forum', 'http://artfully.zendesk.com/forums/318163-feature-requests'}. We love feedback!
+  .span6.offset1
+    .icon
+      = image_tag('index/pencil.png', :class => 'icon')
+    .sub-text
+      %p       Want to suggest a new feature? Use the #{link_to 'Feature Request Forum', 'http://artfully.zendesk.com/forums/318163-feature-requests', :target => '_blank'}. We love feedback!

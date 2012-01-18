@@ -1,10 +1,12 @@
 :css
   .hero-unit {
     color: #fff;
-    background: #552323 url('#{image_path('index/hero.png')}');
+    background: #000 url('#{image_path('index/hero.png')}') no-repeat 0 -80px;
     margin-top: -25px;
+    padding-bottom: 0;
+    padding-top: 180px;
   }
-  
+
   .hero-unit h1, .hero-unit h2, .hero-unit h3, .hero-unit h4, .hero-unit p {
     color: white;
     text-shadow: 1px 1px 6px #000;
@@ -12,7 +14,13 @@
   }
 
   .hero-unit h1 {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+    word-spacing: 0px;
+  }
+
+  .hero-unit p {
+    padding-bottom: 30px;
   }
 
   .landing-section {
@@ -38,13 +46,13 @@
     margin: 0;
     padding: 0;
   }
-  
+
   ol#success li {
     clear: both;
     margin-bottom: 20px;
     overflow: hidden;
   }
-  
+
   ol#success li p {
     margin: 0;
   }
@@ -63,6 +71,10 @@
     text-shadow: 1px 1px 1px #fff;
   }
 
+  p.ps {
+    color: #666;
+  }
+
 .hero-unit
   %h1.raleway Grow Your Audience by Organizing Your Data
   %p
@@ -77,7 +89,7 @@
       %p Artful.ly lets you sell tickets and take donations on your own website. No more redirecting your patrons to other sites for transactions, no log-ins, no more losing customers in between the transfers. Our widget drops onto your site, so visitors are looking at your events, images, words, and videos. You can keep the focus and the web traffic where they belong – on you!
 
       %h5 Make Giving Easy.
-      %p Selling tickets is one way to get revenue, but donations are another. Artful.ly lets you do it all: ticketing, fundraising, or a donation added on to a ticket. If you are fiscally sponsored by Fractured Atlas or a registered 501(c)3, your donations will be tax-deductible. Make it easier for your supporters to contribute in every way!
+      %p Selling tickets is one way to get revenue, but donations are another. Artful.ly lets you do it all: ticketing, fundraising, or a donation added on to a ticket. If you are fiscally sponsored by Fractured Atlas or a registered 501(c)(3), your donations will be tax-deductible. Make it easier for your supporters to contribute in every way!
 
       %h5 Search at the Speed of Thought.
       %p How do you find what you need in a sea of data? Artful.ly lets you tag contacts and actions for easy retrieval (like you already do on Twitter or Wordpress). With your personalized tags, you can run a search or create a report based on your own criteria. You know your data needs better than we do, so we’ll skip the canned reports that no one uses.
@@ -87,16 +99,16 @@
 
   .row
     .span6
-      %h5 Don’t Waste Money.
-      %p If you’re not selling tickets, you aren’t getting charged. It’s that simple. No need to commit to a contract before you’ve planned your season. It’s free to set up ticketing, donations, or contact management.  The credit card companies assess processing fees which we have to pass along; these amount to 3.5% of ticket sales or donations processed by Artful.ly. But that’s it! No fine print. We know your money is precious, so we aren’t going to waste it. 
+      %h5 Secure Your Data.
+      %p We take security very seriously. You can trust that your data – and your customers’ data – is safe, private, and protected. Artful.ly is hosted in Amazon’s industry-leading data centers (the same used by Netflix, FourSquare and HootSuite), where the smartest people in the business are responsible for hardware and network-level security. Sensitive information, like credit card numbers, is transmitted using banking-grade encryption.
 
     .span5
       %h5 Keep it All in One Place.
       %p Artful.ly isn’t just about tickets. It’s about supporters in all forms: audiences, donors, friends, and colleagues. You can finally keep contacts in one place, instead of scattered in your email, spreadsheets, paper files, business cards, social networks, post its, or even written on your hand. And now you can integrate contacts with their actions – no more scrambling to remember how many shows your star donor has seen in the past year.
 
     .span5
-      %h5 Keep Sensitive Data Safe.
-      %p We take security very seriously. You can trust that your data – and your customers’ data – is safe, private, and protected. Artful.ly is hosted in Amazon’s industry-leading data centers (the same used by Netflix, FourSquare and HootSuite), where the smartest people in the business are responsible for hardware and network-level security. Sensitive information, like credit card numbers, is transmitted using banking-grade encryption.
+      %h5 Don’t Waste Money.
+      %p If you’re not selling tickets, you aren’t getting charged. It’s that simple. No need to commit to a contract before you’ve planned your season. It’s free to set up ticketing, donations, or contact management.  The credit card companies assess processing fees which we have to pass along; these amount to 3.5% of ticket sales or donations processed by Artful.ly. But that’s it! No fine print. We know your money is precious, so we aren’t going to waste it.
 
   .row
     .span6
@@ -175,7 +187,7 @@
 .landing-section
   .row
     .span10.offset3
-      %h1.center 8 ways Artful.ly gives you the keys to your own success:
+      %h1.center 8 Ways Artful.ly Gives You the Keys to Your Own Success:
 
       %ol#success
         %li
@@ -236,62 +248,25 @@
         %p This isn’t a complicated merchant services account adapted to a shopping cart for tickets, it’s not an expensive massive patron services database one hosts on site, it’s not a sports ticket system pushed into use for a performance venue, it’s not software adapted from another sales system. It’s a ground-up, powerful yet light-weight, user friendly arts centered system with strong commitment from a service oriented developer.
         %small Ian Garret, Fresh Arts, TX
 
-<link href='http://fonts.googleapis.com/css?family=Special+Elite' rel='stylesheet' type='text/css'>
-:css
-  #letter {
-    width: 450px;
-    padding: 15px;
-    margin: 0 auto;
-    border: 1px solid #ccc;
-    -moz-box-shadow: 1px 1px 1px #ddd;
-    -webkit-box-shadow: 1px 1px 1px #ddd;
-    -o-box-shadow: 1px 1px 1px #ddd;
-    box-shadow: 1px 1px 1px #ddd;
-    background: -webkit-linear-gradient(top left, white, #eee);
-    -webkit-transform: rotateZ(1deg);
-    -moz-transform: rotateZ(1deg);
-    transform: rotateZ(1deg);
-  }
-  
-  #letter-head, #letter p{
-    font-family: 'Special Elite', 'American Typewriter', Georgia, serif;
-    font-size: 15px;
-    line-height: 20px;
-  }
-  
-  #letter p {
-    margin-bottom: 10px;
-  }
-
-  #letter p.ps {
-    color: #666;
-    font-size: 13px;
-  }
-
 .landing-section
-  #letter
-    %p{:style => 'margin-bottom: 20px;'}
-      = image_tag('index/fa-logo.png')
-      <br />Fractured Atlas<br />
-      New York, NY
+  .row
+    .span8.offset4
+      %h1.center Are You Ready to Work Artful.ly?
 
-    %p
-      %strong Are You Ready to Work Artful.ly?
+      %p We’ve used your insights to create a ticketing and contact management system tailored to your needs. Manage the essentials of your arts business in one place!
 
-    %p We’ve used your insights to create a ticketing and contact management system tailored to your needs. Manage the essentials of your arts business in one place!
+      .div.center{:style => 'margin-bottom: 30px;'}
+        = link_to 'Register for your FREE account', sign_up_path, :class => 'btn primary'
 
-    .div{:style => 'margin-bottom: 20px;'}
-      = image_tag('index/fa-signature.png')
+      %p.ps PS: We created Artful.ly because we know and serve 19,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can make.
 
-    .div{:style => 'margin-bottom: 20px;'}
-      = link_to 'Register for your FREE account', '', :class => 'btn primary'
-    
-    %p.ps PS: We created Artful.ly because we know and serve 19,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can make. 
+      %p.ps
+        PPS:  Artful.ly is web-based software so there’s no installation, no updates, no need to call the tech guy.
+        = link_to 'Sign up to try it today!', sign_up_path
 
-    %p.ps
-      PPS:  Artful.ly is web-based software so there’s no installation, no updates, no need to call the tech guy. 
-      = link_to 'Sign up to try it today!'
+      %p.ps{:style => 'margin-bottom: 30px;'}
+        PPPS:  You obviously like to be thorough and read a lot.  We love that!  Want more?
+        = link_to 'Check out some FAQs.', faq_path
 
-    %p.ps
-      PPS:  You obviously like to be thorough and read a lot.  We love that!  Want more?
-      = link_to 'Check out Some FAQs.', faq_path
+      %p.center
+        = link_to image_tag('index/fa-logo.png'), 'http://www.fracturedatlas.org', :target => '_blank'
