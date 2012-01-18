@@ -1,6 +1,7 @@
 require_or_load 'ach/exceptions'
 class Settlement < ActiveRecord::Base
   include Settlement::RangeFinding
+  include AdminTimeZone
 
   belongs_to :organization
   belongs_to :show
@@ -11,6 +12,8 @@ class Settlement < ActiveRecord::Base
   scope :before, lambda { |time| where("created_at < ?", time) }
   scope :after,  lambda { |time| where("created_at > ?", time) }
   scope :in_range, lambda { |start, stop| after(start).before(stop) }
+  
+  set_watch_for :created_at, :local_to => :self, :as => :admins
 
   def self.submit(organization_id, items, bank_account, show_id = nil)
     items = Array.wrap(items)

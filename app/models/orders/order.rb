@@ -3,6 +3,7 @@
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include ApplicationHelper
+  include AdminTimeZone
   
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge
@@ -15,7 +16,8 @@ class Order < ActiveRecord::Base
 
   attr_accessor :skip_actions
 
-  set_watch_for :created_at, :local_to => :organization
+  set_watch_for :created_at, :local_to => :organization  
+  set_watch_for :created_at, :local_to => :self, :as => :admins
 
   validates_presence_of :person_id
   validates_presence_of :organization_id

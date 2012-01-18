@@ -92,7 +92,7 @@
               =check_mark
               .hidden="donation"
           -unless order.created_at.nil?
-            %td= l order.created_at, :format => :short
+            %td= l order.created_at_local_to_admins, :format => :short
           %td=" #{order.person_last_name}, #{order.person_first_name}"
           %td= link_to order.organization_name, admin_organization_path(order.organization_id)
           %td= number_as_cents order.total
@@ -117,7 +117,7 @@
           %td= settlement.id
           %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
           %td= l(settlement.show.datetime_local_to_event, :format => :short) unless settlement.show.nil?
-          %td= l settlement.created_at, :format => :short
+          %td= l settlement.created_at_local_to_admins, :format => :short
           %td
             -if settlement.success?
               =settlement.transaction_id

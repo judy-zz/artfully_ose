@@ -9,6 +9,9 @@ class OrderView < ActiveRecord::Base
   scope :not_imported, where("fa_id IS NULL")
   scope :artfully, where("transaction_id IS NOT NULL")
   
+  include AdminTimeZone
+  set_watch_for :created_at, :local_to => :self, :as => :admins
+  
   def artfully?
     !transaction_id.nil?
   end
