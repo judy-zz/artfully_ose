@@ -1,7 +1,7 @@
 class TicketOffersController < ApplicationController
 
   before_filter :find_organization, :only => [ :index, :new, :create ]
-  before_filter :find_ticket_offer, :only => [ :show, :edit, :update, :destroy, :accept, :decline ]
+  before_filter :find_ticket_offer, :except => [ :index, :new, :create ]
 
   def index
     @ticket_offers = TicketOffer.all
