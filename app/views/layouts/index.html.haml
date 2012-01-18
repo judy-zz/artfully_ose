@@ -13,7 +13,12 @@
       }
 
     %title Artful.ly
-    %link{:rel => 'stylesheet', :href => "http://twitter.github.com/bootstrap/1.4.0/bootstrap.css"}
+    = stylesheet_link_tag 'http://twitter.github.com/bootstrap/1.4.0/bootstrap.css'
+    = javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js', 'splash/jquery.widowFix-1.3.2.min.js'
+    :javascript
+      $(document).ready(function() {
+        $('p:not(.blog)').widowFix();
+      });
     :css
       .topbar-inner, .topbar .fill {
         background-color: #175c71;
