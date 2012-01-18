@@ -20,6 +20,7 @@ end
 
 Factory.define :sold_ticket, :parent => :ticket do |t|
   t.state :sold
+  t.section Factory(:section)
   t.after_create do |ticket|
     ticket.sell_to(Factory(:person))
   end
