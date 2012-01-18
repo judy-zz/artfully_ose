@@ -7,10 +7,6 @@ class ResellerEventsController < ApplicationController
 
   def index
     @reseller_events = current_user.current_organization.reseller_events.upcoming.chronological
-
-    respond_to do |format|
-      format.html
-    end
   end
 
   def new

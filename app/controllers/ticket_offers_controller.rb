@@ -5,45 +5,26 @@ class TicketOffersController < ApplicationController
 
   def index
     @ticket_offers = TicketOffer.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @ticket_offers }
-    end
   end
 
   def show
     @ticket_offer = TicketOffer.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @ticket_offer }
-    end
   end
 
   def new
     @ticket_offer = TicketOffer.new(params[:ticket_offer])
     @reseller_profiles = ResellerProfile.joins(:organization).order("organizations.name").all
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.xml  { render :xml => @ticket_offer }
-    end
   end
 
   def create
     @ticket_offer = TicketOffer.new(params[:ticket_offer])
     @ticket_offer.organization = @organization
 
-    respond_to do |format|
-      if @ticket_offer.save
-        edit_path = edit_organization_ticket_offer_path(@organization, @ticket_offer)
-        format.html { redirect_to(edit_path, :notice => 'Ticket offer was successfully created.') }
-        format.xml  { render :xml => @ticket_offer, :status => :created, :location => @ticket_offer }
-      else
-        format.html { render :action => "new" }
-        format.xml  { render :xml => @ticket_offer.errors, :status => :unprocessable_entity }
-      end
+    if @ticket_offer.save
+      edit_path = edit_organization_ticket_offer_path(@organization, @ticket_offer)
+      redirect_to edit_path, :notice => 'Ticket offer was successfully created.'
+    else
+      render :action => "new"
     end
   end
 
@@ -81,27 +62,20 @@ class TicketOffersController < ApplicationController
       return
     end
 
-    respond_to do |format|
-      if @ticket_offer.update_attributes(params[:ticket_offer])
-        @ticket_offer.offer!
-        path = event_show_path(@ticket_offer.show.event, @ticket_offer.show)
+    if @ticket_offer.update_attributes(params[:ticket_offer])
+      @ticket_offer.offer!
+      path = event_show_path(@ticket_offer.show.event, @ticket_offer.show)
 
-        format.html { redirect_to(path, :notice => 'Your ticket offer has been sent to the reseller.') }
-        format.xml  { head :ok }
-      else
-        format.html { render :action => "edit" }
-        format.xml  { render :xml => @ticket_offer.errors, :status => :unprocessable_entity }
-      end
+      redirect_to path, :notice => 'Your ticket offer has been sent to the reseller.'
+    else
+      render :action => "edit"
     end
   end
 
   def destroy
     @ticket_offer.destroy
 
-    respond_to do |format|
-      format.html { redirect_to(ticket_offers_url) }
-      format.xml  { head :ok }
-    end
+    redirect_to ticket_offers_url
   end
 
   def accept
