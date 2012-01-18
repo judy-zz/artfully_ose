@@ -22,7 +22,7 @@ class TicketOffersController < ApplicationController
 
     if @ticket_offer.save
       edit_path = edit_organization_ticket_offer_path(@organization, @ticket_offer)
-      redirect_to edit_path, :notice => 'Ticket offer was successfully created.'
+      redirect_to edit_path
     else
       render :action => "new"
     end
