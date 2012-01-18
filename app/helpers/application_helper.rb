@@ -1,6 +1,10 @@
 module ApplicationHelper
   include LinkHelper
 
+  def check_mark
+    "&#x2713;".html_safe
+  end
+
   def time_zone_description(tz)
     ActiveSupport::TimeZone.create(tz)
   end
