@@ -6,7 +6,6 @@
     %p
       Sign up for an account invitation:
 
-    =javascript_include_tag 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js', 'splash/mailchimp.js'
     %form{:action => "http://fracturedatlas.us1.list-manage.com/subscribe/post?u=0454e774224b3cc25494dab27&id=3ba751346f", :method => "post", :id => "mc-embedded-subscribe-form", :name => "mc-embedded-subscribe-form", :target => "_blank", :class => "validate"}
       %section.form
         .clearfix
@@ -34,19 +33,5 @@
           .input
             <input type="text" value="" name="MMERGE5" class="" id="mce-MMERGE5">
 
-      #mce-success-response
-        %p Subscribing...
-
       .actions
         <input type="submit" class="btn primary" value="Sign Up" />
-
-
-:javascript
-  $(document).ready(function(){
-
-    $("#mce-success-response").hide();
-    $("#mc-embedded-subscribe-form").submit(function(){
-      $("#mce-success-response").show();
-      $(".form, #hide-form").hide();
-    });
-  });
