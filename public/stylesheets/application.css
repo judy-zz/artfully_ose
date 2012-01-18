@@ -924,6 +924,19 @@ dl.table-display {
   height: 12px;
   margin-bottom: 11px; }
 
+.inline li {
+  float: left;
+  margin-right: 10px; }
+
+.rowline {
+  border: 0 !important;
+  width: 75%; }
+  .rowline tr {
+    border-bottom: 1px solid #aaaaaa; }
+  .rowline td {
+    text-align: right;
+    font-weight: bold; }
+
 #header {
   left: 0;
   right: 0;

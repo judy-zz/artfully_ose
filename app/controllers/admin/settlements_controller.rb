@@ -4,7 +4,7 @@ class Admin::SettlementsController < Admin::AdminController
     @stop  = params[:start].present? ? DateTime.parse(params[:stop]).end_of_day : Time.now.end_of_day
 
     settlements_in_range = Settlement.in_range(@start, @stop)
-    @settlements = settlements_in_range.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
+    @settlements = settlements_in_range.sort{|a,b| b.created_at <=> a.created_at }
   end
 
   def new

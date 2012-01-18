@@ -31,7 +31,7 @@ $(document).ready( function(){
 });
 
 $(document).ready( function(){
-	$('#ticket-sales-table').dataTable({
+	$('#order-table').dataTable({
 	    "iDisplayLength": 100,
 	    "bPaginate": true,
 	    "bJQueryUI": true,
@@ -43,7 +43,7 @@ $(document).ready( function(){
 	    "bJQueryUI": true,
 	    "sDom": '<"H"lf>t<"F"ip>'
 	});
-	$('#finance-settlement-table').dataTable({
+	$('#settlement-table').dataTable({
 	    "iDisplayLength": 100,
 	    "bPaginate": true,
 	    "bJQueryUI": true,

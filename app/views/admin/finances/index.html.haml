@@ -1,18 +1,3 @@
-%style(type="text/css") 
-  :sass
-    .inline
-      li
-        float: left
-        margin-right: 10px
-    .rowline
-      border: 0 !important
-      width: 75%
-      tr
-        border-bottom: 1px solid #aaa
-      td
-        text-align: right
-        font-weight: bold
-
 - content_for :header do
   %h1 Finance Report
 .spread
@@ -68,66 +53,7 @@
         %td.supplement="#{@summary.settlements.num_failed_settlements} failed"
         %td.supplement=""
   %h3 Artful.ly Processed Orders
-  %table.standalone.zebra#ticket-sales-table
-    %thead
-      %tr
-        %th{:style=>'width:40px'} ID
-        %th{:style=>'width:30px'} Tix
-        %th{:style=>'width:30px'} Don
-        %th Date
-        %th Person
-        %th Organization
-        %th Total
-        %th Fee
-    %tbody
-      - @artfully_orders.each do |order|
-        %tr
-          %td=order.id
-          %td
-            - if order.has_ticket?
-              =check_mark
-              .hidden="ticket"
-          %td
-            - if order.has_donation?
-              =check_mark
-              .hidden="donation"
-          -unless order.created_at.nil?
-            %td= l order.created_at_local_to_admins, :format => :short
-          %td=" #{order.person_last_name}, #{order.person_first_name}"
-          %td= link_to order.organization_name, admin_organization_path(order.organization_id)
-          %td= number_as_cents order.total
-          %td= number_as_cents order.service_fee
+  =render :partial => "admin/shared/orders_table", :locals => {:orders => @artfully_orders}
 
   %h3 Settlements
-  %table.standalone#finance-settlement-table
-    %thead
-      %tr
-        %th ID
-        %th Org
-        %th Show
-        %th Date
-        %th Transaction ID
-        %th Gross
-        %th Realized
-        %th Net
-        %th
-    %tbody
-      -@settlements.each do |settlement|
-        %tr{:class => settlement.success? ? "succeeded" : "failed" }
-          %td= settlement.id
-          %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
-          %td= l(settlement.show.datetime_local_to_event, :format => :short) unless settlement.show.nil?
-          %td= l settlement.created_at_local_to_admins, :format => :short
-          %td
-            -if settlement.success?
-              =settlement.transaction_id
-            -else
-              FAILED (#{settlement.ach_response_code})
-          %td= number_as_cents(settlement.gross)
-          %td= number_as_cents(settlement.realized_gross)
-          %td= number_as_cents(settlement.net)
-          %td
-            -if !settlement.success?
-              = form_tag new_admin_settlement_path, :method=>'get' do
-                = hidden_field_tag "show_id", settlement.show_id
-                = submit_tag "Re-settle", :class => [ :mini, :full ]
+  =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}

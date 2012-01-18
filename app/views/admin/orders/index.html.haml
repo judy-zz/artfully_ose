@@ -5,26 +5,4 @@
     %li= link_to "All", all_admin_orders_path
     
 .spread
-  #orders
-    %table.standalone.zebra
-      %thead
-        %tr
-          %th ID
-          %th FA ID
-          %th Date
-          %th Organization
-          %th Total
-          %th Fee
-      %tbody
-        - @orders.each do |order|
-          %tr
-            %td=order.id
-            %td=order.fa_id
-            -unless order.created_at.nil?
-              %td= l order.created_at
-            %td= link_to order.organization.name, admin_organization_path(order.organization)
-            %td= number_as_cents order.total
-            %td= number_as_cents order.service_fee
-
-    = will_paginate @orders
-
+  =render :partial => "admin/shared/orders_table", :locals => {:orders => @orders}
