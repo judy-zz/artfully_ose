@@ -61,7 +61,7 @@ group :test, :development do
   gem "rspec-rails", ">= 2.1"
   gem 'shoulda'
   gem 'fakeweb'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', ">= 1.5"
   gem 'nokogiri'
   gem 'capybara'
   gem 'launchy'
