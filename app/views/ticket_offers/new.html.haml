@@ -3,7 +3,7 @@
 
 .context
   %p Copycopter stuff here about offering tickets to resellers.  Fees.  What one can expect.  Tickets are not reserves until sold.  Etc...
-  
+
 .document
   %h3 Find a reseller
   .clearfix
@@ -13,12 +13,22 @@
         %th Name
         %th Description
         %th Fee
+        %th &nbsp;
+
     %tbody
       - @reseller_profiles.each do |profile|
         %tr
-          %td= link_to profile.organization.name, create_organization_ticket_offers_path(@organization, :ticket_offer => { :reseller_profile_id => profile.id, :show_id => @ticket_offer.show_id })
+          %td
+            - if profile.url.present?
+              = link_to profile.organization.name, profile.url, :target => "_blank"
+            - else
+              = profile.organization.name
           %td= profile.description
           %td= number_to_currency(profile.fee / 100.0)
+          %td
+            = form_for [ @organization, @ticket_offer ] do |f|
+              = f.hidden_field :reseller_profile_id, :value => profile.id
+              = f.submit "Offer Tickets"
 
 - content_for :custom_js do
 
@@ -33,7 +43,8 @@
         "aoColumns"      : [
           { "bSortable" : true },
           { "bSortable" : false },
-          { "bSortable" : true }
+          { "bSortable" : true },
+          { "bSortable" : false }
         ]
       });
     });
