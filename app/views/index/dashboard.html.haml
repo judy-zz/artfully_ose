@@ -15,6 +15,8 @@
 
 - width = "75%" if @events.blank?
 .dashboard{ :style => "width: #{width}" }
+  = render :partial => "ticket_offers/list", :locals => { :ticket_offers => @ticket_offers }
+
   #events
     %h3 Events
     - if @events.blank?
@@ -30,8 +32,6 @@
       = link_to "Add a Contact", new_person_path, :class => :cta
     - else
       = render :partial => 'people/list', :locals => { :people => @people }
-
-  = render :partial => "ticket_offers/list", :locals => { :ticket_offers => @ticket_offers }
 
 .sideboard
   - if !@events.blank?

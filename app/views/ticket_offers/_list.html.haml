@@ -21,7 +21,7 @@
 
           %tr
             %td.organization-name= ticket_offer.organization.name
-            %td.event-name= ticket_offer.event.name
+            %td.event-name= link_to ticket_offer.event.name, store_event_path(ticket_offer.event)
             %td.show-name= ticket_offer.show.show_time
             %td.section= ticket_offer.section.name
             %td.ticket-count= ticket_offer.count
