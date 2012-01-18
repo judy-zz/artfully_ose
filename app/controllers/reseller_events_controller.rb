@@ -1,8 +1,8 @@
 class ResellerEventsController < ApplicationController
 
-  before_filter :find_reseller_profile
-  before_filter :adjust_datetime_to_organization_time_zone
-  before_filter :authorize_reseller_profile, :except => :index
+  before_filter :find_reseller_profile, :except => [ :stream ]
+  before_filter :adjust_datetime_to_organization_time_zone, :except => [ :stream ]
+  before_filter :authorize_reseller_profile, :except => [ :index, :stream ]
   before_filter :find_reseller_event, :only => [ :edit, :update, :destroy ]
 
   def index
@@ -43,6 +43,31 @@ class ResellerEventsController < ApplicationController
     @reseller_event.destroy
 
     redirect_to organization_reseller_events_path(@organization)
+  end
+
+  def stream
+    @organization = Organization.find(params[:organization_id])
+    @reseller_profile = @organization.reseller_profile
+    @reseller_events = @organization.reseller_events.includes(:reseller_profile).all
+    @ticket_offers = @reseller_profile.ticket_offers.includes(:show => :event).on_calendar.all
+
+    @reseller_events.map! do |event|
+      {
+        :title => event.name,
+        :start => event.datetime_local_to_organization.to_s(:fullcalendar),
+        :allDay => false
+      }
+    end
+
+    @ticket_offers.map! do |ticket_offer|
+      {
+        :title => ticket_offer.show.event.name,
+        :start => ticket_offer.show.datetime_local_to_event.to_s(:fullcalendar),
+        :allDay => false
+      }
+    end
+
+    render :json => [ @reseller_events, @ticket_offers ].flatten.to_json
   end
 
   protected

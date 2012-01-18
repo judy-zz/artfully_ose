@@ -17,6 +17,8 @@ class TicketOffer < ActiveRecord::Base
   scope :accepted, where(:status => "accepted")
   scope :rejected, where(:status => "rejected")
   scope :completed, where(:status => "completed")
+  scope :has_show, where("show_id IS NOT NULL")
+  scope :on_calendar, has_show.where("status IN (?)", %w( accepted completed ))
 
   ## State Transitions ##
 
