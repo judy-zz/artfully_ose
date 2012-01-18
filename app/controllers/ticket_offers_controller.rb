@@ -1,6 +1,6 @@
 class TicketOffersController < ApplicationController
 
-  before_filter :find_organization, :except => [ :accept, :decline ]
+  before_filter :find_organization, :only => [ :index, :new, :create ]
   before_filter :find_ticket_offer, :only => [ :show, :edit, :update, :destroy, :accept, :decline ]
 
   def index
@@ -90,7 +90,7 @@ class TicketOffersController < ApplicationController
   protected
 
   def find_organization
-    @organization = Organization.find(params[:organization_id])
+    @organization ||= Organization.find(params[:organization_id])
     authorize! :edit, @organization
   end
 
