@@ -270,7 +270,7 @@ DEPENDENCIES
   dynamic_form
   escape_utils
   exceptional
-  factory_girl_rails
+  factory_girl_rails (= 1.0.1)
   faker
   fakeweb
   fastercsv
