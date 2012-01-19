@@ -53,7 +53,7 @@ form fieldset {
 form fieldset.floater {
   float: left; }
 form fieldset.thirdish {
-  width: 28%;
+  width: 33%;
   margin-right: 5px;
   min-height: 200px; }
 form fieldset.slim {

@@ -4,30 +4,50 @@
     height: 3 * $line_height
     width: 100%
 
+#the-details
+  font-family: Helvetica, sans-serif !important
+  font-size: 12pt !important
+  width: 100%
+  border-bottom: 1px solid #ccc
+  @include top-bottom-shadow(#ccc)
+  label
+    font-family: Helvetica, sans-serif 
+    font-size: 11pt
+  h4
+    @include rounded-corners(2px, 2px, 2px, 2px)
+    background-color: $box-office-blue
+    font-style: normal
+    font-weight: bold
+    font-size: 10pt
+    padding-left: 8px
+
 #section-list
   .label
     @extend .stack3of4
   .element
     @extend .stack1of4
 
+.total-and-checkout
+  margin-bottom: 3px
+  border-bottom: 1px solid #ddd
+  padding-bottom: 5px
+
 #total
+  float: right
   text-align: center
   font-weight: bold
-  padding-bottom: 20px
-  margin-bottom: 20px
-  border-bottom: 1px solid #ddd
+  width: 200px
   span
     text-transform: uppercase
     font-size: .8em
     color: #ccc
   .price
     color: #999
-    font-size: 2.5em
+    font-size: 3.0em
     
 #checkout-now
-  padding-bottom: 20px
-  margin-bottom: 20px
-  border-bottom: 1px solid #ddd
+  float: right
+  width: 200px
   a
     display: block
     @include rounded-corners(2px, 2px, 2px, 2px)
@@ -86,8 +106,8 @@
       color: #999
       font-size: 2.5em
   #popup-ticket-list
-    height: 325px
-    overflow: scroll
+    height: 240px
+    overflow: auto
     
 #swipe-now
   font-size: 16pt
@@ -97,3 +117,35 @@
   border: 0px
   color: #EEE
   background: #EEE
+  
+#sell-popup
+  background-color: white
+  h4
+    @include rounded-corners(2px, 2px, 2px, 2px)
+    background-color: $box-office-blue
+    font-style: normal
+    font-weight: bold
+    font-size: 10pt
+    padding-left: 8px
+  
+.ui-menu-item
+  border-bottom: 1px solid #ccc
+  font-family: Helvetica, sans-serif
+  
+.search-result-name
+  font-size: 14pt
+  
+input#terms
+  width: 90%
+  margin-top: 5px
+  margin-left: 5px
+
+.picked-person
+  margin-left: 5px
+  
+.picked-person-name
+  margin-top: 10px
+  font-family: Helvetica, sans-serif
+  color: $blue
+  font-size: 14pt
+  font-weight: bold

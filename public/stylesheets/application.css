@@ -1082,7 +1082,7 @@ form fieldset {
 form fieldset.floater {
   float: left; }
 form fieldset.thirdish {
-  width: 28%;
+  width: 33%;
   margin-right: 5px;
   min-height: 200px; }
 form fieldset.slim {
@@ -1534,24 +1534,48 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
     height: 36px;
     width: 100%; }
 
+#the-details {
+  font-family: Helvetica, sans-serif !important;
+  font-size: 12pt !important;
+  width: 100%;
+  border-bottom: 1px solid #cccccc;
+  -moz-box-shadow: 0 4px 4px -2px #cccccc;
+  -webkit-box-shadow: 0 4px 4px -2px #cccccc;
+  box-shadow: 0 4px 4px -2px #cccccc; }
+  #the-details label {
+    font-family: Helvetica, sans-serif;
+    font-size: 11pt; }
+  #the-details h4 {
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    background-color: #dbe6ea;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 10pt;
+    padding-left: 8px; }
+
+.total-and-checkout {
+  margin-bottom: 3px;
+  border-bottom: 1px solid #dddddd;
+  padding-bottom: 5px; }
+
 #total {
+  float: right;
   text-align: center;
   font-weight: bold;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #dddddd; }
+  width: 200px; }
   #total span {
     text-transform: uppercase;
     font-size: 0.8em;
     color: #cccccc; }
   #total .price {
     color: #999999;
-    font-size: 2.5em; }
+    font-size: 3em; }
 
 #checkout-now {
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #dddddd; }
+  float: right;
+  width: 200px; }
   #checkout-now a {
     display: block;
     -moz-border-radius: 2px 2px 2px 2px;
@@ -1624,8 +1648,8 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
     color: #999999;
     font-size: 2.5em; }
 #sell-popup #popup-ticket-list {
-  height: 325px;
-  overflow: scroll; }
+  height: 240px;
+  overflow: auto; }
 
 #swipe-now {
   font-size: 16pt;
@@ -1635,3 +1659,37 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   border: 0px;
   color: #eeeeee;
   background: #eeeeee; }
+
+#sell-popup {
+  background-color: white; }
+  #sell-popup h4 {
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    background-color: #dbe6ea;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 10pt;
+    padding-left: 8px; }
+
+.ui-menu-item {
+  border-bottom: 1px solid #cccccc;
+  font-family: Helvetica, sans-serif; }
+
+.search-result-name {
+  font-size: 14pt; }
+
+input#terms {
+  width: 90%;
+  margin-top: 5px;
+  margin-left: 5px; }
+
+.picked-person {
+  margin-left: 5px; }
+
+.picked-person-name {
+  margin-top: 10px;
+  font-family: Helvetica, sans-serif;
+  color: #077083;
+  font-size: 14pt;
+  font-weight: bold; }

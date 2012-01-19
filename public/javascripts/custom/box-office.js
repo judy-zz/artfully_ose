@@ -54,7 +54,27 @@ function setPriceDisplay(amountInCents) {
 
 $("document").ready(function(){
 	
-  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:500})
+	$("input#terms").autocomplete({
+    html: true,
+    source: ["<div class='search-result-name'>Jeff Bezos</div><div class='search-result-email'>jeff@amazon.com</div><div>Amazon.com</div><div>Seattle, WA</div>", 
+             "<div class='search-result-name'>Jeff Goldblum</div><div class='search-result-email'>jeffgol394@aol.com</div><div>SGA - West</div><div>Los Angeles, CA</div>",
+             "<div class='search-result-name'>Jeff Example</div><div class='search-result-email'>jeff.example@example.com</div><div>Example LLC</div><div>New York, NY</div>",
+             "<div class='search-result-name'>Jeffrey Hammonds</div><div class='search-result-email'>hammonds@checkout.info</div><div>Kaiser Dance Company</div><div>Ashville, NC</div>"],
+    select: function(event, ui) { 
+      event.preventDefault()
+      $("input#terms").val("Jeff Bezos")
+      $(".picked-person-name").html("Jeff Bezos")
+      $(".picked-person-email").html("jeff@amazon.com")
+    }
+  });
+
+  $("#new-person-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:200, title: 'Create New Person'})
+  $("#new-person-link").click(function(){
+    $("#new-person-popup").dialog("open")
+    return false;
+  });
+	
+  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:500, title: 'Confirm Sale'})
   $("#checkout-now-button").click(function(){
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
       $('#sell-button').hide()
