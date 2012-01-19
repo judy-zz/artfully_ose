@@ -20,6 +20,6 @@
             %td= link_to organization.owner.email, admin_user_path(organization.owner) unless organization.owner.nil?
             %td= l organization.created_at, :format => :short
             %td= organization.memberships.size
-            %td= "&#x2713;".html_safe if organization.connected?
-            %td= "&#x2713;".html_safe if organization.has_active_fiscally_sponsored_project?
+            %td= check_mark if organization.connected?
+            %td= check_mark if organization.has_active_fiscally_sponsored_project?
     =will_paginate @organizations

@@ -1,0 +1,29 @@
+%table.standalone.zebra#order-table
+  %thead
+    %tr
+      %th{:style=>'width:40px'} ID
+      %th{:style=>'width:30px'} Tix
+      %th{:style=>'width:30px'} Don
+      %th Date
+      %th Person
+      %th Organization
+      %th Total
+      %th Fee
+  %tbody
+    - orders.each do |order|
+      %tr
+        %td=order.id
+        %td
+          - if order.has_ticket?
+            =check_mark
+            .hidden="ticket"
+        %td
+          - if order.has_donation?
+            =check_mark
+            .hidden="donation"
+        -unless order.created_at.nil?
+          %td= l order.created_at_local_to_admins, :format => :short
+        %td=" #{order.person_last_name}, #{order.person_first_name}"
+        %td= link_to order.organization_name, admin_organization_path(order.organization_id)
+        %td= number_as_cents order.total
+        %td= number_as_cents order.service_fee

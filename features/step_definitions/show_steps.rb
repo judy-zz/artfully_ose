@@ -7,7 +7,7 @@ end
 
 When /^I view the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |pos|
   @show = current_shows[pos.to_i - 1]
-  within(:xpath, "(//ul[@id='of_shows']/li)[#{pos.to_i}]") do
+  within("table tbody tr:nth-child(#{pos.to_i})") do
     click_link "show-datetime"
   end
 end
