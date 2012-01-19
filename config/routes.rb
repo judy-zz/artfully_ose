@@ -152,4 +152,5 @@ Artfully::Application.routes.draw do
   match '/features' => 'index#features'
   match '/updates' => 'index#updates'
   match '/sign_up' => 'index#sign_up'
+  match '/sign_up_form' => 'index#sign_up_form'
 end

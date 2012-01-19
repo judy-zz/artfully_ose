@@ -1,5 +1,5 @@
 class IndexController < ApplicationController
-  skip_before_filter :authenticate_user!, :only => [:index, :faq, :pricing, :features, :updates, :sign_up]
+  skip_before_filter :authenticate_user!, :only => [:index, :faq, :pricing, :features, :updates, :sign_up, :sign_up_form]
 
   def index
     redirect_to admin_root_path if admin_signed_in?
@@ -36,5 +36,9 @@ class IndexController < ApplicationController
       logger.info "Pulling in updates from the FA blog on index#updates failed."
       # todo: send to airbrake or exceptional
     end
+  end
+
+  def sign_up_form
+    render :sign_up_form, :layout => false
   end
 end
