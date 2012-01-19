@@ -1411,6 +1411,11 @@ tfoot tr {
 .dataTables_wrapper th {
   cursor: pointer; }
 
+#reseller-profile-datatable tr.even {
+  background-color: #eeeeee; }
+#reseller-profile-datatable tr.odd {
+  background-color: white; }
+
 .flash {
   display: block;
   font-family: "Arial", sans-serif;
