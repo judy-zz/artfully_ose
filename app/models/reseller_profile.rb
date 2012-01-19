@@ -6,4 +6,6 @@ class ResellerProfile < ActiveRecord::Base
   has_many :ticket_offers
   has_many :reseller_events
 
+  validates_length_of :description, :maximum => 350
+
 end
