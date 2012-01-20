@@ -1,11 +1,11 @@
 - content_for :header do
-  %h1 Prepare an offer for #{@ticket_offer.reseller_profile.organization.name}
+  %h1 Prepare an ticket offer
 
 .compact-spread
 
   = form_for [ @organization, @ticket_offer ] do |f|
 
-    %h3 Select Ticket Details
+    %h3 Ticket offer for #{@ticket_offer.reseller_profile.organization.name}
 
     %ul
 
