@@ -19,7 +19,6 @@
           = form_tag unpublished_event_shows_path(@show.event) do |form|
             = hidden_field_tag :show_id, @show.id
             = submit_tag "Unpublish"
-    %li= button_to "Offer to Reseller", new_organization_ticket_offer_path(@show.organization, :ticket_offer => { :show_id => @show.id })
     %li= button_to "Door List", door_list_event_show_path(@event,@show), :method => :get
   %ul.kv
     %li

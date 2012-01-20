@@ -65,6 +65,10 @@
           showOptions[i] = new Option(eventShows[i].show_time, eventShows[i].id, false, false);
         }
 
+        if (showOptions.length === 0) {
+          showOptions[i] = new Option("--- No Upcoming Shows Found ---", 0, true, false);
+        }
+
         loadSectionOptions();
       }
 
@@ -77,8 +81,12 @@
 
         sectionOptions.length = 0;
 
-        for (var i = 0; i < showSections.length; ++i) {
+        for (var i = 0; showSections && i < showSections.length; ++i) {
           sectionOptions[i] = new Option(showSections[i].name, showSections[i].id, i === 0, i === 0);
+        }
+
+        if (sectionOptions.length === 0) {
+          sectionOptions[i] = new Option("--- No Sections Found ---", 0, true, false);
         }
 
         loadCount();
@@ -87,9 +95,13 @@
       function loadCount() {
         var showId = showSelector.val();
         var sectionId = sectionSelector.val();
-        var count = counts[showId][sectionId];
 
-        countInput.val(count);
+        if (counts[showId] !== undefined) {
+          var count = counts[showId][sectionId];
+          countInput.val(count);
+        } else {
+          countInput.val("");
+        }
       }
 
       eventSelector.change(loadShowOptions);

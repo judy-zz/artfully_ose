@@ -75,3 +75,6 @@
 
         %h4 Sell Anywhere
         %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe
+
+        %h4 Sell through Resellers
+        %p= "Click #{link_to 'here', new_organization_ticket_offer_path(@event.organization)} to offer tickets to this event to a reseller.".html_safe
