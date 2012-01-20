@@ -1,0 +1,211 @@
+.topbar-inner, .topbar .fill {
+  background-color: #175c71;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#2086a6), to(#175c71));
+  background-image: -moz-linear-gradient(top, #2086a6, #175c71);
+  background-image: -ms-linear-gradient(top, #2086a6, #175c71);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2086a6), color-stop(100%, #175c71));
+  background-image: -webkit-linear-gradient(top, #2086a6, #175c71);
+  background-image: -o-linear-gradient(top, #2086a6, #175c71);
+  background-image: linear-gradient(top, #2086a6, #175c71);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#2086a6', endColorstr='#175c71', GradientType=0);
+}
+.topbar div > ul .active > a, .nav .active > a {
+  background-color: #175c71;
+}
+.btn.primary {
+  background-color: #a85300;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f8930a), to(#a85300));
+  background-image: -moz-linear-gradient(top, #f8930a, #a85300);
+  background-image: -ms-linear-gradient(top, #f8930a, #a85300);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f8930a), color-stop(100%, #a85300));
+  background-image: -webkit-linear-gradient(top, #f8930a, #a85300);
+  background-image: -o-linear-gradient(top, #f8930a, #a85300);
+  background-image: linear-gradient(top, #f8930a, #a85300);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f8930a', endColorstr='#a85300', GradientType=0);
+  border-color: #a85300 #a85300 #003f81;
+}
+.topbar a.brand {
+  background-image: url('/images/index/logo-white-topbar.png');
+  background-repeat: no-repeat;
+  background-position: 18px 7px;
+  text-indent: 5000px;
+  display: block;
+  width: 85px;
+}
+.topbar .btn.primary {
+  margin-top: 3px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.page-title, h1 {
+  font-family: Harabara, Helvetica, Arial, sans-serif !important;
+  font-weight: normal;
+  letter-spacing: 1px;
+  word-spacing: -1px;
+  // Lora, Yanone+Kaffeesatz, Tienne, Kreon
+}
+
+.page-title {
+  margin-bottom: 30px;
+}
+
+p {
+  margin-bottom: 20px;
+  font-size: 14px;
+  line-height: 19px;
+}
+
+h1 {
+  font-size: 35px;
+}
+
+li {
+  color: #404040;
+}
+
+body {
+  margin-top: 60px;
+}
+
+blockquote small {
+  text-align: right;
+}
+
+div.icon {
+  float: left;
+  margin-right: 10px;
+}
+
+.sub-text {
+  float: left;
+  width: 250px;
+}
+
+img.icon {
+  vertical-align: text-bottom;
+}
+
+.question {
+  padding-top: 60px;
+}
+.question h3 {
+  line-height: 24px;
+  margin-bottom: 10px;
+}
+ul#faqs li {
+  font-size: 14px;
+  line-height: 19px;
+  margin-bottom: 10px;
+}
+
+ul.features {
+  list-style: none;
+  margin-left: 0;
+}
+ul.features li {
+  padding-left: 23px;
+  background: url('/images/index/todo.png') no-repeat;
+  padding-top: 3px;
+  padding-bottom: 20px;
+}
+ul.features li.soon {
+  background: url('/images/index/todo-soon.png') no-repeat;
+}
+.hero-unit {
+  color: #fff;
+  background: #000 url('/images/index/hero.png') no-repeat 0 -80px;
+  margin-top: -25px;
+  padding-bottom: 0;
+  padding-top: 180px;
+}
+
+.hero-unit h1, .hero-unit h2, .hero-unit h3, .hero-unit h4, .hero-unit p {
+  color: white;
+  text-shadow: 1px 1px 6px #000;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.hero-unit h1 {
+  margin-bottom: 30px;
+  letter-spacing: 3px;
+  word-spacing: 0px;
+}
+
+.hero-unit p {
+  padding-bottom: 30px;
+}
+
+.landing-section {
+  padding-bottom: 40px;
+  margin-top: 50px;
+  border-bottom: 5px solid #eee;
+}
+
+.center {
+  text-align: center;
+}
+
+.row.good-guys {
+  margin-bottom: 30px;
+}
+
+.hero-unit {
+  text-align: center;
+}
+
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol#success li {
+  clear: both;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+ol#success li p {
+  margin: 0;
+}
+
+ol#success li .number {
+  color: #2086a6;
+  font-family: 'Bree Serif', Helvetica, Arial, sans-serif !important;
+  font-size: 35px;
+  background: url('/images/index/number.png') no-repeat;
+  width: 66px;
+  height: 43px;
+  float: left;
+  margin-right: 10px;
+  text-align: center;
+  padding-top: 23px;
+  text-shadow: 1px 1px 1px #fff;
+}
+
+p.ps {
+  color: #666;
+}
+
+h5.short {
+  line-height: 24px;
+}
+
+h5.short .indent {
+  margin-left:33px;
+}
+
+.post {
+  margin-bottom: 50px;
+}
+.post h6, .post h5 {
+  line-height: 24px;
+}
+.post h5 a {
+  color: #333;
+}
+.post h5 a:hover {
+  color: #0069D6;
+}
