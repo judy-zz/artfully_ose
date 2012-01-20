@@ -23,10 +23,8 @@ function showMessage(message) {
 }
 
 function resetPerson() {
-	$('#anonymous').attr('checked','checked');
-	$('#person-search').addClass("hidden");
-    $("#person-results li:visible").remove();
-	$('#terms').val('')	
+	$('.picked-person-clear').html("")
+	$('input#search').val('')	
 }
 
 function resetPayment() {
@@ -54,17 +52,37 @@ function setPriceDisplay(amountInCents) {
 
 $("document").ready(function(){
 	
-	$("input#terms").autocomplete({
+	$("input#search").autocomplete({
     html: true,
-    source: ["<div class='search-result-name'>Jeff Bezos</div><div class='search-result-email'>jeff@amazon.com</div><div>Amazon.com</div><div>Seattle, WA</div>", 
-             "<div class='search-result-name'>Jeff Goldblum</div><div class='search-result-email'>jeffgol394@aol.com</div><div>SGA - West</div><div>Los Angeles, CA</div>",
-             "<div class='search-result-name'>Jeff Example</div><div class='search-result-email'>jeff.example@example.com</div><div>Example LLC</div><div>New York, NY</div>",
-             "<div class='search-result-name'>Jeffrey Hammonds</div><div class='search-result-email'>hammonds@checkout.info</div><div>Kaiser Dance Company</div><div>Ashville, NC</div>"],
-    select: function(event, ui) { 
+		minLength: 3,
+		focus: function(event, person) { 
+			event.preventDefault()
+		},
+    source: function(request, response) {
+    	$.getJSON("/people?utf8=%E2%9C%93&commit=Search", { search: request.term }, function(people) {
+				responsePeople = new Array();
+		  
+				$.each(people, function (i, person) {
+					responsePeople[i] =  "<div id='search-result-name'>"+person.first_name+" "+person.last_name+"</div>"
+					responsePeople[i] += "<div id='search-result-email' class='search-result-details'>"+person.email+"</div>"
+					responsePeople[i] += "<div class='clear'></div>"
+					responsePeople[i] += "<div id='search-result-company-name' class='search-result-details'>"+person.company_name+"</div>"	
+					responsePeople[i] +=  "<div id='search-result-id'>"+person.id+"</div>"				        
+	      });
+				response(responsePeople)
+			});
+  	},
+    select: function(event, person) { 
       event.preventDefault()
-      $("input#terms").val("Jeff Bezos")
-      $(".picked-person-name").html("Jeff Bezos")
-      $(".picked-person-email").html("jeff@amazon.com")
+			var personId = $(person.item.value).filter("#search-result-id").html()
+			var personName = $(person.item.value).filter("#search-result-name").html()
+			var personEmail = $(person.item.value).filter("#search-result-email").html()
+			var personCompanyName = $(person.item.value).filter("#search-result-company-name").html()
+      $("input#search").val(personName)
+      $(".picked-person-name").html(personName)
+      $(".picked-person-email").html(personEmail)
+      $(".picked-person-company-name").html(personCompanyName)
+			$("input#person_id").val(personId)
     }
   });
 

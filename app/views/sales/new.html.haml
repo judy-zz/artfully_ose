@@ -1,17 +1,22 @@
 - in_section :events
 - content_for :header do
   %h1 Box Office
-  %h2="#{@event.name}, #{l(@show.datetime_local_to_event, :format => :long_with_day)}"
 
 .spread
   = form_tag event_show_sales_path, :remote => true do
     = hidden_field_tag :commit, ""
-    .total-and-checkout{:style => 'text-align:right' }
-      #checkout-now
-        %button#checkout-now-button{:style => 'width:100%'}
-          Checkout
-      #total.total
-        .price= number_as_cents 0
+    #showtime-total-and-checkout
+      #showtime
+        ="#{@event.name}"
+        %br
+        ="#{l(@show.datetime_local_to_event, :format => :long_with_day)}"
+      #total-and-checkout{:style => 'text-align:right' }
+        #checkout-now
+          %button#checkout-now-button{:style => 'width:100%'}
+            Checkout
+        #total.total
+          .price= number_as_cents 0
+        .clear
       .clear
     #the-details
       %fieldset.floater.thirdish
@@ -29,12 +34,14 @@
                 
       %fieldset.floater.thirdish
         %h4 Customer
-        = text_field_tag(:terms, params[:terms], :id => "terms", :placeholder => "First, last, or email...")
+        = hidden_field_tag(:person_id, @dummy.id, :id => "person_id")
+        = text_field_tag(:search, params[:search], :id => "search", :placeholder => "First, last, or email...")
         %a#new-person-link{:style=>'font-size:9pt; margin-left: 5px',:href=>'#'}
           Create new person
         .picked-person
-          .picked-person-name
-          .picked-person-email
+          .picked-person-name.picked-person-clear
+          .picked-person-email.picked-person-clear
+          .picked-person-company-name.picked-person-clear
 
       %fieldset.floater.thirdish
         %h4 Payment
@@ -43,7 +50,7 @@
             .radio= radio_button_tag(:payment_method, :cash, true, :class => 'payment-method', :disabled => 'true')
             .label= label_tag(:payment_method, "Cash")
           %li
-            .radio= radio_button_tag(:payment_method, :comp, true, :class => 'payment-method', :disabled => 'true')
+            .radio= radio_button_tag(:payment_method, :comp, false, :class => 'payment-method', :disabled => 'true')
             .label= label_tag(:payment_method, "Comp")
           %li
             .radio= radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true')
@@ -121,6 +128,7 @@
   %h4 Buyer
   .picked-person
     .picked-person-name
+      No buyer information
     .picked-person-email
   %h4{:style => 'margin: 15px 0px 5px 0px'} Tickets
   #popup-ticket-list
