@@ -1,0 +1,22 @@
+%table.standalone#shows-table
+  %thead
+    %tr
+      %th ID
+      %th Datetime
+      %th State
+      %th Free
+      %th Sold
+      %th Event
+      %th Organization
+      %th Settlements
+  %tbody
+    -shows.each do |show|
+      %tr
+        %td= show.id
+        %td= l show.datetime_local_to_event, :format => :short
+        %td= show.state
+        %td= check_mark if show.free?
+        %td= show.glance.sold_total
+        %td= "#{show.event.id} - #{show.event.name}"
+        %td= "#{show.organization.id} - #{show.organization.name}"
+        %td= show.settlements.length
