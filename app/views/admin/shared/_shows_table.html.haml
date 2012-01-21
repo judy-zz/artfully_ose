@@ -13,12 +13,12 @@
     -shows.each do |show|
       %tr
         %td= show.id
-        %td= l show.datetime, :format => :short
+        %td= l show.datetime_local_to_unscoped_event, :format => :short
         %td= show.state
-        %td= check_mark if show.free?
+        %td= check_mark if show.unscoped_event.free?
         %td= show.glance.sold_total
         %td
-          = #{show.unscoped_event.id} - #{show.unscoped_event.name}
-          = " DELETED" unless show.unscoped_event.deleted_at.nil?
+          = "#{show.unscoped_event.id} - #{show.unscoped_event.name}"
+          = " [DELETED]" unless show.unscoped_event.deleted_at.nil?
         %td= "#{show.organization.id} - #{show.organization.name}"
         %td= show.settlements.length

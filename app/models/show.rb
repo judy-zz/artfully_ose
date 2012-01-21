@@ -14,6 +14,7 @@ class Show < ActiveRecord::Base
 
   set_watch_for :datetime, :local_to => :organization
   set_watch_for :datetime, :local_to => :event
+  set_watch_for :datetime, :local_to => :unscoped_event
 
   scope :before, lambda { |time| where("shows.datetime <= ?", time) }
   scope :after,  lambda { |time| where("shows.datetime >= ?", time) }

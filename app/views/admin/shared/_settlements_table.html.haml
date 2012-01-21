@@ -15,7 +15,7 @@
       %tr{:class => settlement.success? ? "succeeded" : "failed" }
         %td= settlement.id
         %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
-        %td= l(settlement.show.datetime_local_to_event, :format => :short) unless settlement.show.nil?
+        %td= l(settlement.show.datetime_local_to_unscoped_event, :format => :short) unless settlement.show.nil?
         %td= l settlement.created_at_local_to_admins, :format => :short
         %td
           -if settlement.success?
