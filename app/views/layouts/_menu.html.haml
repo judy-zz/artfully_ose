@@ -36,9 +36,9 @@
   %li{ :class => active?(:help) }
     %span.top-level Information
     %ul
-      %li= link_to "Privacy Policy", page_path("privacy")
-      %li= link_to "Terms of Use", page_path("tou")
-      %li= link_to "User Agreement", page_path("user_agreement")
-      %li= link_to "Pricing", page_path("pricing")
+      %li= link_to "Privacy Policy", privacy_path
+      %li= link_to "Terms of Use", tou_path
+      %li= link_to "User Agreement", user_agreement_path
+      %li= link_to "Pricing", pricing_path
       %li= link_to "Feature Requests", "http://artfully.zendesk.com/forums/318163-feature-requests", :target => "_blank"
       %li= link_to "Knowledge Base", "http://artfully.zendesk.com/home", :target => "_blank"

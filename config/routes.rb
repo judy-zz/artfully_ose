@@ -129,7 +129,6 @@ Artfully::Application.routes.draw do
   resources :exchanges, :only => [ :new, :create ]
   resources :returns, :only => :create
   resources :comps, :only => [ :new, :create ]
-  resources :pages
 
   resources :imports do
     member do
@@ -153,4 +152,7 @@ Artfully::Application.routes.draw do
   match '/updates' => 'pages#updates'
   match '/sign_up' => 'pages#sign_up'
   match '/sign_up_form' => 'pages#sign_up_form'
+  match '/pages/tou' => 'pages#tou', :as => 'tou'
+  match '/pages/user_agreement' => 'pages#user_agreement', :as => 'user_agreement'
+  match '/pages/privacy' => 'pages#privacy', :as => 'privacy'
 end
