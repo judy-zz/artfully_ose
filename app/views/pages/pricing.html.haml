@@ -1,7 +1,7 @@
-- in_section :help
-- content_for :header do
-  %h1= t(".heading", :default => "Pricing")
-  %h2= t(".subheading", :default => "")
+%h1.page-title= t(".heading", :default => "Pricing")
+.row
+  .span5= t(".subheading", :default => "")
 
-.spread
-  = t(".content", :default => "")
+  .span9.offset1
+    %table.pricing
+      %tbody= t(".table", :default => "")

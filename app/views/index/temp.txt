@@ -1,0 +1,474 @@
+=== pages.how.one
+<h5>
+	Sell Where You Are.
+</h5>
+<p>
+	Artful.ly lets you sell tickets and take donations on your own website. No more redirecting your patrons to other sites for transactions, no log-ins, no more losing customers in between the transfers. Our widget drops onto your site, so visitors are looking at your events, images, words, and videos. You can keep the focus and the web traffic where they belong – on&nbsp;you!
+</p>
+
+=== pages.how.two
+<h5>
+	Make Giving Easy.
+</h5>
+<p>
+	Selling tickets is one way to get revenue, but donations are another. Artful.ly lets you do it all: ticketing, fundraising, or a donation added on to a ticket. If you are fiscally sponsored by Fractured Atlas or a registered 501(c)(3), your donations will be tax-deductible. Make it easier for your supporters to contribute in every&nbsp;way!
+</p>
+
+=== pages.how.three
+<h5>
+	Don’t Waste Money.
+</h5>
+<p>
+	If you’re not selling tickets, you aren’t getting charged. It’s that simple. No need to commit to a contract before you’ve planned your season. It’s free to set up ticketing, donations, or contact management.  The credit card companies assess processing fees which we have to pass along; these amount to 3.5% of ticket sales or donations processed by Artful.ly. But that’s it! No fine print. We know your money is precious, so we aren’t going to waste&nbsp;it.
+</p>
+
+=== pages.how.four
+<h5>
+	Secure Your Data.
+</h5>
+<p>
+	We take security very seriously. You can trust that your data – and your customers’ data – is safe, private, and protected. Artful.ly is hosted in Amazon’s industry-leading data centers (the same used by Netflix, FourSquare and HootSuite), where the smartest people in the business are responsible for hardware and network-level security. Sensitive information, like credit card numbers, is transmitted using banking-grade&nbsp;encryption.
+</p>
+
+=== pages.how.five
+<h5>
+	Keep it All in One Place.
+</h5>
+<p>
+	We take security very seriously. You can trust that your data – and your customers’ data – is safe, private, and protected. Artful.ly is hosted in Amazon’s industry-leading data centers (the same used by Netflix, FourSquare and HootSuite), where the smartest people in the business are responsible for hardware and network-level security. Sensitive information, like credit card numbers, is transmitted using banking-grade&nbsp;encryption.
+</p>
+
+=== pages.how.six
+<h5>
+	Search at the Speed of Thought.
+</h5>
+<p>
+	How do you find what you need in a sea of data? Artful.ly lets you tag contacts and actions for easy retrieval (like you already do on Twitter or Wordpress). With your personalized tags, you can run a search or create a report based on your own criteria. You know your data needs better than we do, so we’ll skip the canned reports that no one&nbsp;uses.
+</p>
+
+=== pages.how.seven
+<h5>
+	Simple to Use.
+</h5>
+<p>
+	Artful.ly is all online – all you need is a browser - and takes just a few seconds to sign up. We’ve worked hard to make the simple things easy and the complicated things possible. Your art is what matters – software shouldn’t get in the&nbsp;way.
+</p>
+
+=== pages.how.eight
+<h5>
+	Be Creative.
+</h5>
+<p>
+	Artful.ly is all online – all you need is a browser - and takes just a few seconds to sign up. We’ve worked hard to make the simple things easy and the complicated things possible. Your art is what matters – software shouldn’t get in the&nbsp;way.
+</p>
+
+=== pages.how.nine
+<h5>
+	Keep it Yours.
+</h5>
+<p>
+	Your data is yours to keep, period. It’s yours to use when you want, as you want. We guarantee that you’ll always be able to get an export from&nbsp;Artful.ly.
+</p>
+
+
+=== pages.good-guys.one
+<h5>
+	Start with 20,000 Artists.
+</h5>
+<p>
+	If we know anything, it’s artists. At Fractured Atlas, we help thousands of members navigate insurance, fundraising, and technology for their arts businesses. We’ve learned a lot  from a decade of hearing about their daily challenges and celebrating their successes. With 20,000 members in 50 states and many countries, we understand what you need – sell tickets, accept donations, and keep track of your own contacts in one place. Whether you are a choreographer, gallery, theater company, band, filmmaker, writer, craft artist, or all of the above, we are here to&nbsp;help.
+</p>
+
+=== pages.good-guys.two
+<h5>
+	Listen Closely.
+</h5>
+<p>
+	We didn’t just stop with our members – we took it on the road. Artful.ly was designed by artists and administrators from across the country. Design participants in New York, San Francisco, Philadelphia and Minneapolis / St. Paul told us what they needed, and we listened. Artful.ly’s original requirements came directly from the mouths of artists. We’re excited to give you what you want, and even more excited to roll out a wish list of new features built on best practices over the coming&nbsp;years!
+</p>
+
+=== pages.good-guys.three
+<h5>
+	Add a Bunch of Geeks.
+</h5>
+<p>
+	Fractured Atlas has a secret weapon – we speak geek. We have a stellar team of software developers who are focused solely on creating products for you. Our staff works to translate artist needs into software code. You can be sure that you’re getting the most up-to-date, innovative technology solutions from&nbsp;us.
+</p>
+
+=== pages.good-guys.four
+<h5>
+	Work Like Hell.
+</h5>
+<p>
+	We’ve been working hard to make these ideas a reality. Our team has dreamt, planned, prioritized, implemented, tested, and retested to make sure you’re getting the best system possible. We never sit back on our heels – we’ll be making improvements and updates all the&nbsp;time.
+</p>
+
+=== pages.good-guys.five
+<h5>
+	Best. Service. Ever.
+</h5>
+<p>
+	Sooner or later, something’s going to go wrong. Don’t panic! Our online knowledge base includes articles and tips to get you back on track without a hitch. And if you can’t figure it out yourself, the same stellar service that you have come to enjoy with Fractured Atlas’s other programs is just an email or phone call&nbsp;away.
+</p>
+
+=== pages.list.body
+<li>
+  <div class="number">
+    1
+  </div>
+  <h4>Sell tickets on your own site.</h4>
+  <p>No ugly pop ups.  No sending your patrons away to another&nbsp;site.</p>
+</li>
+<li>
+  <div class="number">
+    2
+  </div>
+  <h4>See the big picture.</h4>
+  <p>View a patron’s entire history on a single dashboard interface—ticket purchases, donations, solicitations, and&nbsp;more.</p>
+</li>
+<li>
+  <div class="number">
+    3
+  </div>
+  <h4>Recognize relationships, not just transactions.</h4>
+  <p>Create tags, define connections, and sort notes to suit your&nbsp;needs.</p>
+</li>
+<li>
+  <div class="number">
+    4
+  </div>
+  <h4>Work intuitively.</h4>
+  <p>Artful.ly's clean design that’s uncluttered by tools you don’t&nbsp;need.</p>
+</li>
+<li>
+  <div class="number">
+    5
+  </div>
+  <h4>Use it now.</h4>
+  <p>No sign up fees. No installation. No week-long trainings. Easy&nbsp;imports.</p>
+</li>
+<li>
+  <div class="number">
+    6
+  </div>
+  <h4>Access anywhere.</h4>
+  <p>Log in at the office, at home, at the show, or on the&nbsp;road.</p>
+</li>
+<li>
+  <div class="number">
+    7
+  </div>
+  <h4>Own your data.</h4>
+  <p>Your data belongs to you forever, no matter what. Exports are easy, fast, and&nbsp;free.</p>
+</li>
+<li>
+  <div class="number">
+    8
+  </div>
+  <h4>Rest easy.</h4>
+  <p>You’ve partnered with Fractured Atlas, a national non-profit that’s been serving the arts community since&nbsp;1998.</p>
+</li>
+            
+
+=== pages.ready.ps
+<p class="ps">
+	PS: We created Artful.ly because we know and serve 20,000 artists nationwide.  We built software for our self a few years ago and it radically improved operations. We wanted to help other artists realize how much of a difference good technology can&nbsp;make.
+</p>
+<p class="ps">
+	PPS:  Artful.ly is web-based software so there’s no installation, no updates, no need to call the tech guy.<a href="/sign_up">Sign up to try it&nbsp;today!</a>
+</p>
+<p class="ps">
+	PPPS:  You obviously like to be thorough and read a lot.  We love that!  Want more?<a href="/faq">Check out some&nbsp;FAQs.</a>
+</p>
+
+=== features.list
+<li>Sell tickets on your site or through an Artful.ly storefront</li>
+<li>Process credit cards and track cash sales at the box office</li>
+<li>Accept donations on your site</li>
+<li>Import contact records from Excel, Access, Salesforce, or other databases</li>
+<li>Offer online RSVP for free events</li>
+<li>Export ticket sales, donation reports, and contact information</li>
+<li>Attach multiple tags to contact records</li>
+<li>Create new list segments with any search or tag</li>
+<li>Save seating and pricing brackets</li>
+<li>Provide ticket buyers and donors with automatic email receipts</li>
+<li>Integrate Artful.ly data with fiscal sponsorship records</li>
+<li class="soon">Offer multiple discount codes (coming soon)</li>
+<li class="soon">Designate tickets for a reseller or papering company (coming soon)</li>
+<li class="soon">Integrate <a href="http://www.mailchimp.com" target="_blank">MailChimp</a> campaigns and analytics with other <br>contact details (coming soon)</li>
+
+=== faq.list
+<li><a href="#why">There are a lot of ticketing and CRM tools already available. Why did you build a new one?</a></li>
+<li><a href="#right">Is Artful.ly right for me?</a></li>
+<li><a href="#cost">How much does Artful.ly cost?</a></li>
+<li><a href="#contract">Do I have to sign a contract? </a></li>
+<li><a href="#requirements">What are the technical requirements?</a></li>
+<li><a href="#beta">“Beta” makes me nervous. When will it be done?</a></li>
+<li><a href="#setup">How long will it take me to learn it and set it up?</a></li>
+<li><a href="#ticket">Where’s the ticket?</a></li>
+<li><a href="#donations">How do we get donations?</a></li>
+<li><a href="#sponsored">What about donations to fiscally sponsored projects?</a></li>
+<li><a href="#receipts">Do donors get receipts?</a></li>
+<li><a href="#money">When and how do I get my money?</a></li>
+<li><a href="#integration">Does it integrate with my old database and mail systems? </a></li>
+<li><a href="#widget">What’s this “widget” of which you speak?</a></li>
+<li><a href="#history">As a fiscally sponsored project, can I connect my Artful.ly data to my Fractured Atlas fund history?</a></li>
+<li><a href="#patron-support">What support will you provide my patrons?</a></li>
+<li><a href="#privacy">Are you using my customers’ information? </a></li>
+<li><a href="#roadmap">What new features are planned? When when will they be ready?</a></li>
+<li><a href="#feature">How do I suggest a new feature?</a></li>
+<li><a href="#athena">I’m confused, what’s the difference between ATHENA and Artful.ly? </a></li>
+<li><a href="#opensource">What’s “open source” and why should I care?</a></li>
+<li><a href="#how">How do I ____?</a></li>
+<li><a href="#support">What if something goes wrong or I need more help?</a></li>
+
+=== faq.answers
+<div class="question" id="why">
+  <h3>There are a lot of ticketing and CRM tools already available. Why did you build a new one?</h3>
+  <p>Fractured Atlas works with over 20,000 artists and arts groups, and a lot of them weren't happy with their software options.  Over the years we’ve built several bits of software to manage our own business.  Since we understand both the arts and technology, we thought we’d make something&nbsp;better.</p>
+  <p>Artful.ly was made to be different.  It lets you sell tickets on your own site.  It integrates sales and donations in one customer record.  It’s more nimble and customizable than other systems.  You are charged only for what you need—there’s no licensing fee just to keep the system running. And that’s just the&nbsp;beginning.</p>
+</div>
+<div class="question" id="right">
+  <h3>Is Artful.ly right for me?</h3>
+  <p>Every organization has different needs and aptitudes so we won’t say Artful.ly will work for&nbsp;everyone.</p>
+  <p>It’s probably best for individual artists or small arts organizations with budgets less than $500,000/year.  It’s good for organizations ticketing dozens of events per year or just a few&nbsp;workshops.</p>
+  <p>If your organization tickets several dozen events per year, offers tiered memberships or subscriptions, or requires extensive customization then a custom <a href="http://athena.fracturedatlas.org/" target="_blank">ATHENA</a> implementation is probably better for&nbsp;you.</p>
+</div>
+<div class="question" id="cost">
+  <h3>How much does Artful.ly cost?</h3>
+  <p>It’s free to set up ticketing, donations, and contact management.  Ticket buyers pay a $2 per ticket fee.  The credit card companies charge a 3.5% processing fee for tickets and donations which we pass on to you, the&nbsp;producer.</p>
+  <p>
+    <strong>A Ticket Sale Example: <br></strong>
+    A ticket to your production of Hamlet costs $15.  A ticket buyer uses her Visa to buy a ticket through Artful.ly and is charged $17.  We keep $2 of that. Visa charges 3.5% of the $15—that’s $0.53. You get&nbsp;$14.47.
+</p>
+  <p>
+    <strong>A Donation to a 501(c)(3) Example: <br></strong>
+    A friend can’t make it to your production of Hamlet but decides to make a $100 donation to your organization online.  His MasterCard is charged $100.  MasterCard charges a 3.5% processing fee on that transaction.  You get&nbsp;$96.50.
+</p>
+  <p>
+    <strong>A Donation to Fractured Atlas Fiscally Sponsored Project Example: <br></strong>
+    Your biggest fan donates $100 to your project’s campaign through Artful.ly. Her Visa is charged $100.  Fractured Atlas assesses the standard fiscal sponsorship fee of 6%.  Your fiscal sponsorship account is credited with $94. There is no additional 3.5% processing fee. <a href="http://www.fracturedatlas.org/site/fiscal/" target="_blank">Learn more about fiscal&nbsp;sponsorship</a>.
+</p>
+  <p><a href="/pricing">See our pricing chart for more&nbsp;explanation</a>.</p>
+</div>
+<div class="question" id="contract">
+  <h3>Do I have to sign a contract?</h3>
+  <p>No. There’s no obligation to stick with Artful.ly. If it’s not working for you, you can export your data and leave (although we hope you’d first <a href="http://artfully.zendesk.com/forums/318163-feature-requests" target="_blank">give us feedback</a> and a chance to make things&nbsp;right.)</p>
+</div>
+<div class="question" id="requirements">
+  <h3>What are the technical requirements?</h3>
+  <p>There’s nothing to install.  It lives on the Internet like Gmail or Facebook. So it's always there when you need it on any computer. You just need an Internet&nbsp;connection.</p>
+</div>
+<div class="question" id="beta">
+  <h3>“Beta” makes me nervous.  When will it be done?</h3>
+  <p>Well, never actually.  We plan to continually develop features for Artful.ly so it will never be done.  However, most of the core features are already available and ready for you to use.  The best part about continual development is that you get to have a say in what additional features we build and how we do&nbsp;it.</p>
+</div>
+<div class="question" id="setup">
+  <h3>How long will it take me to learn it and set it up?</h3>
+  <p>Not long! Sign-up takes less than 5 minutes.  It takes 10 minutes to submit what we need to set up electronic fund transfers.  Importing a list of patrons from Excel or an old database might take 10 minutes or an hour depending on how many you have. Creating a new event for ticketing could take 10-30 minutes depending on the number of price points you want to offer.  Putting the transaction widget on your site takes maybe 15&nbsp;minutes.</p>
+  <p>The <a href="http://artfully.zendesk.com/home" target="_blank">Artful.ly Knowledgebase</a> has lots of helpful articles about how to do&nbsp;things.</p>
+  <p>We’ve designed Artful.ly to be a very intuitive and self-evident tool that you can master.  Your shows, your data, your tool.  We don’t want you to have to depend on us but we're always here to&nbsp;help.</p>
+  <p>First thing you need to do is <a href="/sign_up">sign up for an account&nbsp;here</a>.</p>
+</div>
+<div class="question" id="ticket">
+  <h3>Where’s the ticket?</h3>
+  <p>Artful.ly does not generate a physical ticket. It does however automatically send a confirmation email to every ticket buyer with a unique order number and purchase details.  As a producer, you can run an up-to-date door list and check ticket buyers in at the box office. Artful.ly does not generate physical&nbsp;ticket.</p>
+</div>
+<div class="question" id="donations">
+  <h3>How do we get donations?</h3>
+  <p>If you're a registered as charity with the IRS, you can accept donations through Artful.ly by registering for the Charity Donations Kit. You'll also need to submit a copy of the Electronic Fund Transfer (EFT) form, a voided check, and a copy of your organization's IRS Determination&nbsp;letter.</p>
+  <p>Once these forms have been received, your kit will be approved (usually in about 1 business day) and you'll be able to start accepting donations. A 3.5% transaction fee is passed on from the merchant account charges. No additional fees are applied to&nbsp;donations.</p>
+  <p>If you are a fiscally sponsored project see “<a href="#sponsored">What about donations to fiscally sponsored&nbsp;projects?</a>”</p>
+</div>
+<div class="question" id="sponsored">
+  <h3>What about donations to fiscally sponsored projects?</h3>
+  <p>If you are fiscally sponsored by Fractured Atlas you can connect your project to Artful.ly, import your donor history, and manage donations through&nbsp;Artful.ly.</p>
+  <p>Only the standard 6% fiscal sponsorship administration fee is applied to these donations. We don’t tack on an extra 3.5%. If you choose to ticket your events with Artful.ly, your ticket buyers will pay the standard $2 per&nbsp;ticket.</p>
+  <p>Refer to the <a href="http://artfully.zendesk.com/home" target="_blank">Artful.ly Knowledgebase</a> for instructions on how connect your fiscal sponsorship account and&nbsp;Artful.ly.</p>
+  <p><a href="http://www.fracturedatlas.org/site/fiscal/" target="_blank">Learn more about fiscal&nbsp;sponsorship</a>.</p>
+</div>
+<div class="question" id="receipts">
+  <h3>Do donors get receipts?</h3>
+  <p>Receipts will automatically be issued to your donors after they've completed their&nbsp;transaction.</p>
+  <p>If ticket buyer adds a donation to her order, the two transactions are included in one receipt. You will need to provide the donor with any necessary tax documentation&nbsp;separately.</p>
+  <p>For Fractured Atlas Fiscally Sponsored Projects, the donation receipt is issued by Fractured Atlas, separately from any receipts for ticketing transactions, so your donors will receive two—one from Fractured Atlas with tax information, and one from Artful.ly for any ticketing&nbsp;transactions.</p>
+</div>
+<div class="question" id="money">
+  <h3>When and how do I get my money?</h3>
+  <p>When you set up paid event ticketing or donations you send us information to set up electronic fund transfers.  Artful.ly transfers funds to your bank account two business days after your performance takes place or a donation was made. Settlements after each performance mean you don’t have to wait for the whole run to be over to get your&nbsp;money.</p>
+</div>
+<div class="question" id="integration">
+  <h3>Does it integrate with my old database and mail systems?</h3>
+  <p>Not yet. We are working on integrations that will be ready later this year—stay tuned! We know how important these will be, but for now, it is <strong>really</strong> easy to pull lists for use with other&nbsp;systems.</p>
+</div>
+<div class="question" id="widget">
+  <h3>What’s this “widget” of which you speak?</h3>
+  <p>You can sell tickets just through the Artful.ly storefront that’s automatically generated when you put tickets on sale.  Or you can kick it up a notch and install a little bit of Javascript code on your website and get a sleek shopping cart widget to appear over your web page when someone clicks “Buy” or “Donate”.  This is the Artful.ly&nbsp;widget.</p>
+  <p>The clean widget design works with most web designs and means ticket buyers don’t have to get directed off your site.  Meanwhile, their financial information is securely collected and transactions quickly&nbsp;processed.</p>
+  <p>Refer to the <a href="http://artfully.zendesk.com/home" target="_blank">Artful.ly Knowledgebase</a> for instructions on how to install the&nbsp;widget.</p>
+</div>
+<div class="question" id="history">
+  <h3>As a fiscally sponsored project, can I connect my Artful.ly data to my Fractured Atlas fund history?</h3>
+  <p>You can connect your Fractured Atlas fiscally sponsored project to your Organization's profile page on Artful.ly. This will import your donor history from your fiscally sponsored project into your Artful.ly Transactions and People&nbsp;records.</p>
+  <p>Donations through Artful.ly will automatically appear on your Fractured Atlas fund history. Ticket sales and donations manually entered into Artful.ly do not appear on the Fractured Atlas fund&nbsp;history.</p>
+</div>
+<div class="question" id="patron-support">
+  <h3>What support will you provide my patrons?</h3>
+  <p>Artful.ly support is available to your patrons, but just as we want you to have access to&nbsp;your</p>
+</div>
+data, we want you to have control over your transactions. If a patron has technical trouble our support team is available to help sort it out, but for refunds, exchanges or questions regarding your show or work, your patrons should contact you first. After all, no one knows your work, your mission or your patrons better than you.
+<div class="question" id="privacy">
+  <h3>Are you using my customers’ information?</h3>
+  <p>We access only the information we need to settle your transactions and help you fix&nbsp;things.</p>
+  <p>We will never try to sell anything to your&nbsp;customers.</p>
+  <p>We cannot see your customers’ credit card numbers--that information is managed by third-party credit card processing vendors with bank-level security&nbsp;protection.</p>
+  <p>Since we’re a non-profit organization whose mission is to support the arts and cultural sector, we may use aggregate transaction data to conduct research for the benefit of the field, but anytime we do that it will be purged of personally identifying&nbsp;information.</p>
+  <p>Read the relatively brief fine print--<a href="http://www.artful.ly/pages/privacy">Privacy Policy</a>, <a href="http://www.artful.ly/pages/tou">Terms of Use</a>, and <a href="http://www.artful.ly/pages/user_agreement">User&nbsp;Agreement</a>.</p>
+</div>
+<div class="question" id="roadmap">
+  <h3>What new features are planned? When when will they be ready?</h3>
+  <p>We're rolling out new features in ticketing, fundraising, and more throughout this year and into the next. We want Artful.ly to be a complete system for managing your arts-based business, but we can't do it all at&nbsp;once.</p>
+  <p>For more about what’s new and on the way, check out our Updates&nbsp;page.</p>
+</div>
+<div class="question" id="feature">
+  <h3>How do I suggest a new feature?</h3>
+  <p>Though our <a href="http://artfully.zendesk.com/forums/318163-feature-requests" target="_blank">Feature Request Forum</a> of course!  Check there to see what’s on the way and weigh in on what you think is a high priority for&nbsp;development.</p>
+</div>
+<div class="question" id="athena">
+  <h3>I'm confused, what's the difference between ATHENA and Artful.ly?</h3>
+  <p>ATHENA is the framework that makes Artful.ly run. Artful.ly is one version of arts management software created with ATHENA, but there are many more possibilities. If you like to play with software code, you can create a customized version of ATHENA. <a href="http://athena.fracturedatlas.org/athena-overview" target="_blank">Get more information&nbsp;here</a>.</p>
+</div>
+<div class="question" id="opensource">
+  <h3>What’s “open source” and why should I care?</h3>
+  <p>When software is “open source”, that means that it is free to download, including the underlying software code, and that anyone is allowed to modify it to suit their own needs. This is in contrast to most commercial software products, which cost money to license and which can’t be modified by the end user. Advocates of open source software (including us!) argue that it results in better quality code, increased reliability, greater flexibility, a lower total cost of ownership, and freedom from predatory vendor&nbsp;lock-in.</p>
+  <p>ATHENA has been fully open source from day one, but we didn’t stop there. We’re aiming for radical transparency at all stages from design to distribution. Since the earliest requirement gathering phases, we’ve used community design sessions to hear from our colleagues in the arts community.  And of course, the ATHENA code and documentation are free and publicly available, so anyone is free to build custom implementations, or to extend it with new modules or&nbsp;features.</p>
+  <p>This matters to Artful.ly because there’s a positive feedback loop between the two sister projects. As we (and others) continue to improve the ATHENA code base, those enhancements will be integrated into Artful.ly. Likewise, if we develop something really cool for Artful.ly, we’ll almost always incorporate it into the open source ATHENA&nbsp;code.</p>
+  <p>Read more about the <a href="http://opensource.org/" target="_blank">Open Source&nbsp;Initiative</a>.</p>
+</div>
+<div class="question" id="how">
+  <h3>How do I ____?</h3>
+  <p>The <a href="http://artfully.zendesk.com/home" target="_blank">Artful.ly Knowledgebase</a> offers instructions and tips on every Artful.ly feature and&nbsp;task.</p>
+</div>
+<div class="question" id="support">
+  <h3>What if something goes wrong or I need more help?</h3>
+  <p>Email support@artful.ly.  We’ll respond within one business&nbsp;day.</p>
+</div>
+
+
+=== pricing.subheading
+<p>
+	Basic Artful.ly accounts are <strong>FREE</strong>. They allow you to track your relationships and manage free events.
+</p>
+<p>
+	You can add additional functionality by activating “Kits.” Some Kits are free, some Kits have transaction fees, and (in the future) some Kits will come with a monthly subscription charge.
+</p>
+
+=== pricing.table
+<tr>
+  <td class="name">
+    <h5 class="short">
+      <img alt="Group" src="/images/index/group.png?1326748168" style="vertical-align:text-bottom;">
+      People Management Kit
+    </h5>
+  </td>
+  <td class="details">
+    <ul>
+      <li>FREE</li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td>
+    <h5 class="short">
+      <img alt="Piggy-bank" src="/images/index/piggy-bank.png?1326748168" style="vertical-align:text-bottom;">
+      Charity Donation Kit
+    </h5>
+  </td>
+  <td>
+    <ul>
+      <li>FREE</li>
+      <li>3.5% credit card processing fee</li>
+      <li>Requires proof of 501(c)(3) status</li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td>
+    <h5 class="short">
+      <img alt="Piggy-bank-fa" src="/images/index/piggy-bank-fa.png?1326748168" style="vertical-align:text-bottom;">
+      Charity Donation Kit for <br>
+      <span class="indent">Fractured Atlas</span><br>
+      <span class="indent">Fiscal Sponsees</span>
+    </h5>
+  </td>
+  <td>
+    <ul>
+      <li>FREE</li>
+      <li>NO credit card processing fee</li>
+      <li>6% standard fiscal sponsorship administration fee</li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td>
+    <h5 class="short">
+      <img alt="Ticket" src="/images/index/ticket.png?1326748168" style="vertical-align:text-bottom;">
+      Free Ticketing Kit
+    </h5>
+  </td>
+  <td>
+    <ul>
+      <li>FREE</li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td>
+    <h5 class="short">
+      <img alt="Pricetag" src="/images/index/pricetag.png?1326464666" style="vertical-align:text-bottom;">
+      Paid Event Ticketing Kit
+    </h5>
+  </td>
+  <td>
+    <ul>
+      <li>FREE to install</li>
+      <li>Online ticket buyers pay $2 fee<br> per ticket</li>
+      <li>3.5% credit card processing fee</li>
+      <li>Cash sales are free</li>
+    </ul>
+  </td>
+</tr>
+<tr>
+  <td>
+    <h5 class="short">
+      <img alt="Shopping-cart" src="/images/index/shopping-cart.png?1326748168" style="vertical-align:text-bottom;">
+      Box Office Kit
+    </h5>
+  </td>
+  <td>
+    <ul>
+      <li>FREE to install</li>
+      <li>3.5% credit card processing fee</li>
+      <li>Cash sales are free</li>
+    </ul>
+  </td>
+</tr>
+
+
+
+=== signup.subheading
+<h4>
+	Artful.ly is currently in private beta.
+</h4>
+<p>
+	Request an account invitation and subscribe to our feature update news.
+</p>
+
+
+=== updates.subheading
+<p>
+	<a href="/updates">Subscribe</a> to the Artful.ly e-news list for other updates, tips, and news.
+</p>
+<p>
+	Currently available and planned features are listed on the <a href="/features">Features&nbsp;Page</a>.
+</p>

@@ -146,11 +146,11 @@ Artfully::Application.routes.draw do
   match '/people/:id/tag/:tag' => 'people#untag', :as => :untag, :via => "delete"
 
   root :to => 'index#dashboard', :constraints => lambda{|r| r.env["warden"].authenticate?}
-  root :to => 'index#index'
-  match '/faq' => 'index#faq'
-  match '/pricing' => 'index#pricing'
-  match '/features' => 'index#features'
-  match '/updates' => 'index#updates'
-  match '/sign_up' => 'index#sign_up'
-  match '/sign_up_form' => 'index#sign_up_form'
+  root :to => 'pages#index'
+  match '/faq' => 'pages#faq'
+  match '/pricing' => 'pages#pricing'
+  match '/features' => 'pages#features'
+  match '/updates' => 'pages#updates'
+  match '/sign_up' => 'pages#sign_up'
+  match '/sign_up_form' => 'pages#sign_up_form'
 end

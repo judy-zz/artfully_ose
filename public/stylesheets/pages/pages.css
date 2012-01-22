@@ -26,7 +26,7 @@
   border-color: #a85300 #a85300 #003f81;
 }
 .topbar a.brand {
-  background-image: url('/images/index/logo-white-topbar.png');
+  background-image: url('/images/pages/logo-white-topbar.png');
   background-repeat: no-repeat;
   background-position: 18px 7px;
   text-indent: 5000px;
@@ -111,16 +111,16 @@ ul.features {
 }
 ul.features li {
   padding-left: 23px;
-  background: url('/images/index/todo.png') no-repeat;
+  background: url('/images/pages/todo.png') no-repeat;
   padding-top: 3px;
   padding-bottom: 20px;
 }
 ul.features li.soon {
-  background: url('/images/index/todo-soon.png') no-repeat;
+  background: url('/images/pages/todo-soon.png') no-repeat;
 }
 .hero-unit {
   color: #fff;
-  background: #000 url('/images/index/hero.png') no-repeat 0 -80px;
+  background: #000 url('/images/pages/hero.png') no-repeat 0 -80px;
   margin-top: -25px;
   padding-bottom: 0;
   padding-top: 180px;
@@ -180,7 +180,7 @@ ol#success li .number {
   color: #2086a6;
   font-family: 'Bree Serif', Helvetica, Arial, sans-serif !important;
   font-size: 35px;
-  background: url('/images/index/number.png') no-repeat;
+  background: url('/images/pages/number.png') no-repeat;
   width: 66px;
   height: 43px;
   float: left;
