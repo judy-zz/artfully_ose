@@ -90,6 +90,11 @@ img.icon {
 .question {
   padding-top: 60px;
 }
+
+.question:first-child {
+  padding:0;
+}
+
 .question h3 {
   line-height: 24px;
   margin-bottom: 10px;
@@ -189,12 +194,20 @@ p.ps {
   color: #666;
 }
 
+.logo {
+  margin-top: 30px;
+}
+
 h5.short {
   line-height: 24px;
 }
 
 h5.short .indent {
   margin-left:33px;
+}
+
+table.pricing td {
+  width: 50%;
 }
 
 .post {

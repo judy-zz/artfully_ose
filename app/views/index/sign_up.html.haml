@@ -1,9 +1,6 @@
-%h1.page-title Sign up
+%h1.page-title= t(".heading", :default => "Sign up")
 
-%h4
-  Artful.ly is currently in private beta.
+= t(".subheading", :default => "")
 
-%p
-  Request an account invitation and subscribe to our feature update news.
 // %iframe{:src => "http://eepurl.com/iyegw", :style => 'border:none; width:650px; height: 1650px; border-radius: 5px;'}
 %iframe{:src => "#{sign_up_form_url}", :style => 'border:none; width:650px; height: 1650px; border-radius: 5px;'}

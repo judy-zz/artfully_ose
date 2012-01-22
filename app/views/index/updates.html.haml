@@ -1,4 +1,4 @@
-%h1.page-title Updates
+%h1.page-title= t(".heading", :default => "Updates")
 
 .row
   .span8
@@ -14,9 +14,8 @@
     .icon
       = image_tag('index/envelope.png', :class => 'icon')
     .sub-text
-      %p #{link_to 'Subscribe'} to the Artful.ly e-news list for other updates, tips, and news.
-      %p Currently available and planned features are listed on the #{link_to 'Features Page', features_path}.
+      = t(".subheading", :default => "")
 
 .row
-  %p=link_to 'All Artful.ly posts on the Fractured Atlas Blog »', 'http://www.fracturedatlas.org/site/blog/tag/artfully/'
+  %p=link_to t(".link-to-blog", :default => "All Artful.ly posts on the Fractured Atlas Blog »"), 'http://www.fracturedatlas.org/site/blog/tag/artfully/'
 

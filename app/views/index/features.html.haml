@@ -1,24 +1,12 @@
-%h1.page-title Features
+%h1.page-title= t(".heading", :default => "Features")
 .row
   .span8
     %ul.features
-      %li Sell tickets on your site or through an Artful.ly storefront
-      %li Process credit cards and track cash sales at the box office
-      %li Accept donations on your site
-      %li Import contact records from Excel, Access, Salesforce, or other databases
-      %li Offer online RSVP for free events
-      %li Export ticket sales, donation reports, and contact information
-      %li Attach multiple tags to contact records
-      %li Create new list segments with any search or tag
-      %li Save seating and pricing brackets
-      %li Provide ticket buyers and donors with automatic email receipts
-      %li Integrate Artful.ly data with fiscal sponsorship records
-      %li.soon Offer multiple discount codes (coming soon)
-      %li.soon Designate tickets for a reseller or papering company (coming soon)
-      %li.soon Integrate #{link_to 'MailChimp', 'http://www.mailchimp.com', :target => '_blank'} campaigns and analytics with other <br />contact details (coming soon)
+      = t(".list", :default => "")
 
   .span6.offset1
     .icon
       = image_tag('index/pencil.png', :class => 'icon')
     .sub-text
-      %p       Want to suggest a new feature? Use the #{link_to 'Feature Request Forum', 'http://artfully.zendesk.com/forums/318163-feature-requests', :target => '_blank'}. We love feedback!
+      
+      %p= t(".subheading", :default => 'Want to suggest a new feature? Use the <a href="http://artfully.zendesk.com/forums/318163-feature-requests" target="_blank">Feature Request Forum</a>. We love feedback!')
