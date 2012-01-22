@@ -10,8 +10,7 @@ Feature: Charity Donation Kit
   Scenario: The owner of an organization enables the Charity Donation Kit for her organization
     Given my organization has tax information
     When I follow "Activate Charity Donation Kit"
-    # And I follow "I am an IRS approved charity"
-    And I follow "Activate Charity Donation Kit"
+    And I click "Activate Charity Donation Kit"
     Then I should see "Pending"
 
   Scenario: The owner of an organization enters tax info and then activates the Charity Donation Kit for her organization
@@ -20,6 +19,5 @@ Feature: Charity Donation Kit
     When I fill in "EIN" with "111-1234"
     And I fill in "Legal Organization Name" with "Some Organization"
     And I press "Update Tax Information"
-    Then I should see "You meet the requirements for this kit."
-    And I follow "Activate Charity Donation Kit"
+    And I click "Activate Charity Donation Kit"
     And I should see "Pending"

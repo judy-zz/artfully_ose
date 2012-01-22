@@ -3,10 +3,10 @@ When /^(?:|I )fill in the following event details:$/ do |table|
   setup_event(event)
 
   When %{I fill in "Name" with "#{event.name}"}
-  When %{I fill in "Venue" with "#{event.venue}"}
+  When %{I fill in "event[venue_attributes][name]" with "#{event.venue.name}"}
   When %{I fill in "Producer" with "#{event.producer}"}
-  When %{I fill in "City" with "#{event.city}"}
-  When %{I select "#{us_states.invert[event.state]}" from "State"}
+  When %{I fill in "City*" with "#{event.venue.city}"}
+  When %{I select "#{us_states.invert[event.venue.state]}" from "State"}
 end
 
 Given /^there is an [Ee]vent with (\d+) [Ss]hows$/ do |show_count|
