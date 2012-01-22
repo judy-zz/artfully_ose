@@ -41,7 +41,7 @@ class Item < ActiveRecord::Base
     product_type == "Donation"
   end
 
-  def self.for(prod, per_item_lambda)
+  def self.for(prod, per_item_lambda=lambda { |item| 0 })
     Item.new.tap do |i|
       i.per_item_processing_charge = per_item_lambda
       i.product = prod 

@@ -31,6 +31,6 @@ class RefundsController < ApplicationController
   private
 
   def return_items?
-    @return_items ||= (params[:commit] == "Refund and Return" and @items.all?(&:returnable?))
+    @return_items ||= (params[:commit] == "Issue Refund and Return" and @items.all?(&:returnable?))
   end
 end
