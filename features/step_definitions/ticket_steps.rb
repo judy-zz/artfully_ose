@@ -10,6 +10,10 @@ Then /^I should see (\d+) tickets?$/ do |quantity|
   page.should have_xpath("//li[@class='ticket']", :count => quantity.to_i + 1)
 end
 
+Given /^there are (\d+) ticket sales$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
+end
+
 Given /^I search for (\d+) tickets for \$(\d+)$/ do |quantity, price|
   Given "I am on the tickets page"
   And %Q{I fill in "price" with "eq#{price}"}
