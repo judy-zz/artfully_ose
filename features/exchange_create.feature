@@ -14,15 +14,16 @@ Feature: Exchange Tickets
     Given there is an order with 2 tickets
     When I check the 1st ticket for an exchange
     And I press "Exchange"
-    Then I should see "Exchanging 1 item"
+    Then I should see "Exchanging Tickets"
 
   Scenario: A producer selects the tickets to exchange
     Given I have found 2 items to exchange
     When I select the 1st event
     And I select the 1st show
+    And I select the 1st section
     And I check 2 tickets
     And I press "Exchange these tickets"
-    Then I should see "Successfully exchanged 2 items"
+    Then I should see "Successfully exchanged 2 tickets"
 
   Scenario: A producer selects a comped ticket to exchange
     Given there is an order with 2 comps
@@ -32,6 +33,7 @@ Feature: Exchange Tickets
     Given I have found 3 items to exchange
     When I select the 1st event
     And I select the 1st show
+    And I select the 1st section
     And I check 2 tickets
     And I press "Exchange these tickets"
     Then I should see "Unable to process exchange."

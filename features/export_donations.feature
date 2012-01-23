@@ -9,4 +9,4 @@ Feature: Export Donations
     Given there are 20 donations
     And I am on the imports page
     And I follow "Export all donations currently in Artful.ly"
-    Then I should receive a file "Artfuly-Donations-Export-%s.csv" named for today
+    Then I should receive a file "Artfully-Donations-Export-%s.csv" named for today

@@ -18,7 +18,6 @@ Feature: Import Contacts
     Then the import's status should be approved
 
   Scenario: A user approves a new import and it is performed
-    Given I can save People to ATHENA
     When I upload a new import file "simple-export.csv"
     And the import is performed
     Then there should be no import errors

@@ -5,7 +5,7 @@ Feature: Door List Creation
   Background:
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
-    And there is an Event with 3 Shows
+    And there is an Event with 2 Shows
     And the 1st show has had tickets created
     And the 1st show is on sale
 

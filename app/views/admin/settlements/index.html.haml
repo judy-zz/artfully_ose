@@ -1,63 +1,18 @@
 - content_for :header do
   %h1 Settlements
 
-.context
+.spread
   %p Select a date range to find settlements
-  #settlements-search
-    %ul.kv
-      =form_tag admin_settlements_path, :method => :get do
-        %li
-          .key= label_tag :start_date
-          .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-        %li
-          .key= label_tag :end_date
-          .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-        = submit_tag "Search"
+  %ul.inline
+    =form_tag admin_settlements_path, :method => :get do
+      %li
+        .key= label_tag :start_date
+        .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
+      %li
+        .key= label_tag :end_date
+        .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
+      = submit_tag "Search"
 
-.document
+.spread
   %h3 Settlements
-  #settlement-table
-    %table.standalone
-      %thead
-        %tr
-          %th ID
-          %th Org
-          %th Show
-          %th Date
-          %th Transaction ID
-          %th Gross
-          %th Realized
-          %th Net
-          %th
-      %tbody
-        -if @settlements.nil?
-          %td= "No settlements found for this date range"
-          %td
-          %td
-          %td
-          %td
-          %td
-          %td
-          %td
-          %td
-        -else
-          -@settlements.each do |settlement|
-            %tr{:class => settlement.success? ? "succeeded" : "failed" }
-              %td= settlement.id
-              %td= link_to settlement.organization.name, admin_organization_path(settlement.organization_id)
-              %td= l(settlement.show.datetime_local_to_event, :format => :short) unless settlement.show.nil?
-              %td= l settlement.created_at, :format => :short
-              %td
-                -if settlement.success?
-                  =settlement.transaction_id
-                -else
-                  FAILED (#{settlement.ach_response_code})
-              %td= number_as_cents(settlement.gross)
-              %td= number_as_cents(settlement.realized_gross)
-              %td= number_as_cents(settlement.net)
-              %td
-                -if !settlement.success?
-                  = form_tag new_admin_settlement_path, :method=>'get' do
-                    = hidden_field_tag "show_id", settlement.show_id
-                    = submit_tag "Re-settle", :class => [ :mini, :full ]
-    =will_paginate @settlements unless @settlements.nil?
+  =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}

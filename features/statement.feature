@@ -13,5 +13,5 @@ Feature: View a statement for a single show
     Then I should see a list of events
     When I follow "The Walking Dead"
     Then I should see a list of played shows
-    When I view the 1st show
+    When I view the 1st show in the list of shows
     Then I should see a statement

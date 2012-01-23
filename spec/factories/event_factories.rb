@@ -6,7 +6,7 @@ Factory.define :event do |e|
 end
 
 Factory.define :venue do |venue|
-  venue.name "Venue Theater"
+  venue.name            "Venue Theater"
   venue.address1        { Faker::Address.street_address }
   venue.address2        { Faker::Address.secondary_address }
   venue.city            { Faker::Address.city }

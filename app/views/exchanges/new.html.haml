@@ -21,7 +21,7 @@
 .drilldown
   - unless @show.nil?
     %h3 3. Choose a section
-    %ul#show-drilldown
+    %ul#section-drilldown
       - @show.chart.sections.each do |section|
         %li= link_to (truncate(section.name, :length => 20, :separator => ' ', :omission => '...') + ' ' + number_to_currency(section.price / 100)), params.merge({:section_id => section.id}), :title => 'section-name'
 
