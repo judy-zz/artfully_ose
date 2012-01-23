@@ -24,6 +24,12 @@ When /^I select the (\d+)(?:st|nd|rd|th) show$/ do |pos|
   end
 end
 
+When /^I select the (\d+)(?:st|nd|rd|th) section$/ do |pos|
+  within(:xpath, "(//ul[@id='section-drilldown']/li)[#{pos.to_i}]") do
+    click_link("section-name")
+  end
+end
+
 Then /^there should not be any tickets available to exchange$/ do
   page.should have_no_xpath("(//div[@id='exchanges']/form/ul/li)")
 end
