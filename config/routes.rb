@@ -20,6 +20,7 @@ Artfully::Application.routes.draw do
     end
 
     resources :finances, :only => [ :index ]
+    resources :shows, :only => [ :index ]
     resources :settlements, :only => [ :index, :new, :create ]
     resources :orders, :only => [ :index ] do
       collection do
