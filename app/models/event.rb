@@ -5,7 +5,7 @@ class Event < ActiveRecord::Base
   has_many :charts
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
-  has_many :reseller_attachments, :as => :event
+  has_many :reseller_attachments, :as => :attachable
 
   validates_presence_of :name, :producer, :organization_id
 

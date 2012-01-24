@@ -41,9 +41,11 @@
           %h4= link_to offer.event.name, store_event_path(offer.event), :name => 'event-name'
           %ul.controls
             - if attachment = offer.event.attachment_by(@reseller_profile)
-              %li= link_to "View Image", attachment.image.url, :class => "popup-image"
+              - if attachment.image.present?
+                %li= link_to "View Image", attachment.image.url, :class => "popup-image"
+              %li= link_to "Edit Attachment", edit_organization_reseller_attachment_path(@organization, attachment)
             - else
-              %li= link_to "Attach Image", new_organization_reseller_attachment_path(@organization, :event_id => offer.event.id)
+              %li= link_to "Create Attachment", new_organization_reseller_attachment_path(@organization, :event_id => offer.event.id)
           %ul.details-long
             %li
               .key Date &amp; Time

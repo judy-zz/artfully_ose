@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120123143906) do
+ActiveRecord::Schema.define(:version => 20120124162559) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -289,10 +289,11 @@ ActiveRecord::Schema.define(:version => 20120123143906) do
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
     t.integer  "reseller_profile_id"
-    t.integer  "event_id"
-    t.string   "event_type"
+    t.integer  "attachable_id"
+    t.string   "attachable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "comment"
   end
 
   create_table "reseller_events", :force => true do |t|

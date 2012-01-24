@@ -8,7 +8,7 @@ class Show < ActiveRecord::Base
   has_many :settlements
   has_many :items
 
-  has_many :reseller_attachments, :as => :event
+  has_many :reseller_attachments, :as => :attachable
 
   validates_presence_of :datetime
   validates_presence_of :chart_id

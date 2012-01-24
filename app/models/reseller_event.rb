@@ -1,7 +1,7 @@
 class ResellerEvent < ActiveRecord::Base
 
   belongs_to :reseller_profile
-  has_many :reseller_attachments, :as => :event
+  has_many :reseller_attachments, :as => :attachable
 
   scope :upcoming, where("datetime >= ?", Time.now)
   scope :chronological, order("datetime ASC")

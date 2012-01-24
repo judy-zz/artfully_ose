@@ -1,7 +1,7 @@
 class ResellerAttachment < ActiveRecord::Base
 
   belongs_to :reseller_profile
-  belongs_to :event, :polymorphic => true
+  belongs_to :attachable, :polymorphic => true
 
   has_attached_file :image,
     :storage => :s3,

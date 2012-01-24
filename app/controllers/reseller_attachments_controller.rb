@@ -2,23 +2,30 @@ class ResellerAttachmentsController < ApplicationController
 
   before_filter :find_reseller_profile
   before_filter :find_parent
-  before_filter :rewrite_s3_response, :only => [:create]
+  before_filter :build_new_reseller_attachment
+  before_filter :find_reseller_attachment, :except => [:new, :create]
 
   def new
-    @reseller_attachment = @reseller_profile.reseller_attachments.build
-    @reseller_attachment.event = @parent
   end
 
   def create
-    @reseller_attachment = ResellerAttachment.new(params[:reseller_attachment])
-    @reseller_attachment.reseller_profile = @reseller_profile
-    @reseller_attachment.event = @parent if @parent
-
     if @reseller_attachment.save
-      flash[:notice] = "Your picture has been attached to the event."
+      flash[:notice] = "You attachment has been added to the event."
       redirect_to organization_reseller_events_path(@organization)
     else
       render :new
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    if @reseller_attachment.update_attributes(params[:reseller_attachment])
+      flash[:notice] = "Your attachment has been updated."
+      redirect_to organization_reseller_events_path(@organization)
+    else
+      render :edit
     end
   end
 
@@ -38,6 +45,16 @@ class ResellerAttachmentsController < ApplicationController
     @parent = Event.find(params[:event_id]) if params[:event_id]
     @parent = Show.find(params[:show_id]) if params[:show_id]
     @parent = ResellerEvent.find(params[:reseller_event_id]) if params[:reseller_event_id]
+  end
+
+  def build_new_reseller_attachment
+    @reseller_attachment = ResellerAttachment.new(params[:reseller_attachment])
+    @reseller_attachment.reseller_profile = @reseller_profile
+    @reseller_attachment.attachable = @parent if @parent
+  end
+
+  def find_reseller_attachment
+    @reseller_attachment = @reseller_profile.reseller_attachments.find(params[:id])
   end
 
 end
