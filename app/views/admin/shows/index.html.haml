@@ -1,0 +1,6 @@
+- content_for :header do
+  %h1 Shows
+
+.spread
+  %h3 Shows
+  =render :partial => "admin/shared/shows_table", :locals => {:shows => @shows}

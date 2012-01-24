@@ -11,7 +11,7 @@ Feature: Refund Tickets
   Scenario: A producer is presented with the option to refund with or without returning to inventory
     Given I check the 1st ticket for a refund
     When I press "Refund"
-    Then I should see "Refunding 1 item."
+    Then I should see "Refund these tickets and keep the tickets marked as sold"
 
   Scenario: A producer refunds and returns a ticket
     Given I check the 1st ticket for a refund
@@ -22,5 +22,5 @@ Feature: Refund Tickets
   Scenario: A producer refunds a ticket without returning it to inventory
     Given I check the 1st ticket for a refund
     When I press "Refund"
-    And I press "Just Refund"
+    And I press "Issue Refund"
     Then I should see "Successfully refunded 1 items."

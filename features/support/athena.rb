@@ -5,6 +5,12 @@ module AthenaHelpers
 
   def event_from_table_row(attributes)
     attributes.merge!(:organization_id => @current_user.current_organization.id)
+    venue_name = attributes.delete("venue")
+    city = attributes.delete("city")
+    state = attributes.delete("state")
+    
+    venue = Factory(:venue, {:name => venue_name, :city => city, :state => state} )
+    attributes['venue'] = venue
     Factory(:event, attributes)
   end
 

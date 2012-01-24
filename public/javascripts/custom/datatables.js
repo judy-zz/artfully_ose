@@ -29,3 +29,30 @@ $(document).ready( function(){
         ]
     });
 });
+
+$(document).ready( function(){
+	$('#order-table').dataTable({
+	    "iDisplayLength": 100,
+	    "bPaginate": true,
+	    "bJQueryUI": true,
+	    "sDom": '<"H"lf>t<"F"ip>'
+	});
+	$('#donation-table').dataTable({
+	    "iDisplayLength": 100,
+	    "bPaginate": true,
+	    "bJQueryUI": true,
+	    "sDom": '<"H"lf>t<"F"ip>'
+	});
+	$('#settlement-table').dataTable({
+	    "iDisplayLength": 100,
+	    "bPaginate": true,
+	    "bJQueryUI": true,
+	    "sDom": '<"H"lf>t<"F"ip>'
+	});
+	$('#shows-table').dataTable({
+	    "iDisplayLength": 100,
+	    "bPaginate": true,
+	    "bJQueryUI": true,
+	    "sDom": '<"H"lf>t<"F"ip>'
+	});
+});
