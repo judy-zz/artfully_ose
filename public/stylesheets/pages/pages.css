@@ -1,3 +1,12 @@
+@font-face {
+  font-family: Harabara;
+  src: url("#{image_path('/images/pages/Harabara.eot')}"); // EOT file for IE
+}
+@font-face {
+  font-family: Harabara;
+  src: url('/images/pages/Harabara.ttf'); // TTF file for CSS3 browsers
+}
+
 .topbar-inner, .topbar .fill {
   background-color: #175c71;
   background-repeat: repeat-x;
