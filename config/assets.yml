@@ -25,8 +25,8 @@ javascripts:
     - public/javascripts/splash/**/*.js
     
   pages:
-    - public/pages/**/*.js
-    - public/pages/*.js
+    - public/javascripts/pages/**/*.js
+    - public/javascripts/pages/*.js
 
   vendor:
     - public/javascripts/jquery/**/*.js
