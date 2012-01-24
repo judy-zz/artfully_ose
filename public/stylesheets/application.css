@@ -1658,6 +1658,9 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   color: #eeeeee;
   background: #eeeeee; }
 
+#new-person-popup {
+  background-color: white; }
+
 #sell-popup {
   background-color: white; }
   #sell-popup h4 {
@@ -1718,8 +1721,7 @@ input#search {
   float: left;
   position: absolute;
   bottom: 5px;
-  color: #999999;
-  font-size: 1.6em; }
+  color: #999999; }
 
 #total-and-checkout {
   text-align: right;

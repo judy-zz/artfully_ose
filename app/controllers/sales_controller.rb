@@ -7,6 +7,7 @@ class SalesController < ApplicationController
   end
 
   def new
+    @person = Person.new
     @sale = Sale.new(@show, @show.chart.sections)
     setup_defaults
   end

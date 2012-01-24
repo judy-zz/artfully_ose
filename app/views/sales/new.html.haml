@@ -95,22 +95,18 @@
             %td= number_as_cents(item.ticket.price)
             
 #new-person-popup
-  %form
-    %ul#payment-info
+  = form_for Person.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
+    %ul
       %li
-        .label= label_tag("credit_card[cardholder_name]", "First Name")
-        .element= text_field_tag("credit_card[cardholder_name]", params[:credit_card][:cardholder_name])
+        .label= form.label :first_name, "First Name"
+        .element= form.text_field :first_name
       %li
-        .label= label_tag("credit_card[card_number]", "Last Name")
-        .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
+        .label= form.label :last_name, "Last Name"
+        .element= form.text_field :last_name
       %li
-        .label= label_tag("credit_card[card_number]", "Email")
-        .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
-      %button#cancel-button
-        Cancel
-      %button#cancel-button
-        Save
-      
+        .label= form.label :email, "Email"
+        .element= form.text_field :email
+    = form.submit
             
 #sell-popup
   #top-container

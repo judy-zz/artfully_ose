@@ -50,7 +50,39 @@ function setPriceDisplay(amountInCents) {
 	$('#sell-total').find('.price').html(amountInCents).formatCurrency();
 }
 
+function updateSelectedPerson(personId, personName, personEmail, personCompanyName) {
+	$("input#search").val(personName)
+	$(".picked-person-name").html(personName)
+	$(".picked-person-email").html(personEmail)
+	$(".picked-person-company-name").html(personCompanyName)
+	$("input#person_id").val(personId)	
+}
+
+function clearNewPersonForm() {
+	$('#person_first_name', '#new_person').val('')
+	$('#person_last_name', '#new_person').val('')
+	$('#person_email', '#new_person').val('')
+}
+
 $("document").ready(function(){
+
+  $("#new_person").bind("ajax:beforeSend", function(xhr, person){
+    $(this).addClass('loading')
+  });
+	
+  $("#new_person").bind("ajax:success", function(xhr, person){
+    $(this).removeClass('loading')
+    $(this).find("input:submit").removeAttr('disabled');
+		updateSelectedPerson(person.id, person.first_name + " " + person.last_name, person.email, person.company)
+		clearNewPersonForm()
+    $("#new-person-popup").dialog("close")
+  });
+
+  $("#new_person").bind("ajax:error", function(xhr, status, error){
+    $(this).find("input:submit").removeAttr('disabled');
+    data = eval("(" + status.responseText + ")");
+    $(this).removeClass('loading')
+  });
 	
 	$("input#search").autocomplete({
     html: true,
@@ -78,11 +110,7 @@ $("document").ready(function(){
 			var personName = $(person.item.value).filter("#search-result-name").html()
 			var personEmail = $(person.item.value).filter("#search-result-email").html()
 			var personCompanyName = $(person.item.value).filter("#search-result-company-name").html()
-      $("input#search").val(personName)
-      $(".picked-person-name").html(personName)
-      $(".picked-person-email").html(personEmail)
-      $(".picked-person-company-name").html(personCompanyName)
-			$("input#person_id").val(personId)
+      updateSelectedPerson(personId, personName, personEmail, personCompanyName)
     }
   });
 
