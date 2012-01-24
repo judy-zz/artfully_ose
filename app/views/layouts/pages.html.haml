@@ -19,7 +19,8 @@
     %title Artful.ly
     = favicon_link_tag
     = stylesheet_link_tag 'pages/bootstrap', 'pages/pages'
-    = javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js', 'pages/jquery.widowFix-1.3.2.min.js'
+    = javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js'
+    = javascript_include_tag 'pages/jquery.widowFix-1.3.2.min.js'
     = render :partial => 'layouts/google_analytics'
     :javascript
       $(document).ready(function() {
