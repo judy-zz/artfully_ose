@@ -8,6 +8,8 @@ class Show < ActiveRecord::Base
   has_many :settlements
   has_many :items
 
+  has_many :reseller_attachments, :as => :event
+
   validates_presence_of :datetime
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }

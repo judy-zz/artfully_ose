@@ -23,10 +23,12 @@ gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.12'
-gem 's3', '>= 0.3.8'
+gem 's3', '>= 0.3.11'
 gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
 gem 'jammit'
 gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
+gem 'aws-sdk'
+gem 'paperclip', '>= 2.5.0'
 gem 'comma',     :path => "vendor/gems/comma-0.4.0"
 
 # Authentication and Roles

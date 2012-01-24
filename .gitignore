@@ -13,3 +13,4 @@ public/assets
 .rbenv-version
 log/
 solr/
+.powenv

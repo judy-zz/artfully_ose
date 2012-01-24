@@ -6,7 +6,8 @@ class ResellerEventsController < ApplicationController
   before_filter :find_reseller_event, :only => [ :edit, :update, :destroy ]
 
   def index
-    @reseller_events = current_user.current_organization.reseller_events.upcoming.chronological
+    @reseller_events = current_user.current_organization.reseller_events.upcoming.chronological.all
+    @reselling_offers = @reseller_profile.ticket_offers.includes(:show => { :event => :reseller_attachments }).accepted.all
   end
 
   def new

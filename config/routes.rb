@@ -24,7 +24,7 @@ Artfully::Application.routes.draw do
     resources :settlements, :only => [ :index, :new, :create ]
     resources :orders, :only => [ :index ] do
       collection do
-        get 'all' 
+        get 'all'
         get 'artfully'
       end
     end
@@ -48,6 +48,7 @@ Artfully::Application.routes.draw do
   devise_for :admins
 
   resources :organizations do
+    resources :reseller_attachments
     resources :reseller_profiles
     resources :reseller_events do
       collection do

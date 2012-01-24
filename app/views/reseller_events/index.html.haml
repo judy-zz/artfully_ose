@@ -7,7 +7,7 @@
 
 .document
 
-  %h3 Events
+  %h3 Your Custom Events
 
   - if @reseller_events.blank?
     = link_to "Create an Event", new_organization_reseller_event_path(@organization), :class => 'cta-left-125'
@@ -30,3 +30,37 @@
               .key Description
               .value= event.description
       %li= link_to "Create an Event", new_organization_reseller_event_path(@organization), :class => 'cta-left-125'
+
+  .clearfix
+
+  - if @reselling_offers.present?
+    %h3 Shows You Are Reselling
+    %ul.detailed-list
+      - @reselling_offers.each do |offer|
+        %li
+          %h4= link_to offer.event.name, store_event_path(offer.event), :name => 'event-name'
+          %ul.controls
+            - if attachment = offer.event.attachment_by(@reseller_profile)
+              %li= link_to "View Image", attachment.image.url, :class => "popup-image"
+            - else
+              %li= link_to "Attach Image", new_organization_reseller_attachment_path(@organization, :event_id => offer.event.id)
+          %ul.details-long
+            %li
+              .key Date &amp; Time
+              .value= I18n.l(offer.show.datetime_local_to_event, :format => :long_with_day)
+            %li
+              .key Venue
+              .value= offer.event.venue.name
+            %li
+              .key Description
+              .value= offer.event.description
+
+- content_for :custom_js do
+
+  = javascript_include_tag "splash/fancybox/jquery.fancybox-1.3.4.pack.js"
+
+  :javascript
+
+    $(function () {
+      $("a.popup-image").fancybox();
+    });

@@ -5,6 +5,7 @@ class Event < ActiveRecord::Base
   has_many :charts
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
+  has_many :reseller_attachments, :as => :event
 
   validates_presence_of :name, :producer, :organization_id
 
@@ -75,6 +76,10 @@ class Event < ActiveRecord::Base
     end
     chart.assign_to(self)
     self
+  end
+
+  def attachment_by(reseller_profile)
+    self.reseller_attachments.where(:reseller_profile_id => reseller_profile.id).first
   end
 
   private

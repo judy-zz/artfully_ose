@@ -1,0 +1,25 @@
+- in_section :events
+
+- content_for :header do
+  %h1 Attach a picture
+
+.compact-spread
+  %h3 Please supply an image file
+  = render "shared/error_messages", :target => @reseller_attachment
+  = form_for [ @organization, @reseller_attachment ], :html => { :multipart => true } do |f|
+    = f.hidden_field :event_id
+    = f.hidden_field :event_type
+    %ul
+      %li
+        .label= f.label :event
+        .element
+          - if @parent.respond_to?(:name)
+            = label :parent, :name, @parent.name
+          - elsif @parent.respond_to?(:description)
+            = label :parent, :description, @parent.description
+      %li
+        .label= f.label :image
+        .element= f.file_field :image
+    .cancel-submit
+      = link_to "Cancel", organization_reseller_events_path(@organization)
+      = f.submit "Attach Picture"

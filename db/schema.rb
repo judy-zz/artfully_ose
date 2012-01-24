@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120112150346) do
+ActiveRecord::Schema.define(:version => 20120123143906) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -279,6 +279,18 @@ ActiveRecord::Schema.define(:version => 20120112150346) do
     t.integer  "cart_id"
     t.string   "ticket_id"
     t.string   "lock_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reseller_attachments", :force => true do |t|
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.integer  "reseller_profile_id"
+    t.integer  "event_id"
+    t.string   "event_type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
