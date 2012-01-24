@@ -1,6 +1,6 @@
 @font-face {
   font-family: Harabara;
-  src: url("#{image_path('/images/pages/Harabara.eot')}"); // EOT file for IE
+  src: url('/images/pages/Harabara.eot'); // EOT file for IE
 }
 @font-face {
   font-family: Harabara;
