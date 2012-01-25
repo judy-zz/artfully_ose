@@ -84,7 +84,7 @@ class Person < ActiveRecord::Base
   end
 
   def to_customer
-    AthenaCustomer.new(:email => email, :first_name => first_name, :last_name => last_name)
+    AthenaCustomer.new(:person_id => id, :email => email, :first_name => first_name, :last_name => last_name)
   end
 
   def starred_actions

@@ -25,6 +25,7 @@ function showMessage(message) {
 function resetPerson() {
 	$('.picked-person-clear').html("")
 	$('input#search').val('')	
+	$('input#person_id').val('')
 }
 
 function resetPayment() {
@@ -68,6 +69,7 @@ $("document").ready(function(){
 
   $("#new_person").bind("ajax:beforeSend", function(xhr, person){
     $(this).addClass('loading')
+		$('.flash', '#new-person-popup').remove();
   });
 	
   $("#new_person").bind("ajax:success", function(xhr, person){
@@ -82,6 +84,7 @@ $("document").ready(function(){
     $(this).find("input:submit").removeAttr('disabled');
     data = eval("(" + status.responseText + ")");
     $(this).removeClass('loading')
+		$('#error', '#new-person-popup').after($(document.createElement('div')).addClass('flash').addClass('error').html(data.errors[0]));
   });
 	
 	$("input#search").autocomplete({
@@ -114,7 +117,7 @@ $("document").ready(function(){
     }
   });
 
-  $("#new-person-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:200, title: 'Create New Person'})
+  $("#new-person-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:225, title: 'Create New Person'})
   $("#new-person-link").click(function(){
     $("#new-person-popup").dialog("open")
     return false;
@@ -177,20 +180,20 @@ $("document").ready(function(){
 
 	$('.ticket-quantity-select').closest("form")
 		.bind("ajax:beforeSend", function(){
-    		$("#total").addClass("loading");
-    	  $("#checkout-now-button").addClass('disabled')
-    	  $('#checkout-now-button').attr('disabled', true)
+    	$("#total").addClass("loading");
+    	$("#checkout-now-button").addClass('disabled')
+    	$('#checkout-now-button').attr('disabled', true)
 			$('.flash').remove()
-  		})
+  	})
 		.bind("ajax:failure", function(){
 			showError("Sorry, but Artful.ly could not process the payment.  An error report has been recorded.")
 			resetPayment()
 		})
 		.bind("ajax:success", function(xhr, sale){
-	   		setPriceDisplay(sale.total)
+	   	setPriceDisplay(sale.total)
 			$("#total").removeClass("loading");
     		
-    		$('input[name="payment_method"]').attr('disabled', (sale.total == 0))
+    	$('input[name="payment_method"]').attr('disabled', (sale.total == 0))
 			$('#popup-ticket-list tbody tr').remove()
 	        $.each(sale.tickets, function () {
 	          $("#popup-ticket-list").find('tbody')

@@ -95,6 +95,7 @@
             %td= number_as_cents(item.ticket.price)
             
 #new-person-popup
+  #error
   = form_for Person.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
     %ul
       %li

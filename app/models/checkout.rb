@@ -72,14 +72,14 @@ class Checkout
 
     def find_or_create_people_record
       organization = cart.organizations.first
-      person = Person.find_by_email_and_organization(@customer.email, organization)
-
+      person = Person.find(@customer.person_id) || Person.find_by_email_and_organization(@customer.email, organization)
+      
       if person.nil?
         params = {
           :first_name      => @customer.first_name,
           :last_name       => @customer.last_name,
           :email           => @customer.email,
-          :organization_id => organization.id # DEBT: This doesn't account for multiple organizations per cart
+          :organization_id => organization.id # This doesn't account for multiple organizations per cart
         }
         person = Person.create(params)
         address = Address.from_payment(payment)
