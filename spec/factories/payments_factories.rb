@@ -60,6 +60,15 @@ Factory.define :customer_with_id, :parent => :customer do |c|
   end
 end
 
+Factory.define :customer_with_id_and_person_id, :parent => :customer do |c|
+  c.id { Factory.next :customer_id }
+  c.person_id 9
+  c.after_build do |customer|
+    FakeWeb.register_uri(:post, "http://localhost/payments/customers.json", :body => customer.encode)
+    FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{customer.id}.json", :body => customer.encode)
+  end
+end
+
 Factory.define :customer_with_credit_cards, :parent => :customer_with_id do |c|
   c.credit_cards { [ Factory(:credit_card) ] }
 end

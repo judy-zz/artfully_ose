@@ -32,11 +32,15 @@ describe Sale do
 
   describe "#sell" do
     let(:order) { mock(:order, :items => []) }
+    
+    let (:compee) { Factory(:person) }
   
     let(:payment) { mock(:cash_payment, 
                          :customer => Factory(:customer_with_id), 
                          :amount= => nil, 
                          :requires_settlement? => false) }
+  
+    let(:comp_payment) { CompPayment.new(Factory(:user), Factory(:person)) }
                          
     let(:checkout) { mock(:checkout, :order => order)}
     
@@ -44,6 +48,14 @@ describe Sale do
       tix = Array.new(2)
       tix.collect! { Factory(:ticket, :section => chart.sections.first)}
       Ticket.stub(:available).and_return(tix)
+    end
+       
+    it "should comp tickets" do
+      BoxOffice::Checkout.should_not_receive(:new)
+      c = Comp.new(subject.tickets.first.show, subject.tickets, comp_payment.person)
+      Comp.should_receive(:new).with(subject.tickets.first.show, subject.tickets, comp_payment.person).and_return(c)
+      c.should_receive(:submit).with(comp_payment.benefactor)
+      subject.sell(comp_payment)
     end
         
     it "creates a new BoxOffice::Checkout and a new BoxOfficeCart" do

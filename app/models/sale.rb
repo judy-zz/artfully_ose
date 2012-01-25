@@ -22,16 +22,23 @@ class Sale
 
   def sell(payment)
     if valid?
-      cart.tickets << tickets
-      checkout = BoxOffice::Checkout.new(cart, payment)
-      @sale_made = checkout.finish
-      @buyer = checkout.person
-      errors.add(:base, "payment was not accepted") and return if !@sale_made
-      settle(checkout, @sale_made) if (@sale_made and !payment.requires_settlement?)
-      @sale_made
+      case payment
+      when CompPayment
+        @comp = Comp.new(tickets.first.show, tickets, payment.person)
+        @comp.submit(payment.benefactor)
+        @sale_made = true
+      else
+        cart.tickets << tickets
+        checkout = BoxOffice::Checkout.new(cart, payment)
+        @sale_made = checkout.finish
+        @buyer = checkout.person
+        errors.add(:base, "payment was not accepted") and return if !@sale_made
+        settle(checkout, @sale_made) if (@sale_made and !payment.requires_settlement?)
+      end
     else
       @sale_made = false
     end
+    @sale_made
   end
 
   def non_zero_quantities?

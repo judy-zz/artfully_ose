@@ -98,10 +98,10 @@ $("document").ready(function(){
 				responsePeople = new Array();
 		  
 				$.each(people, function (i, person) {
-					responsePeople[i] =  "<div id='search-result-name'>"+person.first_name+" "+person.last_name+"</div>"
-					responsePeople[i] += "<div id='search-result-email' class='search-result-details'>"+person.email+"</div>"
+					responsePeople[i] =  "<div id='search-result-name'>"+ ( person.first_name == null ? "" : person.first_name ) +" "+ ( person.last_name == null ? "" : person.last_name ) +"</div>"
+					responsePeople[i] += "<div id='search-result-email' class='search-result-details'>"+ ( person.email == null ? "" : person.email ) +"</div>"
 					responsePeople[i] += "<div class='clear'></div>"
-					responsePeople[i] += "<div id='search-result-company-name' class='search-result-details'>"+person.company_name+"</div>"	
+					responsePeople[i] += "<div id='search-result-company-name' class='search-result-details'>"+ ( person.company_name == null ? "" : person.company_name ) +"</div>"	
 					responsePeople[i] +=  "<div id='search-result-id'>"+person.id+"</div>"				        
 	      });
 				response(responsePeople)
@@ -232,36 +232,6 @@ $("document").ready(function(){
   				resetPayment();
   			}
 		});
-	
-  $("#terms").keypress(function(e){
-    if (e.which == 13) {
-      e.stopImmediatePropagation();
-      e.stopPropagation();
-      $("#people-for-sales").click();
-      return false;
-    }
-  });
-
-  var mappings = {
-    "#anonymous": "#person-search"
-  }
-
-  $.each(mappings, function(checkbox, section){
-    if($(checkbox).is(":checked")){
-      $(section).addClass("hidden");
-    }
-  });
-
-  $("#anonymous").change(function(){
-    if($(this).is(":checked")){
-      $("#person-search").addClass("hidden");
-      $(".target li:visible").remove();
-      $("#terms").val("");
-      $("#dummy").click();
-    } else {
-      $("#person-search").removeClass("hidden");
-    }
-  });
 
   $(".payment-method").change(function(){
     if($(this).attr('value') != 'credit_card_manual'){
@@ -270,34 +240,6 @@ $("document").ready(function(){
       $("#credit_card_cardholder_name").val("")
     } else {
       $("#payment-info").removeClass("hidden");
-    }
-  });
-
-  $("#people-for-sales").bind("click", function(){
-    $(this).parent().addClass('loading')
-    $(".target li:visible").remove();
-    var input = $(this).siblings("#terms"),
-        terms = input.val(),
-        url = $(this).attr("data-url"),
-        params = {
-          "commit": 1,
-          "search": terms
-        };
-
-    if("" !== terms){
-      $.getJSON(url, params, function(people){
-        $("#people-for-sales").parent().removeClass('loading')
-        $(".target li:visible").remove();
-        
-        if(people.length == 0) {
-          $(".people-search-message").html('No people found')
-        } else {        
-          $(".people-search-message").html('')
-          $.each(people, function(index, person){
-            bulletedListItem(person);
-          });
-        }
-      });
     }
   });
 });

@@ -1542,9 +1542,9 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   font-size: 12pt !important;
   width: 100%;
   border-bottom: 1px solid #cccccc;
-  -moz-box-shadow: 0 4px 4px -2px #cccccc;
-  -webkit-box-shadow: 0 4px 4px -2px #cccccc;
-  box-shadow: 0 4px 4px -2px #cccccc; }
+  -moz-box-shadow: 0 8px 2px -3px #cccccc;
+  -webkit-box-shadow: 0 8px 2px -3px #cccccc;
+  box-shadow: 0 8px 2px -3px #cccccc; }
   #the-details label {
     font-family: Helvetica, sans-serif;
     font-size: 11pt; }
