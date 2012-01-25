@@ -70,9 +70,10 @@ class Checkout
 
   private
 
+    #TODO: This is a relic from the Athena days.  Should be moved into person.rb
     def find_or_create_people_record
       organization = cart.organizations.first
-      person = Person.find(@customer.person_id) || Person.find_by_email_and_organization(@customer.email, organization)
+      person = Person.find_by_customer(@customer, organization)
       
       if person.nil?
         params = {

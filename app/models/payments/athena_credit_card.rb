@@ -48,7 +48,6 @@ class AthenaCreditCard < AthenaResource::Base
 
   def valid?
     clean_card_number
-    parse_card_number
     super
   end
   
