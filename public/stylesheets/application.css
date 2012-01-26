@@ -672,7 +672,7 @@ input.mini {
   width: 480px;
   margin: 0 auto; }
 
-.refunded, .returned {
+.refunded, .returned, .comped-price {
   text-decoration: line-through; }
 
 .changable-overlay {

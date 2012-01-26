@@ -26,6 +26,7 @@ class Sale
       when CompPayment
         @comp = Comp.new(tickets.first.show, tickets, payment.person)
         @comp.submit(payment.benefactor)
+        @buyer = payment.person
         @sale_made = true
       else
         cart.tickets << tickets

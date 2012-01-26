@@ -51,6 +51,11 @@ function setPriceDisplay(amountInCents) {
 	$('#sell-total').find('.price').html(amountInCents).formatCurrency();
 }
 
+function resetPrice() {
+  setPriceDisplay(0)
+  $('.price').removeClass('comped-price');
+}
+
 function updateSelectedPerson(personId, personName, personEmail, personCompanyName) {
 	$("input#search").val(personName)
 	$(".picked-person-name").html(personName)
@@ -240,6 +245,12 @@ $("document").ready(function(){
       $("#credit_card_cardholder_name").val("")
     } else {
       $("#payment-info").removeClass("hidden");
+    }
+    
+    if($(this).attr('value') == 'comp') { 
+      $('.price').addClass('comped-price');
+    } else {
+      $('.price').removeClass('comped-price');
     }
   });
 });
