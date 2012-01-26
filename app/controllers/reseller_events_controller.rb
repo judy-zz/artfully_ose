@@ -24,7 +24,7 @@ class ResellerEventsController < ApplicationController
     @reseller_event.reseller_profile = @reseller_profile
 
     if @reseller_event.save
-      flash[:notice] = "Your new reseller event has been created."
+      flash[:notice] = "Your event has been created."
       redirect_to organization_reseller_events_path(@organization)
     else
       flash.now[:error] = "There was an error while creating your new reseller event."
@@ -37,7 +37,7 @@ class ResellerEventsController < ApplicationController
 
   def update
     if @reseller_event.update_attributes(params[:reseller_event])
-      flash[:notice] = "Your reseller event has been updated."
+      flash[:notice] = "Your event has been updated."
       redirect_to organization_reseller_events_path(@organization)
     else
       flash.now[:error] = "There was an error in updating your reseller event."

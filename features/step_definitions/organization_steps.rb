@@ -21,6 +21,7 @@ end
 Given /^I am part of an organization with access to the reselling kit$/ do
   @current_user ||= Factory(:user)
   @current_user.organizations << Factory(:organization_with_reselling)
+  @organization = @current_user.current_organization
 end
 
 Given /^I am part of an organization "([^"]*)"$/ do |name|

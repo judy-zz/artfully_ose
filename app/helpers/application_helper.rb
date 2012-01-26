@@ -110,4 +110,8 @@ module ApplicationHelper
       "Wyoming"              =>"WY"
     }
   end
+
+  def verb_for_save(record)
+    record.new_record? ? "Create" : "Update"
+  end
 end

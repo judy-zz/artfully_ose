@@ -21,6 +21,7 @@ Feature: Resellers have profiles
     And I fill in "Description" with "a great example"
     And I fill in "Fee" with "$2.71"
     And I press "Update Profile"
+    And I follow "Reseller Settings"
     Then the "Url" field should contain "http://example.com"
     And the "Description" field should contain "a great example"
     And the "Fee" field should contain "\$2.71"
