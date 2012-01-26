@@ -13,12 +13,12 @@ class ResellerShowsController < ApplicationController
     @reseller_show = ResellerShow.new(params[:reseller_show])
     @reseller_show.reseller_profile = @reseller_profile
     @reseller_show.reseller_event = @reseller_event
+    @reseller_show.datetime = event_time_zone.parse(params[:reseller_show][:datetime])
 
     if @reseller_show.save
       flash[:notice] = "Show created on #{l @reseller_show.datetime_local_to_reseller_event, :format => :date_at_time}"
       redirect_to organization_reseller_event_path(@organization, @reseller_event)
     else
-      flash[:error] = "There was a problem creating your show."
       render :new
     end
   end
@@ -68,6 +68,10 @@ class ResellerShowsController < ApplicationController
 
   def find_reseller_show
     @show = @reseller_show = @reseller_event.reseller_shows.find(params[:id])
+  end
+
+  def event_time_zone
+    ActiveSupport::TimeZone.create(@reseller_event.time_zone)
   end
 
 end
