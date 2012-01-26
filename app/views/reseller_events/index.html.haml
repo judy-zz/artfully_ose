@@ -21,11 +21,8 @@
             %li= link_to "Delete", organization_reseller_event_path(@organization, event), :method => :delete, :confirm => "Are you sure you want to delete #{event.name}?" if can?(:destroy, event)
           %ul.details-long
             %li
-              .key Date &amp; Time
-              .value= I18n.l(event.datetime_local_to_organization, :format => :long_with_day)
-            %li
               .key Venue
-              .value= event.venue
+              .value= "#{event.venue.name} #{event.venue.city}, #{event.venue.state}"
             %li
               .key Description
               .value= event.description

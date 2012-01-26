@@ -8,6 +8,5 @@ class ResellerProfile < ActiveRecord::Base
   has_many :reseller_attachments
 
   validates_length_of :description, :maximum => 350
-  validates_attachment_presence :image
 
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120124162559) do
+ActiveRecord::Schema.define(:version => 20120125171623) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -298,12 +298,13 @@ ActiveRecord::Schema.define(:version => 20120124162559) do
 
   create_table "reseller_events", :force => true do |t|
     t.integer  "reseller_profile_id"
-    t.datetime "datetime"
     t.string   "name"
-    t.string   "venue"
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "venue_id"
+    t.string   "producer"
+    t.string   "url"
   end
 
   create_table "reseller_profiles", :force => true do |t|
@@ -313,6 +314,15 @@ ActiveRecord::Schema.define(:version => 20120124162559) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "fee",             :default => 100
+  end
+
+  create_table "reseller_shows", :force => true do |t|
+    t.string   "state"
+    t.datetime "datetime"
+    t.integer  "reseller_event_id"
+    t.integer  "reseller_profile_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "sections", :force => true do |t|

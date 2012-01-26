@@ -3,15 +3,20 @@ class ResellerEventsController < ApplicationController
   before_filter :find_reseller_profile, :except => [ :stream ]
   before_filter :adjust_datetime_to_organization_time_zone, :except => [ :stream ]
   before_filter :authorize_reseller_profile, :except => [ :index, :stream ]
-  before_filter :find_reseller_event, :only => [ :edit, :update, :destroy ]
+  before_filter :find_reseller_event, :only => [ :show, :edit, :update, :destroy ]
 
   def index
-    @reseller_events = current_user.current_organization.reseller_events.upcoming.chronological.all
+    @reseller_events = current_user.current_organization.reseller_events.alphabetical.all
     @reselling_offers = @reseller_profile.ticket_offers.includes(:show => { :event => :reseller_attachments }).accepted.all
+  end
+
+  def show
+    @next_reseller_show = @reseller_event.next_show
   end
 
   def new
     @reseller_event = ResellerEvent.new
+    @reseller_event.venue = Venue.new
   end
 
   def create
@@ -98,6 +103,8 @@ class ResellerEventsController < ApplicationController
 
   def find_reseller_event
     @reseller_event = @reseller_profile.reseller_events.find(params[:id])
+    @venue = @reseller_event.venue
+    @shows = @reseller_event.reseller_shows.paginate(:page => params[:page], :per_page => 25)
   end
 
 end
