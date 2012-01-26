@@ -38,9 +38,11 @@ $(document).ready(function () {
     $(this).find(":submit").removeAttr('disabled');
     $row.removeClass("pending built published unpublished")
     $row.addClass(performance.state);
-    $row.find(".available").html(performance.glance.tickets.available);
-    $row.find(".gross").html(performance.glance.tickets.sold.gross);
-    $row.find(".comped").html(performance.glance.tickets.comped);
+    if (performance.glance !== undefined) {
+      $row.find(".available").html(performance.glance.tickets.available);
+      $row.find(".gross").html(performance.glance.tickets.sold.gross);
+      $row.find(".comped").html(performance.glance.tickets.comped);
+    }
   });
 
   $("form.sprited").live("ajax:error", function(xhr, status, error){

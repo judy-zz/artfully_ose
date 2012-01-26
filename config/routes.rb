@@ -51,9 +51,14 @@ Artfully::Application.routes.draw do
     resources :reseller_attachments
     resources :reseller_profiles
     resources :reseller_events do
-      resources :reseller_shows
       collection do
         get :stream
+      end
+      resources :reseller_shows do
+        member do
+          put :publish
+          put :unpublish
+        end
       end
     end
     put :tax_info, :on => :member

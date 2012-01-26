@@ -23,11 +23,33 @@ class ResellerShowsController < ApplicationController
     end
   end
 
+  def publish
+    @reseller_show.publish!
+
+    if request.xhr?
+      render :json => @reseller_show.as_json
+    else
+      flash[:notice] = "Your show is now published."
+      redirect_to organization_reseller_event_path(@organization, @reseller_event)
+    end
+  end
+
+  def unpublish
+    @reseller_show.unpublish!
+
+    if request.xhr?
+      render :json => @reseller_show.as_json
+    else
+      flash[:notice] = "Your show is now unpublished."
+      redirect_to organization_reseller_event_path(@organization, @reseller_event)
+    end
+  end
+
   protected
 
   def find_reseller_profile
     @organization = Organization.find(params[:organization_id])
-    @reseller_profile = @organization.reseller_profile
+    @profile = @reseller_profile = @organization.reseller_profile
 
     if @reseller_profile.nil?
       flash[:error] = "You do not have a reseller profile."
@@ -40,12 +62,12 @@ class ResellerShowsController < ApplicationController
   end
 
   def find_reseller_event
-    @reseller_event = @reseller_profile.reseller_events.find(params[:reseller_event_id])
+    @event = @reseller_event = @reseller_profile.reseller_events.find(params[:reseller_event_id])
     @venue = @reseller_event.venue
   end
 
   def find_reseller_show
-    @reseller_event.reseller_shows.find(params[:id])
+    @show = @reseller_show = @reseller_event.reseller_shows.find(params[:id])
   end
 
 end

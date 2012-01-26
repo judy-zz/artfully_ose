@@ -43,9 +43,8 @@
           %tbody
             - @shows.each do |show|
               %tr{ :class => show.state }
-                %td= link_to l(show.datetime_local_to_event, :format => :short), organization_reseller_event_reseller_show_path(@organization, @reseller_event, show), :title => 'show-datetime'
-                %td
-                  /= render :partial => "shows/controls", :locals => { :show => show }
+                %td= l show.datetime_local_to_event, :format => :short
+                %td= render :partial => "reseller_shows/controls", :locals => { :show => show }
             %tr
               = render :partial => 'reseller_shows/new_show_for_table', :locals => { :organization => @organization, :event => @reseller_event, :show => @next_reseller_show }
         = will_paginate @shows
