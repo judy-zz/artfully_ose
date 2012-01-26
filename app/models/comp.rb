@@ -5,10 +5,12 @@ class Comp
   attr_accessor :show, :tickets, :recipient, :reason, :order
   attr_accessor :comped_count, :uncomped_count
 
-  def initialize(show, tickets, recipient)
-    self.show = show
-    self.tickets = tickets
-    self.recipient = recipient
+  #tickets can be an array of tickets_ids or an array of tickets
+  def initialize(show, tickets_or_ids, recipient)
+    @show = show
+    @tickets = []
+    load_tickets(tickets_or_ids)
+    @recipient = recipient
   end
 
   def has_recipient?
@@ -22,8 +24,7 @@ class Comp
   def submit(benefactor)
     ActiveRecord::Base.transaction do
       comped_tickets = []
-      tickets.each do |ticket_id|
-        t = Ticket.find ticket_id
+      @tickets.each do |t|
         t.comp_to recipient
         comped_tickets << t
       end
@@ -34,18 +35,24 @@ class Comp
   end
 
   private
-
-  def create_order(comped_tickets, benefactor)
-    @order = CompOrder.new
-    @order << comped_tickets
-    @order.person = recipient
-    @order.organization = benefactor.current_organization
-    @order.details = "Comped by: #{benefactor.email} Reason: #{reason}"
-    @order.to_comp!
-    
-    
-    if 0 < comped_tickets.size
-      @order.save
+    def load_tickets(tickets_or_ids)
+      tickets_or_ids.each do |t|
+        t = Ticket.find(t) unless t.kind_of? Ticket
+        @tickets << t
+      end
     end
-  end
+  
+    def create_order(comped_tickets, benefactor)
+      @order = CompOrder.new
+      @order << comped_tickets
+      @order.person = recipient
+      @order.organization = benefactor.current_organization
+      @order.details = "Comped by: #{benefactor.email} Reason: #{reason}"
+      @order.to_comp!
+    
+    
+      if 0 < comped_tickets.size
+        @order.save
+      end
+    end
 end
