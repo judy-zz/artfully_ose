@@ -7,7 +7,11 @@ end
 
 Then /^I should see (\d+) tickets?$/ do |quantity|
   #+1 for the service fee
-  page.should have_xpath("//li[@class='ticket']", :count => quantity.to_i * 2)
+  page.should have_xpath("//li[@class='ticket']", :count => quantity.to_i + 1)
+end
+
+Given /^there are (\d+) ticket sales$/ do |arg1|
+  pending # express the regexp above with the code you wish you had
 end
 
 Given /^I search for (\d+) tickets for \$(\d+)$/ do |quantity, price|

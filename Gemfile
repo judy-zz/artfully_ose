@@ -18,7 +18,6 @@ gem 'haml'
 gem 'sass'
 gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0.beta'
-gem 'high_voltage'
 gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
@@ -30,6 +29,7 @@ gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
 gem 'aws-sdk'
 gem 'paperclip', '>= 2.5.0'
 gem 'comma',     :path => "vendor/gems/comma-0.4.0"
+gem 'nokogiri' # for pulling in blog posts on index#updates
 
 # Authentication and Roles
 gem 'devise'

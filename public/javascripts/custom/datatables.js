@@ -49,4 +49,10 @@ $(document).ready( function(){
 	    "bJQueryUI": true,
 	    "sDom": '<"H"lf>t<"F"ip>'
 	});
+	$('#shows-table').dataTable({
+	    "iDisplayLength": 100,
+	    "bPaginate": true,
+	    "bJQueryUI": true,
+	    "sDom": '<"H"lf>t<"F"ip>'
+	});
 });
