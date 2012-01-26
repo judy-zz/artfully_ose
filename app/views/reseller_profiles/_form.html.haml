@@ -2,6 +2,8 @@
 
   %h3 Reseller Profile
 
+  = render "shared/error_messages", :target => @reseller_profile
+
   = form_for [ @organization, @reseller_profile ] do |f|
 
     %ul

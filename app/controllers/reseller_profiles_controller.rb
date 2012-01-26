@@ -1,46 +1,45 @@
 class ResellerProfilesController < ApplicationController
 
+  before_filter :find_organization
   before_filter :fix_fee, :only => [ :create, :update ]
 
   def new
-    @organization = Organization.find(params[:organization_id])
-    @reseller_profile = ResellerProfile.new
+    @reseller_profile ||= ResellerProfile.new
   end
 
   def create
-    @organization = Organization.find(params[:organization_id])
-    @reseller_profile = ResellerProfile.new(params[:reseller_profile])
+    @reseller_profile ||= ResellerProfile.new(params[:reseller_profile])
+    @reseller_profile.organization = @organization
 
-    create_or_update
+    if @reseller_profile.save
+      flash[:notice] = "Your reseller profile has been created."
+      redirect_to root_path
+    else
+      render :new
+    end
   end
 
   def edit
-    @organization = Organization.find(params[:organization_id])
     @reseller_profile = @organization.reseller_profile
   end
 
   def update
-    @organization = Organization.find(params[:organization_id])
     @reseller_profile = @organization.reseller_profile
 
-    create_or_update
+    if @reseller_profile.update_attributes(params[:reseller_profile])
+      flash[:notice] = "Your reseller profile has been updated."
+      redirect_to root_path
+    else
+      render :edit
+    end
   end
 
   protected
-  
-  def create_or_update
+
+  def find_organization
+    @organization = Organization.find(params[:organization_id])
+    @reseller_profile = @organization.reseller_profile
     authorize! :edit, @organization
-    @reseller_profile.organization = @organization
-
-    if params[:reseller_profile] && @reseller_profile.update_attributes(params[:reseller_profile])
-      flash[:notice] = "Your reseller profile has been updated."
-    elsif @reseller_profile.save
-      flash[:notice] = "Your reseller profile has been created."
-    else
-      flash[:error] = @reseller_profile.errors.full_messages.to_sentence
-    end
-
-    redirect_to edit_organization_reseller_profile_path(@organization, @reseller_profile)
   end
 
   def fix_fee
