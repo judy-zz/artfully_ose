@@ -94,7 +94,7 @@ class Checkout
       cart.organizations.each do |organization|
         @order = new_order(organization, order_timestamp, @person)
         @order.save!
-        OrderMailer.confirmation_for(order).deliver unless @person.dummy?
+        OrderMailer.confirmation_for(order).deliver unless @person.dummy? || @person.email.blank?
         @order
       end
     end

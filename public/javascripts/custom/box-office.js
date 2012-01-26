@@ -24,6 +24,7 @@ function showMessage(message) {
 
 function resetPerson() {
 	$('.picked-person-clear').html("")
+	$('#picket-person-name-in-popup').html("No buyer information")
 	$('input#search').val('')	
 	$('input#person_id').val('')
 }
@@ -34,7 +35,6 @@ function resetPayment() {
 	$("#credit_card_cardholder_name").val()
 	$("#credit_card_expiration_date_2i_").val($('option:first', $("#credit_card_expiration_date_2i_")).val())
 	$("#credit_card_expiration_date_1i_").val($('option:first', $("#credit_card_expiration_date_1i_")).val())
-	$('input[name="commit"]').val('')
 }
 
 function resetQuantites() {
@@ -70,6 +70,21 @@ function clearNewPersonForm() {
 	$('#person_email', '#new_person').val('')
 }
 
+/*
+ * Will look for and remove nulls from:
+ *  first_name
+ *  last_name
+ *  email
+ *  company_name
+ */
+function cleanJsonPerson(jsonPerson) {
+  jsonPerson.first_name = ( jsonPerson.first_name == null ? "" : jsonPerson.first_name )  
+  jsonPerson.last_name = ( jsonPerson.last_name == null ? "" : jsonPerson.last_name )  
+  jsonPerson.email = ( jsonPerson.email == null ? "" : jsonPerson.email )  
+  jsonPerson.company_name = ( jsonPerson.company_name == null ? "" : jsonPerson.company_name )  
+  return jsonPerson
+}
+
 $("document").ready(function(){
 
   $("#new_person").bind("ajax:beforeSend", function(xhr, person){
@@ -80,7 +95,8 @@ $("document").ready(function(){
   $("#new_person").bind("ajax:success", function(xhr, person){
     $(this).removeClass('loading')
     $(this).find("input:submit").removeAttr('disabled');
-		updateSelectedPerson(person.id, person.first_name + " " + person.last_name, person.email, person.company)
+    person = cleanJsonPerson(person)
+		updateSelectedPerson(person.id, person.first_name + " " + person.last_name, person.email, person.company_name)
 		clearNewPersonForm()
     $("#new-person-popup").dialog("close")
   });
@@ -103,10 +119,11 @@ $("document").ready(function(){
 				responsePeople = new Array();
 		  
 				$.each(people, function (i, person) {
-					responsePeople[i] =  "<div id='search-result-name'>"+ ( person.first_name == null ? "" : person.first_name ) +" "+ ( person.last_name == null ? "" : person.last_name ) +"</div>"
-					responsePeople[i] += "<div id='search-result-email' class='search-result-details'>"+ ( person.email == null ? "" : person.email ) +"</div>"
+				  person = cleanJsonPerson(person)
+					responsePeople[i] =  "<div id='search-result-name'>"+ person.first_name +" "+ person.last_name +"</div>"
+					responsePeople[i] += "<div id='search-result-email' class='search-result-details'>"+ person.email +"</div>"
 					responsePeople[i] += "<div class='clear'></div>"
-					responsePeople[i] += "<div id='search-result-company-name' class='search-result-details'>"+ ( person.company_name == null ? "" : person.company_name ) +"</div>"	
+					responsePeople[i] += "<div id='search-result-company-name' class='search-result-details'>"+ person.company_name +"</div>"	
 					responsePeople[i] +=  "<div id='search-result-id'>"+person.id+"</div>"				        
 	      });
 				response(responsePeople)

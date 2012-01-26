@@ -75,7 +75,7 @@ class SalesController < ApplicationController
     end
 
     def person
-      Person.find(params[:person_id])
+      params[:person_id].blank? ? @dummy : Person.find(params[:person_id])
     end
 
     def payment
