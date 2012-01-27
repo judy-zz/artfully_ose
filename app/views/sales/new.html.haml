@@ -24,9 +24,11 @@
         %ul#section-list
           - @sale.sections.each do |section|
             %li
-              .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_as_cents(section.price)}"
+              .label
+                = label_tag "quantities[#{section.id}]", "#{section.name} #{number_as_cents(section.price)}"
+                .description{:id => "remaining_#{section.id}"}="#{@tickets_remaining[section.id]} remaining"
               .quantity.element
-                - if section.summary(@show.id).available > 0
+                - if @tickets_remaining[section.id] > 0
                   = select_tag "quantities[#{section.id}]", options_for_select(0..[section.summary(@show.id).available,10].min, @sale.quantities[section.id]), :class => 'ticket-quantity-select'
                 - else
                   .sold-out
@@ -48,16 +50,16 @@
         %ul.radio-list
           %li
             .radio= radio_button_tag(:payment_method, :cash, true, :class => 'payment-method', :disabled => 'true')
-            .label= label_tag(:payment_method, "Cash")
+            .label= label_tag(:cash, "Cash")
           %li
             .radio= radio_button_tag(:payment_method, :comp, false, :class => 'payment-method', :disabled => 'true')
-            .label= label_tag(:payment_method, "Comp")
+            .label= label_tag(:comp, "Comp")
           %li
             .radio= radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true')
-            .label= label_tag(:payment_method, "Credit (Swipe)")
+            .label= label_tag(:credit_card_swipe, "Credit (Swipe)")
           %li
             .radio= radio_button_tag(:payment_method, :credit_card_manual, false, :class => 'payment-method', :disabled => 'true')
-            .label= label_tag(:payment_method, "Credit (Manual)")
+            .label= label_tag(:credit_card_manual, "Credit (Manual)")
         %ul#payment-info.hidden
           %li
             .label= label_tag("credit_card[cardholder_name]", "Name on Card")
@@ -127,6 +129,9 @@
     #picket-person-name-in-popup.picked-person-name.picked-person-clear
       No buyer information
     .picked-person-email.picked-person-clear
+  %h4{:style => 'margin: 15px 0px 5px 0px'} Payment Method
+  #payment-method-popup
+    Cash
   %h4{:style => 'margin: 15px 0px 5px 0px'} Tickets
   #popup-ticket-list
     %table

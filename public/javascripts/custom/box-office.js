@@ -29,6 +29,10 @@ function resetPerson() {
 	$('input#person_id').val('')
 }
 
+function resetCommit() {
+  $('.ticket-quantity-select').closest("form").find('input[name="commit"]').val('')
+}
+
 function resetPayment() {
 	$("#payment_method_cash").click()
 	$("#credit_card_card_number").val()
@@ -68,6 +72,12 @@ function clearNewPersonForm() {
 	$('#person_first_name', '#new_person').val('')
 	$('#person_last_name', '#new_person').val('')
 	$('#person_email', '#new_person').val('')
+}
+
+function updateQuantities(tickets_remaining) {
+  $.each(tickets_remaining, function(index, value) {
+      $('#remaining_' + index).html(value + ' remaining')
+  });
 }
 
 /*
@@ -145,7 +155,7 @@ $("document").ready(function(){
     return false;
   });
 	
-  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:500, title: 'Confirm Sale'})
+  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, height:575, title: 'Confirm Sale'})
   $("#checkout-now-button").click(function(){
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
       $('#sell-button').hide()
@@ -232,6 +242,8 @@ $("document").ready(function(){
   	  $('#sell-button').attr('disabled', false)
 	    $('#sell-button').html('Sell')
 	  		
+	  	updateQuantities(sale.tickets_remaining)
+	  		
 			if(sale.sale_made == true) {
   				$.each(sale.door_list_rows, function () {
   					$("#door-list").find('tbody')
@@ -243,6 +255,7 @@ $("document").ready(function(){
   					    .append($('<td>').html(this.price / 100).formatCurrency())
   					);         	
   				});
+  				resetCommit();
   				resetPayment();
   				resetPerson();
   			  resetQuantites();
@@ -269,5 +282,8 @@ $("document").ready(function(){
     } else {
       $('.price').removeClass('comped-price');
     }
+    
+     var payment_method_text = $(this).attr("value");
+     $('#payment-method-popup').html($('label[for='+payment_method_text+']').text());
   });
 });

@@ -570,11 +570,10 @@ input.mini {
   background: rgba(7, 112, 131, 0.1); }
 
 .sold-out {
-  background: rgba(240, 130, 4, 0.1);
-  -moz-border-radius: 10px 10px 10px 10px;
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  text-align: center !important; }
+  text-align: center !important;
+  text-transform: uppercase;
+  font-size: 10pt;
+  color: #999999; }
 
 .more {
   font-size: 0.8em;
@@ -1558,6 +1557,9 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
     font-size: 10pt;
     padding-left: 8px; }
 
+#section-list .description {
+  margin-top: -10px; }
+
 #total {
   float: right;
   text-align: center;
@@ -1695,6 +1697,14 @@ input#search {
   width: 90%;
   margin-top: 5px;
   margin-left: 5px; }
+
+#payment-method-popup {
+  margin-left: 5px;
+  margin-top: 10px;
+  font-family: Helvetica, sans-serif;
+  color: #077083;
+  font-size: 14pt;
+  font-weight: bold; }
 
 .picked-person {
   margin-left: 5px; }

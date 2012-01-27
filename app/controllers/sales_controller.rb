@@ -9,6 +9,7 @@ class SalesController < ApplicationController
   def new
     @person = Person.new
     @sale = Sale.new(@show, @show.chart.sections)
+    @tickets_remaining = tickets_remaining
     setup_defaults
   end
 
@@ -21,7 +22,12 @@ class SalesController < ApplicationController
         @sale.message =  "#{@sale.errors.full_messages.to_sentence.capitalize}."
       end
     end
-    render :json => @sale.as_json.merge(:total => @sale.cart.total).merge(:door_list_rows => door_list_rows), :status => 200
+    
+    render :json => @sale.as_json
+                         .merge(:total => @sale.cart.total)
+                         .merge(:tickets_remaining => tickets_remaining)
+                         .merge(:door_list_rows => door_list_rows), 
+                         :status => 200
   end
 
   def checking_out?
@@ -36,13 +42,21 @@ class SalesController < ApplicationController
         door_list_rows[i]['buyer'] = (@sale.buyer.first_name || "") + " " + (@sale.buyer.last_name || "")
         door_list_rows[i]['email'] = @sale.buyer.email
         door_list_rows[i]['section'] = ticket.section.name
-        door_list_rows[i]['price'] = ticket.section.price
+        door_list_rows[i]['price'] = ticket.sold_price
       end
     end
     door_list_rows
   end
 
   private
+    def tickets_remaining
+      remaining = {}
+      @sale.sections.each do |section|
+        remaining[section.id] = section.summary(@show).available
+      end
+      remaining
+    end
+    
     def setup_defaults
       params[:anonymous]   = true
       params[:cash]        = true
