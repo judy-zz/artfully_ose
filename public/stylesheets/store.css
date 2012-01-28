@@ -450,3 +450,12 @@ h4 {
   -moz-border-radius: 0 4px 4px 0;
   -webkit-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0; }
+
+#description img {
+  float: left;
+  margin: 0 10px 10px 0;
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px; }
+#description p {
+  margin-bottom: 10px; }

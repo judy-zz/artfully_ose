@@ -6,6 +6,12 @@
     });
     #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
     #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
+
+    // show/hide extended event descriptions
+    $('#description #truncated a.toggle, #description #not-truncated a.toggle').click(function() {
+      $('#description #truncated').toggle();
+      $('#description #not-truncated').toggle();
+    })
   });
 #store
   #artfully-alert.flash.error
@@ -13,8 +19,16 @@
   
 #sidebar
   - unless @event.description.blank?
-    %h2 About
-    %p=@event.description
+    #description
+      %h2 About
+      =image_tag('storefront/event-image-default.jpg', :width => 140, :height => 140) if true #event.image?
+      -if @event.description.length > 300
+        #truncated
+          = simple_format "#{truncate(@event.description, :length => 300)} (#{link_to 'more','#', :class => 'toggle'})"
+        #not-truncated{:style => 'display:none;'}
+          =simple_format "#{@event.description} (#{link_to 'less','#', :class => 'toggle'})"
+      - else
+        =simple_format @event.description
   %h2 Venue
   .event-venue
     %div=@event.venue.name
