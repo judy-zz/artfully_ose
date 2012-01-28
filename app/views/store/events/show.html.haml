@@ -30,7 +30,7 @@
       - else
         =simple_format @event.description
   %h2 Venue
-  .event-venue
+  #venue
     =link_to image_tag("http://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
     %div
       %strong=@event.venue.name
@@ -38,11 +38,12 @@
     %div=@event.venue.city_state_zip_as_string
   - unless @event.contact_email.blank? && @event.contact_phone.blank?
     %h2 Contact
-    %ul.kv
-    - unless @event.contact_email.blank?
-      %li= mail_to @event.contact_email
-    - unless @event.contact_phone.blank?
-      %li= @event.contact_phone
+    #contact
+      - unless @event.contact_email.blank?
+        = mail_to @event.contact_email
+        <br />
+      - unless @event.contact_phone.blank?
+        = @event.contact_phone
   - if @event.organization.can?(:receive, Donation)
     #donation
       %h2 Donate
