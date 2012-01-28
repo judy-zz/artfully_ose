@@ -42,12 +42,16 @@ h4
 .event-venue
   font-size: 1em
   margin-bottom: .5em
+  strong
+    font-weight: bold
   a
     display: block
+    background: #f3f3f3
     width: 140px
     height: 140px
     float: left
     margin: 0 10px 10px 0
+    @include rounded-corners(4px,4px,4px,4px)
     img
       @include rounded-corners(4px,4px,4px,4px)
   
