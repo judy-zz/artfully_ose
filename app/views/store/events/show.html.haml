@@ -38,15 +38,10 @@
   - unless @event.contact_email.blank? && @event.contact_phone.blank?
     %h2 Contact
     %ul.kv
-      - unless @event.contact_email.blank?
-        %li
-          .key Email
-          .value
-            %a{:href=>"mailto:#{@event.contact_email}"}#{@event.contact_email} 
-      - unless @event.contact_phone.blank?
-        %li
-          .key Phone
-          .value= @event.contact_phone    
+    - unless @event.contact_email.blank?
+      %li= mail_to @event.contact_email
+    - unless @event.contact_phone.blank?
+      %li= @event.contact_phone
   - if @event.organization.can?(:receive, Donation)
     #donation
       %h2 Donate
