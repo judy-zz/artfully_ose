@@ -31,11 +31,10 @@
         =simple_format @event.description
   %h2 Venue
   .event-venue
+    =link_to image_tag("http://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
     %div=@event.venue.name
     %div=@event.venue.street_as_string
     %div=@event.venue.city_state_zip_as_string
-    %div
-      %a.map-link{:href=> "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15", :target => "_blank"} map
   - unless @event.contact_email.blank? && @event.contact_phone.blank?
     %h2 Contact
     %ul.kv

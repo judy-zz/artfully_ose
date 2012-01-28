@@ -381,6 +381,16 @@ h4 {
 .event-venue {
   font-size: 1em;
   margin-bottom: 0.5em; }
+  .event-venue a {
+    display: block;
+    width: 140px;
+    height: 140px;
+    float: left;
+    margin: 0 10px 10px 0; }
+    .event-venue a img {
+      -moz-border-radius: 4px 4px 4px 4px;
+      -webkit-border-radius: 4px 4px 4px 4px;
+      border-radius: 4px 4px 4px 4px; }
 
 #content {
   margin: 10px 2%;
