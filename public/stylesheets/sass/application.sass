@@ -565,12 +565,6 @@ ul.prices li div
     font-family: Courier
     padding: 1px
 
-.hidden
-  display: none
-
-.label.hidden
-  display: none
-
 .context-buttons
   @include rounded-corners(4px, 4px, 4px, 4px)
   @include stack-layout
@@ -657,3 +651,12 @@ dl.table-display
 @import "show"
 @import "logo"
 @import "box-office"
+
+.hidden
+  display: none !important
+
+.label.hidden
+  display: none
+  
+.invisible
+  visibility: hidden

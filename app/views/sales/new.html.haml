@@ -25,14 +25,12 @@
           - @sale.sections.each do |section|
             %li
               .label
-                = label_tag "quantities[#{section.id}]", "#{section.name} #{number_as_cents(section.price)}"
+                = label_tag "quantities[#{section.id}]", "#{truncate(section.name, :length => 25)} #{number_as_cents(section.price)}"
                 .description{:id => "remaining_#{section.id}"}="#{@tickets_remaining[section.id]} remaining"
               .quantity.element
-                - if @tickets_remaining[section.id] > 0
-                  = select_tag "quantities[#{section.id}]", options_for_select(0..[section.summary(@show.id).available,10].min, @sale.quantities[section.id]), :class => 'ticket-quantity-select'
-                - else
-                  .sold-out
-                    sold out
+                = select_tag "quantities[#{section.id}]", options_for_select(0..10, @sale.quantities[section.id]), :class => @tickets_remaining[section.id] > 0 ? 'ticket-quantity-select' : 'hidden ticket-quantity-select'
+                .sold-out{:id => "sold_out_#{section.id}", :class => @tickets_remaining[section.id] > 0 ? 'hidden' : ''}
+                  sold out
                 
       %fieldset.floater.thirdish
         %h4 Customer
@@ -96,7 +94,7 @@
             %td= item.ticket.section.name
             %td= number_as_cents(item.ticket.price)
             
-#new-person-popup
+#new-person-popup.hidden
   #error
   = form_for Person.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
     %ul
@@ -111,7 +109,7 @@
         .element= form.text_field :email
     = form.submit
             
-#sell-popup
+#sell-popup.hidden
   #top-container
     #sell-total.total{:style => 'float:left'}
       %span total

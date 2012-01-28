@@ -60,6 +60,16 @@ function resetPrice() {
   $('.price').removeClass('comped-price');
 }
 
+function disableCheckout() {
+	$('#checkout-now-button').attr('disabled', true)
+	$('#checkout-now-button').addClass('off')
+}
+
+function enableCheckout() {
+	$('#checkout-now-button').attr('disabled', false)
+	$('#checkout-now-button').removeClass('off')
+}
+
 function updateSelectedPerson(personId, personName, personEmail, personCompanyName) {
 	$("input#search").val(personName)
 	$(".picked-person-name").html(personName)
@@ -75,8 +85,15 @@ function clearNewPersonForm() {
 }
 
 function updateQuantities(tickets_remaining) {
-  $.each(tickets_remaining, function(index, value) {
-      $('#remaining_' + index).html(value + ' remaining')
+  $.each(tickets_remaining, function(section_id, quantity) {
+      $('#remaining_' + section_id).html(quantity + ' remaining')
+			if (quantity > 0) {
+				$('#quantities_' + section_id).removeClass('hidden')
+				$('#sold_out_' + section_id).addClass('hidden')
+			} else {
+				$('#quantities_' + section_id).addClass('hidden')
+				$('#sold_out_' + section_id).removeClass('hidden')
+			}
   });
 }
 
@@ -96,6 +113,7 @@ function cleanJsonPerson(jsonPerson) {
 }
 
 $("document").ready(function(){
+	disableCheckout()
 
   $("#new_person").bind("ajax:beforeSend", function(xhr, person){
     $(this).addClass('loading')
@@ -150,12 +168,14 @@ $("document").ready(function(){
   });
 
   $("#new-person-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:225, title: 'Create New Person'})
-  $("#new-person-link").click(function(){
+  $("#new-person-popup").removeClass('hidden')
+	$("#new-person-link").click(function(){
     $("#new-person-popup").dialog("open")
     return false;
   });
 	
   $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, height:575, title: 'Confirm Sale'})
+	$("#sell-popup").removeClass('hidden')
   $("#checkout-now-button").click(function(){
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
       $('#sell-button').hide()
@@ -226,6 +246,11 @@ $("document").ready(function(){
 			$("#total").removeClass("loading");
     		
     	$('input[name="payment_method"]').attr('disabled', (sale.total == 0))
+			if (sale.total == 0) {
+				disableCheckout()
+			} else {
+				enableCheckout()
+			}
 			$('#popup-ticket-list tbody tr').remove()
 	        $.each(sale.tickets, function () {
 	          $("#popup-ticket-list").find('tbody')
@@ -255,6 +280,7 @@ $("document").ready(function(){
   					    .append($('<td>').html(this.price / 100).formatCurrency())
   					);         	
   				});
+					disableCheckout()
   				resetCommit();
   				resetPayment();
   				resetPerson();

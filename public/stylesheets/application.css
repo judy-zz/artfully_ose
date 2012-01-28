@@ -849,12 +849,6 @@ ul.prices li div {
     font-family: Courier;
     padding: 1px; }
 
-.hidden {
-  display: none; }
-
-.label.hidden {
-  display: none; }
-
 .context-buttons {
   -moz-border-radius: 4px 4px 4px 4px;
   -webkit-border-radius: 4px 4px 4px 4px;
@@ -1625,10 +1619,10 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
   width: 200px;
   font-size: 18pt; }
 
-.disabled {
-  background: #eeeeee; }
+.off {
+  background: #eeeeee !important; }
 
-#checkout-now.disabled a {
+#checkout-now.off a {
   background: #dddddd;
   background: -moz-linear-gradient(top, #dddddd 14%, #cccccc 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #dddddd), color-stop(100%, #cccccc));
@@ -1742,3 +1736,12 @@ input#search {
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 20px; }
+
+.hidden {
+  display: none !important; }
+
+.label.hidden {
+  display: none; }
+
+.invisible {
+  visibility: hidden; }
