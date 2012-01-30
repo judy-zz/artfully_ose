@@ -112,6 +112,10 @@ function cleanJsonPerson(jsonPerson) {
   return jsonPerson
 }
 
+function ticketsInCart(saleJson) {
+  return saleJson.tickets.length > 0
+}
+
 $("document").ready(function(){
 	disableCheckout()
 
@@ -136,7 +140,7 @@ $("document").ready(function(){
 		$('#error', '#new-person-popup').after($(document.createElement('div')).addClass('flash').addClass('error').html(data.errors[0]));
   });
 	
-	$("input#search").autocomplete({
+	$("input#search", "#the-details").autocomplete({
     html: true,
 		minLength: 3,
 		focus: function(event, person) { 
@@ -245,12 +249,13 @@ $("document").ready(function(){
 	   	setPriceDisplay(sale.total)
 			$("#total").removeClass("loading");
     		
-    	$('input[name="payment_method"]').attr('disabled', (sale.total == 0))
-			if (sale.total == 0) {
-				disableCheckout()
-			} else {
+    	$('input[name="payment_method"]').attr('disabled', !ticketsInCart(sale))
+			if (ticketsInCart(sale)) {
 				enableCheckout()
+			} else {
+			  disableCheckout()
 			}
+			
 			$('#popup-ticket-list tbody tr').remove()
 	        $.each(sale.tickets, function () {
 	          $("#popup-ticket-list").find('tbody')
