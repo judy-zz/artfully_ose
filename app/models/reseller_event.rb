@@ -26,4 +26,17 @@ class ResellerEvent < ActiveRecord::Base
     reseller_shows.pop
   end
 
+  def as_full_calendar_json(options = {})
+    shows = if options[:published_only] then reseller_shows.published else reseller_shows end
+    shows.collect do |s|
+      {
+        :title  => '',
+        :start  => s.datetime_local_to_event,
+        :allDay => false,
+        :color  => '#077083',
+        :id     => s.id
+      }
+    end
+  end
+
 end

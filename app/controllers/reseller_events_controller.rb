@@ -12,6 +12,13 @@ class ResellerEventsController < ApplicationController
 
   def show
     @next_reseller_show = @reseller_event.next_show
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render :json => @reseller_event.as_full_calendar_json(:published_only => false)
+      end
+    end
   end
 
   def new

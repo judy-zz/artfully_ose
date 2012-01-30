@@ -95,12 +95,21 @@ $(document).ready(function() {
 
   var eventId = $("#calendar").attr("data-event");
   var resellerEventId = $("#calendar").attr("data-reseller-event");
+  var organizationId = $("#calendar").attr("data-organization");
   if (eventId !== undefined) {
     $('#calendar').fullCalendar({
       height: 500,
-      events: '/events/'+ eventId + '.json',
+      events: '/events/' + eventId + '.json',
       eventClick: function(calEvent, jsEvent, view){
-        window.location = '/events/'+ eventId + '/shows/' + calEvent.id
+        window.location = '/events/'+ eventId + '/shows/' + calEvent.id;
+      }
+    });
+  } else if (resellerEventId !== undefined && organizationId !== undefined) {
+    $('#calendar').fullCalendar({
+      height: 500,
+      events: '/organizations/' + organizationId + '/reseller_events/' + resellerEventId + '.json',
+      eventClick: function(calEvent, jsEvent, view){
+        window.location = '/organizations/' + organizationId + '/reseller_events/'+ eventId + '/reseller_shows/' + calEvent.id;
       }
     });
   }
