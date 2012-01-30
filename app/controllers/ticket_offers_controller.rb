@@ -4,7 +4,7 @@ class TicketOffersController < ApplicationController
   before_filter :find_ticket_offer, :except => [ :index, :new, :create ]
 
   def index
-    @ticket_offers = TicketOffer.all
+    @offers_to_consider = @reseller_profile.ticket_offers.offered
   end
 
   def show
@@ -21,7 +21,7 @@ class TicketOffersController < ApplicationController
     @ticket_offer.organization = @organization
 
     if @ticket_offer.save
-      edit_path = edit_organization_ticket_offer_path(@organization, @ticket_offer)
+      edit_path = edit_ticket_offer_path(@organization, @ticket_offer)
       redirect_to edit_path
     else
       render :action => "new"
@@ -90,7 +90,8 @@ class TicketOffersController < ApplicationController
   protected
 
   def find_organization
-    @organization ||= Organization.find(params[:organization_id])
+    @organization = current_user.current_organization
+    @reseller_profile = @organization.reseller_profile
     authorize! :edit, @organization
   end
 

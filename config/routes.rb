@@ -63,18 +63,19 @@ Artfully::Application.routes.draw do
     end
     put :tax_info, :on => :member
     resources :memberships
-    resources :ticket_offers do
-      collection do
-        post "/new", :to => "ticket_offers#new"
-        get "/create", :to => "ticket_offers#create"
-      end
-      member do
-        get :accept
-        get :decline
-      end
-    end
     member do
       post :connect
+    end
+  end
+
+  resources :ticket_offers do
+    collection do
+      post "/new", :to => "ticket_offers#new"
+      get "/create", :to => "ticket_offers#create"
+    end
+    member do
+      get :accept
+      get :decline
     end
   end
 
