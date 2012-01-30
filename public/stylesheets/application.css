@@ -1687,7 +1687,7 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 #search-result-id {
   display: none; }
 
-input#search {
+#the-details input#search {
   width: 90%;
   margin-top: 5px;
   margin-left: 5px; }
