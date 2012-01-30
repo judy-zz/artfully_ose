@@ -46,7 +46,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_shows(:all).select(&:published?).as_json).merge('venue' => venue.as_json)
+    as_json(options.merge(:methods => ['shows', 'charts', 'venue'])).merge('performances' => upcoming_shows(:all).select(&:published?).as_json)
   end
 
   def as_full_calendar_json
@@ -61,7 +61,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_json(options = {})
-    super({ :methods => [ 'shows', 'charts' ]}.merge(options))
+    super(options)
   end
 
   def assign_chart(chart)
