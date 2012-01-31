@@ -12,4 +12,12 @@ class ResellerAttachment < ActiveRecord::Base
       :secret_access_key => ENV["SECRET_ACCESS_KEY"]
     }
 
+  def as_json(options = {})
+    {
+      "id" => id,
+      "image_url" => image && image.url,
+      "comment" => comment
+    }
+  end
+
 end

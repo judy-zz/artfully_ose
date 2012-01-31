@@ -1,11 +1,36 @@
 class Api::EventsController < ApiController
 
   def index
+    # Load info about the requested organization.
     @organization = Organization.find(params[:organization_id])
     @reseller_profile = @organization.reseller_profile
-    @events = @organization.events.published.to_a
-    @events += @reseller_profile.reseller_events.published.to_a if @reseller_profile
-    @events.map! { |e| e.as_json(:methods => ["venue"]).merge("shows" => e.shows.published.as_json) }
+
+    # Standard Events
+    @events = @organization.events.published.includes(:reseller_attachments).to_a
+
+    if @reseller_profile
+      # Reselling Events
+      @ticket_offers = @reseller_profile.ticket_offers.on_calendar.includes(:show => :event)
+      @events += @ticket_offers.map(&:show).map(&:event)
+
+      # Reseller Events
+      @events += @reseller_profile.reseller_events.published.includes(:reseller_attachments).to_a
+    end
+
+    # Remove any duplicated events.
+    @events.uniq!
+
+    # Build the array we'll send to the user.
+    @events.map! do |e|
+      e.as_json(:methods => ["venue"]).tap do |json|
+        json.merge! "shows" => e.shows.published.as_json
+
+        if @reseller_profile
+          attachments = e.reseller_attachments.where(:reseller_profile_id => @reseller_profile.id)
+          json.merge! "attachments" => attachments
+        end
+      end
+    end
 
     respond_to do |format|
       format.json { render :json => @events }

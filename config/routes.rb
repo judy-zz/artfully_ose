@@ -4,6 +4,8 @@ Artfully::Application.routes.draw do
     resources :events, :only => :show
     resources :tickets, :only => :index
     resources :organizations, :only => [] do
+      resources :events
+      resources :shows
       get :authorization
     end
   end

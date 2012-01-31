@@ -5,6 +5,7 @@ class ResellerProfile < ActiveRecord::Base
   belongs_to :organization
   has_many :ticket_offers
   has_many :reseller_events
+  has_many :reseller_shows
   has_many :reseller_attachments
 
   validates_length_of :description, :maximum => 350
