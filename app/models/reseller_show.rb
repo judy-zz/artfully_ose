@@ -30,7 +30,8 @@ class ResellerShow < ActiveRecord::Base
     {
       "id"        => id,
       "state"     => state,
-      "show_time" => show_time
+      "show_time" => show_time,
+      "datetime"  => datetime
     }
   end
 

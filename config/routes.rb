@@ -52,9 +52,6 @@ Artfully::Application.routes.draw do
     resources :reseller_attachments
     resources :reseller_profiles
     resources :reseller_events do
-      collection do
-        get :stream
-      end
       resources :reseller_shows do
         member do
           put :publish

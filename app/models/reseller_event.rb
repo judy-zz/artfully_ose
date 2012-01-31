@@ -3,6 +3,7 @@ class ResellerEvent < ActiveRecord::Base
   belongs_to :reseller_profile
   belongs_to :venue
   has_many :reseller_shows
+  has_many :shows, :class_name => "ResellerShow"
   has_many :reseller_attachments, :as => :attachable
   delegate :organization, :to => :reseller_profile
   delegate :time_zone, :to => :venue
@@ -16,6 +17,7 @@ class ResellerEvent < ActiveRecord::Base
   validates_presence_of :venue
 
   scope :alphabetical, order(:name)
+  scope :published, includes(:reseller_shows).where(:reseller_shows => { :state => :published })
 
   def organization
     reseller_profile.organization

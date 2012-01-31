@@ -10,6 +10,7 @@ class Event < ActiveRecord::Base
   validates_presence_of :name, :producer, :organization_id
 
   default_scope where(:deleted_at => nil)
+  scope :published, includes(:shows).where(:shows => { :state => "published" })
 
   delegate :time_zone, :to => :venue
 

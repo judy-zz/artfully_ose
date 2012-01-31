@@ -58,31 +58,6 @@ class ResellerEventsController < ApplicationController
     redirect_to organization_reseller_events_path(@organization)
   end
 
-  def stream
-    @organization = Organization.find(params[:organization_id])
-    @reseller_profile = @organization.reseller_profile
-    @reseller_events = @organization.reseller_events.includes(:reseller_profile).all
-    @ticket_offers = @reseller_profile.ticket_offers.includes(:show => :event).on_calendar.all
-
-    @reseller_events.map! do |event|
-      {
-        :title => event.name,
-        :start => event.datetime_local_to_organization.to_s(:fullcalendar),
-        :allDay => false
-      }
-    end
-
-    @ticket_offers.map! do |ticket_offer|
-      {
-        :title => ticket_offer.show.event.name,
-        :start => ticket_offer.show.datetime_local_to_event.to_s(:fullcalendar),
-        :allDay => false
-      }
-    end
-
-    render :json => [ @reseller_events, @ticket_offers ].flatten.to_json
-  end
-
   protected
 
   def find_reseller_profile

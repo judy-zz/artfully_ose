@@ -99,7 +99,7 @@ class Show < ActiveRecord::Base
     { "id" => id,
       "chart_id" => chart.id,
       "state" => state,
-      "show_time" => show_time
+      "show_time" => show_time,
       "datetime" => datetime_local_to_event
     }
   end
