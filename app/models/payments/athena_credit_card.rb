@@ -54,9 +54,13 @@ class AthenaCreditCard < AthenaResource::Base
   def self.from_swipe(swipe_data)
     card = AthenaCreditCard.new
     swiped_data = Swiper.parse swipe_data
-    card.card_number = swiped_data.track1.primary_account_number
-    card.cardholder_name = swiped_data.track1.cardholder_name
-    card.expiration_date = swiped_data.track1.expiration_month + '/20' + swiped_data.track1.expiration_year    
+    begin
+      card.card_number = swiped_data.track1.primary_account_number
+      card.cardholder_name = swiped_data.track1.cardholder_name
+      card.expiration_date = swiped_data.track1.expiration_month + '/20' + swiped_data.track1.expiration_year    
+    rescue Exception => e
+      puts "Could not parse swiped card.  Returning empty card."
+    end
     card
   end
 

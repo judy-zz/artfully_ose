@@ -183,6 +183,7 @@ $("document").ready(function(){
   $("#checkout-now-button").click(function(){
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
       $('#sell-button').hide()
+      $('#swipe-now').removeClass('hidden')
       $('#swipe-now').show()
     } else {
       $('#sell-button').show()

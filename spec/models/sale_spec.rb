@@ -81,6 +81,7 @@ describe Sale do
       checkout.should_receive(:finish).and_return(true)
       checkout.should_receive(:person).and_return(Factory(:person))
       subject.sell(payment)
+      subject.sale_made.should be_true
     end
   end
 end
