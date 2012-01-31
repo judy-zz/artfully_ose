@@ -9,6 +9,8 @@ class TicketOffer < ActiveRecord::Base
 
   validates_presence_of :organization
   validates_associated :organization
+  validates_presence_of :reseller_profile
+  validates_associated :reseller_profile
   validates_numericality_of :count, :only_integer => true, :greater_than_or_equal_to => 0
   validates_numericality_of :available, :only_integer => true, :greater_than_or_equal_to => 0
   validates_numericality_of :sold, :only_integer => true, :greater_than_or_equal_to => 0

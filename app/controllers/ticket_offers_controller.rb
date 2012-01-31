@@ -27,7 +27,7 @@ class TicketOffersController < ApplicationController
     @ticket_offer.organization = @organization
 
     if @ticket_offer.save
-      edit_path = edit_ticket_offer_path(@organization, @ticket_offer)
+      edit_path = edit_ticket_offer_path(@ticket_offer)
       redirect_to edit_path
     else
       render :action => "new"
@@ -87,7 +87,7 @@ class TicketOffersController < ApplicationController
   def accept
     @ticket_offer.accept!
 
-    redirect_to root_path, :notice => "You have accepted this ticket offer."
+    redirect_to ticket_offers_url, :notice => "You have accepted this ticket offer."
   end
 
   def decline
@@ -102,8 +102,8 @@ class TicketOffersController < ApplicationController
   end
 
   def find_ticket_offer
-    @organization ||= Organization.find(params[:organization_id])
-    @ticket_offer = @organization.ticket_offers.find(params[:id])
+    @ticket_offer = TicketOffer.find(params[:id])
+    @organization = @ticket_offer.organization
     authorize! :edit, @ticket_offer
   end
 

@@ -11,7 +11,7 @@
 
     %h3 Ticket offers for you
 
-    %table.standalone
+    %table.standalone.zebra
       %thead
         %th Status
         %th Event
@@ -25,19 +25,19 @@
         - @offers_to_me.each do |offer|
           %tr
             %td= h offer.status
-            %td= h offer.event.name if offer.event
+            %td= link_to(offer.event.name, store_event_path(offer.event)) if offer.event
             %td= h offer.section.name if offer.section
             %td= l offer.show.datetime_local_to_event if offer.show
-            %td= offer.available
+            %td= offer.count - offer.sold
             %td= offer.sold
             %td= offer.count
-            %td
+            %td= reseller_offer_control(offer)
 
   - if @organization.events.count > 0
 
     %h3 Ticket offers by you
 
-    %table.standalone
+    %table.standalone.zebra
       %thead
         %th Status
         %th Event
@@ -57,7 +57,9 @@
             %td= offer.available
             %td= offer.sold
             %td= offer.count
-            %td
+            %td= producer_offer_control(offer)
+
+    = link_to "Create a ticket offer", new_ticket_offer_path, :class => :cta
 
 /.context
 /  %h3 Overview

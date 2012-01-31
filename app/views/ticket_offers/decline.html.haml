@@ -11,7 +11,7 @@
     #{@ticket_offer.event.name},
     are you sure you want to decline them?
 
-  = form_for [ @ticket_offer.organization, @ticket_offer ] do |f|
+  = form_for [ @ticket_offer ] do |f|
 
     = f.hidden_field :status, :value => "rejected"
 
@@ -22,5 +22,5 @@
         .element= f.text_area :rejection_reason
 
     .cancel-submit
-      = link_to "Cancel", root_path
+      = link_to "Cancel", ticket_offers_path
       = f.submit "Reject this offer"

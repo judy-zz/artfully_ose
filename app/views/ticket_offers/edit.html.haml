@@ -3,7 +3,7 @@
 
 .compact-spread
 
-  = form_for [ @organization, @ticket_offer ] do |f|
+  = form_for [ @ticket_offer ] do |f|
 
     %h3 Ticket offer for #{@ticket_offer.reseller_profile.organization.name}
 
