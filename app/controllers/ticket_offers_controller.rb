@@ -4,7 +4,13 @@ class TicketOffersController < ApplicationController
   before_filter :find_ticket_offer, :except => [ :index, :new, :create ]
 
   def index
-    @offers_to_consider = @reseller_profile.ticket_offers.offered
+    if @reseller_profile
+      @offers_to_me = @reseller_profile.ticket_offers.includes(:show => :event).to_a
+      @offers_to_me.sort!
+    end
+
+    @my_offers = @organization.ticket_offers.includes(:show => :event).to_a
+    @my_offers.sort!
   end
 
   def show

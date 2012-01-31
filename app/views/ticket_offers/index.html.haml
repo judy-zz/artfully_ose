@@ -7,29 +7,57 @@
 
 .document
 
-  %h3 Ticket offers for you
+  - if @reseller_profile
 
-  %h4 Waiting for your response
+    %h3 Ticket offers for you
 
-  %h4 Accepted
+    %table.standalone
+      %thead
+        %th Status
+        %th Event
+        %th Section
+        %th Time
+        %th Available
+        %th Sold
+        %th Total
+        %th
+      %tbody
+        - @offers_to_me.each do |offer|
+          %tr
+            %td= h offer.status
+            %td= h offer.event.name if offer.event
+            %td= h offer.section.name if offer.section
+            %td= l offer.show.datetime_local_to_event if offer.show
+            %td= offer.available
+            %td= offer.sold
+            %td= offer.count
+            %td
 
-  %h4 Completed
+  - if @organization.events.count > 0
 
-  %h4 Rejected
+    %h3 Ticket offers by you
 
-
-
-  %h3 Ticket offers by you
-
-  %h4 Creating
-
-  %h4 Waiting for a response
-
-  %h4 Accepted
-
-  %h4 Rejected
-
-  %h4 Completed
+    %table.standalone
+      %thead
+        %th Status
+        %th Event
+        %th Section
+        %th Time
+        %th Available
+        %th Sold
+        %th Total
+        %th
+      %tbody
+        - @my_offers.each do |offer|
+          %tr
+            %td= h offer.status
+            %td= h offer.event.name if offer.event
+            %td= h offer.section.name if offer.section
+            %td= l offer.show.datetime_local_to_event if offer.show
+            %td= offer.available
+            %td= offer.sold
+            %td= offer.count
+            %td
 
 /.context
 /  %h3 Overview

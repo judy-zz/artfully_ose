@@ -1,5 +1,7 @@
 class TicketOffer < ActiveRecord::Base
 
+  STATUSES = %w( creating offered accepted rejected completed )
+
   belongs_to :organization
   belongs_to :show
   belongs_to :section
@@ -10,7 +12,7 @@ class TicketOffer < ActiveRecord::Base
   validates_numericality_of :count, :only_integer => true, :greater_than_or_equal_to => 0
   validates_numericality_of :available, :only_integer => true, :greater_than_or_equal_to => 0
   validates_numericality_of :sold, :only_integer => true, :greater_than_or_equal_to => 0
-  validates_inclusion_of :status, :in => %w( creating offered accepted rejected completed )
+  validates_inclusion_of :status, :in => STATUSES
 
   scope :creating, where(:status => "creating")
   scope :offered, where(:status => "offered")
@@ -54,6 +56,15 @@ class TicketOffer < ActiveRecord::Base
 
   def event
     show.event if show
+  end
+
+  def <=>(obj)
+    return 0 unless obj.kind_of? TicketOffer
+    return status_sort_index <=> obj.status_sort_index
+  end
+
+  def status_sort_index
+    STATUSES.index status
   end
 
   ## Supporting Classes ##
