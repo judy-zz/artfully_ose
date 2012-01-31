@@ -32,6 +32,10 @@
       $("ul#shows li[data-date='" + date + "'] .sections").show();
     });
 
+    $('.add-to-cart').submit(function() {
+      return false;
+    })
+
     // add tickets to cart
     // jQuery.getJSON(artfully.utils.ticket_uri(params), function(data){
     //   if(data !== null && data.length > 0){
