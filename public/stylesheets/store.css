@@ -583,12 +583,9 @@ table.calendar {
     vertical-align: middle; }
     table.calendar td.filler {
       border: none; }
-    table.calendar td.show.past {
-      background: #999999;
-      color: white; }
-    table.calendar td.show.upcoming {
+    table.calendar td.show {
       background: #2086a6;
       color: white; }
-      table.calendar td.show.upcoming:hover {
+      table.calendar td.show:hover {
         background: #175c71;
         cursor: pointer; }
