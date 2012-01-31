@@ -1,5 +1,5 @@
-%li
-	.title{:id => "show_#{show.id}"}
+%li{:id => "show_#{show.id}", :style => "#{'display:none' if @use_calendar}", 'data-date' => "#{show.datetime.strftime('%D')}"}
+	.title
 		.date
 			.month= show.datetime.strftime("%b")
 			.day= show.datetime.strftime("%e")

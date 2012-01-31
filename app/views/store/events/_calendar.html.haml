@@ -1,54 +1,8 @@
 - dates = @event.shows.collect(&:datetime).map {|d| d.to_date}
 - dates_by_month = dates.group_by {|d| d.strftime("%B %Y")}
 
-:css
-	.month {
-		margin-bottom: 50px;
-		float: left;
-		margin-right: 50px;
-	}
-
-	.month h3 {
-		font-weight: bold;
-	}
-
-	.month h3 span {
-		font-weight: normal;
-	}
-
-	table.calendar {
-		width: 210px;
-	}
-
-	table.calendar td {
-		border: 1px solid #f3f3f3;
-		color: #999;
-		letter-spacing: 0;
-		word-spacing: 0;
-		width: 30px;
-		height: 30px;
-		text-align: center;
-		font-size: 10px;
-		font-family: Verdana, sans-serif;
-		vertical-align: middle;
-	}
-
-	table.calendar td.filler {
-		border: none;
-	}
-
-	table.calendar td.show.past {
-		background: #999;
-		color: #fff;
-	}
-
-	table.calendar td.show.upcoming {
-		background: #2086a6;
-		color: #fff;
-	}
-
 -dates_by_month.each do |month, dates|
-	.month
+	.calendar-month
 		%h3
 			= month
 			%span (#{pluralize(dates.length, 'showing')})
@@ -61,5 +15,5 @@
 					- css += 'show' 
 					- css += ' upcoming' if date > Date.yesterday
 					- css += ' past' if date < Date.yesterday
-				= "<td class='#{css}'>#{date.strftime('%e')}</td>".html_safe
+				= "<td class='#{css}' data-date='#{date.strftime('%D')}'>#{date.strftime('%e')}</td>".html_safe
 				= "</tr>".html_safe if date.cwday == 6

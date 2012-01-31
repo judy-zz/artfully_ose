@@ -23,6 +23,15 @@
     $('.title').first().siblings('.sections').slideToggle();
     $('.title').first().addClass('active');
 
+    // when calendar is clicked
+    $('td.show.upcoming').click(function() {
+      $("ul#shows li").hide();
+      var date = $(this).attr('data-date');
+      $("ul#shows li[data-date='" + date + "']").show();
+      $("ul#shows li[data-date='" + date + "'] .title").addClass('active');
+      $("ul#shows li[data-date='" + date + "'] .sections").show();
+    });
+
     // add tickets to cart
     // jQuery.getJSON(artfully.utils.ticket_uri(params), function(data){
     //   if(data !== null && data.length > 0){
@@ -47,9 +56,12 @@
     %h1#logo= @event.name
     %h3#producer= @event.producer
 
-    / =render 'calendar'
+    - @use_calendar = (@event.shows.unplayed.length > 5 || params[:calendar] == 'true')
+
     %ul#shows
-      =render :partial => 'show', :collection => @event.shows, :as => :show
+      =render :partial => 'show', :collection => @event.shows.unplayed, :as => :show
+    
+    =render 'calendar' if @use_calendar
   
 #sidebar
   - unless @event.description.blank?

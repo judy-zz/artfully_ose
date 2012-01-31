@@ -410,7 +410,8 @@ h4 {
 
 #sidebar {
   position: relative;
-  padding-bottom: 12px; }
+  padding-bottom: 12px;
+  margin-top: 54px; }
   #sidebar > * {
     margin: 0 12px 12px;
     display: block;
@@ -490,12 +491,12 @@ img#logo {
   margin-right: 10px; }
 
 h1#logo {
+  padding-top: 10px;
   font-weight: bold;
   color: #404040;
   margin: 0; }
-
-h1::after {
-  clear: none; }
+  h1#logo::after {
+    clear: none; }
 
 h3#producer {
   color: #404040; }
@@ -509,21 +510,23 @@ ul#shows {
       border: 1px solid #b3b3b3;
       padding: 10px;
       overflow: hidden;
-      color: #4c4c4c;
-      cursor: pointer; }
+      color: #4c4c4c; }
+      ul#shows li .title .date, ul#shows li .title .month, ul#shows li .title .day, ul#shows li .title .time, ul#shows li .title h4.day_and_month {
+        color: #4c4c4c !important; }
       ul#shows li .title:hover {
-        background: #f2f2f2; }
+        background: #f2f2f2;
+        cursor: pointer; }
       ul#shows li .title.active, ul#shows li .title.active:hover {
         background: white;
         background: -moz-linear-gradient(top, white 0%, #e6e6e6 100%);
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
-        color: #191919; }
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6)); }
+        ul#shows li .title.active .date, ul#shows li .title.active .month, ul#shows li .title.active .day, ul#shows li .title.active .time, ul#shows li .title.active h4.day_and_month, ul#shows li .title.active:hover .date, ul#shows li .title.active:hover .month, ul#shows li .title.active:hover .day, ul#shows li .title.active:hover .time, ul#shows li .title.active:hover h4.day_and_month {
+          color: #191919 !important; }
       ul#shows li .title .date {
         width: 50px;
         float: left;
         margin-right: 10px;
-        text-align: center;
-        color: #4c4c4c; }
+        text-align: center; }
         ul#shows li .title .date .month {
           text-transform: uppercase;
           font-size: 10px; }
@@ -533,7 +536,6 @@ ul#shows {
         float: left; }
         ul#shows li .title .time h4.day_and_month {
           font-weight: bold;
-          color: #404040;
           margin-bottom: 5px; }
     ul#shows li .sections {
       padding: 10px;
@@ -556,3 +558,37 @@ ul#shows {
           color: white;
           text-shadow: none;
           font-weight: normal; }
+
+.calendar-month {
+  margin-bottom: 50px;
+  float: left;
+  margin-right: 30px; }
+  .calendar-month h3 {
+    font-weight: bold; }
+    .calendar-month h3 span {
+      font-weight: normal; }
+
+table.calendar {
+  width: 175px; }
+  table.calendar td {
+    border: 1px solid #f3f3f3;
+    color: #999999;
+    letter-spacing: 0;
+    word-spacing: 0;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    font-size: 10px;
+    font-family: Verdana, sans-serif;
+    vertical-align: middle; }
+    table.calendar td.filler {
+      border: none; }
+    table.calendar td.show.past {
+      background: #999999;
+      color: white; }
+    table.calendar td.show.upcoming {
+      background: #2086a6;
+      color: white; }
+      table.calendar td.show.upcoming:hover {
+        background: #175c71;
+        cursor: pointer; }
