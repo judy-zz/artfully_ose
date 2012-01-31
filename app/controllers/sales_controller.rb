@@ -18,9 +18,11 @@ class SalesController < ApplicationController
     if checking_out?
       if @sale.sell(payment)
         @sale.message = "Sold #{self.class.helpers.pluralize(@sale.tickets.length, 'ticket')}.  Order total was #{self.class.helpers.number_as_cents @sale.cart.total}"
-      else
-        @sale.message =  "#{@sale.errors.full_messages.to_sentence.capitalize}."
       end
+    end
+
+    unless @sale.errors.empty?
+      @sale.error = "#{@sale.errors.full_messages.to_sentence.capitalize}."
     end
     
     render :json => @sale.as_json

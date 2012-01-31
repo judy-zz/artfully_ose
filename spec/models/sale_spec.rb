@@ -50,6 +50,24 @@ describe Sale do
       Ticket.stub(:available).and_return(tix)
     end
        
+    it "should recover if CC processing is unavailable" do
+      BoxOffice::Checkout.should_receive(:new).and_return(checkout)
+      checkout.should_receive(:finish).and_raise(Errno::ECONNREFUSED)
+      checkout.should_not_receive(:person)
+      subject.sell(payment)
+      subject.errors.should_not be_empty
+      subject.sale_made.should be_false
+    end
+    
+    it "should recover and throw an error is something unexpected happens" do
+      BoxOffice::Checkout.should_receive(:new).and_return(checkout)
+      checkout.should_receive(:finish).and_raise(Exception)
+      checkout.should_not_receive(:person)
+      subject.sell(payment)
+      subject.errors.should_not be_empty
+      subject.sale_made.should be_false
+    end
+       
     it "should comp tickets" do
       BoxOffice::Checkout.should_not_receive(:new)
       c = Comp.new(subject.tickets.first.show, subject.tickets, comp_payment.person)

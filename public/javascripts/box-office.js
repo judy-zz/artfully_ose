@@ -294,9 +294,9 @@ $("document").ready(function(){
   				showMessage(sale.message);
   	   		
   			} else if (sale.sale_made == false) {
-  				showError(sale.message);
   				resetPayment();
   			}
+			showError(sale.error);
 		});
 
   $(".payment-method").change(function(){
