@@ -107,3 +107,75 @@ h4
     @include rounded-corners(4px,4px,4px,4px)
   p
     margin-bottom: 10px
+
+#contact
+  margin-bottom: 30px
+
+img#logo
+  float: left
+  margin-right: 10px
+
+h1#logo
+  font-weight: bold
+  color: #404040
+  margin: 0
+
+h1::after
+  clear: none
+
+h3#producer
+  color: #404040
+
+ul#shows
+  clear: both
+  li
+    margin-bottom: 10px
+    clear: both
+    .title
+      border: 1px solid #b3b3b3
+      padding: 10px
+      overflow: hidden
+      color: #4c4c4c
+      cursor: pointer
+      &:hover
+        background: #f2f2f2
+      &.active, &.active:hover
+        @include gradient(#fff, #e6e6e6)
+        color: #191919
+      .date
+        width: 50px
+        float: left
+        margin-right: 10px
+        text-align: center
+        color: #4c4c4c
+        .month
+          text-transform: uppercase
+          font-size: 10px
+        .day
+          font-size: 30px
+      .time
+        float: left
+        h4.day_and_month
+          font-weight: bold
+          color: #404040
+          margin-bottom: 5px
+    
+    .sections
+      padding: 10px
+      margin-left: 60px
+      margin-bottom: 20px
+      .section
+        margin-bottom: 20px
+        h4
+          font-weight: bold
+          margin-bottom: 5px
+          color: #404040
+          span.price
+            font-weight: normal
+        p
+          margin-bottom: 10px
+        input[type="submit"]
+          @include gradient(#2086a6, #175c71)
+          color: #fff
+          text-shadow: none
+          font-weight: normal

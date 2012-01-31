@@ -1,0 +1,32 @@
+%li
+	.title{:id => "show_#{show.id}"}
+		.date
+			.month= show.datetime.strftime("%b")
+			.day= show.datetime.strftime("%e")
+		.time
+			%h4.day_and_month
+				= show.datetime.strftime("%A, %B")
+				= show.datetime.strftime("%e").to_i.ordinalize
+			%h5.time
+				= show.datetime.strftime("%l:%M %p")
+
+	.sections{:style => 'display:none;'}
+		- show.chart.sections.each do |section|
+			.section
+				%h4
+					= section.name
+					%span{:class => 'price'}= number_to_currency(section.price / 100)
+
+				- description = "This gets you all the goodies, including wine, pizza, bagels and lots of other delicious stuff. You’ll also have the chance to meet the world famous people who do things.\n\nThis gets you all the goodies, including wine, pizza, bagels and lots of other delicious stuff. You’ll also have the chance to meet the world famous people who do things."
+				-if description.length > 150
+					.toggle-truncated
+						.truncated
+							= simple_format "#{truncate(description, :length => 150)} (#{link_to 'more','#', :class => 'toggle'})"
+						.not-truncated{:style => 'display:none;'}
+							=simple_format "#{description} (#{link_to 'less','#', :class => 'toggle'})"
+				- else
+					=simple_format description
+
+				= form_tag '/something'
+				= select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
+				= submit_tag 'Add to cart'

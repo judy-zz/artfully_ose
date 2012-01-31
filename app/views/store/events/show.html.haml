@@ -4,18 +4,52 @@
       base_uri: '#{root_url}api/',
       store_uri: '#{root_url}store/',
     });
-    #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
-    #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
+    // #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
+    // #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
 
     // show/hide extended event descriptions
-    $('#description #truncated a.toggle, #description #not-truncated a.toggle').click(function() {
-      $('#description #truncated').toggle();
-      $('#description #not-truncated').toggle();
+    $('.truncated a.toggle, .not-truncated a.toggle').click(function(e) {
+      $(this).parents('.toggle-truncated').find('.truncated, .not-truncated').toggle();
+      return false;
     })
+
+    // toggle a showing's sections
+    $('.title').click(function() {
+      $(this).siblings('.sections').slideToggle();
+      $(this).toggleClass('active');
+    })
+
+    // display the first showing's sections
+    $('.title').first().siblings('.sections').slideToggle();
+    $('.title').first().addClass('active');
+
+    // add tickets to cart
+    // jQuery.getJSON(artfully.utils.ticket_uri(params), function(data){
+    //   if(data !== null && data.length > 0){
+    //     if(data.length < $select.val()){
+    //       artfully.alert("Only " + data.length + " ticket(s) could be found for this performance.");
+    //     }
+    //     artfully.widgets.cart().add(data);
+    //   } else {
+    //     artfully.alert("Sorry! No tickets were available for purchase at this time.");
+    //   }
+    // });
+
+    // {'limit': $select.val(),
+    //             'show_id': jQuery(this).closest('.performance').data('performance').id,
+    //             'price': obj.price
+    //           };
   });
 #store
   #artfully-alert.flash.error
   #event
+    = image_tag('storefront/logo.png', :id => 'logo')
+    %h1#logo= @event.name
+    %h3#producer= @event.producer
+
+    / =render 'calendar'
+    %ul#shows
+      =render :partial => 'show', :collection => @event.shows, :as => :show
   
 #sidebar
   - unless @event.description.blank?
@@ -23,10 +57,11 @@
       %h2 About
       =image_tag('storefront/event-image-default.jpg', :width => 140, :height => 140) if true #event.image?
       -if @event.description.length > 300
-        #truncated
-          = simple_format "#{truncate(@event.description, :length => 300)} (#{link_to 'more','#', :class => 'toggle'})"
-        #not-truncated{:style => 'display:none;'}
-          =simple_format "#{@event.description} (#{link_to 'less','#', :class => 'toggle'})"
+        .toggle-truncated
+          .truncated
+            = simple_format "#{truncate(@event.description, :length => 300)} (#{link_to 'more','#', :class => 'toggle'})"
+          .not-truncated{:style => 'display:none;'}
+            =simple_format "#{@event.description} (#{link_to 'less','#', :class => 'toggle'})"
       - else
         =simple_format @event.description
   %h2 Venue

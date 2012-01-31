@@ -481,3 +481,78 @@ h4 {
   border-radius: 4px 4px 4px 4px; }
 #description p {
   margin-bottom: 10px; }
+
+#contact {
+  margin-bottom: 30px; }
+
+img#logo {
+  float: left;
+  margin-right: 10px; }
+
+h1#logo {
+  font-weight: bold;
+  color: #404040;
+  margin: 0; }
+
+h1::after {
+  clear: none; }
+
+h3#producer {
+  color: #404040; }
+
+ul#shows {
+  clear: both; }
+  ul#shows li {
+    margin-bottom: 10px;
+    clear: both; }
+    ul#shows li .title {
+      border: 1px solid #b3b3b3;
+      padding: 10px;
+      overflow: hidden;
+      color: #4c4c4c;
+      cursor: pointer; }
+      ul#shows li .title:hover {
+        background: #f2f2f2; }
+      ul#shows li .title.active, ul#shows li .title.active:hover {
+        background: white;
+        background: -moz-linear-gradient(top, white 0%, #e6e6e6 100%);
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+        color: #191919; }
+      ul#shows li .title .date {
+        width: 50px;
+        float: left;
+        margin-right: 10px;
+        text-align: center;
+        color: #4c4c4c; }
+        ul#shows li .title .date .month {
+          text-transform: uppercase;
+          font-size: 10px; }
+        ul#shows li .title .date .day {
+          font-size: 30px; }
+      ul#shows li .title .time {
+        float: left; }
+        ul#shows li .title .time h4.day_and_month {
+          font-weight: bold;
+          color: #404040;
+          margin-bottom: 5px; }
+    ul#shows li .sections {
+      padding: 10px;
+      margin-left: 60px;
+      margin-bottom: 20px; }
+      ul#shows li .sections .section {
+        margin-bottom: 20px; }
+        ul#shows li .sections .section h4 {
+          font-weight: bold;
+          margin-bottom: 5px;
+          color: #404040; }
+          ul#shows li .sections .section h4 span.price {
+            font-weight: normal; }
+        ul#shows li .sections .section p {
+          margin-bottom: 10px; }
+        ul#shows li .sections .section input[type="submit"] {
+          background: #2086a6;
+          background: -moz-linear-gradient(top, #2086a6 0%, #175c71 100%);
+          background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2086a6), color-stop(100%, #175c71));
+          color: white;
+          text-shadow: none;
+          font-weight: normal; }
