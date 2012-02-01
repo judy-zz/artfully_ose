@@ -1,16 +1,12 @@
 - in_section :events
 - content_for :header do
   %h1= t('.heading', :default => "Reseller Offers")
-  %h2= t('.subheading', :default => "Manage your reseller offers")
   %ul.from-here
     %li= link_to "New Offer", new_ticket_offer_path if @organization.events.count > 0
 
 .document
 
   - if @reseller_profile
-
-    %h3 Ticket offers for you
-
     %table.standalone.zebra
       %thead
         %th Status
