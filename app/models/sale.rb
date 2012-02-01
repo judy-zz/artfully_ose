@@ -78,9 +78,9 @@ class Sale
         errors.add(:base, "payment was not accepted") and return if !success
         settle(checkout, success) if (success and !payment.requires_settlement?)
       rescue Errno::ECONNREFUSED => e
-        errors.add(:base, "Sorry but we couldn't connect to the payment processor.  Try again or use another payment type.")
+        errors.add(:base, "Sorry but we couldn't connect to the payment processor.  Try again or use another payment type")
       rescue Exception => e
-        errors.add(:base, "We had a problem processing the sale.")
+        errors.add(:base, "We had a problem processing the sale")
       end
       success
     end
