@@ -32,11 +32,15 @@ describe Sale do
 
   describe "#sell" do
     let(:order) { mock(:order, :items => []) }
+    
+    let (:compee) { Factory(:person) }
   
     let(:payment) { mock(:cash_payment, 
                          :customer => Factory(:customer_with_id), 
                          :amount= => nil, 
                          :requires_settlement? => false) }
+  
+    let(:comp_payment) { CompPayment.new(Factory(:user), Factory(:person)) }
                          
     let(:checkout) { mock(:checkout, :order => order)}
     
@@ -45,12 +49,39 @@ describe Sale do
       tix.collect! { Factory(:ticket, :section => chart.sections.first)}
       Ticket.stub(:available).and_return(tix)
     end
+       
+    it "should recover if CC processing is unavailable" do
+      BoxOffice::Checkout.should_receive(:new).and_return(checkout)
+      checkout.should_receive(:finish).and_raise(Errno::ECONNREFUSED)
+      checkout.should_not_receive(:person)
+      subject.sell(payment)
+      subject.errors.should_not be_empty
+      subject.sale_made.should be_false
+    end
+    
+    it "should recover and throw an error is something unexpected happens" do
+      BoxOffice::Checkout.should_receive(:new).and_return(checkout)
+      checkout.should_receive(:finish).and_raise(Exception)
+      checkout.should_not_receive(:person)
+      subject.sell(payment)
+      subject.errors.should_not be_empty
+      subject.sale_made.should be_false
+    end
+       
+    it "should comp tickets" do
+      BoxOffice::Checkout.should_not_receive(:new)
+      c = Comp.new(subject.tickets.first.show, subject.tickets, comp_payment.person)
+      Comp.should_receive(:new).with(subject.tickets.first.show, subject.tickets, comp_payment.person).and_return(c)
+      c.should_receive(:submit).with(comp_payment.benefactor)
+      subject.sell(comp_payment)
+    end
         
     it "creates a new BoxOffice::Checkout and a new BoxOfficeCart" do
       BoxOffice::Checkout.should_receive(:new).and_return(checkout)
       checkout.should_receive(:finish).and_return(true)
       checkout.should_receive(:person).and_return(Factory(:person))
       subject.sell(payment)
+      subject.sale_made.should be_true
     end
   end
 end

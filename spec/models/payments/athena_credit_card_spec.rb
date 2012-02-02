@@ -7,7 +7,7 @@ describe AthenaCreditCard do
     it { should respond_to attribute.underscore }
     it { should respond_to attribute.underscore + '=' }
   end
-
+  
   it "should not be valid with a credit card with letters" do
     p subject.new_record?
     subject.card_number << "A"

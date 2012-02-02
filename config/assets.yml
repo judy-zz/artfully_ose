@@ -31,6 +31,9 @@ javascripts:
   vendor:
     - public/javascripts/jquery/**/*.js
 
+  box_office:
+    - public/javascripts/box-office.js
+
   application:
     - public/javascripts/jquery_ujs.js
     - public/javascripts/application.js

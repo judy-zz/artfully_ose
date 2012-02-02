@@ -1,76 +1,80 @@
+- content_for :custom_js do
+  = include_javascripts :box_office
 - in_section :events
 - content_for :header do
   %h1 Box Office
-  %h2="#{@event.name}, #{l(@show.datetime_local_to_event, :format => :long_with_day)}"
 
 .spread
   = form_tag event_show_sales_path, :remote => true do
-    %fieldset.floater.thirdish
-      %h4 Sections
-      %ul#section-list
-        - @sale.sections.each do |section|
-          %li
-            .label= label_tag "quantities[#{section.id}]", "#{section.name} #{number_as_cents(section.price)}"
-            .quantity.element
-              - if section.summary(@show.id).available > 0
-                = select_tag "quantities[#{section.id}]", options_for_select(0..[section.summary(@show.id).available,10].min, @sale.quantities[section.id]), :class => 'ticket-quantity-select'
-              - else
-                .sold-out
+    = hidden_field_tag :commit, ""
+    #showtime-total-and-checkout
+      #showtime
+        ="#{@event.name}"
+        %br
+        ="#{l(@show.datetime_local_to_event, :format => :long_with_day)}"
+      #total-and-checkout{:style => 'text-align:right' }
+        #checkout-now
+          %button#checkout-now-button{:style => 'width:100%'}
+            Checkout
+        #total.total
+          .price= number_as_cents 0
+        .clear
+      .clear
+    #the-details
+      %fieldset.floater.thirdish
+        %h4 Tickets
+        %ul#section-list
+          - @sale.sections.each do |section|
+            %li
+              .label
+                = label_tag "quantities[#{section.id}]", "#{truncate(section.name, :length => 25)} #{number_as_cents(section.price)}"
+                .description{:id => "remaining_#{section.id}"}="#{@tickets_remaining[section.id]} remaining"
+              .quantity.element
+                = select_tag "quantities[#{section.id}]", options_for_select(0..10, @sale.quantities[section.id]), :class => @tickets_remaining[section.id] > 0 ? 'ticket-quantity-select' : 'hidden ticket-quantity-select'
+                .sold-out{:id => "sold_out_#{section.id}", :class => @tickets_remaining[section.id] > 0 ? 'hidden' : ''}
                   sold out
                 
-    %fieldset.floater.thirdish
-      %h4 Customer
-      %ul.radio-list
-        %li
-          .radio= check_box_tag(:anonymous, nil, params[:anonymous])
-          .label= label_tag(:anonymous, "Anonymous")
-        %li.hidden
-          .radio= radio_button_tag(:person_id, @dummy.id, true, :id => "dummy")
-          .label= label_tag(:person_id, "Anonymous Sale")
-      %ul#person-search
-        %li
-          .full.paired.element
-            = text_field_tag(:terms, params[:terms], :id => "terms")
-            = tag(:input, :type => :button, :value => "Search", :id => "people-for-sales", :"data-url" => people_url)
-      %ul.radio-list.target
-        .people-search-message
-        - @people.each do |person|
-          %li
-            .radio= radio_button_tag(:person_id, person.id, params[:person_id] == person.id)
-            .label.eighty= label_tag(:person_id, "#{person.first_name} #{person.last_name}")
-        %li.template.hidden
-          .radio
-          .label.eighty
+      %fieldset.floater.thirdish
+        %h4 Customer
+        = hidden_field_tag(:person_id, @dummy.id, :id => "person_id")
+        = text_field_tag(:search, params[:search], :id => "search", :placeholder => "First, last, or email...")
+        %a#new-person-link{:style=>'font-size:9pt; margin-left: 5px',:href=>'#'}
+          Create new person
+        .picked-person
+          .picked-person-name.picked-person-clear
+          .picked-person-email.picked-person-clear
+          .picked-person-company-name.picked-person-clear
 
-    %fieldset.floater.thirdish
-      %h4 Payment
-      %ul.radio-list
-        %li
-          .radio= radio_button_tag(:payment_method, :cash, true, :class => 'payment-method', :disabled => 'true')
-          .label= label_tag(:payment_method, "Cash")
-        %li
-          .radio= radio_button_tag(:payment_method, :credit_card, false, :class => 'payment-method', :disabled => 'true')
-          .label= label_tag(:payment_method, "Credit")
-      %ul#payment-info.hidden
-        %li
-          .label= label_tag("credit_card[cardholder_name]", "Name on Card")
-          .element= text_field_tag("credit_card[cardholder_name]", params[:credit_card][:cardholder_name])
-        %li
-          .label= label_tag("credit_card[card_number]", "Card Number")
-          .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
-        %li
-          .label= label_tag("credit_card[expiration_date]", "Expiration Date")
-          .element.date_field
-            = hidden_field_tag("credit_card[expiration_date(3i)]", 1)
-            = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
-            = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
-            
-    %fieldset.floater.slim
-      #total
-        %span total
-        .price= number_as_cents 0
-      #checkout-now= submit_tag "Checkout Now", :style => 'width:100%'
-  .clear
+      %fieldset.floater.thirdish
+        %h4 Payment
+        %ul.radio-list
+          %li
+            .radio= radio_button_tag(:payment_method, :cash, true, :class => 'payment-method', :disabled => 'true')
+            .label= label_tag(:cash, "Cash")
+          %li
+            .radio= radio_button_tag(:payment_method, :comp, false, :class => 'payment-method', :disabled => 'true')
+            .label= label_tag(:comp, "Comp")
+          %li
+            .radio= radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true')
+            .label= label_tag(:credit_card_swipe, "Credit (Swipe)")
+          %li
+            .radio= radio_button_tag(:payment_method, :credit_card_manual, false, :class => 'payment-method', :disabled => 'true')
+            .label= label_tag(:credit_card_manual, "Credit (Manual)")
+        %ul#payment-info.hidden
+          %li
+            .label= label_tag("credit_card[cardholder_name]", "Name on Card")
+            .element= text_field_tag("credit_card[cardholder_name]", params[:credit_card][:cardholder_name])
+          %li
+            .label= label_tag("credit_card[card_number]", "Card Number")
+            .element= text_field_tag("credit_card[card_number]", params[:credit_card][:card_number])
+          %li
+            .label= label_tag("credit_card[expiration_date]", "Expiration Date")
+            .element.date_field
+              = hidden_field_tag("credit_card[expiration_date(3i)]", 1)
+              = select_tag("credit_card[expiration_date(2i)]", options_for_select(1..12, params[:credit_card]["expiration_date(2i)"]))
+              = select_tag("credit_card[expiration_date(1i)]", options_for_select(Time.now.year..Time.now.year + 10, params[:credit_card]["expiration_date(1i)"]))
+          
+      .clear
       
 .document
   %h3 Door List
@@ -91,3 +95,54 @@
             %td= item.buyer.email
             %td= item.ticket.section.name
             %td= number_as_cents(item.ticket.price)
+            
+#new-person-popup.hidden
+  #error
+  = form_for Person.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
+    %ul
+      %li
+        .label= form.label :first_name, "First Name"
+        .element= form.text_field :first_name
+      %li
+        .label= form.label :last_name, "Last Name"
+        .element= form.text_field :last_name
+      %li
+        .label= form.label :email, "Email"
+        .element= form.text_field :email
+    = form.submit
+            
+#sell-popup.hidden
+  #top-container
+    #sell-total.total{:style => 'float:left'}
+      %span total
+      .price= number_as_cents 0
+    #sell-container{:style => 'float:right'}
+      %button#sell-button{:name => 'commit', :label => 'true'}
+        Sell
+      #swipe-now.hidden
+        Swipe card to 
+        %br
+        complete transaction
+    .clear
+  %h4 Buyer
+  .picked-person
+    #picket-person-name-in-popup.picked-person-name.picked-person-clear
+      No buyer information
+    .picked-person-email.picked-person-clear
+  %h4{:style => 'margin: 15px 0px 5px 0px'} Payment Method
+  #payment-method-popup
+    Cash
+  %h4{:style => 'margin: 15px 0px 5px 0px'} Tickets
+  #popup-ticket-list
+    %table
+      %thead
+        %tr
+          %th
+            Section
+          %th
+            Price
+      %tbody
+  %button#cancel-button
+    Cancel
+  %br  
+  %input#hack-cc-number.hidden{:name=>'hack-cc-number'}

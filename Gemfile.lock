@@ -18,6 +18,11 @@ PATH
   specs:
     set_watch_for (0.0.1)
 
+PATH
+  remote: vendor/gems/swiper-0.0.1
+  specs:
+    swiper (0.0.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -291,6 +296,7 @@ DEPENDENCIES
   shoulda
   sqlite3-ruby
   sunspot_rails
+  swiper!
   thin
   timecop
   transitions

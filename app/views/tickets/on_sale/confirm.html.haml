@@ -2,8 +2,7 @@
 - content_for :header do
   %h1 Put Tickets on Sale
 
-.context
-.document
+.compact-spread
   %p= "You are about to put #{pluralize(@selected_tickets.size, 'ticket')} for the #{l @show.datetime_local_to_event } showing of #{@show.event.name} on sale."
 
   = form_tag on_sale_show_tickets_path, :method => :put do

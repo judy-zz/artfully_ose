@@ -327,9 +327,10 @@ input.mini
   background: rgba(7, 112, 131, 0.1)
 
 .sold-out
-  background: rgba(240, 130, 4, 0.1)
-  @include rounded-corners(10px, 10px, 10px, 10px)
   text-align: center !important
+  text-transform: uppercase
+  font-size: 10pt
+  color: #999
 
 .more
   font-size: .8em
@@ -418,7 +419,7 @@ input.mini
   width: 480px
   margin: 0 auto
 
-.refunded, .returned
+.refunded, .returned, .comped-price
   text-decoration: line-through
 
 .changable-overlay
@@ -564,12 +565,6 @@ ul.prices li div
     font-family: Courier
     padding: 1px
 
-.hidden
-  display: none
-
-.label.hidden
-  display: none
-
 .context-buttons
   @include rounded-corners(4px, 4px, 4px, 4px)
   @include stack-layout
@@ -656,3 +651,12 @@ dl.table-display
 @import "show"
 @import "logo"
 @import "box-office"
+
+.hidden
+  display: none !important
+
+.label.hidden
+  display: none
+  
+.invisible
+  visibility: hidden
