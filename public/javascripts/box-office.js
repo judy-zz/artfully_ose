@@ -178,7 +178,7 @@ $("document").ready(function(){
     return false;
   });
 	
-  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, height:575, title: 'Confirm Sale'})
+  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, height:600, title: 'Confirm Sale'})
 	$("#sell-popup").removeClass('hidden')
   $("#checkout-now-button").click(function(){
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
