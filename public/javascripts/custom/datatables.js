@@ -5,6 +5,10 @@ $(document).bind('grouped-form-ready', function(){
         "bPaginate": true,
         "bJQueryUI": true,
         "sDom": '<"H"lf>t<"F"ip>',
+				"oLanguage": {
+					"sZeroRecords": "No tickets match your filter",
+					"sEmptyTable": "There are no tickets.  Click 'Add Tickets' to add tickets to this show."
+    		},
         "aoColumns": [
         null,
         null,
