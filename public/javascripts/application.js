@@ -44,7 +44,7 @@ $(document).ready(function() {
   $(".new-window").parents("form").attr("target", "_blank");
 
   $("#main-menu").hover(
-    function(){$("#main-menu li ul").stop().animate({height: '144px'}, 'fast')},
+    function(){$("#main-menu li ul").stop().animate({height: '160px'}, 'fast')},
     function(){$("#main-menu li ul").stop().animate({height: '0px'}, 'fast')}
   );
 
