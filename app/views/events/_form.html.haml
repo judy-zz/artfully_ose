@@ -24,14 +24,15 @@
         .element
           = form.text_field :contact_phone
           .description Contact phone and email will be displayed to patrons and included in confirmation emails
-      - if can? :create, :paid_events
-        %li
-          .label=  form.label :is_free, "This is a free event"
-          .element= form.check_box( :is_free, {}, "true", "false" )
-      - else
-        %li
-          .label=  form.label :is_free, "This is a free event"
-          .element= form.check_box( :is_free, {:disabled => 'disabled', :checked => 'checked'}, "true", "false" )
+      - if event.new_record?
+        - if can? :create, :paid_events
+          %li
+            .label=  form.label :is_free, "This is a free event"
+            .element= form.check_box( :is_free, {}, "true", "false" )
+        - else
+          %li
+            .label=  form.label :is_free, "This is a free event"
+            .element= form.check_box( :is_free, {:disabled => 'disabled', :checked => 'checked'}, "true", "false" )
   %legend Venue
   .hr
   = form.fields_for :venue, event.venue do |venue_form| 
