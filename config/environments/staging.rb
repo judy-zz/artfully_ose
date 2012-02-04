@@ -1,7 +1,7 @@
 Artfully::Application.configure do
   
   #enforce SSL unless we're on /pages
-  config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer, :only => /^\/pages\//
+  config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer, :only => /\^(/faq|/pricing|/features|/updates)/
   
   # Settings specified here will take precedence over those in config/environment.rb
 
