@@ -1,6 +1,6 @@
 # Be sure to restart your server when you modify this file.
 
-Artfully::Application.config.session_store :cookie_store, :key => '_artful.ly_session'
+Artfully::Application.config.session_store :cookie_store, :key => '_artful.ly_session_s'
 
 # Use the database for sessions instead of the cookie-based default,
 # which shouldn't be used to store highly confidential information

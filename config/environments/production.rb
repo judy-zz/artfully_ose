@@ -1,5 +1,6 @@
 Artfully::Application.configure do
-  # Settings specified here will take precedence over those in config/environment.rb
+  #enforce SSL unless we're on /pages
+  config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer
 
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
