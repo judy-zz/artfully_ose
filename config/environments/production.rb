@@ -1,6 +1,6 @@
 Artfully::Application.configure do
   #enforce SSL unless we're on /pages
-  config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer, :only => /\^(/faq|/pricing|/features|/updates)/
+  config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer, :only => /(\/faq|\/pricing|\/features|\/updates)/
 
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
