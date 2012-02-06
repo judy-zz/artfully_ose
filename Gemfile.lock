@@ -162,10 +162,13 @@ GEM
     pr_geohash (1.0.0)
     proxies (0.2.1)
     rack (1.2.4)
+    rack-canonical-host (0.0.3)
+      rack (>= 1.0.0)
     rack-jsonp-middleware (0.0.5)
       rack
     rack-mount (0.6.14)
       rack (>= 1.0.0)
+    rack-ssl-enforcer (0.2.4)
     rack-test (0.5.7)
       rack (>= 1.0)
     rails (3.0.9)
@@ -285,7 +288,9 @@ DEPENDENCIES
   mysql2 (< 0.3)
   newrelic_rpm
   nokogiri
+  rack-canonical-host
   rack-jsonp-middleware
+  rack-ssl-enforcer
   rails
   rails-footnotes (>= 3.7.5.rc4)
   rake (= 0.8.7)

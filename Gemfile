@@ -1,6 +1,8 @@
 source 'http://rubygems.org'
 gem 'rake', '0.8.7'
 gem 'rails'
+gem 'rack-ssl-enforcer'
+gem 'rack-canonical-host'
 
 #Migration
 gem 'mongo'

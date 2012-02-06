@@ -1,5 +1,9 @@
 Artfully::Application.configure do
-  # Settings specified here will take precedence over those in config/environment.rb
+  #enforce SSL unless we're on /pages
+  config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer
+  
+  #Remember CononicalHost in config/initializers/cononical_host.rb
+  #This will kill us if we move to subdomains and can't figure out why subdomains don't work
 
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
