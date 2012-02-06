@@ -5,6 +5,12 @@ Factory.define :event do |e|
   e.association :venue
 end
 
+Factory.define :paid_event, :parent => :event do |e|
+  e.after_create do |event|
+    event.is_free = false
+  end
+end
+
 Factory.define :venue do |venue|
   venue.name            "Venue Theater"
   venue.address1        { Faker::Address.street_address }
