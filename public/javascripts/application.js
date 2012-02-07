@@ -107,10 +107,7 @@ $(document).ready(function() {
   } else if (resellerEventId !== undefined && organizationId !== undefined) {
     $('#calendar').fullCalendar({
       height: 500,
-      events: '/organizations/' + organizationId + '/reseller_events/' + resellerEventId + '.json',
-      eventClick: function(calEvent, jsEvent, view){
-        window.location = '/organizations/' + organizationId + '/reseller_events/'+ eventId + '/reseller_shows/' + calEvent.id;
-      }
+      events: '/organizations/' + organizationId + '/reseller_events/' + resellerEventId + '.json'
     });
   }
   $('#tabs').tabs({
