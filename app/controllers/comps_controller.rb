@@ -18,6 +18,7 @@ class CompsController < ApplicationController
     @selected_tickets = params[:selected_tickets]
 
     @comp = Comp.new(@show, @selected_tickets, recipient)
+    @comp.reason = params[:reason_for_comp]
 
     with_confirmation_comp do
       @comp.submit(current_user)
@@ -33,7 +34,6 @@ class CompsController < ApplicationController
 
   def with_confirmation_comp
     if params[:confirmed].blank?
-      @comp.reason = params[:comp_reason]
       flash[:info] = "Please confirm your changes before we save them."
       render 'comp_confirm' and return
     else
