@@ -41,4 +41,8 @@ class ResellerEvent < ActiveRecord::Base
     end
   end
 
+  def attachment_by(reseller_profile)
+    self.reseller_attachments.where(:reseller_profile_id => reseller_profile.id).first
+  end
+
 end
