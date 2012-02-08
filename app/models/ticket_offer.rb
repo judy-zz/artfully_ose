@@ -23,6 +23,7 @@ class TicketOffer < ActiveRecord::Base
   scope :completed, where(:status => "completed")
   scope :has_show, where("show_id IS NOT NULL")
   scope :on_calendar, has_show.where("status IN (?)", %w( accepted completed ))
+  scope :visible_to_reseller, where("status IN (?)", %w( offered accepted rejected completed ))
 
   ## State Transitions ##
 

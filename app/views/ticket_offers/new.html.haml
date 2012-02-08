@@ -5,46 +5,8 @@
   %p Copycopter stuff here about offering tickets to resellers.  Fees.  What one can expect.  Tickets are not reserves until sold.  Etc...
 
 .document
-  %h3 Find a reseller
-  .clearfix
-  %table#reseller-profile-datatable
-    %thead
-      %tr
-        %th Name
-        %th Description
-        %th Fee
-        %th &nbsp;
-
-    %tbody
-      - @reseller_profiles.each do |profile|
-        %tr
-          %td
-            - if profile.url.present?
-              = link_to profile.organization.name, profile.url, :target => "_blank"
-            - else
-              = profile.organization.name
-          %td= profile.description
-          %td= number_to_currency(profile.fee / 100.0)
-          %td
-            = form_for [ @ticket_offer ] do |f|
-              = f.hidden_field :reseller_profile_id, :value => profile.id
-              = f.submit "Offer Tickets"
-
-- content_for :custom_js do
-
-  :javascript
-
-    $(function () {
-      $("#reseller-profile-datatable").dataTable({
-        "iDisplayLength" : 20,
-        "bPaginate"      : true,
-        "bJQueryUI"      : true,
-        "sDom"           : '<"H"lf>t<"F"ip>',
-        "aoColumns"      : [
-          { "bSortable" : true },
-          { "bSortable" : false },
-          { "bSortable" : true },
-          { "bSortable" : false }
-        ]
-      });
-    });
+  - if !@ticket_offer.reseller_profile
+    = render "select_reseller_profile"
+  - else
+    = render "shared/error_messages", :target => @show
+    = render :partial => 'form', :locals => { :show => @show }
