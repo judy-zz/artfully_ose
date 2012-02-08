@@ -38,6 +38,7 @@ javascripts:
     - public/javascripts/jquery/jquery.mask-money.js
     - public/javascripts/jquery/jquery.formalize.js
     - public/javascripts/jquery_ujs.js
+    - public/javascripts/store/jquery.validate.js
     - public/javascripts/store/**/*.js
 
 stylesheets:
