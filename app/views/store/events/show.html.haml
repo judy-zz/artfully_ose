@@ -53,48 +53,189 @@
     //             'price': obj.price
     //           };
   });
-#store
-  #artfully-alert.flash.error
-  #event
-    = image_tag('storefront/logo.png', :id => 'logo')
-    %h1#logo= @event.name
-    %h3#producer= @event.producer
+#content
+  #store
+    #artfully-alert.flash.error
+    #event
+      = image_tag('storefront/logo.png', :id => 'logo')
+      %h1#logo= @event.name
+      %h3#producer= @event.producer
 
-    - @use_calendar = (@event.shows.unplayed.length > 5 || params[:calendar] == 'true')
+      - @use_calendar = (@event.shows.unplayed.length > 5 || params[:calendar] == 'true')
 
-    %ul#shows
-      =render :partial => 'show', :collection => @event.shows.unplayed, :as => :show
+      %ul#shows
+        =render :partial => 'show', :collection => @event.shows.unplayed, :as => :show
+      
+      =render 'calendar' if @use_calendar
     
-    =render 'calendar' if @use_calendar
-  
-#sidebar
-  - unless @event.description.blank?
-    #description
-      %h2 About
-      =image_tag('storefront/event-image-default.jpg', :width => 140, :height => 140) if true #event.image?
-      -if @event.description.length > 300
-        .toggle-truncated
-          .truncated
-            = simple_format "#{truncate(@event.description, :length => 300)} (#{link_to 'more','#', :class => 'toggle'})"
-          .not-truncated{:style => 'display:none;'}
-            =simple_format "#{@event.description} (#{link_to 'less','#', :class => 'toggle'})"
-      - else
-        =simple_format @event.description
-  %h2 Venue
-  #venue
-    =link_to image_tag("http://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
-    %div
-      %strong=@event.venue.name
-    %div=@event.venue.street_as_string
-    %div=@event.venue.city_state_zip_as_string
-  - unless @event.contact_email.blank? && @event.contact_phone.blank?
-    %h2 Contact
-    #contact
-      - unless @event.contact_email.blank?
-        = mail_to @event.contact_email
-        <br />
-      - unless @event.contact_phone.blank?
-        = @event.contact_phone
-  - if @event.organization.can?(:receive, Donation)
-    #donation
-      %h2 Donate
+  #sidebar
+    - unless @event.description.blank?
+      #description
+        %h2 About
+        =image_tag('storefront/event-image-default.jpg', :width => 140, :height => 140) if true #event.image?
+        -if @event.description.length > 300
+          .toggle-truncated
+            .truncated
+              = simple_format "#{truncate(@event.description, :length => 300)} (#{link_to 'more','#', :class => 'toggle'})"
+            .not-truncated{:style => 'display:none;'}
+              =simple_format "#{@event.description} (#{link_to 'less','#', :class => 'toggle'})"
+        - else
+          =simple_format @event.description
+    %h2 Venue
+    #venue
+      =link_to image_tag("http://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
+      %div
+        %strong=@event.venue.name
+      %div=@event.venue.street_as_string
+      %div=@event.venue.city_state_zip_as_string
+    - unless @event.contact_email.blank? && @event.contact_phone.blank?
+      %h2 Contact
+      #contact
+        - unless @event.contact_email.blank?
+          = mail_to @event.contact_email
+          <br />
+        - unless @event.contact_phone.blank?
+          = @event.contact_phone
+    - if @event.organization.can?(:receive, Donation)
+      #donation
+        %h2 Donate
+
+:javascript
+  $(document).ready(function() {
+
+    $('#shopping-cart-controls').click(function() {
+      $('#shopping-cart #steps').slideToggle();
+    })
+
+    // add * to required field labels
+    $('label.required').append('&nbsp;<strong>*</strong>&nbsp;');
+
+    $('[data-toggle="tab"]').click(function(e) {
+      e.preventDefault();
+      currentSectionId = $('li.active a').attr('href');
+
+      if (validateSection(currentSectionId)) {
+        newHref = $(this).attr('href');
+        $('#nav li').removeClass('active');
+        $('li a[href="' + newHref + '"]').parent('li').addClass('active');
+        switchTabs(newHref);
+      } else {
+        // dont switch
+        // errors should be shown
+      }
+    })
+  });
+
+  function switchTabs(newSectionId) {
+    $('.tab-pane').hide();
+    $(newSectionId+'.tab-pane').show();
+  }
+
+  function validateSection(sectionId) {
+    var everythingValid = true;
+    $(sectionId + ' input.required').each(function() {
+      v = $('#shopping-cart-form').validate().element("#" + $(this).attr('id'));
+      if (!(v)) {everythingValid = false};
+    });
+    return everythingValid;
+  }
+
+#shopping-cart.shown
+  #shopping-cart-controls
+    %span.cart-name Shopping Cart
+  - form_tag 'yo', :id => 'shopping-cart-form' do
+    #steps
+      %ul#nav
+        %li.active= link_to 'Cart', '#cart', 'data-toggle' => 'tab'
+        %li= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
+        %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
+        %li= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
+        %li= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
+      .tab-pane#cart{:style => 'display:block;'}
+        %table
+          %tr
+            %td.price
+              %h5 $30.00
+              ($15.00 each)
+            %td.details
+              %h5 2 VIP tickets
+              A Fictional Cocktail Party <br />
+              Monday, January, 23rd at 3:15 pm
+            %td.edit
+              = link_to_function 'edit', "", :class => 'edit'
+          %tr
+            %td.price
+              %h6 $4.00
+            %td.details
+              Service Charge ($2.00 per ticket)
+        .continue
+          = link_to 'Checkout Now', '#contact-info', 'data-toggle' => 'tab'
+          %h4 $34.00 Total
+
+      .tab-pane#contact-info
+        %fieldset
+          %ul
+            %li
+              .label= label_tag :first_name, "First Name", :class => 'required'
+              .element= text_field_tag :first_name, nil, :class => 'required'
+            %li
+              .label= label_tag :last_name, "Last Name", :class => 'required'
+              .element= text_field_tag :last_name, nil, :class => 'required'
+            %li
+              .label= label_tag :email, "Email", :class => 'required'
+              .element= text_field_tag :email, nil, :class => 'required', :type => 'email'
+            %li
+              .label= label_tag :phone, "Phone", :class => 'required'
+              .element= text_field_tag :phone, nil, :class => 'required'
+        .continue
+          = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab'
+
+      .tab-pane#payment-details
+        %fieldset
+          %ul
+            %li
+              .label= label_tag :cardholder, "Cardholder Name", :class => 'required'
+              .element= text_field_tag :cardholder, nil, :class => 'required'
+            %li
+              .label= label_tag :card_number, "Card Number", :class => 'required'
+              .element= text_field_tag :card_number, nil, :class => 'required', :type => 'creditcard'
+            %li
+              .label= label_tag :cvv, "CVV", :class => 'required'
+              .element= text_field_tag :cvv, nil, :class => 'required'
+            %li
+              .label= label_tag :expiration, "Expiration", :class => 'required'
+              .element= text_field_tag :expiration, nil, :class => 'required'
+        .continue
+          = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
+      
+      .tab-pane#billing-address
+        %fieldset
+          %ul
+            %li
+              .label= label_tag :billing_address, "Billing Address", :class => 'required'
+              .element= text_field_tag :billing_address, nil, :class => 'required'
+            %li
+              .label= label_tag :city, "City", :class => 'required'
+              .element= text_field_tag :city, nil, :class => 'required'
+            %li
+              .label= label_tag :state, "State", :class => 'required'
+              .element= text_field_tag :state, nil, :class => 'required'
+            %li
+              .label= label_tag :postal_code, "Postal Code", :class => 'required'
+              .element= text_field_tag :postal_code, nil, :class => 'required'
+        .continue
+          = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
+
+      .tab-pane#purchase
+        %fieldset
+          %ul
+            %li#agreement
+              .label
+                %label
+                  = check_box_tag :agreement, 1, false, :validate => "required:true"
+                  I have read, understand and accept the terms and conditions of the User Agreement below.
+          
+        #user_agreement
+          = t("pages.user_agreement.content", :default => "")
+        .continue
+          = link_to_function 'Complete Purchase'

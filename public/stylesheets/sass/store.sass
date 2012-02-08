@@ -212,3 +212,134 @@ table.calendar
       &:hover
         background: #175c71
         cursor: pointer
+
+#shopping-cart
+  width: auto
+  background-color: #e6e6e6 !important
+  #steps
+    display: none
+    position: static
+    background: #fff
+    position: static
+    width: 600px
+    margin: 0px auto
+    padding: 50px
+    padding-top: 10px
+    padding-bottom: 0
+    height: 350px
+    ul#nav
+      width: 600px
+      margin: 0 auto
+      overflow: hidden
+      margin-bottom: 20px
+      li
+        float: left
+        list-style: none
+        letter-spacing: 0
+        font-family: "Helvetica", Arial, arial, sans-serif
+        word-spacing: normal
+        &.active a
+          background-color: $compliment_highlight
+          color: #fff
+          font-weight: normal
+        a
+          @include rounded-corners(15px, 15px, 15px, 15px)
+          font-size: 12px
+          padding-top: 8px
+          padding-bottom: 8px
+          margin-top: 4px
+          padding-right: 12px
+          padding-left: 12px
+          margin-right: 2px
+          line-height: 14px
+          display: block
+          color: #999
+    fieldset
+      ul
+        list-style: none
+        li
+          list-style: none
+          clear: both
+          margin-bottom: 10px
+          &#agreement
+            margin-left: 0
+            .label
+              width: 100%
+              display: inline
+          .label
+            width: 20%
+            display: inline-block
+            vertical-align: top
+            float: left
+            font-weight: bold
+          .element
+            width: 80%
+            display: inline-block
+            vertical-align: top
+            input
+              width: 50%
+              float: left
+              margin-right: 10px
+              &.error
+                border: 1px solid red
+                background-image: none
+            label.error
+              background-image: none
+              color: red
+              float: left
+    .tab-pane
+      display: none
+      &.active
+        display: block
+    #cart
+      width: 100%
+      a.edit
+        background: #ccc
+        padding: 5px 10px
+        color: #333
+        @include rounded-corners(15px, 15px, 15px, 15px)
+        font-size: 12px
+        &:hover
+          background: $compliment_highlight
+          color: #fff
+      table
+        margin-bottom: 30px
+        width: 100%
+        font-size: 13px
+        color: #666
+        h5
+          color: #222
+          font-weight: bold
+          font-size: 15px
+          line-height: 18px
+        td
+          padding: 10px
+    .continue
+      padding: 20px
+      @include gradient(#ccc, #e6e6e6)
+      overflow: hidden
+      h4
+        font-weight: bold
+        color: #333
+        margin-top: 15px
+      a
+        float: right
+        width: 200px
+        display: block
+        @include rounded-corners(2px, 2px, 2px, 2px)
+        @include inset-text
+        @include gradient($compliment_highlight, $compliment, 14%, 100%)
+        border: 1px solid $compliment_shadow
+        font-size: 1em
+        text-align: center
+        font-weight: bold
+        line-height: 40px
+    #user_agreement
+      height: 100px
+      border: 1px solid #ccc
+      padding: 10px
+      overflow-y: scroll
+      font-size: 13px
+      margin-bottom: 20px
+      p
+        margin-bottom: 13px

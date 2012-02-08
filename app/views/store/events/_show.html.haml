@@ -27,6 +27,6 @@
 				- else
 					=simple_format description
 
-				= form_tag '', :class => 'add-to-cart'
-				= select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
-				= submit_tag 'Add to cart'
+				= form_tag '', :class => 'add-to-cart' do
+					= select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
+					= submit_tag 'Add to cart'

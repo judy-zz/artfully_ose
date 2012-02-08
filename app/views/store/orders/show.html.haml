@@ -19,3 +19,7 @@
 - unless @donations.empty?
   - @donations.each do |donation|
     = render :partial => 'store/donations/form', :locals => { :target => donation }
+
+#shopping-cart.hidden
+  #shopping-cart-controls
+  %span.cart-name Shopping Cart
