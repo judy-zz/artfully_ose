@@ -5,7 +5,6 @@
 	.calendar-month
 		%h3
 			= month
-			%span (#{pluralize(dates.length, 'showing')})
 		%table.calendar{:align => "center"}
 			- (dates.first.beginning_of_month.to_date..dates.first.end_of_month.to_date).each do |date|
 				= "<tr>".html_safe if date == dates.first.beginning_of_month.to_date || date.wday == 0
