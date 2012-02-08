@@ -6,7 +6,54 @@ describe Comp do
   let(:show) { Factory(:show) }
   let(:benefactor) { Factory(:user_in_organization) }
   let(:tickets) { 10.times.collect { Factory(:ticket, :show => show) } }
-  let(:recipient) { Factory(:person) }
+  let(:recipient) { Factory(:person, :organization => benefactor.current_organization) }
+
+  describe "should not be valid if" do
+    it "it doesnt have a recipient" do
+      @comp = Comp.new(show, [], nil, benefactor)
+      @comp.should_not be_valid
+    end
+    
+    it "it doesnt have a benefactor" do
+      @comp = Comp.new(show, [], recipient, nil)
+      @comp.should_not be_valid
+    end
+    
+    it "the benefactor and recipient are from different organizations" do
+      new_recipient = Factory(:person)
+      selected_tickets = [] 
+      (0..2).each do |i|
+        selected_tickets << tickets[i].id
+      end
+      @comp = Comp.new(show, selected_tickets, new_recipient, benefactor)
+      @comp.should_not be_valid
+    end
+  end
+  
+  describe "should be valid if" do     
+    it "callers pass a recipient_id" do
+      @comp = Comp.new(show, [], recipient.id, benefactor)
+      @comp.should be_valid
+    end
+           
+    it "it has a show, tickets, recipient and benefactor" do 
+      selected_tickets = [] 
+      (0..2).each do |i|
+        selected_tickets << tickets[i].id
+      end
+      @comp = Comp.new(show, selected_tickets, recipient, benefactor)
+      @comp.should be_valid
+    end
+    
+    it "the benefactor and recipient are from the same organization" do
+      selected_tickets = [] 
+      (0..2).each do |i|
+        selected_tickets << tickets[i].id
+      end
+      @comp = Comp.new(show, selected_tickets, recipient, benefactor)
+      @comp.should be_valid
+    end
+  end
 
   describe "passing ticket ids instead of actual tickets" do
     before(:each) do 
@@ -15,9 +62,9 @@ describe Comp do
         selected_tickets << tickets[i].id
       end
       Ticket.should_receive(:find).exactly(3).times.and_return(tickets[0], tickets[1], tickets[2])
-      @comp = Comp.new(show, selected_tickets, recipient)
+      @comp = Comp.new(show, selected_tickets, recipient, benefactor)
       @comp.reason = "comment"
-      @comp.submit(benefactor)
+      @comp.submit
     end
     
     it "creates an order with a total of zero" do
@@ -51,9 +98,9 @@ describe Comp do
     before(:each) do 
       selected_tickets = tickets[0..1]
       Ticket.should_not_receive(:find)
-      @comp = Comp.new(show, selected_tickets, recipient)
+      @comp = Comp.new(show, selected_tickets, recipient, benefactor)
       @comp.reason = "comment"
-      @comp.submit(benefactor)
+      @comp.submit
     end
     
     it "creates an order with a total of zero" do

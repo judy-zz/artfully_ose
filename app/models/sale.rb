@@ -63,8 +63,8 @@ class Sale
   private
 
     def comp_tickets(payment)
-      @comp = Comp.new(tickets.first.show, tickets, payment.person)
-      @comp.submit(payment.benefactor)
+      @comp = Comp.new(tickets.first.show, tickets, payment.person, payment.benefactor)
+      @comp.submit
       @buyer = payment.person
       true
     end

@@ -70,9 +70,9 @@ describe Sale do
        
     it "should comp tickets" do
       BoxOffice::Checkout.should_not_receive(:new)
-      c = Comp.new(subject.tickets.first.show, subject.tickets, comp_payment.person)
-      Comp.should_receive(:new).with(subject.tickets.first.show, subject.tickets, comp_payment.person).and_return(c)
-      c.should_receive(:submit).with(comp_payment.benefactor)
+      c = Comp.new(subject.tickets.first.show, subject.tickets, comp_payment.person, comp_payment.benefactor)
+      Comp.should_receive(:new).with(subject.tickets.first.show, subject.tickets, comp_payment.person, comp_payment.benefactor).and_return(c)
+      c.should_receive(:submit)
       subject.sell(comp_payment)
     end
         
