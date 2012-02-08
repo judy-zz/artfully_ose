@@ -1,0 +1,14 @@
+#new-person-popup.hidden
+  #error
+  = form_for Person.new, :url => people_path, :remote => true, :html => { "data-type" => :json } do |form|
+    %ul
+      %li
+        .label= form.label :first_name, "First Name"
+        .element= form.text_field :first_name
+      %li
+        .label= form.label :last_name, "Last Name"
+        .element= form.text_field :last_name
+      %li
+        .label= form.label :email, "Email"
+        .element= form.text_field :email
+    = form.submit

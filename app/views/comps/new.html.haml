@@ -1,23 +1,36 @@
+- content_for :custom_js do
+  = include_javascripts :comps
 - in_section :events
 - content_for :header do
-  %h1 Ticketing and Events
+  %h1 Comp Tickets
 
-= render "shared/error_messages", :target => @event
-
-.compact-spread
+.spread    
   = form_for @comp do |form|
-    %h4= link_to "#{@comp.recipient.first_name} #{@comp.recipient.last_name}", person_path(@comp.recipient)
-    %h5= @comp.recipient.email
-    .hr
-    = hidden_field_tag :show_id, @show.id
-    = hidden_field_tag :person_id, @comp.recipient.id
+    = hidden_field_tag(:show_id, @show.id)
     - @selected_tickets.each do |st|
-      = hidden_field_tag("selected_tickets[]", st)
-    %ul
-      %li
-        .label= label_tag :comp_reason, "Reason for Comp"
-        .full.paired.element
-          = text_field_tag :comp_reason
-          = submit_tag "Submit"
-  %p= link_to "Search for a different Person Record", "javascript:history.back()"
+      =hidden_field_tag "selected_tickets[]", st
+    #the-details
+      %fieldset.floater.thirdish
+        %h4 Recipient
+        = hidden_field_tag(:person_id, "", :id => "person_id")
+        = text_field_tag(:search, params[:search], :id => "search", :placeholder => "First, last, or email...")
+        %a#new-person-link{:style=>'font-size:9pt; margin-left: 5px',:href=>'#'}
+          Create new person
+        .picked-person
+          .picked-person-name.picked-person-clear
+          .picked-person-email.picked-person-clear
+          .picked-person-company-name.picked-person-clear
+      %fieldset.floater.thirdish
+        %h4 Reason
+        = text_area_tag(:reason_for_comp, params[:reason_for_comp], :id => "reason-for-comp", :placeholder => "Reason for comp...")
+
+      %fieldset.floater.thirdish
+        %h4 Save
+        #save-comp
+          %button#save-comp-button{:style => 'width:100%'}
+            Comp Tickets
+      
+      .clear
+
+= render "shared/new_person_popup"
 

@@ -933,6 +933,45 @@ dl.table-display {
     text-align: right;
     font-weight: bold; }
 
+textarea#reason-for-comp {
+  width: 99%;
+  height: 100px;
+  margin: 2px; }
+
+#save-comp {
+  width: 200px;
+  margin: 5px auto; }
+  #save-comp a {
+    display: block;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    color: white;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+    background: #0a99b3;
+    background: -moz-linear-gradient(top, #0a99b3 14%, #077083 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #0a99b3), color-stop(100%, #077083));
+    border: 1px solid #065b6b;
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    line-height: 40px; }
+  #save-comp button {
+    display: block;
+    -moz-border-radius: 2px 2px 2px 2px;
+    -webkit-border-radius: 2px 2px 2px 2px;
+    border-radius: 2px 2px 2px 2px;
+    color: white;
+    text-shadow: -1px -1px 0 rgba(0, 0, 0, 0.3);
+    background: #0a99b3;
+    background: -moz-linear-gradient(top, #0a99b3 14%, #077083 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #0a99b3), color-stop(100%, #077083));
+    border: 1px solid #065b6b;
+    font-size: 1em;
+    text-align: center;
+    font-weight: bold;
+    line-height: 40px; }
+
 #header {
   left: 0;
   right: 0;
