@@ -17,7 +17,7 @@ $(document).ready(function() {
     
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({
-      dropboxID:   "20016501",
+      dropboxID:   "20042668",
       url:         "https://artfully.zendesk.com",
       tabID:       "help",
       tabColor:    "black",
