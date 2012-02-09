@@ -1,11 +1,5 @@
 :javascript
   $(document).ready(function(){
-    artfully.configure({
-      base_uri: '#{root_url}api/',
-      store_uri: '#{root_url}store/',
-    });
-    // #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
-    // #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
 
     // show/hide extended event descriptions
     $('.truncated a.toggle, .not-truncated a.toggle').click(function(e) {
@@ -32,27 +26,112 @@
       $("ul#shows li[data-date='" + date + "'] .sections").show();
     });
 
-    $('.add-to-cart').submit(function() {
-      return false;
+    // click "add to cart" on tickets
+    $('.add-tickets-to-cart').submit(function(e) {
+      e.preventDefault();
+      $('#shopping-cart #steps').slideDown(); // not sure why this isn't slideUp
+
+      params = {
+        sectionID:   $(this).find('#section_id').val(),
+        sectionName: $(this).find('#section_name').val(),
+        ticketCount: parseInt($(this).find('#ticket_count').val()),
+        ticketPrice: parseFloat($(this).find('#ticket_price').val()),
+        showingName: $(this).find('#showing_name').val()
+      }
+      console.log(params);
+
+      addItemToCart('ticket', params);
+    });
+
+    // show shopping cart when clicked
+    $('#shopping-cart-controls').click(function() {
+      $('#shopping-cart #steps').slideToggle();
     })
 
-    // add tickets to cart
-    // jQuery.getJSON(artfully.utils.ticket_uri(params), function(data){
-    //   if(data !== null && data.length > 0){
-    //     if(data.length < $select.val()){
-    //       artfully.alert("Only " + data.length + " ticket(s) could be found for this performance.");
-    //     }
-    //     artfully.widgets.cart().add(data);
-    //   } else {
-    //     artfully.alert("Sorry! No tickets were available for purchase at this time.");
-    //   }
-    // });
+    // add * to required field labels
+    $('label.required').append('&nbsp;<strong>*</strong>&nbsp;');
 
-    // {'limit': $select.val(),
-    //             'show_id': jQuery(this).closest('.performance').data('performance').id,
-    //             'price': obj.price
-    //           };
+    // switch shopping cart tabs
+    $('[data-toggle="tab"]').click(function(e) {
+      e.preventDefault();
+      currentSectionId = $('li.active a').attr('href');
+
+      // validate section before switching tabs
+      if (validateSection(currentSectionId)) {
+        newHref = $(this).attr('href');
+        $('#nav li').removeClass('active');
+        $('li a[href="' + newHref + '"]').parent('li').addClass('active');
+        switchTabs(newHref);
+      };
+      // else, dont switch
+      // errors will be shown
+    });
   });
+
+  function switchTabs(newSectionId) {
+    $('.tab-pane').hide();
+    $(newSectionId+'.tab-pane').show();
+  }
+
+  // validate fields inside a shopping cart tab
+  // return true if everything valid, false otherwise
+  // add error classes and labels if its invalid
+  function validateSection(sectionId) {
+    var everythingValid = true;
+    $(sectionId + ' input.required').each(function() {
+      v = $('#shopping-cart-form').validate().element("#" + $(this).attr('id'));
+      if (!(v)) {everythingValid = false};
+    });
+    return everythingValid;
+  }
+
+  function addItemToCart(type, params) {
+    if (type == 'ticket') {
+      $('#cart table').prepend(
+        "<tr class='ticket'>" +
+          "<td class='edit'><a href='#'>edit</a></td>" +
+          "<td class='details'>" +
+            "<h5>" + params.sectionName + " ticket</h5>" +
+            "#{@event.name}<br />" +
+            params.showingName +
+          "</td>" +
+          "<td class='quantity' data-quantity='" + params.ticketCount + "'>" +
+            params.ticketCount + " x $" + params.ticketPrice + " each" +
+          "</td>" +
+          "<td class='price' data-price='" + (params.ticketPrice * params.ticketCount) + "'><h5>" +
+            "$" + (params.ticketPrice * params.ticketCount) +
+          "</h5></td>" +
+        "</tr>"
+      );
+
+      updateServiceCharge();
+      updateTotal();
+    }
+  }
+
+  function updateServiceCharge() {
+    quantity = 0;
+    $('tr.ticket').each(function() {
+      quantity += parseInt($(this).find('td.quantity').attr('data-quantity'));
+    });
+
+    if (quantity > 0) {
+      $('tr#service-charge').show();
+      $('tr#service-charge td.quantity span').text(quantity);
+      $('tr#service-charge td.price').text("$" + (quantity * 2.00));
+      $('tr#service-charge td.price').attr('data-price', (quantity * 2.00));
+    } else {
+      $('tr#service-charge').hide();
+    }
+  }
+
+  function updateTotal() {
+    total = 0;
+    $('[data-price]').each(function() {
+      total += parseFloat($(this).attr('data-price'));
+    });
+    $('.continue #cart-total').text("$" + total + " Total");
+  }
 #content
   #store
     #artfully-alert.flash.error
@@ -100,50 +179,10 @@
       #donation
         %h2 Donate
 
-:javascript
-  $(document).ready(function() {
-
-    $('#shopping-cart-controls').click(function() {
-      $('#shopping-cart #steps').slideToggle();
-    })
-
-    // add * to required field labels
-    $('label.required').append('&nbsp;<strong>*</strong>&nbsp;');
-
-    $('[data-toggle="tab"]').click(function(e) {
-      e.preventDefault();
-      currentSectionId = $('li.active a').attr('href');
-
-      if (validateSection(currentSectionId)) {
-        newHref = $(this).attr('href');
-        $('#nav li').removeClass('active');
-        $('li a[href="' + newHref + '"]').parent('li').addClass('active');
-        switchTabs(newHref);
-      } else {
-        // dont switch
-        // errors should be shown
-      }
-    })
-  });
-
-  function switchTabs(newSectionId) {
-    $('.tab-pane').hide();
-    $(newSectionId+'.tab-pane').show();
-  }
-
-  function validateSection(sectionId) {
-    var everythingValid = true;
-    $(sectionId + ' input.required').each(function() {
-      v = $('#shopping-cart-form').validate().element("#" + $(this).attr('id'));
-      if (!(v)) {everythingValid = false};
-    });
-    return everythingValid;
-  }
-
 #shopping-cart.shown
   #shopping-cart-controls
     %span.cart-name Shopping Cart
-  - form_tag 'yo', :id => 'shopping-cart-form' do
+  = form_tag 'yo', :id => 'shopping-cart-form' do
     #steps
       %ul#nav
         %li.active= link_to 'Cart', '#cart', 'data-toggle' => 'tab'
@@ -153,24 +192,20 @@
         %li= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
       .tab-pane#cart{:style => 'display:block;'}
         %table
-          %tr
-            %td.price
-              %h5 $30.00
-              ($15.00 each)
+
+          %tr#service-charge{:style => 'display:none'}
+            %td
             %td.details
-              %h5 2 VIP tickets
-              A Fictional Cocktail Party <br />
-              Monday, January, 23rd at 3:15 pm
-            %td.edit
-              = link_to_function 'edit', "", :class => 'edit'
-          %tr
+              Service Charge
+            %td.quantity
+              %span 1
+              x $2.00 per ticket
             %td.price
-              %h6 $4.00
-            %td.details
-              Service Charge ($2.00 per ticket)
+              $4.00
+
         .continue
           = link_to 'Checkout Now', '#contact-info', 'data-toggle' => 'tab'
-          %h4 $34.00 Total
+          %h4#cart-total
 
       .tab-pane#contact-info
         %fieldset
@@ -201,10 +236,15 @@
               .element= text_field_tag :card_number, nil, :class => 'required', :type => 'creditcard'
             %li
               .label= label_tag :cvv, "CVV", :class => 'required'
-              .element= text_field_tag :cvv, nil, :class => 'required'
+              .element
+                = text_field_tag :cvv, nil, :class => 'required small'
+                = image_tag 'storefront/cvv.gif'
             %li
               .label= label_tag :expiration, "Expiration", :class => 'required'
-              .element= text_field_tag :expiration, nil, :class => 'required'
+              .element
+                = select_tag 'month', options_for_select((1..12).map{|m| "%02d" % m}), :class => "small"
+                #expiration-slash /
+                = select_tag 'year', options_for_select(Date.today.year..Date.today.year+10), :class => "small"
         .continue
           = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
       

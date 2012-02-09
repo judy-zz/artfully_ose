@@ -274,6 +274,7 @@ table.calendar
             width: 80%
             display: inline-block
             vertical-align: top
+            text-align: left
             input
               width: 50%
               float: left
@@ -281,6 +282,15 @@ table.calendar
               &.error
                 border: 1px solid red
                 background-image: none
+            input.small, select.small
+              width: 25%
+              display: inline
+              margin-right: 10px
+            select.small
+              float: left
+            #expiration-slash
+              float: left
+              padding: 0 10px
             label.error
               background-image: none
               color: red
@@ -291,27 +301,33 @@ table.calendar
         display: block
     #cart
       width: 100%
-      a.edit
-        background: #ccc
-        padding: 5px 10px
-        color: #333
-        @include rounded-corners(15px, 15px, 15px, 15px)
-        font-size: 12px
-        &:hover
-          background: $compliment_highlight
-          color: #fff
       table
         margin-bottom: 30px
         width: 100%
         font-size: 13px
         color: #666
-        h5
-          color: #222
-          font-weight: bold
-          font-size: 15px
-          line-height: 18px
-        td
-          padding: 10px
+        tbody
+          width: 100%
+        tr
+          width: 100%
+          h5
+            color: #222
+            font-weight: bold
+            font-size: 15px
+            line-height: 18px
+          td
+            padding: 10px
+            &.price
+              text-align: right
+          td.edit a
+            background: #ccc
+            padding: 5px 10px
+            color: #333
+            @include rounded-corners(15px, 15px, 15px, 15px)
+            font-size: 12px
+            &:hover
+              background: $compliment_highlight
+              color: #fff
     .continue
       padding: 20px
       @include gradient(#ccc, #e6e6e6)
@@ -320,6 +336,8 @@ table.calendar
         font-weight: bold
         color: #333
         margin-top: 15px
+        float: right
+        margin-right: 20px
       a
         float: right
         width: 200px
