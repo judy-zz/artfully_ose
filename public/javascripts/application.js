@@ -93,6 +93,8 @@ $(document).ready(function() {
     return false;
   });
 
+  $("#new-note-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Add Note"})
+
   var eventId = $("#calendar").attr("data-event");
   $('#calendar').fullCalendar({
     height: 500,

@@ -4,6 +4,13 @@ describe Person do
   disconnect_sunspot
   subject { Factory(:person) }
 
+  it "should accept a note" do
+    subject.notes.length.should eq 0
+    subject.notes.build(:text => "This is my first note.")
+    subject.save
+    subject.notes.length.should eq 1
+  end
+
   describe "#valid?" do
     before(:each) do
       FakeWeb.register_uri(:get, %r|http://localhost/athena/people\.json\?email=.*&organizationId=.*|, :body => "[]")
