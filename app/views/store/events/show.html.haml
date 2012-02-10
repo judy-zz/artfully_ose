@@ -3,8 +3,8 @@
 
     // show/hide extended event descriptions
     $('.truncated a.toggle, .not-truncated a.toggle').click(function(e) {
+      e.preventDefault();
       $(this).parents('.toggle-truncated').find('.truncated, .not-truncated').toggle();
-      return false;
     })
 
     // toggle a showing's sections
@@ -33,6 +33,7 @@
 
       params = {
         sectionId:   $(this).find('#section_id').val(),
+        showId:      $(this).find('#show_id').val(),
         sectionName: $(this).find('#section_name').val(),
         ticketCount: parseInt($(this).find('#ticket_count').val()),
         ticketPrice: parseFloat($(this).find('#ticket_price').val()),
@@ -86,7 +87,7 @@
     })
 
     // change drop down on tickets in cart
-    $(document).on('change', '#cart #ticket_count', function(e) {
+    $(document).on('change', '#cart select.ticket-count', function(e) {
       ticketCount = parseInt($(this).val());
       $(this).parent('td').attr('data-quantity', ticketCount);
       subTotal = parseFloat($(this).parent('td').attr('data-unit-price')) * ticketCount;
@@ -117,8 +118,9 @@
 
   function addItemToCart(type, params) {
     if (type === 'ticket') {
-      // if exisiting line item for this secion, dont add it again
-      if (!($("[data-section-id='" + params.sectionId + "']").size() > 0)) {
+      // if exisiting line item for this secion and show
+      // dont add it again
+      if (!($("[data-section-id='" + params.sectionId + "'][data-show-id='" + params.showId + "']").size() > 0)) {
         createTicketLineItem(params); 
       }
 
@@ -134,7 +136,7 @@
 
   function createTicketLineItem(params) {
     $('#cart table').prepend(
-      "<tr class='ticket' data-section-id='" + params.sectionId + "'>" +
+      "<tr class='ticket' data-section-id='" + params.sectionId + "' data-show-id='" + params.showId + "'>" +
         "<td class='remove'><a href='#'>remove</a></td>" +
         "<td class='details'>" +
           "<h5>" + params.sectionName + " ticket</h5>" +
@@ -142,8 +144,9 @@
           params.showingName +
         "</td>" +
         "<td class='quantity' data-quantity='" + params.ticketCount + "' data-unit-price='" + params.ticketPrice + "'>" +
-          "#{escape_javascript(select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]}))}" +
+          "#{escape_javascript(select_tag "tickets[][count]", options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]}), :class => "ticket-count")}" +
           "<br /><span class='formatCurrency'>" + params.ticketPrice + "</span> each" +
+          "<input id='section_id' name='tickets[][section_id]' type='hidden' value='" + params.sectionId +"'>" +
         "</td>" +
         "<td class='price' data-price='" + (params.ticketPrice * params.ticketCount) + "'>" + 
           "<h5 class='formatCurrency'>" +
@@ -153,7 +156,7 @@
       "</tr>"
     );
 
-    $("[data-section-id='" + params.sectionId + "'] #ticket_count").val(params.ticketCount);
+    $("[data-section-id='" + params.sectionId + "'][data-show-id='" + params.showId + "'] .ticket-count").val(params.ticketCount);
   };
 
   function createOrUpdateDonationLineItem(params) {
@@ -248,7 +251,7 @@
 #shopping-cart.shown
   #shopping-cart-controls
     %span.cart-name Shopping Cart
-  = form_tag 'yo', :id => 'shopping-cart-form' do
+  = form_tag '', :id => 'shopping-cart-form', :method => :get do
     #steps
       %ul#nav
         %li.active= link_to 'Cart', '#cart', 'data-toggle' => 'tab'
@@ -346,4 +349,4 @@
         #user_agreement
           = t("pages.user_agreement.content", :default => "")
         .continue
-          = link_to_function 'Complete Purchase'
+          = submit_tag 'Complete Purchase', :id => 'complete-purchase'

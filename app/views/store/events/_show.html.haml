@@ -28,6 +28,7 @@
 					=simple_format description
 
 				= form_tag '', :class => 'add-tickets-to-cart' do
+					= hidden_field_tag :show_id, show.id
 					= hidden_field_tag :section_id, section.id
 					= hidden_field_tag :section_name, section.name
 					= hidden_field_tag :ticket_price, section.price / 100.0
