@@ -465,14 +465,14 @@ h4 {
 #donation p {
   margin-bottom: 5px; }
 #donation input[type="text"] {
-  width: 50%; }
+  width: 30%; }
 #donation input[type="submit"] {
-  border-left: none;
-  width: 50%;
-  min-width: 75px;
-  -moz-border-radius: 0 4px 4px 0;
-  -webkit-border-radius: 0 4px 4px 0;
-  border-radius: 0 4px 4px 0; }
+  background: #2086a6;
+  background: -moz-linear-gradient(top, #2086a6 0%, #175c71 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2086a6), color-stop(100%, #175c71));
+  color: white;
+  text-shadow: none;
+  font-weight: normal; }
 
 #description img {
   float: left;
@@ -661,14 +661,14 @@ table.calendar {
               border: 1px solid red;
               background-image: none; }
           #shopping-cart #steps fieldset ul li .element input.small, #shopping-cart #steps fieldset ul li .element select.small {
-            width: 25%;
+            width: 22%;
             display: inline;
             margin-right: 10px; }
           #shopping-cart #steps fieldset ul li .element select.small {
             float: left; }
           #shopping-cart #steps fieldset ul li .element #expiration-slash {
             float: left;
-            padding: 0 10px; }
+            padding-right: 10px; }
           #shopping-cart #steps fieldset ul li .element label.error {
             background-image: none;
             color: red;
@@ -695,18 +695,18 @@ table.calendar {
             line-height: 18px; }
           #shopping-cart #steps #cart table tr td {
             padding: 10px; }
-            #shopping-cart #steps #cart table tr td.price {
-              text-align: right; }
-          #shopping-cart #steps #cart table tr td.edit a {
-            background: #cccccc;
+            #shopping-cart #steps #cart table tr td.quantity input {
+              width: 90px; }
+          #shopping-cart #steps #cart table tr td.remove a {
+            background: #eeeeee;
             padding: 5px 10px;
-            color: #333333;
+            color: white;
             -moz-border-radius: 15px 15px 15px 15px;
             -webkit-border-radius: 15px 15px 15px 15px;
             border-radius: 15px 15px 15px 15px;
             font-size: 12px; }
-            #shopping-cart #steps #cart table tr td.edit a:hover {
-              background: #0a99b3;
+            #shopping-cart #steps #cart table tr td.remove a:hover {
+              background: #bbbbbb;
               color: white; }
     #shopping-cart #steps .continue {
       padding: 20px;

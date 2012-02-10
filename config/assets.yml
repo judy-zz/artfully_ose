@@ -39,6 +39,7 @@ javascripts:
     - public/javascripts/jquery/jquery.formalize.js
     - public/javascripts/jquery_ujs.js
     - public/javascripts/store/jquery.validate.js
+    - public/javascripts/jquery/jquery.formatCurrency-1.4.0.min.js
     - public/javascripts/store/**/*.js
 
 stylesheets:

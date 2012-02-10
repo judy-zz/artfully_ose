@@ -94,12 +94,12 @@ h4
   p
     margin-bottom: 5px
   input[type="text"]
-    width: 50%
+    width: 30%
   input[type="submit"]
-    border-left: none
-    width: 50%
-    min-width: 75px
-    @include rounded-corners(0, 4px, 4px, 0)
+    @include gradient(#2086a6, #175c71)
+    color: #fff
+    text-shadow: none
+    font-weight: normal
 
 #description
   img
@@ -283,14 +283,14 @@ table.calendar
                 border: 1px solid red
                 background-image: none
             input.small, select.small
-              width: 25%
+              width: 22%
               display: inline
               margin-right: 10px
             select.small
               float: left
             #expiration-slash
               float: left
-              padding: 0 10px
+              padding-right: 10px
             label.error
               background-image: none
               color: red
@@ -317,17 +317,18 @@ table.calendar
             line-height: 18px
           td
             padding: 10px
-            &.price
-              text-align: right
-          td.edit a
-            background: #ccc
+            &.quantity input
+              width: 90px
+          td.remove a
+            background: #eee
             padding: 5px 10px
-            color: #333
+            color: #fff
             @include rounded-corners(15px, 15px, 15px, 15px)
             font-size: 12px
             &:hover
-              background: $compliment_highlight
+              background: darken(#eee, 20%)
               color: #fff
+          td.edit-item
     .continue
       padding: 20px
       @include gradient(#ccc, #e6e6e6)

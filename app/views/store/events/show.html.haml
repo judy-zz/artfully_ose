@@ -26,21 +26,30 @@
       $("ul#shows li[data-date='" + date + "'] .sections").show();
     });
 
-    // click "add to cart" on tickets
+    // click "add to cart" button on tickets
     $('.add-tickets-to-cart').submit(function(e) {
       e.preventDefault();
       $('#shopping-cart #steps').slideDown(); // not sure why this isn't slideUp
 
       params = {
-        sectionID:   $(this).find('#section_id').val(),
+        sectionId:   $(this).find('#section_id').val(),
         sectionName: $(this).find('#section_name').val(),
         ticketCount: parseInt($(this).find('#ticket_count').val()),
         ticketPrice: parseFloat($(this).find('#ticket_price').val()),
         showingName: $(this).find('#showing_name').val()
       }
-      console.log(params);
 
       addItemToCart('ticket', params);
+    });
+
+    // click "make donation" button on donation
+    $('.add-donation-to-cart').submit(function(e) {
+      e.preventDefault();
+      donationAmount = $(this).find('#donation_amount').asNumber();
+      if (donationAmount > 0) {
+        $('#shopping-cart #steps').slideDown(); // not sure why this isn't slideUp
+        addItemToCart('donation', { donationAmount: donationAmount}); 
+      }
     });
 
     // show shopping cart when clicked
@@ -66,6 +75,27 @@
       // else, dont switch
       // errors will be shown
     });
+
+    // click "remove" on a cart item
+    $(document).on('click', 'td.remove a', function(e) {
+      e.preventDefault();
+      $(this).parents('tr').remove();
+      updateServiceCharge();
+      updateTotal();
+      $('.formatCurrency').formatCurrency();
+    })
+
+    // change drop down on tickets in cart
+    $(document).on('change', '#cart #ticket_count', function(e) {
+      ticketCount = parseInt($(this).val());
+      $(this).parent('td').attr('data-quantity', ticketCount);
+      subTotal = parseFloat($(this).parent('td').attr('data-unit-price')) * ticketCount;
+      $(this).parents('tr').find('td.price').attr('data-price', subTotal);
+      $(this).parents('tr').find('td.price h5').text(subTotal);
+      updateServiceCharge();
+      updateTotal();
+      $('.formatCurrency').formatCurrency();
+    });
   });
 
   function switchTabs(newSectionId) {
@@ -86,27 +116,58 @@
   }
 
   function addItemToCart(type, params) {
-    if (type == 'ticket') {
-      $('#cart table').prepend(
-        "<tr class='ticket'>" +
-          "<td class='edit'><a href='#'>edit</a></td>" +
-          "<td class='details'>" +
-            "<h5>" + params.sectionName + " ticket</h5>" +
-            "#{@event.name}<br />" +
-            params.showingName +
-          "</td>" +
-          "<td class='quantity' data-quantity='" + params.ticketCount + "'>" +
-            params.ticketCount + " x $" + params.ticketPrice + " each" +
-          "</td>" +
-          "<td class='price' data-price='" + (params.ticketPrice * params.ticketCount) + "'><h5>" +
-            "$" + (params.ticketPrice * params.ticketCount) +
-          "</h5></td>" +
-        "</tr>"
-      );
+    if (type === 'ticket') {
+      // if exisiting line item for this secion, dont add it again
+      if (!($("[data-section-id='" + params.sectionId + "']").size() > 0)) {
+        createTicketLineItem(params); 
+      }
 
       updateServiceCharge();
-      updateTotal();
+      
+    } else if (type === 'donation') {
+      createOrUpdateDonationLineItem(params);
     }
+
+    updateTotal();
+    $('.formatCurrency').formatCurrency();
+  }
+
+  function createTicketLineItem(params) {
+    $('#cart table').prepend(
+      "<tr class='ticket' data-section-id='" + params.sectionId + "'>" +
+        "<td class='remove'><a href='#'>remove</a></td>" +
+        "<td class='details'>" +
+          "<h5>" + params.sectionName + " ticket</h5>" +
+          "#{@event.name}<br />" +
+          params.showingName +
+        "</td>" +
+        "<td class='quantity' data-quantity='" + params.ticketCount + "' data-unit-price='" + params.ticketPrice + "'>" +
+          "#{escape_javascript(select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]}))}" +
+          "<br /><span class='formatCurrency'>" + params.ticketPrice + "</span> each" +
+        "</td>" +
+        "<td class='price' data-price='" + (params.ticketPrice * params.ticketCount) + "'>" + 
+          "<h5 class='formatCurrency'>" +
+            (params.ticketPrice * params.ticketCount) +
+          "</h5>" + 
+        "</td>" +
+      "</tr>"
+    );
+
+    $("[data-section-id='" + params.sectionId + "'] #ticket_count").val(params.ticketCount);
+  };
+
+  function createOrUpdateDonationLineItem(params) {
+    $('#cart table tr.donation').remove();
+    $('#cart table').prepend(
+      "<tr class='donation'>" +
+        "<td class='remove'><a href='#'>remove</a></td>" +
+        "<td class='details'><h5>Donation</h5></td>" +
+        "<td class='quantity'></td>" +
+        "<td class='price' data-price='" + params.donationAmount + "'>" + 
+          "<h5 class='formatCurrency'>" + params.donationAmount + "</h5>" + 
+        "</td>" +
+      "</tr>"
+    );
   }
 
   function updateServiceCharge() {
@@ -118,9 +179,10 @@
     if (quantity > 0) {
       $('tr#service-charge').show();
       $('tr#service-charge td.quantity span').text(quantity);
-      $('tr#service-charge td.price').text("$" + (quantity * 2.00));
+      $('tr#service-charge td.price h5').html(quantity * 2.00);
       $('tr#service-charge td.price').attr('data-price', (quantity * 2.00));
     } else {
+      $('tr#service-charge td.price').attr('data-price', 0);
       $('tr#service-charge').hide();
     }
   }
@@ -130,7 +192,7 @@
     $('[data-price]').each(function() {
       total += parseFloat($(this).attr('data-price'));
     });
-    $('.continue #cart-total').text("$" + total + " Total");
+    $('.continue #cart-total').html(total);
   }
 #content
   #store
@@ -178,6 +240,10 @@
     - if @event.organization.can?(:receive, Donation)
       #donation
         %h2 Donate
+        %p This could be a customizable block of text to prompt people to donate.
+        = form_tag '', :class => 'add-donation-to-cart' do
+          = text_field_tag :donation_amount, '$', :class => 'input_small'
+          = submit_tag 'Donate Now'
 
 #shopping-cart.shown
   #shopping-cart-controls
@@ -198,14 +264,14 @@
             %td.details
               Service Charge
             %td.quantity
-              %span 1
+              %span
               x $2.00 per ticket
             %td.price
-              $4.00
+              %h5.formatCurrency
 
         .continue
           = link_to 'Checkout Now', '#contact-info', 'data-toggle' => 'tab'
-          %h4#cart-total
+          %h4#cart-total.formatCurrency
 
       .tab-pane#contact-info
         %fieldset
@@ -233,7 +299,9 @@
               .element= text_field_tag :cardholder, nil, :class => 'required'
             %li
               .label= label_tag :card_number, "Card Number", :class => 'required'
-              .element= text_field_tag :card_number, nil, :class => 'required', :type => 'creditcard'
+              .element
+                = text_field_tag :card_number, nil, :class => 'required', :type => 'creditcard'
+                = image_tag 'storefront/lock.png'
             %li
               .label= label_tag :cvv, "CVV", :class => 'required'
               .element
