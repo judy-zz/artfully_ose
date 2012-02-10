@@ -240,7 +240,7 @@
     - if @event.organization.can?(:receive, Donation)
       #donation
         %h2 Donate
-        %p This could be a customizable block of text to prompt people to donate.
+        %p Help support the show by adding a donation to your order! Contributions are tax-deductible to the extent permitted by law.
         = form_tag '', :class => 'add-donation-to-cart' do
           = text_field_tag :donation_amount, '$', :class => 'input_small'
           = submit_tag 'Donate Now'
