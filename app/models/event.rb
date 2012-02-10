@@ -15,7 +15,7 @@ class Event < ActiveRecord::Base
       :secret_access_key => ENV["SECRET_ACCESS_KEY"]
     },
     :styles => {
-      :thumb => "140x140>"
+      :thumb => "140x140#"
     }
 
   validates_presence_of :name, :producer, :organization_id
