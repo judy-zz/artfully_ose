@@ -50,7 +50,7 @@ class Order < ActiveRecord::Base
   end
 
   def total
-    all_items.inject(0) {|sum, item| sum + item.price.to_i }
+    all_items.inject(0) {|sum, item| sum + item.total_price.to_i }
   end
 
   def nongift_amount

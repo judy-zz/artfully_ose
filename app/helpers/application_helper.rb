@@ -31,7 +31,7 @@ module ApplicationHelper
   end
   
   def amount_and_nongift(item)
-    str = number_as_cents item.price
+    str = number_as_cents item.total_price
     str += " (#{number_as_cents item.nongift_amount} Non-deductible)" unless item.nongift_amount.nil?
     str
   end

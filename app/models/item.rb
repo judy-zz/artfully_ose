@@ -41,6 +41,20 @@ class Item < ActiveRecord::Base
     product_type == "Donation"
   end
 
+  #
+  # Donations stored in the FA DB are stored like so:
+  # $100 sent
+  # amount = $50
+  # nongift = $50
+  #
+  # So, unfortunately, they arrive at artfully in the same manner.
+  # That means, for donations, an item's "price" is actually the gift amount of the donation
+  # and the "total_price" is the amount that was transacted (amount + nongift)
+  #
+  def total_price
+    price + (nongift_amount.nil? ? 0 : nongift_amount.to_i)  
+  end
+
   def self.for(prod, per_item_lambda=lambda { |item| 0 })
     Item.new.tap do |i|
       i.per_item_processing_charge = per_item_lambda
