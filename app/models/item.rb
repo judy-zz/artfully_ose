@@ -20,8 +20,8 @@ class Item < ActiveRecord::Base
     order("Last Name") { |order| order.person.last_name if order.person }
     order("Company Name") { |order| order.person.company_name if order.person }
     order("Donation Date") { |order| order.created_at }
-    price("Gift Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
-    nongift_amount("Non-gift Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
+    total_price("Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
+    nongift_amount("Non-deductible") { |cents| number_to_currency(cents.to_f/100) if cents }
   end
 
   comma :ticket_sale do
