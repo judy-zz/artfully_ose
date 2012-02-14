@@ -26,4 +26,4 @@
     = hidden_field_tag :show_id, show.id
     = submit_tag "Delete", :class => [ :mini, :full ]
     .confirmation.dialog
-      %p= "You are about to put all tickets for the #{l show.datetime_local_to_event} showing of #{show.event.name} on sale and make it public."
+      %p= "Are you sure you want to delete this show?  Any tickets that have been created will also be deleted."

@@ -1,4 +1,8 @@
 $(document).ready(function () {
+  $("form.destroyable").live("ajax:before", function(){
+    $row = $(this).closest("tr").remove();
+  });
+
   $("form.sprited").live("ajax:before", function(){
     $(this).find("input:submit").attr('disabled','disabled');
   });
