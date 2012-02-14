@@ -40,7 +40,7 @@
               %th Actions
           %tbody
             - @shows.each do |show|
-              %tr{ :class => show.state }
+              %tr{ :class => [show.state, show.destroyable? ? "destroyable" : "" ] }
                 %td= link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
                 %td.available= show.glance.available_total
                 %td.gross= show.glance.sold_total

@@ -10,14 +10,20 @@
     .confirmation.dialog
       %p= "You are about to put all tickets for the #{l show.datetime_local_to_event} showing of #{show.event.name} on sale and make it public."
 
-  = form_tag published_event_shows_path(show.event), :remote => true, :'data-type' => :json, :class => "sprited built unpublished" do
-    = hidden_field_tag :show_id, show.id
-    = submit_tag "Publish", :class => [ :mini, :half ]
-    .confirmation.dialog
-      %p= "You are publishing the #{l show.datetime_local_to_event} showing of #{show.event.name}."
-
   = form_tag unpublished_event_shows_path(show.event), :remote => true, :'data-type' => :json, :class => "sprited published", :id => "show_#{show.id}" do
     = hidden_field_tag :show_id, show.id
     = submit_tag "Unpublish", :class => [ :mini, :half ]
     .confirmation.dialog
       %p= "You are unpublishing the #{l show.datetime_local_to_event} showing of #{show.event.name}."
+
+  = form_tag published_event_shows_path(show.event), :remote => true, :'data-type' => :json, :class => "sprited build pending published" do
+    = hidden_field_tag :show_id, show.id
+    = submit_tag "Publish", :class => [ :mini, :half ]
+    .confirmation.dialog
+      %p= "You are publishing the #{l show.datetime_local_to_event} showing of #{show.event.name}."
+
+  = form_tag event_show_path(@event, show), :method => :delete, :remote => true, :'data-type' => :json, :class => "sprited destroyable" do
+    = hidden_field_tag :show_id, show.id
+    = submit_tag "Delete", :class => [ :mini, :full ]
+    .confirmation.dialog
+      %p= "You are about to put all tickets for the #{l show.datetime_local_to_event} showing of #{show.event.name} on sale and make it public."

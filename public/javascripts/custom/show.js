@@ -33,14 +33,17 @@ $(document).ready(function () {
     }
   });
 
-  $("form.sprited").live("ajax:success", function(xhr, performance){
+  $("form.sprited").live("ajax:success", function(xhr, show){
     var $row = $(this).closest("tr");
     $(this).find(":submit").removeAttr('disabled');
-    $row.removeClass("pending built published unpublished")
-    $row.addClass(performance.state);
-    $row.find(".available").html(performance.glance.tickets.available);
-    $row.find(".gross").html(performance.glance.tickets.sold.gross);
-    $row.find(".comped").html(performance.glance.tickets.comped);
+    $row.removeClass("pending built published unpublished destroyable")
+    $row.addClass(show.state);
+    if(show.destroyable == true) {
+			$row.addClass("destroyable");
+		}
+    $row.find(".available").html(show.glance.tickets.available);
+    $row.find(".gross").html(show.glance.tickets.sold.gross);
+    $row.find(".comped").html(show.glance.tickets.comped);
   });
 
   $("form.sprited").live("ajax:error", function(xhr, status, error){
