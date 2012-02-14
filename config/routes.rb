@@ -3,6 +3,7 @@ Artfully::Application.routes.draw do
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index
+    resources :shows, :only => :show
     resources :organizations, :only => [] do
       resources :events
       resources :shows

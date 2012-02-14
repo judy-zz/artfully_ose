@@ -149,6 +149,10 @@ class Show < ActiveRecord::Base
     tickets.select(&:compable?)
   end
 
+  def as_widget_json(options = {})
+    as_json.merge(:event => event.as_json, :venue => event.venue.as_json, :chart => chart.as_json)
+  end
+
   private
 
   def self.future(date)

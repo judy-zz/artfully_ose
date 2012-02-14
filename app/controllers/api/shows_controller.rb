@@ -37,4 +37,12 @@ class Api::ShowsController < ApiController
     end
   end
 
+  def show
+    @show = Show.find(params[:id])
+    
+    respond_to do |format|
+      format.json { render :json => @show.as_widget_json }
+    end
+  end
+
 end
