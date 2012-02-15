@@ -359,7 +359,7 @@ artfully.models = (function(){
           var $t, performance_link;
 
           if (asRoot === true) {
-              $t = target;
+              $t = target.addClass("performance");
 
               jQuery("<h1>")
                 .addClass("event-name")
