@@ -19,7 +19,7 @@
 
     %li
       .label= f.label :comment
-      .element= f.text_area :comment
+      .element= f.text_area :comment, :rows => 5
 
   .cancel-submit
     = link_to "Cancel", organization_reseller_events_path(@organization)
