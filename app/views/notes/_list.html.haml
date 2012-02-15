@@ -18,4 +18,4 @@
           %td= l note.occurred_at, :format => :short unless note.occurred_at.nil?
           %td= truncate(note.text, :length => 80, :separator => ' ', :omission => '...')
           %td
-            =link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "popup-link", :remote => true)
+            = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "new-note-link", :remote => true)

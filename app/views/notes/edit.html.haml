@@ -1,10 +1,9 @@
 .spread
-  = form_for @note, :url => person_note_path(@person, @note), :as => :artfully_action do |form|
+  = form_for @note, :url => person_note_path(@person, @note) do |form|
     %ul
       %li
         .label= form.label :occurred_at, "Note date/time"
-        .element
-          = form.text_field :occurred_at, :value => l(@note.occurred_at, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+        .element= form.text_field :occurred_at, :value => l(@note.occurred_at, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
 
       %li
         .label= form.label :details, "Details"

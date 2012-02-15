@@ -2,8 +2,10 @@ class NotesController < ApplicationController
   before_filter :find_person
 
   def new
-    authorize! :create, Note
+    #authorize! :create, Note
     @note = Note.new
+    @note.occurred_at = DateTime.now.in_time_zone(current_user.current_organization.time_zone)
+    render :layout => false
   end
 
   def create
@@ -26,7 +28,7 @@ class NotesController < ApplicationController
     @person = Person.find params[:person_id]
     @note = Note.find params[:id]
 
-    if @note.valid? && @note.save!
+    if @note.update_attributes(params[:note])
       flash[:notice] = "Note updated successfully!"
       redirect_to person_url(@person)
     else

@@ -1,5 +1,4 @@
 Artfully::Application.routes.draw do
-  get "foo/index"
 
   namespace :api do
     resources :events, :only => :show
@@ -148,7 +147,6 @@ Artfully::Application.routes.draw do
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
   match '/people/:id/tag/' => 'people#tag', :as => :new_tag, :via => "post"
   match '/people/:id/tag/:tag' => 'people#untag', :as => :untag, :via => "delete"
-  match '/people/:id/note/' => 'people#note', :as => :new_note, :via => "post"
 
   root :to => 'index#dashboard', :constraints => lambda{|r| r.env["warden"].authenticate?}
   root :to => 'pages#index'
