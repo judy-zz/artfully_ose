@@ -4,6 +4,13 @@ $(document).ready(function () {
     zebra($('.zebra'));
   });
 
+  $("form.destroyable").live("ajax:success", function(){
+    $.gritter.add({
+      title: "Success",
+      text: "The show has been deleted"
+    });
+  });
+
   $("form.sprited").live("ajax:before", function(){
     $(this).find("input:submit").attr('disabled','disabled');
   });
