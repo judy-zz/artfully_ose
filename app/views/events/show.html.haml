@@ -30,22 +30,25 @@
 
     #tabs-1
       #shows
-        %table.standalone.zebra
+        %table.standalone.zebra{:style => 'width: 100%'}
           %thead
             %tr
               %th Show
-              %th Available
-              %th Sold
-              %th Comped
-              %th Actions
+              %th.stat Available
+              %th.stat Sold
+              %th.stat Comped
           %tbody
             - @shows.each do |show|
               %tr{ :class => [show.state, show.destroyable? ? "destroyable" : "" ] }
-                %td= link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
+                %td
+                  %div#show-datetime
+                    =link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
+                  %div#control-bar
+                    =render :partial => "shows/controls", :locals => { :show => show }
+                  .clear
                 %td.available= show.glance.available_total
                 %td.gross= show.glance.sold_total
                 %td.comped= show.glance.comped_total
-                %td= render :partial => "shows/controls", :locals => { :show => show }
             %tr
               = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
         = will_paginate @shows   

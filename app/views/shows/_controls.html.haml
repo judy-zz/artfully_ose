@@ -16,7 +16,7 @@
     .confirmation.dialog
       %p= "You are unpublishing the #{l show.datetime_local_to_event} showing of #{show.event.name}."
 
-  = form_tag published_event_shows_path(show.event), :remote => true, :'data-type' => :json, :class => "sprited build pending published" do
+  = form_tag published_event_shows_path(show.event), :remote => true, :'data-type' => :json, :class => "sprited built unpublished" do
     = hidden_field_tag :show_id, show.id
     = submit_tag "Publish", :class => [ :mini, :half ]
     .confirmation.dialog
