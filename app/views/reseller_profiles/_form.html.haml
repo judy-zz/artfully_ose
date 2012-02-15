@@ -16,7 +16,7 @@
       %li
         .label= f.label :fee
         .paired.element
-          = f.text_field :fee, :value => number_to_currency(@reseller_profile.fee * 0.01)
+          = f.text_field :fee, :value => number_to_currency((@reseller_profile.fee || 100) * 0.01)
           .description= "This fee is in addition to the $1 fee which Artful.ly collects."
 
     = f.submit "Update Profile"
