@@ -15,6 +15,10 @@ class TicketOffer < ActiveRecord::Base
   validates_numericality_of :available, :only_integer => true, :greater_than_or_equal_to => 0
   validates_numericality_of :sold, :only_integer => true, :greater_than_or_equal_to => 0
   validates_inclusion_of :status, :in => STATUSES
+  validates_presence_of :show
+  validates_associated :show
+  validates_presence_of :section
+  validates_associated :section
 
   scope :creating, where(:status => "creating")
   scope :offered, where(:status => "offered")

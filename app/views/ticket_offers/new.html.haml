@@ -8,5 +8,5 @@
   - if !@ticket_offer.reseller_profile
     = render "select_reseller_profile"
   - else
-    = render "shared/error_messages", :target => @show
+    = render "shared/error_messages", :target => @ticket_offer
     = render :partial => 'form', :locals => { :show => @show }

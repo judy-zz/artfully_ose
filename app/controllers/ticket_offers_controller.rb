@@ -2,6 +2,7 @@ class TicketOffersController < ApplicationController
 
   before_filter :find_organization, :only => [ :index, :new, :create ]
   before_filter :find_ticket_offer, :except => [ :index, :new, :create ]
+  before_filter :load_available_offer_options, :only => [ :new, :create ]
 
   def index
     if @reseller_profile
@@ -18,37 +19,8 @@ class TicketOffersController < ApplicationController
   end
 
   def new
-    # Build new ticket offer object.
     @ticket_offer = TicketOffer.new(params[:ticket_offer])
     @ticket_offer.reseller_profile = ResellerProfile.find_by_id(params[:reseller_profile_id])
-
-    # Get the master list of resellers.
-    @reseller_profiles = ResellerProfile.joins(:organization).order("organizations.name").all
-
-    # Grab the list of Events.
-    @events = @organization.events.includes(:shows)
-
-    # Build an EventID -> Shows hash.
-    @shows = @events.to_h { |event| [ event.id, event.shows.unplayed.all ] }
-
-    # Build a ShowID -> Sections hash.
-    @sections = @shows.values.flatten.to_h { |show| [ show.id, show.tickets.includes(:section).map(&:section).uniq ] }
-
-    # Build a list of ticket counts per section.
-    @counts = {}
-    @shows.map do |event_id, shows|
-      shows.each do |show|
-        show.
-          tickets.
-          resellable.
-          select("section_id, COUNT(*) AS count").
-          group("section_id").
-          each do |t|
-            @counts[show.id] ||= {}
-            @counts[show.id][t.section_id] = t.count
-          end
-      end
-    end
   end
 
   def create
@@ -57,54 +29,9 @@ class TicketOffersController < ApplicationController
     @ticket_offer.status = "offered"
 
     if @ticket_offer.save
-      edit_path = edit_ticket_offer_path(@ticket_offer)
-      redirect_to edit_path
+      redirect_to ticket_offers_path
     else
       render :action => "new"
-    end
-  end
-
-  def edit
-    # Grab the list of Events.
-    @events = @organization.events.includes(:shows)
-
-    # Build an EventID -> Shows hash.
-    @shows = @events.to_h { |event| [ event.id, event.shows.unplayed.all ] }
-
-    # Build a ShowID -> Sections hash.
-    @sections = @shows.values.flatten.to_h { |show| [ show.id, show.tickets.includes(:section).map(&:section).uniq ] }
-
-    # Build a list of ticket counts per section.
-    @counts = {}
-    @shows.map do |event_id, shows|
-      shows.each do |show|
-        show.
-          tickets.
-          resellable.
-          select("section_id, COUNT(*) AS count").
-          group("section_id").
-          each do |t|
-            @counts[show.id] ||= {}
-            @counts[show.id][t.section_id] = t.count
-          end
-      end
-    end
-  end
-
-  def update
-    if params[:ticket_offer][:status] == "rejected"
-      @ticket_offer.decline! params[:ticket_offer][:rejection_reason]
-      redirect_to root_path, :notice => "You have rejected this ticket offer."
-      return
-    end
-
-    if @ticket_offer.update_attributes(params[:ticket_offer])
-      @ticket_offer.offer!
-      path = event_show_path(@ticket_offer.show.event, @ticket_offer.show)
-
-      redirect_to path, :notice => 'Your ticket offer has been sent to the reseller.'
-    else
-      render :action => "edit"
     end
   end
 
@@ -135,6 +62,36 @@ class TicketOffersController < ApplicationController
     @ticket_offer = TicketOffer.find(params[:id])
     @organization = @ticket_offer.organization
     authorize! :edit, @ticket_offer
+  end
+
+  def load_available_offer_options
+    # Get the master list of resellers.
+    @reseller_profiles = ResellerProfile.joins(:organization).order("organizations.name").all
+
+    # Grab the list of Events.
+    @events = @organization.events.includes(:shows)
+
+    # Build an EventID -> Shows hash.
+    @shows = @events.to_h { |event| [ event.id, event.shows.unplayed.all ] }
+
+    # Build a ShowID -> Sections hash.
+    @sections = @shows.values.flatten.to_h { |show| [ show.id, show.tickets.includes(:section).map(&:section).uniq ] }
+
+    # Build a list of ticket counts per section.
+    @counts = {}
+    @shows.map do |event_id, shows|
+      shows.each do |show|
+        show.
+          tickets.
+          resellable.
+          select("section_id, COUNT(*) AS count").
+          group("section_id").
+          each do |t|
+            @counts[show.id] ||= {}
+            @counts[show.id][t.section_id] = t.count
+          end
+      end
+    end
   end
 
 end
