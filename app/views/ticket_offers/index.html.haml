@@ -1,8 +1,6 @@
 - in_section :events
 - content_for :header do
   %h1= t('.heading', :default => "Reseller Offers")
-  %ul.from-here
-    %li= link_to "New Offer", new_ticket_offer_path if @organization.events.count > 0
 
 .document
 
