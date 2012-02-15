@@ -21,9 +21,9 @@
             - if attachment = event.attachment_by(@reseller_profile)
               - if attachment.image.present?
                 %li= link_to "View Image", attachment.image.url, :class => "popup-image"
-              %li= link_to "Edit Attachment", edit_organization_reseller_attachment_path(@organization, attachment)
+              %li= link_to "Edit Image", edit_organization_reseller_attachment_path(@organization, attachment)
             - else
-              %li= link_to "Create Attachment", new_organization_reseller_attachment_path(@organization, :reseller_event_id => event.id)
+              %li= link_to "Upload Image", new_organization_reseller_attachment_path(@organization, :reseller_event_id => event.id)
           %ul.details-long
             %li
               .key Venue
@@ -45,9 +45,9 @@
             - if attachment = offer.event.attachment_by(@reseller_profile)
               - if attachment.image.present?
                 %li= link_to "View Image", attachment.image.url, :class => "popup-image"
-              %li= link_to "Edit Attachment", edit_organization_reseller_attachment_path(@organization, attachment)
+              %li= link_to "Edit Image", edit_organization_reseller_attachment_path(@organization, attachment)
             - else
-              %li= link_to "Create Attachment", new_organization_reseller_attachment_path(@organization, :event_id => offer.event.id)
+              %li= link_to "Upload Image", new_organization_reseller_attachment_path(@organization, :event_id => offer.event.id)
           %ul.details-long
             %li
               .key Date &amp; Time

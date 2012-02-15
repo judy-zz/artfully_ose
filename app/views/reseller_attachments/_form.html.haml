@@ -23,7 +23,4 @@
 
   .cancel-submit
     = link_to "Cancel", organization_reseller_events_path(@organization)
-    - if @reseller_attachment.new_record?
-      = f.submit "Create Attachment"
-    - else
-      = f.submit "Update Attachment"
+    = f.submit "Upload Image"
