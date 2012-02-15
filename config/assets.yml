@@ -30,6 +30,13 @@ javascripts:
 
   vendor:
     - public/javascripts/jquery/**/*.js
+    
+  comps:
+    - public/javascripts/inline-people-search.js
+
+  box_office:
+    - public/javascripts/inline-people-search.js
+    - public/javascripts/box-office.js
 
   application:
     - public/javascripts/jquery_ujs.js

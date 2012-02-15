@@ -329,9 +329,10 @@ input.mini
   background: rgba(7, 112, 131, 0.1)
 
 .sold-out
-  background: rgba(240, 130, 4, 0.1)
-  @include rounded-corners(10px, 10px, 10px, 10px)
   text-align: center !important
+  text-transform: uppercase
+  font-size: 10pt
+  color: #999
 
 .more
   font-size: .8em
@@ -420,7 +421,7 @@ input.mini
   width: 480px
   margin: 0 auto
 
-.refunded, .returned
+.refunded, .returned, .comped-price
   text-decoration: line-through
 
 .changable-overlay
@@ -566,12 +567,6 @@ ul.prices li div
     font-family: Courier
     padding: 1px
 
-.hidden
-  display: none
-
-.label.hidden
-  display: none
-
 .context-buttons
   @include rounded-corners(4px, 4px, 4px, 4px)
   @include stack-layout
@@ -648,6 +643,35 @@ dl.table-display
   td
     text-align: right
     font-weight: bold
+    
+textarea#reason-for-comp
+  width: 99%
+  height: 100px
+  margin: 2px
+
+#save-comp
+  width: 200px
+  margin: 5px auto
+  a
+    display: block
+    @include rounded-corners(2px, 2px, 2px, 2px)
+    @include inset-text
+    @include gradient($compliment_highlight, $compliment, 14%, 100%)
+    border: 1px solid $compliment_shadow
+    font-size: 1em
+    text-align: center
+    font-weight: bold
+    line-height: 40px
+  button
+    display: block
+    @include rounded-corners(2px, 2px, 2px, 2px)
+    @include inset-text
+    @include gradient($compliment_highlight, $compliment, 14%, 100%)
+    border: 1px solid $compliment_shadow
+    font-size: 1em
+    text-align: center
+    font-weight: bold
+    line-height: 40px
 
 @import "main-menu"
 @import "admin-menu"
@@ -658,3 +682,12 @@ dl.table-display
 @import "show"
 @import "logo"
 @import "box-office"
+
+.hidden
+  display: none !important
+
+.label.hidden
+  display: none
+  
+.invisible
+  visibility: hidden

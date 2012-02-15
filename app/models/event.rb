@@ -8,6 +8,7 @@ class Event < ActiveRecord::Base
   has_many :reseller_attachments, :as => :attachable
 
   validates_presence_of :name, :producer, :organization_id
+  validates :is_free, :immutable => {:message => "Cannot change free/paid event after an event has been created"}
 
   default_scope where(:deleted_at => nil)
   scope :published, includes(:shows).where(:shows => { :state => "published" })

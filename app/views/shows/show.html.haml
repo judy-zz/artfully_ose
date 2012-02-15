@@ -7,7 +7,7 @@
   %ul.context-buttons
     - unless @show.pending?
       %li= button_to "Add Tickets", new_show_ticket_path(@show), :method => :get
-      -# %li= button_to "Box Office", new_event_show_sales_path(@event,@show), :method => :get
+      %li= button_to "Box Office", new_event_show_sales_path(@event,@show), :method => :get
     - if not @show.played?
       - if not @show.published?
         %li
@@ -33,6 +33,8 @@
   - if @show.pending?
     %h3 Tickets
     %p= "You have not created tickets for this event.  Tickets will be created using the #{@show.chart.name} seating chart."
+    %h4= @show.chart.name
+    = render :partial => 'sections/section_table', :locals => { :chart => @show.chart, :include_link => false }
     = form_tag built_event_shows_path(@show.event) do
       = hidden_field_tag :show_id, @show.id
       = submit_tag "Create Tickets"

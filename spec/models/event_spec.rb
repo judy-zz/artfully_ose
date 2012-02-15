@@ -25,7 +25,7 @@ describe Event do
     subject.producer = nil
     subject.should_not be_valid
   end
-
+  
   describe "#upcoming_shows" do
     it "should default to a limit of 5 performances" do
       subject.shows = 10.times.collect { Factory(:show, :datetime => (DateTime.now + 1.day)) }
@@ -37,6 +37,20 @@ describe Event do
       test_performances += 2.times.collect { mock(:show, :datetime => (DateTime.now - 1.day)) }
       subject.stub(:shows).and_return(test_performances)
       subject.upcoming_shows.should have(3).shows
+    end
+  end
+  
+  describe "free and paid events" do
+    it "cannot be changed from paid to free once saved and vice versa" do
+      event = Factory(:paid_event)
+      event.save
+      event.is_free = true
+      event.save
+      event.errors.should_not be_empty
+      event.errors[:is_free].first.should eq "Cannot change free/paid event after an event has been created"
+      
+      event = Event.find(event.id)
+      event.is_free?.should be_false
     end
   end
   

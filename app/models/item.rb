@@ -20,8 +20,8 @@ class Item < ActiveRecord::Base
     order("Last Name") { |order| order.person.last_name if order.person }
     order("Company Name") { |order| order.person.company_name if order.person }
     order("Donation Date") { |order| order.created_at }
-    price("Gift Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
-    nongift_amount("Non-gift Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
+    total_price("Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
+    nongift_amount("Non-deductible") { |cents| number_to_currency(cents.to_f/100) if cents }
   end
 
   comma :ticket_sale do
@@ -39,6 +39,20 @@ class Item < ActiveRecord::Base
 
   def donation?
     product_type == "Donation"
+  end
+
+  #
+  # Donations stored in the FA DB are stored like so:
+  # $100 sent
+  # amount = $50
+  # nongift = $50
+  #
+  # So, unfortunately, they arrive at artfully in the same manner.
+  # That means, for donations, an item's "price" is actually the gift amount of the donation
+  # and the "total_price" is the amount that was transacted (amount + nongift)
+  #
+  def total_price
+    price + (nongift_amount.nil? ? 0 : nongift_amount.to_i)  
   end
 
   def self.for(prod, per_item_lambda=lambda { |item| 0 })

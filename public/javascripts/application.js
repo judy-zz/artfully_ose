@@ -17,7 +17,7 @@ $(document).ready(function() {
     
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({
-      dropboxID:   "20016501",
+      dropboxID:   "20042668",
       url:         "https://artfully.zendesk.com",
       tabID:       "help",
       tabColor:    "black",
@@ -44,7 +44,7 @@ $(document).ready(function() {
   $(".new-window").parents("form").attr("target", "_blank");
 
   $("#main-menu").hover(
-    function(){$("#main-menu li ul").stop().animate({height: '144px'}, 'fast')},
+    function(){$("#main-menu li ul").stop().animate({height: '160px'}, 'fast')},
     function(){$("#main-menu li ul").stop().animate({height: '0px'}, 'fast')}
   );
 

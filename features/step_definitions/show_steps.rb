@@ -66,7 +66,6 @@ When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email
   customer = Factory(:person, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)
   Person.stub(:search_index).and_return(Array.wrap(customer))
   When %{I fill in "Search" with "#{email}"}
-  And %{I press "Search"}
 end
 
 When /^I confirm comp$/ do

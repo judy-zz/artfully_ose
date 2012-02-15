@@ -4,7 +4,7 @@
       %thead
         %tr
           %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall
-          %th Type
+          %th Item
           %th Price
       %tbody
         - order.all_items.each do |item|

@@ -70,16 +70,17 @@ class Checkout
 
   private
 
+    #TODO: This is a relic from the Athena days.  Should be moved into person.rb
     def find_or_create_people_record
       organization = cart.organizations.first
-      person = Person.find_by_email_and_organization(@customer.email, organization)
-
+      person = Person.find_by_customer(@customer, organization)
+      
       if person.nil?
         params = {
           :first_name      => @customer.first_name,
           :last_name       => @customer.last_name,
           :email           => @customer.email,
-          :organization_id => organization.id # DEBT: This doesn't account for multiple organizations per cart
+          :organization_id => organization.id # This doesn't account for multiple organizations per cart
         }
         person = Person.create(params)
         address = Address.from_payment(payment)
@@ -93,7 +94,7 @@ class Checkout
       cart.organizations.each do |organization|
         @order = new_order(organization, order_timestamp, @person)
         @order.save!
-        OrderMailer.confirmation_for(order).deliver unless @person.dummy?
+        OrderMailer.confirmation_for(order).deliver unless @person.dummy? || @person.email.blank?
         @order
       end
     end

@@ -61,8 +61,8 @@
           $back = $(document.createElement('input')).addClass('back').attr({'type':'button','value':'\u2190 Back'}).appendTo($wizard);
           $back.attr('disabled','disabled');
 
-          $wizard.bind("onLastSlideIn", function(){ methods.disableButton($next); });
-          $wizard.bind("onLastSlideOut", function(){ methods.enableButton($next); });
+          $wizard.bind("onLastSlideIn", function(){ methods.hideButton($next); });
+          $wizard.bind("onLastSlideOut", function(){ methods.showButton($next); });
 
           $wizard.bind("onFirstSlideIn", function(){ methods.disableButton($back); });
           $wizard.bind("onFirstSlideOut", function(){ methods.enableButton($back); });
@@ -133,6 +133,12 @@
         },
         disableButton: function($btn){
           $btn.attr('disabled','disabled');
+        },
+        hideButton: function($btn){
+          $btn.css('visibility', 'hidden');
+        },
+        showButton: function($btn){
+          $btn.css('visibility', 'visible');
         },
         calculateMarginFor: function(pos){
           return -($viewport.width() * pos);

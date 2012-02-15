@@ -1,14 +1,36 @@
 class Comp
-  include ActiveModel::Conversion
+  include ActiveModel::Conversion 
+  include ActiveModel::Validations
   extend ActiveModel::Naming
 
-  attr_accessor :show, :tickets, :recipient, :reason, :order
+  validate :valid_recipient_and_benefactor
+
+  attr_accessor :show, :tickets, :recipient, :benefactor, :reason, :order
   attr_accessor :comped_count, :uncomped_count
 
-  def initialize(show, tickets, recipient)
-    self.show = show
-    self.tickets = tickets
-    self.recipient = recipient
+  #tickets can be an array of tickets_ids or an array of tickets
+  def initialize(show, tickets_or_ids, recipient, benefactor)
+    @show = show
+    @tickets = []
+    load_tickets(tickets_or_ids)
+    @recipient = Person.find(recipient) unless recipient.blank?
+    @benefactor = benefactor
+  end
+  
+  def valid_recipient_and_benefactor
+    if @recipient.nil?
+      errors.add(:base, "Please select a person to comp to or create a new person record")
+      return
+    end
+    
+    if @benefactor.nil?
+      errors.add(:base, "Please select a benefactor")
+      return
+    end
+    
+    unless @benefactor.current_organization.eql? @recipient.organization
+      errors.add(:base, "Recipient and benefactor are from different organizations")
+    end
   end
 
   def has_recipient?
@@ -19,33 +41,38 @@ class Comp
     false
   end
 
-  def submit(benefactor)
+  def submit
     ActiveRecord::Base.transaction do
       comped_tickets = []
-      tickets.each do |ticket_id|
-        t = Ticket.find ticket_id
+      @tickets.each do |t|
         t.comp_to recipient
         comped_tickets << t
       end
-      create_order(comped_tickets, benefactor)
+      create_order(comped_tickets, @benefactor)
       self.comped_count    = tickets.size
       self.uncomped_count  = 0
     end
   end
 
   private
-
-  def create_order(comped_tickets, benefactor)
-    @order = CompOrder.new
-    @order << comped_tickets
-    @order.person = recipient
-    @order.organization = benefactor.current_organization
-    @order.details = "Comped by: #{benefactor.email} Reason: #{reason}"
-    @order.to_comp!
-    
-    
-    if 0 < comped_tickets.size
-      @order.save
+    def load_tickets(tickets_or_ids)
+      tickets_or_ids.each do |t|
+        t = Ticket.find(t) unless t.kind_of? Ticket
+        @tickets << t
+      end
     end
-  end
+  
+    def create_order(comped_tickets, benefactor)
+      @order = CompOrder.new
+      @order << comped_tickets
+      @order.person = recipient
+      @order.organization = benefactor.current_organization
+      @order.details = "Comped by: #{benefactor.email} Reason: #{reason}"
+      @order.to_comp!
+    
+    
+      if 0 < comped_tickets.size
+        @order.save
+      end
+    end
 end

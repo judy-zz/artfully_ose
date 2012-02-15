@@ -39,6 +39,10 @@ class Ticket < ActiveRecord::Base
   def datetime
     show.datetime_local_to_event
   end
+  
+  def as_json(options = {})
+    super(options).merge!({:section => section})
+  end
 
   def self.unsold
     where(:state => [:off_sale, :on_sale])
