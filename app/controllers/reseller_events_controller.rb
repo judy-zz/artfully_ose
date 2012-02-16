@@ -49,7 +49,7 @@ class ResellerEventsController < ApplicationController
   def update
     if @reseller_event.update_attributes(params[:reseller_event])
       flash[:notice] = "Your event has been updated."
-      redirect_to organization_reseller_events_path(@organization)
+      redirect_to organization_reseller_event_path(@organization, @reseller_event)
     else
       render :edit
     end
