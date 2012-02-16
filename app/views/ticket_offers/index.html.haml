@@ -4,13 +4,11 @@
 
 - if (@offers_to_me && @offers_to_me.count > 0) || (@my_offers && @my_offers.count > 0)
 
-  .context
+  .spread
 
     %h3 Tiket Offers
 
     %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
-
-  .spread
 
     - if @reseller_profile
 
