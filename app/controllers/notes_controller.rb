@@ -2,7 +2,6 @@ class NotesController < ApplicationController
   before_filter :find_person
 
   def new
-    #authorize! :create, Note
     @note = Note.new
     @note.occurred_at = DateTime.now.in_time_zone(current_user.current_organization.time_zone)
     render :layout => false

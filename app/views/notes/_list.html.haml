@@ -1,21 +1,18 @@
 %table.zebra#notes-list
   %thead
     %tr
-      %th Date Occurred
+      %th Date
       %th Details
       %th &nbsp;
   %tbody
     - if person.notes.empty?
       %tr
-        %td
         %td No notes for this person
-        %td
-        %td
-        %td
+        %td &nbsp;
+        %td &nbsp;
     - else
       - notes.each do |note|
         %tr
           %td= l note.occurred_at, :format => :short unless note.occurred_at.nil?
           %td= truncate(note.text, :length => 80, :separator => ' ', :omission => '...')
-          %td
-            = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "new-note-link", :remote => true)
+          %td= link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "new-note-link", :remote => true)
