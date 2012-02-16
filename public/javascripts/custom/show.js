@@ -1,14 +1,18 @@
 $(document).ready(function () {
   $("form.destroyable").live("ajax:before", function(){
-    $row = $(this).closest("tr").remove();
+		var row = $(this).closest("tr")
+    row.remove();
     zebra($('.zebra'));
   });
 
-  $("form.destroyable").live("ajax:success", function(){
-    $.gritter.add({
-      title: "Success",
-      text: "The show has been deleted"
-    });
+  $("form.destroyable").live("ajax:success", function(ev){
+    setFlashMessage("The show has been deleted");
+		ev.stopImmediatePropagation()
+  });
+
+  $("form.destroyable").live("ajax:error", function(ev){
+    setErrorMessage("That show cannot be deleted");
+		ev.stopImmediatePropagation()
   });
 
   $("form.sprited").live("ajax:before", function(){

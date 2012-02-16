@@ -46,9 +46,9 @@
                   %div#control-bar
                     =render :partial => "shows/controls", :locals => { :show => show }
                   .clear
-                %td.available= show.glance.available_total
-                %td.gross= show.glance.sold_total
-                %td.comped= show.glance.comped_total
+                %td.available_value= show.glance.available_total
+                %td.gross_value= show.glance.sold_total
+                %td.comped_value= show.glance.comped_total
             %tr
               = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
         = will_paginate @shows   
