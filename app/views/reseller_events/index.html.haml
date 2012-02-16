@@ -17,15 +17,6 @@
       - @reseller_events.each do |event|
         %li
           %h4= link_to event.name, organization_reseller_event_path(@organization, event), :name => 'event-name'
-          %ul.controls
-            %li= link_to "Edit", edit_organization_reseller_event_path(@organization, event) if can?(:edit, event)
-            %li= link_to "Delete", organization_reseller_event_path(@organization, event), :method => :delete, :confirm => "Are you sure you want to delete #{event.name}?" if can?(:destroy, event)
-            - if attachment = event.attachment_by(@reseller_profile)
-              - if attachment.image.present?
-                %li= link_to "View Image", attachment.image.url, :class => "popup-image"
-              %li= link_to "Edit Image", edit_organization_reseller_attachment_path(@organization, attachment)
-            - else
-              %li= link_to "Upload Image", new_organization_reseller_attachment_path(@organization, :reseller_event_id => event.id)
           %ul.details-long
             %li
               .key Venue
@@ -43,13 +34,6 @@
       - @reselling_offers.each do |offer|
         %li
           %h4= link_to offer.event.name, store_event_path(offer.event), :name => 'event-name'
-          %ul.controls
-            - if attachment = offer.event.attachment_by(@reseller_profile)
-              - if attachment.image.present?
-                %li= link_to "View Image", attachment.image.url, :class => "popup-image"
-              %li= link_to "Edit Image", edit_organization_reseller_attachment_path(@organization, attachment)
-            - else
-              %li= link_to "Upload Image", new_organization_reseller_attachment_path(@organization, :event_id => offer.event.id)
           %ul.details-long
             %li
               .key Date &amp; Time
