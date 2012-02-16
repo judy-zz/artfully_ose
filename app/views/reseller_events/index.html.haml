@@ -2,9 +2,13 @@
 - content_for :header do
   %h1= t('.heading', :default => "Reseller Events")
 
-.document
+.context
 
-  %h3 Your Custom Events
+  %h3 Your Events
+
+  %p= t('.events', :default => "Your events will appear here.")
+
+.document
 
   - if @reseller_events.blank?
     = link_to "Create an Event", new_organization_reseller_event_path(@organization), :class => 'cta-left-125'
