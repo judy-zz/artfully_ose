@@ -8,6 +8,10 @@ class ResellerEventsController < ApplicationController
   def index
     @reseller_events = current_user.current_organization.reseller_events.alphabetical.all
     @reselling_offers = @reseller_profile.ticket_offers.includes(:show => { :event => :reseller_attachments }).accepted.all
+
+    if @reseller_events.blank? && @reselling_offers.blank?
+      redirect_to new_organization_reseller_event_path(@organization)
+    end
   end
 
   def show
