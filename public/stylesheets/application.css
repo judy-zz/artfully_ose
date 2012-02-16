@@ -820,6 +820,9 @@ ul.prices li div {
         clear: both;
         visibility: hidden; }
 
+.context-thumbnail img {
+  max-width: 100%; }
+
 .list-manipulations {
   margin: 12px 0; }
   .list-manipulations li {

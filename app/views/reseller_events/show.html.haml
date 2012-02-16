@@ -7,8 +7,18 @@
     = "#{@venue.name} #{@venue.city}, #{@venue.state} [#{time_zone_description(@venue.time_zone)}]"
 
 .context
+
   %ul.context-buttons
     %li= button_to "Edit Event", edit_organization_reseller_event_path(@organization, @reseller_event), :method => :get
+    %li
+      - if @reseller_attachment
+        = button_to "Edit Image", edit_organization_reseller_attachment_path(@organization, @reseller_attachment), :method => :get
+      - else
+        = button_to "Upload Image", new_organization_reseller_event_reseller_attachment_path(@organization, @reseller_event), :method => :get
+
+  - if @reseller_attachment && @reseller_attachment.image.present?
+    .context-thumbnail= image_tag @reseller_attachment.image.url
+
   %h3 At a Glance
   %ul
     %li

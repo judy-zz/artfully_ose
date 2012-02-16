@@ -12,6 +12,7 @@ class ResellerEventsController < ApplicationController
 
   def show
     @next_reseller_show = @reseller_event.next_show
+    @reseller_attachment = @reseller_event.attachment_by(@reseller_profile)
 
     respond_to do |format|
       format.html
