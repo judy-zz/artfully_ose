@@ -1799,3 +1799,6 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 .invisible {
   visibility: hidden; }
+
+#offers-by-me {
+  padding-top: 25px; }
