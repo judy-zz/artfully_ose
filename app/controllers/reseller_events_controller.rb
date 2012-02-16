@@ -39,7 +39,6 @@ class ResellerEventsController < ApplicationController
       flash[:notice] = "Your event has been created."
       redirect_to organization_reseller_events_path(@organization)
     else
-      flash.now[:error] = "There was an error while creating your new reseller event."
       render :new
     end
   end
@@ -52,7 +51,6 @@ class ResellerEventsController < ApplicationController
       flash[:notice] = "Your event has been updated."
       redirect_to organization_reseller_events_path(@organization)
     else
-      flash.now[:error] = "There was an error in updating your reseller event."
       render :edit
     end
   end
