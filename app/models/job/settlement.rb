@@ -27,8 +27,13 @@ class Job::Settlement < Job::Base
         donations = order_set.collect(&:settleable_donations).flatten
         organization = order_set.first.organization
 
-        logger.error "#{organization.name} does not have a bank account." if organization.bank_account.nil?
-        Settlement.submit(organization.id, donations, organization.bank_account)
+        logger.error "#{organization.id} does not have a bank account." if organization.bank_account.nil?
+
+        if donations.empty?
+          logger.error "#{organization.id} has ticket sales but no donations for this range." if organization.bank_account.nil?
+        else
+          Settlement.submit(organization.id, donations, organization.bank_account)
+        end
       end
     end
   end
