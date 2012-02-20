@@ -53,6 +53,12 @@
       }
     });
 
+    // click "complete purchase" to submit payment
+    $('from#shopping-cart-form').submit(function(e) {
+      e.preventDefault();
+      checkout();
+    });
+
     // show shopping cart when clicked
     $('#shopping-cart-controls').click(function() {
       $('#shopping-cart #steps').slideToggle();
@@ -134,6 +140,7 @@
       url: "#{store_order_path}",
       type: "DELETE",
       success: function( data ) {
+        // then add items
         $.post("#{store_order_path}", params);
       }
     });
@@ -142,8 +149,18 @@
   function checkout() {
     // POST "/store/checkout" // Store::CheckoutsController#create as HTML // Parameters: {"utf8"=>"✓", "authenticity_token"=>"oGmh5IrGv6CU3aPbpERHFNTpZg6YAiwLXY66d0zev6I=", "athena_payment"=>{"athena_customer"=>{"first_name"=>"test", "last_name"=>"test", "phone"=>"test", "email"=>"test@test.com"}, "athena_credit_card"=>{"cardholder_name"=>"test test", "card_number"=>"4242424242424242", "cvv"=>"123", "expiration_date(3i)"=>"1", "expiration_date(2i)"=>"2", "expiration_date(1i)"=>"2015"}, "billing_address"=>{"street_address1"=>"test", "city"=>"test", "state"=>"AL", "postal_code"=>"12345"}, "user_agreement"=>"1"}, "confirmation"=>"1", "commit"=>"Purchase"}
 
-    $.post('#{store_checkout_path}', $("form#shopping-cart-form").serialize(), function(data) {
-      console.log(data);
+    $.ajax({
+      type: 'POST',
+      url: '#{store_checkout_path}',
+      data: $("form#shopping-cart-form").serialize(),
+      success: function(data) {
+        console.log("SUCCESS!");
+        console.log(data);
+      },
+      error: function(data) {
+        console.log("ERROR!");
+        console.log(data);
+      }
     });
   }
 
@@ -370,7 +387,7 @@
 
       .tab-pane#payment-details
         %fieldset
-          = fields_for "athena_credit_card" do |card|
+          = fields_for "athena_payment[athena_credit_card]" do |card|
             %ul
               %li
                 .label= card.label :cardholder_name, "Cardholder Name", :class => 'required'
@@ -391,12 +408,13 @@
                   = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "small"
                   #expiration-slash /
                   = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "small"
+                  = card.hidden_field 'expiration_date(3i)', :value => 1
           .continue
             = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
       
       .tab-pane#billing-address
         %fieldset
-          = fields_for "billing_address" do |address|
+          = fields_for "athena_payment[billing_address]" do |address|
             %ul
               %li
                 .label= address.label :street_address1, "Billing Address", :class => 'required'
@@ -424,5 +442,6 @@
           
         #user_agreement
           = t("pages.user_agreement.content", :default => "")
+        = hidden_field_tag :confirmation, 1
         .continue
           = submit_tag 'Complete Purchase', :id => 'complete-purchase'

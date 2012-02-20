@@ -22,6 +22,16 @@ class Store::OrdersController < Store::StoreController
     redirect_to store_order_url
   end
 
+  # used by hosted storefront
+  # def sync_from_storefront
+  #   current_cart.destroy
+  #   tickets = []
+  #   params[:section].each do |section|
+  #     tickets << Ticket.available(:section_id => section[:id], params[:limit])
+  #   end
+  #   handle_order([tickets, params[:donation]])
+  # end
+
   private
     def handle_order(params)
       handle_tickets(params[:tickets]) if params.has_key? :tickets
@@ -33,6 +43,7 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_tickets(ids)
+      logger.info("current_cart: #{current_cart}")
       current_cart << Ticket.find(ids)
     end
 
