@@ -66,6 +66,11 @@
       e.preventDefault();
       currentSectionId = $('li.active a').attr('href');
 
+      // update cart on server if moving from "cart" tab
+      if (currentSectionId == '#cart') {
+        updateOrderOnServer();
+      };
+
       // validate section before switching tabs
       if (validateSection(currentSectionId)) {
         newHref = $(this).attr('href');
@@ -89,15 +94,58 @@
     // change drop down on tickets in cart
     $(document).on('change', '#cart select.ticket-count', function(e) {
       ticketCount = parseInt($(this).val());
+      sectionId = $(this).parents('tr').attr('data-section-id');
+      showId = $(this).parents('tr').attr('data-show-id');
+      unitPrice =$(this).parent('td').attr('data-unit-price')
+
       $(this).parent('td').attr('data-quantity', ticketCount);
-      subTotal = parseFloat($(this).parent('td').attr('data-unit-price')) * ticketCount;
+      subTotal = parseFloat(unitPrice) * ticketCount;
       $(this).parents('tr').find('td.price').attr('data-price', subTotal);
       $(this).parents('tr').find('td.price h5').text(subTotal);
+      createOrUpdateTicketIdsInCart(sectionId, showId, ticketCount, unitPrice);
       updateServiceCharge();
       updateTotal();
       $('.formatCurrency').formatCurrency();
     });
   });
+
+  function updateOrderOnServer() {
+    // POST "/store/order" // Store::OrdersController#create as HTML // Parameters: {"tickets"=>["20001"]}
+    // POST "/store/order" // Store::OrdersController#create as HTML // Parameters: {"utf8"=>"✓", "authenticity_token"=>"oGmh5IrGv6CU3aPbpERHFNTpZg6YAiwLXY66d0zev6I=", "donation"=>{"organization_id"=>"92", "amount"=>"1000"}, "old_donation"=>{"amount"=>"$10.00"}, "commit"=>"Make Donation"}
+    
+    var params = {};
+
+    tickets = [];
+    $('.ticket_id').each(function() { tickets.push($(this).val()) });
+    if (tickets.length > 0) {
+      params.tickets = tickets;
+    }
+
+    donationAmount = parseFloat($('tr.donation td.price').attr('data-price')) * 100;
+    if (donationAmount > 0) {
+      params.donation = {
+        organization_id: #{@event.organization.id},
+        amount: donationAmount
+      }
+    }
+
+    // empty the cart first
+    $.ajax({
+      url: "#{store_order_path}",
+      type: "DELETE",
+      success: function( data ) {
+        $.post("#{store_order_path}", params);
+      }
+    });
+  }
+
+  function checkout() {
+    // POST "/store/checkout" // Store::CheckoutsController#create as HTML // Parameters: {"utf8"=>"✓", "authenticity_token"=>"oGmh5IrGv6CU3aPbpERHFNTpZg6YAiwLXY66d0zev6I=", "athena_payment"=>{"athena_customer"=>{"first_name"=>"test", "last_name"=>"test", "phone"=>"test", "email"=>"test@test.com"}, "athena_credit_card"=>{"cardholder_name"=>"test test", "card_number"=>"4242424242424242", "cvv"=>"123", "expiration_date(3i)"=>"1", "expiration_date(2i)"=>"2", "expiration_date(1i)"=>"2015"}, "billing_address"=>{"street_address1"=>"test", "city"=>"test", "state"=>"AL", "postal_code"=>"12345"}, "user_agreement"=>"1"}, "confirmation"=>"1", "commit"=>"Purchase"}
+
+    $.post('#{store_checkout_path}', $("form#shopping-cart-form").serialize(), function(data) {
+      console.log(data);
+    });
+  }
 
   function switchTabs(newSectionId) {
     $('.tab-pane').hide();
@@ -125,6 +173,9 @@
       }
 
       updateServiceCharge();
+
+      // add hidden field with ticket ids to checkout form
+      createOrUpdateTicketIdsInCart(params.sectionId, params.showId, params.ticketCount, params.ticketPrice);
       
     } else if (type === 'donation') {
       createOrUpdateDonationLineItem(params);
@@ -158,6 +209,28 @@
 
     $("[data-section-id='" + params.sectionId + "'][data-show-id='" + params.showId + "'] .ticket-count").val(params.ticketCount);
   };
+
+  function createOrUpdateTicketIdsInCart(section_id, show_id, limit, price) {
+    //clear any exisiting ids
+    $("[data-section-id='" + section_id + "'][data-show-id='" + show_id + "'] input.ticket_id").remove();
+
+    // GET "/api/tickets.jsonp" // Api::TicketsController#index as JSON // Parameters: {"callback"=>"jQuery15206865967682097107_1328902227716", "limit"=>"1", "show_id"=>"189", "price"=>"10000", "_"=>"1328902247282"}
+    data = {
+      show_id: show_id,
+      limit: limit,
+      price: (price * 100)
+    }
+
+    // get ids
+    $.get('#{api_tickets_path}', data, function(data) {
+      // add ids to line item
+      $.each(data, function() {
+        $("[data-section-id='" + section_id + "'][data-show-id='" + show_id + "']").prepend(
+          "<input class='ticket_id' name='tickets[]' type='hidden' value='" + this.id + " ' >"
+        )
+      })
+    });
+  }
 
   function createOrUpdateDonationLineItem(params) {
     $('#cart table tr.donation').remove();
@@ -278,64 +351,67 @@
 
       .tab-pane#contact-info
         %fieldset
-          %ul
-            %li
-              .label= label_tag :first_name, "First Name", :class => 'required'
-              .element= text_field_tag :first_name, nil, :class => 'required'
-            %li
-              .label= label_tag :last_name, "Last Name", :class => 'required'
-              .element= text_field_tag :last_name, nil, :class => 'required'
-            %li
-              .label= label_tag :email, "Email", :class => 'required'
-              .element= text_field_tag :email, nil, :class => 'required', :type => 'email'
-            %li
-              .label= label_tag :phone, "Phone", :class => 'required'
-              .element= text_field_tag :phone, nil, :class => 'required'
-        .continue
-          = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab'
+          = fields_for "athena_payment[athena_customer]" do |athena_customer|
+            %ul
+              %li
+                .label= athena_customer.label :first_name, "First Name", :class => 'required'
+                .element= athena_customer.text_field :first_name, :class => 'required'
+              %li
+                .label= athena_customer.label :last_name, "Last Name", :class => 'required'
+                .element= athena_customer.text_field :last_name, :class => 'required'
+              %li
+                .label= athena_customer.label :email, "Email", :class => 'required'
+                .element= athena_customer.text_field :email, :class => 'required', :type => 'email'
+              %li
+                .label= athena_customer.label :phone, "Phone", :class => 'required'
+                .element= athena_customer.text_field :phone, :class => 'required'
+          .continue
+            = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab'
 
       .tab-pane#payment-details
         %fieldset
-          %ul
-            %li
-              .label= label_tag :cardholder, "Cardholder Name", :class => 'required'
-              .element= text_field_tag :cardholder, nil, :class => 'required'
-            %li
-              .label= label_tag :card_number, "Card Number", :class => 'required'
-              .element
-                = text_field_tag :card_number, nil, :class => 'required', :type => 'creditcard'
-                = image_tag 'storefront/lock.png'
-            %li
-              .label= label_tag :cvv, "CVV", :class => 'required'
-              .element
-                = text_field_tag :cvv, nil, :class => 'required small'
-                = image_tag 'storefront/cvv.gif'
-            %li
-              .label= label_tag :expiration, "Expiration", :class => 'required'
-              .element
-                = select_tag 'month', options_for_select((1..12).map{|m| "%02d" % m}), :class => "small"
-                #expiration-slash /
-                = select_tag 'year', options_for_select(Date.today.year..Date.today.year+10), :class => "small"
-        .continue
-          = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
+          = fields_for "athena_credit_card" do |card|
+            %ul
+              %li
+                .label= card.label :cardholder_name, "Cardholder Name", :class => 'required'
+                .element= card.text_field :cardholder_name, :class => 'required'
+              %li
+                .label= card.label :card_number, "Card Number", :class => 'required'
+                .element
+                  = card.text_field :card_number, :class => 'required', :type => 'creditcard'
+                  = image_tag 'storefront/lock.png'
+              %li
+                .label= card.label :cvv, "CVV", :class => 'required'
+                .element
+                  = card.text_field :cvv, :class => 'required small'
+                  = image_tag 'storefront/cvv.gif'
+              %li
+                .label= card.label :expiration, "Expiration", :class => 'required'
+                .element.small
+                  = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "small"
+                  #expiration-slash /
+                  = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "small"
+          .continue
+            = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
       
       .tab-pane#billing-address
         %fieldset
-          %ul
-            %li
-              .label= label_tag :billing_address, "Billing Address", :class => 'required'
-              .element= text_field_tag :billing_address, nil, :class => 'required'
-            %li
-              .label= label_tag :city, "City", :class => 'required'
-              .element= text_field_tag :city, nil, :class => 'required'
-            %li
-              .label= label_tag :state, "State", :class => 'required'
-              .element= text_field_tag :state, nil, :class => 'required'
-            %li
-              .label= label_tag :postal_code, "Postal Code", :class => 'required'
-              .element= text_field_tag :postal_code, nil, :class => 'required'
-        .continue
-          = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
+          = fields_for "billing_address" do |address|
+            %ul
+              %li
+                .label= address.label :street_address1, "Billing Address", :class => 'required'
+                .element= address.text_field :street_address1, :class => 'required'
+              %li
+                .label= address.label :city, "City", :class => 'required'
+                .element= address.text_field :city, :class => 'required'
+              %li
+                .label= address.label :state, "State", :class => 'required'
+                .element= address.text_field :state, :class => 'required'
+              %li
+                .label= address.label :postal_code, "Postal Code", :class => 'required'
+                .element= address.text_field :postal_code, :class => 'required'
+          .continue
+            = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
 
       .tab-pane#purchase
         %fieldset
