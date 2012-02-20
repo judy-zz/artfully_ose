@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+
   has_many :shows
   has_many :orders
   has_many :imports
@@ -14,6 +15,8 @@ class User < ActiveRecord::Base
          :suspendable, :invitable
 
   scope :logged_in_more_than_once, where("users.sign_in_count > 1")
+
+  after_create :metric_created
 
   def self.generate_password
     Devise.friendly_token
@@ -54,6 +57,7 @@ class User < ActiveRecord::Base
   end
 
   private
+
     def find_customer
       begin
         return AthenaCustomer.find(self.customer_id)
@@ -62,4 +66,9 @@ class User < ActiveRecord::Base
         return nil
       end unless self.customer_id.nil?
     end
+
+    def metric_created
+      RestfulMetrics::Client.add_metric(ENV["RESTFUL_METRICS_APP"], "user_created", 1)
+    end
+
 end

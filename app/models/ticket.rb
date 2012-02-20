@@ -1,4 +1,5 @@
 class Ticket < ActiveRecord::Base
+
   include ActiveRecord::Transitions
 
   belongs_to :buyer, :class_name => "Person"
@@ -27,18 +28,18 @@ class Ticket < ActiveRecord::Base
     state :sold
     state :comped
 
-    event(:on_sale)   { transitions :from => [ :on_sale, :off_sale, :sold ],  :to => :on_sale   }
-    event(:off_sale)  { transitions :from => :on_sale,                        :to => :off_sale  }
-    event(:exchange)  { transitions :from => [ :on_sale, :off_sale ],         :to => :sold    }
-    event(:sell)      { transitions :from => :on_sale,                        :to => :sold      }
-    event(:comp)      { transitions :from => [ :on_sale, :off_sale ],         :to => :comped    }
-    event(:do_return) { transitions :from => [ :comped, :sold ],              :to => :on_sale   }
+    event(:on_sale)   { transitions :from => [ :on_sale, :off_sale, :sold ],  :to => :on_sale                                }
+    event(:off_sale)  { transitions :from => :on_sale,                        :to => :off_sale                               }
+    event(:exchange)  { transitions :from => [ :on_sale, :off_sale ],         :to => :sold,    :success => :metric_exchanged }
+    event(:sell)      { transitions :from => :on_sale,                        :to => :sold,    :success => :metric_sold      }
+    event(:comp)      { transitions :from => [ :on_sale, :off_sale ],         :to => :comped                                 }
+    event(:do_return) { transitions :from => [ :comped, :sold ],              :to => :on_sale                                }
   end
 
   def datetime
     show.datetime_local_to_event
   end
-  
+
   def as_json(options = {})
     super(options).merge!({:section => section})
   end
@@ -193,12 +194,12 @@ class Ticket < ActiveRecord::Base
   def repriceable?
     not committed?
   end
-  
+
   #Bulk creation of tickets should use this method to ensure all tickets are created the same
   #Reminder that this returns a ActiveRecord::Import::Result, not an array of tickets
   def self.create_many(show, section, quantity=section.capacity)
     new_tickets = []
-    (0..quantity-1).each do 
+    (0..quantity-1).each do
       new_tickets << Ticket.new({
         :venue => show.event.venue.name,
         :price => section.price,
@@ -212,6 +213,7 @@ class Ticket < ActiveRecord::Base
   end
 
   private
+
     def self.attempt_transition(tickets, state)
       begin
         tickets.map(&state)
@@ -220,4 +222,13 @@ class Ticket < ActiveRecord::Base
         false
       end
     end
+
+    def metric_sold
+      RestfulMetrics::Client.add_metric(ENV["RESTFUL_METRICS_APP"], "ticket_sold", 1)
+    end
+
+    def metric_exchanged
+      RestfulMetrics::Client.add_metric(ENV["RESTFUL_METRICS_APP"], "ticket_exchanged", 1)
+    end
+
 end
