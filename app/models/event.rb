@@ -6,6 +6,18 @@ class Event < ActiveRecord::Base
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
 
+  has_attached_file :image,
+    :storage => :s3,
+    :path => ":attachment/:id/:style.:extension",
+    :bucket => ENV["S3_BUCKET"],
+    :s3_credentials => {
+      :access_key_id => ENV["ACCESS_KEY_ID"],
+      :secret_access_key => ENV["SECRET_ACCESS_KEY"]
+    },
+    :styles => {
+      :thumb => "140x140#"
+    }
+
   validates_presence_of :name, :producer, :organization_id
 
   default_scope where(:deleted_at => nil)
