@@ -14,7 +14,7 @@ class NotesController < ApplicationController
 
   def destroy
     Note.destroy(params[:id])
-    redirect_to notes_url(@note)
+    redirect_to person_url(@person)
   end
 
   def edit

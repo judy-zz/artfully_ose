@@ -36,7 +36,7 @@ $(document).ready( function(){
         "sDom": '<"H"lf>t<"F"ip>',
         "aoColumns": [
         null,
-        null,
+        { "bSortable": false },
         { "bSearchable": false, "bSortable": false },
         ]
     });
