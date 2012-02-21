@@ -31,6 +31,9 @@
       e.preventDefault();
       $('#shopping-cart #steps').slideDown(); // not sure why this isn't slideUp
 
+      // show the cart tab
+      switchTabs('#cart');
+
       params = {
         sectionId:   $(this).find('#section_id').val(),
         showId:      $(this).find('#show_id').val(),
@@ -77,10 +80,7 @@
 
         // validate section before switching tabs
         if (validateSection(currentSectionId)) {
-          newHref = $(this).attr('href');
-          $('#nav li').removeClass('active');
-          $('li a[href="' + newHref + '"]').parent('li').addClass('active');
-          switchTabs(newHref);
+          switchTabs($(this).attr('href'));
         };
         // else, dont switch
         // errors will be shown 
@@ -215,6 +215,8 @@
   }
 
   function switchTabs(newSectionId) {
+    $('#nav li').removeClass('active');
+    $('li a[href="' + newSectionId + '"]').parent('li').addClass('active');
     $('.tab-pane').hide();
     $(newSectionId+'.tab-pane').show();
   }
