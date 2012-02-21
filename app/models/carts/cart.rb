@@ -34,8 +34,12 @@ class Cart < ActiveRecord::Base
     tickets.delete(ticket)
   end
 
+  def items_subject_to_fee
+    self.tickets.reject{|t| t.price == 0}
+  end
+
   def update_ticket_fee
-    @fee_in_cents = self.tickets.reject{|t| t.price == 0}.size * 200
+    @fee_in_cents = items_subject_to_fee.size * 200
   end
 
   def clear_donations
