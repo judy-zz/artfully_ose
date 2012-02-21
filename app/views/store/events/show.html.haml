@@ -193,27 +193,34 @@
   function checkout() {
     // POST "/store/checkout" // Store::CheckoutsController#create as HTML // Parameters: {"utf8"=>"✓", "authenticity_token"=>"oGmh5IrGv6CU3aPbpERHFNTpZg6YAiwLXY66d0zev6I=", "athena_payment"=>{"athena_customer"=>{"first_name"=>"test", "last_name"=>"test", "phone"=>"test", "email"=>"test@test.com"}, "athena_credit_card"=>{"cardholder_name"=>"test test", "card_number"=>"4242424242424242", "cvv"=>"123", "expiration_date(3i)"=>"1", "expiration_date(2i)"=>"2", "expiration_date(1i)"=>"2015"}, "billing_address"=>{"street_address1"=>"test", "city"=>"test", "state"=>"AL", "postal_code"=>"12345"}, "user_agreement"=>"1"}, "confirmation"=>"1", "commit"=>"Purchase"}
 
-    $.ajax({
-      type: 'POST',
-      url: '#{storefront_create_store_checkout_path}',
-      data: $("form#shopping-cart-form").serialize(),
-      success: function(data) {
-        $('#nav').hide();
-        // console.log("SUCCESS!");
-        // console.log(data);
-        $('.tab-pane').hide();
-        $('.tab-pane#result').show();
-        $('.tab-pane#result').text("Thanks for your purchase. We have emailed you a receipt.");
-      },
-      error: function(data) {
-        $('#nav li').removeClass('active');
-        // console.log("ERROR!");
-        // console.log(data);
-        $('.tab-pane').hide();
-        $('.tab-pane#result').show();
-        $('.tab-pane#result').html("<h4>Your payment did not go through. Please check the issues below.</h4><p>" + data.responseText + ".</p>");
-      }
-    });
+    // make sure agreement checkbox is checked
+    if ($('input#agreement:checked').length == 1) {
+      $('#purchase .error').hide();
+      $.ajax({
+        type: 'POST',
+        url: '#{storefront_create_store_checkout_path}',
+        data: $("form#shopping-cart-form").serialize(),
+        success: function(data) {
+          $('#nav').hide();
+          // console.log("SUCCESS!");
+          // console.log(data);
+          $('.tab-pane').hide();
+          $('.tab-pane#result').show();
+          $('.tab-pane#result').text("Thanks for your purchase. We have emailed you a receipt.");
+        },
+        error: function(data) {
+          $('#nav li').removeClass('active');
+          // console.log("ERROR!");
+          // console.log(data);
+          $('.tab-pane').hide();
+          $('.tab-pane#result').show();
+          $('.tab-pane#result').html("<h4>Your payment did not go through.</h4><p>" + data.responseText + ".</p>");
+        }
+      });
+    } else {
+      // have to add this error message manually for some reason
+      $('#purchase .error').show();
+    }
   }
 
   function switchTabs(newSectionId) {
@@ -465,8 +472,9 @@
             %li#agreement
               .label
                 %label
-                  = check_box_tag "[athena_payment][user_agreement]", 1, false, :validate => "required:true"
+                  = check_box_tag "[athena_payment][user_agreement]", 1, false, :validate => "required:true", :id => 'agreement'
                   I have read, understand and accept the terms and conditions of the User Agreement below.
+                %label.error.checkbox{:style => 'display:none;'} Please agree to the terms and conditions.
           
         #user_agreement
           = t("pages.user_agreement.content", :default => "")

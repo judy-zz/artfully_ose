@@ -46,7 +46,11 @@ class Store::CheckoutsController < Store::StoreController
     if @checkout.valid? && @checkout.finish
       render :json => @checkout.to_json
     else
-      render :json => @payment.errors.full_messages.to_sentence, :status => :unprocessable_entity
+      message = @payment.errors.full_messages.to_sentence.downcase
+      message = message.gsub('customer', 'contact info')
+      message = message.gsub('credit card is', 'payment details are')
+      message = message[0].upcase + message[1..message.length] #capitalize first word
+      render :json => message, :status => :unprocessable_entity
     end
   end
 

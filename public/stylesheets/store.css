@@ -669,10 +669,13 @@ table.calendar {
           #shopping-cart #steps fieldset ul li .element #expiration-slash {
             float: left;
             padding-right: 10px; }
-          #shopping-cart #steps fieldset ul li .element label.error {
-            background-image: none;
-            color: red;
-            float: left; }
+        #shopping-cart #steps fieldset ul li label.error {
+          background-image: none;
+          color: red;
+          float: left; }
+          #shopping-cart #steps fieldset ul li label.error.checkbox {
+            margin-top: -15px;
+            font-weight: normal; }
     #shopping-cart #steps .tab-pane {
       display: none; }
       #shopping-cart #steps .tab-pane.active {
