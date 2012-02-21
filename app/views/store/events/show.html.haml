@@ -147,6 +147,7 @@
         if (data.over_section_limit) {
           jQuery.each(data.over_section_limit, function(index, section) {
             ticket = $("tr.ticket[data-section-id='" + section.section_id + "'][data-show-id='" + section.show_id + "']");
+            // change ticket dropdown value
             ticket.find('.quantity select').val(section.limit);
             var message = "";
             if (section.limit == 0) {
@@ -156,6 +157,7 @@
             } else {
               message += "Only " + section.limit + " tickets available for this show's section."
             }
+            // add error message
             ticket.find('.quantity select').after("<span class='over-limit'><br />" + message + "</span>");
           });
           updateQuantityInCart();
@@ -163,7 +165,7 @@
           updateTotal();
           $('.formatCurrency').formatCurrency();
         };
-        // validate amount
+        // todo validate amount
         $('#cart .continue a').removeClass('disabled');
         $('.continue #cart-total').show();
       },
