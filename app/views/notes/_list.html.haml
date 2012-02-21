@@ -17,4 +17,6 @@
           %td{:width => "80%"}= truncate(note.text, :length => 300, :separator => ' ', :omission => '...')
           %td
             = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "new-note-link", :remote => true)
-            = link_to("Delete", person_note_path(person, note), :confirm => "Delete note?", :method => :delete)
+            = link_to("Delete", person_note_path(person, note), :method => :delete, :class => "delete-confirm-link")           
+            .confirmation.dialog
+              %p= "Are you sure you want to permanently delete this note?  This action cannot be undone."

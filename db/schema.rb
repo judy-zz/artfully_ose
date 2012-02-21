@@ -230,6 +230,21 @@ ActiveRecord::Schema.define(:version => 20120201213140) do
     t.datetime "occurred_at"
   end
 
+  create_table "order_view", :id => false, :force => true do |t|
+    t.integer  "id",                :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "transaction_id"
+    t.integer  "price"
+    t.integer  "service_fee"
+    t.integer  "fa_id"
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.string   "organization_name"
+    t.string   "person_first_name"
+    t.string   "person_last_name"
+  end
+
   create_table "orders", :force => true do |t|
     t.string   "transaction_id"
     t.integer  "price"
