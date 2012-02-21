@@ -9,6 +9,6 @@
         .label= form.label :details, "Details"
         .element= form.text_area :text, :size => "25x5"
 
-    -unless @note.created_at.nil?
-      %h4= "Note created on #{(l @note.created_at, :format => :long)} by #{current_user.email}"
+    -unless @note.created_at.nil? || @note.user.nil?
+      %h4= "Note created on #{(l @note.created_at, :format => :long)} by #{@note.user.email}"
     = form.submit "Save note"

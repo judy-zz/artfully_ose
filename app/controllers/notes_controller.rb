@@ -8,6 +8,7 @@ class NotesController < ApplicationController
   end
 
   def create
+    params[:note][:user] = current_user
     @person.notes.create(params[:note])
     redirect_to @person
   end
