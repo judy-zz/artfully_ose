@@ -332,7 +332,7 @@
     - unless @event.description.blank?
       #description
         %h2 About
-        =image_tag(@event.image.url(:thumb), :width => 140, :height => 140) if @event.image
+        =image_tag(@event.image.url(:thumb), :width => 140, :height => 140) if @event.image?
         -if @event.description.length > 300
           .toggle-truncated
             .truncated
