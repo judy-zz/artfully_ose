@@ -32,6 +32,24 @@ class Store::CheckoutsController < Store::StoreController
     end
   end
 
+  def storefront_create
+    unless current_cart.unfinished?
+      render :json => "This order is already finished!", :status => :unprocessable_entity and return
+    end
+
+    @payment = AthenaPayment.new(params[:athena_payment])
+    #The user_agreement parameter doesn't get set automatically, not sure why
+    @payment.user_agreement = params[:athena_payment][:user_agreement]
+
+    @checkout = Checkout.new(current_cart, @payment)
+
+    if @checkout.valid? && @checkout.finish
+      render :json => @checkout.to_json
+    else
+      render :json => @payment.errors.full_messages.to_sentence, :status => :unprocessable_entity
+    end
+  end
+
   private
     def with_confirmation
       if params[:confirmation].blank?

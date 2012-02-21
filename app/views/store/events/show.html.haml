@@ -54,7 +54,7 @@
     });
 
     // click "complete purchase" to submit payment
-    $('from#shopping-cart-form').submit(function(e) {
+    $('form#shopping-cart-form').submit(function(e) {
       e.preventDefault();
       checkout();
     });
@@ -146,17 +146,15 @@
         // we dont have enough tickets available
         if (data.over_section_limit) {
           jQuery.each(data.over_section_limit, function(index, section) {
-            console.log("Over section limit!");
-            console.log(section);
             ticket = $("tr.ticket[data-section-id='" + section.section_id + "'][data-show-id='" + section.show_id + "']");
             ticket.find('.quantity select').val(section.limit);
             var message = "";
             if (section.limit == 0) {
-              message += "No tickets available for this show and section."
+              message += "No tickets available for this show's section."
             } else if (section.limit == 1) {
-              message += "Only 1 ticket available for this show and section."
+              message += "Only 1 ticket available for this show's section."
             } else {
-              message += "Only " + section.limit + " tickets available for this show and section."
+              message += "Only " + section.limit + " tickets available for this show's section."
             }
             ticket.find('.quantity select').after("<span class='over-limit'><br />" + message + "</span>");
           });
@@ -195,15 +193,23 @@
 
     $.ajax({
       type: 'POST',
-      url: '#{store_checkout_path}',
+      url: '#{storefront_create_store_checkout_path}',
       data: $("form#shopping-cart-form").serialize(),
       success: function(data) {
-        console.log("SUCCESS!");
-        console.log(data);
+        $('#nav').hide();
+        // console.log("SUCCESS!");
+        // console.log(data);
+        $('.tab-pane').hide();
+        $('.tab-pane#result').show();
+        $('.tab-pane#result').text("Thanks for your purchase. We have emailed you a receipt.");
       },
       error: function(data) {
-        console.log("ERROR!");
-        console.log(data);
+        $('#nav li').removeClass('active');
+        // console.log("ERROR!");
+        // console.log(data);
+        $('.tab-pane').hide();
+        $('.tab-pane#result').show();
+        $('.tab-pane#result').html("<h4>Your payment did not go through. Please check the issues below.</h4><p>" + data.responseText + ".</p>");
       }
     });
   }
@@ -359,7 +365,7 @@
 #shopping-cart.shown
   #shopping-cart-controls
     %span.cart-name Shopping Cart
-  = form_tag '', :id => 'shopping-cart-form', :method => :get do
+  = form_tag '', :id => 'shopping-cart-form' do
     #steps
       %ul#nav
         %li.active= link_to 'Cart', '#cart', 'data-toggle' => 'tab'
@@ -455,7 +461,7 @@
             %li#agreement
               .label
                 %label
-                  = check_box_tag :agreement, 1, false, :validate => "required:true"
+                  = check_box_tag "[athena_payment][user_agreement]", 1, false, :validate => "required:true"
                   I have read, understand and accept the terms and conditions of the User Agreement below.
           
         #user_agreement
@@ -463,3 +469,6 @@
         = hidden_field_tag :confirmation, 1
         .continue
           = submit_tag 'Complete Purchase', :id => 'complete-purchase'
+
+      .tab-pane#result
+        

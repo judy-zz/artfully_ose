@@ -14,7 +14,11 @@ Artfully::Application.routes.draw do
         post :storefront_sync
       end 
     end
-    resource :checkout
+    resource :checkout do
+      collection do
+        post :storefront_create
+      end 
+    end
   end
 
   namespace :admin do
