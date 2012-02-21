@@ -15,10 +15,19 @@ Feature: Ticket Comp
     And I view the 1st show
     And I check the 1st ticket for a comp
     And I press "Comp"
-    And I search for the patron named "Joe Producer" email "joe.producer@example.com"
-    And I select the first person
-    And I fill in "comp_reason" with "Dull and Generic Reason"
-    And I press "Submit"
-    And I should see "Dull and Generic Reason"
-    And I confirm comp
-    Then I should see "Comped"
+    And I should see "Recipient"
+    And I should see "Reason"
+    And I want to comp to "Joe Producer" email "joe.producer@example.com"
+    And I fill in "reason_for_comp" with "Dull and Generic Reason"
+
+  Scenario: A producer comps a ticket but forgets to specify which person
+    When I go to the events page
+    And I view the 1st event
+    And I view the 1st show
+    And I check the 1st ticket for a comp
+    And I press "Comp"
+    And I should see "Recipient"
+    And I should see "Reason"
+    And I fill in "reason_for_comp" with "Dull and Generic Reason"
+    And I press "Comp Tickets"
+    And I should see "Please select a person to comp to or create a new person record"

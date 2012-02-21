@@ -10,6 +10,15 @@ describe Order do
       subject.payment.transaction_id.should eq subject.transaction_id
     end
   end
+  
+  describe "total" do
+    it "should report the prices and non-gift amounts to all items" do
+      order = Factory(:order)
+      order << Factory(:sponsored_donation)
+      order.items.first.nongift_amount = 400
+      order.total.should eq 1400
+    end
+  end
 
   describe "#ticket_summary" do
     let(:organization)  { Factory(:organization) }

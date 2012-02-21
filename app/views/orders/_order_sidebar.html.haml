@@ -13,11 +13,11 @@
     .key Date
     .value #{(l order.created_at_local_to_organization) unless order.created_at.nil?}
   %li
-    .key Total
+    .key Amount
     .value #{number_as_cents(total)}
   - if order.nongift_amount > 0
     %li
-      .key Nongift
+      .key Non-deductible
       .value #{number_as_cents(order.nongift_amount)}
   %li
     .key Payment method

@@ -39,7 +39,7 @@
               %tr
                 %td= l order.created_at_local_to_organization
                 %td= link_to_person order.person
-                %td= number_as_cents item.price
+                %td= number_as_cents item.total_price
                 %td= number_as_cents item.nongift_amount
                 %td= link_to "view", order_path(order)
       = will_paginate(@search.results)

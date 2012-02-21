@@ -57,6 +57,16 @@ class Person < ActiveRecord::Base
   def self.recent(organization)
     []
   end
+  
+  def self.find_by_customer(customer, organization)
+    p = nil
+    if !customer.person_id.nil?
+      p = find(customer.person_id.to_i)
+    elsif !customer.email.nil?
+      p = find_by_email_and_organization(customer.email, organization)
+    end
+    p
+  end
 
   def self.find_by_email_and_organization(email, organization)
     find(:first, :conditions => { :email => email, :organization_id => organization.id })
@@ -85,7 +95,7 @@ class Person < ActiveRecord::Base
   end
 
   def to_customer
-    AthenaCustomer.new(:email => email, :first_name => first_name, :last_name => last_name)
+    AthenaCustomer.new(:person_id => id, :email => email, :first_name => first_name, :last_name => last_name)
   end
 
   def starred_actions

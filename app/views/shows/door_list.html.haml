@@ -14,7 +14,8 @@
         %thead
           %tr
             %th
-            %th Buyer
+            %th First
+            %th Last
             %th Email
             %th Section
             %th Price
@@ -22,8 +23,9 @@
           - @door_list.items.each do |item|
             %tr
               %td= "☐"
-              %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
+              %td= item.buyer.first_name
+              %td= item.buyer.last_name
               %td= item.buyer.email
               %td= item.ticket.section.name
-              %td= number_as_cents(item.ticket.price)
+              %td= number_as_cents(item.ticket.sold_price)
 
