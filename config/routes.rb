@@ -9,7 +9,11 @@ Artfully::Application.routes.draw do
 
   namespace :store do
     resources :events, :only => :show
-    resource :order, :only => [:show, :create, :update, :destroy ]
+    resource :order, :only => [:show, :create, :update, :destroy, :storefront_sync] do
+      collection do
+        post :storefront_sync
+      end 
+    end
     resource :checkout
   end
 

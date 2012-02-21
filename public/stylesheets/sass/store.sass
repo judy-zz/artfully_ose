@@ -329,6 +329,8 @@ table.calendar
               background: darken(#eee, 20%)
               color: #fff
           td.edit-item
+          .over-limit
+            color: red
     .continue
       padding: 20px
       @include gradient(#ccc, #e6e6e6)
@@ -351,6 +353,9 @@ table.calendar
       text-align: center
       font-weight: bold
       line-height: 40px
+      &.disabled
+        @include gradient(#999, #ccc, 14%, 100%)
+        border: 1px solid #666
     #user_agreement
       height: 100px
       border: 1px solid #ccc

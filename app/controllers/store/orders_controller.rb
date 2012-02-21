@@ -23,14 +23,40 @@ class Store::OrdersController < Store::StoreController
   end
 
   # used by hosted storefront
-  # def sync_from_storefront
-  #   current_cart.destroy
-  #   tickets = []
-  #   params[:section].each do |section|
-  #     tickets << Ticket.available(:section_id => section[:id], params[:limit])
-  #   end
-  #   handle_order([tickets, params[:donation]])
-  # end
+  def storefront_sync
+    current_cart.release_tickets
+    current_cart.clear_donations
+    order_params = {}
+
+    if params[:sections]
+      ticket_ids = []
+      over_section_limit = []
+      params[:sections].each_value do |section|
+        ids = Ticket.available(
+          {
+            :section_id => section[:section_id],
+            :show_id => section[:show_id]
+          },
+          section[:limit]
+        ).collect(&:id)
+        # requesting more tickets than are available
+        if ids.length < section[:limit].to_i
+          over_section_limit << {:section_id => section[:section_id], :show_id => section[:show_id], :limit => ids.length}
+        end
+        # :status => 403
+        ticket_ids += ids
+      end
+      order_params = order_params.merge(:tickets => ticket_ids) if ticket_ids.any?
+    end
+    order_params = order_params.merge(:donation => params[:donation]) if params[:donation]
+    handle_order(order_params)
+
+    response = current_cart.attributes
+    response = response.merge(:total => current_cart.total)
+    response = response.merge(:over_section_limit => over_section_limit).to_json
+    logger.info "RESPONSE: #{response}"
+    render :json => response
+  end
 
   private
     def handle_order(params)
