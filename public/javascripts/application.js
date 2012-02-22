@@ -13,6 +13,50 @@ bindControlsToListElements = function () {
       $(this).find(".controls").stop(false,true).fadeOut('fast');});
 }
 
+function createErrorFlashMessage(msg) {
+	$('#heading').after($(document.createElement('div'))
+							.addClass('flash')
+							.addClass('notice')
+							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+
+	$(".close").click(function(){
+		$(this).closest('.flash').remove();
+	})	
+}
+
+function setErrorMessage(msg) {
+	if($('.flash').length > 0) {
+		$('.flash').fadeOut(400, function() {
+			$(this).remove()
+			createFlashMessage(msg)
+		})
+	} else {
+		createFlashMessage(msg)
+	}
+}
+
+function createFlashMessage(msg) {
+	$('#heading').after($(document.createElement('div'))
+							.addClass('flash')
+							.addClass('success')
+							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+
+	$(".close").click(function(){
+		$(this).closest('.flash').remove();
+	})	
+}
+
+function setFlashMessage(msg) {
+	if($('.flash').length > 0) {
+		$('.flash').fadeOut(400, function() {
+			$(this).remove()
+			createFlashMessage(msg)
+		})
+	} else {
+		createFlashMessage(msg)
+	}
+}
+
 $(document).ready(function() {
     
   if (typeof(Zenbox) !== "undefined") {

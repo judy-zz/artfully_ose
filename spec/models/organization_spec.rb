@@ -95,8 +95,31 @@ describe Organization do
       end
     end
 
+    context "when both kits have been created" do
+      it "returns type of regular when the sponsored kit is cancelled" do
+        subject.kits << Factory.build(:sponsored_donation_kit, :state => :pending, :organization => subject)
+        subject.kits.where(:type => "SponsoredDonationKit").first.cancel_with_authority!
+        subject.kits << Factory.build(:regular_donation_kit, :state => :activated, :organization => subject)
+        subject.authorization_hash[:authorized].should be_true
+        subject.authorization_hash[:type].should eq :regular
+      end
+
+      it "returns type of regular when the sponsored kit is pending" do
+        subject.kits << Factory.build(:sponsored_donation_kit, :state => :pending, :organization => subject)
+        subject.kits << Factory.build(:regular_donation_kit, :state => :activated, :organization => subject)
+        subject.authorization_hash[:authorized].should be_true
+        subject.authorization_hash[:type].should eq :regular
+      end
+    end
+
     context "without a Donation Kit" do
       it "sets authorized to false" do
+        subject.authorization_hash[:authorized].should be_false
+      end
+
+      it "sets authorized to false if neither kit is active" do
+        subject.kits << Factory.build(:sponsored_donation_kit, :state => :pending, :organization => subject)
+        subject.kits << Factory.build(:regular_donation_kit, :state => :pending, :organization => subject)
         subject.authorization_hash[:authorized].should be_false
       end
     end

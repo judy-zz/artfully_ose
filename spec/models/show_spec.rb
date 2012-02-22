@@ -114,6 +114,51 @@ describe Show do
       end
     end
   end
+  
+  describe "deleting a show" do
+    it "is fine if no tickets are created" do
+      s = Factory(:show)
+      s.should be_destroyable
+      s.destroy.should be_true
+    end
+    
+    it "is okay if tickets are created but they are not on sale" do
+      s = Factory(:show_with_tickets)
+      s.should be_destroyable
+      s.destroy.should be_true
+    end
+    
+    it "is allowed even if tickets are on sale" do
+      s = Factory(:show_with_tickets)
+      s.bulk_on_sale(:all)
+      s.should be_destroyable
+      s.destroy.should be_true
+    end
+    
+    it "is frowned upon if any tickets have been sold" do
+      s = Factory(:show_with_tickets)
+      s.bulk_on_sale(:all)
+      s.tickets.first.sell_to(Factory(:person))
+      s.bulk_off_sale(:all)
+      s.should_not be_destroyable
+      s.destroy.should be_false
+    end
+    
+    it "is verboten it any tickets have been comped" do      
+      s = Factory(:show_with_tickets)
+      s.tickets.first.comp_to(Factory(:person))
+      s.should_not be_destroyable
+      s.destroy.should be_false
+    end
+    
+    it "should also delete all the tickets" do
+      s = Factory(:show_with_tickets)
+      s.bulk_on_sale(:all)
+      s.tickets.each { |t| t.should_receive(:destroy).and_return(true) }
+      s.should be_destroyable
+      s.destroy.should be_true      
+    end
+  end
 
   describe "#event" do
     it "should store the event when one is assigned" do

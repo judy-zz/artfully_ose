@@ -3,10 +3,12 @@ class Show < ActiveRecord::Base
   belongs_to :event
   belongs_to :chart
 
-  has_many :tickets
+  has_many :tickets, :dependent => :destroy
 
   has_many :settlements
   has_many :items
+  
+  before_destroy :destroyable?
 
   has_many :reseller_attachments, :as => :attachable
 
@@ -100,7 +102,8 @@ class Show < ActiveRecord::Base
       "chart_id" => chart.id,
       "state" => state,
       "show_time" => show_time,
-      "datetime" => datetime_local_to_event
+      "datetime" => datetime_local_to_event,
+      "destroyable" => destroyable?
     }
   end
 
@@ -123,6 +126,10 @@ class Show < ActiveRecord::Base
 
   def settleables
     items.reject(&:modified?)
+  end
+
+  def destroyable?
+    (tickets_comped + tickets_sold).empty?
   end
 
   def live?

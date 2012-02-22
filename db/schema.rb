@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120125171623) do
+ActiveRecord::Schema.define(:version => 20120201213140) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -274,12 +274,12 @@ ActiveRecord::Schema.define(:version => 20120125171623) do
     t.boolean  "dummy"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "old_mongo_id"
     t.string   "person_type"
     t.string   "twitter_handle"
     t.string   "facebook_url"
     t.string   "linked_in_url"
     t.integer  "import_id"
-    t.string   "old_mongo_id"
   end
 
   create_table "phones", :force => true do |t|

@@ -1,4 +1,20 @@
 $(document).ready(function () {
+  $("form.destroyable").live("ajax:before", function(){
+		var row = $(this).closest("tr")
+    row.remove();
+    zebra($('.zebra'));
+  });
+
+  $("form.destroyable").live("ajax:success", function(ev){
+    setFlashMessage("The show has been deleted");
+		ev.stopImmediatePropagation()
+  });
+
+  $("form.destroyable").live("ajax:error", function(ev){
+    setErrorMessage("That show cannot be deleted");
+		ev.stopImmediatePropagation()
+  });
+
   $("form.sprited").live("ajax:before", function(){
     $(this).find("input:submit").attr('disabled','disabled');
   });
@@ -33,16 +49,19 @@ $(document).ready(function () {
     }
   });
 
-  $("form.sprited").live("ajax:success", function(xhr, performance){
+  $("form.sprited").live("ajax:success", function(xhr, show){
     var $row = $(this).closest("tr");
     $(this).find(":submit").removeAttr('disabled');
-    $row.removeClass("pending built published unpublished")
-    $row.addClass(performance.state);
-    if (performance.glance !== undefined) {
-      $row.find(".available").html(performance.glance.tickets.available);
-      $row.find(".gross").html(performance.glance.tickets.sold.gross);
-      $row.find(".comped").html(performance.glance.tickets.comped);
-    }
+    $row.removeClass("pending built published unpublished destroyable")
+    $row.addClass(show.state);
+		if(show.glance !== undefined) {
+	    if(show.destroyable == true) {
+				$row.addClass("destroyable");
+			}
+	    $row.find(".available").html(show.glance.tickets.available);
+	    $row.find(".gross").html(show.glance.tickets.sold.gross);
+	    $row.find(".comped").html(show.glance.tickets.comped);
+		}
   });
 
   $("form.sprited").live("ajax:error", function(xhr, status, error){

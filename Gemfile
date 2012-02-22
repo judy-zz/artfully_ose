@@ -59,7 +59,7 @@ group :test do
 end
 
 group :deployment do
-  gem 'heroku'
+  gem 'heroku', "> 2.20"
 end
 
 group :test, :development do

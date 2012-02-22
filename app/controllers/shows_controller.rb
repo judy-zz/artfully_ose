@@ -76,8 +76,11 @@ class ShowsController < ApplicationController
     @show = Show.find(params[:id])
     authorize! :destroy, @show
 
-    @show.destroy
-    redirect_to @show.event
+    if @show.destroy
+      render :nothing => true, :status => 204 and return  
+    else
+      render :status => :forbidden and return
+    end
   end
 
   def door_list
