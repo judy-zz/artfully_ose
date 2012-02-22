@@ -10,8 +10,8 @@ class ResellerAttachmentsController < ApplicationController
 
   def create
     if @reseller_attachment.save
-      flash[:notice] = "You attachment has been added to the event."
-      redirect_to organization_reseller_events_path(@organization)
+      flash[:notice] = "Your image has been added to the event."
+      redirect_to path_to_parent
     else
       render :new
     end
@@ -22,8 +22,8 @@ class ResellerAttachmentsController < ApplicationController
 
   def update
     if @reseller_attachment.update_attributes(params[:reseller_attachment])
-      flash[:notice] = "Your attachment has been updated."
-      redirect_to organization_reseller_events_path(@organization)
+      flash[:notice] = "Your image has been updated."
+      redirect_to path_to_parent
     else
       render :edit
     end
@@ -55,6 +55,14 @@ class ResellerAttachmentsController < ApplicationController
 
   def find_reseller_attachment
     @reseller_attachment = @reseller_profile.reseller_attachments.find(params[:id])
+  end
+
+  def path_to_parent
+    case @reseller_attachment.attachable
+    when ResellerEvent then organization_reseller_event_path(@organization, @reseller_attachment.attachable)
+    when Event         then organization_event_path(@organization, @reseller_attachment.attachable)
+    else                    organization_reseller_events_path(@organization)
+    end
   end
 
 end
