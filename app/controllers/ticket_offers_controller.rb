@@ -35,6 +35,16 @@ class TicketOffersController < ApplicationController
     end
   end
 
+  def update
+    if @ticket_offer.update_attributes!(params[:ticket_offer])
+      flash[:notice] = "Ticket offer rejected."
+    else
+      flash[:error] = "There was a problem in rejecting that offer."
+    end
+
+    redirect_to ticket_offers_path
+  end
+
   def destroy
     @ticket_offer.destroy
 
