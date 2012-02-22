@@ -1,4 +1,4 @@
-class NotesController < ApplicationController
+ class NotesController < ApplicationController
   before_filter :find_person
 
   def new
@@ -8,8 +8,7 @@ class NotesController < ApplicationController
   end
 
   def create
-    params[:note][:user] = current_user
-    @person.notes.create(params[:note])
+    @person.notes.create(params[:note].merge({:user => current_user, :organization => current_user.current_organization}))
     redirect_to @person
   end
 
