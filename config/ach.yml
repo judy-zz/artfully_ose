@@ -1,4 +1,8 @@
 ---
+dev:
+  base_uri: "https://demo.firstach.com/"
+  login_id: xPCTyjcQ0KlG
+  transaction_key: d38a1b4afaf5230c
 demo:
   base_uri: "https://demo.firstach.com/"
   login_id: xPCTyjcQ0KlG
