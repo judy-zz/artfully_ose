@@ -15,13 +15,22 @@
 }(this, document));
 
 artfully.config = {
-  base_uri: 'http://api.lvh.me:3000/',
-  store_uri: 'http://localhost:3000/store/',
-  maxHeight: '350'
+  base_uri:   'http://api.lvh.me:3000/',
+  store_uri:  'http://localhost:3000/store/',
+  maxHeight:  '350',
+  resellerId: undefined
 };
 
-artfully.utils = (function(){
-  function ticket_uri(params){
+artfully.reseller = function (resellerId) {
+  if (resellerId !== undefined) {
+    artfully.config.resellerId = resellerId;
+  } else {
+    return artfully.config.resellerId;
+  }
+};
+
+artfully.utils = (function() {
+  function ticket_uri(params) {
     var u = artfully.config.base_uri + 'tickets.jsonp?callback=?';
     jQuery.each(params, function(k,v){
       u += "&" + k + "=" + v;
@@ -116,17 +125,19 @@ artfully.widgets = (function(){
       return artfully.utils.modelize(data, artfully.models.artfully_event);
     }
 
-    function render(data){
+    function render(data, dom_id){
       e = prep(data);
-      e.render(jQuery('#event'));
+      e.render(jQuery(dom_id));
     }
 
-    if(widgetCache.artfully_event === undefined){
+    if (widgetCache.artfully_event === undefined) {
       widgetCache.artfully_event = {
-        display: function(id){
+        display: function(id, target_dom_id){
+          var dom_id = target_dom_id ? target_dom_id : "#event";
+
           artfully.widgets.cart().display();
           jQuery.getJSON(artfully.utils.event_uri(id), function(data){
-            render(data);
+            render(data, dom_id);
           });
         }
       };
@@ -153,9 +164,11 @@ artfully.widgets = (function(){
       s.render(jQuery('#artfully-show'), true, true);
     }
 
-    if(widgetCache.artfully_show === undefined){
+    if (widgetCache.artfully_show === undefined) {
       widgetCache.artfully_show = {
-        display: function(id){
+        display: function(id, org_id, target_dom_id) {
+          var dom_id = target_dom_id ? target_dom_id : "#artfully-show";
+
           artfully.widgets.cart().display();
           jQuery.getJSON(artfully.utils.show_uri(id), function(data) {
             render(data);
@@ -174,6 +187,10 @@ artfully.widgets = (function(){
       jQuery.each(tickets, function(i,ticket){
         jQuery(document.createElement('input')).attr({'type':'hidden', 'name':'tickets[]','value':ticket.id}).appendTo($form);
       });
+
+      jQuery(document.createElement("input"))
+        .attr({ type: "hidden", name: "reseller_id", value: artfully.reseller() })
+        .appendTo($form);
 
       return $form.appendTo(jQuery('body'));
     }
