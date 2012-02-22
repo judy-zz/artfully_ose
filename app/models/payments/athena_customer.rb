@@ -4,6 +4,7 @@ class AthenaCustomer < AthenaResource::Base
   self.element_name = 'customers'
 
   schema do
+    attribute 'person_id',   :string
     attribute 'first_name',  :string
     attribute 'last_name',   :string
     attribute 'company',    :string

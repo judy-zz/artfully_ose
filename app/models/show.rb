@@ -3,10 +3,12 @@ class Show < ActiveRecord::Base
   belongs_to :event
   belongs_to :chart
 
-  has_many :tickets
+  has_many :tickets, :dependent => :destroy
 
   has_many :settlements
   has_many :items
+  
+  before_destroy :destroyable?
 
   validates_presence_of :datetime
   validates_presence_of :chart_id
@@ -93,6 +95,7 @@ class Show < ActiveRecord::Base
     { "id" => id,
       "chart_id" => chart.id,
       "state" => state,
+      "destroyable" => destroyable?,
       "show_time" => I18n.l( datetime_local_to_event, :format => :long_with_day)
     }
   end
@@ -116,6 +119,10 @@ class Show < ActiveRecord::Base
 
   def settleables
     items.reject(&:modified?)
+  end
+
+  def destroyable?
+    (tickets_comped + tickets_sold).empty?
   end
 
   def live?

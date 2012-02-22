@@ -1,0 +1,12 @@
+%h1.page-title= t(".heading", :default => "Features")
+.row
+  .span8
+    %ul.features
+      = t(".list", :default => "?")
+
+  .span6.offset1
+    .icon
+      = image_tag('pages/pencil.png', :class => 'icon')
+    .sub-text
+      
+      %p= t(".subheading", :default => 'Want to suggest a new feature? Use the <a href="http://artfully.zendesk.com/forums/318163-feature-requests" target="_blank">Feature Request Forum</a>. We love feedback!')

@@ -55,6 +55,22 @@ describe Checkout do
       subject.cart.stub(:pay_with)
     end
 
+    describe "people without emails" do
+      it "should receive an email for dummy records" do
+        OrderMailer.should_not_receive(:confirmation_for)
+        subject.stub(:find_or_create_people_record).and_return(Factory(:dummy))
+        subject.cart.stub(:approved?).and_return(true)
+        subject.finish.should be_true
+      end
+  
+      it "should receive an email if we don't have an email address for the buyer" do
+        OrderMailer.should_not_receive(:confirmation_for)
+        subject.stub(:find_or_create_people_record).and_return(Factory(:person_without_email))
+        subject.cart.stub(:approved?).and_return(true)
+        subject.finish.should be_true
+      end
+    end
+
     describe "return value" do
       before(:each) do
         subject.stub(:find_or_create_people_record).and_return(Factory(:person))

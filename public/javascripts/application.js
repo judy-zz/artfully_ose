@@ -13,11 +13,55 @@ bindControlsToListElements = function () {
       $(this).find(".controls").stop(false,true).fadeOut('fast');});
 }
 
+function createErrorFlashMessage(msg) {
+	$('#heading').after($(document.createElement('div'))
+							.addClass('flash')
+							.addClass('notice')
+							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+
+	$(".close").click(function(){
+		$(this).closest('.flash').remove();
+	})	
+}
+
+function setErrorMessage(msg) {
+	if($('.flash').length > 0) {
+		$('.flash').fadeOut(400, function() {
+			$(this).remove()
+			createFlashMessage(msg)
+		})
+	} else {
+		createFlashMessage(msg)
+	}
+}
+
+function createFlashMessage(msg) {
+	$('#heading').after($(document.createElement('div'))
+							.addClass('flash')
+							.addClass('success')
+							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+
+	$(".close").click(function(){
+		$(this).closest('.flash').remove();
+	})	
+}
+
+function setFlashMessage(msg) {
+	if($('.flash').length > 0) {
+		$('.flash').fadeOut(400, function() {
+			$(this).remove()
+			createFlashMessage(msg)
+		})
+	} else {
+		createFlashMessage(msg)
+	}
+}
+
 $(document).ready(function() {
     
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({
-      dropboxID:   "20016501",
+      dropboxID:   "20042668",
       url:         "https://artfully.zendesk.com",
       tabID:       "help",
       tabColor:    "black",
@@ -44,7 +88,7 @@ $(document).ready(function() {
   $(".new-window").parents("form").attr("target", "_blank");
 
   $("#main-menu").hover(
-    function(){$("#main-menu li ul").stop().animate({height: '144px'}, 'fast')},
+    function(){$("#main-menu li ul").stop().animate({height: '160px'}, 'fast')},
     function(){$("#main-menu li ul").stop().animate({height: '0px'}, 'fast')}
   );
 

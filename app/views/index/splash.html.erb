@@ -1,0 +1,160 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html class="no-js ie6 ie" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="no-js ie7 ie" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="no-js ie8 ie" lang="en"> <![endif]-->
+<head>
+  <meta charset="utf-8">
+  <!--[if lt IE 9]>
+  <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <title>Artfully</title>
+  <meta name="description" content="Artfully is cloud-based business software built for individual artists and arts organizations.">
+  <meta name="author" content="Fractured Atlas">
+
+  <!-- Mobile viewport optimized: j.mp/bplateviewport -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+  <!-- CSS: implied media="all" -->
+  <%= include_stylesheets :splash %>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:100" type="text/css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold" type="text/css" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <header>
+      <div class="container_12">
+        <div class="title grid_6">
+          <h1>
+            <span class="logo">Artfully</span>
+          </h1>
+        </div>
+        <div class="grid_6">
+          <nav>
+            <p>Already a member?</p>
+            <a href="<%= new_user_session_path %>" title="Log in to Artfully"> <i></i>Log In</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <div class="introduction container_12">
+        <section class="grid_6">
+          <h2>Ready to Work Artful.ly?</h2>
+          <p>Artful.ly is an online system to manage your tickets, donations, and contacts. It’s a simple way to keep track of events, people, and your everyday work.</p>
+          <p>Artful.ly is a project of <a href="http://www.fracturedatlas.org">Fractured Atlas</a>, an organization serving over 18,000 artists across the nation. We’ve used your insights to create a ticketing and contact management system tailored to your needs. Manage the essentials of your arts business in one place!</p>
+          <ul class="features-list">
+            <li class="features-tickets grid_3 alpha">Sell tickets</li>
+            <li class="features-sales grid_3 omega">Keep track of your sales</li>
+            <li class="features-donations grid_3 alpha">Take donations</li>
+            <li class="features-patrons grid_3 omega">Manage patron records</li>
+          </ul>
+        </section>
+        <section class="grid_6">
+          <div class="monitor"></div>
+        </section>
+      </div>
+
+      <div class="box container_12">
+          <div class="box-top"></div>
+          <section class="grid_12">
+            <h2>Take a Peek</h2>
+            <ul class="screenshots">
+              <li class="grid_3 alpha">
+                <a href="<%= image_path("screenshot-events2.png") %>" title="Create events, shows and seating charts" class="thumbnail modal">
+                  <%= image_tag("thumbnail-events.png") %>Create Events + Seating Charts
+                </a>
+              </li>
+              <li class="grid_3">
+                <a href="<%= image_path("screenshot-people.png") %>" title="Your patron records have never been more organized" class="thumbnail modal">
+                  <%= image_tag("thumbnail-crm.png") %>Built in CRM for patrons
+                </a>
+              </li>
+              <li class="grid_3">
+                <a href="<%= image_path("screenshot-navigation.png") %>" title="Intuitive navigation and design" class="thumbnail modal">
+                  <%= image_tag("thumbnail-intuitive.png") %>Intuitive navigation and design
+                </a>
+              </li>
+              <li class="grid_3 omega">
+                <a href="<%= image_path("screenshot-orders.png") %>" title="View ticket sales" class="thumbnail modal">
+                  <%= image_tag("thumbnail-sales.png") %>View ticket sales
+                </a>
+              </li>
+            </ul>
+          </section>
+          <form action="http://fracturedatlas.us1.list-manage.com/subscribe/post?u=0454e774224b3cc25494dab27&amp;id=3ba751346f" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+          <section class="form">
+              <h2>Get Notified</h2>
+              <div class="grid_6">
+                <label for="mce-EMAIL">Email Address <strong class="note-required">*</strong></label>
+                <input type="text" value="" name="EMAIL" class="required email" id="mce-EMAIL">
+              </div>
+              <div class="grid_3">
+                <label for="mce-FNAME">First Name </label>
+                <input type="text" value="" name="FNAME" class="" id="mce-FNAME">
+              </div>
+              <div class="grid_3">
+                <label for="mce-LNAME">Last Name </label>
+                <input type="text" value="" name="LNAME" class="" id="mce-LNAME">
+              </div>
+              <div class="grid_3">
+                <label for="mce-MMERGE3">State </label>
+                <input type="text" value="" name="MMERGE3" class="" id="mce-MMERGE3">
+              </div>
+              <div class="grid_3">
+                <label for="mce-MMERGE5">Country </label>
+                <input type="text" value="" name="MMERGE5" class="" id="mce-MMERGE5">
+              </div>
+              <div class="grid_6">
+                <label class="input-group-label">I have a ticketed event happening before Dec 2011 </label>
+                <div class="input-group">
+                    <ul>
+                        <li style="float: left; margin-right: 10px">
+                          <input type="radio" value="yes" name="MMERGE4" id="mce-MMERGE4-0" style="display: inline"/>
+                          <label for="mce-MMERGE4-0" style="display: inline">yes</label>
+                        </li>
+                        <li style="float: left">
+                          <input type="radio" value="no" name="MMERGE4" id="mce-MMERGE4-1" style="display: inline"/>
+                          <label for="mce-MMERGE4-1" style="display: inline">no</label>
+                        </li>
+                    </ul>
+                </div>
+              </div>
+          </section>
+          <section class="drawer grid_12">
+            <div id="show-form">
+              <a class="button-sign-up button"><i></i>Sign up for an account invitation!</a>
+            </div>
+            <div id="hide-form">
+              <input type="submit" class="button-submit button" value="Sign up for notifications" />
+              <span class="button-hide-form">
+                <a class="button"><i></i>No Thanks</a>
+              </span>
+            </div>
+            <div id="mce-success-response">
+              <p>Subscribing...</p>
+            </div>
+          </section>
+          </form>
+      </div>
+
+    </div>
+
+    <footer class="container_12">
+      <div class="grid_12">
+        <p>&nbsp;</p>
+      </div>
+      <div class="ticket"></div>
+    </footer>
+
+  <%= include_javascripts :splash %>
+</body>
+</html>

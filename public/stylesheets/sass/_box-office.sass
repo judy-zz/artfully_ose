@@ -4,30 +4,47 @@
     height: 3 * $line_height
     width: 100%
 
+#the-details
+  font-family: Helvetica, sans-serif !important
+  font-size: 12pt !important
+  width: 100%
+  border-bottom: 1px solid #ccc
+  @include top-bottom-shadow(#ccc)
+  label
+    font-family: Helvetica, sans-serif 
+    font-size: 11pt
+  h4
+    @include rounded-corners(2px, 2px, 2px, 2px)
+    background-color: $box-office-blue
+    font-style: normal
+    font-weight: bold
+    font-size: 10pt
+    padding-left: 8px
+
 #section-list
   .label
     @extend .stack3of4
   .element
     @extend .stack1of4
+  .description
+    margin-top: -10px
 
 #total
+  float: right
   text-align: center
   font-weight: bold
-  padding-bottom: 20px
-  margin-bottom: 20px
-  border-bottom: 1px solid #ddd
+  width: 200px
   span
     text-transform: uppercase
     font-size: .8em
     color: #ccc
   .price
     color: #999
-    font-size: 2.5em
+    font-size: 3.0em
     
 #checkout-now
-  padding-bottom: 20px
-  margin-bottom: 20px
-  border-bottom: 1px solid #ddd
+  float: right
+  width: 200px
   a
     display: block
     @include rounded-corners(2px, 2px, 2px, 2px)
@@ -38,7 +55,7 @@
     text-align: center
     font-weight: bold
     line-height: 40px
-  input
+  button
     display: block
     @include rounded-corners(2px, 2px, 2px, 2px)
     @include inset-text
@@ -48,8 +65,131 @@
     text-align: center
     font-weight: bold
     line-height: 40px
+    
+#checkout-now-button
+    
+#sell-button
+  display: block
+  @include rounded-corners(2px, 2px, 2px, 2px)
+  @include inset-text
+  @include gradient($compliment_highlight, $compliment, 14%, 100%)
+  border: 1px solid $compliment_shadow
+  font-size: 1em
+  text-align: center
+  font-weight: bold
+  line-height: 40px
+  width: 200px
+  font-size: 18pt
+  
+.off    
+  background: #EEE !important
 
-#checkout-now.disabled a
+#checkout-now.off a
   @include gradient(#ddd, #ccc, 14%, 100%)
   border: 1px solid #ccc
   cursor: default
+  
+#sell-popup
+  #sell-total
+    text-align: center
+    font-weight: bold
+    padding-bottom: 20px
+    margin-bottom: 20px
+    span
+      text-transform: uppercase
+      font-size: .8em
+      color: #ccc
+    .price
+      color: #999
+      font-size: 2.5em
+  #popup-ticket-list
+    height: 240px
+    overflow: auto
+    
+#swipe-now
+  font-size: 16pt
+  color: $compliment
+
+#hack-cc-number
+  border: 0px
+  color: #EEE
+  background: #EEE
+  
+#new-person-popup
+  background-color: white
+
+#sell-popup
+  background-color: white
+  h4
+    @include rounded-corners(2px, 2px, 2px, 2px)
+    background-color: $box-office-blue
+    font-style: normal
+    font-weight: bold
+    font-size: 10pt
+    padding-left: 8px
+  
+.ui-menu-item
+  border-bottom: 1px solid #ccc
+  font-family: Helvetica, sans-serif
+  
+#search-result-name
+  font-size: 11pt
+  float: left
+.search-result-details
+  color: #666
+  font-size: 10pt
+#search-result-email
+  float: right
+#search-result-id
+  display: none
+
+#the-details  
+  input#search
+    width: 90%
+    margin-top: 5px
+    margin-left: 5px
+
+#payment-method-popup
+  margin-left: 5px
+  margin-top: 10px
+  font-family: Helvetica, sans-serif
+  color: $blue
+  font-size: 14pt
+  font-weight: bold 
+
+.picked-person
+  margin-left: 5px 
+  
+.picked-person-name
+  margin-top: 10px
+  font-family: Helvetica, sans-serif
+  color: $blue
+  font-size: 14pt
+  font-weight: bold
+  
+.picked-person-email
+  color: #999
+
+.picked-person-company-name
+  color: #999
+  
+#showtime-total-and-checkout
+  width: 97%
+  margin-bottom: 3px
+  position: relative
+
+#showtime
+  float: left
+  position: absolute
+  bottom: 5px
+  color: #999
+
+#total-and-checkout
+  text-align: right
+  float: right  
+  
+.ui-autocomplete 
+  max-height: 320px
+  overflow-y: auto
+  overflow-x: hidden
+  padding-right: 20px

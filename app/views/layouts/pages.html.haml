@@ -1,0 +1,42 @@
+!!! 5
+%html{:lang => 'en'}
+  %head
+    %meta{:charset => 'utf-8'}
+
+    %title Artful.ly
+    = favicon_link_tag
+    :css
+      /* jammit will break this if its in a .css file */
+      @font-face {
+        font-family: 'Harabara';
+        src: url('/images/pages/Harabara.eot');
+        src: url('/images/pages/Harabara.eot?#iefix') format('embedded-opentype'),
+             url('/images/pages/Harabara.woff') format('woff'),
+             url('/images/pages/Harabara.ttf') format('truetype'),
+             url('/images/pages/Harabara.svg#') format('svg');
+        font-weight: normal;
+        font-style: normal;
+      }
+    = include_stylesheets :pages
+    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
+    = include_javascripts :pages
+    = render :partial => 'layouts/google_analytics'
+    :javascript
+      $(document).ready(function() {
+        $('p:not(.blog)').widowFix();
+      });
+
+  %body
+    .topbar
+      .topbar-inner
+        .container
+          %h3= link_to 'Artful.ly', root_url, :class => 'brand'
+          %ul.nav.secondary-nav
+            = active_link_to 'FAQ', faq_path
+            = active_link_to 'Pricing', pricing_path
+            = active_link_to 'Features', features_path
+            = active_link_to 'Updates', updates_path
+            %li= link_to 'Sign Up', sign_up_path, :class => 'btn primary'
+            = active_link_to 'Sign in', new_user_session_path
+    .container
+      =yield

@@ -1,7 +1,7 @@
 class Sale
   include ActiveModel::Validations
 
-  attr_accessor :sections, :quantities, :tickets, :cart, :message, :sale_made
+  attr_accessor :sections, :quantities, :tickets, :cart, :message, :error, :sale_made
   attr_reader :buyer
 
   validate :has_tickets?
@@ -22,16 +22,16 @@ class Sale
 
   def sell(payment)
     if valid?
-      cart.tickets << tickets
-      checkout = BoxOffice::Checkout.new(cart, payment)
-      @sale_made = checkout.finish
-      @buyer = checkout.person
-      errors.add(:base, "payment was not accepted") and return if !@sale_made
-      settle(checkout, @sale_made) if (@sale_made and !payment.requires_settlement?)
-      @sale_made
+      case payment
+      when CompPayment
+        @sale_made = comp_tickets(payment)
+      else
+        @sale_made = sell_tickets(payment)
+      end
     else
       @sale_made = false
     end
+    @sale_made
   end
 
   def non_zero_quantities?
@@ -45,7 +45,7 @@ class Sale
     sections.each do |section|
       tickets_available_in_section = Ticket.available({:section_id => section.id, :show_id => @show.id}, @quantities[section.id.to_s])
       if tickets_available_in_section.length != @quantities[section.id.to_s].to_i
-        errors.add(:base, "Not enough tickets in section")
+        errors.add(:base, "There aren't enough tickets available in that section")
       else
         @tickets = @tickets + tickets_available_in_section
       end
@@ -61,6 +61,29 @@ class Sale
   end
 
   private
+
+    def comp_tickets(payment)
+      @comp = Comp.new(tickets.first.show, tickets, payment.person, payment.benefactor)
+      @comp.submit
+      @buyer = payment.person
+      true
+    end
+    
+    def sell_tickets(payment)
+      cart.tickets << tickets
+      checkout = BoxOffice::Checkout.new(cart, payment)
+      begin
+        success = checkout.finish
+        @buyer = checkout.person
+        errors.add(:base, "payment was not accepted") and return if !success
+        settle(checkout, success) if (success and !payment.requires_settlement?)
+      rescue Errno::ECONNREFUSED => e
+        errors.add(:base, "Sorry but we couldn't connect to the payment processor.  Try again or use another payment type")
+      rescue Exception => e
+        errors.add(:base, "We had a problem processing the sale")
+      end
+      success
+    end
 
     def settle(checkout, success)
       Item.settle(checkout.order.items, Settlement.new)
