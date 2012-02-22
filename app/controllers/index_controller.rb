@@ -21,7 +21,7 @@ class IndexController < ApplicationController
       elsif current_user.current_organization.has_kit?(:reseller)
         profile_path = new_organization_reseller_profile_path(current_user.current_organization)
         anchor = %[<a href="#{profile_path}">Setup your profile</a>]
-        flash.now[:notice] = "Your reseller kit has been approved! #{anchor} so that you'll show up in the resellers director.".html_safe
+        flash.now[:notice] = "Your reseller kit has been approved! #{anchor} so that you'll show up in the resellers directory".html_safe
       end
     end
   end
