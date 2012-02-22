@@ -1,3 +1,6 @@
-Factory.define :ticket_offer do |o|
-  o.organization { Factory.create(:organization) }
+Factory.define :ticket_offer do |f|
+  f.organization { Factory.create(:organization) }
+  f.reseller_profile { |o| Factory.create(:reseller_profile, :organization_id => o.organization_id) }
+  f.show { Factory.create(:show) }
+  f.section { Factory.create(:section) }
 end
