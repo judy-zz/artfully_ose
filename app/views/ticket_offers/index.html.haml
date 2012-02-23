@@ -6,37 +6,39 @@
 
   .spread
 
-    %h3 Tiket Offers
+    - if current_user.current_organization.has_kit?(:reseller) && current_user.current_organization.reseller_profile
 
-    %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
+      %h3 Ticket Offers
 
-    - if @reseller_profile
+      %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
 
-      #offers-to-me
+      - if @reseller_profile
 
-        %table.zebra
-          %thead
-            %th Status
-            %th Event
-            %th Section
-            %th Time
-            %th Price
-            %th Available
-            %th Sold
-            %th Total
-            %th
-          %tbody
-            - @offers_to_me.each do |offer|
-              %tr
-                %td= h offer.status
-                %td= link_to(offer.event.name, store_event_path(offer.event)) if offer.event
-                %td= h offer.section.name if offer.section
-                %td= l offer.show.datetime_local_to_event if offer.show
-                %td= number_to_currency(offer.section.price * 0.01)
-                %td= offer.count - offer.sold
-                %td= offer.sold
-                %td= offer.count
-                %td= reseller_offer_control(offer)
+        #offers-to-me
+
+          %table.zebra
+            %thead
+              %th Status
+              %th Event
+              %th Section
+              %th Time
+              %th Price
+              %th Available
+              %th Sold
+              %th Total
+              %th
+            %tbody
+              - @offers_to_me.each do |offer|
+                %tr
+                  %td= h offer.status
+                  %td= link_to(offer.event.name, store_event_path(offer.event)) if offer.event
+                  %td= h offer.section.name if offer.section
+                  %td= l offer.show.datetime_local_to_event if offer.show
+                  %td= number_to_currency(offer.section.price * 0.01)
+                  %td= offer.count - offer.sold
+                  %td= offer.sold
+                  %td= offer.count
+                  %td= reseller_offer_control(offer)
 
     - if @organization.events.count > 0
 
