@@ -3,6 +3,7 @@ class Item < ActiveRecord::Base
   belongs_to :order
   belongs_to :show
   belongs_to :settlement
+  belongs_to :reseller_order, :class_name => "Reseller::Order"
   
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge
