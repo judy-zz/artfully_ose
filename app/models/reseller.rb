@@ -18,9 +18,34 @@ module Reseller
     end
   end
   
+  #
+  # This is the order that resellers see.
+  # Producers will receive and view ExternalOrders
+  #
   class Order < Order  
+    has_many :external_orders, :class_name => "ExternalOrder", :foreign_key => "reseller_order_id"
+    
+    #Rails wraps callbacks in the save transaction, so this is cool.
+    after_save :explode
+    
+    def explode
+      orders = {}
+      
+      items.each do |item|
+        order = ExternalOrder.new
+        order.organization       = @organization
+        order.person             = @person
+        order.reseller_order     = self
+        orders[@organization.id] = order
+      end
+      
+      orders.each do |organization_id, order|
+        order.save
+      end
+    end
+    
     def location
-      "Reseller"
+      "Web"
     end
   end
 end
