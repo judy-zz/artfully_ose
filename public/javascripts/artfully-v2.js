@@ -163,19 +163,19 @@ artfully.widgets = (function(){
       return data;
     }
 
-    function render(data){
+    function render(data, domId) {
       var s = prep(data);
-      s.render(jQuery('#artfully-show'), true, true);
+      s.render(jQuery(domId), true, true);
     }
 
     if (widgetCache.artfully_show === undefined) {
       widgetCache.artfully_show = {
-        display: function(id, org_id, target_dom_id) {
-          var dom_id = target_dom_id ? target_dom_id : "#artfully-show";
+        display: function(id, targetDomId) {
+          var domId = targetDomId || "#artfully-show";
 
           artfully.widgets.cart().display();
           jQuery.getJSON(artfully.utils.show_uri(id), function(data) {
-            render(data);
+            render(data, domId);
           });
         }
       };
