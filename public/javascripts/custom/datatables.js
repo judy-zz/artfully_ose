@@ -57,7 +57,7 @@ $(document).ready( function(){
         "bJQueryUI": true,
         "sDom": '<"H"lf>t<"F"ip>',
         "aoColumns": [
-        null,
+        { "asSorting": [ 'desc', 'asc', 'desc' ] },
         { "bSortable": false },
         { "bSearchable": false, "bSortable": false },
         ]
