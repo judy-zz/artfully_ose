@@ -6,7 +6,7 @@ describe Reseller::Cart do
     let(:reseller)            { reseller_profile.organization }
     let(:tickets)             { 2.times.collect { Factory(:ticket) } }
     let(:free_tickets)        { 2.times.collect { Factory(:free_ticket) } }
-    let(:cart)                { Reseller::Cart.new(reseller) }
+    let(:cart)                { Reseller::Cart.new( {:reseller => reseller} )  }
     
     before(:each) do
       cart.reseller = reseller
@@ -26,8 +26,12 @@ describe Reseller::Cart do
       cart.fee_in_cents.should eq 1200
     end
     
+    #
+    # Case where someone is re-selling their own tickets.  
+    # Fee should roll back to regular fees
+    #
     it "should not assess a fee on an item where the reseller is also the producer of the item" do
-      #Case where someone is selling their own tickets
+      pending
     end
   end 
 end

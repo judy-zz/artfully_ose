@@ -23,9 +23,23 @@ describe Reseller::Order do
   end
   
   describe "handling of ExternalOrders" do
-    
     it "should create an ExternalOrder for each producer in the cart" do
       order.external_orders.length.should eq 2
+      order.external_orders.each do |o|
+        o.transaction_id.should   eq order.transaction_id
+        o.service_fee.should      eq order.service_fee
+        o.payment_method.should   eq order.payment_method
+      end
+    end
+    
+    #
+    # This isn't going to work until Kurt's work in the notes branch is complete
+    # once that is merged in, we'll have to find_or_create people records for each org on the order
+    #
+    it "should create or link to people records for each individual org on the order" do
+      order.external_orders.each do |o|
+        o.person.should_not eq order.person
+      end      
     end
     
     it "should attach the items to this order via reseller_order" do
