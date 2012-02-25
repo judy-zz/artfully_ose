@@ -2,6 +2,10 @@ class Checkout
   attr_accessor :cart, :payment
   attr_reader :order, :person
 
+  def self.for(cart, payment)
+    cart.checkout_class.new(cart, payment)
+  end
+
   def initialize(cart, payment)
     @cart = cart
     @payment = payment
@@ -89,14 +93,20 @@ class Checkout
       end
       person
     end
-
-    def create_order(order_timestamp)
+    
+    def create_sub_orders(order_timestamp)
+      created_orders = []
       cart.organizations.each do |organization|
         @order = new_order(organization, order_timestamp, @person)
         @order.save!
         OrderMailer.confirmation_for(order).deliver unless @person.dummy? || @person.email.blank?
-        @order
+        created_orders << @order
       end
+      created_orders
+    end
+
+    def create_order(order_timestamp)
+      create_sub_orders(order_timestamp)
     end
 
     def order_class

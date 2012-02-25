@@ -51,7 +51,11 @@ artfully.utils = (function() {
   }
 
   function order_uri(){
-    return artfully.config.store_uri + 'order';
+    uri = artfully.config.store_uri + 'order?reseller_id=';
+		if(artfully.reseller() !== undefined) {
+			uri += artfully.reseller()
+		}
+		return uri;
   }
 
   function donation_uri(id){

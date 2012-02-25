@@ -4,6 +4,7 @@ class Store::OrdersController < Store::StoreController
   after_filter :add_p3p_header
 
   def show
+    current_cart(params[:reseller_id])
     @donations = current_cart.generate_donations
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120223172930) do
+ActiveRecord::Schema.define(:version => 20120224152954) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -97,6 +97,8 @@ ActiveRecord::Schema.define(:version => 20120223172930) do
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "type"
+    t.string   "reseller_id"
   end
 
   create_table "charts", :force => true do |t|
