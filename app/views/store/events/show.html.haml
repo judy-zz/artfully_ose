@@ -91,7 +91,6 @@
     $(document).on('click', 'td.remove a', function(e) {
       e.preventDefault();
       $(this).parents('tr').remove();
-      updateServiceCharge();
       updateTotal();
       $('.formatCurrency').formatCurrency();
       updateOrderOnServer();
@@ -99,8 +98,7 @@
 
     // change drop down on tickets in cart
     $(document).on('change', '#cart select.ticket-count', function(e) {
-      updateQuantityInCart()
-      updateServiceCharge();
+      updateQuantityInCart();
       updateTotal();
       $('.formatCurrency').formatCurrency();
       updateOrderOnServer();
@@ -128,7 +126,7 @@
       params.sections = sections;
     }
 
-    console.log(params);
+    // console.log(params);
 
     donationAmount = parseFloat($('tr.donation td.price').attr('data-price')) * 100;
     if (donationAmount > 0) {
@@ -161,17 +159,27 @@
             ticket.find('.quantity select').after("<span class='over-limit'><br />" + message + "</span>");
           });
           updateQuantityInCart();
-          updateServiceCharge();
           updateTotal();
           $('.formatCurrency').formatCurrency();
         };
+
+        // add service charge line item
+        $('tr#service-charge td.price h5').html(data.service_charge);
+        $('tr#service-charge td.price').attr('data-price', data.service_charge);
+        if (data.service_charge > 0) {
+          $('tr#service-charge').show();
+        } else {
+          $('tr#service-charge').hide();
+        }
+        $('.formatCurrency').formatCurrency();
         // todo validate amount
         $('#cart .continue a').removeClass('disabled');
         $('.continue #cart-total').show();
+
       },
       error: function(data) {
-        console.log("updateOrderOnServer: ERROR");
-        console.log(data);
+        // console.log("updateOrderOnServer: ERROR");
+        // console.log(data);
       }
     });
   }
@@ -248,7 +256,6 @@
       if (!($("[data-section-id='" + params.sectionId + "'][data-show-id='" + params.showId + "']").size() > 0)) {
         createTicketLineItem(params); 
       }
-      updateServiceCharge();
       
     } else if (type === 'donation') {
       createOrUpdateDonationLineItem(params);
@@ -296,23 +303,6 @@
         "</td>" +
       "</tr>"
     );
-  }
-
-  function updateServiceCharge() {
-    quantity = 0;
-    $('tr.ticket').each(function() {
-      quantity += parseInt($(this).find('td.quantity').attr('data-quantity'));
-    });
-
-    if (quantity > 0) {
-      $('tr#service-charge').show();
-      $('tr#service-charge td.quantity span').text(quantity);
-      $('tr#service-charge td.price h5').html(quantity * 2.00);
-      $('tr#service-charge td.price').attr('data-price', (quantity * 2.00));
-    } else {
-      $('tr#service-charge td.price').attr('data-price', 0);
-      $('tr#service-charge').hide();
-    }
   }
 
   function updateTotal() {
@@ -392,8 +382,6 @@
             %td.details
               Service Charge
             %td.quantity
-              %span
-              x $2.00 per ticket
             %td.price
               %h5.formatCurrency
 
