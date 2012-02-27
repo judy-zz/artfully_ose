@@ -28,14 +28,13 @@ $(document).ready(function() {
           },
           Ok: function(){
             $dialog.dialog("close")
-						var rowNum = row.parent().children().index(row);
-						dataTable.fnDeleteRow( rowNum );
+						dataTable.fnDeleteRow( dataTable.fnGetPosition(row.get(0)) );
     				zebra($('.zebra'));
-						$.post(targetUrl, {_method:'delete'},
-						   function(data) {
-    						 setFlashMessage("The note has been deleted");
-						   }
-						);
+            $.post(targetUrl, {_method:'delete'},
+               function(data) {
+                 setFlashMessage("The note has been deleted");
+               }
+            );
           }
         }
       });
