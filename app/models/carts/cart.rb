@@ -76,7 +76,7 @@ class Cart < ActiveRecord::Base
   end
 
   def finish(person, order_timestamp)
-    self.metric_sale_total
+    metric_sale_total
     tickets.each { |ticket| ticket.sell_to(person, order_timestamp) }
   end
 
@@ -111,6 +111,8 @@ class Cart < ActiveRecord::Base
     end
 
     def metric_sale_total
+
+
       bracket =
         case self.total
         when 0                  then "$0.00"
