@@ -19,6 +19,7 @@
             %th Email
             %th Section
             %th Price
+            %th Seller
         %tbody
           - @door_list.items.each do |item|
             %tr
@@ -28,4 +29,4 @@
               %td= item.buyer.email
               %td= item.ticket.section.name
               %td= number_as_cents(item.ticket.sold_price)
-
+              %td= ticket_reseller_name(item.ticket)

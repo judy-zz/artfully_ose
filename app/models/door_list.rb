@@ -6,7 +6,7 @@ class DoorList
   end
 
   def items
-    @items ||= show.tickets.select(&:committed?).collect do |ticket|
+    @items ||= show.tickets.includes(:buyer, :cart).select(&:committed?).collect do |ticket|
       Item.new(ticket, ticket.buyer)
     end.sort{ |a,b| (a.ticket.buyer.last_name || "") <=> (b.ticket.buyer.last_name || "") }
   end

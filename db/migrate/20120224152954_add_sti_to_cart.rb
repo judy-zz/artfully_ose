@@ -2,11 +2,6 @@ class AddStiToCart < ActiveRecord::Migration
   def self.up
     add_column :carts, :type, :string
     add_column :carts, :reseller_id, :string
-    
-    Cart.all.each do |c|
-      c.type = 'Cart'
-      c.save
-    end
   end
 
   def self.down
