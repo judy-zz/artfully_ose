@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120110224141) do
+ActiveRecord::Schema.define(:version => 20120222201906) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -220,16 +220,30 @@ ActiveRecord::Schema.define(:version => 20120110224141) do
     t.integer "organization_id"
   end
 
+  create_table "notes", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "user_id"
+    t.string   "type"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "occurred_at"
+    t.integer  "organization_id"
+  end
+
   create_table "order_view", :id => false, :force => true do |t|
-    t.integer "id",                :default => 0, :null => false
-    t.string  "transaction_id"
-    t.integer "price"
-    t.integer "service_fee"
-    t.integer "organization_id"
-    t.integer "person_id"
-    t.string  "organization_name"
-    t.string  "person_first_name"
-    t.string  "person_last_name"
+    t.integer  "id",                :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "transaction_id"
+    t.integer  "price"
+    t.integer  "service_fee"
+    t.integer  "fa_id"
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.string   "organization_name"
+    t.string   "person_first_name"
+    t.string   "person_last_name"
   end
 
   create_table "orders", :force => true do |t|

@@ -65,12 +65,12 @@ describe Job::Settlement do
   end
 
   describe ".settle_donations_in" do
-    let(:orders) { 2.times.collect { Factory(:order) } }
+    let(:orders) { 3.times.collect { Factory(:order) } }
 
     let(:donations_for_first_org)   { 2.times.collect{ Factory(:item, :product_type => "Donation")}}
     let(:donations_for_second_org)  { 2.times.collect{ Factory(:item, :product_type => "Donation")}}
 
-    let(:organizations) { 2.times.collect { Factory(:organization, :bank_account => Factory(:bank_account)) } }
+    let(:organizations) { 3.times.collect { Factory(:organization, :bank_account => Factory(:bank_account)) } }
     let(:settlement) { mock(:settlement, :submit => nil) }
 
     before(:each) do
@@ -82,13 +82,20 @@ describe Job::Settlement do
       orders.second.stub(:organization).and_return(organizations.second)
       orders.second.stub(:all_donations).and_return(donations_for_second_org)
 
+      orders.third.stub(:organization).and_return(organizations.third)
+      orders.third.stub(:all_donations).and_return([])
+
       Order.stub(:in_range).and_return(orders)
     end
 
     it "creates and submit a Settlement for each organization for all donations" do
       Settlement.should_receive(:submit).with(organizations.first.id, donations_for_first_org, organizations.first.bank_account).and_return(settlement)
       Settlement.should_receive(:submit).with(organizations.second.id, donations_for_second_org, organizations.second.bank_account).and_return(settlement)
+      
+      #This tests the case where an org has ticket sales in range but no donations.  Settlement was creating an empty settlement
+      Settlement.should_not_receive(:submit).with(organizations.third.id, [], organizations.third.bank_account)
+      
       Job::Settlement.settle_donations_in(Settlement.range_for(DateTime.now))
-    end
+    end 
   end
 end

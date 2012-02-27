@@ -47,7 +47,19 @@ $(document).ready( function(){
         null,
         null,
         null,
-        { "bSortable": false }
+        { "bSearchable": false, "bSortable": false }
+        ]
+    });
+
+    var $table = $('#notes-list').dataTable({
+        "iDisplayLength": 20,
+        "bPaginate": true,
+        "bJQueryUI": true,
+        "sDom": '<"H"lf>t<"F"ip>',
+        "aoColumns": [
+        { "asSorting": [ 'desc', 'asc', 'desc' ] },
+        { "bSortable": false },
+        { "bSearchable": false, "bSortable": false },
         ]
     });
 });

@@ -6,6 +6,43 @@ $(document).ready(function() {
     return (htmlElement === "\u272D");
   };
 
+  $(".delete-confirm-link").bind("click", function(event){
+    var $dialog = $(this).siblings(".confirmation.dialog").clone(),
+        $submit = $(this);
+
+    if($dialog.length !== 0){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      var $confirmation = $(document.createElement('input')).attr({type: 'hidden', name:'confirm', value: 'true'});
+    	var targetUrl = $(this).attr("href");
+			var row = $(this).closest("tr")
+			var table = row.closest("table")
+			var dataTable = table.dataTable()
+
+      $dialog.dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+          Cancel: function(){
+            $dialog.dialog("close")
+          },
+          Ok: function(){
+            $dialog.dialog("close")
+						dataTable.fnDeleteRow( dataTable.fnGetPosition(row.get(0)) );
+    				zebra($('.zebra'));
+            $.post(targetUrl, {_method:'delete'},
+               function(data) {
+                 setFlashMessage("The note has been deleted");
+               }
+            );
+          }
+        }
+      });
+      $dialog.dialog("open");
+      return false;
+    }
+  });
+
   $(".starable").live('click', function() {
     var star      = $.trim($(this).html()),
         person_id = $(this).attr("data-person-id"),
