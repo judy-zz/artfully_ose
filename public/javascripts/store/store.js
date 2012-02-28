@@ -170,10 +170,13 @@ function updateOrderOnServer() {
       } else {
         $('tr#service-charge').hide();
       }
-      $('.formatCurrency').formatCurrency();
+      
       // todo validate amount
-      $('#cart .continue a').removeClass('disabled');
+      $('.continue #cart-total').html(data.total);
       $('.continue #cart-total').show();
+
+      $('.formatCurrency').formatCurrency();
+      $('#cart .continue a').removeClass('disabled');
 
     },
     error: function(data) {
