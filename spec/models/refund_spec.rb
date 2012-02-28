@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Refund do
   disconnect_sunspot
-  let(:order) { Factory(:order) }
-  let(:items) { 3.times.collect { Factory(:item, :order => order)}}
+  let(:items) { 3.times.collect { Factory(:item)}}
+  let(:order) { Factory(:order, :service_fee => 600, :items => items) }
   subject { Refund.new(order, items) }
   
   gateway = ActiveMerchant::Billing::BraintreeGateway.new(
@@ -16,12 +16,13 @@ describe Refund do
   fail_response = ActiveMerchant::Billing::Response.new(false, 'you failed!')
   
   before(:each) do
+    items.each { |i| i.order = order }
     ActiveMerchant::Billing::BraintreeGateway.stub(:new).and_return(gateway)
   end
 
   describe "#submit" do
     before(:each) do
-      gateway.should_receive(:refund).with(3000, order.transaction_id).and_return(successful_response)
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(successful_response)
       
       subject.items.each { |i| i.stub(:return!) }
       subject.items.each { |i| i.stub(:refund!) }
@@ -57,7 +58,7 @@ describe Refund do
   describe "refund_amount" do
     it "should return the total for the items in the refund in cents" do
       total = items.collect(&:price).reduce(:+)
-      subject.refund_amount.should eq total
+      subject.refund_amount.should eq total + order.service_fee
     end
   end
   
@@ -73,13 +74,13 @@ describe Refund do
     end
   
     it "should return true if the refund was successful" do
-      gateway.should_receive(:refund).with(3000, order.transaction_id).and_return(successful_response)
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(successful_response)
       subject.submit
       subject.should be_successful
     end
   
     it "should return false if the refund was not successful" do
-      gateway.should_receive(:refund).with(3000, order.transaction_id).and_return(fail_response)
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(fail_response)
       subject.submit
       subject.should_not be_successful
     end
@@ -95,12 +96,12 @@ describe Refund do
     it "should return the amount for only those orders being refunded" do
       refundable_items = items[0..1]
       partial_refund = Refund.new(order, refundable_items)
-      partial_refund.refund_amount.should eq refundable_items.collect(&:price).reduce(:+)
+      partial_refund.refund_amount.should eq 2400
     end
     
     it "should issue a refund for the amount being refunded" do
       refundable_items = items[0..1]
-      gateway.should_receive(:refund).with(2000, order.transaction_id).and_return(successful_response)
+      gateway.should_receive(:refund).with(2400, order.transaction_id).and_return(successful_response)
       partial_refund = Refund.new(order, refundable_items)
       partial_refund.submit
       partial_refund.items.length.should eq 2

@@ -7,7 +7,7 @@ class Refund
   end
 
   def submit(options = {})
-    should_return = options[:and_return] || false
+    return_items = options[:and_return] || false
 
     gateway = ActiveMerchant::Billing::BraintreeGateway.new(
       :merchant_id => Artfully::Application.config.BRAINTREE_MERCHANT_ID,
@@ -19,7 +19,7 @@ class Refund
     @success = response.success?
     
     if @success
-      items.each(&:return!) if should_return
+      items.each(&:return!) if return_items
       items.each(&:refund!)
       create_refund_order(response.authorization)
     else
@@ -32,7 +32,7 @@ class Refund
   end
 
   def refund_amount
-    @amount ||= items.collect(&:price).sum
+    @amount ||= items.collect(&:price).sum + (items.size * ((order.service_fee / order.items.reject{|item| item.price == 0}.size)))
   end
 
   private
