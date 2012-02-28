@@ -221,8 +221,7 @@
           // console.log("ERROR!");
           // console.log(data);
           $('.tab-pane').hide();
-          $('.tab-pane#result').show();
-          $('.tab-pane#result').html("<h4>Your payment did not go through.</h4><p>" + data.responseText + ".</p>");
+          $('.tab-pane#thanks').show();
         }
       });
     } else {
@@ -469,5 +468,7 @@
         .continue
           = submit_tag 'Complete Purchase', :id => 'complete-purchase'
 
-      .tab-pane#result
-        
+      .tab-pane#thanks
+        %h2 Thank you for your order!
+        %p You'll receive an email confirmation shortly.
+        %p If you have any questions about the event, contact us at #{mail_to @event.contact_email if @event.contact_email.present?} #{@event.contact_phone}

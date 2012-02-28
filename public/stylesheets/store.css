@@ -758,3 +758,6 @@ table.calendar {
       margin-bottom: 20px; }
       #shopping-cart #steps #user_agreement p {
         margin-bottom: 13px; }
+    #shopping-cart #steps #thanks p {
+      margin-bottom: 10px;
+      line-height: 1.4em; }
