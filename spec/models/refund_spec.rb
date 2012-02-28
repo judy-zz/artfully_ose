@@ -12,7 +12,7 @@ describe Refund do
       :private_key => Artfully::Application.config.BRAINTREE_PRIVATE_KEY
     )    
   
-  successful_response = ActiveMerchant::Billing::Response.new(true, 'nice job!')
+  successful_response = ActiveMerchant::Billing::Response.new(true, 'nice job!', {}, {:authorization => '3e4r5q'} )
   fail_response = ActiveMerchant::Billing::Response.new(false, 'you failed!')
   
   before(:each) do
@@ -43,6 +43,8 @@ describe Refund do
         item.realized_price.should eq (items.first.realized_price * -1)
         item.net.should eq (items.first.net * -1)
       end
+      
+      subject.refund_order.transaction_id.should eq '3e4r5q'
       
       #and don't touch the original items
       items.each do |original_item|
