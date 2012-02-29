@@ -16,8 +16,8 @@
   #recently
     %h3 Recently
     - if @recent_actions.blank?
-      %p= t(".first-person", :default => "Add your Contacts.")
-      = link_to "Add a Contact", new_person_path, :class => :cta
+      %p= t(".first-action", :default => "When actions happen to your organization, they'll be recorded here. Get started by adding a new contact to your people database.")
+      = link_to "Add a Contact", new_person_path, :class => "cta-left-125"
     - else
       %ul.detailed-list
         - @recent_actions.each do |action|
