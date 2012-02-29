@@ -40,9 +40,6 @@ class Refund
 
   #This is brittle, sure, but active merchant doens't pass along any processor codes so we have to match the whole stupid string
   def format_message(message)
-    puts "[#{message}]"
-    puts "[#{BRAINTREE_UNSETTLED_MESSAGE}]"
-    puts "#{BRAINTREE_UNSETTLED_MESSAGE.eql? message}"
     (message.eql? BRAINTREE_UNSETTLED_MESSAGE) ? FRIENDLY_UNSETTLED_MESSAGE : message
   end
 
