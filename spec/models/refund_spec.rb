@@ -15,6 +15,7 @@ describe Refund do
   
   successful_response = ActiveMerchant::Billing::Response.new(true, 'nice job!', {}, {:authorization => '3e4r5q'} )
   fail_response = ActiveMerchant::Billing::Response.new(false, 'you failed!')
+  unsettled_response = ActiveMerchant::Billing::Response.new(false, Refund::BRAINTREE_UNSETTLED_MESSAGE)
   
   before(:each) do
     items.each      { |i| i.order = order }
@@ -31,7 +32,6 @@ describe Refund do
     end
 
     it "should attempt to refund the payment made for the order" do
-      puts subject.order.items.length
       subject.submit
       subject.should be_successful
     end
@@ -58,10 +58,36 @@ describe Refund do
     end
   end
   
+  describe "when refunding free items" do    
+    it "should not contact braintree if only free items are being refunded" do
+      subject.items.each { |i| i.stub(:return!) }
+      subject.items.each { |i| i.stub(:refund!) }
+      free_refund = Refund.new(order, free_items)
+      free_refund.refund_amount.should eq 0
+      gateway.should_not_receive(:refund)
+      free_refund.submit
+      free_refund.should be_successful
+    end
+  end
+  
   describe "refund_amount" do
     it "should return the total for the items in the refund in cents" do
       total = items.collect(&:price).reduce(:+)
       subject.refund_amount.should eq total + order.service_fee
+    end
+  end
+  
+  describe "when items havent settled yet" do
+    before(:each) do
+      subject.items.each { |i| i.should_not_receive(:return!) }
+      subject.items.each { |i| i.should_not_receive(:refund!) }
+      subject.should_not_receive(:create_refund_order)
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(unsettled_response)
+    end
+    
+    it "should display a friendlier error to the user" do
+      subject.submit
+      subject.gateway_error_message.should eq Refund::FRIENDLY_UNSETTLED_MESSAGE
     end
   end
   
