@@ -137,6 +137,15 @@ $(document).ready(function() {
     return false;
   });
 
+  $("#new-note-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Add Note"})
+
+  $(".new-note-link").bind("ajax:complete", function(et, e){
+    $("#new-note-popup").dialog( "open" );
+    $("#new-note-popup").html(e.responseText);
+    activateControls();
+    return false;
+  });
+
   var eventId = $("#calendar").attr("data-event");
   $('#calendar').fullCalendar({
     height: 500,

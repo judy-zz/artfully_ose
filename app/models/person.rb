@@ -5,6 +5,7 @@ class Person < ActiveRecord::Base
   has_many :actions
   has_one :address
   has_many :phones
+  has_many :notes
 
   validates_presence_of :organization_id
   validates_presence_of :person_info
