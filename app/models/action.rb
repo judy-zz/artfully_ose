@@ -43,7 +43,7 @@ class Action < ActiveRecord::Base
   end
   
   def sentence
-    verb + " " + details
+    (verb + " " + details.uncapitalize)
   end
 
   def hear_action_subtypes
