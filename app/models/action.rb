@@ -37,6 +37,14 @@ class Action < ActiveRecord::Base
   def unstarred?
     !starred?
   end
+  
+  def verb
+    ""
+  end
+  
+  def sentence
+    verb + " " + details
+  end
 
   def hear_action_subtypes
     [ "Email (sent)",
@@ -50,6 +58,10 @@ class Action < ActiveRecord::Base
       "Facebook",
       "Blog",
       "Press" ]
+  end
+  
+  def self.recent(organization, limit = 5)
+    Action.where(:organization_id => organization).order('created_at DESC').limit(limit)
   end
 
   def give_action_subtypes
