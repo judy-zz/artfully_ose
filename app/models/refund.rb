@@ -1,7 +1,7 @@
 class Refund
   attr_accessor :order, :refund_order, :items, :gateway_error_message
 
-  BRAINTREE_UNSETTLED_MESSAGE = "Cannot refund a transaction unless it is settled (91506)"
+  BRAINTREE_UNSETTLED_MESSAGE = "Cannot refund a transaction unless it is settled. (91506)"
   FRIENDLY_UNSETTLED_MESSAGE = "The processor cannot refund that tranaction yet. Please try again in a few hours."
 
   def initialize(order, items)
@@ -40,6 +40,9 @@ class Refund
 
   #This is brittle, sure, but active merchant doens't pass along any processor codes so we have to match the whole stupid string
   def format_message(message)
+    puts "[#{message}]"
+    puts "[#{BRAINTREE_UNSETTLED_MESSAGE}]"
+    puts "#{BRAINTREE_UNSETTLED_MESSAGE.eql? message}"
     (message.eql? BRAINTREE_UNSETTLED_MESSAGE) ? FRIENDLY_UNSETTLED_MESSAGE : message
   end
 
