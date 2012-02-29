@@ -3,7 +3,8 @@ require 'spec_helper'
 describe Refund do
   disconnect_sunspot
   let(:items) { 3.times.collect { Factory(:item)}}
-  let(:order) { Factory(:order, :service_fee => 600, :items => items) }
+  let(:free_items) { 3.times.collect { Factory(:free_item)}}
+  let(:order) { Factory(:order, :service_fee => 600, :items => (items + free_items)) }
   subject { Refund.new(order, items) }
   
   gateway = ActiveMerchant::Billing::BraintreeGateway.new(
@@ -16,7 +17,8 @@ describe Refund do
   fail_response = ActiveMerchant::Billing::Response.new(false, 'you failed!')
   
   before(:each) do
-    items.each { |i| i.order = order }
+    items.each      { |i| i.order = order }
+    free_items.each { |i| i.order = order }
     ActiveMerchant::Billing::BraintreeGateway.stub(:new).and_return(gateway)
   end
 
@@ -29,6 +31,7 @@ describe Refund do
     end
 
     it "should attempt to refund the payment made for the order" do
+      puts subject.order.items.length
       subject.submit
       subject.should be_successful
     end
