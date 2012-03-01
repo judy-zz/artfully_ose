@@ -1,23 +1,30 @@
 class DoorList
-  attr_accessor :show
+  attr_reader :show
 
   def initialize(show)
-    self.show = show
+    @show = show
+  end
+
+  def tickets
+    @tickets ||= Ticket.where(:show_id => show.id).includes(:buyer, :cart).select(&:committed?)
   end
 
   def items
-    @items ||= show.tickets.includes(:buyer, :cart).select(&:committed?).collect do |ticket|
-      Item.new(ticket, ticket.buyer)
-    end.sort{ |a,b| (a.ticket.buyer.last_name || "") <=> (b.ticket.buyer.last_name || "") }
+    @items ||= tickets.map { |t| Item.new t, t.buyer }.sort
   end
 
   private
+
     class Item
       attr_accessor :ticket, :buyer
 
       def initialize(ticket, buyer)
         self.ticket = ticket
         self.buyer = buyer
+      end
+
+      def <=>(obj)
+        (self.ticket.buyer.last_name || "") <=> (obj.ticket.buyer.last_name || "")
       end
     end
 end
