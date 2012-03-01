@@ -109,7 +109,7 @@ describe Ticket do
      subject { Factory(:ticket, :state => :on_sale) }
 
      it "posts to restful metrics" do
-       RestfulMetrics::Client.should_receive(:add_metric)
+       RestfulMetrics::Client.should_receive(:add_metric).with(ENV["RESTFUL_METRICS_APP"], "ticket_sold", 1)
        subject.sell_to(buyer).should be_true
      end
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Exchange do
-  disconnect_sunspot  
+  disconnect_sunspot
   let(:order)       { Factory(:order) }
   let(:items)       { 3.times.collect { Factory(:item) } }
   let(:event)       { Factory(:event, :organization => order.organization) }
@@ -73,7 +73,10 @@ describe Exchange do
       end
 
       it "should post a metric for the exchange" do
-        subject.tickets.each { |ticket| RestfulMetrics::Client.should_receive(:add_metric) }
+        subject.tickets.should_not be_empty
+        subject.tickets.each do |ticket|
+          RestfulMetrics::Client.should_receive(:add_metric).with(ENV["RESTFUL_METRICS_APP"], "ticket_exchanged", 1)
+        end
         subject.submit
       end
 

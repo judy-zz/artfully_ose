@@ -111,8 +111,6 @@ class Cart < ActiveRecord::Base
     end
 
     def metric_sale_total
-
-
       bracket =
         case self.total
         when 0                  then "$0.00"
