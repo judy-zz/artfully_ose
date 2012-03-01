@@ -34,6 +34,9 @@ javascripts:
   comps:
     - public/javascripts/inline-people-search.js
 
+  widget_generator:
+    - public/javascripts/widget-generator.js
+
   box_office:
     - public/javascripts/inline-people-search.js
     - public/javascripts/box-office.js

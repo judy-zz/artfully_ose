@@ -1,0 +1,41 @@
+- content_for :custom_js do
+  = include_javascripts :widget_generator
+- in_section :dashboard
+- content_for :header do
+  %h1 Sell On Your Website
+
+.halfzies-left
+  %form
+    .radio{:style=>'margin-top:10px'}
+      %h4 I want to...
+      %ul.radio-list
+        %li
+          .radio= radio_button_tag :widget_type, "event", false, :class => 'widget_type'
+          .label= label_tag :widget_type_event, "Sell tickets to an event"
+        %li
+          .radio= radio_button_tag :widget_type, "donations", false, :class => 'widget_type'
+          .label= label_tag :widget_type_donations, "Receive donations"
+        %li
+          .radio= radio_button_tag :widget_type, "both", false, :class => 'widget_type'
+          .label= label_tag :widget_type_both, "Both"
+    .hidden.events{:style=>'margin-top:10px'}
+      %h4 Choose the event to sell tickets to
+      = select_tag :event_id, options_for_select(@events_array)
+    .radio{:style=>'margin-top:10px'}
+      %h4 Do you have jQuery installed on your website?
+      %ul.radio-list
+        %li
+          .radio= radio_button_tag :jquery, "yes"
+          .label= label_tag :jquery_yes, "Yes"
+        %li
+          .radio= radio_button_tag :jquery, "no"
+          .label= label_tag :jquery_no, "No"
+        %li
+          .radio= radio_button_tag :jquery, "dont_know"
+          .label= label_tag :jquery_dont_know, "I don't know"
+    .generate-link-container{:style=>'margin-top:10px'}
+      = link_to "Generate widget", "", :id=>"generate-link", :class => "cta-left"
+      .clear
+.halfzies-right{:style => 'width:45%'}
+  .the-code.hidden
+    %pre.code= widget_script(@event, current_user.current_organization)
