@@ -2,8 +2,8 @@ module Reseller
   class Cart < Cart
     belongs_to :reseller, :class_name => "Organization", :foreign_key => "reseller_id"
     
-    def update_ticket_fee
-      @fee_in_cents = (items_subject_to_fee.size * 100) + (items_subject_to_fee.size * reseller.reseller_profile.fee)
+    def fee_in_cents
+      (items_subject_to_fee.size * 100) + (items_subject_to_fee.size * reseller.reseller_profile.fee)
     end
     
     def checkout_class

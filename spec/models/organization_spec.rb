@@ -144,4 +144,40 @@ describe Organization do
       subject.send(:update_kits)
     end
   end
+
+  describe "#events_with_sales" do
+    let(:org2) { Factory(:organization_with_reselling) }
+    subject { Factory(:organization_with_reselling) }
+
+    before do
+      # An event produced and sold by this organization.
+      create_event_with_a_sale subject
+
+      # An event produced by this organization and sold by a reseller.
+      create_event_with_a_sale subject, org2
+
+      # An event produced by another organization and sold by this organization.
+      create_event_with_a_sale org2, subject
+
+      # An event produced and sold by another organization.
+      create_event_with_a_sale org2
+    end
+
+    it "should have its own events with sales and events it has resold" do
+      subject.should have(3).events_with_sales
+    end
+
+    def create_event_with_a_sale(producer, reseller = nil)
+      cart =
+        if reseller
+          Factory(:reseller_cart, :state => :approved, :reseller => reseller)
+        else
+          Factory(:cart, :state => :approved)
+        end
+
+      event = Factory(:event, :organization => producer)
+      show = Factory(:show, :event => event, :organization => producer)
+      ticket = Factory(:ticket, :show => show, :organization => producer, :cart => cart, :state => :sold)
+    end
+  end
 end

@@ -5,9 +5,6 @@ class Cart < ActiveRecord::Base
   has_many :tickets, :after_add => :set_timeout
   after_destroy :release_tickets
 
-  attr_accessor :fee_in_cents
-  after_initialize :update_ticket_fee
-
   state_machine do
     state :started
     state :approved
@@ -42,8 +39,8 @@ class Cart < ActiveRecord::Base
     self.tickets.reject{|t| t.price == 0}
   end
 
-  def update_ticket_fee
-    @fee_in_cents = items_subject_to_fee.size * 200
+  def fee_in_cents
+    items_subject_to_fee.size * 200
   end
 
   def clear_donations
@@ -58,11 +55,10 @@ class Cart < ActiveRecord::Base
 
   def <<(tkts)
     tickets << tkts
-    update_ticket_fee
   end
 
   def total
-    items.sum(&:price) + @fee_in_cents
+    items.sum(&:price) + fee_in_cents
   end
 
   def unfinished?

@@ -107,6 +107,16 @@ class Organization < ActiveRecord::Base
     kits.where(:state => "activated").map(&:class).map(&:name).include?(name.to_s.camelize + "Kit")
   end
 
+  def events_with_sales
+    Cart.
+      includes(:tickets => { :show => :event }).
+      where("(carts.reseller_id = ? OR tickets.organization_id = ?) AND (carts.state = ?)", self.id, self.id, :approved).
+      map { |c| c.tickets.map(&:show).map(&:event) }.
+      flatten.
+      uniq.
+      sort { |e1, e2| e1.name.downcase <=> e2.name.downcase}
+  end
+
   private
 
     def update_kits
