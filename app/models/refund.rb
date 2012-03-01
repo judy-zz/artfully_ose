@@ -44,7 +44,7 @@ class Refund
   end
 
   def refund_amount
-    item_total + (number_of_non_free_items(items) * ((order.service_fee / number_of_non_free_items(order.items))))
+    item_total + (number_of_non_free_items(items) * (( (order.service_fee || 0) / number_of_non_free_items(order.items))))
   end
 
   private
