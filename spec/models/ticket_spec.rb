@@ -103,42 +103,48 @@ describe Ticket do
   #   end
   # end
   # 
-  # describe "#sell_to" do
-  #   let (:buyer) { Factory(:person) }
-  #   subject { Factory(:ticket, :state => :on_sale) }
-  # 
+
+  describe "#sell_to" do
+     let (:buyer) { Factory(:person) }
+     subject { Factory(:ticket, :state => :on_sale) }
+
+     it "posts to restful metrics" do
+       RestfulMetrics::Client.should_receive(:add_metric)
+       subject.sell_to(buyer).should be_true
+     end
+
   #   it "defaults to current time if time is not provided" do
   #     subject.sell_to(buyer)
   #     subject.sold_at.should_not eq nil
   #   end
-  # 
+  #
   #   it "sets sold_at to the time provided" do
   #     when_it_got_sold = Time.now + 1.hour
   #     subject.sell_to(buyer, when_it_got_sold)
   #     subject.sold_at.should eq when_it_got_sold
   #   end
-  # 
+  #
   #   it "sets sold_price to price" do
   #     subject.sell_to(buyer)
   #     subject.sold_price.should eq subject.price
   #   end
-  # 
+  #
   #   it "marks the ticket as sold" do
   #     subject.sell_to(buyer)
   #     subject.should be_sold
   #   end
-  # 
+  #
   #   it "saves the updated ticket" do
   #     subject.should_receive(:save!)
   #     subject.sell_to(buyer)
   #   end
-  # 
+  #
   #   it "sets the buyer after being sold" do
   #     subject.sell_to(buyer)
   #     subject.buyer.should eq buyer
   #   end
-  # end
-  # 
+  end
+
   # describe "#comp_to" do
   #   let (:buyer) { Factory(:person) }
   #   subject { Factory(:ticket, :state => :on_sale) }

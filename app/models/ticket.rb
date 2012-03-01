@@ -28,12 +28,12 @@ class Ticket < ActiveRecord::Base
     state :sold
     state :comped
 
-    event(:on_sale)   { transitions :from => [ :on_sale, :off_sale, :sold ],  :to => :on_sale                                }
-    event(:off_sale)  { transitions :from => :on_sale,                        :to => :off_sale                               }
-    event(:exchange)  { transitions :from => [ :on_sale, :off_sale ],         :to => :sold,    :success => :metric_exchanged }
-    event(:sell)      { transitions :from => :on_sale,                        :to => :sold,    :success => :metric_sold      }
-    event(:comp)      { transitions :from => [ :on_sale, :off_sale ],         :to => :comped                                 }
-    event(:do_return) { transitions :from => [ :comped, :sold ],              :to => :on_sale                                }
+    event(:on_sale)                                 { transitions :from => [ :on_sale, :off_sale, :sold ], :to => :on_sale  }
+    event(:off_sale)                                { transitions :from => :on_sale,                       :to => :off_sale }
+    event(:exchange, :success => :metric_exchanged) { transitions :from => [ :on_sale, :off_sale ],        :to => :sold,    }
+    event(:sell, :success => :metric_sold)          { transitions :from => :on_sale,                       :to => :sold,    }
+    event(:comp)                                    { transitions :from => [ :on_sale, :off_sale ],        :to => :comped   }
+    event(:do_return)                               { transitions :from => [ :comped, :sold ],             :to => :on_sale  }
   end
 
   def datetime

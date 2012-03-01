@@ -72,6 +72,11 @@ describe Exchange do
         subject.submit
       end
 
+      it "should post a metric for the exchange" do
+        subject.tickets.each { |ticket| RestfulMetrics::Client.should_receive(:add_metric) }
+        subject.submit
+      end
+
       it "should create an exchange order if all of the tickets are sold successfully" do
         subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
         subject.should_receive(:create_order)
