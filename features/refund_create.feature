@@ -5,7 +5,7 @@ Feature: Refund Tickets
   Background:
     And I am logged in
     And I am part of an organization
-    And I can refund tickets through ATHENA
+    And I can refund tickets through Braintree
     And there is an order with 2 tickets
 
   Scenario: A producer is presented with the option to refund with or without returning to inventory
