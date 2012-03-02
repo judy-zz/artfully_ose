@@ -84,6 +84,12 @@ class Event < ActiveRecord::Base
     self.reseller_attachments.where(:reseller_profile_id => reseller_profile.id).first
   end
 
+  def <=>(obj)
+    return -1 unless obj.kind_of? Event
+
+    self.name.downcase <=> obj.name.downcase
+  end
+
   private
     def already_has_chart(chart)
       !self.charts.select{|c| c.name == chart.name }.empty?

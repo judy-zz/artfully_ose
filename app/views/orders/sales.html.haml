@@ -3,10 +3,18 @@
   %h1 Sales
 
 .context
-  %h3 Range
+  %h3 Search
   #donations-search
     %ul.kv
       = form_tag sales_orders_path, :method => :get do
+        - if @events.present?
+          %li
+            .key= label_tag :event_id
+            .value= raw select_event_for_sales_search @events, :event_id, params[:event_id]
+        - if @event && @shows.present?
+          %li
+            .key= label_tag :show_id
+            .value= raw select_show_for_sales_search @shows, :show_id, params[:show_id]
         %li
           .key= label_tag :start_date
           .value= text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
@@ -18,7 +26,10 @@
 .document
   %h3 Sales
   - unless @search.results.empty?
-    %h4= "From #{l @search.start} to #{l @search.stop}"
+    %h4
+      = "From #{l @search.start} to #{l @search.stop}"
+      = "for #{@event.name}" if @event
+      = "on #{l @show.datetime_local_to_event}" if @show
     #tickets
       %table.standalone.zebra
         %thead

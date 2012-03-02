@@ -25,12 +25,42 @@ class Order < ActiveRecord::Base
   after_create :create_purchase_action, :unless => :skip_actions
   after_create :create_donation_actions, :unless => :skip_actions
 
-  default_scope :order => 'created_at DESC'
-  scope :before, lambda { |time| where("created_at < ?", time) }
-  scope :after,  lambda { |time| where("created_at > ?", time) }
+  default_scope :order => 'orders.created_at DESC'
+  scope :before, lambda { |time| where("orders.created_at < ?", time) }
+  scope :after,  lambda { |time| where("orders.created_at > ?", time) }
   scope :imported, where("fa_id IS NOT NULL")
   scope :not_imported, where("fa_id IS NULL")
   scope :artfully, where("transaction_id IS NOT NULL")
+
+  def self.sale_search(search)        
+    query = self
+
+    if search.start   
+      query = query.after(search.start)    
+    end
+
+    if search.stop   
+      query = query.before(search.stop)
+    end
+
+    if search.event
+      query = query.
+        includes(:items => { :show => :event }).
+        where('shows.event_id = ?', search.event.id)
+    end
+
+    if search.show
+      query = query.
+        includes(:items => { :show => :event }).
+        where('shows.id = ?', search.show.id)
+    end
+
+    if search.organization
+      query = query.where('orders.organization_id = ?', search.organization.id)
+    end
+
+    query
+  end
 
   def self.in_range(start, stop, organization_id = nil)
     query = after(start).before(stop).order("created_at DESC")

@@ -108,13 +108,18 @@ class Organization < ActiveRecord::Base
   end
 
   def events_with_sales
+    shows_with_sales.map(&:event).uniq
+  end
+
+  def shows_with_sales
     Cart.
       includes(:tickets => { :show => :event }).
-      where("(carts.reseller_id = ? OR tickets.organization_id = ?) AND (carts.state = ?)", self.id, self.id, :approved).
-      map { |c| c.tickets.map(&:show).map(&:event) }.
+      where("(carts.reseller_id = :org OR tickets.organization_id = :org) AND (carts.state = 'approved')", :org => self.id).
+      map { |c| c.tickets.map(&:show) }.
       flatten.
+      compact.
       uniq.
-      sort { |e1, e2| e1.name.downcase <=> e2.name.downcase}
+      sort
   end
 
   private

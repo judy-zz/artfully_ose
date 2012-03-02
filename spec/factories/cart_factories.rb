@@ -1,3 +1,8 @@
+Factory.define :reseller_cart, :class => Reseller::Cart do |f|
+  f.state
+  f.association :reseller
+end
+
 Factory.define :cart do |o|
 end
 

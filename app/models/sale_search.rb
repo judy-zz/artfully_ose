@@ -1,16 +1,20 @@
 class SaleSearch
 
   attr_reader :start, :stop
+  attr_reader :organization, :event, :show
 
-  def initialize(start, stop, organization)
-    @organization = organization
-    @start = start_with(start)
-    @stop  = stop_with(stop)
+  def initialize(terms)
+    @start        = start_with(terms[:start])
+    @stop         = stop_with(terms[:stop])
+    @organization = terms[:organization]
+    @event        = terms[:event]
+    @show         = terms[:show]
+
     @results = yield(results) if block_given?
   end
 
   def results
-    @results ||= Order.in_range(@start, @stop, @organization.id).select(&:has_ticket?)
+    @results ||= Order.sale_search(self).select(&:has_ticket?)
   end
 
   private

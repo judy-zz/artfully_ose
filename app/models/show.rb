@@ -160,6 +160,16 @@ class Show < ActiveRecord::Base
     as_json.merge(:event => event.as_json, :venue => event.venue.as_json, :chart => chart.as_json)
   end
 
+  def <=>(obj)
+    return -1 unless obj.kind_of? Show
+
+    if self.event == obj.event
+      self.datetime <=> obj.datetime
+    else
+      self.event <=> obj.event
+    end
+  end
+
   private
 
   def self.future(date)
