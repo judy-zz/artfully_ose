@@ -112,10 +112,10 @@ class Organization < ActiveRecord::Base
   end
 
   def shows_with_sales
-    Cart.
-      includes(:tickets => { :show => :event }).
-      where("(carts.reseller_id = :org OR tickets.organization_id = :org) AND (carts.state = 'approved')", :org => self.id).
-      map { |c| c.tickets.map(&:show) }.
+    Order.
+      includes(:items => { :show => :event }).
+      where(:orders => { :organization_id => self.id }).
+      map { |o| o.items.map(&:show) }.
       flatten.
       compact.
       uniq.
