@@ -7,14 +7,26 @@
   %h3 Organization
   %p
     - if current_user.is_in_organization?
-      You are a member of organization:
+      You are a member of 
       =link_to current_user.current_organization.name, organization_path(current_user.current_organization)
     - else
       You are not in an organization yet.  Ask your organization administrator to add you, or
       =link_to "create your own.", new_organization_path
 
-- width = "75%" if @events.blank?
-.dashboard{ :style => "width: #{width}" }
+  #recently
+    %h3 Recently
+    - if @recent_actions.blank?
+      %p= t(".first-action", :default => "When actions happen to your organization, they'll be recorded here. Get started by adding a new contact to your people database.")
+      = link_to "Add a Contact", new_person_path, :class => "cta-left-125"
+    - else
+      %ul.detailed-list
+        - @recent_actions.each do |action|
+          %li
+            %p
+              = person_link(action.person)
+              = action.sentence
+
+.dashboard
   #events
     %h3 Events
     - if @events.blank?
@@ -22,16 +34,3 @@
       = link_to "Create your first Event", new_event_path, :class => :cta
     - else
       = render :partial => 'events/list', :locals => { :events => @events }
-
-  #people
-    %h3 People
-    - if @people.blank?
-      %p= t(".first-person", :default => "Add your Contacts.")
-      = link_to "Add a Contact", new_person_path, :class => :cta
-    - else
-      = render :partial => 'people/list', :locals => { :people => @people }
-
-.sideboard
-  - if !@events.blank?
-    %h3 Overview
-    = render :partial => 'events/glances', :locals => { :events => @events } unless @events.blank?

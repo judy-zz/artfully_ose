@@ -17,4 +17,8 @@ class GiveAction < Action
     self.subject_id = sub.id
     @subject = sub
   end
+  
+  def sentence
+    "contribued to your organization."
+  end
 end

@@ -10,8 +10,16 @@ Given /^I can settle Credit Cards in ATHENA$/ do
   FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => "{ success : true }")
 end
 
-Given /^I can refund tickets through ATHENA$/ do
-  FakeWeb.register_uri(:post, "http://localhost/payments/transactions/refund", :body => "{ success : true }")
+Given /^I can refund tickets through Braintree$/ do
+  gateway = ActiveMerchant::Billing::BraintreeGateway.new(
+      :merchant_id => Artfully::Application.config.BRAINTREE_MERCHANT_ID,
+      :public_key  => Artfully::Application.config.BRAINTREE_PUBLIC_KEY,
+      :private_key => Artfully::Application.config.BRAINTREE_PRIVATE_KEY
+    )    
+  
+  successful_response = ActiveMerchant::Billing::Response.new(true, 'nice job!', {}, {:authorization => '3e4r5q'} )
+  gateway.stub(:refund).and_return(successful_response)
+  ActiveMerchant::Billing::BraintreeGateway.stub(:new).and_return(gateway)
 end
 
 Given /^I can save Customers to ATHENA$/ do
