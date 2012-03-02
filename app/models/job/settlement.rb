@@ -15,7 +15,11 @@ class Job::Settlement < Job::Base
         logger.info "Settling #{show.event.name}, #{show.datetime_local_to_organization}"
 
         logger.error "#{show.organization.name} does not have a bank account." if show.organization.bank_account.nil?
-        settlements << Settlement.submit(show.organization.id, show.settleables, show.organization.bank_account, show.id)
+        begin
+          settlements << Settlement.submit(show.organization.id, show.settleables, show.organization.bank_account, show.id)
+        rescue Exception => e
+          logger.error e.backtrace
+        end
       end
       AdminMailer.settlement_summary(shows_to_settle, settlements).deliver
     end
@@ -32,7 +36,11 @@ class Job::Settlement < Job::Base
         if donations.empty?
           logger.error "#{organization.id} has ticket sales but no donations for this range." if organization.bank_account.nil?
         else
-          Settlement.submit(organization.id, donations, organization.bank_account)
+          begin
+            Settlement.submit(organization.id, donations, organization.bank_account)
+          rescue Exception => e
+            logger.error e.backtrace
+          end
         end
       end
     end

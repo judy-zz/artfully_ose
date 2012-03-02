@@ -62,6 +62,22 @@ describe Job::Settlement do
       end
       Job::Settlement.settle_shows_in(Settlement.range_for(DateTime.now))
     end
+  end  
+  
+  describe "when disaster strikes" do
+    let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
+    let(:shows) { 3.times.collect{ Factory(:show, :organization => organization, :event => Factory(:event)) } }
+    let(:settlement) { Factory (:settlement) }
+
+    before(:each) do
+      Settlement.should_receive(:submit).exactly(3).times.and_raise(Exception.new)
+      shows.each { |show| show.stub(:settleables).and_return(5.times.collect{ Factory(:item) } ) }
+      Show.stub(:in_range).and_return(shows)
+    end
+    
+    it "should recover and continue settling if there is a problem" do
+      Job::Settlement.settle_shows_in(Settlement.range_for(DateTime.now))
+    end
   end
 
   describe ".settle_donations_in" do
