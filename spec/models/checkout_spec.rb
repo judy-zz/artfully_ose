@@ -3,10 +3,11 @@ require 'spec_helper'
 describe Checkout do
   disconnect_sunspot
   let(:payment) { Factory(:payment) }
+  let(:payment_without_email) { Factory(:payment_without_email) }
   let(:order) { Factory(:cart) }
 
   subject { Checkout.new(order, payment) }
-
+  
   it "should set the amount for the payment from the order" do
     subject.payment.amount.should eq order.total
   end
@@ -15,6 +16,14 @@ describe Checkout do
     subject = Checkout.new(Factory(:cart_with_items), payment)
     subject.payment = nil
     subject.should_not be_valid
+  end
+  
+  it "should not be valid without an email address on the customer" do
+    [nil, "", " "].each do |invalid_email|    
+      payment.customer.email = invalid_email
+      invalid_checkout = Checkout.new(order, payment)
+      invalid_checkout.should_not be_valid
+    end
   end
 
   it "should be valid without a payment if the cart total is 0 (Free)" do
