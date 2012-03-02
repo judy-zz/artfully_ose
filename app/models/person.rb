@@ -113,6 +113,31 @@ class Person < ActiveRecord::Base
     end.results
   end
 
+  def self.find_or_create(customer, organization)
+    person = Person.find_by_customer(customer, organization)
+      
+    if person.nil?
+      params = {
+        :first_name      => customer.first_name,
+        :last_name       => customer.last_name,
+        :email           => customer.email,
+        :organization_id => organization.id # This doesn't account for multiple organizations per cart
+      }
+      person = Person.create(params)
+    end
+    person
+  end
+
+  def update_address?(new_address, time_zone, user = nil, updated_by = nil)
+    if not new_address.nil?
+      if !new_address.respond_to?(:person=) then new_address = Address.create(new_address) end
+      new_address.person = self
+      @address = Address.find_or_create(id)
+      rtn = @address.update_with_note?(self, user, new_address, time_zone, updated_by)
+    end
+    return true
+  end
+
   private
     def person_info
       !(first_name.blank? and last_name.blank? and email.blank?)

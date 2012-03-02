@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'awesome_print'
 
 describe Person do
   disconnect_sunspot
@@ -9,6 +10,64 @@ describe Person do
     subject.notes.build(:text => "This is my first note.")
     subject.save
     subject.notes.length.should eq 1
+  end
+
+  context "updating address" do
+    let(:addr1)     { Address.new(:address1 => '123 A St.') }
+    let(:addr2)     { Address.new(:address1 => '234 B Ln.') }
+    let(:user)      { User.create() }
+    let(:time_zone) { ActiveSupport::TimeZone["UTC"] }
+
+    it "should create address when none exists, and add note" do
+      ::Rails.logger.info "kstar-B :  addr = |#{subject.address.to_s}| notes = #{subject.notes.length}"
+      num_notes = subject.notes.length
+      subject.address.should be_nil
+      subject.update_address?(addr1, time_zone, user).should eq true
+      subject.address.should_not be_nil
+      subject.address.to_s.should eq addr1.to_s
+      subject.notes.length.should eq num_notes + 1
+      ::Rails.logger.info "kstar-E :  addr = |#{subject.address.to_s}|"
+    end
+
+    it "should not update when nil address supplied" do
+      ::Rails.logger.info "kstar-B :  addr = |#{subject.address.to_s}| notes = #{subject.notes.length}"
+      num_notes = subject.notes.length
+      old_addr = subject.address.to_s
+      subject.update_address?(nil, time_zone, user).should eq true
+      subject.address.to_s.should eq old_addr
+      subject.notes.length.should eq num_notes
+      ::Rails.logger.info "kstar-E :  addr = |#{subject.address.to_s}|"
+    end
+
+    it "should not update when address is unchanged" do
+      subject.update_address?(addr1, time_zone, user).should eq true
+      ::Rails.logger.info "kstar-B :  addr = |#{subject.address.to_s}| notes = #{subject.notes.length}"
+      num_notes = subject.notes.length
+      old_addr = subject.address.to_s
+      subject.update_address?(addr1, time_zone, user).should eq true
+      subject.address.to_s.should eq old_addr
+      subject.notes.length.should eq num_notes
+      ::Rails.logger.info "kstar-E :  addr = |#{subject.address.to_s}|"
+    end
+
+    it "should update address when address is changed, and add note" do
+      ::Rails.logger.info "kstar-B :  addr = |#{subject.address.to_s}| notes = #{subject.notes.length}"
+      subject.update_address?(addr1, time_zone, user).should eq true
+      num_notes = subject.notes.length
+      subject.update_address?(addr2, time_zone, user).should eq true
+      subject.address.to_s.should eq addr2.to_s
+      subject.notes.length.should eq num_notes + 1
+      ::Rails.logger.info "kstar-E :  addr = |#{subject.address.to_s}|"
+    end
+
+    it "should allow a note with nil user" do
+      ::Rails.logger.info "kstar-B :  addr = |#{subject.address.to_s}| notes = #{subject.notes.length}"
+      num_notes = subject.notes.length
+      subject.update_address?(addr1, time_zone).should eq true
+      subject.address.to_s.should eq addr1.to_s
+      subject.notes.length.should eq num_notes + 1
+      ::Rails.logger.info "kstar-E :  addr = |#{subject.address.to_s}|"
+    end
   end
 
   describe "#valid?" do
