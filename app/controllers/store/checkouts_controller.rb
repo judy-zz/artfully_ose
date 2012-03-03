@@ -49,7 +49,7 @@ class Store::CheckoutsController < Store::StoreController
       message = @payment.errors.full_messages.to_sentence.downcase
       message = message.gsub('customer', 'contact info')
       message = message.gsub('credit card is', 'payment details are')
-      message = message[0].upcase + message[1..message.length] #capitalize first word
+      message = message[0].upcase + message[1..message.length] unless message.blank? #capitalize first word
       render :json => message, :status => :unprocessable_entity
     end
   end

@@ -150,7 +150,7 @@
             %li#agreement
               .label
                 %label
-                  = check_box_tag "[athena_payment][user_agreement]", 1, false, :validate => "required:true", :id => 'agreement'
+                  = check_box_tag "[athena_payment][user_agreement]", 1, false, :id => 'agreement-checkbox'
                   I have read, understand and accept the terms and conditions of the User Agreement below.
                 %label.error.checkbox{:style => 'display:none;'} Please agree to the terms and conditions.
           
@@ -160,6 +160,7 @@
         .continue
           = submit_tag 'Complete Purchase', :id => 'complete-purchase'
 
+      .tab-pane#result
       .tab-pane#thanks
         %h2 Thank you for your order!
         %p You'll receive an email confirmation shortly.

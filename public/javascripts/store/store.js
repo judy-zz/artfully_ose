@@ -58,7 +58,10 @@ $(document).ready(function(){
   // click "complete purchase" to submit payment
   $('form#shopping-cart-form').submit(function(e) {
     e.preventDefault();
-    checkout();
+    // dont let people submit form twice
+    if (!($('#complete-purchase').hasClass('disabled'))) {
+      checkout();
+    }
   });
 
   // show shopping cart when clicked
@@ -202,9 +205,10 @@ function updateQuantityInCart() {
 
 function checkout() {
   // POST "/store/checkout" // Store::CheckoutsController#create as HTML // Parameters: {"utf8"=>"✓", "authenticity_token"=>"oGmh5IrGv6CU3aPbpERHFNTpZg6YAiwLXY66d0zev6I=", "athena_payment"=>{"athena_customer"=>{"first_name"=>"test", "last_name"=>"test", "phone"=>"test", "email"=>"test@test.com"}, "athena_credit_card"=>{"cardholder_name"=>"test test", "card_number"=>"4242424242424242", "cvv"=>"123", "expiration_date(3i)"=>"1", "expiration_date(2i)"=>"2", "expiration_date(1i)"=>"2015"}, "billing_address"=>{"street_address1"=>"test", "city"=>"test", "state"=>"AL", "postal_code"=>"12345"}, "user_agreement"=>"1"}, "confirmation"=>"1", "commit"=>"Purchase"}
+  $('#complete-purchase').addClass('disabled');
 
   // make sure agreement checkbox is checked
-  if ($('input#agreement:checked').length == 1) {
+  if ($('#agreement-checkbox').is(':checked')) {
     $('#purchase .error').hide();
     $.ajax({
       type: 'POST',
@@ -224,11 +228,13 @@ function checkout() {
         $('.tab-pane').hide();
         $('.tab-pane#result').show();
         $('.tab-pane#result').html("<h4>Your payment did not go through.</h4><p>" + data.responseText + ".</p>");
+        $('#complete-purchase').removeClass('disabled');
       }
     });
   } else {
     // have to add this error message manually for some reason
     $('#purchase .error').show();
+    $('#complete-purchase').removeClass('disabled');
   }
 }
 
