@@ -47,9 +47,6 @@ class Donation::Importer
         :fa_id      => fa_donation.id
       })
       order.save
-      ::Rails.logger.debug "#{order.errors}"
-      
-      ::Rails.logger.debug "Order has id of #{order.id}"
 
       create_or_update_items(order, fa_donation, organization)
       order
