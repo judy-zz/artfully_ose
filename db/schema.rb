@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120222201906) do
+ActiveRecord::Schema.define(:version => 20120305025755) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -193,7 +193,7 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.integer  "net"
     t.string   "settlement_id"
     t.string   "fs_project_id"
-    t.string   "nongift_amount"
+    t.integer  "nongift_amount"
     t.boolean  "is_noncash"
     t.boolean  "is_stock"
     t.boolean  "is_anonymous"
