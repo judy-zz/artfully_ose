@@ -78,10 +78,10 @@
 - else
 
   .document
-
     %h3 Ticket Offers
 
-    %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
+    - if current_user.current_organization.has_kit?(:reseller) && current_user.current_organization.reseller_profile
+      %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
 
     - if @organization.events.count > 0
       = link_to "Create a ticket offer", new_ticket_offer_path, :class => "cta-left-125"
