@@ -168,16 +168,45 @@ describe Organization do
     end
 
     def create_event_with_a_sale(producer, reseller = nil)
-      cart =
+      FakeWeb.register_uri :post, "http://localhost:8982/solr/update?wt=ruby", :body => ""
+
+      person = Factory(:person)
+
+      order =
         if reseller
-          Factory(:reseller_cart, :state => :approved, :reseller => reseller)
+          Factory(:reseller_order, :organization => reseller, :person => person)
         else
-          Factory(:cart, :state => :approved)
+          Factory(:order, :organization => producer, :person => person)
         end
 
       event = Factory(:event, :organization => producer)
       show = Factory(:show, :event => event, :organization => producer)
-      ticket = Factory(:ticket, :show => show, :organization => producer, :cart => cart, :state => :sold)
+      ticket = Factory(:ticket, :show => show, :organization => producer, :state => :sold)
+
+      item =
+        if reseller
+          Factory(:item, :product => ticket, :order => nil, :reseller_order => order, :show => show)
+        else
+          Factory(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
+        end
+
+      order.items << item
+      order.save!
+
+      order.reload
+      producer.reload
+      reseller.reload if reseller
+
+      producer.should_not == reseller
+      order.should have(1).items
+      event.should have(1).shows
+
+      if reseller
+        order.organization.should_not == item.show.organization
+        order.items.first.show.should == show
+        order.should have(1).external_order
+        order.external_orders.first.organization.should == producer
+      end
     end
   end
 end

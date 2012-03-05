@@ -51,9 +51,11 @@ module Reseller
     
     def explode
       orders = {}
+
+      external_orders.each { |eo| orders[eo.organization.id] = eo }
       
       items.each do |item|
-        order = orders[item.product.organization.id] || ExternalOrder.new
+        order = orders[item.product.organization.id] || external_orders.build
         
         item.reseller_net        = @organization.reseller_profile.fee
         order.organization       = item.product.organization
@@ -61,12 +63,11 @@ module Reseller
         order.transaction_id     = transaction_id
         order.service_fee        = service_fee
         order.payment_method     = payment_method
-        order.reseller_order     = self
         order.items              << item
         
         orders[item.product.organization.id] = order
       end
-      
+
       orders.each do |organization_id, order|
         order.save
       end

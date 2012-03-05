@@ -114,7 +114,7 @@ class Organization < ActiveRecord::Base
   def shows_with_sales
     Order.
       includes(:items => { :show => :event }).
-      where(:orders => { :organization_id => self.id }).
+      where(:organization_id => self.id).
       map { |o| o.items.map(&:show) }.
       flatten.
       compact.
