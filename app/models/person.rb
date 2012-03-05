@@ -5,6 +5,7 @@ class Person < ActiveRecord::Base
   has_many :actions
   has_one :address
   has_many :phones
+  has_many :notes
 
   validates_presence_of :organization_id
   validates_presence_of :person_info
@@ -52,9 +53,8 @@ class Person < ActiveRecord::Base
     where('import_id = ?', import.id)
   end
 
-  #TODO
-  def self.recent(organization)
-    []
+  def self.recent(organization, limit = 10)
+    Person.where(:organization_id => organization).order('updated_at DESC').limit(limit)
   end
   
   def self.find_by_customer(customer, organization)

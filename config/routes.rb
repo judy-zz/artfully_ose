@@ -104,6 +104,7 @@ Artfully::Application.routes.draw do
 
   resources :people, :except => :destroy do
     resources :actions
+    resources :notes
     resources :phones, :only => [:create, :destroy]
     resource  :address, :only => [:create, :update, :destroy]
   end

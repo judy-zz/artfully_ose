@@ -2,27 +2,38 @@ require 'spec_helper'
 
 describe Refund do
   disconnect_sunspot
-  let(:order) { Factory(:order) }
-  let(:items) { 3.times.collect { Factory(:item, :order => order)}}
+  let(:items) { 3.times.collect { Factory(:item)}}
+  let(:free_items) { 3.times.collect { Factory(:free_item)}}
+  let(:order) { Factory(:order, :service_fee => 600, :items => (items + free_items)) }
   subject { Refund.new(order, items) }
+  
+  gateway = ActiveMerchant::Billing::BraintreeGateway.new(
+      :merchant_id => Artfully::Application.config.BRAINTREE_MERCHANT_ID,
+      :public_key  => Artfully::Application.config.BRAINTREE_PUBLIC_KEY,
+      :private_key => Artfully::Application.config.BRAINTREE_PRIVATE_KEY
+    )    
+  
+  successful_response = ActiveMerchant::Billing::Response.new(true, 'nice job!', {}, {:authorization => '3e4r5q'} )
+  fail_response = ActiveMerchant::Billing::Response.new(false, 'you failed!')
+  unsettled_response = ActiveMerchant::Billing::Response.new(false, Refund::BRAINTREE_UNSETTLED_MESSAGE)
+  
+  before(:each) do
+    items.each      { |i| i.order = order }
+    free_items.each { |i| i.order = order }
+    ActiveMerchant::Billing::BraintreeGateway.stub(:new).and_return(gateway)
+  end
 
   describe "#submit" do
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/refund", :body => "{ success: true }")
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(successful_response)
+      
       subject.items.each { |i| i.stub(:return!) }
       subject.items.each { |i| i.stub(:refund!) }
     end
 
     it "should attempt to refund the payment made for the order" do
       subject.submit
-      FakeWeb.last_request.method.should eq "POST"
-      FakeWeb.last_request.path.should eq "/payments/transactions/refund"
-    end
-
-    it "should include the total price of all items being refunded" do
-      total = subject.refund_amount / 100.0
-      subject.submit
-      FakeWeb.last_request.body.should match Regexp.new(/\"amount\":#{total}/)
+      subject.should be_successful
     end
     
     it "should create a refund_order with refunded items" do
@@ -37,6 +48,8 @@ describe Refund do
         item.net.should eq (items.first.net * -1)
       end
       
+      subject.refund_order.transaction_id.should eq '3e4r5q'
+      
       #and don't touch the original items
       items.each do |original_item|
         original_item.order.should eq order     
@@ -44,41 +57,66 @@ describe Refund do
       subject.refund_order.parent.should eq order   
     end
   end
-
+  
+  describe "when refunding free items" do    
+    it "should not contact braintree if only free items are being refunded" do
+      subject.items.each { |i| i.stub(:return!) }
+      subject.items.each { |i| i.stub(:refund!) }
+      free_refund = Refund.new(order, free_items)
+      free_refund.refund_amount.should eq 0
+      gateway.should_not_receive(:refund)
+      free_refund.submit
+      free_refund.should be_successful
+    end
+  end
+  
   describe "refund_amount" do
     it "should return the total for the items in the refund in cents" do
       total = items.collect(&:price).reduce(:+)
-      subject.refund_amount.should eq total
+      subject.refund_amount.should eq total + order.service_fee
     end
   end
-
+  
+  describe "when items havent settled yet" do
+    before(:each) do
+      subject.items.each { |i| i.should_not_receive(:return!) }
+      subject.items.each { |i| i.should_not_receive(:refund!) }
+      subject.should_not_receive(:create_refund_order)
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(unsettled_response)
+    end
+    
+    it "should display a friendlier error to the user" do
+      subject.submit
+      subject.gateway_error_message.should eq Refund::FRIENDLY_UNSETTLED_MESSAGE
+    end
+  end
+  
   describe "successful?" do
     before(:each) do
       subject.items.each { |i| i.stub(:return!) }
       subject.items.each { |i| i.stub(:refund!) }
       subject.stub(:create_refund_order)
     end
-
+  
     it "should return false if it has not been submitted" do
       subject.should_not be_successful
     end
-
+  
     it "should return true if the refund was successful" do
-      FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/refund', :body => '{ "success": true }')
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(successful_response)
       subject.submit
       subject.should be_successful
     end
-
+  
     it "should return false if the refund was not successful" do
-      FakeWeb.register_uri(:post, 'http://localhost/payments/transactions/refund', :body => '{ "success": false }')
+      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(fail_response)
       subject.submit
       subject.should_not be_successful
     end
   end
-
+  
   describe "a partial refund" do
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/refund", :body => "{ success: true }")
       subject.items.each { |i| i.stub(:return!) }
       subject.items.each { |i| i.stub(:refund!) }
       subject.stub(:create_refund_order)
@@ -87,14 +125,14 @@ describe Refund do
     it "should return the amount for only those orders being refunded" do
       refundable_items = items[0..1]
       partial_refund = Refund.new(order, refundable_items)
-      partial_refund.refund_amount.should eq refundable_items.collect(&:price).reduce(:+)
+      partial_refund.refund_amount.should eq 2400
     end
     
     it "should issue a refund for the amount being refunded" do
       refundable_items = items[0..1]
+      gateway.should_receive(:refund).with(2400, order.transaction_id).and_return(successful_response)
       partial_refund = Refund.new(order, refundable_items)
       partial_refund.submit
-      (FakeWeb.last_request.body.include? "20.0").should be_true
       partial_refund.items.length.should eq 2
     end
   end

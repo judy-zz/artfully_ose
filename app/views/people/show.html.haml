@@ -9,10 +9,20 @@
 .document
   #actions
     %h3 Actions
-    %ul#new-actions
+    %ul#button-bar
       %li=link_to "Hear", new_person_action_path(@person, :format => :html, :type => :hear), :class => "popup-link", :remote => true, :title => "Log a communication event"
       %li=link_to "Give", new_contribution_path("contribution[person_id]" => @person.id), :title => "Log a contribution"
     = render :partial => 'actions/list', :locals => { :person => @person, :actions => (@person.starred_actions + @person.unstarred_actions ) }
 
+  #notes
+    %h3 Notes
+    %ul#button-bar
+      %li=link_to "New Note", new_person_note_path(@person, :format => :html), :class => "new-note-link", :remote => true, :title => "Add a new note"
+
+  = render :partial=>'notes/list', :locals => { :person => @person, :notes => @person.notes, :subject => @person }
+
   = render :partial=>'shared/tags', :locals => { :tags => @person.tag_list, :subject => @person }
+
   .popup
+  #new-note-popup
+

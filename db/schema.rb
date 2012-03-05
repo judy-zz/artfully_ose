@@ -225,6 +225,17 @@ ActiveRecord::Schema.define(:version => 20120224152954) do
     t.integer "organization_id"
   end
 
+  create_table "notes", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "user_id"
+    t.string   "type"
+    t.text     "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "occurred_at"
+    t.integer  "organization_id"
+  end
+
   create_table "order_view", :id => false, :force => true do |t|
     t.integer  "id",                :default => 0, :null => false
     t.datetime "created_at"

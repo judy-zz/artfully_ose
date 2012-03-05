@@ -4,6 +4,10 @@ Factory.define(:item) do |i|
   i.association :order
 end
 
+Factory.define(:free_item, :parent => :item) do |i|
+  i.price 0
+end
+
 Factory.define(:fa_item, :parent => :item) do |i|
   i.nongift_amount 400
 end
