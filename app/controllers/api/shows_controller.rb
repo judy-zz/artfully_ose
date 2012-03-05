@@ -17,6 +17,10 @@ class Api::ShowsController < ApiController
       @shows += @reseller_profile.reseller_shows.published.includes(:event => :reseller_attachments).to_a
     end
 
+    # Remove shows outside the specified time range.
+    @shows.reject! { |s| s.datetime < DateTime.parse(params[:start]).beginning_of_day } if params[:start]
+    @shows.reject! { |s| s.datetime > DateTime.parse(params[:end]).end_of_day } if params[:end]
+
     # Remove any duplicated events.
     @shows.uniq!
 
