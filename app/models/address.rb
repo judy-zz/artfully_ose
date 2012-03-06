@@ -41,7 +41,7 @@ class Address < ActiveRecord::Base
     find(pers_id) rescue Address.create(:person_id => pers_id)
   end
 
-  def update_with_note?(person, user, address, time_zone, updated_by)
+  def update_with_note(person, user, address, time_zone, updated_by)
     old_addr = to_s()
 
     unless is_same_as(address)
