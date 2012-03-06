@@ -662,6 +662,13 @@ table.calendar {
             #shopping-cart #steps fieldset ul li .element input.error {
               border: 1px solid red;
               background-image: none; }
+          #shopping-cart #steps fieldset ul li .element select {
+            width: 50%;
+            float: left;
+            margin-right: 10px; }
+            #shopping-cart #steps fieldset ul li .element select.error {
+              border: 1px solid red;
+              background-image: none; }
           #shopping-cart #steps fieldset ul li .element input.small, #shopping-cart #steps fieldset ul li .element select.small {
             width: 22%;
             display: inline;
