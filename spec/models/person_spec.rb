@@ -60,9 +60,6 @@ describe Person do
   end
 
   describe "#valid?" do
-    before(:each) do
-      FakeWeb.register_uri(:get, %r|http://localhost/athena/people\.json\?email=.*&organizationId=.*|, :body => "[]")
-    end
 
     it { should be_valid }
     it { should respond_to :email }
