@@ -24,14 +24,17 @@ class Store::OrdersController < Store::StoreController
 
   # used by hosted storefront
   def storefront_sync
-    current_cart.release_tickets
-    current_cart.clear_donations
+    puts "    #{current_cart.tickets.length}"
+    current_cart.clear!
+    puts "    #{current_cart.tickets.length}"
+    
     order_params = {}
 
     if params[:sections]
       ticket_ids = []
       over_section_limit = []
       params[:sections].each_value do |section|
+        puts "#{section[:section_id]}: #{section[:limit]}"
         ids = Ticket.available(
           {
             :section_id => section[:section_id],
@@ -53,6 +56,7 @@ class Store::OrdersController < Store::StoreController
 
     response = current_cart.attributes
     response = response.merge(:total => current_cart.total / 100)
+    puts "                      #{current_cart.fee_in_cents}"
     response = response.merge(:service_charge => (current_cart.fee_in_cents / 100))
     response = response.merge(:over_section_limit => over_section_limit).to_json
     logger.info "RESPONSE: #{response}"
