@@ -17,16 +17,6 @@
 					= section.name
 					%span{:class => 'price'}= number_to_currency(section.price / 100.0)
 
-				- description = "This gets you all the goodies, including wine, pizza, bagels and lots of other delicious stuff. You’ll also have the chance to meet the world famous people who do things.\n\nThis gets you all the goodies, including wine, pizza, bagels and lots of other delicious stuff. You’ll also have the chance to meet the world famous people who do things."
-				-if description.length > 150
-					.toggle-truncated
-						.truncated
-							= simple_format "#{truncate(description, :length => 150)} (#{link_to 'more','#', :class => 'toggle'})"
-						.not-truncated{:style => 'display:none;'}
-							=simple_format "#{description} (#{link_to 'less','#', :class => 'toggle'})"
-				- else
-					=simple_format description
-
 				= form_tag '', :class => 'add-tickets-to-cart' do
 					= hidden_field_tag :show_id, show.id
 					= hidden_field_tag :section_id, section.id
