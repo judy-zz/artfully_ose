@@ -47,7 +47,7 @@ class Address < ActiveRecord::Base
     unless is_same_as(address)
       if update_attributes(address.attributes)
         update_attributes(address.attributes)
-        extra = updated_by.nil? ? "" : " from ${updated_by}"
+        extra = updated_by.nil? ? "" : " from #{updated_by}"
         person.notes.create({
           :person_id    => person.id,
           :occurred_at  => DateTime.now.in_time_zone(time_zone),
