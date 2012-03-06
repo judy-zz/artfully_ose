@@ -11,6 +11,15 @@ class Address < ActiveRecord::Base
     "#{address1} #{address2} #{city} #{state} #{zip} #{country}"
   end
 
+  def is_same_as(addr)
+    return address1.eql?(addr.address1) &&
+           address2.eql?(addr.address2) &&
+           city.eql?(addr.city) &&
+           state.eql?(addr.state) &&
+           zip.eql?(addr.zip) &&
+           country.eql?(addr.country)
+  end
+
   def self.from_payment(payment)
     if payment.respond_to? "billing_address"
       billing_address = payment.billing_address
@@ -35,7 +44,7 @@ class Address < ActiveRecord::Base
   def update_with_note?(person, user, address, time_zone, updated_by)
     old_addr = to_s()
 
-    if old_addr != address.to_s()
+    unless is_same_as(address)
       if update_attributes(address.attributes)
         update_attributes(address.attributes)
         extra = updated_by.nil? ? "" : " from ${updated_by}"
@@ -49,6 +58,6 @@ class Address < ActiveRecord::Base
       end
     end
 
-    return true
+    true
   end
 end

@@ -20,7 +20,7 @@ describe Person do
     it "should create address when none exists, and add note" do
       num_notes = subject.notes.length
       subject.address.should be_nil
-      subject.update_address?(addr1, time_zone, user).should eq true
+      subject.update_address(addr1, time_zone, user).should eq true
       subject.address.should_not be_nil
       subject.address.to_s.should eq addr1.to_s
       subject.notes.length.should eq num_notes + 1
@@ -29,31 +29,31 @@ describe Person do
     it "should not update when nil address supplied" do
       num_notes = subject.notes.length
       old_addr = subject.address.to_s
-      subject.update_address?(nil, time_zone, user).should eq true
+      subject.update_address(nil, time_zone, user).should eq true
       subject.address.to_s.should eq old_addr
       subject.notes.length.should eq num_notes
     end
 
     it "should not update when address is unchanged" do
-      subject.update_address?(addr1, time_zone, user).should eq true
+      subject.update_address(addr1, time_zone, user).should eq true
       num_notes = subject.notes.length
       old_addr = subject.address.to_s
-      subject.update_address?(addr1, time_zone, user).should eq true
+      subject.update_address(addr1, time_zone, user).should eq true
       subject.address.to_s.should eq old_addr
       subject.notes.length.should eq num_notes
     end
 
     it "should update address when address is changed, and add note" do
-      subject.update_address?(addr1, time_zone, user).should eq true
+      subject.update_address(addr1, time_zone, user).should eq true
       num_notes = subject.notes.length
-      subject.update_address?(addr2, time_zone, user).should eq true
+      subject.update_address(addr2, time_zone, user).should eq true
       subject.address.to_s.should eq addr2.to_s
       subject.notes.length.should eq num_notes + 1
     end
 
     it "should allow a note with nil user" do
       num_notes = subject.notes.length
-      subject.update_address?(addr1, time_zone).should eq true
+      subject.update_address(addr1, time_zone).should eq true
       subject.address.to_s.should eq addr1.to_s
       subject.notes.length.should eq num_notes + 1
     end
