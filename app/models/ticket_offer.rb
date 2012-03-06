@@ -29,6 +29,24 @@ class TicketOffer < ActiveRecord::Base
   scope :on_calendar, has_show.where("status IN (?)", %w( accepted completed ))
   scope :visible_to_reseller, where("status IN (?)", %w( offered accepted rejected completed ))
 
+  ## Ticket Sale Information ##
+  
+  def available
+    [ 0, count - sold ].max
+  end
+
+  def sold
+    Order.
+      includes(:items).
+      where(:organization_id => reseller_organization.id).
+      map { |o| o.items }.
+      flatten.
+      compact.
+      uniq.
+      select { |i| i.ticket? && valid_ticket?(i.product) }.
+      count
+  end
+
   ## State Transitions ##
 
   def transition_to_status!(valid_prestatus, status)
@@ -72,6 +90,15 @@ class TicketOffer < ActiveRecord::Base
 
   def status_sort_index
     STATUSES.index status
+  end
+
+  def reseller_organization
+    reseller_profile.organization
+  end
+
+  def valid_ticket?(ticket)
+    return false unless ticket.kind_of? Ticket
+    ticket.organization_id == organization_id && ticket.show_id == show_id && ticket.section_id == section_id
   end
 
   ## Supporting Classes ##

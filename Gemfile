@@ -77,4 +77,5 @@ group :test do
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'autotest'
+  gem 'autotest-fsevent'
 end

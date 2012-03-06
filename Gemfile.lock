@@ -78,6 +78,8 @@ GEM
     athena_resource (0.0.1)
     autotest (4.4.6)
       ZenTest (>= 4.4.1)
+    autotest-fsevent (0.2.8)
+      sys-uname
     awesome_print (0.4.0)
     aws-sdk (1.3.2)
       httparty (~> 0.7)
@@ -252,6 +254,8 @@ GEM
     sunspot_rails (1.2.1)
       nokogiri
       sunspot (= 1.2.1)
+    sys-uname (0.9.0)
+      ffi (>= 1.0.0)
     term-ansicolor (1.0.7)
     thin (1.2.11)
       daemons (>= 1.0.9)
@@ -287,6 +291,7 @@ DEPENDENCIES
   acts-as-taggable-on (~> 2.1.0)
   athena_resource
   autotest
+  autotest-fsevent
   awesome_print
   aws-sdk
   cancan
