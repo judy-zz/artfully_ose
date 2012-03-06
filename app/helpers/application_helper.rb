@@ -14,6 +14,10 @@ module ApplicationHelper
     block.call(menu)
     menu.render_menu
   end
+  
+  def person_link(person)
+    link_to "#{person.first_name} #{person.last_name}", person_url(person)
+  end
 
   def widget_script(event, organization)
     return <<-EOF

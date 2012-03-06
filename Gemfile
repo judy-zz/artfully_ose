@@ -4,10 +4,7 @@ gem 'rails'
 gem 'rack-ssl-enforcer'
 gem 'rack-canonical-host'
 
-#Migration
-gem 'mongo'
-gem 'bson'
-gem 'bson_ext'
+gem 'activemerchant', :require => 'active_merchant'
 
 gem 'athena_resource'
 gem 'activerecord-import'

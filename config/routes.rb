@@ -1,4 +1,5 @@
 Artfully::Application.routes.draw do
+
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index
@@ -86,6 +87,7 @@ Artfully::Application.routes.draw do
 
   resources :people, :except => :destroy do
     resources :actions
+    resources :notes
     resources :phones, :only => [:create, :destroy]
     resource  :address, :only => [:create, :update, :destroy]
   end
