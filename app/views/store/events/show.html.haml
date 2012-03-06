@@ -10,10 +10,10 @@
       %h1#logo= @event.name
       %h3#producer= @event.producer
 
-      - @use_calendar = (@event.shows.unplayed.length > 5 || params[:calendar] == 'true')
+      - @use_calendar = (@event.upcoming_public_shows.length > 5 || params[:calendar] == 'true')
 
       %ul#shows
-        =render :partial => 'show', :collection => @event.shows.unplayed, :as => :show
+        =render :partial => 'show', :collection => @event.upcoming_public_shows, :as => :show
       
       =render 'calendar' if @use_calendar
     
