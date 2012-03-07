@@ -128,13 +128,15 @@ class Person < ActiveRecord::Base
   end
 
   def update_address(new_address, time_zone, user = nil, updated_by = nil)
-    # If new_address is a hash, then upgrade it to an Address:
-    if !new_address.respond_to?(:person=) then new_address = Address.create(new_address) end
-    new_address.person = self
-    @address = Address.find_or_create(id)
-    if !@address.update_with_note(self, user, new_address, time_zone, updated_by)
-      ::Rails.logger.error "Could not update address from payment"
-      return false
+    unless new_address.nil?
+      # If new_address is a hash, then upgrade it to an Address:
+      if !new_address.respond_to?(:person=) then new_address = Address.create(new_address) end
+      new_address.person = self
+      @address = Address.find_or_create(id)
+      if !@address.update_with_note(self, user, new_address, time_zone, updated_by)
+        ::Rails.logger.error "Could not update address from payment"
+        return false
+      end
     end
     true
   end
