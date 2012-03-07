@@ -63,6 +63,7 @@
         %li= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
         %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
         %li= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
+        %li= link_to 'Extra', '#extra', 'data-toggle' => 'tab'
         %li= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
       .tab-pane#cart{:style => 'display:block;'}
         %table
@@ -126,6 +127,25 @@
             = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
       
       .tab-pane#billing-address
+        %fieldset
+          = fields_for "athena_payment[billing_address]" do |address|
+            %ul
+              %li
+                .label= address.label :street_address1, "Billing Address", :class => 'required'
+                .element= address.text_field :street_address1, :class => 'required'
+              %li
+                .label= address.label :city, "City", :class => 'required'
+                .element= address.text_field :city, :class => 'required'
+              %li
+                .label= address.label :state, "State", :class => 'required'
+                .element= address.select(:state, options_for_select(sorted_us_state_names), :class => 'required')
+              %li
+                .label= address.label :postal_code, "Postal Code", :class => 'required'
+                .element= address.text_field :postal_code, :class => 'required'
+          .continue
+            = link_to 'Next »', '#extra', 'data-toggle' => 'tab'
+      
+      .tab-pane#extra
         %fieldset
           = fields_for "athena_payment[billing_address]" do |address|
             %ul

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120305025755) do
+ActiveRecord::Schema.define(:version => 20120307204119) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -148,6 +148,8 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
+    t.string   "special_instructions_caption", :default => "Special Instructions"
+    t.boolean  "show_special_instructions",    :default => false
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -269,6 +271,7 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "type"
     t.string   "payment_method"
     t.integer  "reseller_order_id"
+    t.string   "special_instructions"
   end
 
   create_table "organizations", :force => true do |t|
