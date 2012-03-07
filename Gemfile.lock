@@ -81,7 +81,11 @@ GEM
     autotest-fsevent (0.2.8)
       sys-uname
     awesome_print (0.4.0)
+<<<<<<< HEAD
     aws-sdk (1.3.2)
+=======
+    aws-sdk (1.3.4)
+>>>>>>> rockafella
       httparty (~> 0.7)
       json (~> 1.4)
       nokogiri (>= 1.4.4)
@@ -181,7 +185,11 @@ GEM
     nokogiri (1.5.0)
     open4 (1.1.0)
     orm_adapter (0.0.5)
+<<<<<<< HEAD
     paperclip (2.5.0)
+=======
+    paperclip (2.5.2)
+>>>>>>> rockafella
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
@@ -234,7 +242,11 @@ GEM
       railties (~> 3.0)
       rspec (~> 2.6.0)
     ruby-hmac (0.4.0)
+<<<<<<< HEAD
     rubyzip (0.9.5)
+=======
+    rubyzip (0.9.4)
+>>>>>>> rockafella
     s3 (0.3.11)
       proxies (~> 0.2.0)
     sass (3.1.2)

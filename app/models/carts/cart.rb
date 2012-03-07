@@ -23,6 +23,16 @@ class Cart < ActiveRecord::Base
     Checkout
   end
 
+  def clear!
+    clear_tickets
+    clear_donations
+  end
+  
+  def clear_tickets
+    release_tickets
+    self.tickets = []
+  end
+
   def release_tickets
     tickets.each { |ticket| ticket.update_attribute(:cart, nil) }
   end

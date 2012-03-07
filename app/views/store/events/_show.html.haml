@@ -1,0 +1,27 @@
+%li{:id => "show_#{show.id}", :style => "#{'display:none' if @use_calendar}", 'data-date' => "#{show.datetime.strftime('%D')}"}
+	.title
+		.date
+			.month= show.datetime.strftime("%b")
+			.day= show.datetime.strftime("%e")
+		.time
+			%h4.day_and_month
+				= show.datetime.strftime("%A, %B")
+				= show.datetime.strftime("%e").to_i.ordinalize
+			%h5.time
+				= show.datetime.strftime("%l:%M %p")
+
+	.sections{:style => 'display:none;'}
+		- show.chart.sections.each do |section|
+			.section
+				%h4
+					= section.name
+					%span{:class => 'price'}= number_to_currency(section.price / 100.0)
+
+				= form_tag '', :class => 'add-tickets-to-cart' do
+					= hidden_field_tag :show_id, show.id
+					= hidden_field_tag :section_id, section.id
+					= hidden_field_tag :section_name, section.name
+					= hidden_field_tag :ticket_price, section.price / 100.0
+					= hidden_field_tag :showing_name, "#{show.datetime.strftime("%A, %B")} #{show.datetime.strftime("%e").to_i.ordinalize} at #{show.datetime.strftime("%l:%M %p")}" # Monday, January, 23rd at 3:15 pm
+					= select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
+					= submit_tag 'Add to cart'

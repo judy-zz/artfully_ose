@@ -149,6 +149,9 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "contact_email"
     t.text     "description"
     t.integer  "venue_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -343,6 +346,7 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "url"
   end
 
+<<<<<<< HEAD
   create_table "reseller_items", :force => true do |t|
     t.string   "state"
     t.integer  "product_id"
@@ -362,6 +366,8 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.datetime "updated_at"
   end
 
+=======
+>>>>>>> rockafella
   create_table "reseller_profiles", :force => true do |t|
     t.integer  "organization_id"
     t.text     "url"
@@ -443,6 +449,11 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.integer  "reseller_profile_id"
     t.string   "status",              :default => "creating", :null => false
     t.integer  "count",               :default => 0,          :null => false
+<<<<<<< HEAD
+=======
+    t.integer  "available",           :default => 0,          :null => false
+    t.integer  "sold",                :default => 0,          :null => false
+>>>>>>> rockafella
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "rejection_reason"

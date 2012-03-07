@@ -1,39 +1,167 @@
 :javascript
-  $(document).ready(function(){
-    artfully.configure({
-      base_uri: '#{root_url}api/',
-      store_uri: '#{root_url}store/',
-    });
-    #{render :partial => "widgets/event", :locals => { :event => @event } unless @event.nil? }
-    #{render :partial => "widgets/donation", :locals => { :organization => @event.organization } if @event.organization.can?(:receive, Donation) }
-  });
-#store
-  #artfully-alert.flash.error
-  #event
-  
-#sidebar
-  - unless @event.description.blank?
-    %h2 About
-    %p=@event.description
-  %h2 Venue
-  .event-venue
-    %div=@event.venue.name
-    %div=@event.venue.street_as_string
-    %div=@event.venue.city_state_zip_as_string
-    %div
-      %a.map-link{:href=> "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15", :target => "_blank"} map
-  - unless @event.contact_email.blank? && @event.contact_phone.blank?
-    %h2 Contact
-    %ul.kv
-      - unless @event.contact_email.blank?
-        %li
-          .key Email
-          .value
-            %a{:href=>"mailto:#{@event.contact_email}"}#{@event.contact_email} 
-      - unless @event.contact_phone.blank?
-        %li
-          .key Phone
-          .value= @event.contact_phone    
-  - if @event.organization.can?(:receive, Donation)
-    #donation
-      %h2 Donate
+  var organizationId = #{@event.organization.id};
+  var eventName = "#{@event.name}";
+  var storefront_sync_store_order_path = "#{storefront_sync_store_order_path}";
+  var storefront_create_store_checkout_path = "#{storefront_create_store_checkout_path}";
+#content
+  #store
+    #artfully-alert.flash.error
+    #event
+      %h1#logo= @event.name
+      %h3#producer= @event.producer
+
+      - @use_calendar = (@event.upcoming_public_shows.length > 5 || params[:calendar] == 'true')
+
+      %ul#shows
+        =render :partial => 'show', :collection => @event.upcoming_public_shows, :as => :show
+      
+      =render 'calendar' if @use_calendar
+    
+  #sidebar
+    - unless @event.description.blank?
+      #description
+        %h2 About
+        =image_tag(@event.image.url(:thumb), :width => 140, :height => 140) if @event.image?
+        -if @event.description.length > 300
+          .toggle-truncated
+            .truncated
+              = simple_format "#{truncate(@event.description, :length => 300)} (#{link_to 'more','#', :class => 'toggle'})"
+            .not-truncated{:style => 'display:none;'}
+              =simple_format "#{@event.description} (#{link_to 'less','#', :class => 'toggle'})"
+        - else
+          =simple_format @event.description
+    %h2 Venue
+    #venue
+      =link_to image_tag("http://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
+      %div
+        %strong=@event.venue.name
+      %div=@event.venue.street_as_string
+      %div=@event.venue.city_state_zip_as_string
+    - unless @event.contact_email.blank? && @event.contact_phone.blank?
+      %h2 Contact
+      #contact
+        - unless @event.contact_email.blank?
+          = mail_to @event.contact_email
+          <br />
+        - unless @event.contact_phone.blank?
+          = @event.contact_phone
+    - if @event.organization.can?(:receive, Donation)
+      #donation
+        %h2 Donate
+        %p Help support the show by adding a donation to your order! Contributions are tax-deductible to the extent permitted by law.
+        = form_tag '', :class => 'add-donation-to-cart' do
+          = text_field_tag :donation_amount, '$', :class => 'input_small'
+          = submit_tag 'Donate Now'
+
+#shopping-cart.shown
+  #shopping-cart-controls
+    %span.cart-name Shopping Cart
+  = form_tag '', :id => 'shopping-cart-form' do
+    #steps
+      %ul#nav
+        %li.active= link_to 'Cart', '#cart', 'data-toggle' => 'tab'
+        %li= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
+        %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
+        %li= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
+        %li= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
+      .tab-pane#cart{:style => 'display:block;'}
+        %table
+
+          %tr#service-charge{:style => 'display:none'}
+            %td
+            %td.details
+              Service Charge
+            %td.quantity
+            %td.price
+              %h5.formatCurrency
+
+        .continue
+          = link_to 'Checkout Now', '#contact-info', 'data-toggle' => 'tab', :class => 'disabled'
+          %h4#cart-total.formatCurrency
+
+      .tab-pane#contact-info
+        %fieldset
+          = fields_for "athena_payment[athena_customer]" do |athena_customer|
+            %ul
+              %li
+                .label= athena_customer.label :first_name, "First Name", :class => 'required'
+                .element= athena_customer.text_field :first_name, :class => 'required'
+              %li
+                .label= athena_customer.label :last_name, "Last Name", :class => 'required'
+                .element= athena_customer.text_field :last_name, :class => 'required'
+              %li
+                .label= athena_customer.label :email, "Email", :class => 'required'
+                .element= athena_customer.text_field :email, :class => 'required', :type => 'email'
+              %li
+                .label= athena_customer.label :phone, "Phone", :class => 'required'
+                .element= athena_customer.text_field :phone, :class => 'required'
+          .continue
+            = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab'
+
+      .tab-pane#payment-details
+        %fieldset
+          = fields_for "athena_payment[athena_credit_card]" do |card|
+            %ul
+              %li
+                .label= card.label :cardholder_name, "Cardholder Name", :class => 'required'
+                .element= card.text_field :cardholder_name, :class => 'required'
+              %li
+                .label= card.label :card_number, "Card Number", :class => 'required'
+                .element
+                  = card.text_field :card_number, :class => 'required', :type => 'creditcard'
+                  = image_tag 'storefront/lock.png'
+              %li
+                .label= card.label :cvv, "CVV", :class => 'required'
+                .element
+                  = card.text_field :cvv, :class => 'required small'
+                  = image_tag 'storefront/cvv.gif'
+              %li
+                .label= card.label :expiration, "Expiration", :class => 'required'
+                .element.small
+                  = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "small"
+                  #expiration-slash /
+                  = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "small"
+                  = card.hidden_field 'expiration_date(3i)', :value => 1
+          .continue
+            = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
+      
+      .tab-pane#billing-address
+        %fieldset
+          = fields_for "athena_payment[billing_address]" do |address|
+            %ul
+              %li
+                .label= address.label :street_address1, "Billing Address", :class => 'required'
+                .element= address.text_field :street_address1, :class => 'required'
+              %li
+                .label= address.label :city, "City", :class => 'required'
+                .element= address.text_field :city, :class => 'required'
+              %li
+                .label= address.label :state, "State", :class => 'required'
+                .element= address.select(:state, options_for_select(sorted_us_state_names), :class => 'required')
+              %li
+                .label= address.label :postal_code, "Postal Code", :class => 'required'
+                .element= address.text_field :postal_code, :class => 'required'
+          .continue
+            = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
+
+      .tab-pane#purchase
+        %fieldset
+          %ul
+            %li#agreement
+              .label
+                %label
+                  = check_box_tag "[athena_payment][user_agreement]", 1, false, :id => 'agreement-checkbox'
+                  I have read, understand and accept the terms and conditions of the User Agreement below.
+                %label.error.checkbox{:style => 'display:none;'} Please agree to the terms and conditions.
+          
+        #user_agreement
+          = t("pages.user_agreement.content", :default => "")
+        = hidden_field_tag :confirmation, 1
+        .continue
+          = submit_tag 'Complete Purchase', :id => 'complete-purchase'
+
+      .tab-pane#result
+      .tab-pane#thanks
+        %h2 Thank you for your order!
+        %p You'll receive an email confirmation shortly.
+        %p If you have any questions about the event, contact us at #{mail_to @event.contact_email if @event.contact_email.present?} #{@event.contact_phone}

@@ -108,7 +108,8 @@ input[type="tel"],
 input[type="text"],
 input[type="time"],
 input[type="url"],
-input[type="week"] {
+input[type="week"],
+input[type="creditcard"] {
   -webkit-appearance: none;
   -moz-border-radius: 0;
   -webkit-border-radius: 0;

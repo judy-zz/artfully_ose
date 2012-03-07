@@ -1,4 +1,5 @@
-= form_for(event) do |form|
+= form_for event, :html => { :multipart => true } do |form|
+
   %legend Event
   .hr
   %fieldset
@@ -24,6 +25,11 @@
         .element
           = form.text_field :contact_phone
           .description Contact phone and email will be displayed to patrons and included in confirmation emails
+      %li
+        .label= form.label :image 
+        .element
+          = form.file_field :image
+
       - if event.new_record?
         - if can? :create, :paid_events
           %li
