@@ -19,7 +19,9 @@ class Checkout
   end
 
   def finish
-    @person = find_or_create_people_record
+    @person = Person.find_or_create(@customer, cart.organizations.first)
+    #This should be a delayed_job, but DJ fails to deserialize something. When we move ot DJ 3.0 it might work
+    @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
     prepare_fafs_donations
     cart.pay_with(@payment)
 
@@ -69,26 +71,6 @@ class Checkout
   end
 
   private
-
-    #TODO: This is a relic from the Athena days.  Should be moved into person.rb
-    def find_or_create_people_record
-      organization = cart.organizations.first
-      person = Person.find_by_customer(@customer, organization)
-      
-      if person.nil?
-        params = {
-          :first_name      => @customer.first_name,
-          :last_name       => @customer.last_name,
-          :email           => @customer.email,
-          :organization_id => organization.id # This doesn't account for multiple organizations per cart
-        }
-        person = Person.create(params)
-        address = Address.from_payment(payment)
-        address.person_id = person.id
-        address.save
-      end
-      person
-    end
 
     def create_order(order_timestamp)
       cart.organizations.each do |organization|
