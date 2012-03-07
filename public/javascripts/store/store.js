@@ -111,9 +111,6 @@ function updateOrderOnServer() {
   $('#cart .continue a').addClass('disabled');
   $('.continue #cart-total').hide();
   $('#cart .over-limit').remove();
-  // POST "/store/order/storefront_sync"
-  // Store::OrdersController#storefront_sync
-  // Parameters: {"sections"=>{"0" => {"section_id" => "1", "show_id" => "1", "limit" => "4"}, "1" => {"section_id" => "2", "show_id" => "1", "limit" => "4"}], "donation"=>{"organization_id"=>"92", "amount"=>"1000"}}
   var params = {};
 
   sections = [];
@@ -179,7 +176,12 @@ function updateOrderOnServer() {
       $('.continue #cart-total').show();
 
       $('.formatCurrency').formatCurrency();
-      $('#cart .continue a').removeClass('disabled');
+
+			if(data.total > 0) {
+      	$('#cart .continue a').removeClass('disabled');		
+			} else {
+      	$('#cart .continue a').addClass('disabled');	
+			}
 
     },
     error: function(data) {
