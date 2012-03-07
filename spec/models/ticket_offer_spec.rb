@@ -41,12 +41,15 @@ describe TicketOffer do
 
     before do
       FakeWeb.register_uri :post, "http://localhost:8982/solr/update?wt=ruby", body: ""
+      @capacity = 20
       @producer = Factory :organization
       @event = Factory :event, organization: @producer
       @chart = Factory :chart, event: @event, organization: @producer
       @show = Factory :show, organization: @producer, event: @event, chart: @chart
-      @section = Factory :section, capacity: 20, chart: @chart
-      @tickets = (1..20).map { Factory :ticket, state: "on_sale", show: @show, organization: @producer, section: @section }
+      @section = Factory :section, capacity: @capacity, chart: @chart
+      @tickets = (1..20).map { Factory.build :ticket, state: "on_sale", show: @show, organization: @producer, section: @section }
+      Ticket.import @tickets
+      @tickets = @event.tickets
       @ticket_offer = Factory :ticket_offer, organization: @producer, show: @show, section: @section, count: 7
       @reseller = @ticket_offer.reseller_organization
     end
