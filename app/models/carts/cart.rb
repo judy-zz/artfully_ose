@@ -4,6 +4,7 @@ class Cart < ActiveRecord::Base
   has_many :donations, :dependent => :destroy
   has_many :tickets, :after_add => :set_timeout
   after_destroy :release_tickets
+  attr_accessor :special_instructions
 
   state_machine do
     state :started
