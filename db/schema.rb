@@ -10,11 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20120306204250) do
-=======
-ActiveRecord::Schema.define(:version => 20120305025755) do
->>>>>>> notes-update-address-on-checkout
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -346,7 +342,6 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "url"
   end
 
-<<<<<<< HEAD
   create_table "reseller_items", :force => true do |t|
     t.string   "state"
     t.integer  "product_id"
@@ -366,8 +361,6 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.datetime "updated_at"
   end
 
-=======
->>>>>>> rockafella
   create_table "reseller_profiles", :force => true do |t|
     t.integer  "organization_id"
     t.text     "url"
@@ -449,11 +442,6 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.integer  "reseller_profile_id"
     t.string   "status",              :default => "creating", :null => false
     t.integer  "count",               :default => 0,          :null => false
-<<<<<<< HEAD
-=======
-    t.integer  "available",           :default => 0,          :null => false
-    t.integer  "sold",                :default => 0,          :null => false
->>>>>>> rockafella
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "rejection_reason"
