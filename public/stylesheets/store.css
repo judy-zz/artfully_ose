@@ -598,14 +598,14 @@ table.calendar {
     position: static;
     background: white;
     position: static;
-    width: 600px;
+    width: 650px;
     margin: 0px auto;
     padding: 50px;
     padding-top: 10px;
     padding-bottom: 0;
     height: 350px; }
     #shopping-cart #steps ul#nav {
-      width: 600px;
+      width: 650px;
       margin: 0 auto;
       overflow: hidden;
       margin-bottom: 20px; }
@@ -662,6 +662,8 @@ table.calendar {
             #shopping-cart #steps fieldset ul li .element input.error {
               border: 1px solid red;
               background-image: none; }
+          #shopping-cart #steps fieldset ul li .element textarea {
+            float: none; }
           #shopping-cart #steps fieldset ul li .element select {
             width: 50%;
             float: left;
@@ -685,6 +687,17 @@ table.calendar {
           #shopping-cart #steps fieldset ul li label.error.checkbox {
             margin-top: -15px;
             font-weight: normal; }
+      #shopping-cart #steps fieldset ul li.stacked .label {
+        width: 100%;
+        float: none;
+        clear: both; }
+      #shopping-cart #steps fieldset ul li.stacked .element {
+        width: 100%;
+        display: inline-block;
+        vertical-align: top;
+        text-align: left; }
+        #shopping-cart #steps fieldset ul li.stacked .element textarea {
+          float: none; }
     #shopping-cart #steps .tab-pane {
       display: none; }
       #shopping-cart #steps .tab-pane.active {

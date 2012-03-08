@@ -221,14 +221,14 @@ table.calendar
     position: static
     background: #fff
     position: static
-    width: 600px
+    width: 650px
     margin: 0px auto
     padding: 50px
     padding-top: 10px
     padding-bottom: 0
     height: 350px
     ul#nav
-      width: 600px
+      width: 650px
       margin: 0 auto
       overflow: hidden
       margin-bottom: 20px
@@ -284,6 +284,8 @@ table.calendar
               &.error
                 border: 1px solid red
                 background-image: none
+            textarea
+              float: none
             select
               width: 50%
               float: left
@@ -307,6 +309,19 @@ table.calendar
             &.checkbox
               margin-top: -15px
               font-weight: normal
+        li.stacked
+          .label
+            width: 100%
+            float: none
+            clear: both
+          .element
+            width: 100%
+            display: inline-block
+            vertical-align: top
+            text-align: left
+            textarea
+              float: none
+          
     .tab-pane
       display: none
       &.active

@@ -28,4 +28,7 @@
               %td= item.buyer.email
               %td= item.ticket.section.name
               %td= number_as_cents(item.ticket.sold_price)
+            %tr{:style => 'border-bottom: 1px solid #999'}
+              %td
+              %td{:colspan => 5}= item.special_instructions
 
