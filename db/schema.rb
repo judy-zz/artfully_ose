@@ -271,7 +271,7 @@ ActiveRecord::Schema.define(:version => 20120307204119) do
     t.string   "type"
     t.string   "payment_method"
     t.integer  "reseller_order_id"
-    t.string   "special_instructions"
+    t.text     "special_instructions"
   end
 
   create_table "organizations", :force => true do |t|

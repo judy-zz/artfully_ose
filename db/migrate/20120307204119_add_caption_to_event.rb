@@ -3,7 +3,7 @@ class AddCaptionToEvent < ActiveRecord::Migration
     add_column :events, :special_instructions_caption, :string, :default => 'Special Instructions'
     add_column :events, :show_special_instructions, :boolean, :default => false 
     
-    add_column :orders, :special_instructions, :string
+    add_column :orders, :special_instructions, :text
   end
 
   def self.down

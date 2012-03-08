@@ -9,6 +9,7 @@ describe Ticket do
     it { should respond_to :price }
     it { should respond_to :sold_at }
     it { should respond_to :sold_price }
+    it { should respond_to :item }
   end
 
   describe "available tickets" do
@@ -266,17 +267,17 @@ describe Ticket do
       tickets.each { |t| t.should be_off_sale }
     end
   
-    # it "does not issue the request if any of the tickets can not be put on sale" do
-    #   tickets.first.state = :off_sale
-    #   Ticket.take_off_sale(tickets)
-    # end
-    #   
-    # it "updates the attributes for each ticket" do
-    #   Ticket.take_off_sale(tickets)
-    #   tickets.each do |ticket|
-    #     ticket.should be_off_sale
-    #   end
-    # end
+    it "does not issue the request if any of the tickets can not be put on sale" do
+      tickets.first.state = :off_sale
+      Ticket.take_off_sale(tickets)
+    end
+      
+    it "updates the attributes for each ticket" do
+      Ticket.take_off_sale(tickets)
+      tickets.each do |ticket|
+        ticket.should be_off_sale
+      end
+    end
   end
   
   describe "create_many" do
