@@ -37,7 +37,7 @@ class TicketOffer < ActiveRecord::Base
 
   def sold
     Order.
-      includes(:items).
+      includes(:items => :product).
       where(:organization_id => reseller_organization.id).
       map { |o| o.items }.
       flatten.

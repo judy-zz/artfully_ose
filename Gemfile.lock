@@ -80,16 +80,9 @@ GEM
       ZenTest (>= 4.4.1)
     autotest-fsevent (0.2.8)
       sys-uname
+    autotest-growl (0.2.16)
     awesome_print (0.4.0)
-<<<<<<< HEAD
     aws-sdk (1.3.2)
-=======
-    aws-sdk (1.3.4)
->>>>>>> rockafella
-      httparty (~> 0.7)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
-      uuidtools (~> 2.1)
     bcrypt-ruby (2.1.4)
     braintree (2.13.4)
       builder (>= 2.0.0)
@@ -185,11 +178,7 @@ GEM
     nokogiri (1.5.0)
     open4 (1.1.0)
     orm_adapter (0.0.5)
-<<<<<<< HEAD
-    paperclip (2.5.0)
-=======
     paperclip (2.5.2)
->>>>>>> rockafella
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
@@ -242,11 +231,7 @@ GEM
       railties (~> 3.0)
       rspec (~> 2.6.0)
     ruby-hmac (0.4.0)
-<<<<<<< HEAD
     rubyzip (0.9.5)
-=======
-    rubyzip (0.9.4)
->>>>>>> rockafella
     s3 (0.3.11)
       proxies (~> 0.2.0)
     sass (3.1.2)
@@ -282,7 +267,6 @@ GEM
     tzinfo (0.3.28)
     uuid (2.3.2)
       macaddr (~> 1.0)
-    uuidtools (2.1.2)
     validates_timeliness (3.0.6)
       timeliness (~> 0.3.3)
     warden (1.0.4)
@@ -304,6 +288,7 @@ DEPENDENCIES
   athena_resource
   autotest
   autotest-fsevent
+  autotest-growl
   awesome_print
   aws-sdk
   cancan
