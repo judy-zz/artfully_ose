@@ -110,6 +110,11 @@ describe Person do
       p = Person.find_by_email_and_organization(email, organization)
       p.should eq nil
     end
+    
+    it "should return nil if the email address is nil" do
+      p = Factory(:person_without_email, :organization => organization)
+      Person.find_by_email_and_organization(nil, organization).should be_nil
+    end
   end
 
   describe "organization" do
