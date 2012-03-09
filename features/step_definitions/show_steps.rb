@@ -61,6 +61,21 @@ Given /^a user named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) 
   end
 end
 
+Given /^a user named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) [Ss]how with instructions to "([^"]*)"$/ do |name, wanted, pos, special_instructions| 
+  fname, lname = name.split(" ")
+  customer = Factory(:person, :first_name => fname, :last_name => lname)
+
+  show = current_shows[pos.to_i - 1]
+  tickets = show.tickets
+  
+  order = Factory(:order, :person=>customer, :special_instructions=>special_instructions)
+  
+  tickets.reject { |t| t.state == "sold" }.first(wanted.to_i).each do |ticket|
+    ticket.sell_to(customer)
+    order << ticket
+  end
+end
+
 When /^I search for the patron named "([^"]*)" email "([^"]*)"$/ do |name, email|
   fname, lname = name.split(" ")
   customer = Factory(:person, :first_name => fname, :last_name => lname, :email=>email, :organization_id => @current_user.current_organization.id)

@@ -6,7 +6,7 @@ class DoorList
   end
 
   def items
-    @items ||= Ticket.where(:show_id => show.id).includes(:buyer, :item).select(&:committed?).collect do |ticket|
+    @items ||= Ticket.where(:show_id => show.id).includes(:buyer).select(&:committed?).collect do |ticket|
       Item.new(ticket, ticket.buyer)
     end.sort{ |a,b| (a.ticket.buyer.last_name || "") <=> (b.ticket.buyer.last_name || "") }
   end
@@ -18,7 +18,7 @@ class DoorList
       def initialize(ticket, buyer)
         self.ticket = ticket
         self.buyer = buyer
-        self.special_instructions = ticket.item.order.special_instructions
+        self.special_instructions = ticket.special_instructions
       end
     end
 end

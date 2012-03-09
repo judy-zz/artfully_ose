@@ -9,7 +9,7 @@ describe Ticket do
     it { should respond_to :price }
     it { should respond_to :sold_at }
     it { should respond_to :sold_price }
-    it { should respond_to :item }
+    it { should respond_to :items }
   end
 
   describe "available tickets" do
@@ -31,6 +31,97 @@ describe Ticket do
       ticket = Ticket.find(:first, :conditions => conditions)
       ticket.update_attribute(:state, :off_sale)
       Ticket.available().should_not include(ticket)
+    end
+  end
+  
+  describe "items and sold_item and special_instructions" do
+    it "should return the list of items that it is associated with" do
+      ticket = Factory(:ticket)
+      
+      items = [
+        Factory(:item, :product=>ticket),      
+        Factory(:exchanged_item, :product=>ticket),
+        Factory(:refunded_item, :product=>ticket)
+        ]
+
+      ticket.items.should eq items
+    end
+    
+    it "should return the item associated with its most recent sale" do
+      ticket = Factory(:ticket)
+      items = [
+        Factory(:item, :product=>ticket),      
+        Factory(:exchanged_item, :product=>ticket),
+        Factory(:refunded_item, :product=>ticket)
+        ]
+      
+      ticket.sold_item.should eq items[0]
+      ticket.sold_item.state.should eq "purchased"
+    end
+    
+    it "should return the settled item" do
+      ticket = Factory(:ticket)
+      items = [     
+        Factory(:exchanged_item, :product=>ticket),
+        Factory(:refunded_item, :product=>ticket),
+        Factory(:settled_item, :product=>ticket)
+        ]
+      
+      ticket.sold_item.should eq items[2]
+      ticket.sold_item.state.should eq "settled"
+    end
+    
+    it "should return nil if there is no sold item" do
+      ticket = Factory(:ticket)
+      items = [  
+        Factory(:exchanged_item, :product=>ticket),
+        Factory(:refunded_item, :product=>ticket)
+        ]
+      ticket.sold_item.should be_nil   
+    end
+    
+    it "should return the comp if there is no purchased item" do
+      ticket = Factory(:ticket)
+      items = [
+        Factory(:comped_item, :product=>ticket),      
+        Factory(:exchanged_item, :product=>ticket),
+        Factory(:refunded_item, :product=>ticket)
+        ]
+      
+      ticket.sold_item.should eq items[0]
+      ticket.sold_item.state.should eq "comped"
+    end
+    
+    it "should return the exchangee item if there is no comp" do
+      ticket = Factory(:ticket)
+      items = [
+        Factory(:exchangee_item, :product=>ticket),      
+        Factory(:exchanged_item, :product=>ticket),
+        Factory(:refunded_item, :product=>ticket)
+        ]
+      
+      ticket.sold_item.should eq items[0]
+      ticket.sold_item.state.should eq "exchangee"
+    end
+    
+    it "should return the special instructions from the sold item" do
+      special_instructions = "I'm not saying I invented the turtleneck."
+      ticket = Factory(:ticket)
+      order = Factory(:order, :special_instructions => special_instructions)
+      settled_item = Factory(:settled_item, :product=>ticket, :order => order)
+      items = [
+        Factory(:refunded_item, :product=>ticket),
+        settled_item
+        ]      
+      ticket.special_instructions.should eq special_instructions
+    end
+    
+    it "should return special_instructions of nil if there is no sold_item" do
+      ticket = Factory(:ticket)
+      refunded_item = Factory(:refunded_item, :product=>ticket)
+      items = Array.wrap(refunded_item)   
+      refunded_item.should_not_receive(:order)
+      ticket.special_instructions.should be_nil      
     end
   end
   
