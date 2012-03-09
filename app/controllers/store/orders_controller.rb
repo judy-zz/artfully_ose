@@ -72,7 +72,7 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_tickets(ids)
-      logger.info("current_cart: #{current_cart}")
+      logger.info("current_cart: #{current_cart.inspect}")
       current_cart << Ticket.find(ids)
     end
 
