@@ -24,7 +24,7 @@ class Checkout
     @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
     prepare_fafs_donations
     cart.pay_with(@payment)
-
+    
     if cart.approved?
       process_fafs_donations
       order_timestamp = Time.now

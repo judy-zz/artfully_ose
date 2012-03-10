@@ -63,7 +63,8 @@
         %li= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
         %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
         %li= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
-        %li= link_to 'Special Instructions', '#special-instructions', 'data-toggle' => 'tab'
+        - if @event.show_special_instructions
+          %li= link_to 'Special Instructions', '#special-instructions', 'data-toggle' => 'tab'
         %li= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
       .tab-pane#cart{:style => 'display:block;'}
         %table
@@ -110,7 +111,6 @@
                 .label= card.label :card_number, "Card Number", :class => 'required'
                 .element
                   = card.text_field :card_number, :class => 'required', :type => 'creditcard'
-                  = image_tag 'storefront/lock.png'
               %li
                 .label= card.label :cvv, "CVV", :class => 'required'
                 .element
@@ -143,15 +143,19 @@
                 .label= address.label :postal_code, "Postal Code", :class => 'required'
                 .element= address.text_field :postal_code, :class => 'required'
           .continue
-            = link_to 'Next »', '#special-instructions', 'data-toggle' => 'tab'
+            - if @event.show_special_instructions
+              = link_to 'Next »', '#special-instructions', 'data-toggle' => 'tab'
+            - else
+              = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
+              
       
-      .tab-pane#special-instructions
-        %fieldset
-          = fields_for "cart" do |cart|
+      - if @event.show_special_instructions
+        .tab-pane#special-instructions
+          %fieldset
             %ul
               %li.stacked
-                .label= cart.label :special_instructions, @event.special_instructions_caption
-                .element= cart.text_area :special_instructions, :rows => 10
+                .label= label_tag :special_instructions, @event.special_instructions_caption
+                .element= text_area_tag :special_instructions, nil, :size => '25x10'
           .continue
             = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
 

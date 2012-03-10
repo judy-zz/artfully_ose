@@ -94,6 +94,11 @@ class AthenaPayment < AthenaResource::Base
     connection.post( AthenaPayment::element_name + "/transactions/authorize", encode, self.class.headers).tap do |response|
       load_attributes_from_response(response)
     end
+    
+    if rejected?
+      errors.add(:base, message)
+    end
+    
     approved?
   end
   alias :save :authorize!
