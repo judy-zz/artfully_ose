@@ -38,8 +38,8 @@ end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how is on sale$/ do |pos|
   show = current_shows[pos.to_i - 1]
-  show.publish
   show.bulk_on_sale(:all)
+  show.publish!
 end
 
 Then /^I should not be able to delete the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |pos|

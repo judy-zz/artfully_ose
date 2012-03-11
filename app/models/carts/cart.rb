@@ -25,6 +25,10 @@ class Cart < ActiveRecord::Base
     clear_donations
   end
   
+  def as_json(options = {})
+    super({ :methods => [ 'tickets', 'donations' ]}.merge(options))
+  end
+  
   def clear_tickets
     release_tickets
     self.tickets = []

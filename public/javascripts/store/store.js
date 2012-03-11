@@ -177,7 +177,10 @@ function updateOrderOnServer() {
 
       $('.formatCurrency').formatCurrency();
 
-			if(data.total > 0) {
+			console.log(data.tickets)
+			console.log(data.tickets.length)
+			
+			if(data.tickets.length > 0) {
       	$('#cart .continue a').removeClass('disabled');		
 			} else {
       	$('#cart .continue a').addClass('disabled');	
