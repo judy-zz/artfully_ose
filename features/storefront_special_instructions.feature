@@ -1,9 +1,9 @@
-Feature: Storefront
+Feature: Storefront for an event that requires special instructions
 
   Background:
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
-    And there is an Event with 3 Shows
+    And there is an Event with special instructions with 3 Shows
     And the 1st show has had tickets created
     And the 1st show is on sale
 
@@ -12,5 +12,4 @@ Feature: Storefront
     Then show me the page
     And the customer should see the published shows
     And all the checkout panel links
-    And not the special instructions link
-    
+    And the special instructions link
