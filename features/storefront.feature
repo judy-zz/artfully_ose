@@ -1,5 +1,4 @@
 Feature: Storefront
-
   Background:
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
@@ -9,8 +8,6 @@ Feature: Storefront
 
   Scenario: A customer wants to buy tickets to my show
     Given the customer goes to the storefront for my event
-    Then show me the page
     And the customer should see the published shows
     And all the checkout panel links
     And not the special instructions link
-    
