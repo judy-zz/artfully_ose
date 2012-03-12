@@ -37,6 +37,7 @@
         .label= form.label :image 
         .element
           = form.file_field :image
+          .description Image will be sized to 140/x140 and displayed on your storefront with the about text
 
       - if event.new_record?
         - if can? :create, :paid_events
