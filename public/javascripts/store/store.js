@@ -176,9 +176,6 @@ function updateOrderOnServer() {
       $('.continue #cart-total').show();
 
       $('.formatCurrency').formatCurrency();
-
-			console.log(data.tickets)
-			console.log(data.tickets.length)
 			
 			if(data.tickets.length > 0 || data.donations.length > 0) {
       	$('#cart .continue a').removeClass('disabled');		

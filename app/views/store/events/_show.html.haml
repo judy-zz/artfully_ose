@@ -1,4 +1,4 @@
-%li{:id => "show_#{show.id}", :style => "#{'display:none' if @use_calendar}", 'data-date' => "#{show.datetime.strftime('%D')}"}
+%li{:id => "show_#{show.id}", :style => "#{'display:none' if @use_calendar}", 'data-date' => "#{show.datetime_local_to_event.strftime('%D')}"}
 	.title
 		.date
 			.month= show.datetime_local_to_event.strftime("%b")
