@@ -72,8 +72,13 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_tickets(ids)
-      logger.info("current_cart: #{current_cart.inspect}")
-      current_cart << Ticket.find(ids)
+      Ticket.find(ids).each do |ticket|
+        if current_cart.can_hold? ticket
+          current_cart << ticket
+        else
+          flash[:error] = "Your cart cannot hold any more tickets."
+        end
+      end
     end
 
     def handle_donation(data)
