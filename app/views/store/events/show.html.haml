@@ -45,10 +45,13 @@
           <br />
         - unless @event.contact_phone.blank?
           = @event.contact_phone
-    - if @event.organization.can?(:receive, Donation)
+    - if @event.organization.authorization_hash[:authorized]
       #donation
         %h2 Donate
-        %p Help support the show by adding a donation to your order! Contributions are tax-deductible to the extent permitted by law.
+        - if @event.organization.authorization_hash[:type] == :sponsored
+          %p="#{@event.organization.authorization_hash[:fsp_name]} is a fiscally sponsored project of Fractured Atlas, a non-profit arts service organization. Contributions for the purposes of #{@event.organization.authorization_hash[:fsp_name]} must be made payable to Fractured Atlas and are tax-deductible to the extent permitted by law."
+        - else
+          %p Help support the show by adding a donation to your order! Contributions are tax-deductible to the extent permitted by law.
         = form_tag '', :class => 'add-donation-to-cart' do
           = text_field_tag :donation_amount, '$', :class => 'input_small'
           = submit_tag 'Donate Now'
