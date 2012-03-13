@@ -1,6 +1,7 @@
 module Reseller
   class Cart < Cart
     belongs_to :reseller, :class_name => "Organization", :foreign_key => "reseller_id"
+    delegate :reseller_profile, :to => :reseller
     
     def fee_in_cents
       (items_subject_to_fee.size * 100) + (items_subject_to_fee.size * reseller.reseller_profile.fee)
@@ -8,6 +9,26 @@ module Reseller
     
     def checkout_class
       Reseller::Checkout
+    end
+
+    def can_hold?(ticket)
+      if ticket.organization != reseller
+        profile = reseller.reseller_profile
+        return false unless profile
+
+        profile.ticket_offers.each do |offer|
+          if offer.valid_ticket? ticket
+            available = offer.available
+            in_cart = self.tickets.count { |t| offer.valid_ticket? t }
+            in_cart += 1 # Considering this ticket
+            return true if available >= in_cart
+          end
+        end
+
+        false
+      else
+        true
+      end
     end
   end
   

@@ -124,6 +124,10 @@ class Cart < ActiveRecord::Base
     Organization.find(tickets.collect(&:organization_id))
   end
 
+  def can_hold?(ticket)
+    true
+  end
+
   private
     def pay_with_authorization(payment, options)
       options[:settle] = true if options[:settle].nil?

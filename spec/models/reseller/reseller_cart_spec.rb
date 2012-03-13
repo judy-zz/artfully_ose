@@ -34,4 +34,25 @@ describe Reseller::Cart do
       pending
     end
   end 
+
+  describe "adding tickets to a cart on an offer with no tickets available" do
+    let(:cart) { Factory :reseller_cart }
+    let(:ticket) { Factory :ticket }
+    let(:ticket_offer) { Factory :ticket_offer, reseller_profile: cart.reseller.reseller_profile, show: ticket.show, section: ticket.section, count: 0 }
+
+    it "should not hold any more tickets" do
+      cart.should_not be_can_hold ticket
+    end
+  end
+
+  describe "adding tickets to a cart on an offer with tickets available" do
+    let(:cart) { Factory :reseller_cart }
+    let(:ticket) { Factory :ticket }
+    let(:ticket_offer) { Factory :ticket_offer, organization: ticket.organization, reseller_profile: cart.reseller.reseller_profile, show: ticket.show, section: ticket.section, count: 1 }
+
+    it "should hold another ticket" do
+      ticket_offer.should_not be_nil # Force the offer to be built.
+      cart.should be_can_hold ticket
+    end
+  end
 end

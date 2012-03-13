@@ -199,4 +199,13 @@ describe Cart do
       subject.generate_donations.should have(1).donation
     end
   end
+
+  describe ".can_hold?" do
+    let(:ticket) { Factory :ticket }
+    let(:cart) { Factory :cart }
+
+    it "should be able to hold another ticket" do
+      cart.should be_can_hold ticket
+    end
+  end
 end

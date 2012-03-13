@@ -32,6 +32,10 @@ class TicketOffer < ActiveRecord::Base
   ## Ticket Sale Information ##
   
   def available
+    [ 0, unsold - in_carts ].max
+  end
+  
+  def unsold
     [ 0, count - sold ].max
   end
 
@@ -44,6 +48,18 @@ class TicketOffer < ActiveRecord::Base
       compact.
       uniq.
       select { |i| i.ticket? && valid_ticket?(i.product) }.
+      count
+  end
+
+  def in_carts
+    Reseller::Cart.
+      includes(:tickets).
+      where(:reseller_id => reseller_organization.id).
+      map(&:tickets).
+      flatten.
+      compact.
+      uniq.
+      select { |t| valid_ticket? t }.
       count
   end
 

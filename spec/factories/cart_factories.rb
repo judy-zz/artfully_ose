@@ -1,6 +1,6 @@
 Factory.define :reseller_cart, :class => Reseller::Cart do |f|
-  f.state
-  f.association :reseller
+  f.state :approved
+  f.reseller { Factory :organization_with_reselling }
 end
 
 Factory.define :cart do |o|
