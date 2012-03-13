@@ -159,6 +159,8 @@ function updateOrderOnServer() {
         });
         updateQuantityInCart();
         updateTotal();
+				updateRequiredFields();
+				hidePaymentDetails();
         $('.formatCurrency').formatCurrency();
       };
 
@@ -189,6 +191,41 @@ function updateOrderOnServer() {
       // console.log(data);
     }
   });
+}
+
+function hidePaymentDetails() {
+	var total = getTotal();
+	if(total > 0) {
+		$('#payment-details-fields').removeClass('hidden')
+		$('#payment-details-message').addClass('hidden')
+	} else {
+		$('#payment-details-fields').addClass('hidden')
+		$('#payment-details-message').removeClass('hidden')
+	}
+}
+
+function updateRequiredFields() {
+	var total = getTotal();
+	$('input.nonzero-total').each(function() {
+    if(cartTotal > 0) {
+			$(this).addClass('required')
+			$(this).removeAttr("disabled");
+		} else {
+			$(this).removeClass('required')
+			$(this).attr("disabled", "disabled");
+		}
+  });
+}
+
+function getTotal() {
+	cartTotal = $('.continue #cart-total').html()
+	if (cartTotal === undefined || cartTotal == "") {
+		return 0;
+	} else if (cartTotal.indexOf('$') > -1){
+		return cartTotal.split('$')[1];
+	} else {
+		return cartTotal;
+	}
 }
 
 function updateQuantityInCart() {

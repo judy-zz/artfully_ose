@@ -61,8 +61,7 @@
       %ul#nav
         %li.active= link_to 'Cart', '#cart', 'data-toggle' => 'tab'
         %li= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
-        - unless @event.is_free?
-          %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
+        %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
         %li= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
         - if @event.show_special_instructions
           %li= link_to 'Special Instructions', '#special-instructions', 'data-toggle' => 'tab'
@@ -99,37 +98,36 @@
                 .label= athena_customer.label :phone, "Phone", :class => 'required'
                 .element= athena_customer.text_field :phone, :class => 'required'
           .continue
-            - if @event.is_free?
-              = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
-            - else
-              = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab'
+            = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab'
       
-      - unless @event.is_free?
-        .tab-pane#payment-details
+      .tab-pane#payment-details
+        #payment-details-fields
           %fieldset
             = fields_for "athena_payment[athena_credit_card]" do |card|
               %ul
                 %li
-                  .label= card.label :cardholder_name, "Cardholder Name", :class => 'required'
-                  .element= card.text_field :cardholder_name, :class => 'required'
+                  .label= card.label :cardholder_name, "Cardholder Name", :class => 'nonzero-total'
+                  .element= card.text_field :cardholder_name, :class => 'nonzero-total'
                 %li
-                  .label= card.label :card_number, "Card Number", :class => 'required'
+                  .label= card.label :card_number, "Card Number", :class => 'nonzero-total'
                   .element
-                    = card.text_field :card_number, :class => 'required', :type => 'creditcard'
+                    = card.text_field :card_number, :class => 'nonzero-total', :type => 'creditcard'
                 %li
-                  .label= card.label :cvv, "CVV", :class => 'required'
+                  .label= card.label :cvv, "CVV", :class => 'nonzero-total'
                   .element
-                    = card.text_field :cvv, :class => 'required small'
+                    = card.text_field :cvv, :class => 'small nonzero-total'
                     = image_tag 'storefront/cvv.gif'
                 %li
-                  .label= card.label :expiration, "Expiration", :class => 'required'
+                  .label= card.label :expiration, "Expiration", :class => 'nonzero-total'
                   .element.small
-                    = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "small"
+                    = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "small nonzero-total"
                     #expiration-slash /
-                    = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "small"
+                    = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "small nonzero-total"
                     = card.hidden_field 'expiration_date(3i)', :value => 1
-            .continue
-              = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
+        #payment-details-message.hidden
+          No payment details are necessary. Click Next to continue.
+        .continue
+          = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
       
       .tab-pane#billing-address
         %fieldset
@@ -156,11 +154,12 @@
       
       - if @event.show_special_instructions
         .tab-pane#special-instructions
-          %fieldset
-            %ul
-              %li.stacked
-                .label= label_tag :special_instructions, @event.special_instructions_caption
-                .element= text_area_tag :special_instructions, nil, :size => '25x10'
+          #container
+            %fieldset
+              %ul
+                %li.stacked
+                  .label= label_tag :special_instructions, @event.special_instructions_caption
+                  .element= text_area_tag :special_instructions, nil, :size => '25x5'
           .continue
             = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
 
@@ -184,4 +183,9 @@
       .tab-pane#thanks
         %h2 Thank you for your order!
         %p You'll receive an email confirmation shortly.
-        %p If you have any questions about the event, contact us at #{mail_to @event.contact_email if @event.contact_email.present?} #{@event.contact_phone}
+        - unless @event.contact_email.blank? && @event.contact_phone.blank?
+          %p If you have any questions or need information before the event about the event, contact us at 
+          .email
+            #{mail_to @event.contact_email if @event.contact_email.present?} 
+          .phone
+            #{@event.contact_phone}
