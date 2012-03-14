@@ -187,7 +187,7 @@
         %h2 Thank you for your order!
         %p You'll receive an email confirmation shortly.
         - unless @event.contact_email.blank? && @event.contact_phone.blank?
-          %p If you have any questions or need information before the event about the event, contact us at 
+          %p If you have any questions or need information about the event, contact us at 
           .email
             #{mail_to @event.contact_email if @event.contact_email.present?} 
           .phone
