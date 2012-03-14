@@ -20,5 +20,5 @@
             .label= payment_form.label :user_agreement, "User Agreement"
             .element
               .checkbox= payment_form.check_box :user_agreement
-              .checkbox-text= "I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", user_agreement_path, :target => "_blank"}".html_safe
+              .checkbox-text= label_tag "athena_payment[user_agreement]", "I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", user_agreement_path, :target => "_blank"}".html_safe
               = payment_form.error_message_on(:user_agreement, :prepend_text => "The user agreement ", :css_class => "form-error")
