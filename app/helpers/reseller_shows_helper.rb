@@ -1,10 +1,9 @@
 module ResellerShowsHelper
 
   def ticket_reseller_name(ticket)
-    return unless ticket
-    return unless ticket.cart.kind_of?(Reseller::Cart)
-    return unless ticket.cart.reseller
+    return unless ticket.kind_of? Ticket
 
-    ticket.cart.reseller.name
+    ticket.reseller.name if ticket.reseller
   end
+
 end

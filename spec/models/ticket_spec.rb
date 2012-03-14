@@ -317,4 +317,21 @@ describe Ticket do
                                  :section_id => section.id)
     end
   end
+
+  describe "#reseller" do
+    let(:ticket) { Factory :ticket }
+
+    it "should not have a reseller" do
+      ticket.reseller.should be_nil
+    end
+
+    it "should have a reseller if it's in a reseller order" do
+      reseller_order = Factory :reseller_order
+      reseller_order << ticket
+      reseller_order.save!
+
+      ticket.reseller.should_not be_nil
+      ticket.reseller.should == reseller_order.organization
+    end
+  end
 end

@@ -6,5 +6,6 @@ Factory.define(:order) do |o|
 end
 
 Factory.define :reseller_order, :class => Reseller::Order do |o|
-  
+  o.person { Factory :person }
+  o.organization { Factory :organization_with_reselling }
 end
