@@ -53,8 +53,8 @@ class Store::OrdersController < Store::StoreController
     handle_order(order_params)
 
     response = current_cart.as_json
-    response = response.merge(:total => current_cart.total / 100)
-    response = response.merge(:service_charge => (current_cart.fee_in_cents / 100))
+    response = response.merge(:total => current_cart.total)
+    response = response.merge(:service_charge => current_cart.fee_in_cents)
     response = response.merge(:over_section_limit => over_section_limit).to_json
     logger.info "RESPONSE: #{response}"
     render :json => response

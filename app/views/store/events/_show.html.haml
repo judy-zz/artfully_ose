@@ -15,7 +15,7 @@
 			.section
 				%h4
 					= section.name
-					%span{:class => 'price'}= number_to_currency(section.price / 100.0)
+					%span{:class => 'price'}= number_as_cents(section.price)
 
 				= form_tag '', :class => 'add-tickets-to-cart' do
 					= hidden_field_tag :show_id, show.id

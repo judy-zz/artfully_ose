@@ -165,8 +165,8 @@ function updateOrderOnServer() {
       };
 
       // add service charge line item
-      $('tr#service-charge td.price h5').html(data.service_charge);
-      $('tr#service-charge td.price').attr('data-price', data.service_charge);
+      $('tr#service-charge td.price h5').html(data.service_charge / 100.0);
+      $('tr#service-charge td.price').attr('data-price', data.service_charge / 100.0);
       if (data.service_charge > 0) {
         $('tr#service-charge').show();
       } else {
@@ -174,7 +174,7 @@ function updateOrderOnServer() {
       }
       
       // todo validate amount
-      $('.continue #cart-total').html(data.total);
+      $('.continue #cart-total').html(data.total / 100.0);
       $('.continue #cart-total').show();
 
       $('.formatCurrency').formatCurrency();
