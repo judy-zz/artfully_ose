@@ -1,5 +1,5 @@
 module Reseller
-  class Cart < Cart
+  class Cart < ::Cart
     belongs_to :reseller, :class_name => "Organization", :foreign_key => "reseller_id"
     delegate :reseller_profile, :to => :reseller
     
@@ -32,7 +32,7 @@ module Reseller
     end
   end
   
-  class Checkout < Checkout 
+  class Checkout < ::Checkout 
     def order_class
       Reseller::Order
     end
@@ -46,13 +46,21 @@ module Reseller
       order << @cart.tickets
       order.save
     end
+
+    def finish
+      reseller = @cart.reseller
+      reseller_person = Person.find_or_create(@customer, reseller)
+      reseller_person.update_address(Address.from_payment(payment), reseller.time_zone, nil, "checkout")
+
+      super
+    end
   end
   
   #
   # This is the order that resellers see.
   # Producers will receive and view ExternalOrders
   #
-  class Order < Order  
+  class Order < ::Order  
     has_many :external_orders, :class_name => "ExternalOrder", :foreign_key => "reseller_order_id"
     has_many :items, :foreign_key => "reseller_order_id"
     
