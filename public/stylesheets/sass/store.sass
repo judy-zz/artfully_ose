@@ -39,9 +39,22 @@ h4
   font-size: 1.25em
   margin-bottom: .5em
 
-.event-venue
+#venue
+  line-height: 1.4em
   font-size: 1em
   margin-bottom: .5em
+  strong
+    font-weight: bold
+  a
+    display: block
+    background: #f3f3f3
+    width: 140px
+    height: 140px
+    float: left
+    margin: 0 10px 10px 0
+    @include rounded-corners(4px,4px,4px,4px)
+    img
+      @include rounded-corners(4px,4px,4px,4px)
   
 #content
   margin: 10px 2%
@@ -51,6 +64,14 @@ h4
 #sidebar
   @include section
   @extend .stack1of3
+  margin-top: 54px
+  h2
+    color: #BFBFBF
+    text-transform: uppercase
+    font-size: 16px
+    font-weight: bold
+    margin-bottom: 12px
+    // line-height: 36px
 
 #store
   @include section
@@ -72,11 +93,320 @@ h4
   h2
     margin-bottom: 12px
   p
+    line-height: 1.4em
     margin-bottom: 5px
   input[type="text"]
-    width: 50%
+    width: 30%
   input[type="submit"]
-    border-left: none
-    width: 50%
-    min-width: 75px
-    @include rounded-corners(0, 4px, 4px, 0)
+    @include gradient(#2086a6, #175c71)
+    color: #fff
+    text-shadow: none
+    font-weight: normal
+
+#description
+  img
+    float: left
+    margin: 0 10px 10px 0
+    @include rounded-corners(4px,4px,4px,4px)
+  p
+    line-height: 1.4em
+    margin-bottom: 10px
+
+#contact
+  line-height: 1.4em
+  margin-bottom: 30px
+
+img#logo
+  float: left
+  margin-right: 10px
+
+h1#logo
+  padding-top: 10px
+  font-weight: bold
+  color: #404040
+  margin: 0
+  &::after
+    clear: none
+
+h3#producer
+  color: #404040
+  
+ul#shows
+  clear: both
+  li
+    margin-bottom: 10px
+    clear: both
+    .title
+      border: 1px solid #b3b3b3
+      padding: 10px
+      overflow: hidden
+      color: #4c4c4c
+      .date, .month, .day, .time, h4.day_and_month
+        color: #4c4c4c !important
+      &:hover
+        background: #f2f2f2
+        cursor: pointer
+      &.active, &.active:hover
+        @include gradient(#fff, #e6e6e6)
+        .date, .month, .day, .time, h4.day_and_month
+          color: #191919 !important
+      .date
+        width: 50px
+        float: left
+        margin-right: 10px
+        text-align: center
+        .month
+          text-transform: uppercase
+          font-size: 10px
+        .day
+          font-size: 30px
+      .time
+        float: left
+        h4.day_and_month
+          font-weight: bold
+          margin-bottom: 5px
+    
+    .sections
+      padding: 10px
+      margin-left: 60px
+      margin-bottom: 20px
+      .section
+        margin-bottom: 20px
+        h4
+          font-weight: bold
+          margin-bottom: 5px
+          color: #404040
+          span.price
+            font-weight: normal
+        p
+          margin-bottom: 10px
+          line-height: 1.4em
+        input[type="submit"]
+          @include gradient(#2086a6, #175c71)
+          color: #fff
+          text-shadow: none
+          font-weight: normal
+
+.calendar-month
+  margin-bottom: 50px
+  float: left
+  margin-right: 30px
+  h3
+    font-weight: bold
+
+table.calendar
+  width: 175px
+  td
+    border: 1px solid #f3f3f3
+    color: #999
+    letter-spacing: 0
+    word-spacing: 0
+    width: 25px
+    height: 25px
+    text-align: center
+    font-size: 10px
+    font-family: Verdana, sans-serif
+    vertical-align: middle
+    &.filler
+      border: none
+    &.show
+      background: #2086a6
+      color: #fff
+      &:hover
+        background: #175c71
+        cursor: pointer
+
+#shopping-cart
+  width: auto
+  background-color: #e6e6e6 !important
+  #steps
+    display: none
+    position: static
+    background: #fff
+    position: static
+    width: 650px
+    margin: 0px auto
+    padding: 50px
+    padding-top: 10px
+    padding-bottom: 0
+    height: 350px
+    ul#nav
+      width: 650px
+      margin: 0 auto
+      overflow: hidden
+      margin-bottom: 20px
+      li
+        float: left
+        list-style: none
+        letter-spacing: 0
+        font-family: "Helvetica", Arial, arial, sans-serif
+        word-spacing: normal
+        &.active a
+          background-color: $compliment_highlight
+          color: #fff
+          font-weight: normal
+        a
+          @include rounded-corners(15px, 15px, 15px, 15px)
+          font-size: 12px
+          padding-top: 8px
+          padding-bottom: 8px
+          margin-top: 4px
+          padding-right: 12px
+          padding-left: 12px
+          margin-right: 2px
+          line-height: 14px
+          display: block
+          color: #999
+    fieldset
+      ul
+        list-style: none
+        li
+          list-style: none
+          clear: both
+          margin-bottom: 10px
+          &#agreement
+            margin-left: 0
+            .label
+              width: 100%
+              display: inline
+          .label
+            width: 20%
+            display: inline-block
+            vertical-align: top
+            float: left
+            font-weight: bold
+          .element
+            width: 80%
+            display: inline-block
+            vertical-align: top
+            text-align: left
+            input
+              width: 50%
+              float: left
+              margin-right: 10px
+              &.error
+                border: 1px solid red
+                background-image: none
+            textarea
+              float: none
+            select
+              width: 50%
+              float: left
+              margin-right: 10px
+              &.error
+                border: 1px solid red
+                background-image: none
+            input.small, select.small
+              width: 22%
+              display: inline
+              margin-right: 10px
+            select.small
+              float: left
+            #expiration-slash
+              float: left
+              padding-right: 10px
+          label.error
+            background-image: none
+            color: red
+            float: left
+            &.checkbox
+              margin-top: -15px
+              font-weight: normal
+        li.stacked
+          .label
+            width: 100%
+            float: none
+            clear: both
+          .element
+            width: 100%
+            display: inline-block
+            vertical-align: top
+            text-align: left
+            textarea
+              float: none
+          
+    .tab-pane
+      display: none
+      &.active
+        display: block
+    #cart
+      width: 100%
+      table
+        margin-bottom: 30px
+        width: 100%
+        font-size: 13px
+        color: #666
+        tbody
+          width: 100%
+        tr
+          width: 100%
+          h5
+            color: #222
+            font-weight: bold
+            font-size: 15px
+            line-height: 18px
+          td
+            padding: 10px
+            &.quantity input
+              width: 90px
+          td.remove a
+            background: #eee
+            padding: 5px 10px
+            color: #fff
+            @include rounded-corners(15px, 15px, 15px, 15px)
+            font-size: 12px
+            &:hover
+              background: darken(#eee, 20%)
+              color: #fff
+          td.edit-item
+          .over-limit
+            color: red
+    .continue
+      padding: 20px
+      @include gradient(#ccc, #e6e6e6)
+      overflow: hidden
+      h4
+        font-weight: bold
+        color: #333
+        margin-top: 15px
+        float: right
+        margin-right: 20px
+    .continue a, #complete-purchase
+      float: right
+      width: 200px
+      display: block
+      @include rounded-corners(2px, 2px, 2px, 2px)
+      @include inset-text
+      @include gradient($compliment_highlight, $compliment, 14%, 100%)
+      border: 1px solid $compliment_shadow
+      font-size: 1em
+      text-align: center
+      font-weight: bold
+      line-height: 40px
+      &.disabled
+        @include gradient(#999, #ccc, 14%, 100%)
+        border: 1px solid #666
+    #user_agreement
+      height: 100px
+      border: 1px solid #ccc
+      padding: 10px
+      overflow-y: scroll
+      font-size: 13px
+      margin-bottom: 20px
+      p
+        margin-bottom: 13px
+    #thanks
+      p
+        margin-bottom: 10px
+        line-height: 1.4em
+
+.hidden
+  display: none !important
+  
+#payment-details-message
+  height: 200px
+  text-align: center
+  
+#special-instructions
+  #container
+    height: 200px

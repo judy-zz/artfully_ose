@@ -4,11 +4,10 @@
     %title= "#{yield :title} : Artful.ly"
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
+    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
     = include_stylesheets :store
     = stylesheet_link_tag "themes/default"
-    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
     = render :partial => 'layouts/google_analytics'
   %body
-    #content= yield
+    = yield
     = include_javascripts :store
-    = javascript_include_tag "artfully"

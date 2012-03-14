@@ -1,0 +1,15 @@
+** What if 2 sections have the same price?
+	Api::TicketsController
+	def conditions
+	  { :show_id => params[:show_id], :price => params[:price] }
+	end
+
+** If we dont' submit the card ID with the order, what happens if you have multiple carts in different tabs
+
+** why dont we know how many tickets are available on page load?
+
+** need some actions not to return html
+
+** need some actions not to return 200 when things fail
+
+** do you want me to write cucumber features for the new storefront?

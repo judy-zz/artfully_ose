@@ -57,9 +57,9 @@ $(document).ready(function () {
     if(show.destroyable == true) {
 			$row.addClass("destroyable");
 		}
-    $row.find(".available").html(show.glance.tickets.available);
-    $row.find(".gross").html(show.glance.tickets.sold.gross);
-    $row.find(".comped").html(show.glance.tickets.comped);
+    $row.find(".available_value").html(show.glance.tickets.available);
+    $row.find(".gross_value").html(show.glance.tickets.sold.gross);
+    $row.find(".comped_value").html(show.glance.tickets.comped);
   });
 
   $("form.sprited").live("ajax:error", function(xhr, status, error){

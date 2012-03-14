@@ -63,7 +63,7 @@ class Item < ActiveRecord::Base
   end
 
   def self.find_by_product(product)
-    find(:all, :params => { :productType => product.class.to_s, :productId => product.id })
+    where(:product_type => product.class.to_s).where(:product_id => product.id)
   end
 
   def product
@@ -94,6 +94,12 @@ class Item < ActiveRecord::Base
     (not modified?) and product.returnable?
   end
 
+  #
+  # This looks bad, but here's what's going on
+  # the item that gets refunded is state="refunded"
+  # then we create a new item to signify the negative amount, state="refund"
+  # Should all be pulled out into state machine
+  #
   def refund!
     update_attribute(:state, "refunded")
   end
@@ -132,6 +138,18 @@ class Item < ActiveRecord::Base
 
   def settled?
     state.eql? "settled"
+  end
+  
+  def purchased?
+    state.eql? "purchased"
+  end
+  
+  def comped?
+    state.eql? "comped"
+  end
+  
+  def exchangee?
+    state.eql? "exchangee"
   end
 
   def self.find_by_order(order)

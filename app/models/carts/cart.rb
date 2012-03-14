@@ -4,9 +4,7 @@ class Cart < ActiveRecord::Base
   has_many :donations, :dependent => :destroy
   has_many :tickets, :after_add => :set_timeout
   after_destroy :release_tickets
-
-  attr_accessor :fee_in_cents
-  after_initialize :update_ticket_fee
+  attr_accessor :special_instructions
 
   state_machine do
     state :started
@@ -22,6 +20,20 @@ class Cart < ActiveRecord::Base
     self.tickets + self.donations
   end
 
+  def clear!
+    clear_tickets
+    clear_donations
+  end
+  
+  def as_json(options = {})
+    super({ :methods => [ 'tickets', 'donations' ]}.merge(options))
+  end
+  
+  def clear_tickets
+    release_tickets
+    self.tickets = []
+  end
+
   def release_tickets
     tickets.each { |ticket| ticket.update_attribute(:cart, nil) }
   end
@@ -34,6 +46,10 @@ class Cart < ActiveRecord::Base
     tickets.delete(ticket)
   end
 
+  def items_subject_to_fee
+    self.tickets.reject{|t| t.price == 0}
+  end
+
   #
   # :( :( :(  Potential disaster
   #
@@ -43,8 +59,8 @@ class Cart < ActiveRecord::Base
   # is on the order.  When we move to allowing producers to "eat the fee", we'll have to address
   # refunds AND move the fee to the item, not the order
   #
-  def update_ticket_fee
-    @fee_in_cents = self.tickets.reject{|t| t.price == 0}.size * 200
+  def fee_in_cents
+    items_subject_to_fee.size * 200
   end
 
   def clear_donations
@@ -59,11 +75,10 @@ class Cart < ActiveRecord::Base
 
   def <<(tkts)
     tickets << tkts
-    update_ticket_fee
   end
 
   def total
-    items.sum(&:price) + @fee_in_cents
+    items.sum(&:price) + fee_in_cents
   end
 
   def unfinished?
