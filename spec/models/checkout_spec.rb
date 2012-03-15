@@ -73,11 +73,11 @@ describe Checkout do
       end
     end
     
-    describe "order creation" do      
-      person = Factory(:person)
-      organization = person.organization
+    describe "order creation" do  
+      organization = Factory(:organization)
       
-      before(:each) do
+      before(:each) do    
+        person = Factory(:person, :organization => organization)
         Person.stub(:find_or_create).and_return(person)
         subject.cart.stub(:approved?).and_return(true)
         subject.cart.stub(:organizations).and_return(Array.wrap(organization))
