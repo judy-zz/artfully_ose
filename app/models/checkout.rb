@@ -28,7 +28,7 @@ class Checkout
     @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
     prepare_fafs_donations
     cart.pay_with(@payment)
-
+    
     if cart.approved?
       process_fafs_donations
       order_timestamp = Time.now
@@ -96,13 +96,14 @@ class Checkout
 
     def new_order(organization, order_timestamp, person)
       order_class.new.tap do |order|
-        order.organization    = organization
-        order.created_at      = order_timestamp
-        order.person          = @person
-        order.transaction_id  = @payment.transaction_id
-        order.service_fee     = @cart.fee_in_cents
-        order.payment_method  = @payment.payment_method
-        order.per_item_processing_charge = @payment.per_item_processing_charge
+        order.organization                = organization
+        order.created_at                  = order_timestamp
+        order.person                      = @person
+        order.transaction_id              = @payment.transaction_id
+        order.service_fee                 = @cart.fee_in_cents
+        order.special_instructions        = @cart.special_instructions
+        order.payment_method              = @payment.payment_method
+        order.per_item_processing_charge  = @payment.per_item_processing_charge
 
         order << @cart.tickets.select { |ticket| ticket.organization_id == organization.id }
         order << @cart.donations

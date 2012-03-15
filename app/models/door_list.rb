@@ -16,11 +16,12 @@ class DoorList
   private
 
     class Item
-      attr_accessor :ticket, :buyer
+      attr_accessor :ticket, :buyer, :special_instructions
 
       def initialize(ticket, buyer)
         self.ticket = ticket
         self.buyer = buyer
+        self.special_instructions = ticket.special_instructions
       end
 
       def <=>(obj)

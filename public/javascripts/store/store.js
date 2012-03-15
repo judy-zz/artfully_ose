@@ -159,12 +159,14 @@ function updateOrderOnServer() {
         });
         updateQuantityInCart();
         updateTotal();
+				updateRequiredFields();
+				hidePaymentDetails();
         $('.formatCurrency').formatCurrency();
       };
 
       // add service charge line item
-      $('tr#service-charge td.price h5').html(data.service_charge);
-      $('tr#service-charge td.price').attr('data-price', data.service_charge);
+      $('tr#service-charge td.price h5').html(data.service_charge / 100.0);
+      $('tr#service-charge td.price').attr('data-price', data.service_charge / 100.0);
       if (data.service_charge > 0) {
         $('tr#service-charge').show();
       } else {
@@ -172,12 +174,12 @@ function updateOrderOnServer() {
       }
       
       // todo validate amount
-      $('.continue #cart-total').html(data.total);
+      $('.continue #cart-total').html(data.total / 100.0);
       $('.continue #cart-total').show();
 
       $('.formatCurrency').formatCurrency();
-
-			if(data.total > 0) {
+			
+			if(data.tickets.length > 0 || data.donations.length > 0) {
       	$('#cart .continue a').removeClass('disabled');		
 			} else {
       	$('#cart .continue a').addClass('disabled');	
@@ -189,6 +191,41 @@ function updateOrderOnServer() {
       // console.log(data);
     }
   });
+}
+
+function hidePaymentDetails() {
+	var total = getTotal();
+	if(total > 0) {
+		$('#payment-details-fields').removeClass('hidden')
+		$('#payment-details-message').addClass('hidden')
+	} else {
+		$('#payment-details-fields').addClass('hidden')
+		$('#payment-details-message').removeClass('hidden')
+	}
+}
+
+function updateRequiredFields() {
+	var total = getTotal();
+	$('input.nonzero-total').each(function() {
+    if(cartTotal > 0) {
+			$(this).addClass('required')
+			$(this).removeAttr("disabled");
+		} else {
+			$(this).removeClass('required')
+			$(this).attr("disabled", "disabled");
+		}
+  });
+}
+
+function getTotal() {
+	cartTotal = $('.continue #cart-total').html()
+	if (cartTotal === undefined || cartTotal == "") {
+		return 0;
+	} else if (cartTotal.indexOf('$') > -1){
+		return cartTotal.split('$')[1];
+	} else {
+		return cartTotal;
+	}
 }
 
 function updateQuantityInCart() {
