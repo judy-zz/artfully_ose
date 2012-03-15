@@ -44,7 +44,7 @@ class Donation::Importer
     end
 
     def create_order(fa_donation, organization, donor)
-      order = Order.find_by_fa_id(fa_donation.id) || FaOrder.new(:organization => organization, :person => person)
+      order = Order.find_by_fa_id(fa_donation.id) || FaOrder.new(:organization => organization, :person => donor)
 
       order.update_attributes({
         :created_at => DateTime.parse(fa_donation.date),
