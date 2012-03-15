@@ -85,6 +85,7 @@ class ShowsController < ApplicationController
 
   def door_list
     @show = Show.find(params[:id])
+    @event = @show.event
     authorize! :view, @show
     @current_time = DateTime.now.in_time_zone(@show.event.time_zone)
     @door_list = DoorList.new(@show)
