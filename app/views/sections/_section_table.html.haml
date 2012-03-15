@@ -3,6 +3,7 @@
     %thead
       %tr
         %th Name
+        %th Description
         %th Seats
         %th Price
         - if (editable ||= false)
@@ -18,6 +19,7 @@
         - chart.sections.each do |section|
           %tr
             %td= section.name
+            %td= section.description
             %td= "#{section.capacity} seats"
             %td= number_as_cents section.price
             

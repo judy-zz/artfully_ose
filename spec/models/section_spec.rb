@@ -9,6 +9,7 @@ describe Section do
   it { should respond_to :capacity }
   it { should respond_to :price }
   it { should respond_to :chart_id }
+  it { should respond_to :description }
 
   describe "valid?" do
     it "should not be valid without a name" do

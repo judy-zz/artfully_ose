@@ -9,6 +9,11 @@
       .label= form.label :capacity, "Capacity"
       .element= form.text_field :capacity
     %li
+      .label= form.label :description, "Description"
+      .element.validate
+        = form.text_area :description, :rows => "6", :maxlength => "300"
+        .description This description will appear under the section name on your storefront
+    %li
       - if can? :create, :paid_events
         .label= form.label :price, "Price"
         .element= form.text_field :price, :class => :currency, :value => number_as_cents(section.price)
@@ -19,3 +24,4 @@
           = form.hidden_field :price, :value => 0
           .description= "#{link_to "Upgrade your account", organization_path(current_user.current_organization)} to create prices on your tickets.".html_safe
   = form.submit
+
