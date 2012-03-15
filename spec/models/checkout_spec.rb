@@ -59,7 +59,7 @@ describe Checkout do
       it "should receive an email for dummy records" do
         OrderMailer.should_not_receive(:confirmation_for)
         Person.stub(:find_or_create).and_return(Factory(:dummy))
-      subject.cart.stub(:organizations).and_return([Factory(:dummy).organization])
+        subject.cart.stub(:organizations).and_return([Factory(:dummy).organization])
         subject.cart.stub(:approved?).and_return(true)
         subject.finish.should be_true
       end
@@ -67,9 +67,30 @@ describe Checkout do
       it "should receive an email if we don't have an email address for the buyer" do
         OrderMailer.should_not_receive(:confirmation_for)
         Person.stub(:find_or_create).and_return(Factory(:person_without_email))
-      subject.cart.stub(:organizations).and_return([Factory(:person_without_email).organization])
+        subject.cart.stub(:organizations).and_return([Factory(:person_without_email).organization])
         subject.cart.stub(:approved?).and_return(true)
         subject.finish.should be_true
+      end
+    end
+    
+    describe "order creation" do  
+      organization = Factory(:organization)
+      
+      before(:each) do    
+        person = Factory(:person, :organization => organization)
+        Person.stub(:find_or_create).and_return(person)
+        subject.cart.stub(:approved?).and_return(true)
+        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
+        subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+      end
+    
+      it "should put special instructions on the order" do
+        special_instructions = "Bring me a fifth of Glengoole Black and a bag of gummi bears"
+        subject.cart.should_receive(:special_instructions).and_return(special_instructions)
+        subject.finish.should be_true
+        order = organization.orders.first
+        order.should_not be_nil
+        order.special_instructions.should eq special_instructions
       end
     end
 

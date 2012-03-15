@@ -1,11 +1,10 @@
 - in_section :transactions
 - content_for :header do
   %h1 Contributions
-  %h2 Donations & Grants
 
 .context
-  %ul.context-buttons
-    %li= button_to "Record Contribution", new_contribution_path, :method => :get
+  -# %ul.context-buttons
+  -#   %li= button_to "Record Contribution", new_contribution_path, :method => :get
 
   %h3 Range
   #donations-search
@@ -21,7 +20,7 @@
 
 
 .document
-  %h3 Donations
+  %h3 Contributions
   - unless @search.results.empty?
     %h4= "From #{l @search.start} to #{l @search.stop}"
     #donations
@@ -44,4 +43,4 @@
                 %td= link_to "view", order_path(order)
       = will_paginate(@search.results)
   - else
-    %h4= "No donations found between #{l @search.start} and #{l @search.stop}"
+    %h4= "No contributions found between #{l @search.start} and #{l @search.stop}"

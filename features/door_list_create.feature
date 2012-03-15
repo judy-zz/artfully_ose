@@ -11,10 +11,11 @@ Feature: Door List Creation
 
   Scenario: A producer views the door list for a show
     Given a user named "Joe Patron" buys 2 tickets from the 1st show
-    And a user named "Bob Patron" buys 3 tickets from the 1st show
+    And a user named "Bob Patron" buys 3 tickets from the 1st show with instructions to "not mess up my order"
     When I go to the events page
     And I view the 1st event
     And I view the 1st show
     And I press "Door List"
     Then I should see "Joe Patron"
     And I should see "Bob Patron"
+    And I should see "not mess up my order"
