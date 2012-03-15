@@ -88,6 +88,16 @@ class ShowsController < ApplicationController
     authorize! :view, @show
     @current_time = DateTime.now.in_time_zone(@show.event.time_zone)
     @door_list = DoorList.new(@show)
+
+    respond_to do |format|
+      format.html
+
+      format.csv do
+        @filename = "Artfully-Door-List-Export-#{DateTime.now.strftime("%m-%d-%y")}.csv"
+        @csv_string = @door_list.items.to_comma
+        send_data @csv_string, :filename => @filename, :type => "text/csv", :disposition => "attachment"
+      end
+    end
   end
 
   def published

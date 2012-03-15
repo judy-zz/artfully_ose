@@ -15,6 +15,14 @@ class DoorList
     class Item
       attr_accessor :ticket, :buyer, :special_instructions
 
+      comma do
+        buyer("First Name") { |buyer| buyer.first_name }
+        buyer("Last Name") { |buyer| buyer.last_name }
+        buyer("Email") { |buyer| buyer.email }
+        ticket("Section") { |ticket| ticket.section.name }
+        ticket("Price") { |ticket| number_to_currency(ticket.price.to_f / 100) }
+      end
+
       def initialize(ticket, buyer)
         self.ticket = ticket
         self.buyer = buyer
