@@ -94,7 +94,7 @@ class ShowsController < ApplicationController
       format.html
 
       format.csv do
-        @filename = "Artfully-Door-List-Export-#{DateTime.now.strftime("%m-%d-%y")}.csv"
+        @filename = [ @event.name, @show.datetime_local_to_event.to_s(:db_date), "door-list.csv" ].join("-")
         @csv_string = @door_list.items.to_comma
         send_data @csv_string, :filename => @filename, :type => "text/csv", :disposition => "attachment"
       end
