@@ -19,6 +19,7 @@ s3_upload_files:
   - public/stylesheets/reset.css
   - public/stylesheets/themes/default.css
   - public/javascripts/artfully.js
+  - public/javascripts/artfully-v2.js
 
 javascripts:
   splash:

@@ -14,7 +14,7 @@
       .label= f.label :show_id
       .element
         - if @ticket_offer.show && @ticket_offer.event
-          = f.select :show_id, options_from_collection_for_select(@ticket_offer.event.shows.unplayed.all, :id, :show_time, @ticket_offer.show_id)
+          = f.select :show_id, options_from_collection_for_select(@ticket_offer.event.upcoming_shows.all, :id, :show_time, @ticket_offer.show_id)
         - else
           = f.select :show_id, []
 
