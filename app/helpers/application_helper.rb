@@ -1,5 +1,6 @@
 module ApplicationHelper
   include LinkHelper
+  include ActionView::Helpers::NumberHelper
 
   def check_mark
     "&#x2713;".html_safe

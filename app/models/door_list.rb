@@ -1,4 +1,6 @@
 class DoorList
+  extend ::ApplicationHelper
+
   attr_accessor :show
 
   def initialize(show)
@@ -20,7 +22,8 @@ class DoorList
         buyer("Last Name") { |buyer| buyer.last_name }
         buyer("Email") { |buyer| buyer.email }
         ticket("Section") { |ticket| ticket.section.name }
-        ticket("Price") { |ticket| number_to_currency(ticket.price.to_f / 100) }
+        ticket("Price") { |ticket| DoorList.number_as_cents ticket.price }
+        ticket("Special Instructions") { |ticket| ticket.special_instructions }
       end
 
       def initialize(ticket, buyer)
