@@ -4,11 +4,11 @@ class SaleSearch
   attr_reader :organization, :event, :show
 
   def initialize(terms)
-    @start        = start_with(terms[:start])
-    @stop         = stop_with(terms[:stop])
     @organization = terms[:organization]
     @event        = terms[:event]
     @show         = terms[:show]
+    @start        = start_with(terms[:start])
+    @stop         = stop_with(terms[:stop])
 
     @results = yield(results) if block_given?
   end
