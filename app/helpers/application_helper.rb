@@ -114,4 +114,8 @@ module ApplicationHelper
       "Wyoming"              =>"WY"
     }
   end
+
+  def nav_dropdown(text, link='#')
+    link_to ERB::Util.html_escape(text) + ' <b class="caret"></b>'.html_safe, link, :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'
+  end
 end
