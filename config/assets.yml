@@ -53,6 +53,9 @@ javascripts:
     - public/javascripts/jquery/jquery.formatCurrency-1.4.0.min.js
     - public/javascripts/store/**/*.js
 
+  bootstrap:
+    - public/javascripts/bootstrap.js
+
 stylesheets:
   splash:
     - public/stylesheets/formalize.css
@@ -85,3 +88,7 @@ stylesheets:
     - public/stylesheets/formalize.css
     - public/stylesheets/cart.css
     - public/stylesheets/store.css
+
+  bootstrap:
+    - public/stylesheets/bootstrap.css
+    - public/stylesheets/bootstrap-overrides.css
