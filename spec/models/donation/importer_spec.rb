@@ -32,7 +32,10 @@ describe Donation::Importer do
     let(:donor) { Factory(:fa_donor) }
   
     it "uses the anonymous record for an organization if the donor has no information" do
-      person = subject.send(:create_person, mock(:donor, :has_information? => false), organization)
+      donor.email = nil
+      donor.first_name = nil
+      donor.last_name = nil
+      person = subject.send(:create_person, donor, organization)
       person.should be_dummy
     end
   
@@ -46,6 +49,14 @@ describe Donation::Importer do
       Person.delete_all(:email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name)
       organization.people.should_receive(:create).and_return(Factory(:person))
       subject.send(:create_person, donor, organization)
+    end
+    
+    it "creates a new person record is email is not present" do
+      donor.email = nil
+      person = organization.people.create(:email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name)
+      organization.people.should_receive(:create).and_return(Factory(:person, :organization => organization))
+      new_person = subject.send(:create_person, donor, organization)
+      new_person.should_not eq person
     end
   end
   

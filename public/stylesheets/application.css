@@ -663,12 +663,15 @@ input.mini {
   font-size: 0.875em; }
   .kv li {
     line-height: 24px; }
-  .kv .key, .kv .value {
+  .kv .key, .kv .value, .kv .key-full {
     display: inline-block;
     color: #666666; }
   .kv .key {
     font-weight: bold;
     width: 30%; }
+  .kv .key-full {
+    font-weight: bold;
+    width: 100%; }
 
 .tags {
   margin-bottom: 0.1em; }

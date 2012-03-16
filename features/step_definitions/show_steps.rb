@@ -38,8 +38,8 @@ end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how is on sale$/ do |pos|
   show = current_shows[pos.to_i - 1]
-  show.publish
   show.bulk_on_sale(:all)
+  show.publish!
 end
 
 Then /^I should not be able to delete the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |pos|
@@ -58,6 +58,21 @@ Given /^a user named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) 
   tickets = show.tickets
   tickets.reject { |t| t.state == "sold" }.first(wanted.to_i).each do |ticket|
     ticket.sell_to(customer)
+  end
+end
+
+Given /^a user named "([^"]*)" buys (\d+) tickets from the (\d+)(?:st|nd|rd|th) [Ss]how with instructions to "([^"]*)"$/ do |name, wanted, pos, special_instructions| 
+  fname, lname = name.split(" ")
+  customer = Factory(:person, :first_name => fname, :last_name => lname)
+
+  show = current_shows[pos.to_i - 1]
+  tickets = show.tickets
+  
+  order = Factory(:order, :person=>customer, :special_instructions=>special_instructions)
+  
+  tickets.reject { |t| t.state == "sold" }.first(wanted.to_i).each do |ticket|
+    ticket.sell_to(customer)
+    order << ticket
   end
 end
 

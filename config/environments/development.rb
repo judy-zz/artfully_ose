@@ -35,6 +35,8 @@ Artfully::Application.configure do
   config.reports_site     = 'http://localhost:8080/athena/reports/'
   config.payments_component = 'http://localhost:8080/payments/'
   config.payments_element_name = '/payments'
+  
+  ActiveMerchant::Billing::Base.mode = :test
 
   AthenaResource::USER_AGENT = "artful.ly"
   AthenaResource::USER = nil

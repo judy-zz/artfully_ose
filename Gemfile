@@ -4,10 +4,7 @@ gem 'rails'
 gem 'rack-ssl-enforcer'
 gem 'rack-canonical-host'
 
-#Migration
-gem 'mongo'
-gem 'bson'
-gem 'bson_ext'
+gem 'activemerchant', :require => 'active_merchant'
 
 gem 'athena_resource'
 gem 'activerecord-import'
@@ -24,11 +21,13 @@ gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.12'
-gem 's3', '>= 0.3.8'
+gem 's3', '>= 0.3.11'
 gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
 gem 'swiper', :path => "vendor/gems/swiper-0.0.1"
 gem 'jammit'
 gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
+gem 'aws-sdk'
+gem 'paperclip', '>= 2.5.0'
 gem 'comma',     :path => "vendor/gems/comma-0.4.0"
 gem 'nokogiri' # for pulling in blog posts on index#updates
 

@@ -46,5 +46,10 @@ module Artfully
 
     # Load JSONP middleware.
     config.middleware.use Rack::JSONP
+  
+    config.BRAINTREE_MERCHANT_ID = ENV['BRAINTREE_MERCHANT_ID'] || 'bzy5dt9tm5x3jvys'
+    config.BRAINTREE_PUBLIC_KEY = ENV['BRAINTREE_PUBLIC_KEY'] || 'n8xrkpmvkdmgxqgc'
+    config.BRAINTREE_PRIVATE_KEY = ENV['BRAINTREE_PRIVATE_KEY'] || '6gnq5wzg79rtbq4v'
+    
   end
 end

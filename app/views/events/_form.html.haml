@@ -1,4 +1,5 @@
-= form_for(event) do |form|
+= form_for event, :html => { :multipart => true } do |form|
+
   %legend Event
   .hr
   %fieldset
@@ -24,6 +25,20 @@
         .element
           = form.text_field :contact_phone
           .description Contact phone and email will be displayed to patrons and included in confirmation emails
+      %li
+        .label=  form.label :show_special_instructions, "Show special instructions"
+        .element= form.check_box( :show_special_instructions, {}, "true", "false" )
+      %li
+        .label= form.label :special_instructions_caption, "Special instructions caption"
+        .element
+          = form.text_field :special_instructions_caption
+          .description This will be displayed above the special instructions field during checkout
+      %li
+        .label= form.label :image 
+        .element
+          = form.file_field :image
+          .description Image will be sized to 140x140 and displayed on your storefront with the about text
+
       - if event.new_record?
         - if can? :create, :paid_events
           %li

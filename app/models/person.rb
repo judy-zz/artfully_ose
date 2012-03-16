@@ -53,9 +53,8 @@ class Person < ActiveRecord::Base
     where('import_id = ?', import.id)
   end
 
-  #TODO
-  def self.recent(organization)
-    []
+  def self.recent(organization, limit = 10)
+    Person.where(:organization_id => organization).order('updated_at DESC').limit(limit)
   end
   
   def self.find_by_customer(customer, organization)
@@ -69,6 +68,7 @@ class Person < ActiveRecord::Base
   end
 
   def self.find_by_email_and_organization(email, organization)
+    return nil if email.nil? 
     find(:first, :conditions => { :email => email, :organization_id => organization.id })
   end
 
@@ -111,6 +111,35 @@ class Person < ActiveRecord::Base
       keywords query
       with(:organization_id).equal_to(organization.id)
     end.results
+  end
+
+  def self.find_or_create(customer, organization)
+    person = Person.find_by_customer(customer, organization)
+      
+    if person.nil?
+      params = {
+        :first_name      => customer.first_name,
+        :last_name       => customer.last_name,
+        :email           => customer.email,
+        :organization_id => organization.id # This doesn't account for multiple organizations per cart
+      }
+      person = Person.create(params)
+    end
+    person
+  end
+
+  def update_address(new_address, time_zone, user = nil, updated_by = nil)
+    unless new_address.nil?
+      # If new_address is a hash, then upgrade it to an Address:
+      if !new_address.respond_to?(:person=) then new_address = Address.create(new_address) end
+      new_address.person = self
+      @address = Address.find_or_create(id)
+      if !@address.update_with_note(self, user, new_address, time_zone, updated_by)
+        ::Rails.logger.error "Could not update address from payment"
+        return false
+      end
+    end
+    true
   end
 
   private

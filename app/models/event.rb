@@ -6,6 +6,18 @@ class Event < ActiveRecord::Base
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
 
+  has_attached_file :image,
+    :storage => :s3,
+    :path => ":attachment/:id/:style.:extension",
+    :bucket => ENV["S3_BUCKET"],
+    :s3_credentials => {
+      :access_key_id => ENV["ACCESS_KEY_ID"],
+      :secret_access_key => ENV["SECRET_ACCESS_KEY"]
+    },
+    :styles => {
+      :thumb => "140x140#"
+    }
+
   validates_presence_of :name, :producer, :organization_id
   validates :is_free, :immutable => {:message => "Cannot change free/paid event after an event has been created"}
 
@@ -40,13 +52,17 @@ class Event < ActiveRecord::Base
     played.take(limit)
   end
 
+  def upcoming_public_shows
+    upcoming_shows(:all).select(&:published?)
+  end
+
   def next_show
     shows.build(:datetime => Show.next_datetime(shows.last))
     shows.pop
   end
 
   def as_widget_json(options = {})
-    as_json(options).merge('performances' => upcoming_shows(:all).select(&:published?).as_json).merge('venue' => venue.as_json)
+    as_json(options).merge('performances' => upcoming_public_shows.as_json).merge('venue' => venue.as_json)
   end
 
   def as_full_calendar_json

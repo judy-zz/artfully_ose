@@ -60,6 +60,8 @@ Artfully::Application.configure do
 
   config.payments_component = 'https://athena-payments-staging.elasticbeanstalk.com:443/'
   config.payments_element_name = ''
+  
+  ActiveMerchant::Billing::Base.mode = :test
 
   AthenaResource::USER_AGENT = "artful.ly"
   AthenaResource::USER = ENV['ATHENA_RESOURCE_USER']

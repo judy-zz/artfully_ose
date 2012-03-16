@@ -22,6 +22,44 @@ class Store::OrdersController < Store::StoreController
     redirect_to store_order_url
   end
 
+  # used by hosted storefront
+  def storefront_sync
+    current_cart.clear!
+    
+    order_params = {}
+
+    if params[:sections]
+      ticket_ids = []
+      over_section_limit = []
+      params[:sections].each_value do |section|
+        puts "#{section[:section_id]}: #{section[:limit]}"
+        ids = Ticket.available(
+          {
+            :section_id => section[:section_id],
+            :show_id => section[:show_id]
+          },
+          section[:limit]
+        ).collect(&:id)
+        # requesting more tickets than are available
+        if ids.length < section[:limit].to_i
+          over_section_limit << {:section_id => section[:section_id], :show_id => section[:show_id], :limit => ids.length}
+        end
+        # :status => 403
+        ticket_ids += ids
+      end
+      order_params = order_params.merge(:tickets => ticket_ids) if ticket_ids.any?
+    end
+    order_params = order_params.merge(:donation => params[:donation]) if params[:donation]
+    handle_order(order_params)
+
+    response = current_cart.as_json
+    response = response.merge(:total => current_cart.total)
+    response = response.merge(:service_charge => current_cart.fee_in_cents)
+    response = response.merge(:over_section_limit => over_section_limit).to_json
+    logger.info "RESPONSE: #{response}"
+    render :json => response
+  end
+
   private
     def handle_order(params)
       handle_tickets(params[:tickets]) if params.has_key? :tickets
@@ -33,6 +71,7 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_tickets(ids)
+      logger.info("current_cart: #{current_cart}")
       current_cart << Ticket.find(ids)
     end
 

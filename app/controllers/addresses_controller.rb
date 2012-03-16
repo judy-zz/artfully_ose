@@ -12,10 +12,7 @@ class AddressesController < ApplicationController
   end
 
   def update
-    now = DateTime.now.in_time_zone(current_user.current_organization.time_zone)
-    o_addr = Marshal.load(Marshal.dump(@person.address))
-    n_addr = params[:address]
-    if @person.address.update_attributes(params[:address])
+    if @person.update_address(params[:address], current_user.current_organization.time_zone, current_user)
       flash[:notice] = "Successfully updated the address for #{@person.first_name} #{@person.last_name}."
     else
       flash[:error] = "There was a problem updating this address."

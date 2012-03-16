@@ -17,6 +17,14 @@ Given /^there is an [Ee]vent with (\d+) [Ss]hows$/ do |show_count|
   setup_shows(show_count.to_i.times.collect { Factory(:show, :event => current_event, :organization_id => @current_user.current_organization.id) })
 end
 
+Given /^there is an Event with special instructions with (\d+) Shows$/ do |show_count|
+  event = Factory(:event, :organization_id => @current_user.current_organization.id, :show_special_instructions => true)
+  event.charts << Factory(:chart_with_sections)
+
+  setup_event(event)
+  setup_shows(show_count.to_i.times.collect { Factory(:show, :event => current_event, :organization_id => @current_user.current_organization.id) })
+end
+
 Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
   within(:xpath, "(//ul[@class='detailed-list']/li)[#{pos.to_i}]") do
     click_link "event-name"

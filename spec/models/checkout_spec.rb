@@ -54,7 +54,7 @@ describe Checkout do
 
     it "should always approve orders with cash payments" do
       subject.stub(:create_order).and_return(BoxOffice::Order.new)
-      subject.stub(:find_or_create_people_record).and_return(Factory(:person))
+      Person.stub(:find_or_create).and_return(Factory(:person))
       subject.finish.should be_true
     end
   end
@@ -67,22 +67,46 @@ describe Checkout do
     describe "people without emails" do
       it "should receive an email for dummy records" do
         OrderMailer.should_not_receive(:confirmation_for)
-        subject.stub(:find_or_create_people_record).and_return(Factory(:dummy))
+        Person.stub(:find_or_create).and_return(Factory(:dummy))
+        subject.cart.stub(:organizations).and_return([Factory(:dummy).organization])
         subject.cart.stub(:approved?).and_return(true)
         subject.finish.should be_true
       end
   
       it "should receive an email if we don't have an email address for the buyer" do
         OrderMailer.should_not_receive(:confirmation_for)
-        subject.stub(:find_or_create_people_record).and_return(Factory(:person_without_email))
+        Person.stub(:find_or_create).and_return(Factory(:person_without_email))
+        subject.cart.stub(:organizations).and_return([Factory(:person_without_email).organization])
         subject.cart.stub(:approved?).and_return(true)
         subject.finish.should be_true
+      end
+    end
+    
+    describe "order creation" do  
+      organization = Factory(:organization)
+      
+      before(:each) do    
+        person = Factory(:person, :organization => organization)
+        Person.stub(:find_or_create).and_return(person)
+        subject.cart.stub(:approved?).and_return(true)
+        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
+        subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+      end
+    
+      it "should put special instructions on the order" do
+        special_instructions = "Bring me a fifth of Glengoole Black and a bag of gummi bears"
+        subject.cart.should_receive(:special_instructions).and_return(special_instructions)
+        subject.finish.should be_true
+        order = organization.orders.first
+        order.should_not be_nil
+        order.special_instructions.should eq special_instructions
       end
     end
 
     describe "return value" do
       before(:each) do
-        subject.stub(:find_or_create_people_record).and_return(Factory(:person))
+        Person.stub(:find_or_create).and_return(Factory(:person))
+        subject.cart.stub(:organizations).and_return(Array.wrap(Factory(:person).organization))
       end
 
       it "returns true if the order was approved" do
@@ -97,9 +121,6 @@ describe Checkout do
     end
 
     describe "people creation" do
-      before(:each) do
-        FakeWeb.register_uri(:post, "http://localhost/athena/addresses.json", :body => "")
-      end
 
       let(:email){ payment.customer.email }
       let(:organization){ Factory(:organization) }
@@ -113,6 +134,7 @@ describe Checkout do
 
       it "should create a person record when finishing with a new customer" do
         subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
         Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
         Person.should_receive(:create).with(attributes).and_return(Factory(:person,attributes))
         subject.finish
@@ -120,6 +142,7 @@ describe Checkout do
 
       it "should not create a person record when the person already exists" do
         subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
         Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:person,attributes))
         Person.should_not_receive(:create)
         subject.finish
