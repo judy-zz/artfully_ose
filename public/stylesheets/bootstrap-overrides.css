@@ -46,3 +46,27 @@ section {
 .navbar .dropdown-menu:after {
   display: none;
 }
+.dropdown-menu li > a:hover,
+.dropdown-menu .active > a,
+.dropdown-menu .active > a:hover {
+  background-color: #2086a6;
+}
+
+.navbar .nav .active > a,
+.navbar .nav .active > a:hover {
+  background-color: transparent;
+}
+
+.footer {
+  margin-top: 45px;
+  padding: 35px 0 36px;
+  border-top: 1px solid #E5E5E5;
+}
+
+.footer ul li {
+  float: left;
+  margin-right: 10px;
+}
+.footer a {
+  color: #999;
+}
