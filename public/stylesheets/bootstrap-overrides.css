@@ -38,3 +38,11 @@ section {
 #heading {
   margin-bottom: 30px;
 }
+
+
+.navbar .dropdown-menu:before {
+  display: none;
+}
+.navbar .dropdown-menu:after {
+  display: none;
+}
