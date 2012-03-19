@@ -133,6 +133,10 @@ class Cart < ActiveRecord::Base
     true
   end
 
+  def reseller_is?(reseller)
+    reseller == nil
+  end
+
   private
     def pay_with_authorization(payment, options)
       options[:settle] = true if options[:settle].nil?

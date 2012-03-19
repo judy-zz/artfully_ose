@@ -2,25 +2,25 @@ class Store::OrdersController < Store::StoreController
   layout "cart"
   skip_before_filter :verify_authenticity_token
   after_filter :add_p3p_header
+  before_filter :initialize_cart
 
   def show
-    current_cart(params[:reseller_id])
     @donations = current_cart.generate_donations
   end
 
   def create
     handle_order(params)
-    redirect_to store_order_url
+    redirect_to redirection_destination
   end
 
   def update
     handle_order(params)
-    redirect_to store_order_url
+    redirect_to redirection_destination
   end
 
   def destroy
     current_cart.destroy
-    redirect_to store_order_url
+    redirect_to redirection_destination
   end
 
   # used by hosted storefront
@@ -62,6 +62,10 @@ class Store::OrdersController < Store::StoreController
   end
 
   private
+    def initialize_cart
+      current_cart params[:reseller_id]
+    end
+
     def handle_order(params)
       handle_tickets(params[:tickets]) if params.has_key? :tickets
       handle_donation(params[:donation]) if params.has_key? :donation
@@ -92,5 +96,9 @@ class Store::OrdersController < Store::StoreController
     
     def add_p3p_header
       response.headers["P3P"] = "CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT\""
+    end
+
+    def redirection_destination
+      store_order_url reseller_id: params[:reseller_id]
     end
 end
