@@ -5,10 +5,10 @@
     Put this code in the <head> tag of your website
 %pre.code
   :escaped
-    #{"<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js'/>" if @jquery }
-    <script src='#{javascript_path("artfully")}'/>
-    #{("<script src='" + javascript_path("vendor") + "'/>") unless @organization.nil? }
-    #{"<link href='" + stylesheet_path("themes/default.css") + "' media='screen' rel='stylesheet' type='text/css'>"}
+    #{"<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js'></script>" if @jquery }
+    <script src='#{javascript_path("artfully")}'></script>
+    #{("<script src='" + javascript_path("vendor") + "'></script>") unless @organization.nil? }
+    #{"<link href='" + stylesheet_path("themes/default.css") + "' media='screen' rel='stylesheet' type='text/css'/>"}
     <script>
       $(document).ready(function(){
         artfully.configure({
