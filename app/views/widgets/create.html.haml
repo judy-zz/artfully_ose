@@ -6,9 +6,9 @@
 %pre.code
   :escaped
     #{"<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js' type='text/javascript'></script>" if @jquery }
-    <script src='#{javascript_path("artfully")}'></script>
+    <script src='#{javascript_path("artfully")}' type='text/javascript'></script>
     #{("<script src='" + javascript_path("vendor") + "' type='text/javascript'></script>") unless @organization.nil? }
-    #{"<link href='" + stylesheet_path("themes/default.css") + "' media='screen' rel='stylesheet' type='text/css'/>"}
+    #{"<link href='" + stylesheet_path("themes/default.css") + "' media='screen' rel='stylesheet' type='text/css'>"}
     <script type='text/javascript'>
       $(document).ready(function(){
         artfully.configure({
@@ -20,7 +20,7 @@
         #{"artfully.widgets.cart().init()" if @donation_extras }
         #{"artfully.widgets.cart().display()" if @donation_extras }
       });
-    <script>
+    </script>
 %h4
   Display
 %p
