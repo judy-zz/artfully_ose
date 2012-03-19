@@ -85,9 +85,20 @@ class ShowsController < ApplicationController
 
   def door_list
     @show = Show.find(params[:id])
+    @event = @show.event
     authorize! :view, @show
     @current_time = DateTime.now.in_time_zone(@show.event.time_zone)
     @door_list = DoorList.new(@show)
+
+    respond_to do |format|
+      format.html
+
+      format.csv do
+        @filename = [ @event.name, @show.datetime_local_to_event.to_s(:db_date), "door-list.csv" ].join("-")
+        @csv_string = @door_list.items.to_comma
+        send_data @csv_string, :filename => @filename, :type => "text/csv", :disposition => "attachment"
+      end
+    end
   end
 
   def published
