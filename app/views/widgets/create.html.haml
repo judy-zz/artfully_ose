@@ -5,11 +5,11 @@
     Put this code in the <head> tag of your website
 %pre.code
   :escaped
-    #{"<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js'></script>" if @jquery }
+    #{"<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js' type='text/javascript'></script>" if @jquery }
     <script src='#{javascript_path("artfully")}'></script>
-    #{("<script src='" + javascript_path("vendor") + "'></script>") unless @organization.nil? }
+    #{("<script src='" + javascript_path("vendor") + "' type='text/javascript'></script>") unless @organization.nil? }
     #{"<link href='" + stylesheet_path("themes/default.css") + "' media='screen' rel='stylesheet' type='text/css'/>"}
-    <script>
+    <script type='text/javascript'>
       $(document).ready(function(){
         artfully.configure({
           base_uri: '#{root_url}api/',
