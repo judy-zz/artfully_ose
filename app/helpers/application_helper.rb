@@ -9,6 +9,11 @@ module ApplicationHelper
   def time_zone_description(tz)
     ActiveSupport::TimeZone.create(tz)
   end
+  
+  #This is for the widget generator
+  def asset_path(asset)
+    javascript_path(asset).gsub(/javascripts/, 'assets')
+  end
 
   def contextual_menu(&block)
     menu = ContextualMenu.new(self)
