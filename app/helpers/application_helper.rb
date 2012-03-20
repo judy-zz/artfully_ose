@@ -10,7 +10,7 @@ module ApplicationHelper
     ActiveSupport::TimeZone.create(tz)
   end
   
-  #This is for the widget generator
+  #This is for the widget generator, DO NOT use anywhere else
   def asset_path(asset)
     javascript_path(asset).gsub(/javascripts/, 'assets')
   end
