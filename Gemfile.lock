@@ -190,7 +190,7 @@ GEM
     rdoc (3.6.1)
     rest-client (1.6.7)
       mime-types (>= 1.16)
-    restful_metrics (1.1.1)
+    restful_metrics (1.1.2)
       rest-client (~> 1.6.0)
       yajl-ruby (~> 0.8.1)
     rsolr (0.12.1)
