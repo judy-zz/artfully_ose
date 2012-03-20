@@ -9,4 +9,4 @@
 .document
   %h3 New Section Details
   = render "shared/error_messages", :target => @section
-  = render :partial => 'form', :locals => { :section => @section }
+  = render :partial => 'form', :locals => { :section => @section, :action => 'new' }

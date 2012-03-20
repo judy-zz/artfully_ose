@@ -1,4 +1,5 @@
-= form_for section, :url => chart_sections_path(@chart, @section) do |form|
+- url = (action == 'edit') ? chart_section_path(@chart, @section) : chart_sections_path(@chart, @section)
+= form_for section, :url => url do |form|
   %ul
     %li
       .label= form.label :name, "Name"
@@ -12,7 +13,7 @@
       .label= form.label :description, "Description"
       .element.validate
         = form.text_area :description, :rows => "6", :maxlength => "300"
-        .description This description will appear under the section name on your storefront
+        .description This description will appear under the section name on your storefront.  This is limited to 300 characters.
     %li
       - if can? :create, :paid_events
         .label= form.label :price, "Price"
