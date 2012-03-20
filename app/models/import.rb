@@ -124,7 +124,7 @@ class Import < ActiveRecord::Base
       else
         s3_bucket = s3_service.buckets.find(self.s3_bucket) if self.s3_bucket.present?
         s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
-        s3_object.content if s3_object
+        s3_object.content(true) if s3_object
       end
   end
 
