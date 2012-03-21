@@ -3,7 +3,6 @@ var eventEnabled = true
 $("document").ready(function(){
 
   $(".widget_type").change(function(){
-		console.log($(this).attr('value'))
     if($(this).attr('value') == 'event' || $(this).attr('value') == 'both') { 
       $('.events').removeClass('hidden');
 			eventEnabled = true
