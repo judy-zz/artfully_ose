@@ -1,5 +1,4 @@
-- url = (action == 'edit') ? chart_section_path(@chart, @section) : chart_sections_path(@chart, @section)
-= form_for section, :url => url do |form|
+= form_for [chart, section] do |form|
   %ul
     %li
       .label= form.label :name, "Name"

@@ -5,7 +5,6 @@
 .context
 .document
   %h3 Edit Section
-  %h4= "chart #{@chart.id}, section #{@section.id}"
   = render "shared/error_messages", :target => @section
-  = render :partial => 'form', :locals => { :chart => @chart, :section => @section, :action => 'edit' }
+  = render :partial => 'form', :locals => { :chart => @chart, :section => @section }
 
