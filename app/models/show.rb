@@ -4,6 +4,7 @@ class Show < ActiveRecord::Base
   belongs_to :chart
 
   has_many :tickets, :dependent => :destroy
+  has_many :ticket_offers, :dependent => :destroy
 
   has_many :settlements
   has_many :items
@@ -168,6 +169,10 @@ class Show < ActiveRecord::Base
     else
       self.event <=> obj.event
     end
+  end
+
+  def reseller_sold_count
+    self.ticket_offers.inject(0) { |sum, to| sum + to.sold }
   end
 
   private

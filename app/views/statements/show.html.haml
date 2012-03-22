@@ -17,6 +17,8 @@
           %tr
             %th{:style=>'width:200px'} Shows
             %th{:style=>'width:100px'} Tickets Sold
+            - if @show.ticket_offers.count > 0
+              %th{:style=>'width:100px'} Reseller Sales
             %th{:style=>'width:50px'} Comps
             %th{:style=>'width:100px'} Potential
             %th{:style=>'width:100px'} Gross
@@ -26,6 +28,8 @@
           %tr
             %td=l @statement.datetime, :format => :short
             %td=@statement.tickets_sold
+            - if @show.ticket_offers.count > 0
+              %td= @show.reseller_sold_count
             %td=@statement.tickets_comped
             %td=number_as_cents @statement.potential_revenue
             %td
