@@ -35,7 +35,7 @@
                   %td= h offer.section.name if offer.section
                   %td= l offer.show.datetime_local_to_event if offer.show
                   %td= number_to_currency(offer.section.price * 0.01)
-                  %td= offer.count - offer.sold
+                  %td= offer.available
                   %td= offer.sold
                   %td= offer.count
                   %td= reseller_offer_control(offer)

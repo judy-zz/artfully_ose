@@ -40,27 +40,29 @@ class TicketOffer < ActiveRecord::Base
   end
 
   def sold
-    Order.
-      includes(:items => :product).
-      where(:organization_id => reseller_organization.id).
-      map { |o| o.items }.
-      flatten.
-      compact.
-      uniq.
-      select { |i| i.ticket? && valid_ticket?(i.product) }.
-      count
+    @sold ||=
+      Order.
+        includes(:items => :product).
+        where(:organization_id => reseller_organization.id).
+        map { |o| o.items }.
+        flatten.
+        compact.
+        uniq.
+        select { |i| i.ticket? && valid_ticket?(i.product) }.
+        count
   end
 
   def in_carts
-    Reseller::Cart.
-      includes(:tickets).
-      where(:reseller_id => reseller_organization.id).
-      map(&:tickets).
-      flatten.
-      compact.
-      uniq.
-      select { |t| valid_ticket? t }.
-      count
+    @in_carts ||=
+      Reseller::Cart.
+        includes(:tickets).
+        where(:reseller_id => reseller_organization.id).
+        map(&:tickets).
+        flatten.
+        compact.
+        uniq.
+        select { |t| valid_ticket? t }.
+        count
   end
 
   ## State Transitions ##
