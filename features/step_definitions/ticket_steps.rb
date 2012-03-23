@@ -49,7 +49,7 @@ end
 
 Then /^the (\d+)(?:st|nd|rd|th) ticket should be on sale$/ do |pos|
   within(:xpath, "//table/tbody/tr[#{pos.to_i}]") do
-    Then %Q{I should see "On Sale"}
+    step %Q{I should see "On Sale"}
   end
 end
 
@@ -62,7 +62,7 @@ end
 
 Then /^the (\d+)st ticket should be off sale$/ do |pos|
   within(:xpath, "//table/tbody/tr[#{pos.to_i}]") do
-    Then %Q{I should see "Off Sale"}
+    step %Q{I should see "Off Sale"}
   end
 end
 
