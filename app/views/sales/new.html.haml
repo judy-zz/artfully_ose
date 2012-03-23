@@ -54,12 +54,13 @@
           %li
             .radio= radio_button_tag(:payment_method, :comp, false, :class => 'payment-method', :disabled => 'true')
             .label= label_tag(:comp, "Comp")
-          %li
-            .radio= radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true')
-            .label= label_tag(:credit_card_swipe, "Credit (Swipe)")
-          %li
-            .radio= radio_button_tag(:payment_method, :credit_card_manual, false, :class => 'payment-method', :disabled => 'true')
-            .label= label_tag(:credit_card_manual, "Credit (Manual)")
+          -unless @event.is_free
+            %li
+              .radio= radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true')
+              .label= label_tag(:credit_card_swipe, "Credit (Swipe)")
+            %li
+              .radio= radio_button_tag(:payment_method, :credit_card_manual, false, :class => 'payment-method', :disabled => 'true')
+              .label= label_tag(:credit_card_manual, "Credit (Manual)")
         %ul#payment-info.hidden
           %li
             .label= label_tag("credit_card[cardholder_name]", "Name on Card")
@@ -133,3 +134,4 @@
     Cancel
   %br  
   %input#hack-cc-number.hidden{:name=>'hack-cc-number'}
+

@@ -5,12 +5,9 @@
 
 .context
   %h3 Editing an Event
-  - if can? :create, :paid_events
-    %p= t(".create_paid_events", :default => "If this is an event that you will not be charging for, check Free Event.")
-  - else
-    %p= t(".create_free_events", :default => "You may create events with free tickets right away, or you can %{link} your account to start selling tickets.", :link => link_to("upgrade", organization_path(current_user.current_organization)))
 
 .document
   %h3= "Edit #{@event.name}"
   = render "shared/error_messages", :target => @event
   = render :partial => 'form', :locals => { :event => @event, :templates => @templates }
+
