@@ -33,7 +33,7 @@ module Reseller
 
     def reseller_is?(reseller)
       reseller_id = if reseller.kind_of?(Organization) then reseller.id else reseller end
-      reseller && self.reseller_id == reseller_id
+      !reseller_id || self.reseller_id == reseller_id
     end
   end
   
