@@ -93,7 +93,7 @@ module Reseller
         
         item.reseller_net        = @organization.reseller_profile.fee
         order.organization       = item.product.organization
-        order.person             = @person
+        order.person             = Person.find_or_create(@person, item.product.organization)
         order.transaction_id     = transaction_id
         order.service_fee        = service_fee
         order.payment_method     = payment_method
