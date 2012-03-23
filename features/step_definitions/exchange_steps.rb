@@ -5,11 +5,11 @@ When /^I check the (\d+)(?:st|nd|rd|th) ticket for an exchange$/ do |pos|
 end
 
 Given /^I have found (\d+) items to exchange$/ do |num|
-  Given %{there is an order with #{num} tickets}
+  step %{there is an order with #{num} tickets}
   num.to_i.times do |n|
-    Given %{I check the #{n+1}th ticket for an exchange}
+    step %{I check the #{n+1}th ticket for an exchange}
   end
-  Given %{I press "Exchange"}
+  step %{I press "Exchange"}
 end
 
 When /^I select the (\d+)(?:st|nd|rd|th) event$/ do |pos|

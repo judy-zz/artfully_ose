@@ -1,22 +1,22 @@
 Given /^I have found the user "([^"]*)" to suspend$/ do |email|
-  Given %{I am on the admin root page}
-  And   %{a user exists with an email of "user@example.com"}
-  And   %{I follow "Users"}
-  And   %{I fill in "Query" with "#{email}"}
-  And   %{I press "Search"}
-  And   %{I follow "#{email}"}
+  step %{I am on the admin root page}
+  step %{a user exists with an email of "user@example.com"}
+  step %{I follow "Users"}
+  step %{I fill in "Query" with "#{email}"}
+  step %{I press "Search"}
+  step %{I follow "#{email}"}
 end
 
 
 Then /^I should see "([^"]*)" in the search results$/ do |email|
   within("#users") do
-    Then %{I should see "#{email}"}
+    step %{I should see "#{email}"}
   end
 end
 
 Then /^I should not see "([^"]*)" in the search results$/ do |email|
   within("#users") do
-    Then %{I should not see "#{email}"}
+    step %{I should not see "#{email}"}
   end
 end
 
