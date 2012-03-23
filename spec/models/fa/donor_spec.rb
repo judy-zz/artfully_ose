@@ -15,4 +15,10 @@ describe FA::Donor do
       subject.zip.should        == payment.billing_address.postal_code
     end
   end
+  
+  it "should say it has keys if email is present" do
+    subject.should have_keys
+    subject.email = nil
+    subject.should_not have_keys
+  end
 end

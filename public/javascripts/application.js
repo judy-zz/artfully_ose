@@ -16,7 +16,7 @@ bindControlsToListElements = function () {
 function createErrorFlashMessage(msg) {
 	$('#heading').after($(document.createElement('div'))
 							.addClass('flash')
-							.addClass('notice')
+							.addClass('error')
 							.html('<span>'+msg+'</span><div class="close">✖</div>'));
 
 	$(".close").click(function(){
@@ -28,10 +28,10 @@ function setErrorMessage(msg) {
 	if($('.flash').length > 0) {
 		$('.flash').fadeOut(400, function() {
 			$(this).remove()
-			createFlashMessage(msg)
+			createErrorFlashMessage(msg)
 		})
 	} else {
-		createFlashMessage(msg)
+		createErrorFlashMessage(msg)
 	}
 }
 

@@ -12,6 +12,14 @@ Factory.define :chart_with_sections, :parent => :chart do |c|
   end
 end
 
+Factory.define :chart_with_free_sections, :parent => :chart do |c|
+  c.after_create do |chart|
+    2.times do
+      chart.sections << Factory(:free_section)
+    end
+  end
+end
+
 Factory.define(:assigned_chart, :parent => :chart_with_sections) do |c|
   c.association :event
 end

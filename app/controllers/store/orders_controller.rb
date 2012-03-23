@@ -1,4 +1,6 @@
 class Store::OrdersController < Store::StoreController
+  
+  #This is the layout for the remote widget cart.  All methods in this controller are used by widget EXCEPT storefront_sync
   layout "cart"
   skip_before_filter :verify_authenticity_token
   after_filter :add_p3p_header

@@ -38,6 +38,7 @@ class Address < ActiveRecord::Base
   end
 
   def self.find_or_create(pers_id)
+    #refactor to first_or_initialize when Rails 3.1
     where(:person_id => pers_id).first || Address.create(:person_id => pers_id)
   end
 

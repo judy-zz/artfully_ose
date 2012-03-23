@@ -26,8 +26,6 @@ end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how has had tickets created$/ do |pos|
   show = current_shows[pos.to_i - 1]
-  show.build!
-  show.create_tickets
 end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how has had tickets sold$/ do |pos|

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120307204119) do
+ActiveRecord::Schema.define(:version => 20120305025755) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(:version => 20120307204119) do
   end
 
   create_table "admins", :force => true do |t|
-    t.string   "email",                                              :null => false
-    t.string   "encrypted_password",   :limit => 128,                :null => false
+    t.string   "email",                               :default => "", :null => false
+    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
     t.integer  "sign_in_count",                       :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
@@ -148,8 +148,6 @@ ActiveRecord::Schema.define(:version => 20120307204119) do
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
-    t.string   "special_instructions_caption", :default => "Special Instructions"
-    t.boolean  "show_special_instructions",    :default => false
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -271,7 +269,6 @@ ActiveRecord::Schema.define(:version => 20120307204119) do
     t.string   "type"
     t.string   "payment_method"
     t.integer  "reseller_order_id"
-    t.text     "special_instructions"
   end
 
   create_table "organizations", :force => true do |t|
@@ -343,25 +340,6 @@ ActiveRecord::Schema.define(:version => 20120307204119) do
     t.integer  "venue_id"
     t.string   "producer"
     t.string   "url"
-  end
-
-  create_table "reseller_items", :force => true do |t|
-    t.string   "state"
-    t.integer  "product_id"
-    t.integer  "price"
-    t.integer  "realized_price"
-    t.integer  "net"
-    t.string   "settlement_id"
-    t.integer  "show_id"
-    t.integer  "reseller_order_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "reseller_orders", :force => true do |t|
-    t.string   "url"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "reseller_profiles", :force => true do |t|
@@ -445,6 +423,8 @@ ActiveRecord::Schema.define(:version => 20120307204119) do
     t.integer  "reseller_profile_id"
     t.string   "status",              :default => "creating", :null => false
     t.integer  "count",               :default => 0,          :null => false
+    t.integer  "available",           :default => 0,          :null => false
+    t.integer  "sold",                :default => 0,          :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "rejection_reason"
@@ -469,8 +449,8 @@ ActiveRecord::Schema.define(:version => 20120307204119) do
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                                              :null => false
-    t.string   "encrypted_password",   :limit => 128
+    t.string   "email",                               :default => "", :null => false
+    t.string   "encrypted_password",   :limit => 128, :default => ""
     t.string   "reset_password_token"
     t.string   "remember_token"
     t.datetime "remember_created_at"

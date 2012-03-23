@@ -33,6 +33,7 @@ class Item < ActiveRecord::Base
     show("Performance Title") { |show| show.event.name if show }
     show("Performance Date-Time") { |show| show.datetime_local_to_event if show }
     price("Ticket Price") { |cents| number_to_currency(cents.to_f/100) if cents }
+    order("Special Instructions") { |order| order.special_instructions }
   end
 
   def ticket?

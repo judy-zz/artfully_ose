@@ -9,6 +9,7 @@ class Show < ActiveRecord::Base
   has_many :settlements
   has_many :items
   
+  after_create [:build!, :unpublish!]
   before_destroy :destroyable?
 
   has_many :reseller_attachments, :as => :attachable
@@ -34,17 +35,24 @@ class Show < ActiveRecord::Base
 
   include ActiveRecord::Transitions
   state_machine do
+    
+    #pending and built are deprecated, left in only because we have shows in production which are built
     state :pending
-    state :built, :enter => :create_tickets
+    state :built, :enter => :create_and_on_sale_tickets
     state :published
     state :unpublished
 
     event(:build)     { transitions :from => :pending, :to => :built }
     event(:publish)   { transitions :from => [ :built, :unpublished ], :to => :published }
-    event(:unpublish) { transitions :from => :published, :to => :unpublished }
+    event(:unpublish) { transitions :from => [ :built, :published ], :to => :unpublished }
   end
 
   delegate :free?, :to => :event
+
+  def create_and_on_sale_tickets
+    create_tickets
+    bulk_on_sale(:all)
+  end
 
   def unscoped_event
     ::Event.unscoped.find(event_id)

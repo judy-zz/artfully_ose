@@ -4,6 +4,7 @@
   %h2= "#{l @show.datetime_local_to_event, :format => :long_with_day} showing of #{@show.event.name} at #{@show.event.venue.name}"
 
   %ul.from-here
+    %li= link_to "Download as CSV", door_list_event_show_path(@event, @show, format: "csv")
     %li= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
 
 .spread

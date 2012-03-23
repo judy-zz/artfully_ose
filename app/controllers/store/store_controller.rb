@@ -1,5 +1,5 @@
 class Store::StoreController < ActionController::Base
-  layout "store"
+  layout "storefront"
 
   helper_method :current_cart
   def current_cart(reseller_id = nil)

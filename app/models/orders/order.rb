@@ -63,7 +63,7 @@ class Order < ActiveRecord::Base
   end
 
   def self.in_range(start, stop, organization_id = nil)
-    query = after(start).before(stop).order("created_at DESC")
+    query = after(start).before(stop).includes(:items, :person, :organization).order("created_at DESC")
     if organization_id.present?
       query.where('organization_id = ?', organization_id)
     else

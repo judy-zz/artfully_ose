@@ -2,7 +2,7 @@
   %table.standalone
     %thead
       %tr
-        %th Name
+        %th Name/Description
         %th Seats
         %th Price
         - if (editable ||= false)
@@ -17,8 +17,11 @@
       -else
         - chart.sections.each do |section|
           %tr
-            %td= section.name
-            %td= "#{section.capacity} seats"
+            %td
+              = section.name
+              %br/
+              = section.description
+            %td= "#{section.capacity}"
             %td= number_as_cents section.price
             
             - if (editable ||= false)

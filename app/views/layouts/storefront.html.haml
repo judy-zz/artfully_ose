@@ -5,9 +5,9 @@
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-    = include_stylesheets :store
+    = include_stylesheets :storefront
     = stylesheet_link_tag "themes/default"
     = render :partial => 'layouts/google_analytics'
   %body
     = yield
-    = include_javascripts :store
+    = include_javascripts :storefront

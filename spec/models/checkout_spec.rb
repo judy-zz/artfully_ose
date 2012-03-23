@@ -3,10 +3,11 @@ require 'spec_helper'
 describe Checkout do
   disconnect_sunspot
   let(:payment) { Factory(:payment) }
+  let(:payment_without_email) { Factory(:payment_without_email) }
   let(:order) { Factory(:cart) }
 
   subject { Checkout.new(order, payment) }
-
+  
   it "should set the amount for the payment from the order" do
     subject.payment.amount.should eq order.total
   end
@@ -15,6 +16,14 @@ describe Checkout do
     subject = Checkout.new(Factory(:cart_with_items), payment)
     subject.payment = nil
     subject.should_not be_valid
+  end
+  
+  it "should not be valid without an email address on the customer" do
+    [nil, "", " "].each do |invalid_email|    
+      payment.customer.email = invalid_email
+      invalid_checkout = Checkout.new(order, payment)
+      invalid_checkout.should_not be_valid
+    end
   end
 
   it "should be valid without a payment if the cart total is 0 (Free)" do
@@ -70,6 +79,27 @@ describe Checkout do
         subject.cart.stub(:organizations).and_return([Factory(:person_without_email).organization])
         subject.cart.stub(:approved?).and_return(true)
         subject.finish.should be_true
+      end
+    end
+    
+    describe "order creation" do  
+      organization = Factory(:organization)
+      
+      before(:each) do    
+        person = Factory(:person, :organization => organization)
+        Person.stub(:find_or_create).and_return(person)
+        subject.cart.stub(:approved?).and_return(true)
+        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
+        subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+      end
+    
+      it "should put special instructions on the order" do
+        special_instructions = "Bring me a fifth of Glengoole Black and a bag of gummi bears"
+        subject.cart.should_receive(:special_instructions).and_return(special_instructions)
+        subject.finish.should be_true
+        order = organization.orders.first
+        order.should_not be_nil
+        order.special_instructions.should eq special_instructions
       end
     end
     
