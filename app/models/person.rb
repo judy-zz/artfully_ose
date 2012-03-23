@@ -57,16 +57,6 @@ class Person < ActiveRecord::Base
     Person.where(:organization_id => organization).order('updated_at DESC').limit(limit)
   end
   
-  def self.find_by_customer(customer, organization)
-    p = nil
-    if !customer.person_id.nil?
-      p = find(customer.person_id.to_i)
-    elsif !customer.email.nil?
-      p = find_by_email_and_organization(customer.email, organization)
-    end
-    p
-  end
-
   def self.find_by_email_and_organization(email, organization)
     return nil if email.nil? 
     find(:first, :conditions => { :email => email, :organization_id => organization.id })
@@ -113,8 +103,12 @@ class Person < ActiveRecord::Base
     end.results
   end
 
+  #
+  # You can pass any object as first param as long as it responds to
+  # .first_name, .last_name, and .email
+  #
   def self.find_or_create(customer, organization)
-    person = Person.find_by_customer(customer, organization)
+    person = Person.find_by_email_and_organization(customer.email, organization)
       
     if person.nil?
       params = {
