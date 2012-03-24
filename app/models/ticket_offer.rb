@@ -29,6 +29,8 @@ class TicketOffer < ActiveRecord::Base
   scope :on_calendar, has_show.where("status IN (?)", %w( accepted completed ))
   scope :visible_to_reseller, where("status IN (?)", %w( offered accepted rejected completed ))
 
+  after_save :clear_cached_data
+
   ## Ticket Sale Information ##
   
   def available
@@ -117,6 +119,11 @@ class TicketOffer < ActiveRecord::Base
   def valid_ticket?(ticket)
     return false unless ticket.kind_of? Ticket
     ticket.organization_id == organization_id && ticket.show_id == show_id && ticket.section_id == section_id
+  end
+
+  def clear_cached_data
+    @sold = nil
+    @in_cart = nil
   end
 
   ## Supporting Classes ##
