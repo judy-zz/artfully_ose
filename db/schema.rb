@@ -146,6 +146,8 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
+    t.string   "special_instructions_caption", :default => "Special Instructions"
+    t.boolean  "show_special_instructions",    :default => false
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -196,7 +198,7 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.integer  "net"
     t.string   "settlement_id"
     t.string   "fs_project_id"
-    t.integer  "nongift_amount",  :limit => 255
+    t.integer  "nongift_amount"
     t.boolean  "is_noncash"
     t.boolean  "is_stock"
     t.boolean  "is_anonymous"
@@ -234,6 +236,21 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.integer  "organization_id"
   end
 
+  create_table "order_view", :id => false, :force => true do |t|
+    t.integer  "id",                :default => 0, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "transaction_id"
+    t.integer  "price"
+    t.integer  "service_fee"
+    t.integer  "fa_id"
+    t.integer  "organization_id"
+    t.integer  "person_id"
+    t.string   "organization_name"
+    t.string   "person_first_name"
+    t.string   "person_last_name"
+  end
+
   create_table "orders", :force => true do |t|
     t.string   "transaction_id"
     t.integer  "price"
@@ -248,6 +265,7 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.string   "old_mongo_id"
     t.string   "type"
     t.string   "payment_method"
+    t.text     "special_instructions"
   end
 
   create_table "organizations", :force => true do |t|
