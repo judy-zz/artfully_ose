@@ -67,9 +67,9 @@ describe Event do
   
     it "should not include performances that are on sale" do
       subject.shows = 2.times.collect { Factory(:show) }
-      subject.shows.first.state = "published"
+      subject.shows.first.publish!
       subject.stub(:charts).and_return([])
-  
+      
       json = JSON.parse(subject.as_widget_json.to_json)
       json["performances"].length.should eq 1
     end

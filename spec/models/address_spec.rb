@@ -10,6 +10,23 @@ describe Address do
   let(:addra) { Factory(:address, aaaa) }
   let(:addrb) { Factory(:address, bbbb) }
 
+  describe "find_or_create" do
+    it "should create a new address is none is found for a given person" do
+      person = Factory(:person)
+      address = Address.find_or_create(person.id)
+      address.should_not be_nil
+      address.person.should eq person
+    end
+    
+    it "should return the existing address if it exists" do
+      person = Factory(:person)
+      address = Factory(:address, :person_id => person.id, :id => 1000)
+      address.person.should eq person
+      existing_address = Address.find_or_create(person.id)
+      existing_address.should eq address
+    end
+  end
+
   context "is_same_as()" do
     RSpec::Matchers.define :be_the_same_as do |addr|
       match do |subj|

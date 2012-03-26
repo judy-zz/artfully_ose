@@ -1,5 +1,6 @@
 module ApplicationHelper
   include LinkHelper
+  include ActionView::Helpers::NumberHelper
 
   def check_mark
     "&#x2713;".html_safe
@@ -7,6 +8,11 @@ module ApplicationHelper
 
   def time_zone_description(tz)
     ActiveSupport::TimeZone.create(tz)
+  end
+  
+  #This is for the widget generator, DO NOT use anywhere else
+  def asset_path(asset)
+    javascript_path(asset).gsub(/javascripts/, 'assets')
   end
 
   def contextual_menu(&block)

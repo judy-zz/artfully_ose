@@ -34,6 +34,9 @@ javascripts:
   comps:
     - public/javascripts/inline-people-search.js
 
+  widget_generator:
+    - public/javascripts/widget-generator.js
+
   box_office:
     - public/javascripts/inline-people-search.js
     - public/javascripts/box-office.js
@@ -45,7 +48,14 @@ javascripts:
   custom:
     - public/javascripts/custom/**/*.js
 
-  store:
+  widget_cart:
+    - public/javascripts/jquery/jquery.mask-money.js
+    - public/javascripts/jquery/jquery.formalize.js
+    - public/javascripts/jquery_ujs.js
+    - public/javascripts/store/sliding-wizard.js
+    - public/javascripts/jquery/jquery.formatCurrency-1.4.0.min.js
+
+  storefront:
     - public/javascripts/jquery/jquery.mask-money.js
     - public/javascripts/jquery/jquery.formalize.js
     - public/javascripts/jquery_ujs.js
@@ -83,7 +93,7 @@ stylesheets:
   themes_default:
     - public/stylesheets/themes/default.css
 
-  store:
+  storefront:
     - public/stylesheets/reset.css
     - public/stylesheets/formalize.css
     - public/stylesheets/cart.css

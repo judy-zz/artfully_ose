@@ -16,6 +16,10 @@ class FA::Donor < FA::Base
     end
   end
 
+  def has_keys?
+    !email.blank?
+  end
+
   def has_information?
     [ email, first_name, last_name ].any?
   end

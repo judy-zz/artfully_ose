@@ -45,10 +45,13 @@
           <br />
         - unless @event.contact_phone.blank?
           = @event.contact_phone
-    - if @event.organization.can?(:receive, Donation)
+    - if @event.organization.authorization_hash[:authorized]
       #donation
         %h2 Donate
-        %p Help support the show by adding a donation to your order! Contributions are tax-deductible to the extent permitted by law.
+        - if @event.organization.authorization_hash[:type] == :sponsored
+          %p="#{@event.organization.authorization_hash[:fsp_name]} is a fiscally sponsored project of Fractured Atlas, a non-profit arts service organization. Contributions for the purposes of #{@event.organization.authorization_hash[:fsp_name]} must be made payable to Fractured Atlas and are tax-deductible to the extent permitted by law."
+        - else
+          %p Help support the show by adding a donation to your order! Contributions are tax-deductible to the extent permitted by law.
         = form_tag '', :class => 'add-donation-to-cart' do
           = text_field_tag :donation_amount, '$', :class => 'input_small'
           = submit_tag 'Donate Now'
@@ -63,6 +66,8 @@
         %li= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
         %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
         %li= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
+        - if @event.show_special_instructions
+          %li= link_to 'Special Instructions', '#special-instructions', 'data-toggle' => 'tab'
         %li= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
       .tab-pane#cart{:style => 'display:block;'}
         %table
@@ -97,33 +102,35 @@
                 .element= athena_customer.text_field :phone, :class => 'required'
           .continue
             = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab'
-
+      
       .tab-pane#payment-details
-        %fieldset
-          = fields_for "athena_payment[athena_credit_card]" do |card|
-            %ul
-              %li
-                .label= card.label :cardholder_name, "Cardholder Name", :class => 'required'
-                .element= card.text_field :cardholder_name, :class => 'required'
-              %li
-                .label= card.label :card_number, "Card Number", :class => 'required'
-                .element
-                  = card.text_field :card_number, :class => 'required', :type => 'creditcard'
-                  = image_tag 'storefront/lock.png'
-              %li
-                .label= card.label :cvv, "CVV", :class => 'required'
-                .element
-                  = card.text_field :cvv, :class => 'required small'
-                  = image_tag 'storefront/cvv.gif'
-              %li
-                .label= card.label :expiration, "Expiration", :class => 'required'
-                .element.small
-                  = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "small"
-                  #expiration-slash /
-                  = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "small"
-                  = card.hidden_field 'expiration_date(3i)', :value => 1
-          .continue
-            = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
+        #payment-details-fields
+          %fieldset
+            = fields_for "athena_payment[athena_credit_card]" do |card|
+              %ul
+                %li
+                  .label= card.label :cardholder_name, "Cardholder Name", :class => 'nonzero-total'
+                  .element= card.text_field :cardholder_name, :class => 'nonzero-total'
+                %li
+                  .label= card.label :card_number, "Card Number", :class => 'nonzero-total'
+                  .element
+                    = card.text_field :card_number, :class => 'nonzero-total', :type => 'creditcard'
+                %li
+                  .label= card.label :cvv, "CVV", :class => 'nonzero-total'
+                  .element
+                    = card.text_field :cvv, :class => 'small nonzero-total'
+                    = image_tag 'storefront/cvv.gif'
+                %li
+                  .label= card.label :expiration, "Expiration", :class => 'nonzero-total'
+                  .element.small
+                    = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "small nonzero-total"
+                    #expiration-slash /
+                    = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "small nonzero-total"
+                    = card.hidden_field 'expiration_date(3i)', :value => 1
+        #payment-details-message.hidden
+          No payment details are necessary. Click Next to continue.
+        .continue
+          = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab'
       
       .tab-pane#billing-address
         %fieldset
@@ -141,6 +148,21 @@
               %li
                 .label= address.label :postal_code, "Postal Code", :class => 'required'
                 .element= address.text_field :postal_code, :class => 'required'
+          .continue
+            - if @event.show_special_instructions
+              = link_to 'Next »', '#special-instructions', 'data-toggle' => 'tab'
+            - else
+              = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
+              
+      
+      - if @event.show_special_instructions
+        .tab-pane#special-instructions
+          #container
+            %fieldset
+              %ul
+                %li.stacked
+                  .label= label_tag :special_instructions, @event.special_instructions_caption
+                  .element= text_area_tag :special_instructions, nil, :size => '25x5'
           .continue
             = link_to 'Next »', '#purchase', 'data-toggle' => 'tab'
 
@@ -164,4 +186,9 @@
       .tab-pane#thanks
         %h2 Thank you for your order!
         %p You'll receive an email confirmation shortly.
-        %p If you have any questions about the event, contact us at #{mail_to @event.contact_email if @event.contact_email.present?} #{@event.contact_phone}
+        - unless @event.contact_email.blank? && @event.contact_phone.blank?
+          %p If you have any questions or need information about the event, contact us at 
+          .email
+            #{mail_to @event.contact_email if @event.contact_email.present?} 
+          .phone
+            #{@event.contact_phone}

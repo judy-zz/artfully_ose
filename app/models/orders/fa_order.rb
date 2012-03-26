@@ -1,5 +1,5 @@
 class FaOrder < Order
   def location
-    "Fractured atlas"
+    "Fractured Atlas"
   end
 end

@@ -1,6 +1,6 @@
 Given /^I peep statements$/ do
-  Given %{I am on the root page}
-  And %{I follow "Statements"}
+  step %{I am on the root page}
+  step %{I follow "Statements"}
 end
 
 Then /^I should see a statement$/ do

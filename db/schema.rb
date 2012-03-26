@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120305025755) do
+ActiveRecord::Schema.define(:version => 20120309174706) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -97,8 +97,6 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type"
-    t.string   "reseller_id"
   end
 
   create_table "charts", :force => true do |t|
@@ -148,6 +146,8 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
+    t.string   "special_instructions_caption", :default => "Special Instructions"
+    t.boolean  "show_special_instructions",    :default => false
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -210,9 +210,6 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
-    t.boolean  "reseller_settled"
-    t.integer  "reseller_net"
-    t.integer  "reseller_order_id"
   end
 
   create_table "kits", :force => true do |t|
@@ -268,7 +265,7 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.string   "old_mongo_id"
     t.string   "type"
     t.string   "payment_method"
-    t.integer  "reseller_order_id"
+    t.text     "special_instructions"
   end
 
   create_table "organizations", :force => true do |t|
@@ -318,54 +315,13 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.datetime "updated_at"
   end
 
-  create_table "reseller_attachments", :force => true do |t|
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.integer  "reseller_profile_id"
-    t.integer  "attachable_id"
-    t.string   "attachable_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "comment"
-  end
-
-  create_table "reseller_events", :force => true do |t|
-    t.integer  "reseller_profile_id"
-    t.string   "name"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "venue_id"
-    t.string   "producer"
-    t.string   "url"
-  end
-
-  create_table "reseller_profiles", :force => true do |t|
-    t.integer  "organization_id"
-    t.text     "url"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "fee",             :default => 100
-  end
-
-  create_table "reseller_shows", :force => true do |t|
-    t.string   "state"
-    t.datetime "datetime"
-    t.integer  "reseller_event_id"
-    t.integer  "reseller_profile_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "sections", :force => true do |t|
     t.text    "name"
     t.integer "capacity"
     t.integer "price"
     t.integer "chart_id"
     t.string  "old_mongo_id"
+    t.text    "description"
   end
 
   create_table "segments", :force => true do |t|
@@ -414,20 +370,6 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
-  end
-
-  create_table "ticket_offers", :force => true do |t|
-    t.integer  "organization_id"
-    t.integer  "show_id"
-    t.integer  "section_id"
-    t.integer  "reseller_profile_id"
-    t.string   "status",              :default => "creating", :null => false
-    t.integer  "count",               :default => 0,          :null => false
-    t.integer  "available",           :default => 0,          :null => false
-    t.integer  "sold",                :default => 0,          :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "rejection_reason"
   end
 
   create_table "tickets", :force => true do |t|

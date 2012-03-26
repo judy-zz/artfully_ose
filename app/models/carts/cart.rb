@@ -4,6 +4,7 @@ class Cart < ActiveRecord::Base
   has_many :donations, :dependent => :destroy
   has_many :tickets, :after_add => :set_timeout
   after_destroy :release_tickets
+  attr_accessor :special_instructions
 
   state_machine do
     state :started
@@ -22,6 +23,10 @@ class Cart < ActiveRecord::Base
   def clear!
     clear_tickets
     clear_donations
+  end
+  
+  def as_json(options = {})
+    super({ :methods => [ 'tickets', 'donations' ]}.merge(options))
   end
   
   def clear_tickets

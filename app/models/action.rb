@@ -61,7 +61,7 @@ class Action < ActiveRecord::Base
   end
   
   def self.recent(organization, limit = 5)
-    Action.where(:organization_id => organization).order('created_at DESC').limit(limit)
+    Action.includes(:person).where(:organization_id => organization).order('created_at DESC').limit(limit)
   end
 
   def give_action_subtypes

@@ -19,6 +19,6 @@ class GiveAction < Action
   end
   
   def sentence
-    "contribued to your organization."
+    "contributed to your organization."
   end
 end

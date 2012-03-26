@@ -94,46 +94,6 @@ describe Person do
     end
   end
 
-  describe "#find_by_customer" do
-    let(:organization) { Factory(:organization) }
-    it "should find by person_id if one is present" do
-      customer = AthenaCustomer.new({
-        :person_id => subject.id,
-        :email => "person@example.com",
-        :organization_id => organization.id
-      })
-      Person.should_receive(:find).with(customer.person_id)
-      p = Person.find_by_customer(customer, organization)
-    end
-    
-    it "should find by email and org if no person_id is present" do
-      customer = AthenaCustomer.new({
-        :email => "person@example.com",
-        :organization_id => organization.id
-      })
-      params = {
-        :email => "person@example.com",
-        :organization_id => organization.id
-      }
-      Person.should_not_receive(:find).with(customer.person_id)
-      Person.should_receive(:find).with(:first, :conditions => params)
-      p = Person.find_by_customer(customer, organization)
-    end
-    
-    it "should return nil if no person_id or email is provided" do
-      customer = AthenaCustomer.new({
-        :organization_id => organization.id
-      })
-      params = {
-        :organization_id => organization.id
-      }
-      Person.should_not_receive(:find).with(customer.person_id)
-      Person.should_not_receive(:find).with(:first, :conditions => params)
-      p = Person.find_by_customer(customer, organization)
-      p.should be_nil
-    end
-  end
-
   describe "#find_by_email_and_organization" do
     let(:organization) { Factory(:organization) }
 
@@ -154,6 +114,11 @@ describe Person do
       email = "person@example.com"
       p = Person.find_by_email_and_organization(email, organization)
       p.should eq nil
+    end
+    
+    it "should return nil if the email address is nil" do
+      p = Factory(:person_without_email, :organization => organization)
+      Person.find_by_email_and_organization(nil, organization).should be_nil
     end
   end
 

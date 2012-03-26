@@ -1,7 +1,7 @@
 .stackAuto {
   width: auto; }
 
-.stack, #heading, .spread, form ul li .label span.required, form ul li .label-and-element, .full.element, .stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .of4, .drilldown, .quarter.element, #section-list .element, .stack3of4, #section-list .label, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #button-bar > li, #main-menu > li, .stack1of10, #admin-menu > li, .stackAuto {
+.stack, #heading, .spread, form ul li .label span.required, form ul li .label-and-element, .full.element, .stack1of2, .halfzies-left, .halfzies-right, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li, .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label, .stack2of3, .document, form ul li .element, .stack1of4, .sideboard, .of4, .drilldown, .quarter.element, #section-list .element, .stack3of4, #section-list .label, .stack1of5, .single_field .label, .single_field .submit, .stack2of5, .stack3of5, .single_field .element, .stack4of5, .stack1of6, .stack1of7, .calendar > li, #button-bar > li, #main-menu > li, .stack1of10, #admin-menu > li, .stackAuto {
   display: inline-block;
   font-family: "Courier New", monospace;
   letter-spacing: -0.65em;
@@ -12,7 +12,7 @@
 .stack, #heading, .spread, form ul li .label span.required, form ul li .label-and-element, .full.element {
   width: 100%; }
 
-.stack1of2, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li {
+.stack1of2, .halfzies-left, .halfzies-right, .compact-spread, .dashboard, .of2, .drilldown.final, .reports > li {
   width: 50%; }
 
 .stack1of3, .context, .tip, .overview, .of3, .context-buttons li, form ul li .label {
@@ -179,6 +179,42 @@ strong {
     word-spacing: normal;
     text-align: left; }
     .spread > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+
+.halfzies-left {
+  position: relative;
+  padding-bottom: 12px;
+  padding: 12px; }
+  .halfzies-left > * {
+    margin: 0 12px 12px;
+    display: block;
+    font-family: "Arial", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    .halfzies-left > *:after {
+      content: ".";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden; }
+
+.halfzies-right {
+  position: relative;
+  padding-bottom: 12px;
+  padding: 12px; }
+  .halfzies-right > * {
+    margin: 0 12px 12px;
+    display: block;
+    font-family: "Arial", sans-serif;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-align: left; }
+    .halfzies-right > *:after {
       content: ".";
       display: block;
       height: 0;
@@ -627,12 +663,15 @@ input.mini {
   font-size: 0.875em; }
   .kv li {
     line-height: 24px; }
-  .kv .key, .kv .value {
+  .kv .key, .kv .value, .kv .key-full {
     display: inline-block;
     color: #666666; }
   .kv .key {
     font-weight: bold;
     width: 30%; }
+  .kv .key-full {
+    font-weight: bold;
+    width: 100%; }
 
 .tags {
   margin-bottom: 0.1em; }

@@ -7,6 +7,9 @@ class Ticket < ActiveRecord::Base
   belongs_to :section
 
   belongs_to :cart
+  
+  # Can re-insert this when the polymorphism on the items side catches up
+  #has_many :items, :foreign_key => "product_id"
 
   delegate :event, :to => :show
 
@@ -64,6 +67,17 @@ class Ticket < ActiveRecord::Base
 
   def settled_item
     @settled_item ||= items.select(&:settled?).first
+  end
+  
+  def sold_item
+    items.select(&:purchased?).first ||
+    items.select(&:settled?).first ||
+    items.select(&:comped?).first ||
+    items.select(&:exchangee?).first
+  end
+  
+  def special_instructions
+    sold_item.nil? ? nil : sold_item.order.special_instructions
   end
 
   def self.fee

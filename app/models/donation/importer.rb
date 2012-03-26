@@ -28,18 +28,23 @@ class Donation::Importer
     private
 
     def create_person(donor, organization)
-      if donor.has_information?
+      if donor.has_keys?
+        ::Rails.logger.debug "Donor has email, matching to: #{donor.email}"
         conditions = { :email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name, :organization_id => organization.id }
         person = organization.people.find(:first, :conditions => { :email => donor.email }) || organization.people.create(conditions)
+      elsif donor.has_information?
+        ::Rails.logger.debug "Donor has no email, but person info is present. Creating a new record."
+        conditions = { :email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name, :organization_id => organization.id }
+        person = organization.people.create(conditions)
       else
+        ::Rails.logger.debug "Donor has no information, creating dummy"
         person = organization.dummy
       end
-      ::Rails.logger.debug "Person.errors: #{person.errors}"
       person
     end
 
     def create_order(fa_donation, organization, donor)
-      order = Order.find_by_fa_id(fa_donation.id) || organization.orders.build(:person_id => donor.id)
+      order = Order.find_by_fa_id(fa_donation.id) || FaOrder.new(:organization => organization, :person => donor)
 
       order.update_attributes({
         :created_at => DateTime.parse(fa_donation.date),

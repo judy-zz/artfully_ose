@@ -102,6 +102,10 @@ describe Chart do
       it "copies each sections capacity" do
         copy.sections.collect { |section| section.capacity }.should eq subject.sections.collect { |section| section.capacity }
       end
+
+      it "copies each sections description" do
+        copy.sections.collect { |section| section.description }.should eq subject.sections.collect { |section| section.description }
+      end
     end
   end
 

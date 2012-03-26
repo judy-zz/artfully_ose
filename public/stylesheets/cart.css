@@ -460,7 +460,7 @@ a {
   border-bottom: 1px solid #dddddd; }
   #steps li {
     list-style-type: decimal;
-    margin-left: 2em;
+    margin-left: 1em;
     font-size: 0.8em;
     padding: 0.25em 0;
     color: #666666; }

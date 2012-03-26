@@ -64,6 +64,8 @@ Artfully::Application.routes.draw do
     end
   end
 
+  resources :widgets, :only => [:new, :create]
+
   resources :export do
     collection do
       get :contacts

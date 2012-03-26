@@ -1,4 +1,6 @@
 class Store::OrdersController < Store::StoreController
+  
+  #This is the layout for the remote widget cart.  All methods in this controller are used by widget EXCEPT storefront_sync
   layout "cart"
   skip_before_filter :verify_authenticity_token
   after_filter :add_p3p_header
@@ -52,9 +54,9 @@ class Store::OrdersController < Store::StoreController
     order_params = order_params.merge(:donation => params[:donation]) if params[:donation]
     handle_order(order_params)
 
-    response = current_cart.attributes
-    response = response.merge(:total => current_cart.total / 100)
-    response = response.merge(:service_charge => (current_cart.fee_in_cents / 100))
+    response = current_cart.as_json
+    response = response.merge(:total => current_cart.total)
+    response = response.merge(:service_charge => current_cart.fee_in_cents)
     response = response.merge(:over_section_limit => over_section_limit).to_json
     logger.info "RESPONSE: #{response}"
     render :json => response
