@@ -19,10 +19,11 @@ class OrdersController < ApplicationController
   def sales
     authorize! :view, Order
 
+    @organization = current_user.current_organization
     @event = Event.find_by_id(params[:event_id]) if params[:event_id].present?
-    @events = current_user.current_organization.events_with_sales
+    @events = @organization.events_with_sales
     @show = @event.shows.find_by_id(params[:show_id]) if @event && params[:show_id].present?
-    @shows = current_user.current_organization.shows_with_sales
+    @shows = @event.shows_with_sales(@organization) if @event
 
     search_terms = {
       :start        => params[:start],
