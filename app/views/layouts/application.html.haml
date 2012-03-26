@@ -6,8 +6,7 @@
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
     = stylesheet_link_tag "https://asset0.zendesk.com/external/zenbox/v2.4/zenbox.css"
-    / = include_stylesheets :vendor, :application, :media => :screen
-    = include_stylesheets :bootstrap, :media => :screen
+    = include_stylesheets :application, :media => :screen
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
     = render :partial => 'layouts/google_analytics'

@@ -79,6 +79,8 @@ stylesheets:
   application:
     - public/stylesheets/reset.css
     - public/stylesheets/formalize.css
+    - public/stylesheets/bootstrap.css
+    - public/stylesheets/bootstrap-overrides.css
     - public/stylesheets/application.css
 
   vendor:

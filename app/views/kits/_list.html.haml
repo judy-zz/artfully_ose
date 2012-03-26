@@ -15,7 +15,6 @@
       %td Activated
     - kits.each do |kit|
       %tr
-        %td= t(kit.type.underscore)
         -if can? :manage, current_user.current_organization
           - if kit.fresh?
             - if kit.has_alternatives?
@@ -44,3 +43,4 @@
             %td= "Cancelled"
           - else
             %td= kit.state.titleize
+        %td= t(kit.type.underscore)
