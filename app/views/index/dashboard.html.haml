@@ -18,20 +18,18 @@
       %h3 Recent Activity
       - if @recent_actions.blank?
         %p= t(".first-action", :default => "When actions happen to your organization, they'll be recorded here. Get started by adding a new contact to your people database.")
-        = link_to "Add a Contact", new_person_path, :class => "cta-left-125"
+        = link_to "Add a Contact", new_person_path, :class => 'btn'
       - else
-        %ul.detailed-list
+        %ul#recent-list
           - @recent_actions.each do |action|
-            %li
-              %p
-                = person_link(action.person)
-                = action.sentence
+            %li.row-fluid
+              .span2
+                = image_tag "actions/#{action.action_type.downcase}.png"
+              .span10
+                =person_link(action.person)
+                =action.sentence
 
   .span8
     %section
-      %h3 Upcoming Events
-      - if @events.blank?
-        %p= t(".first-event", :default => "Create your first Event.")
-        = link_to "Create your first Event", new_event_path, :class => :cta
-      - else
-        = render :partial => 'events/list', :locals => { :events => @events }
+      %h3 Events
+      = render :partial => 'events/list', :locals => { :events => @events }

@@ -1,5 +1,5 @@
 - if events.blank?
-  = link_to "Create an Event", new_event_path, :class => 'cta-left-125'
+  = link_to "Create an Event", new_event_path, :class => 'btn'
 - else
   %ul#event-list
     - events.each do |event|
