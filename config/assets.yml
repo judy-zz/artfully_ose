@@ -14,7 +14,6 @@ s3_upload_files:
   - public/favicon.ico
   - public/robots.txt
   - public/forms/**/*
-  - public/stylesheets/formalize.css
   - public/stylesheets/printing.css
   - public/stylesheets/reset.css
   - public/stylesheets/themes/default.css
@@ -78,7 +77,6 @@ stylesheets:
 
   application:
     - public/stylesheets/reset.css
-    - public/stylesheets/formalize.css
     - public/stylesheets/bootstrap.css
     - public/stylesheets/bootstrap-overrides.css
     - public/stylesheets/application.css
