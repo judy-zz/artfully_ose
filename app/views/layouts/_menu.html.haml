@@ -41,6 +41,8 @@
             
         %li.divider-vertical
         %li.dropdown
+          = gravatar_image_tag('mdeering@mdeering.com', :alt => 'Michael Deering', :class => 'nav-grav', :gravatar => { :size => 32 })
+        %li.dropdown
           = nav_dropdown current_user.email
           %ul.dropdown-menu
             %li= link_to "Sign Out", destroy_user_session_path

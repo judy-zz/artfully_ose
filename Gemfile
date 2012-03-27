@@ -49,6 +49,7 @@ gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transitions', :require => ['transitions', 'active_record/transitions']
 gem 'sunspot_rails'
+gem 'gravatar_image_tag'
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
