@@ -53,3 +53,10 @@ module Artfully
     
   end
 end
+
+GravatarImageTag.configure do |config|
+  config.default_image = 'fake.jpg'
+  config.rating        = nil   # Set this if you change the rating of the images that will be returned ['G', 'PG', 'R', 'X']. Gravatar's default is G
+  config.size          = nil   # Set this to globally set the size of the gravatar image returned (1..512). Gravatar's default is 80
+  config.secure        = true 
+end

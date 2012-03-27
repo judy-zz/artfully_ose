@@ -41,7 +41,7 @@
             
         %li.divider-vertical
         %li.dropdown
-          = gravatar_image_tag('mdeering@mdeering.com', :alt => 'Michael Deering', :class => 'nav-grav', :gravatar => { :size => 32 })
+          = gravatar_image_tag(current_user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
         %li.dropdown
           = nav_dropdown current_user.email
           %ul.dropdown-menu
