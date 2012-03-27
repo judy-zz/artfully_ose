@@ -10,7 +10,9 @@
     = render :partial => 'layouts/google_analytics'
   %body
     = render :partial => 'layouts/devise_menu'
-    #content.span6.offset3
+    #devise-header.span8.offset2
+      = yield :devise_header
+    #content.span3.offset5
       = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
       - flash.discard
       = yield

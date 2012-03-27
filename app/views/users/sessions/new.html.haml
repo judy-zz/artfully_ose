@@ -1,5 +1,7 @@
-= form_for(resource, :as => resource_name, :url => session_path(resource_name), :html => { :class => "form-horizontal"}) do |f|
-  %h3 Sign In
+- content_for :devise_header do
+  %h1 Sign In
+  
+= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f|
   %ul
     %li
       = f.label :email, :class=>'control-label'
@@ -10,5 +12,5 @@
       = f.label :password, :class=>'control-label'
       .controls
         = f.password_field :password, :tabindex => "2"
-        .description= link_to "Forgot your password?", new_password_path(resource_name)
-  = f.submit "Sign in", :tabindex => "3"
+        %p.help-block= link_to "Forgot your password?", new_password_path(resource_name)
+  = f.submit "Sign in", :tabindex => "3", :class => ['btn-large', 'btn', 'btn-primary']
