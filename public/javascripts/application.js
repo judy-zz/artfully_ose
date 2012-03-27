@@ -59,6 +59,12 @@ function setFlashMessage(msg) {
 
 $(document).ready(function() {
     
+	/*********** NEW BOOTSTRAP JS ***********/
+	$(".alert").alert()
+	
+	
+	/*********** EXISTING ARTFUL.LY JS ******/
+
   if (typeof(Zenbox) !== "undefined") {
     Zenbox.init({
       dropboxID:   "20042668",

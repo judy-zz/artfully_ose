@@ -124,4 +124,13 @@ module ApplicationHelper
   def nav_dropdown(text, link='#')
     link_to ERB::Util.html_escape(text) + ' <b class="caret"></b>'.html_safe, link, :class => 'dropdown-toggle', 'data-toggle' => 'dropdown'
   end
+  
+  def bootstrapped_type(type)
+    case type
+    when :notice then "alert alert-info"
+    when :success then "alert alert-success"
+    when :error then "alert alert-error"
+    when :alert then "alert alert-error"
+    end
+  end
 end

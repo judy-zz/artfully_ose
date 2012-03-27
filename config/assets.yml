@@ -75,6 +75,9 @@ stylesheets:
     - public/stylesheets/pages/**/*.css
     - public/stylesheets/pages/*.css
 
+  devise:
+    - public/stylesheets/devise.css
+
   application:
     - public/stylesheets/reset.css
     - public/stylesheets/bootstrap.css
