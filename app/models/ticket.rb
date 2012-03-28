@@ -173,7 +173,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def destroyable?
-    !(sold? or comped?)
+    !sold? and !comped? and items.empty?
   end
 
   def compable?
