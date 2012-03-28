@@ -30,7 +30,7 @@ describe Refund do
       subject.items.each { |i| i.stub(:return!) }
       subject.items.each { |i| i.stub(:refund!) }
     end
-
+  
     it "should attempt to refund the payment made for the order" do
       subject.submit
       subject.should be_successful
@@ -67,6 +67,30 @@ describe Refund do
       gateway.should_not_receive(:refund)
       free_refund.submit
       free_refund.should be_successful
+    end
+  end
+  
+  describe "refunding an item from an order with just free items" do
+    before(:each) do
+      @free_order = Factory(:order, :service_fee => 0, :items => free_items)
+      @free_order.items.each { |i| i.stub(:return!) }
+      @free_order.items.each { |i| i.stub(:refund!) } 
+    end
+    
+    it "should not contact Braintree" do
+      free_refund = Refund.new(@free_order, free_items)
+      free_refund.refund_amount.should eq 0
+      gateway.should_not_receive(:refund)
+      free_refund.submit
+      free_refund.should be_successful         
+    end
+    
+    it "should have an amount of 0" do
+      free_refund = Refund.new(@free_order, free_items)
+      free_refund.refund_amount.should eq 0
+      gateway.should_not_receive(:refund)
+      free_refund.submit
+      free_refund.should be_successful      
     end
   end
   
