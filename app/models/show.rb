@@ -130,8 +130,7 @@ class Show < ActiveRecord::Base
   end
 
   def destroyable?
-    #(tickets_comped + tickets_sold).empty?
-    tickets.includes(:items).reject(&:destroyable?).empty?
+    (tickets_comped + tickets_sold).empty? && items.empty?
   end
 
   def live?
