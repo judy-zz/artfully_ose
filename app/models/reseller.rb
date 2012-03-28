@@ -54,8 +54,8 @@ module Reseller
 
     def finish
       reseller = @cart.reseller
-      reseller_person = Person.find_or_create(@customer, reseller)
-      reseller_person.update_address(Address.from_payment(payment), reseller.time_zone, nil, "checkout")
+      @person = Person.find_or_create(@customer, reseller)
+      @person.update_address(Address.from_payment(payment), reseller.time_zone, nil, "checkout")
 
       super
     end
