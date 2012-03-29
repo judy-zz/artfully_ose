@@ -70,3 +70,111 @@ section {
 .footer a {
   color: #999;
 }
+
+/* Accordian Menu used on events#edit */
+
+.nav-accordian{
+  *zoom: 1;
+}
+.nav-accordian:before,
+.nav-accordian:after {
+  display: table;
+  content: "";
+}
+.nav-accordian:after {
+  clear: both;
+}
+.nav-accordian {
+  border-bottom: 0;
+  background: #F7F7F9;
+}
+.nav-accordian > li{
+  margin-bottom: -1px;
+}
+.nav-accordian > .active > a,
+.nav-accordian > .active > a:hover {
+  color: #555555;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+.nav-accordian > li > a:hover {
+  border-color: #ddd;
+  z-index: 2;
+}
+.nav-accordian > li > a  {
+  color: #175d73;
+  margin-right: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 12px;
+  padding-left: 12px;
+  line-height: 18px;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  position: relative;
+}
+.nav-accordian > li:first-child > a {
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
+}
+.nav-accordian > li:last-child > a {
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+}
+
+
+.nav-accordian > li.accordian { 
+}
+.nav-accordian > li.accordian > .accordian-menu {
+  margin-bottom: 0;
+  background: #fff;
+  display: none;
+}
+.nav-accordian > li.accordian.active > .accordian-menu {
+  display: block;
+}
+.accordian-menu > li  {
+  
+}
+.accordian-menu > li > a  {
+  font-weight: normal;
+  display: block;
+  position: relative;
+  color: #175d73;
+  margin-right: 0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 12px;
+  padding-left: 24px;
+  line-height: 18px;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+}
+.accordian-menu > li > a:hover {
+  background: #F5F5F5;
+  text-decoration: none;
+  z-index: 2;
+}
+.accordian-menu > .active > a,
+.accordian-menu > .active > a:hover {
+  color: #fff;
+  background-color: #175d73;
+  border: 1px solid #175d73;
+  border-bottom-color: transparent;
+  cursor: default;
+}
+.nav-accordian > li:last-child > .accordian-menu > li:last-child > a {
+  border-bottom: 1px solid #ddd;
+  -webkit-border-radius: 0 0 4px 4px;
+  -moz-border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
+}
