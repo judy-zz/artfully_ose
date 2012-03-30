@@ -9,7 +9,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :cart
   
   # Can re-insert this when the polymorphism on the items side catches up
-  #has_many :items, :foreign_key => "product_id"
+  has_many :items, :foreign_key => "product_id"
 
   delegate :event, :to => :show
 
@@ -55,10 +55,6 @@ class Ticket < ActiveRecord::Base
     conditions[:state] ||= :on_sale
     conditions[:cart_id] = nil
     where(conditions).limit(limit)
-  end
-
-  def items
-    @items ||= Item.find_by_product(self)
   end
 
   def settlement_id
@@ -173,7 +169,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def destroyable?
-    !(sold? or comped?)
+    !sold? and !comped? and items.empty?
   end
 
   def compable?
