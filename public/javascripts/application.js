@@ -62,6 +62,7 @@ $(document).ready(function() {
 	/*********** NEW BOOTSTRAP JS ***********/
 	$(".alert").alert()
 	
+	/*********** NEW ARTFULLY JS ************/
 	
 	/*********** EXISTING ARTFUL.LY JS ******/
 

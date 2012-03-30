@@ -20,7 +20,7 @@ a {
   margin-top: 50px; }
 
 #kit-table td.status {
-  width: 80px;
+  width: 60px;
   text-align: center;
   padding-bottom: 1.4em; }
   #kit-table td.status p {
@@ -31,13 +31,26 @@ a {
   font-weight: bold; }
 
 ul#memberships li {
-  display: inline; }
+  margin: 0 10px 10px 0px; }
+ul#memberships .email {
+  font-weight: bold; }
+
+.bordered {
+  border: 3px solid #cccccc;
+  text-align: center;
+  border-radius: 5px;
+  moz-border-radius: 5px; }
 
 .nav-grav {
   padding-top: 3px;
   border-radius: 5px;
   moz-border-radius: 5px;
   height: 32px; }
+
+.user-grav {
+  height: 48px;
+  width: 48px;
+  padding: 2px; }
 
 .no-image {
   border-radius: 10px;

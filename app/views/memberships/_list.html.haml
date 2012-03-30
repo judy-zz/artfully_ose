@@ -1,5 +1,12 @@
-%ul.detailed-list#memberships
+%ul#memberships.detailed-list.row-fluid
   - organization.users.each do |user|
-    %li
-      = gravatar_image_tag(user.email, :alt => 'User icon', :gravatar => { :size => 64 })
-      = user.email
+    %li.span5.row-fluid
+      .span3
+        .bordered= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'user-grav', :gravatar => { :size => 48 })
+      .span9
+        .email= user.email
+        .remove
+          - if user == current_user.current_organization.owner
+            Organization Administrator
+          - elsif can? :manage, current_user.current_organization
+            = link_to "Remove", organization_membership_path(@organization, user.memberships.first), :method => :delete

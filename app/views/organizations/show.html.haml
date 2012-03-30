@@ -14,35 +14,40 @@
   %li.row-fluid
     .key.span2 Time Zone
     .value.span6= @organization.time_zone
+  -unless @organization.connected?
+    %li.row-fluid
+      .key.span2 Fractured Atlas
+      .value.span6= link_to "connect now", "#faForm", 'data-toggle' => 'modal'
+  -else
+    %li.row-fluid
+      .key.span2 Fractured Atlas
+      .value.span6 Connected
+    -if @organization.has_active_fiscally_sponsored_project?
+      %li.row-fluid
+        .key.span2 Project
+        .value.span6= @organization.fiscally_sponsored_project.name || "&nbsp;".html_safe 
+      %li.row-fluid
+        .key.span2 Website
+        .value.span6= @organization.fiscally_sponsored_project.website || "&nbsp;".html_safe
+      %li.row-fluid
+        .key.span2 Status
+        .value.span6= @organization.fiscally_sponsored_project.status || "&nbsp;".html_safe
+    
 = link_to "Edit", edit_organization_path(@organization), :class => "btn"
 
 #organization-details.row
-  #kits.span5
+  #kits.span4
     %h2 Kits
     = render :partial => "kits/list", :locals => { :kits => @kits }
 
-  #memberships.span7
+  #memberships.span8
     %h2 Users
     = render :partial => "memberships/list", :locals => { :organization => @organization }
+    
 
-  - unless @organization.connected?
+#faForm.modal{:style => 'display:none'}
+  .modal-header
+    .close{'data-dismiss'=>'modal'} x
     %h3 Connect to Fractured Atlas
-    %p This organization has not been connected to a Fractured Atlas membership.  Enter your Fractured Atlas username and password below to connect.
+  .modal-body
     = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
-  - else
-    %h3 Fractured Atlas
-    %p This organization is connected to a Fractured Atlas membership.
-    -if @organization.has_active_fiscally_sponsored_project?
-      %ul
-        %li
-          %h4 Fiscal Sponsorship
-          %ul.report
-            %li
-              %span.stat Project
-              %span.current= @organization.fiscally_sponsored_project.name || "&nbsp;".html_safe 
-            %li
-              %span.stat Website
-              %span.current= @organization.fiscally_sponsored_project.website || "&nbsp;".html_safe
-            %li
-              %span.stat Status
-              %span.current= @organization.fiscally_sponsored_project.status || "&nbsp;".html_safe

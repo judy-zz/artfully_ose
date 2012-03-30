@@ -77,5 +77,5 @@ end
 
 GravatarImageTag.configure do |config|
   #This has to be fully qualified URL.  Gravatar serves up the default form it's servers, not the local filesystem
-  config.default_image = 'https://arfully-dev.s3.amazonaws.com/images/glyphish/gray/111-user.png'
+  config.default_image = 'https://arfully-dev.s3.amazonaws.com/images/glyphish/gray/111-user2x.png'
 end
