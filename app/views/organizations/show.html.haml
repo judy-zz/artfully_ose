@@ -17,14 +17,12 @@
 = link_to "Edit", edit_organization_path(@organization), :class => "btn"
 
 #organization-details.row
-  #kits.span4
-    %h3 Kits
-    - unless can? :manage, current_user.current_organization
-      %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits."
+  #kits.span5
+    %h2 Kits
     = render :partial => "kits/list", :locals => { :kits => @kits }
 
-  #memberships.span8
-    %h3 Users
+  #memberships.span7
+    %h2 Users
     = render :partial => "memberships/list", :locals => { :organization => @organization }
 
   - unless @organization.connected?

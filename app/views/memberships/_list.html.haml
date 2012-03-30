@@ -1,10 +1,5 @@
 %ul.detailed-list#memberships
   - organization.users.each do |user|
     %li
-      %h4= user.email
-      %ul.controls
-        - if user == current_user.current_organization.owner
-          %li
-            %span Organization Administrator
-        - elsif can? :manage, current_user.current_organization
-          %li= link_to "Remove", organization_membership_path(@organization, user.memberships.first), :method => :delete
+      = gravatar_image_tag(user.email, :alt => 'User icon', :gravatar => { :size => 64 })
+      = user.email

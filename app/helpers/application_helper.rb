@@ -2,8 +2,23 @@ module ApplicationHelper
   include LinkHelper
   include ActionView::Helpers::NumberHelper
 
-  def check_mark
-    "&#x2713;".html_safe
+  def check_mark(size=nil, alt=nil)
+    case size
+      when :huge
+        icon_tag('117-todo@2x', {:alt => alt})
+      when :big
+        icon_tag('117-todo', {:alt => alt})
+      else
+        "&#x2713;".html_safe
+    end
+  end
+  
+  #
+  # just name the image, this method will prepend the path and append the .png
+  # icon_tag('111-logo')
+  #
+  def icon_tag(img, options={})
+    image_tag('glyphish/gray/' + img + '.png', options)
   end
 
   def time_zone_description(tz)

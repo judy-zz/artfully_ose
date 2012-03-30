@@ -13,6 +13,14 @@ class RegularDonationKit < Kit
     errors.add(:requirements, "Your organization's tax information is missing or incomplete. Please complete it in order to active this kit.") unless organization.has_tax_info?
     organization.has_tax_info?
   end
+  
+  def friendly_name
+    "Charity Donations"
+  end
+  
+  def pitch
+    "Receive donations for a 501(c)(3)"
+  end
 
   def exclusive?
     exclusive = !organization.kits.where(:type => alternatives.collect(&:to_s)).any?

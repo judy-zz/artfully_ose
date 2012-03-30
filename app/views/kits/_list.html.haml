@@ -1,46 +1,32 @@
-%table.standalone
-  %thead
-    %tr
-      %th Name
-      -if can? :manage, current_user.current_organization
-        %th Actions
-      -else
-        %th State
+%table#kit-table.standalone
   %tbody
     %tr
-      %td Free Ticketing Kit
-      %td Activated
+      %td.status=check_mark :huge
+      %td.type
+        .kit-type Free Ticketing
+        %p='Take reservations for free events'
     %tr
-      %td People Management Kit
-      %td Activated
+      %td.status=check_mark :huge
+      %td.type
+        .kit-type People Management
+        %p='Manage your contacts and patrons'
     - kits.each do |kit|
       %tr
         -if can? :manage, current_user.current_organization
           - if kit.fresh?
-            - if kit.has_alternatives?
-              %td= link_to "Activate #{t(kit.type.underscore)}", alternatives_kits_path(:type => kit.type.underscore)
-            - else
-              %td= link_to "Activate #{t(kit.type.underscore)}", new_kit_path(:type => kit.type.underscore)
+            %td.status= link_to "Add", new_kit_path(:type => kit.type.underscore), :class => "btn"
           - elsif kit.cancelled? && kit.type == "SponsoredDonationKit"
             %td= "Contact support@artful.ly to learn about Fiscal Sponsorship for your organization"
           - elsif kit.cancelled?
             %td= link_to "Reactivate #{t(kit.type.underscore)}", kit_path(kit), :method => :put
           - elsif kit.pending?
-            %td
-              = "#{kit.state.titleize}."
-              -if current_user.current_organization.bank_account.nil?
-                = "We haven't processed your ACH authorization form"
-                = link_to "(download)", "/forms/artfully_etf_sign_up.pdf"
-                = ". If you have not already done so, please submit this form and a voided check by email to support@artful.ly or by fax to (212) 277-8025, ATTN: Artful.ly."
-              -else
-                = " Your ACH information has been processed."
+            %td.status=icon_tag '11-clock@2x', :alt=>'pending'
+          - elsif kit.activated?
+            %td.status=check_mark :huge, 'activated'
           - else
-            %td= kit.state.titleize
+            %td.status= kit.state.titleize
         -else
-          - if kit.fresh?
-            %td= "Not active"
-          - elsif kit.cancelled?
-            %td= "Cancelled"
-          - else
-            %td= kit.state.titleize
-        %td= t(kit.type.underscore)
+          %td
+        %td.type
+          .kit-type= kit.friendly_name
+          %p= kit_message(kit)

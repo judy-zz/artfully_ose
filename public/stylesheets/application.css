@@ -5,12 +5,33 @@ ul {
 h1 {
   font-size: 2.5em; }
 
+h2 {
+  margin-bottom: 10px;
+  font-size: 2em; }
+
 h3 {
   margin-bottom: 10px;
   font-size: 1.6em; }
 
 a {
   font-weight: bold; }
+
+#organization-details {
+  margin-top: 50px; }
+
+#kit-table td.status {
+  width: 80px;
+  text-align: center;
+  padding-bottom: 1.4em; }
+  #kit-table td.status p {
+    line-height: 4em; }
+#kit-table td.type {
+  vertical-align: top; }
+#kit-table .kit-type {
+  font-weight: bold; }
+
+ul#memberships li {
+  display: inline; }
 
 .nav-grav {
   padding-top: 3px;
