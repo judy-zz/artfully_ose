@@ -7,4 +7,4 @@
     %br
     = link_to "Click here to download the Artful.ly ACH Authorization Form", "/forms/artfully_etf_sign_up.pdf"
   %p After you've downloaded the form, please click this button to notify us to be ready for your request
-  %p= button_to "Submit Activation Request", kits_path(:type => @kit.type.underscore)
+  %p= link_to "Submit Activation Request", kits_path(:type => @kit.type.underscore), :class => 'btn'
