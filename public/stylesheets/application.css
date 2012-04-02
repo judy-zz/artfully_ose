@@ -76,3 +76,11 @@ ul.kv li .key {
 
 ul#recent-list li {
   margin-bottom: 10px; }
+
+.quiz-form label.control-label {
+  font-size: 1.8em;
+  width: 240px; }
+.quiz-form .controls {
+  margin-left: 250px; }
+.quiz-form .form-actions {
+  padding-left: 250px; }

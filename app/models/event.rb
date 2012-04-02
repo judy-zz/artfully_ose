@@ -18,8 +18,7 @@ class Event < ActiveRecord::Base
       :thumb => "140x140#"
     }
 
-  validates_presence_of :name, :producer, :organization_id
-  validates :is_free, :immutable => {:message => "Cannot change free/paid event after an event has been created"}
+  validates_presence_of :name, :organization_id
 
   default_scope where(:deleted_at => nil)
 

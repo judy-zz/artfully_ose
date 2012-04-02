@@ -1,9 +1,5 @@
 - content_for :header do
-  %h1= link_to @event.name, event_path(@event)
-  %h6
-    = "#{@event.producer}"
-    &mdash;
-    = "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state} [#{time_zone_description(@event.venue.time_zone)}]"
+  %h1= @event.name
 
 .row
   .span4

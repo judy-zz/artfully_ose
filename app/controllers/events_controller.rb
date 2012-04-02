@@ -10,18 +10,11 @@ class EventsController < ApplicationController
     @event = Event.new(params[:event])
     @templates = current_organization.charts.template
     @event.organization_id = current_user.current_organization.id
+    @event.is_free = !(current_user.current_organization.can? :access, :paid_ticketing)
     @event.venue.organization_id = current_user.current_organization.id
-    begin
-      authorize! :create, @event
-    rescue CanCan::AccessDenied
-      flash[:error] = "Please upgrade your account to create paid events."
-      render :new and return
-    end
+    @event.venue.time_zone = current_user.current_organization.time_zone
 
     if @event.save
-      @charts = find_charts.each do |chart|
-        @event.assign_chart(chart)
-      end
       redirect_to event_url(@event)
     else
       render :new
@@ -47,11 +40,7 @@ class EventsController < ApplicationController
       end
 
       format.html do
-        if @event.charts.empty?
-          render :show_with_chart_select
-        else
-          render :show
-        end
+        render :show
       end
     end
 
@@ -109,16 +98,16 @@ class EventsController < ApplicationController
       session[:event_id] = nil
     end
 
-  def find_event
-    @event = Event.find(params[:id])
-  end
+    def find_event
+      @event = Event.find(params[:id])
+    end
 
-  def find_charts
-    ids = params[:charts] || []
-    ids.collect { |id| Chart.find(id) }
-  end
+    def find_charts
+      ids = params[:charts] || []
+      ids.collect { |id| Chart.find(id) }
+    end
 
-  def upcoming_shows
-    @upcoming = @event.upcoming_shows
-  end
+    def upcoming_shows
+      @upcoming = @event.upcoming_shows
+    end
 end
