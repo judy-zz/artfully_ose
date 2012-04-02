@@ -1,39 +1,16 @@
 - in_section :people
-= render :partial => "shared/headers/people"
+- content_for :header do
+  %h1 People
 
-.spread
-  = form_tag people_path, {:method => :get, :remote => true, :class => 'super-search'} do
-    = hidden_field_tag :commit, "Search"
-    %ul
-      %li
-        .full.paired.element
-          = text_field_tag :search, "", :placeholder => "Email address, name, or tag..."
-          = submit_tag "Search"
-          .description
-            %a#search-help-link{:href=>'#'}
-              / Search help
-
-.search-help-popup.hidden
-  %h4
-    General
-  %p
-    Searching for people is simple.  Type some information into the search box about the person or people you are searching for.  Type first name, last name, full name, or email address and click the "Search" button.
-  %h4
-    More tips
-  %ul
-    %li
-      Type any tag into the search box to find people who have been tagged with that tag.
-    %li
-      Search is case insensitive. Searching for <pre>Joe Customer</pre> is the same as searching for <pre>joe customer</pre>
-    %li
-      Punctuation is ignored. Don't include <pre>#$%^&=+[]\</pre>
-    %li
-      Searching with wildcards is allowed.  To find all people with an email address containing example.com, search for <pre>*example.com</pre>
-    %li
-      You can use the <pre>OR</pre> operator, but the clause must be enclosed by parenthesis: <pre>(*example.com OR *google.com)</pre>
-
-.spread
-  .super-search-results
+.row
+  .span4
+    = form_tag people_path, {:method => :get, :remote => true, :class => 'super-search form-search'} do
+      = hidden_field_tag :commit, "Search"
+      %ul
+        %li
+          = text_field_tag :search, "", :placeholder => "Email address or name", :class => "input-medium search-query"
+          = submit_tag "Search", :class => 'btn'
+  .span8.super-search-results
     - if @people.empty?
       &nbsp;
     -else

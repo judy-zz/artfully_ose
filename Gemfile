@@ -20,7 +20,7 @@ gem 'will_paginate', '~> 3.0.beta'
 gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
-gem 'jquery-rails', '>= 1.0.12'
+gem 'jquery-rails', '>= 1.0.19'
 gem 's3', '>= 0.3.11'
 gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
 gem 'swiper', :path => "vendor/gems/swiper-0.0.1"

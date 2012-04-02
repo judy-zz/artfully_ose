@@ -9,10 +9,10 @@
       = hidden_field_tag :next, new_kit_path(:type => @kit.type.underscore)
       %ul
         %li
-          .label= form.label :legal_organization_name, "Legal Organization Name"
-          .element= form.text_field :legal_organization_name
+          = form.label :legal_organization_name, "Legal Organization Name"
+          = form.text_field :legal_organization_name
         %li
-          .label= form.label :ein, "EIN"
-          .element= form.text_field :ein
-      = form.submit "Update Tax Information"
+          = form.label :ein, "EIN"
+          = form.text_field :ein
+      = form.submit "Update Tax Information", :class => 'btn'
 

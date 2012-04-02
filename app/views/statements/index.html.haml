@@ -2,15 +2,16 @@
 - content_for :header do
   %h1= t(".heading", :default => "Statement Reports")
 
-.context
-  %h3 About
-  %p= t(".about")
-.document
-  %h3 Events
-  - if @events.blank?
-    = link_to "Create an Event", new_event_path, :class => 'cta-left-125'
-  - else
-    %ul.detailed-list#event-list
-      - @events.each do |event|
-        %li
-          %h4= link_to event.name, statements_path(:event_id => event.id), :title => 'event-name'
+.row
+  .span4
+    %h3 About
+    %p= t(".about")
+  .span8
+    %h3 Events
+    - if @events.blank?
+      = link_to "Create an Event", new_event_path, :class => 'cta-left-125'
+    - else
+      %ul.detailed-list#event-list
+        - @events.each do |event|
+          %li
+            %h4= link_to event.name, statements_path(:event_id => event.id), :title => 'event-name'

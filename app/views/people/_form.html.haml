@@ -1,14 +1,13 @@
 = form_for(person) do |form|
   %ul
     %li
-      .label= form.label :first_name, "First Name"
-      .element= form.text_field :first_name
+      =form.label :first_name, "First Name"
+      = form.text_field :first_name
     %li
-      .label= form.label :last_name, "Last Name"
-      .element= form.text_field :last_name
+      = form.label :last_name, "Last Name"
+      = form.text_field :last_name
     %li
-      .label= form.label :email, "Email"
-      .element= form.text_field :email
+      = form.label :email, "Email"
+      = form.text_field :email
   .cancel-submit
-    = link_to "Cancel", people_path
-    = form.submit
+    = render :partial => 'shared/submit_cancel', :locals => { :form => form, :cancel_path => people_path }

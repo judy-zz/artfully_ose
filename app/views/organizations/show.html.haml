@@ -37,17 +37,9 @@
 
 #organization-details.row
   #kits.span4
-    %h2 Kits
     = render :partial => "kits/list", :locals => { :kits => @kits }
 
   #memberships.span8
-    %h2 Users
     = render :partial => "memberships/list", :locals => { :organization => @organization }
     
-
-#faForm.modal{:style => 'display:none'}
-  .modal-header
-    .close{'data-dismiss'=>'modal'} x
-    %h3 Connect to Fractured Atlas
-  .modal-body
-    = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
+= render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
