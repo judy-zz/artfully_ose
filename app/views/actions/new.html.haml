@@ -17,4 +17,4 @@
 
     -unless @action.created_at.nil? or @action.creator.nil?
       %h4= "Action created by #{@action.creator.email} on #{(l @action.created_at, :format => :long)}"
-    = form.submit "Save #{params[:type].titleize} action"
+    = form.submit "Save #{params[:type].titleize} action", :class => "btn"

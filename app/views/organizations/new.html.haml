@@ -12,4 +12,4 @@
   %h3 Create your own
   = form_for @organization do |form|
     %ul= render :partial => 'organizations/form', :locals => { :form => form }
-    = form.submit "Create"
+    = form.submit "Create", :class => "btn"

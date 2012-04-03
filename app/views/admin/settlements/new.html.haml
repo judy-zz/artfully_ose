@@ -5,7 +5,7 @@
   %h3
   = form_tag admin_settlements_path do
     = hidden_field_tag :show_id, @show.id
-    = submit_tag "Submit new settlement"
+    = submit_tag "Submit new settlement", :class => "btn"
   %h3 Info
   %ul.kv
     %li

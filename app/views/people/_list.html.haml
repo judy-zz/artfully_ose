@@ -11,8 +11,8 @@
     %li
       = form_for(Segment.new(:terms => params[:search]), :url => new_segment_path, :html => {:method => :get}) do |form|
         = form.hidden_field :terms
-        = form.submit "New List Segment"
+        = form.submit "New List Segment", :class => "btn"
     %li
       = form_tag(people_path(:format => :csv), :method => :get) do
         = hidden_field_tag :search, params[:search]
-        = submit_tag "Export CSV"
+        = submit_tag "Export CSV", :class => "btn"

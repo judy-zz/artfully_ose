@@ -13,4 +13,4 @@
 
     %h3 Credit Card Information
     %ul#credit_card= render :partial => 'athena_credit_cards/form', :locals => { :parent_form => form, :target => @credit_card }
-    = form.submit "Save Card"
+    = form.submit "Save Card", :class => "btn"

@@ -20,7 +20,7 @@
         .stack
           .label= label_tag(:quantity)
           .element= text_field_tag(:quantity, @quantity)
-          .submit= submit_tag "Create Tickets"
+          .submit= submit_tag "Create Tickets", :class => "btn"
     .of2{:style => 'float:left'}
       %h4 About this section
       %ul.report{:style => 'width:75%'}
