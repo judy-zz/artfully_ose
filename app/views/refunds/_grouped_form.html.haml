@@ -8,4 +8,4 @@
           .label-and-element
             = check_box_tag "items[]", item.id, false, :id => "refund_item_#{item.id}", :class => "item_#{item.id}"
             = label_tag "refund_item_#{item.id}", item.id
-    = submit_tag "Refund"
+    = submit_tag "Refund", :class => "btn"

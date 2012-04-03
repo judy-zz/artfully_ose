@@ -12,7 +12,7 @@
         :redirect => new_import_url,
         :acl => "public-read",
         :max_filesize => 50.megabytes,
-        :submit_button => '<div class="cancel-submit"><a href="/people">Cancel</a><input id="import_submit" name="commit" type="submit" value="Import"></div>'
+        :submit_button => '<div class="cancel-submit"><a href="/people">Cancel</a><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
 
   %p #{link_to 'Download', template_imports_path} an empty CSV file with these headers already filled in.
 

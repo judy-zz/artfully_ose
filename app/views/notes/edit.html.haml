@@ -11,4 +11,4 @@
 
     -unless @note.created_at.nil? || @note.user.nil?
       %h4= "Note created on #{(l @note.created_at, :format => :long)} by #{@note.user.email}"
-    = form.submit "Save note"
+    = form.submit "Save note", :class => "btn"
