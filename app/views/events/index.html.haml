@@ -1,9 +1,7 @@
 - in_section :events
 - content_for :header do
   %h1= t('.heading', :default => "Events")
-  %ul.from-here
-    %li= link_to "New Event", new_event_path
 
-.compact-spread
-  %h3 Events
-  = render :partial => 'list', :locals => { :events => @events }
+.row
+  .span8.offset2
+    = render :partial => 'list', :locals => { :events => @events }

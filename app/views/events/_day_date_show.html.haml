@@ -1,0 +1,13 @@
+- if show.nil?
+  %p=message
+-else
+  .row-fluid
+    .span6
+      #day-date
+        #month.navbar.navbar-inner
+          =show.datetime_local_to_event.strftime('%b')
+        #day
+          =show.datetime_local_to_event.strftime('%e')
+    .span6
+      %strong=show.datetime_local_to_event.strftime('%l:%M %P')
+      #available="#{show.glance.available_total} tickets available"

@@ -1,5 +1,5 @@
 .nav.nav-accordian
-  %li= link_to 'Overview'
+  %li= link_to 'Overview', event_path(@event)
   %li.accordian.active
     = link_to 'Details', edit_event_path(@event)
     %ul.accordian-menu

@@ -72,6 +72,41 @@ ul#memberships .email {
     color: #666666; }
   .no-image a {
     cursor: pointer; }
+  .no-image p {
+    color: #999999; }
+
+#add-a-description {
+  width: 100%;
+  height: 150px;
+  margin-bottom: 9px; }
+  #add-a-description #text {
+    padding-top: 50px; }
+
+#add-a-venue {
+  width: 100%;
+  height: 150px; }
+  #add-a-venue #text {
+    padding-top: 50px; }
+
+#day-date {
+  width: 95%;
+  height: 120px;
+  border: 2px solid #999999;
+  background-color: #eeeeee; }
+  #day-date #month {
+    border-bottom: 2px solid #999999;
+    text-align: center;
+    color: #eeeeee;
+    font-weight: bold;
+    border-radius: 0px;
+    moz-border-radius: 0px;
+    font-size: 18px;
+    padding: 5px 0px; }
+  #day-date #day {
+    text-align: center;
+    font-size: 84px;
+    padding: 14px 0px;
+    color: #175c71; }
 
 ul#event-list li.event-list-item {
   margin-bottom: 20px; }
@@ -95,21 +130,6 @@ ul#recent-list li {
 
 .modal {
   display: none; }
-
-.section-fields {
-  padding: 20px 0;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #eee;
-}
-
-span.remove-fields-link {
-  margin-left: 75px;
-}
-
-span.remove-fields-link a {
-  color: #999;
-  font-weight: normal;
-}
 
 #event-header-logo-container {
   text-align: right; }

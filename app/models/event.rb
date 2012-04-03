@@ -51,6 +51,10 @@ class Event < ActiveRecord::Base
     played.take(limit)
   end
 
+  def next_public_show
+    upcoming_public_shows.empty? ? nil : upcoming_public_shows.first
+  end
+
   def upcoming_public_shows
     upcoming_shows(:all).select(&:published?)
   end
