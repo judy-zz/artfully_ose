@@ -3,7 +3,6 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
-    = stylesheet_link_tag "https://asset0.zendesk.com/external/zenbox/v2.4/zenbox.css" unless Rails.env.development?
     = include_stylesheets :application, :media => :screen
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
@@ -23,5 +22,6 @@
           %li= link_to 'User Agreement', user_agreement_path
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
     = include_javascripts :bootstrap
+    = render :partial => "shared/help_tab"
     /= include_javascripts :vendor, :application, :custom
     = yield :custom_js

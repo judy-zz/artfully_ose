@@ -66,16 +66,6 @@ $(document).ready(function() {
 	
 	/*********** EXISTING ARTFUL.LY JS ******/
 
-  if (typeof(Zenbox) !== "undefined") {
-    Zenbox.init({
-      dropboxID:   "20042668",
-      url:         "https://artfully.zendesk.com",
-      tabID:       "help",
-      tabColor:    "black",
-      tabPosition: "Left"
-    });
-  }
-
   $("form .description").siblings("input").focusin(function(){
     $("form .description").addClass("active");
   }).focusout(function(){
