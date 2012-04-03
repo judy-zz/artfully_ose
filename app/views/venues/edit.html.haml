@@ -40,7 +40,7 @@
       .control-group
         =form.label :time_zone, "Time Zone", :class => 'control-label'
         .controls
-          = form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => current_user.current_organization.time_zone
+          = form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, {:default => current_user.current_organization.time_zone}, {:class => 'input-xlarge'}
           
       .form-actions
         = form.submit "Save", :class => 'btn'

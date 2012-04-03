@@ -12,7 +12,7 @@
           - if user == current_user.current_organization.owner
             Organization Administrator
           - elsif can? :manage, current_user.current_organization
-            = link_to "Remove", organization_membership_path(@organization, user.memberships.first), :method => :delete
+            = link_to "Remove", organization_membership_path(@organization, user.membership_in(organization)), :method => :delete
 
 #userForm.modal
   = form_tag organization_memberships_path(@organization.id), :action => "create" do

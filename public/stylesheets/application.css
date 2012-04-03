@@ -62,14 +62,16 @@ ul#memberships .email {
   border-radius: 10px;
   moz-border-radius: 10px;
   border: 2px dashed #999999;
-  background-color: #cccccc;
+  background-color: #dddddd;
   height: 75px;
   width: 75px;
   text-align: center; }
-  .no-image #text {
+  .no-image a, .no-image #text {
     padding-top: 30px;
     font-weight: bold;
     color: #666666; }
+  .no-image a {
+    cursor: pointer; }
 
 ul#event-list li.event-list-item {
   margin-bottom: 20px; }

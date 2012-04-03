@@ -30,6 +30,10 @@ class User < ActiveRecord::Base
     @current_organization ||= (is_in_organization? ? memberships.first.organization : Organization.new)
   end
 
+  def membership_in(organization)
+    memberships.where(:organization_id => organization.id).limit(1).first
+  end
+
   def customer
     @customer ||= find_customer
   end
