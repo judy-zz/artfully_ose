@@ -27,6 +27,21 @@
   border-color: #2086a6;
 }
 
+.feedback-footer .navbar-inner {
+  background-image: none;
+  background-color: #ccc;
+  font-weight: normal;
+}
+
+.feedback-footer .navbar-inner a {
+  font-weight: normal;
+  color: #2086a6;
+}
+
+#feedback-modal, #feedback-modal .modal-footer {
+  text-align:center;
+}
+
 body {
   padding-top: 60px;
 }

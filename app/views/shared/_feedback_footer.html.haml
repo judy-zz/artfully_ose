@@ -1,0 +1,14 @@
+.navbar.navbar-fixed-bottom.feedback-footer
+  .navbar-inner
+    .container
+      = link_to 'Artful.ly is community designed. Help make it better.', '#feedback-modal', 'data-toggle' => 'modal'
+
+
+#feedback-modal.modal
+  .modal-header
+    = link_to 'x', '#', :class => 'close', 'data-dismiss' => 'modal'
+    %h3 Help make Artful.ly better.
+
+  .modal-footer
+    = link_to 'I want to request a feature.', 'https://artfully.zendesk.com/forums/318163-feature-requests', :target => '_blank', :class => 'btn'
+    = link_to 'I want to report a bug.', 'https://artfully.zendesk.com/anonymous_requests/new', :target => '_blank', :class => 'btn'
