@@ -178,3 +178,6 @@ section {
   -moz-border-radius: 0 0 4px 4px;
   border-radius: 0 0 4px 4px;
 }
+.icon-gray {
+  background-image: url("../images/glyphicons-halflings-gray.png");
+}

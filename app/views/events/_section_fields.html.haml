@@ -1,0 +1,22 @@
+.fields.section-fields
+  .control-group
+    =f.label :name, "Name", :class => 'control-label'
+    .controls
+      =f.text_field :name, :placeholder => 'Type 1'
+
+  .control-group
+    =f.label :price, "Price", :class => 'control-label'
+    .controls
+      .input-prepend
+        %span.add-on $
+        =f.text_field :price, :placeholder => '0.00', :class => 'input-small'
+
+  .control-group
+    =f.label :capacity, "Capacity", :class => 'control-label'
+    .controls
+      =f.text_field :capacity, :placeholder => '10', :class => 'span1'
+
+      %span.remove-fields-link
+        = f.hidden_field :_destroy
+        %i.icon-minus-sign.icon-gray
+        = link_to_remove_fields "remove", f

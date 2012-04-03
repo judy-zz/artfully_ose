@@ -6,6 +6,7 @@ class Chart < ActiveRecord::Base
   belongs_to :organization
   has_many :shows
   has_many :sections, :order => 'price DESC'
+  accepts_nested_attributes_for :sections, :reject_if => lambda { |a| a[:capacity].blank? }, :allow_destroy => true
 
   validates :name, :presence => true, :length => { :maximum => 255 }
 

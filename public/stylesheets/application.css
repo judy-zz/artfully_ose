@@ -93,3 +93,18 @@ ul#recent-list li {
 
 .modal {
   display: none; }
+
+.section-fields {
+  padding: 20px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+span.remove-fields-link {
+  margin-left: 75px;
+}
+
+span.remove-fields-link a {
+  color: #999;
+  font-weight: normal;
+}
