@@ -110,6 +110,7 @@ Artfully::Application.routes.draw do
         post :unpublished
       end
     end
+    resource :venue, :only => [:edit, :update]
   end
 
   resources :shows, :only => [] do

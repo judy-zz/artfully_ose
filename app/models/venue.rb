@@ -4,6 +4,8 @@ class Venue < ActiveRecord::Base
  
   validates_presence_of :name
   
+  attr_accessible :name, :address1, :address2, :city, :state, :zip, :time_zone
+  
   def street_as_string
     str = (address1 || "") + " " + (address2 || "")
     str.strip
