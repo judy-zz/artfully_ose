@@ -5,4 +5,4 @@
 .document
   %p
     You meet the requirements for this kit.
-    = link_to "Activate #{@kit.type.underscore.titleize}", kits_path(:type => @kit.type.underscore), :method => :post
+    = button_to "Activate #{@kit.type.underscore.titleize}", kits_path(:type => @kit.type.underscore), :method => :post

@@ -32,7 +32,7 @@
       .full.paired.element
         = form.select(:kind, options_for_select(Phone.kinds), {}, {:class => :half})
         = form.text_field(:number, :placeholder => "Ex: 555-123-1234", :class => :half)
-        = form.submit
+        = form.submit :class => "btn"
 
 %h4 Mailing Address
 - if @person.address.present?

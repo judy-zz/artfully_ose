@@ -1,10 +1,12 @@
 - content_for :header do
   %h1 Paid Event Ticketing Kit
 
-.dashboard
-  %p 
-    To activate paid ticketing for your organization, please download the ACH authorization form and submit this form and a voided check by email to support@artful.ly or by fax to (212) 277-8025, ATTN: Artful.ly.
-    %br
-    = link_to "Click here to download the Artful.ly ACH Authorization Form", "/forms/artfully_etf_sign_up.pdf"
-  %p After you've downloaded the form, please click this button to notify us to be ready for your request
-  %p= link_to "Submit Activation Request", kits_path(:type => @kit.type.underscore), :class => 'btn'
+.row
+  .span10.offset1
+    %p 
+      To activate paid ticketing for your organization, please download the ACH authorization form and submit this form and a voided check by email to support@artful.ly or by fax to (212) 277-8025, ATTN: Artful.ly.
+      %br
+      = link_to "Click here to download the Artful.ly ACH Authorization Form", "/forms/artfully_etf_sign_up.pdf"
+    %p After you've downloaded the form, please click this button to notify us to be ready for your request
+    .btn-toolbar.form-actions
+      .btn-group= button_to "Submit Activation Request", kits_path(:type => @kit.type.underscore), :class => 'btn'

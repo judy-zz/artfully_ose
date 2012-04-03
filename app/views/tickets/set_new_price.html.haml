@@ -26,6 +26,6 @@
           .element= text_field_tag :price, '', :class => :currency, :size => 1
       - @selected_tickets.each do |st|
         = hidden_field_tag "selected_tickets[]", st
-      = submit_tag "Submit"
+      = submit_tag "Submit", :class => "btn"
   %p
     =link_to "cancel", :back

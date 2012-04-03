@@ -10,7 +10,7 @@
         %li
           .full.paired.element
             = text_field_tag :search, "", :placeholder => "Enter an order number..."
-            = submit_tag "Search"
+            = submit_tag "Search", :class => "btn"
 
 .row
   - if !params["search"].nil? && @results.empty?
@@ -24,7 +24,7 @@
       %h3 Search Results
 
     #orders
-      %table.standalone.zebra
+      %table.standalone.zebra.table
         %thead
           %tr
             %th ID

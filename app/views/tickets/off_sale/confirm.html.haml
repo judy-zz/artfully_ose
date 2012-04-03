@@ -10,7 +10,7 @@
     - @selected_tickets.each do |st|
       = hidden_field_tag "selected_tickets[]", st
     %p If this is correct, please click confirm it by clicking here:
-    = submit_tag "Take off Sale"
+    = submit_tag "Take off Sale", :class => "btn"
 
   %p
     If this is not correct,
