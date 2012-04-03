@@ -1,0 +1,5 @@
+.row
+  .span8
+    %h1= @event.name
+  .span4#event-header-logo-container
+    =image_tag(@event.image.url(:thumb), :id => 'event-header-logo', :width => 80, :height => 80) if @event.image?

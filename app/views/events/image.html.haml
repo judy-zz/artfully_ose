@@ -1,0 +1,20 @@
+- in_section :events
+- content_for :header do
+  =render :partial=>'header'
+
+.row
+  .span4
+    =render :partial=>'menu'
+  .span8
+    .row
+      .span4
+        = render "shared/error_messages", :target => @event
+        = form_for( @event, :html => { :multipart => true } ) do |form|
+          .control-group
+            =form.label :image, "Upload a new image", :class => 'control-label'
+            .controls
+              =form.file_field :image
+          .form-actions
+            = form.submit "Upload", :class => 'btn'
+      .span8
+        =image_tag(@event.image.url) if @event.image?        

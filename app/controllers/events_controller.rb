@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   respond_to :html, :json
 
-  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget ]
+  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image ]
   before_filter :upcoming_shows, :only => :show
   after_filter :save_event_to_session, :except => [:destroy, :index]
   after_filter :clear_event_from_session, :only => :destroy
@@ -56,6 +56,10 @@ class EventsController < ApplicationController
   def edit
     authorize! :edit, @event
   end
+  
+  def image
+    authorize! :edit, @event
+  end
 
   def assign
     @event = Event.find(params[:event_id])
@@ -67,7 +71,7 @@ class EventsController < ApplicationController
     redirect_to event_url(@event)
   end
 
-  def update
+  def update    
     authorize! :edit, @event
 
     @event.update_attributes(params[:event])

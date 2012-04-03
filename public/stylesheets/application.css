@@ -93,3 +93,10 @@ ul#recent-list li {
 
 .modal {
   display: none; }
+
+#event-header-logo-container {
+  text-align: right; }
+
+#event-header-logo {
+  border-radius: 5px;
+  moz-border-radius: 5px; }
