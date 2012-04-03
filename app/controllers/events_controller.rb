@@ -15,7 +15,7 @@ class EventsController < ApplicationController
     @event.venue.time_zone = current_user.current_organization.time_zone
 
     if @event.save
-      redirect_to event_url(@event)
+      redirect_to edit_event_url(@event)
     else
       render :new
     end

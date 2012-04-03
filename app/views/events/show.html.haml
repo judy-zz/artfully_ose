@@ -3,97 +3,74 @@
 
 .row
   .span4
-    .nav.nav-accordian
-      %li= link_to 'Overview'
-      %li.accordian.active
-        = link_to 'Details', edit_event_path(@event)
-        %ul.accordian-menu
-          %li= link_to 'About'
-          %li= link_to 'Venue'
-          %li= link_to 'Prices'
-          %li= link_to 'Image'
-          %li= link_to 'Messages'
-      %li.accordian
-        = link_to 'Shows'
-        %ul.accordian-menu
-          - @shows.each do |show|
-            %li=link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show)
-
-      %li.accordian
-        = link_to 'Share & Sell'
-        %ul.accordian-menu
-          %li= link_to 'Storefront'
-          %li= link_to 'On Your Site'
-          %li= link_to 'Box Office'
+    =render :partial=>'menu'
   .span8
-    .context
-      %ul.context-buttons
-        %li= button_to "Store Front", store_event_path(@event), :method => :get, :class => "new-window"
-      = render :partial => "glance", :locals => { :report => @event.glance }
+    %ul.context-buttons
+      %li= button_to "Store Front", store_event_path(@event), :method => :get, :class => "new-window"
+    = render :partial => "glance", :locals => { :report => @event.glance }
 
-    .document
-      #tabs
-        %ul
-          %li
-            %a{ :href => '#tabs-1'}
-              Shows
-          %li
-            %a{ :href => '#tabs-2'}
-              Calendar
-          %li
-            %a{ :href => '#tabs-3'}
-              Charts
-          %li
-            %a{ :href => '#tabs-4'}
-              Sell
+    #tabs
+      %ul
+        %li
+          %a{ :href => '#tabs-1'}
+            Shows
+        %li
+          %a{ :href => '#tabs-2'}
+            Calendar
+        %li
+          %a{ :href => '#tabs-3'}
+            Charts
+        %li
+          %a{ :href => '#tabs-4'}
+            Sell
 
-        #tabs-1
-          #shows
-            %table.standalone.zebra{:style => 'width: 100%'}
-              %thead
-                %tr
-                  %th Show
-                  %th.stat Available
-                  %th.stat Sold
-                  %th.stat Comped
-              %tbody
-                - @shows.each do |show|
-                  %tr{ :class => [show.state, show.destroyable? ? "destroyable" : "" ] }
-                    %td
-                      %div#show-datetime
-                        =link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
-                      %div#control-bar
-                        =render :partial => "shows/controls", :locals => { :show => show }
-                      .clear
-                    %td.available_value= show.glance.available_total
-                    %td.gross_value= show.glance.sold_total
-                    %td.comped_value= show.glance.comped_total
-                %tr
-                  = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
-            = will_paginate @shows   
-        #tabs-2
-          #this-week
-            #calendar{ :"data-event" => @event.id }        
-        #tabs-3
-          - unless @charts.empty?
-            %h3 Import charts
-            = form_for @chart, :url => assign_chart_path(@event) do |form|
-              %ul
-                %li
-                  .hidden.label= form.label :id, "Chart"
-                  .full.paired.element
-                    = form.select :id, options_from_collection_for_select(@charts, "id", "name")
-                    = form.submit "Import"
-          %ul.detailed-list
-            %h3 Charts
-            - @event.charts.each do |chart|
+      #tabs-1
+        #shows
+          %table.standalone.zebra{:style => 'width: 100%'}
+            %thead
+              %tr
+                %th Show
+                %th.stat Available
+                %th.stat Sold
+                %th.stat Comped
+            %tbody
+              - @shows.each do |show|
+                %tr{ :class => [show.state, show.destroyable? ? "destroyable" : "" ] }
+                  %td
+                    %div#show-datetime
+                      =link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
+                    %div#control-bar
+                      =render :partial => "shows/controls", :locals => { :show => show }
+                    .clear
+                  %td.available_value= show.glance.available_total
+                  %td.gross_value= show.glance.sold_total
+                  %td.comped_value= show.glance.comped_total
+              %tr
+                = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
+          = will_paginate @shows   
+      #tabs-2
+        #this-week
+          #calendar{ :"data-event" => @event.id }        
+      #tabs-3
+        - unless @charts.empty?
+          %h3 Import charts
+          = form_for @chart, :url => assign_chart_path(@event) do |form|
+            %ul
               %li
-                %h4= chart.name
-                = render :partial => 'sections/section_table', :locals => { :chart => chart, :include_link => false }
-        #tabs-4    
-          #widget
-            %h4 Quick and Easy
-            %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
+                .hidden.label= form.label :id, "Chart"
+                .full.paired.element
+                  = form.select :id, options_from_collection_for_select(@charts, "id", "name")
+                  = form.submit "Import"
+        %ul.detailed-list
+          %h3 Charts
+          - @event.charts.each do |chart|
+            %li
+              %h4= chart.name
+              = render :partial => 'sections/section_table', :locals => { :chart => chart, :include_link => false }
+      #tabs-4    
+        #widget
+          %h4 Quick and Easy
+          %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
 
-            %h4 Sell Anywhere
-            %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe
+          %h4 Sell Anywhere
+          %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe

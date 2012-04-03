@@ -14,7 +14,7 @@
       #heading= yield :header
       = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
       - flash.discard
-      = yield
+      = content_for?(:menu_sub_template) ? yield(:menu_sub_template) : yield
       %footer.footer
         %ul.nav
           %li= link_to 'Updates', updates_path
