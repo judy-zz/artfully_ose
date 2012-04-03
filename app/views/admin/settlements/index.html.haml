@@ -11,7 +11,7 @@
       %li
         .key= label_tag :end_date
         .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-      = submit_tag "Search"
+      = submit_tag "Search", :class => "btn"
 
 .spread
   %h3 Settlements

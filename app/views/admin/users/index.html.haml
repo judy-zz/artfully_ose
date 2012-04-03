@@ -10,7 +10,7 @@
           .hidden.label= label_tag :query, "Query"
           .full.paired.element
             = text_field_tag :query, params[:query], :placeholder => "Email address or organization name..."
-            = submit_tag "Search"
+            = submit_tag "Search", :class => "btn"
   = link_to "Invite User", new_admin_user_path
   = render :partial => "admin/stats/stats"
 .document

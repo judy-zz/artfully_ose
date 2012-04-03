@@ -29,4 +29,4 @@
           -if !settlement.success?
             = form_tag new_admin_settlement_path, :method=>'get' do
               = hidden_field_tag "show_id", settlement.show_id
-              = submit_tag "Re-settle", :class => [ :mini, :full ]
+              = submit_tag "Re-settle", :class => [ :mini, :full, :btn ]

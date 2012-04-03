@@ -7,7 +7,7 @@
   %h3 Password Reset
   = form_for @user, :url => admin_user_path(@user) do |f|
     = f.hidden_field :reset_password, :value => true
-    = f.submit "Send Password Reset Instructions"
+    = f.submit "Send Password Reset Instructions", :class => "btn"
 
 .document
   %h3 Suspend User
@@ -21,7 +21,7 @@
           .element
             = f.text_field :suspension_reason
         %li
-          = f.submit "Suspend"
+          = f.submit "Suspend", :class => "btn"
   - else
     %p
       %strong= @user.email

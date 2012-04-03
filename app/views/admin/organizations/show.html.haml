@@ -9,7 +9,7 @@
         .label=   label_tag :user_email, "Email"
         .element= text_field_tag :user_email
       %li
-        = submit_tag "Add"
+        = submit_tag "Add", :class => "btn"
 
 .document
   %h3 Users (#{@organization.users.size})
