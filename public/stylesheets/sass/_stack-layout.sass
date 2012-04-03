@@ -1,0 +1,83 @@
+@mixin stack-layout
+  display: inline-block
+  font-family: 'Courier New',monospace
+  letter-spacing: -0.65em
+  word-spacing: -0.65em
+  text-align: center
+  vertical-align: top
+
+@mixin stack-list
+  font-family: 'Courier New',monospace
+  letter-spacing: -0.65em
+  word-spacing: -0.65em
+  text-align: center
+  vertical-align: top
+
+@mixin stack-content
+  @include stack-reset
+  &:after
+    content: "."
+    display: block
+    height: 0
+    clear: both
+    visibility: hidden
+
+@mixin stack-reset
+  display: block
+  font-family: "Arial", sans-serif
+  letter-spacing: normal
+  word-spacing: normal
+  text-align: left
+
+@mixin section
+  position: relative
+  padding-bottom: $gutter
+  > *
+    margin: 0 $gutter $gutter
+    @include stack-content
+
+
+.stackAuto
+  width: auto
+
+.stack, .stack1of2, .stack1of3, .stack2of3, .stack1of4, .stack3of4, .stack1of5, .stack2of5, .stack3of5, .stack4of5, .stack1of6, .stack1of7, .stack1of10, .stackAuto
+  @include stack-layout
+
+.stack
+  width: 100%
+
+.stack1of2
+  width: 50%
+
+.stack1of3
+  width: 33.334%
+
+.stack2of3
+  width: 66.667%
+
+.stack1of4
+  width: 25%
+
+.stack3of4
+  width: 75%
+
+.stack1of5
+  width: 20%
+
+.stack2of5
+  width: 40%
+
+.stack3of5
+  width: 60%
+
+.stack4of5
+  width: 80%
+
+.stack1of6
+  width: 16.667%
+
+.stack1of7
+  width: 14.285%
+
+.stack1of10
+  width: 10%

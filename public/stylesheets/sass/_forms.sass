@@ -1,0 +1,208 @@
+.grouped-checkbox
+  width: 1em
+
+form
+  fieldset
+    margin-bottom: $gutter
+  fieldset.floater
+    float: left
+  fieldset.thirdish
+    width: 32%
+    margin-right: 5px
+    min-height: 200px
+  fieldset.slim
+    width: 14%
+    margin-right: 5px
+    min-height: 200px
+  legend
+    line-height: $line_height
+    color: #666
+    font-size: 1.5em
+    font-family: Raleway, sans-serif
+
+form ul li
+  @include stack-list
+  text-align: left
+  line-height: 3 * $line_height
+  min-height: 3 * $line_height
+  position: relative
+  input[type="submit"]
+    text-align: left
+  .element
+    @extend .stack2of3
+    input, select
+      margin: 7px 0 6px 0
+      width: 98%
+    input[type="checkbox"]
+      width: auto
+  .quantity.element
+    text-align: right
+    select
+      display: inline-block
+      width: 4em
+  .date_field
+    text-align: left
+    select
+      width: 48%
+      display: inline
+      margin-right: 2%
+
+  .label
+    @extend .stack1of3
+    span.required
+      @extend .stack
+      color: red
+  .eighty
+    width: 80%
+  .hidden.label
+    display: none
+  .label-and-element
+    text-align: left
+    @extend .stack
+    label, input
+      display: inline
+  .checkbox
+    float: left
+  .checkbox-text
+    font-size: .8em
+    margin: .3em 0 .25em 1.5em
+    color: #999
+  .active.description
+    color: #666
+  .form-error
+    color: $red
+
+form
+  .description, .form-error
+    font-size: .75em
+    line-height: $line_height
+    width: 75%
+    color: #999
+
+form
+  .description
+    margin-top: -3px
+    width: 100%
+
+.element, .label, .label-and-element, .cancel-submit
+  > div, label
+    @include stack-content
+  > input, select
+    @include stack-reset
+
+.double.element
+  text-align: left
+  select
+    width: 48%
+    display: inline
+    margin-right: 2%
+  input
+    width: 48%
+    display: inline
+    margin-right: 2%
+    &:last-child
+      margin-right: 0
+  .form-error
+    width: 48%
+    margin-right: 2%
+    float: left
+
+.paired.element
+  input, select
+    float: left
+    width: 75%
+  .half
+    float: left
+    width: 37.5%
+  input.half
+    border-left: none
+  .description
+    float: left
+  input[type=submit], input[type=button]
+    width: 25%
+    text-align: center
+    margin: 7px 0 6px
+    border-left: none
+    @include rounded-corners(0, 4px, 4px, 0)
+
+.full.element
+  @extend .stack
+.quarter.element
+  @extend .stack1of4
+
+.single_field
+  margin-top: 10px
+  .label
+    @extend .stack1of5
+  .element
+    @extend .stack3of5
+    input
+      width: 100%
+  .submit
+    @extend .stack1of5
+    input
+      width: 100%
+      border-left: none
+      @include rounded-corners(0, 4px, 4px, 0)
+
+.code textarea
+  height: 16em
+
+.hidden-target
+  display: none
+
+.cancel-submit
+  margin: $gutter 0 0
+  a
+    @include stack-content
+    @include rounded-corners(4px, 0, 0, 4px)
+    float: left
+    font-size: .75em
+    line-height: 14px
+    border: 1px solid
+    border-color: #ddd #bbb #999
+    border-right: none
+    background: #eee
+    color: #999
+    padding: 3px 10px 4px
+  input[type="submit"]
+    padding-left: 3em
+    padding-right: 3em
+    @include rounded-corners(0, 4px, 4px, 0)
+
+input, textarea
+  color: #000
+.placeholder
+  color: #aaa
+
+form.jeditable
+  input
+    padding: 1px 0
+  button
+    @include rounded-corners(0, 4px, 4px, 0)
+    border-left: none
+    display: block
+    float: right
+    padding: 3px 10px
+
+
+// http://trentrichardson.com/examples/timepicker/
+.ui-timepicker-div
+  .ui-widget-header
+    margin-bottom: 8px
+  dl
+    text-align: left
+  dl dt
+    height: 25px
+  dl dd
+    margin: -25px 0 10px 65px
+  td
+    font-size: 90%
+
+
+.radio-list
+  li
+    .radio
+      text-align: center
+      display: inline-block
+      width: 3 * $line_height
