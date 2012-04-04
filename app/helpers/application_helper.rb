@@ -29,6 +29,13 @@ module ApplicationHelper
   def asset_path(asset)
     javascript_path(asset).gsub(/javascripts/, 'assets')
   end
+  
+  def events_to_options(selected_event_id = nil)
+    @events = current_user.current_organization.events
+    @events_array = @events.map { |event| [event.name, event.id] }
+    @events_array.insert(0, ["", ""])
+    options_for_select(@events_array, selected_event_id)
+  end
 
   def contextual_menu(&block)
     menu = ContextualMenu.new(self)

@@ -14,9 +14,9 @@
       -# @shows.each do |show|
       -#  %li=link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show)
 
-  %li.accordian
+  %li.accordian.active
     = link_to 'Share & Sell'
     %ul.accordian-menu
-      %li= link_to 'Storefront'
-      %li= link_to 'On Your Site'
+      %li= link_to 'Storefront', storefront_link_event_path(@event)
+      %li= link_to 'On Your Site', widget_event_path(@event)
       %li= link_to 'Box Office'

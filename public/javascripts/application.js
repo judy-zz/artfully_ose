@@ -17,7 +17,9 @@ function createErrorFlashMessage(msg) {
 	$('#heading').after($(document.createElement('div'))
 							.addClass('flash')
 							.addClass('error')
-							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+							.addClass('alert')
+							.addClass('alert-error')
+							.html('<span>'+msg+'</span>'));
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();
@@ -39,7 +41,9 @@ function createFlashMessage(msg) {
 	$('#heading').after($(document.createElement('div'))
 							.addClass('flash')
 							.addClass('success')
-							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+							.addClass('alert')
+							.addClass('alert-info')
+							.html('<span>'+msg+'</span>'));
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();

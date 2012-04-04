@@ -3,9 +3,9 @@
   =render :partial=>'header'
 
 .row
-  .span4
+  .span3
     =render :partial=>'menu'
-  .span8
+  .span9
     = render "shared/error_messages", :target => @event
     = form_for( @event, :html => { :class => 'form-horizontal' } ) do |form|
       .control-group

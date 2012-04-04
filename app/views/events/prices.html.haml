@@ -3,9 +3,9 @@
   %h1= t('.heading', :default => "Events")
 
 .row
-  .span4
+  .span3
     =render :partial=>'menu'
-  .span8
+  .span9
     = render "shared/error_messages", :target => @event
     / need to move this to the controller
     / and have @chart load from @event (find or create?)

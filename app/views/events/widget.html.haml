@@ -1,40 +1,11 @@
 - in_section :events
 - content_for :header do
-  %h1= link_to @event.name, event_path(@event)
-  %h2
-    = @event.producer
-    &mdash;
-    = "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state}"
-
-.context
-  %ul.context-buttons
-    %li= button_to "Edit Event", edit_event_path(@event), :method => :get
-    %li= button_to "Store Front", store_event_path(@event), :method => :get
-    %li= button_to "New Show", new_event_show_path(@event), :method => :get
-
-  = render :partial => "glance", :locals => { :report => @event.glance }
-
-.document
-  #introduction
-    %h3 Promote on your Website
-    %p= t(".introduction", :default => "Introduction")
-
-  #script
-    %h4 The Script
-    %p= t(".script_installation", :default => "Script installation.")
-    %pre.code= "<script src='#{javascript_path("artfully")}'></script>"
-    %p= t(".jquery_installation", :default => "This script requires jQuery.")
-    %pre.code= "<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js'></script>"
-
-  #styles
-    %h4 Styles
-    %p= t(".styles_installation", :default => "Stylesheet installation.")
-    %pre.code= "<link href='#{stylesheet_path("themes/default.css")}' media='screen' rel='stylesheet' type='text/css'>"
-
-  #integration
-    %h4 Integration
-    %p= t(".intregration", :default => "Integration")
-    %pre.code= widget_script(@event, current_user.current_organization)
-
-    %p= t(".hooks", :default => "Rendering hooks")
-    %pre.code= '<div id="event"></div>'
+  =render :partial=>'header'
+- content_for :custom_js do
+  = include_javascripts :widget_generator
+  
+.row
+  .span3
+    =render :partial=>'menu'
+  .span9
+    = render :partial => 'widgets/generator', :locals => {:selected_event_id => @event.id}

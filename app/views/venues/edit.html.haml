@@ -3,9 +3,9 @@
   =render :partial=>'events/header'
 
 .row
-  .span4
+  .span3
     =render :partial=>'events/menu'
-  .span8
+  .span9
     = form_for( [@event, @venue], :html => { :class => 'form-horizontal' }) do |form|
       .control-group
         =form.label :name, "Venue name", :class => 'control-label'

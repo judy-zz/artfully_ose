@@ -1,0 +1,16 @@
+- in_section :events
+- content_for :header do
+  =render :partial=>'header'
+
+.row
+  .span3
+    =render :partial=>'menu'
+  .span9
+    .row
+      .span10.offset1
+        %h1 Sell Tickets From Our Store
+        
+        %p#storefront-text Anyone can buy tickets at:
+        
+        %blockquote#storefront-link
+          =store_event_url(@event)
