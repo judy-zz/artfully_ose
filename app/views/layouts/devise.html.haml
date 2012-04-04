@@ -4,17 +4,17 @@
     %title= "#{yield :title} : Artful.ly"
     %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
 
-    = include_stylesheets :application, :devise, :media => :screen
+    = include_stylesheets :application, :media => :screen
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
     = render :partial => 'layouts/google_analytics'
   %body
-    = render :partial => 'layouts/devise_menu'
-    #devise-header.span8.offset2
-      = yield :devise_header
-    #content.span3.offset5
-      = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
-      - flash.discard
-      = yield
-    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
-
+    .container
+      = render :partial => 'layouts/devise_menu'
+      .row
+        #content.span6.offset3
+          = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+          - flash.discard
+          = yield
+    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
+    = include_javascripts :bootstrap

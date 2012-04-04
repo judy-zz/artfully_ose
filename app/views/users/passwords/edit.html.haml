@@ -1,14 +1,18 @@
-= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f|
-  %h3 Reset your Password
-  = devise_error_messages!
-  = f.hidden_field :reset_password_token
+= devise_error_messages!
 
-  %ul
-    %li
-      .label= f.label :password
-      .element= f.password_field :password
-    %li
-      .label= f.label :password_confirmation
-      .element= f.password_field :password_confirmation
+= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put, :class => 'form-horizontal' }) do |f|
+  %fieldset
+    %legend Reset your Password
 
-    = f.submit "Change My Password", :class => "btn"
+    .control-group
+      = f.label :password, :class=>'control-label'
+      .controls= f.password_field :password
+
+    .control-group
+      = f.label :password_confirmation, "Retype Password", :class=>'control-label'
+      .controls= f.password_field :password_confirmation
+
+    = f.hidden_field :reset_password_token
+
+    .form-actions
+      = f.submit "Change My Password", :class => "btn btn-primary"
