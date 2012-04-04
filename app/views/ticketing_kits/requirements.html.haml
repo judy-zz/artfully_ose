@@ -1,9 +1,9 @@
 - content_for :header do
   %h1 Paid Event Ticketing Kit
 
-.context
-.document
-  #requirements
-    %h3 Requirements
-    - @kit.errors[:requirements].each do |error|
-      %p= error
+.row
+  .span8.offset4
+    #requirements
+      %h3 Requirements
+      - @kit.errors[:requirements].each do |error|
+        %p= error

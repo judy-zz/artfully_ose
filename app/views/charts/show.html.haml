@@ -2,27 +2,29 @@
 - content_for :header do
   %h1= @chart.name
 
-.context
-  %h3 Charts
-  %ul.context-buttons
-    - unless session[:event_id].nil?
-      %li
-        = button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
-    %li= button_to "Copy Chart", charts_path(:chart_id => @chart.id), :method => :post
-    %li= button_to "New Section", new_chart_section_path(@chart), :method => :get
-  %ul.detailed-list
-    - @charts.each do |chart|
-      %li
-        %h4= link_to chart.name, chart_path(chart) if can?(:view, chart)
-        %ul.controls
-          %li= link_to "Edit", edit_chart_path(chart) if can?(:edit, chart)
-          %li= link_to "Copy", charts_path(:chart_id => chart.id), :method => :post if can?(:view, chart)
-          %li= link_to "Delete", chart_path(chart), :method=>:delete if can?(:delete, chart)
-        %ul.details
-          %li= pluralize(chart.sections.size, "Section")
+.row
 
-.document
-  %h3= "#{@chart.name}"
-  = render :partial => 'sections/section_table', :locals => { :chart => @chart, :include_link => true, :editable => true }
-  .element
-    .description When purchasing tickets, patrons will see sections ordered by price starting with the highest price and descending to the lowest.
+  .span4
+    %h3 Charts
+    %ul.context-buttons
+      - unless session[:event_id].nil?
+        %li
+          = button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
+      %li= button_to "Copy Chart", charts_path(:chart_id => @chart.id), :method => :post
+      %li= button_to "New Section", new_chart_section_path(@chart), :method => :get
+    %ul.detailed-list
+      - @charts.each do |chart|
+        %li
+          %h4= link_to chart.name, chart_path(chart) if can?(:view, chart)
+          %ul.controls
+            %li= link_to "Edit", edit_chart_path(chart) if can?(:edit, chart)
+            %li= link_to "Copy", charts_path(:chart_id => chart.id), :method => :post if can?(:view, chart)
+            %li= link_to "Delete", chart_path(chart), :method=>:delete if can?(:delete, chart)
+          %ul.details
+            %li= pluralize(chart.sections.size, "Section")
+
+  .span8
+    %h3= "#{@chart.name}"
+    = render :partial => 'sections/section_table', :locals => { :chart => @chart, :include_link => true, :editable => true }
+    .element
+      .description When purchasing tickets, patrons will see sections ordered by price starting with the highest price and descending to the lowest.

@@ -3,41 +3,42 @@
   %h1= link_to @event.name, event_path(@event)
   %h6= l @show.datetime_local_to_event, :format => :long_with_day
 
-.context  
-  %ul.context-buttons
-    - unless @show.pending?
-      %li= button_to "Add Tickets", new_show_ticket_path(@show), :method => :get
-      %li= button_to "Box Office", new_event_show_sales_path(@event,@show), :method => :get
-    - if not @show.played?
-      - if not @show.published?
-        %li
-          = form_tag published_event_shows_path(@show.event) do
-            = hidden_field_tag :show_id, @show.id
-            = submit_tag "Publish"
-      - else
-        %li
-          = form_tag unpublished_event_shows_path(@show.event) do |form|
-            = hidden_field_tag :show_id, @show.id
-            = submit_tag "Unpublish"
-    %li= button_to "Door List", door_list_event_show_path(@event,@show), :method => :get
-  %ul.kv
-    %li
-      .key Venue
-      .value= "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state}"
-    %li
-      .key Producer
-      .value= @event.producer
-  = render :partial => "glance", :locals => { :report => @show.glance }
+.row
+  .span4  
+    %ul.context-buttons
+      - unless @show.pending?
+        %li= button_to "Add Tickets", new_show_ticket_path(@show), :method => :get
+        %li= button_to "Box Office", new_event_show_sales_path(@event,@show), :method => :get
+      - if not @show.played?
+        - if not @show.published?
+          %li
+            = form_tag published_event_shows_path(@show.event) do
+              = hidden_field_tag :show_id, @show.id
+              = submit_tag "Publish"
+        - else
+          %li
+            = form_tag unpublished_event_shows_path(@show.event) do |form|
+              = hidden_field_tag :show_id, @show.id
+              = submit_tag "Unpublish"
+      %li= button_to "Door List", door_list_event_show_path(@event,@show), :method => :get
+    %ul.kv
+      %li
+        .key Venue
+        .value= "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state}"
+      %li
+        .key Producer
+        .value= @event.producer
+    = render :partial => "glance", :locals => { :report => @show.glance }
 
-.document
-  - if @show.pending?
-    %h3 Tickets
-    %p= "You have not created tickets for this event.  Tickets will be created using the #{@show.chart.name} seating chart."
-    %h4= @show.chart.name
-    = render :partial => 'sections/section_table', :locals => { :chart => @show.chart, :include_link => false }
-    = form_tag built_event_shows_path(@show.event) do
-      = hidden_field_tag :show_id, @show.id
-      = submit_tag "Create Tickets"
+  .span8
+    - if @show.pending?
+      %h3 Tickets
+      %p= "You have not created tickets for this event.  Tickets will be created using the #{@show.chart.name} seating chart."
+      %h4= @show.chart.name
+      = render :partial => 'sections/section_table', :locals => { :chart => @show.chart, :include_link => false }
+      = form_tag built_event_shows_path(@show.event) do
+        = hidden_field_tag :show_id, @show.id
+        = submit_tag "Create Tickets"
 
-  - else
-    = render :partial => 'ticket_table', :locals => { :show => @show, :tickets => @tickets }
+    - else
+      = render :partial => 'ticket_table', :locals => { :show => @show, :tickets => @tickets }
