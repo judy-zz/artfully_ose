@@ -2,28 +2,31 @@
 - content_for :header do
   %h1 Confirm Price Change
 
-.context
-.document
-  #section
-    %h3 Tickets
-    %p= "You have selected the following #{pluralize @selected_tickets.count, "tickets"} to reprice:"
-    %ul
-      -@grouped_tickets.each do |section, prices|
-        %li
-          %h4= section
-          %ul.prices
-            -prices.each do |price, tickets|
-              %li
-                %div= "#{pluralize tickets.count, "ticket"}, at #{number_as_cents price} would change to #{number_as_cents @price}"
+.row
+  .span4
+    &nbsp;
 
-  %p
-    = "Are you sure you want to change the price of these tickets from their current price to #{number_as_cents @price} for the #{l @show.datetime_local_to_event} show of #{@show.event.name}?"
+  .span8
+    #section
+      %h3 Tickets
+      %p= "You have selected the following #{pluralize @selected_tickets.count, "tickets"} to reprice:"
+      %ul
+        -@grouped_tickets.each do |section, prices|
+          %li
+            %h4= section
+            %ul.prices
+              -prices.each do |price, tickets|
+                %li
+                  %div= "#{pluralize tickets.count, "ticket"}, at #{number_as_cents price} would change to #{number_as_cents @price}"
 
-  =form_tag change_prices_show_tickets_path, :method=>:put do
-    = hidden_field_tag :confirmed, :true
-    = hidden_field_tag :price, @price
-    - @selected_tickets.each do |st|
-      = hidden_field_tag "selected_tickets[]", st
-    = submit_tag "Confirm"
-  %p
-    =link_to "Cancel", event_show_path(@show.event, @show)
+    %p
+      = "Are you sure you want to change the price of these tickets from their current price to #{number_as_cents @price} for the #{l @show.datetime_local_to_event} show of #{@show.event.name}?"
+
+    =form_tag change_prices_show_tickets_path, :method=>:put do
+      = hidden_field_tag :confirmed, :true
+      = hidden_field_tag :price, @price
+      - @selected_tickets.each do |st|
+        = hidden_field_tag "selected_tickets[]", st
+      = submit_tag "Confirm"
+    %p
+      =link_to "Cancel", event_show_path(@show.event, @show)

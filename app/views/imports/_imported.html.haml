@@ -1,11 +1,13 @@
-.context
-  %h3 Imported Contacts
+.row
 
-  %p This import was created at #{@import.created_at}
-  %p #{pluralize @import.rows.count, "contact"} found in this import file
+  .span4
+    %h3 Imported Contacts
 
-  %p= link_to "Back to imports/exports", imports_path
+    %p This import was created at #{@import.created_at}
+    %p #{pluralize @import.rows.count, "contact"} found in this import file
 
-.document
+    %p= link_to "Back to imports/exports", imports_path
 
-  %h3 This file has been imported into Artful.ly.
+  .span8
+
+    %h3 This file has been imported into Artful.ly.

@@ -1,29 +1,31 @@
-.context
-  %h3 Validate Contacts
+.row
 
-  %p This import was created at #{import.created_at}
-  %p #{pluralize @import.rows.count, "contact"} found in this import file
+  .span4
+    %h3 Validate Contacts
 
-  %p= link_to "Approve this import", approve_import_path(import), :confirm => "Are you sure you want to approve this import?"
-  %p= link_to "Delete this import", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete
-  %p= link_to "Back to imports/exports", imports_path
+    %p This import was created at #{import.created_at}
+    %p #{pluralize @import.rows.count, "contact"} found in this import file
 
-.document
-  %h3 Viewing contacts #{@offset + 1} through #{[ import.rows.count, @offset + @length ].min}
+    %p= link_to "Approve this import", approve_import_path(import), :confirm => "Are you sure you want to approve this import?"
+    %p= link_to "Delete this import", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete
+    %p= link_to "Back to imports/exports", imports_path
 
-  .page-controller
-    - if @offset > 0
-      = link_to "Previous Page", import_path(import, :offset => [ 0, @offset - @length ].max, :length => @length), :class => :previous
-    - if @offset + @length < import.rows.count
-      = link_to "Next Page", import_path(import, :offset => @offset + @length, :length => @length), :class => :next
+  .span8
+    %h3 Viewing contacts #{@offset + 1} through #{[ import.rows.count, @offset + @length ].min}
 
-  %table.example-contact
+    .page-controller
+      - if @offset > 0
+        = link_to "Previous Page", import_path(import, :offset => [ 0, @offset - @length ].max, :length => @length), :class => :previous
+      - if @offset + @length < import.rows.count
+        = link_to "Next Page", import_path(import, :offset => @offset + @length, :length => @length), :class => :next
 
-    - import.headers.each_with_index do |field, index|
+    %table.example-contact
 
-      %tr
+      - import.headers.each_with_index do |field, index|
 
-        %td.label= field.capitalize
+        %tr
 
-        - import.rows[@offset, @length].each do |row|
-          %td.value= row[index]
+          %td.label= field.capitalize
+
+          - import.rows[@offset, @length].each do |row|
+            %td.value= row[index]

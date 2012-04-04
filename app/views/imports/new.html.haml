@@ -3,7 +3,7 @@
 - content_for :header do
   %h1 Import a new set of contacts
 
-.compact-spread
+.row
   %h3 Please supply a file
   %p
     = render :partial => "shared/error_messages", :locals => { :target => @import }
@@ -12,7 +12,7 @@
         :redirect => new_import_url,
         :acl => "public-read",
         :max_filesize => 50.megabytes,
-        :submit_button => '<div class="cancel-submit"><a href="/people">Cancel</a><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
+        :submit_button => '<div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
 
   %p #{link_to 'Download', template_imports_path} an empty CSV file with these headers already filled in.
 
@@ -24,7 +24,7 @@
     The first row of the file should be a row of headers specifying what each
     column represents. The list of valid column names is below. You may include
     any or all of these fields.
-  %table
+  %table.table
     %tr
       %td Email
       %td The contact's email address
