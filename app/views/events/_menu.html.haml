@@ -5,7 +5,7 @@
     %ul.accordian-menu
       %li= link_to 'About', edit_event_path(@event)
       %li= link_to 'Venue', edit_event_venue_path(@event)
-      %li= link_to 'Prices'
+      %li= link_to 'Prices', prices_event_path(@event)
       %li= link_to 'Image', image_event_path(@event)
       %li= link_to 'Messages'
   %li.accordian

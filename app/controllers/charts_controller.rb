@@ -32,11 +32,7 @@ class ChartsController < ApplicationController
     @chart = Chart.find(params[:id])
     authorize! :edit, @chart
     @chart.update_attributes(params[:chart])
-    if @chart.save
-      redirect_to @chart
-    else
-      render :edit and return
-    end
+    redirect_to prices_event_url(@chart.event)
   end
 
   def destroy

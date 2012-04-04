@@ -7,6 +7,7 @@ class Chart < ActiveRecord::Base
   has_many :shows
   has_many :sections, :order => 'price DESC'
   accepts_nested_attributes_for :sections, :reject_if => lambda { |a| a[:capacity].blank? }, :allow_destroy => true
+  after_create :create_first_section
 
   validates :name, :presence => true, :length => { :maximum => 255 }
 
@@ -25,6 +26,14 @@ class Chart < ActiveRecord::Base
 
   def dup!
     duplicate(:without => "id", :with => { :is_template => false })
+  end
+  
+  def create_first_section
+    if sections.empty?
+      self.sections.build({ :name => "General Admission", 
+                            :price => 0, 
+                            :capacity => 0 }).save
+    end
   end
 
   def assign_to(event)

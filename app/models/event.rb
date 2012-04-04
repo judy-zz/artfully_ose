@@ -5,6 +5,8 @@ class Event < ActiveRecord::Base
   has_many :charts
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
+  
+  after_create :create_default_chart
 
   has_attached_file :image,
     :storage => :s3,
@@ -37,6 +39,16 @@ class Event < ActiveRecord::Base
 
   def filter_charts(charts)
     charts.reject { |chart| already_has_chart(chart) }
+  end
+  
+  def create_default_chart
+    self.charts.build({ :name => self.name, 
+                        :organization => self.organization, 
+                        :is_template => false }).save
+  end
+  
+  def default_chart
+    charts.first
   end
 
   def upcoming_shows(limit = 5)

@@ -7,14 +7,8 @@
     =render :partial=>'menu'
   .span9
     = render "shared/error_messages", :target => @event
-    / need to move this to the controller
-    / and have @chart load from @event (find or create?)
-    - @chart = @event.charts.build
-    - @chart.sections.build
-    /
-    /
 
-    = form_for( @chart, :html => { :class => 'form-horizontal' } ) do |f|
+    = form_for( @event.default_chart, :html => { :class => 'form-horizontal' } ) do |f|
       %fieldset
         %legend Ticket Types
 
