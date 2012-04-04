@@ -9,7 +9,7 @@
     .controls
       .input-prepend
         %span.add-on $
-        =f.text_field :price, :placeholder => '0.00', :class => 'input-small'
+        =f.text_field :price, :placeholder => '0.00', :class => 'input-small', :value => number_to_dollars(f.object.price)
 
   .control-group
     =f.label :capacity, "Capacity", :class => 'control-label'

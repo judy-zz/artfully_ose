@@ -8,11 +8,15 @@
       %li= link_to 'Prices', prices_event_path(@event)
       %li= link_to 'Image', image_event_path(@event)
       %li= link_to 'Messages'
-  %li.accordian
-    = link_to 'Shows'
+  %li.accordian.active
+    = link_to 'Shows', event_shows_path(@event)
     %ul.accordian-menu
-      -# @shows.each do |show|
-      -#  %li=link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show)
+      %li
+        %a{:href => new_event_show_path(@event), :class => 'btn'}
+          %i.icon-plus-sign
+          New
+      - @event.shows.each do |show|
+        =link_to show.datetime_local_to_event, event_show_path(@event, show)
 
   %li.accordian.active
     = link_to 'Share & Sell'

@@ -31,6 +31,19 @@ class ChartsController < ApplicationController
   def update
     @chart = Chart.find(params[:id])
     authorize! :edit, @chart
+    
+    #
+    # HACK: The move to bootstrap left us with currency submission in the form os "DD.CC" which 
+    # Artfully interpreted as DD.00.  
+    # This hack converts DD.CC to DDCC
+    #   
+    params[:chart][:sections_attributes].each do |index, section_hash|
+      new_price = (section_hash['price'].to_f * 100).to_i
+      
+      puts "#{section_hash['price']} > #{new_price}"
+      section_hash['price'] = new_price
+    end
+    
     @chart.update_attributes(params[:chart])
     redirect_to prices_event_url(@chart.event)
   end

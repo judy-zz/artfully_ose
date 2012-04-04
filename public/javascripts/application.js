@@ -258,7 +258,7 @@ function activateControls() {
         form = $(this).closest('form'),
         hiddenCurrency = $(document.createElement('input'));
 
-    input.maskMoney({showSymbol:true, symbolStay:true, allowZero:true, symbol:"$"});
+    input.maskMoney({allowZero:true});
     input.attr({"id":"old_" + name, "name":"old_" + name});
     hiddenCurrency.attr({'name': name, 'type': 'hidden'}).appendTo(form);
 

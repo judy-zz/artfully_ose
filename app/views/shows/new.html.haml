@@ -1,0 +1,19 @@
+- in_section :events
+- content_for :header do
+  =render :partial=>'events/header'
+
+.row
+  .span3
+    =render :partial=>'events/menu'
+  .span9
+    = render "shared/error_messages", :target => @event
+    %h3 Add a show
+    .row-fluid
+      .span8.offset2
+        = form_for @show, :url => event_shows_path(@event, @show) do |f|
+          .control-group
+            = f.label "something"
+            .controls
+              = f.text_field :datetime, :value => l(@show.datetime_local_to_event, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+          
+            

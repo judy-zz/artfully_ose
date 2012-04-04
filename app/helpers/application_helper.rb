@@ -67,9 +67,14 @@ module ApplicationHelper
     str += " (#{number_as_cents item.nongift_amount} Non-deductible)" unless item.nongift_amount.nil?
     str
   end
+  
+  #This method will not prepend the $
+  def number_to_dollars(cents)
+    cents.to_i / 100.00
+  end
 
   def number_as_cents(cents)
-    number_to_currency(cents.to_i / 100.00)
+    number_to_currency(number_to_dollars(cents))
   end
 
   def sorted_us_state_names
