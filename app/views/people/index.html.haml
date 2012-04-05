@@ -15,4 +15,4 @@
       &nbsp;
     -else
       = render :partial => 'list', :locals => { :people => @people } unless @people.empty?
-      = will_paginate @people
+      = will_paginate @people, :inner_window => 2, :outer_window => 0

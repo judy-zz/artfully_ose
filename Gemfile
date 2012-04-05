@@ -16,7 +16,8 @@ gem 'acts-as-taggable-on', '~>2.1.0'
 gem 'haml'
 gem 'sass'
 gem 'dynamic_form'
-gem 'will_paginate', '~> 3.0.beta'
+gem 'will_paginate', '~> 3.0'
+gem 'bootstrap-will_paginate'
 gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
@@ -74,6 +75,9 @@ group :test, :development do
 end
 
 group :test do
+  gem 'autotest-rails'
+  gem 'autotest-fsevent'
+  gem 'autotest-growl'
   gem 'cucumber-rails'
   gem 'database_cleaner'
 end
