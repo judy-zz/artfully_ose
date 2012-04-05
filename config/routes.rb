@@ -54,6 +54,9 @@ Artfully::Application.routes.draw do
   end
 
   devise_for :users
+  devise_scope :user do
+    get "sign_up", :to => "devise/registrations#new"
+  end
   devise_for :admins
 
   resources :organizations do
@@ -168,8 +171,6 @@ Artfully::Application.routes.draw do
   match '/pricing' => 'pages#pricing'
   match '/features' => 'pages#features'
   match '/updates' => 'pages#updates'
-  match '/sign_up' => 'pages#sign_up'
-  match '/sign_up_form' => 'pages#sign_up_form'
   match '/pages/tou' => 'pages#tou', :as => 'tou'
   match '/pages/user_agreement' => 'pages#user_agreement', :as => 'user_agreement'
   match '/pages/privacy' => 'pages#privacy', :as => 'privacy'

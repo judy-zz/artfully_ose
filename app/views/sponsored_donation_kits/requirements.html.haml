@@ -1,13 +1,14 @@
 - content_for :header do
   %h1 Sponsored Donation Kit
 
-.context
-  - @kit.errors[:requirements].each do |error|
-    %p= error
-.document
-  #requirements
-    %h3 Requirements
-    - if !@kit.organization.connected?
-      = render :partial => 'organizations/connection_form', :locals => { :organization => @kit.organization, :fa_user => FA::User.new, :back => true}
-    - elsif @kit.organization.website.blank?
-      = render :partial => 'organizations/website_form', :locals => { :organization => @kit.organization }
+.row
+  .span4
+    - @kit.errors[:requirements].each do |error|
+      %p= error
+  .span8
+    #requirements
+      %h3 Requirements
+      - if !@kit.organization.connected?
+        = render :partial => 'organizations/connection_form', :locals => { :organization => @kit.organization, :fa_user => FA::User.new, :back => true}
+      - elsif @kit.organization.website.blank?
+        = render :partial => 'organizations/website_form', :locals => { :organization => @kit.organization }

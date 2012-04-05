@@ -2,7 +2,7 @@
 - content_for :header do
   %h1 Ticketing and Events
 
-.document
+.row
   %p
     = "Are you sure you want to comp #{pluralize(@selected_tickets.size, 'ticket')}"
     = " to \"#{@comp.recipient.first_name} #{@comp.recipient.last_name}\""

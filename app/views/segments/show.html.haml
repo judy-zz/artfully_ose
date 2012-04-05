@@ -2,12 +2,15 @@
 - content_for :header do
   %h1= @segment.name
 
-.context
-  %h3 Export
-  %p= "Export to this list segment to #{link_to('CSV', segment_path(@segment, :format => :csv))}.".html_safe
-.document
-  %ul.people-list
-    - @segment.people.each do |person|
-      %li
-        .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
-        .email= person.email
+.row
+
+  .span4
+    %h3 Export
+    %p= "Export to this list segment to #{link_to('CSV', segment_path(@segment, :format => :csv))}.".html_safe
+
+  .span8
+    %ul.people-list
+      - @segment.people.each do |person|
+        %li
+          .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
+          .email= person.email
