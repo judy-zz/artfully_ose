@@ -16,8 +16,8 @@ gem 'acts-as-taggable-on', '~>2.1.0'
 gem 'haml'
 gem 'sass'
 gem 'dynamic_form'
-gem 'will_paginate', '3.0.pre2'
-#gem 'bootstrap-will_paginate'
+gem 'will_paginate', '~> 3.0', :require => [ "will_paginate", "will_paginate/array" ]
+gem 'bootstrap-will_paginate'
 gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
@@ -72,6 +72,7 @@ group :test, :development do
   gem 'awesome_print', :require => 'ap'
   gem 'faker'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
+  gem 'sunspot_solr'
 end
 
 group :test do
