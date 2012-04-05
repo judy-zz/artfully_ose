@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120309174706) do
+ActiveRecord::Schema.define(:version => 20120405225653) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.datetime "updated_at"
     t.string   "old_mongo_id"
   end
+
+  add_index "addresses", ["person_id"], :name => "index_addresses_on_person_id"
 
   create_table "admin_stats", :force => true do |t|
     t.integer  "users"
@@ -97,8 +99,6 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.string   "transaction_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "type"
-    t.string   "reseller_id"
   end
 
   create_table "charts", :force => true do |t|
@@ -212,9 +212,6 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
-    t.boolean  "reseller_settled"
-    t.integer  "reseller_net"
-    t.integer  "reseller_order_id"
   end
 
   create_table "kits", :force => true do |t|
@@ -271,7 +268,6 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.string   "type"
     t.string   "payment_method"
     t.text     "special_instructions"
-    t.integer  "reseller_order_id"
   end
 
   create_table "organizations", :force => true do |t|
@@ -321,48 +317,6 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.datetime "updated_at"
   end
 
-  create_table "reseller_attachments", :force => true do |t|
-    t.string   "image_file_name"
-    t.string   "image_content_type"
-    t.integer  "image_file_size"
-    t.datetime "image_updated_at"
-    t.integer  "reseller_profile_id"
-    t.integer  "attachable_id"
-    t.string   "attachable_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "comment"
-  end
-
-  create_table "reseller_events", :force => true do |t|
-    t.integer  "reseller_profile_id"
-    t.string   "name"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "venue_id"
-    t.string   "producer"
-    t.string   "url"
-  end
-
-  create_table "reseller_profiles", :force => true do |t|
-    t.integer  "organization_id"
-    t.text     "url"
-    t.text     "description"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "fee",             :default => 100
-  end
-
-  create_table "reseller_shows", :force => true do |t|
-    t.string   "state"
-    t.datetime "datetime"
-    t.integer  "reseller_event_id"
-    t.integer  "reseller_profile_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "sections", :force => true do |t|
     t.text    "name"
     t.integer "capacity"
@@ -403,6 +357,9 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.string   "old_mongo_id"
   end
 
+  add_index "shows", ["event_id"], :name => "index_shows_on_event_id"
+  add_index "shows", ["organization_id"], :name => "index_shows_on_organization_id"
+
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
     t.integer  "taggable_id"
@@ -418,18 +375,6 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
 
   create_table "tags", :force => true do |t|
     t.string "name"
-  end
-
-  create_table "ticket_offers", :force => true do |t|
-    t.integer  "organization_id"
-    t.integer  "show_id"
-    t.integer  "section_id"
-    t.integer  "reseller_profile_id"
-    t.string   "status",              :default => "creating", :null => false
-    t.integer  "count",               :default => 0,          :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "rejection_reason"
   end
 
   create_table "tickets", :force => true do |t|
@@ -448,10 +393,12 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.integer  "section_id"
   end
 
+  add_index "tickets", ["organization_id"], :name => "index_tickets_on_organization_id"
+  add_index "tickets", ["show_id"], :name => "index_tickets_on_show_id"
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
+    t.string   "email",                               :default => "",   :null => false
     t.string   "encrypted_password",   :limit => 128, :default => ""
     t.string   "reset_password_token"
     t.string   "remember_token"
@@ -470,6 +417,7 @@ ActiveRecord::Schema.define(:version => 20120309174706) do
     t.datetime "invitation_sent_at"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.boolean  "newsletter_emails",                   :default => true, :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
