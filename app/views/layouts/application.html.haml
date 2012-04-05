@@ -3,6 +3,7 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
+    = include_stylesheets :vendor, :media => :screen
     = include_stylesheets :application, :media => :screen
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag

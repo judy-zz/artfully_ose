@@ -29,16 +29,19 @@ class ShowsController < ApplicationController
 
   def create
     @event = Event.find(params[:event_id])
-    @show = @event.shows.build(params[:show].merge(:organization => current_organization))
+    @show = Show.new(params[:show].merge(:organization => current_organization))
     @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
-
-    if @show.save
-      flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
-      redirect_to event_path(@event)
-    else
-      flash[:error] = "There was a problem creating your show."
-      render :new
-    end
+    
+    puts @show.charts
+    
+    # 
+    # if @show.save
+    #   flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
+    #   redirect_to event_path(@event)
+    # else
+    #   flash[:error] = "There was a problem creating your show."
+    #   render :new
+    # end
   end
 
   def show

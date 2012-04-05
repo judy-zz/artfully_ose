@@ -47,6 +47,9 @@ class Event < ActiveRecord::Base
                         :is_template => false }).save
   end
   
+  #
+  # Hack McHackerson. When we go back to multiple charts per event, this is where we start
+  #
   def default_chart
     charts.first
   end
@@ -73,7 +76,9 @@ class Event < ActiveRecord::Base
 
   def next_show
     shows.build(:datetime => Show.next_datetime(shows.last))
-    shows.pop
+    show = shows.pop
+    show.chart = default_chart.dup!
+    show
   end
 
   def as_widget_json(options = {})
