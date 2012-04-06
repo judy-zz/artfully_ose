@@ -7,7 +7,7 @@
       .span3
         .bordered= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'user-grav', :gravatar => { :size => 48 })
       .span9
-        .email= user.email
+        .email= truncate(user.email)
         .remove
           - if user == current_user.current_organization.owner
             Organization Administrator
