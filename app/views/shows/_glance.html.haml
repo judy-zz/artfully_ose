@@ -2,34 +2,17 @@
 - if report.nil?
   %p Report not yet available.
 - else
-  %ul
-    %li
-      %h4 Revenue
-      %ul.report
-        %li
-          %span.stat Total Sales
-          %span.current= number_as_cents(report.sales_total)
-        %li
-          %span.stat Sold Today
-          %span.current= number_as_cents(report.sales_today)
-        %li
-          %span.stat Potential Remaining
-          %span.current= number_as_cents(report.potential_remaining)
-        %li
-          %span.stat Original Potential
-          %span.current= number_as_cents(report.potential_original)
-    %li
-      %h4 Tickets
-      %ul.report
-        %li
-          %span.stat On Sale
-          %span.current= report.available_total
-        %li
-          %span.stat Comped
-          %span.current= report.comped_total
-        %li
-          %span.stat Sold
-          %span.current= report.sold_total
-        %li
-          %span.stat Sold Today
-          %span.current= report.sold_today
+  %table.table.table-condensed
+    %tbody
+      %tr
+        %td Sold
+        %td="#{report.sold_total} tickets"
+        %td= number_as_cents(report.sales_total)
+      %tr
+        %td Potential Remaining
+        %td
+        %td= number_as_cents(report.potential_remaining)
+      %tr
+        %td Original Potential
+        %td
+        %td= number_as_cents(report.potential_original)

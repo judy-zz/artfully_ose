@@ -6,6 +6,13 @@
     =render :partial=>'menu'
   .span9
     .row-fluid
+      .span6    
+        = render :partial => "glance", :locals => { :report => @event.glance }       
+
+      .span6
+        %h3 Next Showing
+        = render :partial => "day_date_show", :locals => { :show => @event.next_public_show, :message => "There are no upcoming shows" }
+    .row-fluid
       .span6
         #description
           %h3 Description
@@ -16,8 +23,9 @@
               #text
                 =link_to 'Add an event description', edit_event_path(@event)
                 %p
-                  This will be displayed to patrons when purchasing tickets
-        
+                  This will be displayed to patrons when purchasing tickets 
+      .span6
+        %h3 Venue
         #venue.row-fluid
           .span6
             -unless @event.venue.city.blank?
@@ -32,8 +40,3 @@
             %strong=@event.venue.name
             %div=@event.venue.street_as_string
             %div=@event.venue.city_state_zip_as_string
-      .span6
-        = render :partial => "glance", :locals => { :report => @event.glance }
-        -unless @event.next_public_show.nil?
-          %h3 Next Showing
-          = render :partial => "day_date_show", :locals => { :show => @event.next_public_show, :message => "There are no upcoming shows" }

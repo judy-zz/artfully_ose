@@ -7,7 +7,7 @@
       %li= link_to 'Venue', edit_event_venue_path(@event)
       %li= link_to 'Prices', prices_event_path(@event)
       %li= link_to 'Image', image_event_path(@event)
-      %li= link_to 'Messages'
+      %li= link_to 'Messages', messages_event_path(@event)
   %li.accordian.active
     = link_to 'Shows', event_shows_path(@event)
     %ul.accordian-menu
@@ -23,4 +23,3 @@
     %ul.accordian-menu
       %li= link_to 'Storefront', storefront_link_event_path(@event)
       %li= link_to 'On Your Site', widget_event_path(@event)
-      %li= link_to 'Box Office'

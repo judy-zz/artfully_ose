@@ -9,7 +9,7 @@ class TicketsController < ApplicationController
     @show = Show.find(params[:show_id])
     when_section_selected do
       @section = Section.find(params[:section_id])
-      @summary = @section.summarize(@show.id)
+      @summary = @section.summarize
     end 
   end
   

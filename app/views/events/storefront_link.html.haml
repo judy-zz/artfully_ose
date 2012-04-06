@@ -8,9 +8,9 @@
   .span9
     .row
       .span10.offset1
-        %h1 Sell Tickets From Our Store
+        %h1 Online storefront
         
         %p#storefront-text Anyone can buy tickets at:
         
         %blockquote#storefront-link
-          =store_event_url(@event)
+          =link_to "#{store_event_url(@event)}".html_safe, store_event_url(@event)

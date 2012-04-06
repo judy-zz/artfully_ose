@@ -5,9 +5,9 @@
 .row
   .span4
     %h3 Sections
-    %ul.selection
+    %ul.nav.nav-pills.nav-stacked
       - @show.chart.sections.each do |section|
-        %li{:class => @section && section.id == @section.id ? :selected : :unselected }
+        %li{:class => @section && section.id == @section.id ? :active : :unselected }
           = link_to section.name,  new_show_ticket_path(@show, :section_id => section.id)
 
   .span8
@@ -17,45 +17,45 @@
       #section
         %h3= @section.name
         %p= "This will add tickets to the #{@section.name} section of the #{l(@show.datetime_local_to_event, :format => :short)} showing."
-        = form_tag show_tickets_path, :class => :single_field do
+        = form_tag show_tickets_path, :class => 'form-inline' do
           = hidden_field_tag :section_id, @section.id
-          .stack
-            .label= label_tag(:quantity)
-            .element= text_field_tag(:quantity, @quantity)
-            .submit= submit_tag "Create Tickets", :class => "btn"
-      .of2{:style => 'float:left'}
-        %h4 About this section
-        %ul.report{:style => 'width:75%'}
-          %li
-            %span.stat Price
-            %span.current=number_as_cents @section.price
-          %li
-            %span.stat Total Tickets
-            %span.current=@summary.total
-          %li
-            %span.stat On Sale
-            %span.current= @summary.available
-          %li
-            %span.stat Sold
-            %span.current=@summary.sold
-          %li
-            %span.stat Comped
-            %span.current=@summary.comped
-      .of2{:style => 'float:left'}
-        %h4 About this show
-        %ul.report{:style => 'width:75%'}
-          %li
-            %span.stat Potential Remaining
-            %span.current= number_as_cents(@show.glance.potential_remaining)
-          %li
-            %span.stat Original Potential
-            %span.current= number_as_cents(@show.glance.potential_original)
-          %li
-            %span.stat On Sale
-            %span.current= @show.glance.available_total
-          %li
-            %span.stat Sold
-            %span.current= @show.glance.sold_total
-          %li
-            %span.stat Comped
-            %span.current= @show.glance.comped_total
+          = label_tag(:quantity)
+          = text_field_tag(:quantity, @quantity)
+          = submit_tag "Create Tickets", :class => "btn"
+      .row-fluid
+        .span6
+          %h6 About this section
+          %table.table
+            %tr
+              %td Price
+              %td=number_as_cents @section.price
+            %tr
+              %td Total Tickets
+              %td=@summary.total
+            %tr
+              %td On Sale
+              %td= @summary.available
+            %tr
+              %td Sold
+              %td=@summary.sold
+            %tr
+              %td Comped
+              %td=@summary.comped
+        .span6
+          %h6 About this show
+          %table.table
+            %tr
+              %td Potential Remaining
+              %td= number_as_cents(@show.glance.potential_remaining)
+            %tr
+              %td Original Potential
+              %td= number_as_cents(@show.glance.potential_original)
+            %tr
+              %td On Sale
+              %td= @show.glance.available_total
+            %tr
+              %td Sold
+              %td= @show.glance.sold_total
+            %tr
+              %td Comped
+              %td= @show.glance.comped_total

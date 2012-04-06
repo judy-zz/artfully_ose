@@ -67,7 +67,7 @@ ul#memberships .email {
   width: 75px;
   text-align: center; }
   .no-image a, .no-image #text {
-    padding-top: 30px;
+    padding-top: 27px;
     font-weight: bold;
     color: #666666; }
   .no-image a {
@@ -147,3 +147,17 @@ ul#recent-list li {
 
 .section-fields {
   margin-bottom: 40px; }
+
+#show-headline {
+  background-color: #eeeeee;
+  padding: 15px;
+  margin-bottom: 15px; }
+
+form.sprited {
+  display: none; }
+
+tr.published form.published, tr.unpublished form.unpublished, tr.built form.built, tr.pending form.pending, tr.destroyable form.destroyable {
+  display: inline; }
+
+.dialog {
+  display: none; }

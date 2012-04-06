@@ -18,12 +18,12 @@ class Section < ActiveRecord::Base
     Section.new(self.attributes.reject { |key, value| key == 'id' })
   end
 
-  def summarize(show_id)
-    tickets = Ticket.where(:show_id => show_id).where(:section_id => id)
+  def summarize
+    tickets = Ticket.where(:show_id => chart.show.id).where(:section_id => id)
     @summary = SectionSummary.for_tickets(tickets)
   end
   
-  def summary(show_id)
-    @summary || summarize(show_id)
+  def summary
+    @summary || summarize
   end
 end

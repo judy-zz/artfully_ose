@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   respond_to :html, :json
 
-  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices ]
+  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages ]
   before_filter :upcoming_shows, :only => :show
   after_filter :save_event_to_session, :except => [:destroy, :index]
   after_filter :clear_event_from_session, :only => :destroy
@@ -97,6 +97,9 @@ class EventsController < ApplicationController
   end
   
   def prices
+  end
+  
+  def messages
   end
 
   private

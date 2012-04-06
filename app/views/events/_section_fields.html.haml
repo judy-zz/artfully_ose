@@ -3,6 +3,11 @@
     =f.label :name, "Name", :class => 'control-label'
     .controls
       =f.text_field :name, :placeholder => 'Type 1'
+      
+  .control-group
+    =f.label :description, "Description", :class => 'control-label'
+    .controls
+      =f.text_area :description, :size => '10x5'
 
   .control-group
     =f.label :price, "Price", :class => 'control-label'

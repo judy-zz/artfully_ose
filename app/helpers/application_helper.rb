@@ -13,6 +13,11 @@ module ApplicationHelper
     end
   end
   
+  #For use with Bootstraps icon %i classes
+  def icon_link_to(text, href, icon, class_names, id)
+    "<a href='#{href}' class='#{class_names}' id='#{id}'><i class='#{icon}'></i> #{text}</a>".html_safe
+  end
+  
   #
   # just name the image, this method will prepend the path and append the .png
   # icon_tag('111-logo')
