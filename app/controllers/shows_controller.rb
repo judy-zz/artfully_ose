@@ -9,7 +9,7 @@ class ShowsController < ApplicationController
   end
 
   def index
-    authorize :manage, @event
+    authorize! :manage, @event
     @shows = @event.shows.paginate(:page => params[:page], :per_page => 10)
     @next_show = @event.next_show
   end

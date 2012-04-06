@@ -103,7 +103,7 @@ Artfully::Application.routes.draw do
     get :storefront_link,  :on => :member
     get :prices,  :on => :member
     get :image,   :on => :member
-    resources :shows, :except => :index do
+    resources :shows do
       resource :sales, :only => [:new, :create, :show, :update]
       member do
         get :door_list

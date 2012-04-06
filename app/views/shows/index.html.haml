@@ -1,0 +1,18 @@
+- in_section :events
+- content_for :header do
+  =render :partial=>'events/header'
+
+.row
+  .span3
+    - in_sub_section :shows
+    =render :partial=>'events/menu'
+  .span9
+    .row
+      .span4
+        = render "shared/error_messages", :target => @event
+        %ul
+          - @shows.each do |show|
+            %li= link_to show.datetime_local_to_event, event_show_path(@event, show)
+
+      .span8
+        =image_tag(@event.image.url) if @event.image?        
