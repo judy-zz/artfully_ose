@@ -5,4 +5,4 @@
   .span8.offset4
     %p
       You meet the requirements for this kit.
-      = button_to "Activate #{@kit.type.underscore.titleize}", kits_path(:type => @kit.type.underscore), :method => :post
+      = button_to "Activate #{@kit.type.underscore.titleize}", kits_path(:type => @kit.type.underscore), :method => :post, :class => "btn"

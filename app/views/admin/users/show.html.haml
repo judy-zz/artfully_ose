@@ -9,7 +9,7 @@
       = f.hidden_field :reset_password, :value => true
       = f.submit "Send Password Reset Instructions", :class => "btn"
     %h3 Sign in
-    = button_to "Sign in as #{@user.email}", sessions_admin_user_path(@user)
+    = button_to "Sign in as #{@user.email}", sessions_admin_user_path(@user), :class => "btn"
   .span8
     %h3 Suspend User
     - if nil == @user.suspended_at

@@ -1,7 +1,7 @@
 %h3="#{@person.first_name} #{@person.last_name}"
 
 %ul.context-buttons
-  %li= button_to "Edit", edit_person_path(@person), :method => :get
+  %li= button_to "Edit", edit_person_path(@person), :method => :get, :class => "btn"
 
 %h4 Contact Information
 %ul.kv.editable
@@ -37,8 +37,8 @@
 %h4 Mailing Address
 - if @person.address.present?
   = render @person.address
-  = button_to "Edit", "#", :id => "update-mailing-address"
+  = button_to "Edit", "#", :id => "update-mailing-address", :class => "btn"
 - else
-  = button_to "Add", "#", :id => "create-mailing-address"
+  = button_to "Add", "#", :id => "create-mailing-address", :class => "btn"
 
 = render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address || @person.build_address }

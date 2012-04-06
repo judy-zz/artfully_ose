@@ -8,8 +8,8 @@
     %ul.context-buttons
       - unless session[:event_id].nil?
         %li
-          = button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get
-      %li= button_to "New Chart", new_chart_path, :method => :get
+          = button_to "&#8617; Return to event".html_safe, event_path(session[:event_id]), :method => :get, :class => "btn"
+      %li= button_to "New Chart", new_chart_path, :method => :get, :class => "btn"
 
   .span8
     %h3 Charts
