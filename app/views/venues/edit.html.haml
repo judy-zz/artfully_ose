@@ -4,6 +4,7 @@
 
 .row
   .span3
+    - in_sub_section :details
     =render :partial=>'events/menu'
   .span9
     = form_for( [@event, @venue], :html => { :class => 'form-horizontal' }) do |form|
