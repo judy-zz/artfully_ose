@@ -3,10 +3,10 @@
   %h1= t(".heading", :default => "Statement Reports")
 
 .row
-  .span4
+  .span3
     %h3 Shows
     = render :partial => "played_shows", :locals => { :event => @event, :played => @played }
-  .span8
+  .span9
     -if @statement.nil?
       %p
         Please select a show
