@@ -41,8 +41,9 @@
             
         %li.divider-vertical
         %li.dropdown
-          = gravatar_image_tag(current_user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32, :default => :identicon })
+          = gravatar_image_tag(current_user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
         %li.dropdown
           = nav_dropdown current_user.email
           %ul.dropdown-menu
+            %li= link_to "My Organization", organization_path(current_user.current_organization)
             %li= link_to "Sign Out", destroy_user_session_path

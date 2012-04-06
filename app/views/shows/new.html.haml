@@ -13,7 +13,7 @@
       .span8.offset2
         = form_for @show, :html => { :class => 'form-horizontal' }, :url => event_shows_path(@event, @show) do |show_form|
           .control-group
-            = show_form.label :datetime, :class => 'control-label'
+            = show_form.label "Date and time", :class => 'control-label'
             .controls
               = show_form.text_field :datetime, :value => l(@show.datetime_local_to_event, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
         

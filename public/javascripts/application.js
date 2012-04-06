@@ -66,6 +66,9 @@ $(document).ready(function() {
 	/*********** NEW BOOTSTRAP JS ***********/
 	$(".alert").alert()
 	
+	$('.section-price-disabled').popover({trigger:'manual'})
+	                            .click(function(){ $(this).popover('toggle') });
+	
 	/*********** NEW ARTFULLY JS ************/
 	
 	/*********** EXISTING ARTFUL.LY JS ******/

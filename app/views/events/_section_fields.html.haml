@@ -14,7 +14,11 @@
     .controls
       .input-prepend
         %span.add-on $
-        =f.text_field :price, :placeholder => '0.00', :class => 'input-small', :value => number_to_dollars(f.object.price)
+        - if can? :create, :paid_events
+          =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price', :value => number_to_dollars(f.object.price)
+        - else
+          %span.section-price-disabled{'data-content' => "#{link_to "Enable paid ticketing", organization_path(current_user.current_organization)} to set prices on your events".html_safe}
+            =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price-disabled disabled', :value => number_to_dollars(f.object.price), :disabled => 'disabled'
 
   .control-group
     =f.label :capacity, "Capacity", :class => 'control-label'

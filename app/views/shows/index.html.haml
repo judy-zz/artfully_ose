@@ -20,6 +20,12 @@
         %th Available
         %th Sold
         %th Comped
+      -if @shows.empty?
+        %tr
+          %td{:colspan => 5}
+            .no-image.full
+              #text
+                =link_to 'You have no shows scheduled.  Add one now.', new_event_show_path(@event, @show)
       -@shows.each do |show|
         %tr{ :class => [show.state, show.destroyable? ? "destroyable" : "" ] }
           %td
@@ -28,4 +34,5 @@
             =render :partial => "shows/controls", :locals => { :show => show }
           %td.available_value= show.glance.available_total
           %td.gross_value= show.glance.sold_total
-          %td.comped_value= show.glance.comped_total          
+          %td.comped_value= show.glance.comped_total
+                  

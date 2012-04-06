@@ -16,7 +16,7 @@
           %i.icon-plus-sign.icon-gray
           Add show
       - @event.shows.each do |show|
-        = active_link_to show.datetime_local_to_event, event_show_path(@event, show)
+        = active_link_to l(show.datetime_local_to_event, :format => :day_time), event_show_path(@event, show)
 
   %li.accordian{:class => active?(:share)}
     = link_to 'Share & Sell', storefront_link_event_path(@event)
