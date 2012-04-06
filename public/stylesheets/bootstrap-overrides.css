@@ -112,7 +112,6 @@ section {
   color: #555555;
   background-color: #ffffff;
   border: 1px solid #ddd;
-  border-bottom-color: transparent;
   cursor: default;
 }
 .nav-accordian > li > a:hover {
@@ -176,6 +175,14 @@ section {
   border-radius: 0;
 }
 .accordian-menu > li > a:hover {
+  background: #F5F5F5;
+  text-decoration: none;
+  z-index: 2;
+}
+.accordian-menu > li > a.add  {
+  background: none;
+}
+.accordian-menu > li > a.add:hover {
   background: #F5F5F5;
   text-decoration: none;
   z-index: 2;
