@@ -1,3 +1,4 @@
+/*
 
 $(document).bind('grouped-form-ready', function(){
     $('#ticket-table').dataTable({
@@ -90,3 +91,5 @@ $(document).ready( function(){
 	    "sDom": '<"H"lf>t<"F"ip>'
 	});
 });
+
+*/
