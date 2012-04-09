@@ -83,6 +83,7 @@ stylesheets:
     - public/stylesheets/bootstrap.css
     - public/stylesheets/bootstrap-overrides.css
     - public/stylesheets/application.css
+    - public/stylesheets/box-office.css
 
   vendor:
     - public/stylesheets/jquery/jquery.gritter.css

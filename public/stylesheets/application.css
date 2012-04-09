@@ -164,3 +164,6 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 .dialog {
   display: none; }
+
+.hidden {
+  display: none !important; }
