@@ -2,7 +2,9 @@
   %h1 Organizations
 
 .row
-  .span12
+  .span3
+    = render :partial => "admin/stats/stats"
+  .span9
     #organizations
       %table.table
         %thead
@@ -22,4 +24,4 @@
               %td= organization.memberships.size
               %td= check_mark if organization.connected?
               %td= check_mark if organization.has_active_fiscally_sponsored_project?
-      =will_paginate @organizations
+      = will_paginate @organizations

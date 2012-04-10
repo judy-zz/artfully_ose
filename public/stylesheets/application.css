@@ -205,6 +205,9 @@ ul#recent-list li {
   padding: 15px;
   margin-bottom: 15px; }
 
+#admin #heading h1 {
+  margin-bottom: 25px; }
+
 form.sprited {
   display: none; }
 
@@ -219,3 +222,17 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 #contact-information #image {
   margin-right: 10px; }
+
+ul.report li {
+  clear: both; }
+ul.report span.stat {
+  display: inline-block;
+  font-weight: bold;
+  width: 100px;
+  text-align: left;
+  margin: 0px; }
+ul.report span.current {
+  display: inline-block;
+  width: 75px;
+  text-align: right;
+  margin: 0px; }
