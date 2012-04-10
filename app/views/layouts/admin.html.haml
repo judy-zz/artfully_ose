@@ -9,7 +9,7 @@
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
 
-  %body
+  %body{:id => "admin"}
     #header
       = render 'admin/shared/menu'
     .container
@@ -20,3 +20,4 @@
 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
     = include_javascripts :vendor, :application, :custom, :bootstrap
+    = yield :custom_js
