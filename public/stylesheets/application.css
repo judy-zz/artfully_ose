@@ -166,8 +166,8 @@ ul#event-list li.event-list-item {
 ul.mini-stats li {
   line-height: 20px; }
 
-ul.kv li .key {
-  font-weight: bold; }
+ul.kv li {
+  margin-bottom: 10px; }
 
 ul#recent-list li {
   margin-bottom: 10px; }

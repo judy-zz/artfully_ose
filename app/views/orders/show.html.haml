@@ -1,11 +1,11 @@
 - in_section :transactions
 - content_for :header do
-  %h1 Orders & Donations
+  %h1="Order #{@order.id}"
 
 .row
-  .span4
+  .span3
     = render :partial => 'order_sidebar', :locals => { :order => @order, :person => @person, :total => @total }
-  .span8
+  .span9
     - unless @order.all_items.empty?
       = render :partial => 'refunds/grouped_form', :locals => { :order => @order }
       = render :partial => 'exchanges/grouped_form', :locals => { :order => @order }

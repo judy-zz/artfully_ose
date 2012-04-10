@@ -33,7 +33,7 @@
     = form.text_field(:number, :placeholder => "555-123-1234", :class => 'span6')
     = form.submit "Add", :class => "btn span2"
 
-%h6 Mailing Address
+%h6 Address
 - if @person.address.present?
   = render @person.address
   = button_to "Edit", "#", :id => "update-mailing-address", :class => "btn"
