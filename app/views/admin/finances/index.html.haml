@@ -1,59 +1,60 @@
 - content_for :header do
   %h1 Finance Report
-.spread
-  %ul.inline
+.row
+  .span12
     =form_tag admin_finances_path, :method => :get do
-      %li
-        .key= label_tag :start_date
-        .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-      %li
-        .key= label_tag :end_date
-        .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-      %li{:style => 'padding-top:14px'}
-        = submit_tag "Search", :class => "btn"
-  .clear
-.spread
-  %h3 Summary
-  %table.standalone.rowline
-    %tbody
-      %tr
-        %td{:style=>'width:40px'}="All Tickets"
-        %td{:style=>'width:100px'}=number_as_cents @summary.all_tickets.gross_sales
-        %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.sold.length} sold"
-        %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.free.length} free"
-        %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.comped.length} comp"
-      %tr
-        %td{:style=>'width:40px'}="Artful.ly Tickets"
-        %td{:style=>'width:100px'}=number_as_cents @summary.artfully_tickets.gross_sales
-        %td.supplement{:style=>'width:150px'}="#{@summary.artfully_tickets.sold.length} sold"
-        %td.supplement=""
-        %td.supplement=""
-      %tr
-        %td="Donations"
-        %td=number_as_cents @summary.donations.gross_donations
-        %td.supplement="#{@summary.donations.num_donations} donations"
-        %td.supplement=""
-        %td.supplement=""
-      %tr
-        %td="Service Fees"
-        %td=number_as_cents @summary.service_fees.gross_fees
-        %td.supplement="#{@summary.service_fees.num_tickets} tickets"
-        %td.supplement=""
-        %td.supplement=""
-      %tr
-        %td="Processing Fees"
-        %td=number_as_cents @summary.processing_fees.gross_fees
-        %td.supplement="#{@summary.processing_fees.num_tickets} tickets"
-        %td.supplement="#{@summary.processing_fees.num_donations} donations"
-        %td.supplement=""
-      %tr
-        %td="Settled"
-        %td=number_as_cents @summary.settlements.net_settlements
-        %td.supplement="#{@summary.settlements.num_settlements} settlements"
-        %td.supplement="#{@summary.settlements.num_failed_settlements} failed"
-        %td.supplement=""
-  %h3 Artful.ly Processed Orders
-  =render :partial => "admin/shared/orders_table", :locals => {:orders => @artfully_orders}
+      .row-fluid
+        .span3
+          .key= label_tag :start_date
+          .value= text_field_tag :start,"#{l @start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
+        .span3
+          .key= label_tag :end_date
+          .value= text_field_tag :stop, "#{l @stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
+        .span3
+          = submit_tag "Search", :class => "btn"
+.row
+  .span12
+    %h3 Summary
+    %table.table
+      %tbody
+        %tr
+          %td{:style=>'width:40px'}="All Tickets"
+          %td{:style=>'width:100px'}=number_as_cents @summary.all_tickets.gross_sales
+          %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.sold.length} sold"
+          %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.free.length} free"
+          %td.supplement{:style=>'width:150px'}="#{@summary.all_tickets.comped.length} comp"
+        %tr
+          %td{:style=>'width:40px'}="Artful.ly Tickets"
+          %td{:style=>'width:100px'}=number_as_cents @summary.artfully_tickets.gross_sales
+          %td.supplement{:style=>'width:150px'}="#{@summary.artfully_tickets.sold.length} sold"
+          %td.supplement=""
+          %td.supplement=""
+        %tr
+          %td="Donations"
+          %td=number_as_cents @summary.donations.gross_donations
+          %td.supplement="#{@summary.donations.num_donations} donations"
+          %td.supplement=""
+          %td.supplement=""
+        %tr
+          %td="Service Fees"
+          %td=number_as_cents @summary.service_fees.gross_fees
+          %td.supplement="#{@summary.service_fees.num_tickets} tickets"
+          %td.supplement=""
+          %td.supplement=""
+        %tr
+          %td="Processing Fees"
+          %td=number_as_cents @summary.processing_fees.gross_fees
+          %td.supplement="#{@summary.processing_fees.num_tickets} tickets"
+          %td.supplement="#{@summary.processing_fees.num_donations} donations"
+          %td.supplement=""
+        %tr
+          %td="Settled"
+          %td=number_as_cents @summary.settlements.net_settlements
+          %td.supplement="#{@summary.settlements.num_settlements} settlements"
+          %td.supplement="#{@summary.settlements.num_failed_settlements} failed"
+          %td.supplement=""
+    %h3 Artful.ly Processed Orders
+    =render :partial => "admin/shared/orders_table", :locals => {:orders => @artfully_orders}
 
-  %h3 Settlements
-  =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}
+    %h3 Settlements
+    =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}
