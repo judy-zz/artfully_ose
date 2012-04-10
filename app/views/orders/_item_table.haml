@@ -14,8 +14,8 @@
               - if item.product_type.eql?("Ticket")
                 %span Ticket
                 %span
-                  (#{link_to "#{item.product.event.name}", event_path(item.product.event)},
-                  #{link_to "#{l item.product.datetime}", event_show_path(item.product.show.event, item.product.show)})
+                  to #{link_to "#{item.product.event.name}", event_path(item.product.event)},
+                  #{link_to "#{l item.product.datetime}", event_show_path(item.product.show.event, item.product.show)}
               - if item.product_type.eql?("Donation")
                 %span Donation
             %td= amount_and_nongift item
