@@ -25,8 +25,13 @@
 }
 
 .navbar .nav > li > a {
-  color: #BFBFBF;
+  color: #DFDFDF;
 }
+
+.navbar-inner-admin .nav > li > a {
+  color: #FFFFFF;
+}
+
 .navbar a.brand {
   background-image: url('/images/pages/logo-white-topbar.png');
   background-repeat: no-repeat;

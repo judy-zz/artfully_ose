@@ -1,0 +1,35 @@
+@import "mixins"
+
+.rounder
+  @include rounded-corners(3px, 3px, 3px, 3px)
+  
+ul.tags
+  li
+    display: inline-block
+    position: relative
+  ul.controls
+    position: absolute
+    background: #fff
+    right: 0
+    top: 0
+    text-align: right
+    display: none
+    li
+      display: inline-block
+      a, span
+        padding: 0 4px
+        font-weight: bold
+        text-decoration: none
+        font-size: .875em
+        display: inline-block
+        color: red
+      a:hover
+        color: red
+    
+.tag
+  @include gradient(#f8930a, #a85300)
+  padding: 5px
+  color: #EEEEEE
+  
+.tag-error
+  color: #991111

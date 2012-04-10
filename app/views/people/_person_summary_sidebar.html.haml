@@ -1,6 +1,5 @@
 %h2="#{@person.first_name} #{@person.last_name}"
 
-= button_to "Edit", edit_person_path(@person), :method => :get, :class => "btn"
 #contact-information
   -# #image
   -#   = gravatar_image_tag(@person.email, :alt => 'User icon', :class => 'large-grav bordered', :gravatar => { :size => 128 })
@@ -16,6 +15,7 @@
         %h6.key Website
         .value.website{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website
 
+  = button_to "Edit", edit_person_path(@person), :method => :get, :class => "btn"
 
 %h6 Phone Numbers
 %ul.kv

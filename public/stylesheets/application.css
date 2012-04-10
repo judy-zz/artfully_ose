@@ -1,3 +1,47 @@
+.rounder {
+  -moz-border-radius: 3px 3px 3px 3px;
+  -webkit-border-radius: 3px 3px 3px 3px;
+  border-radius: 3px 3px 3px 3px; }
+
+ul.tags li {
+  display: inline-block;
+  position: relative; }
+ul.tags ul.controls {
+  position: absolute;
+  background: white;
+  right: 0;
+  top: 0;
+  text-align: right;
+  display: none; }
+  ul.tags ul.controls li {
+    display: inline-block; }
+    ul.tags ul.controls li a, ul.tags ul.controls li span {
+      padding: 0 4px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 0.875em;
+      display: inline-block;
+      color: red; }
+    ul.tags ul.controls li a:hover {
+      color: red; }
+
+.tag {
+  background: #f8930a;
+  background: -moz-linear-gradient(top, #f8930a 0%, #a85300 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f8930a), color-stop(100%, #a85300));
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f8930a), to(#a85300));
+  background-image: -moz-linear-gradient(top, #f8930a, #a85300);
+  background-image: -ms-linear-gradient(top, #f8930a, #a85300);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f8930a), color-stop(100%, #a85300));
+  background-image: -webkit-linear-gradient(top, #f8930a, #a85300);
+  background-image: -o-linear-gradient(top, #f8930a, #a85300);
+  background-image: linear-gradient(top, #f8930a, #a85300);
+  padding: 5px;
+  color: #eeeeee; }
+
+.tag-error {
+  color: #991111; }
+
 .left {
   float: left; }
 

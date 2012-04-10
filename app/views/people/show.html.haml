@@ -22,6 +22,7 @@
 
     = render :partial=>'notes/list', :locals => { :person => @person, :notes => @person.notes, :subject => @person }
 
+    %h3 Tags
     = render :partial=>'shared/tags', :locals => { :tags => @person.tag_list, :subject => @person }
 
     #hear-action-modal.modal

@@ -308,12 +308,26 @@ form.jeditable button {
 .error, .warning {
   background: #fb572c;
   background: -moz-linear-gradient(top, #fb572c 0%, #f03504 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fb572c), color-stop(100%, #f03504)); }
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fb572c), color-stop(100%, #f03504));
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fb572c), to(#f03504));
+  background-image: -moz-linear-gradient(top, #fb572c, #f03504);
+  background-image: -ms-linear-gradient(top, #fb572c, #f03504);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fb572c), color-stop(100%, #f03504));
+  background-image: -webkit-linear-gradient(top, #fb572c, #f03504);
+  background-image: -o-linear-gradient(top, #fb572c, #f03504);
+  background-image: linear-gradient(top, #fb572c, #f03504); }
 
 .notice, .info, .success {
   background: #0a99b3;
   background: -moz-linear-gradient(top, #0a99b3 0%, #077083 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083)); }
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083));
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#0a99b3), to(#077083));
+  background-image: -moz-linear-gradient(top, #0a99b3, #077083);
+  background-image: -ms-linear-gradient(top, #0a99b3, #077083);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083));
+  background-image: -webkit-linear-gradient(top, #0a99b3, #077083);
+  background-image: -o-linear-gradient(top, #0a99b3, #077083);
+  background-image: linear-gradient(top, #0a99b3, #077083); }
 
 body {
   font-size: 11pt;
@@ -472,6 +486,13 @@ h4 {
   background: #2086a6;
   background: -moz-linear-gradient(top, #2086a6 0%, #175c71 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2086a6), color-stop(100%, #175c71));
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#2086a6), to(#175c71));
+  background-image: -moz-linear-gradient(top, #2086a6, #175c71);
+  background-image: -ms-linear-gradient(top, #2086a6, #175c71);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2086a6), color-stop(100%, #175c71));
+  background-image: -webkit-linear-gradient(top, #2086a6, #175c71);
+  background-image: -o-linear-gradient(top, #2086a6, #175c71);
+  background-image: linear-gradient(top, #2086a6, #175c71);
   color: white;
   text-shadow: none;
   font-weight: normal; }
@@ -523,7 +544,14 @@ ul#shows {
       ul#shows li .title.active, ul#shows li .title.active:hover {
         background: white;
         background: -moz-linear-gradient(top, white 0%, #e6e6e6 100%);
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6)); }
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+        background-image: -khtml-gradient(linear, left top, left bottom, from(white), to(#e6e6e6));
+        background-image: -moz-linear-gradient(top, white, #e6e6e6);
+        background-image: -ms-linear-gradient(top, white, #e6e6e6);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e6e6e6));
+        background-image: -webkit-linear-gradient(top, white, #e6e6e6);
+        background-image: -o-linear-gradient(top, white, #e6e6e6);
+        background-image: linear-gradient(top, white, #e6e6e6); }
         ul#shows li .title.active .date, ul#shows li .title.active .month, ul#shows li .title.active .day, ul#shows li .title.active .time, ul#shows li .title.active h4.day_and_month, ul#shows li .title.active:hover .date, ul#shows li .title.active:hover .month, ul#shows li .title.active:hover .day, ul#shows li .title.active:hover .time, ul#shows li .title.active:hover h4.day_and_month {
           color: #191919 !important; }
       ul#shows li .title .date {
@@ -560,6 +588,13 @@ ul#shows {
           background: #2086a6;
           background: -moz-linear-gradient(top, #2086a6 0%, #175c71 100%);
           background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2086a6), color-stop(100%, #175c71));
+          background-image: -khtml-gradient(linear, left top, left bottom, from(#2086a6), to(#175c71));
+          background-image: -moz-linear-gradient(top, #2086a6, #175c71);
+          background-image: -ms-linear-gradient(top, #2086a6, #175c71);
+          background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #2086a6), color-stop(100%, #175c71));
+          background-image: -webkit-linear-gradient(top, #2086a6, #175c71);
+          background-image: -o-linear-gradient(top, #2086a6, #175c71);
+          background-image: linear-gradient(top, #2086a6, #175c71);
           color: white;
           text-shadow: none;
           font-weight: normal; }
@@ -743,6 +778,13 @@ table.calendar {
       background: #cccccc;
       background: -moz-linear-gradient(top, #cccccc 0%, #e6e6e6 100%);
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cccccc), color-stop(100%, #e6e6e6));
+      background-image: -khtml-gradient(linear, left top, left bottom, from(#cccccc), to(#e6e6e6));
+      background-image: -moz-linear-gradient(top, #cccccc, #e6e6e6);
+      background-image: -ms-linear-gradient(top, #cccccc, #e6e6e6);
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cccccc), color-stop(100%, #e6e6e6));
+      background-image: -webkit-linear-gradient(top, #cccccc, #e6e6e6);
+      background-image: -o-linear-gradient(top, #cccccc, #e6e6e6);
+      background-image: linear-gradient(top, #cccccc, #e6e6e6);
       overflow: hidden; }
       #shopping-cart #steps .continue h4 {
         font-weight: bold;
@@ -762,6 +804,13 @@ table.calendar {
       background: #0a99b3;
       background: -moz-linear-gradient(top, #0a99b3 14%, #077083 100%);
       background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #0a99b3), color-stop(100%, #077083));
+      background-image: -khtml-gradient(linear, left top, left bottom, from(#0a99b3), to(#077083));
+      background-image: -moz-linear-gradient(top, #0a99b3, #077083);
+      background-image: -ms-linear-gradient(top, #0a99b3, #077083);
+      background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083));
+      background-image: -webkit-linear-gradient(top, #0a99b3, #077083);
+      background-image: -o-linear-gradient(top, #0a99b3, #077083);
+      background-image: linear-gradient(top, #0a99b3, #077083);
       border: 1px solid #065b6b;
       font-size: 1em;
       text-align: center;
@@ -771,6 +820,13 @@ table.calendar {
         background: #999999;
         background: -moz-linear-gradient(top, #999999 14%, #cccccc 100%);
         background: -webkit-gradient(linear, left top, left bottom, color-stop(14%, #999999), color-stop(100%, #cccccc));
+        background-image: -khtml-gradient(linear, left top, left bottom, from(#999999), to(#cccccc));
+        background-image: -moz-linear-gradient(top, #999999, #cccccc);
+        background-image: -ms-linear-gradient(top, #999999, #cccccc);
+        background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #999999), color-stop(100%, #cccccc));
+        background-image: -webkit-linear-gradient(top, #999999, #cccccc);
+        background-image: -o-linear-gradient(top, #999999, #cccccc);
+        background-image: linear-gradient(top, #999999, #cccccc);
         border: 1px solid #666666; }
     #shopping-cart #steps #user_agreement {
       height: 100px;

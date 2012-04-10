@@ -160,8 +160,8 @@ $(document).ready(function() {
       }
   });
 
-  $('.subject-tag').each(function() {
-	createControlsForTag($(this));
+  $('.tag').each(function() {
+		createControlsForTag($(this));
   });
 
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
@@ -174,7 +174,7 @@ $(document).ready(function() {
 		}
 
 	  newTagLi = $(document.createElement('li'));
-		newTagLi.addClass('tag').addClass('subject-tag').html(tagText).appendTo($('.tags'));
+		newTagLi.addClass('tag').addClass('rounder').html(tagText).appendTo($('.tags'));
 		$('.tags').append("\n");
 		createControlsForTag(newTagLi);
 	  $('#new-tag-field').attr('value', '');
@@ -246,7 +246,7 @@ createControlsForTag = function(tagEl) {
 
 	controlsUl.append(deleteLi);
 
-    tagEl.append(controlsUl);
+  tagEl.append(controlsUl);
 	tagEl.append("\n");
 }
 
