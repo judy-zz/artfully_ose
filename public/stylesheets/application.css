@@ -58,6 +58,11 @@ ul#memberships .email {
   width: 48px;
   padding: 2px; }
 
+.large-grav {
+  height: 130px;
+  width: 130px;
+  padding: 2px; }
+
 .no-image {
   border-radius: 10px;
   moz-border-radius: 10px;
@@ -167,3 +172,6 @@ tr.published form.published, tr.unpublished form.unpublished, tr.built form.buil
 
 .hidden {
   display: none !important; }
+
+#contact-information #image {
+  margin-right: 10px; }

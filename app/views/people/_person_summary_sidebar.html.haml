@@ -1,40 +1,39 @@
-%h3="#{@person.first_name} #{@person.last_name}"
+%h2="#{@person.first_name} #{@person.last_name}"
 
-%ul.context-buttons
-  %li= button_to "Edit", edit_person_path(@person), :method => :get, :class => "btn"
+= button_to "Edit", edit_person_path(@person), :method => :get, :class => "btn"
+#contact-information
+  -# #image
+  -#   = gravatar_image_tag(@person.email, :alt => 'User icon', :class => 'large-grav bordered', :gravatar => { :size => 128 })
+  #details
+    %ul.kv.editable
+      %li
+        %h6.key Email
+        .value{"data-name" => "email", "data-url" => person_url(@person, :format => :json)}= @person.email
+      %li
+        %h6.key Company
+        .value{"data-name" => "company_name", "data-url" => person_url(@person, :format => :json)}= @person.company_name
+      %li
+        %h6.key Website
+        .value.website{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website
 
-%h4 Contact Information
-%ul.kv.editable
-  %li
-    .key Email
-    .value{"data-name" => "email", "data-url" => person_url(@person, :format => :json)}= @person.email
-  %li
-    .key Company Name
-    .value{"data-name" => "company_name", "data-url" => person_url(@person, :format => :json)}= @person.company_name
-  %li
-    .key Website
-    .value.website{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website
 
-%h4 Phone Numbers
+%h6 Phone Numbers
 %ul.kv
   - person.phones.each do |phone|
-    %li
-      .key= phone.kind
-      .value
-        = phone.number
-        = link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :confirm => "Are you sure you want to delete #{phone.number}?"
+    %li.row-fluid
+      .span3= phone.kind
+      .span7= phone.number
+      .span2= link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :class=>'btn btn-danger btn-mini', :confirm => "Are you sure you want to delete #{phone.number}?"
 
 = form_for([person, Phone.new]) do |form|
-  %ul
-    %li
-      .hidden.label= form.label(:number, "Number")
-      .hidden.label= form.label(:kind, "Kind")
-      .full.paired.element
-        = form.select(:kind, options_for_select(Phone.kinds), {}, {:class => :half})
-        = form.text_field(:number, :placeholder => "Ex: 555-123-1234", :class => :half)
-        = form.submit :class => "btn"
+  .row-fluid
+    .hidden= form.label(:number, "Number")
+    .hidden= form.label(:kind, "Kind")
+    = form.select(:kind, options_for_select(Phone.kinds), {}, {:class => 'span3', :style=>'margin-left:0px'})
+    = form.text_field(:number, :placeholder => "555-123-1234", :class => 'span6')
+    = form.submit "Add", :class => "btn span2"
 
-%h4 Mailing Address
+%h6 Mailing Address
 - if @person.address.present?
   = render @person.address
   = button_to "Edit", "#", :id => "update-mailing-address", :class => "btn"

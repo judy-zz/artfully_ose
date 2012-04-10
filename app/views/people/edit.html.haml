@@ -1,8 +1,8 @@
 - in_section :people
 - content_for :header do
-  %h1 Edit Contact
+  %h1="Editing #{@person.first_name} #{@person.last_name}"
 
-.compact-spread
-  %h3="#{@person.first_name} #{@person.last_name}"
-  = render :partial => "shared/error_messages", :locals => { :target => @person }
-  = render :partial => 'form', :locals => { :person => @person }
+.row
+  .span6.offset3
+    = render :partial => "shared/error_messages", :locals => { :target => @person }
+    = render :partial => 'form', :locals => { :person => @person }

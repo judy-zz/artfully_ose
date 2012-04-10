@@ -1,20 +1,19 @@
-.spread
-  = form_for @action, :url => person_actions_path, :as => :artfully_action do |form|
+.modal-header
+  %h3 Hear Action
+
+= form_for @action, :url => person_actions_path, :as => :artfully_action do |form|
+  .modal-body
     = hidden_field_tag "action_type", params[:type]
-    %ul
-      %li
-        .label= form.label :subtype, "Action Type"
-        .element= form.select :subtype, options_for_select( @action.hear_action_subtypes, @action.subtype )
+    = form.label :subtype, "Action Type"
+    = form.select :subtype, options_for_select( @action.hear_action_subtypes, @action.subtype ), :class => 'input-xlarge'
 
-      %li
-        .label= form.label :occurred_at, "Action date/time"
-        .element
-          = form.text_field :occurred_at, :value => l(@action.occurred_at, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+    = form.label :occurred_at, "Action date/time"
+    = form.text_field :occurred_at, :value => l(@action.occurred_at, :format => :datetime_for_input), :readonly => true, :class => [:datetimepicker, 'input-xlarge']
 
-      %li
-        .label= form.label :details, "Details"
-        .element= form.text_area :details, :size => "25x5"
+    = form.label :details, "Details"
+    = form.text_area :details, :size => "25x5", :class => 'input-xlarge'
 
     -unless @action.created_at.nil? or @action.creator.nil?
-      %h4= "Action created by #{@action.creator.email} on #{(l @action.created_at, :format => :long)}"
-    = form.submit "Save #{params[:type].titleize} action", :class => "btn"
+      = "Action created by #{@action.creator.email} on #{(l @action.created_at, :format => :long)}"
+  .modal-footer
+    = form.submit "Save", :class => "btn"

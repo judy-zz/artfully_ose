@@ -132,20 +132,16 @@ $(document).ready(function() {
     return false;
   });
 
-  $(".popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Log Action"})
-
-  $(".popup-link").bind("ajax:complete", function(et, e){
-    $(".popup").dialog( "open" );
-    $(".popup").html(e.responseText);
+  $("#hear-action-link").bind("ajax:complete", function(et, e){
+    $("#hear-action-modal").html(e.responseText);
+    $("#hear-action-modal").modal( "show" );
     activateControls();
     return false;
   });
 
-  $("#new-note-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Add Note"})
-
   $(".new-note-link").bind("ajax:complete", function(et, e){
-    $("#new-note-popup").dialog( "open" );
     $("#new-note-popup").html(e.responseText);
+    $("#new-note-popup").modal( "show" );
     activateControls();
     return false;
   });
@@ -169,22 +165,22 @@ $(document).ready(function() {
   });
 
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
-	var tagText = $('#new-tag-field').attr('value');
-	if(!validTagText(tagText)) {
-		$('.tag-error').text("Only letters, number, or dashes allowed in tags")
-		return false;
-	} else {
-		$('.tag-error').text("")
-	}
+		var tagText = $('#new-tag-field').attr('value');
+		if(!validTagText(tagText)) {
+			$('.tag-error').text("Only letters, number, or dashes allowed in tags")
+			return false;
+		} else {
+			$('.tag-error').text("")
+		}
 
-    newTagLi = $(document.createElement('li'));
-	newTagLi.addClass('tag').addClass('subject-tag').html(tagText).appendTo($('.tags'));
-	$('.tags').append("\n");
-	createControlsForTag(newTagLi);
-    $('#new-tag-field').attr('value', '');
+	  newTagLi = $(document.createElement('li'));
+		newTagLi.addClass('tag').addClass('subject-tag').html(tagText).appendTo($('.tags'));
+		$('.tags').append("\n");
+		createControlsForTag(newTagLi);
+	  $('#new-tag-field').attr('value', '');
 
-	bindControlsToListElements();
-	bindXButton();
+		bindControlsToListElements();
+		bindXButton();
   });
 
   bindControlsToListElements();

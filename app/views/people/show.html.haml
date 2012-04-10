@@ -1,6 +1,4 @@
 - in_section :people
-- content_for :header do
-  %h1 People
 
 .row
   .span4
@@ -8,21 +6,24 @@
 
   .span8
     #actions
-      %h3 Actions
-      %ul#button-bar
-        %li=link_to "Hear", new_person_action_path(@person, :format => :html, :type => :hear), :class => "popup-link", :remote => true, :title => "Log a communication event"
-        %li=link_to "Give", new_contribution_path("contribution[person_id]" => @person.id), :title => "Log a contribution"
+      .row-fluid.form-actions
+        .span2
+          %h3 Actions
+        .span10
+          =icon_link_to("Hear", new_person_action_path(@person, :format => :html, :type => :hear), 'icon-volume-up', 'btn', 'hear-action-link', true)
+          =icon_link_to("Give", new_contribution_path("contribution[person_id]" => @person.id), 'icon-gift', 'btn', '')
       = render :partial => 'actions/list', :locals => { :person => @person, :actions => (@person.starred_actions + @person.unstarred_actions ) }
 
     #notes
-      %h3 Notes
-      %ul#button-bar
-        %li=link_to "New Note", new_person_note_path(@person, :format => :html), :class => "new-note-link", :remote => true, :title => "Add a new note"
+      .row-fluid.form-actions
+        .span2
+          %h3 Notes
+        .span10=icon_link_to("Add", new_person_note_path(@person, :format => :html), 'icon-plus-sign', 'btn new-note-link', '', true)
 
     = render :partial=>'notes/list', :locals => { :person => @person, :notes => @person.notes, :subject => @person }
 
     = render :partial=>'shared/tags', :locals => { :tags => @person.tag_list, :subject => @person }
 
-    .popup
-    #new-note-popup
+    #hear-action-modal.modal
+    #new-note-popup.modal
 

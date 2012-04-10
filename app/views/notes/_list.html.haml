@@ -3,7 +3,7 @@
   %thead
     %tr
       %th Date
-      %th Note
+      %th{:width => "70%"} Note
       %th &nbsp;
 
   %tbody
@@ -16,10 +16,10 @@
       - notes.each do |note|
         %tr
           %td= l note.occurred_at, :format => :slashed_date unless note.occurred_at.nil?
-          %td{:width => "80%"}= truncate(note.text, :length => 300, :separator => ' ', :omission => '...')
+          %td= truncate(note.text, :length => 300, :separator => ' ', :omission => '...')
           %td
-            = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "new-note-link", :remote => true)
-            = link_to "Delete", "#delete-confirm-modal-#{note.id}", :class => "delete-confirm-link", "data-toggle" => "modal"
+            = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "btn btn-mini", :remote => true)
+            = link_to "Delete", "#delete-confirm-modal-#{note.id}", :class => "delete-confirm-link btn-mini btn-danger", "data-toggle" => "modal"
 
             .modal.fade{:id => "delete-confirm-modal-#{note.id}"}
               .modal-header

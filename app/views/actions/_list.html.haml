@@ -22,5 +22,5 @@
           %td="#{action.action_type.capitalize} - #{action.subtype unless action.subtype.nil?}"
           %td= truncate(action.details, :length => 80, :separator => ' ', :omission => '...')
           %td
-            =link_to("Edit", edit_person_action_path(person, action, :format => :html, :type => :hear), :class => "popup-link", :remote => true) if action.action_type == "Hear"
-            =link_to("Edit", edit_person_action_path(person, action, :type => :give), :class => "popup-link", :remote => true) if action.action_type == "Give" unless action.creator_id.nil?
+            =link_to("Edit", edit_person_action_path(person, action, :format => :html, :type => :hear), :class => "btn btn-mini", :remote => true) if action.action_type == "Hear"
+            =link_to("Edit", edit_person_action_path(person, action, :type => :give), :class => "btn btn-mini", :remote => true) if action.action_type == "Give" unless action.creator_id.nil?
