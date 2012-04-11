@@ -1,10 +1,9 @@
 - in_section :imports
-
 - content_for :header do
   %h1 Import a new set of contacts
 
 .row
-  .span8.offset2
+  .span12
     %h3 Please supply a file
     %p
       = render :partial => "shared/error_messages", :locals => { :target => @import }

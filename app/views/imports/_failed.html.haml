@@ -3,10 +3,10 @@
   .span4
     %h3 Import Failed
 
-    %p This import was created at #{import.created_at}
+    %p This import was created at: <br> #{l import.created_at}
 
-    %p= link_to "Delete this import", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete
-    %p= link_to "Back to imports/exports", imports_path
+    %p= link_to "Delete this import", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete, :class => "btn"
+    %p= link_to "Back to imports/exports", imports_path, :class => "btn"
 
   .span8
 

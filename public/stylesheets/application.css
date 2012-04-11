@@ -242,3 +242,6 @@ tr.returned td.item-description, tr.returned td.price {
 
 .in-table {
   margin-bottom: 0px; }
+
+table.example-contact .field {
+  font-weight: bold; }
