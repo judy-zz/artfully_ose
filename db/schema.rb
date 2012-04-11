@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120305025755) do
+ActiveRecord::Schema.define(:version => 20120410191416) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -40,6 +40,14 @@ ActiveRecord::Schema.define(:version => 20120305025755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
+  end
+
+  create_table "admin_messages", :force => true do |t|
+    t.text     "message"
+    t.date     "starts_on"
+    t.date     "ends_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "admin_stats", :force => true do |t|
