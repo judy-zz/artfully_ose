@@ -1,5 +1,7 @@
 class MigrateShowsToNewChartStructure < ActiveRecord::Migration
   def self.up
+    
+    Chart.skip_callback(:create, :after, :create_first_section)
     Show.all.each do |show|
       new_chart = Chart.new({ :name => show.chart.name, 
                               :organization => show.chart.organization, 
@@ -16,11 +18,10 @@ class MigrateShowsToNewChartStructure < ActiveRecord::Migration
         end
       end
       
-      Chart.skip_callback(:create, :after, :create_first_section)
       show.chart = new_chart
       show.save      
-      Chart.set_callback(:create, :after, :create_first_section)
     end
+    Chart.set_callback(:create, :after, :create_first_section)
   end
 
   def self.down
