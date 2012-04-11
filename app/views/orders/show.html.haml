@@ -16,9 +16,10 @@
 
 - unless @order.children.empty?
   - @order.children.each do |child|
+    %hr
     .row
-      .span4
+      .span3
         = render :partial => 'order_sidebar', :locals => { :order => child, :person => @person, :total => child.total }
-      .span8
+      .span9
         - unless child.items.empty?
           = render :partial => 'item_table', :locals => { :order => child }
