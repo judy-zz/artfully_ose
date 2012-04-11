@@ -1,31 +1,35 @@
 .row
 
-  .span4
+  .span3
     %h3 Validate Contacts
 
-    %p This import was created at #{import.created_at}
+    %p This import was created at: <br> #{l import.created_at}
     %p #{pluralize @import.rows.count, "contact"} found in this import file
 
-    %p= link_to "Approve this import", approve_import_path(import), :confirm => "Are you sure you want to approve this import?"
-    %p= link_to "Delete this import", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete
-    %p= link_to "Back to imports/exports", imports_path
+    .btn-group
+      = link_to "Approve", approve_import_path(import), :confirm => "Are you sure you want to approve this import?", :class => "btn"
+      = link_to "Delete", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete, :class => "btn"
+      = link_to "Back", imports_path, :class => "btn"
 
-  .span8
+  .span9
     %h3 Viewing contacts #{@offset + 1} through #{[ import.rows.count, @offset + @length ].min}
 
-    .page-controller
-      - if @offset > 0
-        = link_to "Previous Page", import_path(import, :offset => [ 0, @offset - @length ].max, :length => @length), :class => :previous
-      - if @offset + @length < import.rows.count
-        = link_to "Next Page", import_path(import, :offset => @offset + @length, :length => @length), :class => :next
+    .page-controller= import_page_controller import, @offset, @length
 
-    %table.example-contact
+    %table.example-contact.table
+
+      %thead
+
+        %th &nbsp;
+        - @length.times do |i|
+          - if import.rows[@offset + i]
+            %th= @offset + i + 1
 
       - import.headers.each_with_index do |field, index|
 
         %tr
 
-          %td.label= field.capitalize
+          %td.field= field.capitalize
 
           - import.rows[@offset, @length].each do |row|
             %td.value= row[index]
