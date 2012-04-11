@@ -10,7 +10,7 @@
         - order.all_items.each do |item|
           %tr{:id => "row_item_#{item.id}", :class => item.state}
             %td.grouped-checkbox= check_box_tag "item_#{item.id}", item.id, false, :disabled => true
-            %td
+            %td.item-description
               - if item.product_type.eql?("Ticket")
                 %span Ticket
                 %span
@@ -18,4 +18,4 @@
                   #{link_to "#{l item.product.datetime}", event_show_path(item.product.show.event, item.product.show)}
               - if item.product_type.eql?("Donation")
                 %span Donation
-            %td= amount_and_nongift item
+            %td.price= amount_and_nongift item

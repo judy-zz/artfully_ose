@@ -2,18 +2,19 @@
 - content_for :header do
   %h1 New List Segment
 
-.compact-spread
-  = render "shared/error_messages", :target => @segment
-  #list-segment
-    %ul.people-list
-      - @segment.people.each do |person|
-        %li
-          = hidden_field_tag "people[]", person.id, :id => nil
-          .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
-          .email= person.email
+= render "shared/error_messages", :target => @segment
+.row
+  .span4
     = form_for(@segment) do |form|
       = form.hidden_field :terms
-      .stack.single_field
-        .label= form.label(:name)
-        .element= form.text_field :name, :html_options => { :placeholder => "Name your list segment..." }
-        .submit= form.submit "Create", :class => "btn"
+      = form.text_field :name, :placeholder => "Name your list segment..."
+      %br
+      = form.submit "Create", :class => "btn"
+  .span8
+    #list-segment
+      %ul.people-list
+        - @segment.people.each do |person|
+          %li
+            = hidden_field_tag "people[]", person.id, :id => nil
+            .name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
+            .email= person.email

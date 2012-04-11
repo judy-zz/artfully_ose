@@ -51,7 +51,16 @@ class Chart < ActiveRecord::Base
       section_hash['price'] = new_price
     end
     
-    update_attributes(params_hash)    
+    update_attributes(params_hash)
+    upgrade_event
+  end
+  
+  #If this is a free event, and they've specified prices on this chart, then upgrade to a paid event
+  def upgrade_event
+    if !event.nil? && event.free? && has_paid_sections?
+      event.is_free = false
+      event.save
+    end    
   end
 
   def assign_to(event)

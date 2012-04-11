@@ -236,3 +236,6 @@ ul.report span.current {
   width: 75px;
   text-align: right;
   margin: 0px; }
+
+tr.returned td.item-description, tr.returned td.price {
+  text-decoration: line-through; }
