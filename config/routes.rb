@@ -133,7 +133,7 @@ Artfully::Application.routes.draw do
     end
   end
 
-  resources :charts do
+  resources :charts, :only => [:update] do
     resources :sections
   end
 

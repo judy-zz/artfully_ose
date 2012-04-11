@@ -1,9 +1,0 @@
-- in_section :events
-- content_for :header do
-  %h1 Chart Templates
-
-.row
-  .span8.offset4
-    %h3 Edit Section
-    = render "shared/error_messages", :target => @section
-    = render :partial => 'form', :locals => { :chart => @chart, :section => @section }

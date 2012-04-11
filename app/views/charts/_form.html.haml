@@ -1,8 +1,0 @@
-= form_for(chart) do |form|
-  %ul
-    %li
-      .label= form.label :name, "Name"
-      .paired.element
-        = form.text_field :name
-        = form.submit
-        .description= "Example: \"Weekend Matinee\". You'll add more details in a minute." unless chart.persisted?
