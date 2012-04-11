@@ -245,3 +245,6 @@ tr.returned td.item-description, tr.returned td.price {
 
 table.example-contact .field {
   font-weight: bold; }
+
+tr.no-border td {
+  border-top: 0px; }

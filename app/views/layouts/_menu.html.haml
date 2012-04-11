@@ -45,5 +45,6 @@
         %li.dropdown
           = nav_dropdown current_user.email
           %ul.dropdown-menu
-            %li= link_to "My Organization", organization_path(current_user.current_organization)
+            -if current_user.is_in_organization? 
+              %li= link_to "My Organization", organization_path(current_user.current_organization)
             %li= link_to "Sign Out", destroy_user_session_path
