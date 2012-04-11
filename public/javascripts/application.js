@@ -69,6 +69,8 @@ $(document).ready(function() {
 	$('.section-price-disabled').popover({trigger:'manual'})
 	                            .click(function(){ $(this).popover('toggle') });
 	
+	$('.dropdown-toggle').dropdown()
+	
 	/*********** NEW ARTFULLY JS ************/
 	
 	/*********** EXISTING ARTFUL.LY JS ******/

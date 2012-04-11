@@ -239,3 +239,6 @@ ul.report span.current {
 
 tr.returned td.item-description, tr.returned td.price {
   text-decoration: line-through; }
+
+.in-table {
+  margin-bottom: 0px; }

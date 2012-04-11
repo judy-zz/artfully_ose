@@ -136,6 +136,13 @@ Artfully::Application.routes.draw do
   resources :charts, :only => [:update] do
     resources :sections
   end
+  
+  resources :sections do
+    collection do
+      post :on_sale
+      post :off_sale
+    end
+  end
 
   resources :help, :only => [ :index ]
 

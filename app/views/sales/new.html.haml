@@ -14,6 +14,8 @@
         %strong="#{@event.name}"
         %br
         ="#{l(@show.datetime_local_to_event, :format => :long_with_day)}"
+        %br
+        =icon_link_to("Return to show", event_show_path(@show.event, @show), 'icon-share-alt', 'btn', '')
     #total-and-checkout.span4{:style => 'text-align:right' }
       .row-fluid
         .span6

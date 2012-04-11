@@ -8,3 +8,14 @@
       %td="#{section.summary.available} available"
       %td="#{section.summary.sold} sold"
       %td="#{section.summary.comped} comped"
+      %td{:style => 'width: 30px'}
+        %ul.nav.in-table
+          %li.dropdown{:id => "#menu#{section.id}"}
+            =icon_link_to(' ', "#menu#{section.id}", 'icon-asterisk', 'dropdown-toggle dropdown btn btn-mini', '')
+            %ul.dropdown-menu
+              %li
+                =link_to "Put on sale", on_sale_sections_path(:id => section.id), :method => :post
+              %li
+                =link_to "Take off sale", off_sale_sections_path(:id => section.id), :method => :post
+              %li
+                =link_to "Add tickets", new_show_ticket_path(@show, :section_id => section.id)
