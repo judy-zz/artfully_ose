@@ -2,5 +2,5 @@
   %h1= "Bank Account for #{@organization.name}"
 
 .row
-  .span8.offset4
+  .span8.offset2
     = render :partial => 'form', :locals => { :bank_account => @bank_account, :organization => @organization, :submit => "Create" }

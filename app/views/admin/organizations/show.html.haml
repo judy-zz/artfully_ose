@@ -6,12 +6,10 @@
   .span4
     %h3 Add User
     = form_tag admin_organization_memberships_path(@organization.id), :action => "create" do
-      %ul
-        %li
-          .label=   label_tag :user_email, "Email"
-          .element= text_field_tag :user_email
-        %li
-          = submit_tag "Add", :class => "btn"
+      = label_tag :user_email, "Email"
+      = text_field_tag :user_email
+      %br
+      = submit_tag "Add", :class => "btn"
 
   .span8
     %h3 Users (#{@organization.users.size})
