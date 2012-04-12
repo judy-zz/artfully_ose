@@ -3,7 +3,10 @@
 - content_for :header do
   %h1 Dashboard
 
+= render :partial => 'layouts/admin_messages'
+
 .sideboard
+
   %h3 Organization
   %p
     - if current_user.is_in_organization?
@@ -26,7 +29,9 @@
               = action.sentence
 
 .dashboard
+
   = render :partial => "ticket_offers/list", :locals => { :ticket_offers => @ticket_offers }
+
   #events
     %h3 Events
     - if @events.blank?

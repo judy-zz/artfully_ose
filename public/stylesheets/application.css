@@ -1862,3 +1862,7 @@ th.stat {
 
 #offers-by-me {
   padding-top: 25px; }
+
+.admin-message {
+  font-weight: bold;
+  font-size: 1.5em; }
