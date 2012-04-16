@@ -1,6 +1,8 @@
 .row-fluid
   %h2.span2 Users
-  .span10= link_to "Add", "#userForm", 'data-toggle' => 'modal', :class => 'btn'
+  .span10
+    - if can? :manage, current_user.current_organization
+      = link_to "Add", "#userForm", 'data-toggle' => 'modal', :class => 'btn'
 %ul#memberships.detailed-list.row-fluid
   - organization.users.each do |user|
     %li.span5.row-fluid
