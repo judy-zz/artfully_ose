@@ -27,7 +27,7 @@ class SponsoredDonationKit < Kit
   end
   
   def pitch
-    "Receive donations through Fractured Atlas fiscal sponsorship program"
+    "Contact support@artful.ly to learn about Fiscal Sponsorship through Fractured Atlas for your organization"
   end
 
   def connected?
