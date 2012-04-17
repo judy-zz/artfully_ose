@@ -12,12 +12,12 @@
       .control-group
         =form.label :name, "Event name", :class => 'control-label'
         .controls
-          =form.text_field :name, :placeholder=>"Event name"
+          =form.text_field :name, :class => 'input-xlarge', :placeholder=>"Event name"
           
       .control-group
         =form.label :name, "Producer", :class => 'control-label'
         .controls
-          =form.text_field :producer
+          =form.text_field :producer, :class => 'input-xlarge'
           
       .control-group
         =form.label :name, "Description", :class => 'control-label'
@@ -27,12 +27,12 @@
       .control-group
         =form.label :name, "Contact email", :class => 'control-label'
         .controls
-          =form.text_field :contact_email, :placeholder=>"Event name"
+          =form.text_field :contact_email, :class => 'input-xlarge', :placeholder=>"Email"
           
       .control-group
         =form.label :name, "Contact phone", :class => 'control-label'
         .controls
-          =form.text_field :contact_phone, :placeholder=>"Event name"
+          =form.text_field :contact_phone, :class => 'input-xlarge', :placeholder=>"Phone"
           
       .form-actions
         = form.submit "Save", :class => 'btn'

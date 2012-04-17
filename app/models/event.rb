@@ -5,6 +5,7 @@ class Event < ActiveRecord::Base
   has_many :charts
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
+  validate :validate_contact_phone
   
   after_create :create_default_chart
 
@@ -116,6 +117,19 @@ class Event < ActiveRecord::Base
   end
 
   private
+  
+    #
+    # This is a pretty basic validation to prevent them from entering an email in the phone
+    # number field (we saw this in usability testing)
+    # We can't disallow numbers because some people use them in their phones (718-555-4TIX)
+    #
+    def validate_contact_phone
+      contains_at_sign = /\@/
+      if contact_phone.match contains_at_sign
+        errors.add(:contact_phone, "doesn't look like a phone number.  Your changes have not been saved.")
+      end
+    end
+  
     def already_has_chart(chart)
       !self.charts.select{|c| c.name == chart.name }.empty?
     end

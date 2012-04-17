@@ -3,8 +3,6 @@ class EventsController < ApplicationController
 
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages ]
   before_filter :upcoming_shows, :only => :show
-  after_filter :save_event_to_session, :except => [:destroy, :index]
-  after_filter :clear_event_from_session, :only => :destroy
 
   def create
     @event = Event.new(params[:event])
@@ -79,7 +77,6 @@ class EventsController < ApplicationController
       flash[:notice] = "Your event has been updated."
       redirect_to event_url(@event)
     else
-      flash[:error] = "Your event has not been updated."
       render :edit
     end
   end
@@ -103,14 +100,6 @@ class EventsController < ApplicationController
   end
 
   private
-    def save_event_to_session
-      session[:event_id] = @event.id
-    end
-
-    def clear_event_from_session
-      session[:event_id] = nil
-    end
-
     def find_event
       @event = Event.find(params[:id])
     end
