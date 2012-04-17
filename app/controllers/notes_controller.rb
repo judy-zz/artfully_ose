@@ -13,7 +13,11 @@
   end
 
   def destroy
-    Note.destroy(params[:id])
+    if Note.exists? params[:id]
+      Note.destroy(params[:id])
+    else
+      flash[:notice] = "We couldn't find that note to delete."
+    end
     redirect_to person_url(@person)
   end
 
