@@ -6,3 +6,7 @@ Given /^I am logged in as an admin$/ do
   fill_in("Password", :with => @current_admin.password)
   click_button("Sign in")
 end
+
+And /^I search for "([^"]*)"$/ do |email|
+  fill_in(:query, :with => email)
+end

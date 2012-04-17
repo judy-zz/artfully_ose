@@ -125,7 +125,7 @@ class Event < ActiveRecord::Base
     #
     def validate_contact_phone
       contains_at_sign = /\@/
-      if contact_phone.match contains_at_sign
+      if (!contact_phone.nil?) && (contact_phone.match contains_at_sign)
         errors.add(:contact_phone, "doesn't look like a phone number.  Your changes have not been saved.")
       end
     end
