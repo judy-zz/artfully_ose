@@ -15,11 +15,11 @@ function bulletedListItem(person){
 }
 
 function showError(message) {
-	$('#heading').after($(document.createElement('div')).addClass('flash').addClass('error').html(message));
+	setErrorMessage(message)
 }
 
 function showMessage(message) {
-	$('#heading').after($(document.createElement('div')).addClass('flash').addClass('success').html(message));
+	setFlashMessage(message)
 }
 
 function resetPerson() {
@@ -88,12 +88,12 @@ function ticketsInCart(saleJson) {
 }
 
 $("document").ready(function(){
+  
 	disableCheckout()
 	
 	//People searching stuff is in inline-people-search.js
 	
-  $("#sell-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, height:600, title: 'Confirm Sale'})
-	$("#sell-popup").removeClass('hidden')
+	
   $("#checkout-now-button").click(function(){
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
       $('#sell-button').hide()
@@ -104,7 +104,7 @@ $("document").ready(function(){
       $('#swipe-now').hide()      
     }
     
-    $("#sell-popup").dialog("open")
+    $("#sell-popup").modal("show")
 
     if($("input[name=payment_method]:checked").val() == 'credit_card_swipe') {
 	    $("input[name=hack-cc-number]").removeClass("hidden")
@@ -122,7 +122,7 @@ $("document").ready(function(){
     form = $('.ticket-quantity-select').closest("form")
     form.find('input[name="commit"]').val('submit')
     $("input[name=hack-cc-number]").val('')
-    $("#sell-popup").dialog("close")
+    $("#sell-popup").modal("hide")
     form.submit()
   });
 
@@ -133,7 +133,7 @@ $("document").ready(function(){
   });
   
   $("#cancel-button").click(function(){
-    $("#sell-popup").dialog("close")
+    $("#sell-popup").modal("hide")
   });
 
   $("#sell-button").click(function(){
@@ -145,7 +145,7 @@ $("document").ready(function(){
 	  form.submit()
   });
 	
-	$('.ticket-quantity-select').change(function(){
+	$('.ticket-quantity-select').on('change', function(){
 	   	$(this).closest("form").submit()
 	});
 
@@ -182,7 +182,7 @@ $("document").ready(function(){
   	  $("#checkout-now-button").removeClass('disabled')
   	  $('#checkout-now-button').attr('disabled', false)
 	
-			$("#sell-popup").dialog("close")
+			$("#sell-popup").modal("hide")
   	  $("#sell-button").removeClass('disabled')
   	  $('#sell-button').attr('disabled', false)
 	    $('#sell-button').html('Sell')
@@ -211,7 +211,9 @@ $("document").ready(function(){
   			} else if (sale.sale_made == false) {
   				resetPayment();
   			}
-			showError(sale.error);
+			if(sale.error != undefined) {
+			  showError(sale.error);
+		  }
 		});
 
   $(".payment-method").change(function(){
@@ -230,6 +232,6 @@ $("document").ready(function(){
     }
     
      var payment_method_text = $(this).attr("value");
-     $('#payment-method-popup').html($('label[for='+payment_method_text+']').text());
+     $('#payment-method-popup').html(payment_method_text);
   });
 });

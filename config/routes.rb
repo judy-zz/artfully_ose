@@ -57,6 +57,9 @@ Artfully::Application.routes.draw do
   end
 
   devise_for :users
+  devise_scope :user do
+    get "sign_up", :to => "devise/registrations#new"
+  end
   devise_for :admins
 
   resources :organizations do
@@ -121,8 +124,12 @@ Artfully::Application.routes.draw do
   resources :segments
 
   resources :events do
-    get :widget, :on => :member
-    resources :shows, :except => :index do
+    get :widget,  :on => :member
+    get :storefront_link,  :on => :member
+    get :prices,  :on => :member
+    get :image,   :on => :member
+    get :messages,   :on => :member
+    resources :shows do
       resource :sales, :only => [:new, :create, :show, :update]
       member do
         get :door_list
@@ -135,6 +142,7 @@ Artfully::Application.routes.draw do
         post :unpublished
       end
     end
+    resource :venue, :only => [:edit, :update]
   end
 
   resources :shows, :only => [] do
@@ -150,8 +158,15 @@ Artfully::Application.routes.draw do
     end
   end
 
-  resources :charts do
+  resources :charts, :only => [:update] do
     resources :sections
+  end
+  
+  resources :sections do
+    collection do
+      post :on_sale
+      post :off_sale
+    end
   end
 
   resources :help, :only => [ :index ]
@@ -189,8 +204,6 @@ Artfully::Application.routes.draw do
   match '/pricing' => 'pages#pricing'
   match '/features' => 'pages#features'
   match '/updates' => 'pages#updates'
-  match '/sign_up' => 'pages#sign_up'
-  match '/sign_up_form' => 'pages#sign_up_form'
   match '/pages/tou' => 'pages#tou', :as => 'tou'
   match '/pages/user_agreement' => 'pages#user_agreement', :as => 'user_agreement'
   match '/pages/privacy' => 'pages#privacy', :as => 'privacy'

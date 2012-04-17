@@ -44,10 +44,15 @@ class Refund
   end
 
   def refund_amount
-    item_total + (number_of_non_free_items(items) * (( (order.service_fee || 0) / number_of_non_free_items(order.items))))
+    item_total + (number_of_non_free_items(items) * service_fee_per_item(order.items))
   end
 
   private
+    def service_fee_per_item(itmz)
+      #ternery operation solely to avoid dividing by zero
+      number_of_non_free_items(itmz) == 0 ? 0 : (order.service_fee || 0) / number_of_non_free_items(itmz)
+    end
+  
     def item_total
       items.collect(&:price).sum
     end

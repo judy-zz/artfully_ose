@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  devise :database_authenticatable, #:registerable,
+  devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable,
          :suspendable, :invitable
 
@@ -28,6 +28,10 @@ class User < ActiveRecord::Base
 
   def current_organization
     @current_organization ||= (is_in_organization? ? memberships.first.organization : Organization.new)
+  end
+
+  def membership_in(organization)
+    memberships.where(:organization_id => organization.id).limit(1).first
   end
 
   def customer

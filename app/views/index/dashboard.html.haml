@@ -5,37 +5,36 @@
 
 = render :partial => 'layouts/admin_messages'
 
-.sideboard
+.row
+  .span4
+    %section
+      %h3 My Organization
+      %p
+        - if current_user.is_in_organization?
+          =link_to current_user.current_organization.name, organization_path(current_user.current_organization)
+        - else
+          You are not in an organization yet.  Ask your organization administrator to add you, or
+          =link_to "create your own.", new_organization_path
 
-  %h3 Organization
-  %p
-    - if current_user.is_in_organization?
-      You are a member of 
-      =link_to current_user.current_organization.name, organization_path(current_user.current_organization)
-    - else
-      You are not in an organization yet.  Ask your organization administrator to add you, or
-      =link_to "create your own.", new_organization_path
-  #recently
-    %h3 Recently
-    - if @recent_actions.blank?
-      %p= t(".first-action", :default => "When actions happen to your organization, they'll be recorded here. Get started by adding a new contact to your people database.")
-      = link_to "Add a Contact", new_person_path, :class => "cta-left-125"
-    - else
-      %ul.detailed-list
-        - @recent_actions.each do |action|
-          %li
-            %p
-              = person_link(action.person)
-              = action.sentence
+    %section
+      %h3 Recent Activity
+      - if @recent_actions.blank?
+        %p= t(".no-actions", :default => "When some buys a ticket, makes a donation, or updates a record, it will be noted here. Get started by adding some new contacts to your People database.")
+        = link_to "Add a Contact", new_person_path, :class => 'btn'
+      - else
+        %ul#recent-list
+          - @recent_actions.each do |action|
+            %li.row-fluid
+              .span2
+                = image_tag "actions/#{action.action_type.downcase}.png"
+              .span10
+                =person_link(action.person)
+                =action.sentence
 
-.dashboard
+  .span8
+    %section
 
-  = render :partial => "ticket_offers/list", :locals => { :ticket_offers => @ticket_offers }
+      = render :partial => "ticket_offers/list", :locals => { :ticket_offers => @ticket_offers }
 
-  #events
-    %h3 Events
-    - if @events.blank?
-      %p= t(".first-event", :default => "Create your first Event.")
-      = link_to "Create your first Event", new_event_path, :class => :cta
-    - else
+      %h3 Events
       = render :partial => 'events/list', :locals => { :events => @events }

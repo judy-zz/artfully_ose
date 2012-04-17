@@ -1,7 +1,8 @@
 - content_for :header do
   %h1 Administration
 
-.context
-  = render :partial => "admin/stats/stats"
-.document
-  %p= "You are signed in as #{current_admin.email}"
+.row
+  .span4
+    = render :partial => "admin/stats/stats"
+  .span8
+    %p= "You are signed in as #{current_admin.email}"

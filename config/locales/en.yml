@@ -24,6 +24,7 @@
       default: "%B %d, %Y %I:%M %p"
       short: "%m/%d/%Y %I:%M %p"
       slashed_date: "%m/%d/%Y"
+      day_time: "%a, %b %d %l:%m %P"
       date: "%B %d, %Y"
       long_date: "%B %d, %Y %I:%M %p"
       long_with_day: "%A, %b, %d %Y %I:%M %p"

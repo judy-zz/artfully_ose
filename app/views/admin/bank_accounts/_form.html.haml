@@ -1,40 +1,50 @@
 = render "shared/error_messages", :target => bank_account
-= form_for bank_account, :url => admin_organization_bank_account_path(organization) do |form|
-  %ul
-    %li
-      .label= form.label :routing_number
-      .element= form.text_field :routing_number
+= form_for bank_account, :url => admin_organization_bank_account_path(organization), :html => { :class => 'form-horizontal' } do |form|
+  
+  .control-group
+    = form.label :routing_number, :class => 'control-label'
+    .controls
+      = form.text_field :routing_number
+    
+  .control-group
+    = form.label :number, :class => 'control-label'
+    .controls
+      = form.text_field :number
 
-    %li
-      .label= form.label :number
-      .element= form.text_field :number
+  .control-group
+    = form.label :account_type, :class => 'control-label'
+    .controls
+      = form.select :account_type, options_for_select( BankAccount::ACCOUNT_TYPES, bank_account.account_type )
 
-    %li
-      .label= form.label :account_type
-      .element= form.select :account_type, options_for_select( BankAccount::ACCOUNT_TYPES, bank_account.account_type )
-    %li
-      .label= form.label :name
-      .element= form.text_field :name
+  .control-group
+    = form.label :name, :class => 'control-label'
+    .controls
+      = form.text_field :name
 
-    %li
-      .label= form.label :address
-      .element= form.text_field :address
+  .control-group
+    = form.label :address, :class => 'control-label'
+    .controls
+      = form.text_field :address
 
-    %li
-      .label= form.label :city
-      .element= form.text_field :city
+  .control-group
+    = form.label :city, :class => 'control-label'
+    .controls
+      = form.text_field :city
 
-    %li
-      .label= form.label :state
-      .element= form.select :state, options_for_select(sorted_us_state_abbreviations, bank_account.state)
+  .control-group
+    = form.label :state, :class => 'control-label'
+    .controls
+      = form.select :state, options_for_select(sorted_us_state_abbreviations, bank_account.state)
 
-    %li
-      .label= form.label :zip
-      .element= form.text_field :zip
+  .control-group
+    = form.label :zip, :class => 'control-label'
+    .controls
+      = form.text_field :zip
 
-    %li
-      .label= form.label :phone
-      .element= form.text_field :phone
-
-    %li
-      = form.submit submit
+  .control-group
+    = form.label :phone, :class => 'control-label'
+    .controls
+      = form.text_field :phone
+  
+  .form-actions
+    = form.submit submit, :class => "btn"

@@ -54,7 +54,7 @@ class SalesController < ApplicationController
     def tickets_remaining
       remaining = {}
       @sale.sections.each do |section|
-        remaining[section.id] = section.summary(@show).available
+        remaining[section.id] = section.summary.available
       end
       remaining
     end

@@ -1,25 +1,27 @@
 - content_for :header do
   %h1 Organizations
-.context
-  = render :partial => "admin/stats/stats"
-.document
-  #organizations
-    %table.standalone.zebra
-      %thead
-        %tr
-          %th Name
-          %th Owner
-          %th Created Date
-          %th Members
-          %th FA
-          %th FSP
-      %tbody
-        - @organizations.each do |organization|
+
+.row
+  .span3
+    = render :partial => "admin/stats/stats"
+  .span9
+    #organizations
+      %table.table
+        %thead
           %tr
-            %td= link_to organization.name, admin_organization_path(organization)
-            %td= link_to organization.owner.email, admin_user_path(organization.owner) unless organization.owner.nil?
-            %td= l organization.created_at, :format => :short
-            %td= organization.memberships.size
-            %td= check_mark if organization.connected?
-            %td= check_mark if organization.has_active_fiscally_sponsored_project?
-    =will_paginate @organizations
+            %th Name
+            %th Owner
+            %th Created Date
+            %th Members
+            %th FA
+            %th FSP
+        %tbody
+          - @organizations.each do |organization|
+            %tr
+              %td= link_to organization.name, admin_organization_path(organization)
+              %td= link_to organization.owner.email, admin_user_path(organization.owner) unless organization.owner.nil?
+              %td= l organization.created_at, :format => :short
+              %td= organization.memberships.size
+              %td= check_mark if organization.connected?
+              %td= check_mark if organization.has_active_fiscally_sponsored_project?
+      = will_paginate @organizations

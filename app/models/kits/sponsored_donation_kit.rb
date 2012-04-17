@@ -21,6 +21,14 @@ class SponsoredDonationKit < Kit
   def has_active_fiscally_sponsored_project
     organization.has_active_fiscally_sponsored_project?
   end
+  
+  def friendly_name
+    "Sponsored Donations"
+  end
+  
+  def pitch
+    "Receive donations through Fractured Atlas fiscal sponsorship program"
+  end
 
   def connected?
     errors.add(:requirements, "You need to connect to your Fractured Atlas Membership to active this kit") unless organization.connected?

@@ -43,7 +43,7 @@ describe Ticket do
         Factory(:exchanged_item, :product=>ticket),
         Factory(:refunded_item, :product=>ticket)
         ]
-
+  
       ticket.items.should eq items
     end
     
@@ -307,6 +307,28 @@ describe Ticket do
        subject.stub(:comped?).and_return(true)
        subject.should_not be_refundable
      end
+   end
+   
+   describe "#destroyable?" do
+     it "should be destroyable" do
+       subject.should be_destroyable
+     end
+     
+     it "should not be destroyable if it has been sold" do
+       subject.stub(:sold?).and_return(true)
+       subject.should_not be_destroyable
+     end
+     
+     it "should not be destroyable it it has been comped" do
+       subject.stub(:comped?).and_return(true)
+       subject.should_not be_destroyable
+     end
+     
+     it "should not be destroyable if it has ever been associated with an order" do
+       subject.stub(:items).and_return([Factory(:item)])
+       subject.should_not be_destroyable
+     end
+     
    end
    
    describe "return!" do

@@ -150,7 +150,7 @@ describe Show do
       s.destroy.should be_true
     end
     
-    it "is frowned upon if any tickets have been sold" do
+    it "is prevented if any tickets have been sold" do
       s = Factory(:show_with_tickets)
       s.bulk_on_sale(:all)
       s.tickets.first.sell_to(Factory(:person))
@@ -162,6 +162,14 @@ describe Show do
     it "is verboten it any tickets have been comped" do      
       s = Factory(:show_with_tickets)
       s.tickets.first.comp_to(Factory(:person))
+      s.should_not be_destroyable
+      s.destroy.should be_false
+    end
+    
+    it "is disallowed if any tickets have ever been involved in any tranaction" do
+      s = Factory(:show_with_tickets)
+      ticket = s.tickets.first
+      ticket.stub(:items).and_return(Array.wrap(Factory(:refunded_item, :product => ticket)))
       s.should_not be_destroyable
       s.destroy.should be_false
     end

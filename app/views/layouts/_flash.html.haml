@@ -1,19 +1,5 @@
-- if flash[:notice]
-  .flash.success
-    .close &#10006;
-    %span= flash[:notice]
-
-- if flash[:error]
-  .flash.error
-    .close &#10006;
-    %span= flash[:error]
-
-- if flash[:alert]
-  .flash.warning
-    .close &#10006;
-    %span= flash[:alert]
-
-- if flash[:info]
-  .flash.info
-    .close &#10006;
-    %span= flash[:info]
+- [:notice, :error, :alert, :info].each do |type|
+  - if flash[type]
+    .flash{ "data-alert" => "alert", :class => [bootstrapped_type(type), type, 'alert'] }
+      .close{ "data-dismiss" => "alert"} &times;
+      = flash[type]  

@@ -2,7 +2,6 @@ $(document).ready(function () {
   $("form.destroyable").live("ajax:before", function(){
 		var row = $(this).closest("tr")
     row.remove();
-    zebra($('.zebra'));
   });
 
   $("form.destroyable").live("ajax:success", function(ev){

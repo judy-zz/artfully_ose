@@ -1,83 +1,44 @@
-- in_section :events
 - content_for :header do
-  %h1= link_to @event.name, event_path(@event)
-  %h6
-    = "#{@event.producer}"
-    &mdash;
-    = "#{@event.venue.name} #{@event.venue.city}, #{@event.venue.state} [#{time_zone_description(@event.venue.time_zone)}]"
+  =render :partial=>'header'
 
-.context
-  %ul.context-buttons
-    %li= button_to "Edit Event", edit_event_path(@event), :method => :get
-    %li= button_to "Store Front", store_event_path(@event), :method => :get, :class => "new-window"
-  = render :partial => "glance", :locals => { :report => @event.glance }
-
-.document
-  #tabs
-    %ul
-      %li
-        %a{ :href => '#tabs-1'}
-          Shows
-      %li
-        %a{ :href => '#tabs-2'}
-          Calendar
-      %li
-        %a{ :href => '#tabs-3'}
-          Charts
-      %li
-        %a{ :href => '#tabs-4'}
-          Sell
-
-    #tabs-1
-      #shows
-        %table.standalone.zebra{:style => 'width: 100%'}
-          %thead
-            %tr
-              %th Show
-              %th.stat Available
-              %th.stat Sold
-              %th.stat Comped
-          %tbody
-            - @shows.each do |show|
-              %tr{ :class => [show.state, show.destroyable? ? "destroyable" : "" ] }
-                %td
-                  %div#show-datetime
-                    =link_to l(show.datetime_local_to_event, :format => :short), event_show_path(@event, show), :title => 'show-datetime'
-                  %div#control-bar
-                    =render :partial => "shows/controls", :locals => { :show => show }
-                  .clear
-                %td.available_value= show.glance.available_total
-                %td.gross_value= show.glance.sold_total
-                %td.comped_value= show.glance.comped_total
-            %tr
-              = render :partial => 'shows/new_show_for_table', :locals => { :event => @event, :show => @next_show }
-        = will_paginate @shows   
-    #tabs-2
-      #this-week
-        #calendar{ :"data-event" => @event.id }        
-    #tabs-3
-      - unless @charts.empty?
-        %h3 Import charts
-        = form_for @chart, :url => assign_chart_path(@event) do |form|
-          %ul
-            %li
-              .hidden.label= form.label :id, "Chart"
-              .full.paired.element
-                = form.select :id, options_from_collection_for_select(@charts, "id", "name")
-                = form.submit "Import"
-      %ul.detailed-list
-        %h3 Charts
-        - @event.charts.each do |chart|
-          %li
-            %h4= chart.name
-            = render :partial => 'sections/section_table', :locals => { :chart => chart, :include_link => false }
-    #tabs-4    
-      #widget
-        %h4 Quick and Easy
-        %p= "Use this link to sell tickets to #{@event.name}: #{ link_to(store_event_url(@event), store_event_url(@event))}".html_safe
-
-        %h4 Sell Anywhere
-        %p= "Click #{link_to 'here', widget_event_path(@event)} for instructions on installing the widget on your own site.".html_safe
-
+.row
+  .span3
+    - in_sub_section :overview
+    =render :partial=>'menu'
+  .span9
+    .row-fluid
+      .span6    
+        = render :partial => "glance", :locals => { :report => @event.glance }       
+      .span6
+        %h3 Next Showing
+        = render :partial => "day_date_show", :locals => { :show => @event.next_public_show, :message => "There are no upcoming shows" }
+    .row-fluid
+      .span6
+        #description
+          %h3 Description
+          -unless @event.description.blank?
+            =simple_format @event.description  
+          -else
+            .no-image#add-a-description
+              #text
+                =link_to 'Add an event description', edit_event_path(@event)
+                %p
+                  This will be displayed to patrons when purchasing tickets 
+      .span6
+        %h3 Venue
+        #venue.row-fluid
+          .span6
+            -unless @event.venue.city.blank?
+              =link_to image_tag("http://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
+            -else
+              .no-image#add-a-venue
+                #text
+                  =icon_tag '07-map-marker'
+                  %br
+                  =link_to 'Add venue address', edit_event_venue_path(@event)
+          .span6
+            %strong=@event.venue.name
+            %div=@event.venue.street_as_string
         %h4 Sell through Resellers
         %p= "Click #{link_to 'here', new_ticket_offer_path} to offer tickets to this event to a reseller.".html_safe
+            %div=@event.venue.city_state_zip_as_string

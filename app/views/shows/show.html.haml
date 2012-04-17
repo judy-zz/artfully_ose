@@ -1,8 +1,8 @@
 - in_section :events
 - content_for :header do
-  %h1= link_to @event.name, event_path(@event)
-  %h6= l @show.datetime_local_to_event, :format => :long_with_day
+  =render :partial=>'events/header'
 
+<<<<<<< HEAD
 .context
   %ul.context-buttons
     - unless @show.pending?
@@ -41,3 +41,26 @@
 
   - else
     = render :partial => 'ticket_table', :locals => { :show => @show, :tickets => @tickets }
+=======
+.row
+  .span3
+    - in_sub_section :shows
+    =render :partial=>'events/menu'
+  .span9
+    = render "shared/error_messages", :target => @event
+    #show-headline.row-fluid
+      .span6
+        %h3=l @show.datetime_local_to_event, :format => :day_time
+        #show-links
+          =icon_link_to("Door List", door_list_event_show_path(@event, @show), 'icon-list', 'btn', '')
+          =icon_link_to("Box Office", new_event_show_sales_path(@event,@show), 'icon-shopping-cart', 'btn', '')
+      .span6
+        = render :partial => "glance", :locals => { :report => @show.glance }
+    #tickets
+      .row-fluid
+        .span2
+          %h3 Tickets
+        .span10
+          =icon_link_to("Add", new_show_ticket_path(@show), 'icon-plus-sign', 'btn', '')
+      = render :partial => 'ticket_table', :locals => { :show => @show, :tickets => @show.tickets }
+>>>>>>> design-refresh

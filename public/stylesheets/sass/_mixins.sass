@@ -12,6 +12,13 @@
   background: $start
   background: -moz-linear-gradient(top, $start $offset-start, $finish $offset-finish)
   background: -webkit-gradient(linear, left top, left bottom, color-stop($offset-start, $start), color-stop($offset-finish, $finish))
+  background-image: -khtml-gradient(linear, left top, left bottom, from($start), to($finish))
+  background-image: -moz-linear-gradient(top, $start, $finish)
+  background-image: -ms-linear-gradient(top, $start, $finish)
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $start), color-stop(100%, $finish))
+  background-image: -webkit-linear-gradient(top, $start, $finish)
+  background-image: -o-linear-gradient(top, $start, $finish)
+  background-image: linear-gradient(top, $start, $finish)
 
 @mixin rounded-corners($top, $right, $down, $left)
   -moz-border-radius: $top $right $down $left

@@ -4,8 +4,10 @@ class Chart < ActiveRecord::Base
 
   belongs_to :event
   belongs_to :organization
-  has_many :shows
+  has_one :show
   has_many :sections, :order => 'price DESC'
+  accepts_nested_attributes_for :sections, :reject_if => lambda { |a| a[:capacity].blank? }, :allow_destroy => true
+  after_create :create_first_section
 
   validates :name, :presence => true, :length => { :maximum => 255 }
 
@@ -24,6 +26,41 @@ class Chart < ActiveRecord::Base
 
   def dup!
     duplicate(:without => "id", :with => { :is_template => false })
+  end
+  
+  def create_first_section
+    if sections.empty?
+      self.sections.build({ :name => "General Admission", 
+                            :price => 0, 
+                            :capacity => 0 }).save
+    end
+  end
+  
+  #
+  # params_hash is the params[:chart] with :section_attributes as a key.  
+  # This is how they're submitted from the ticket types form
+  #
+  def update_attributes_from_params(params_hash)
+    #
+    # HACK: The move to bootstrap left us with currency submission in the form os "DD.CC" which 
+    # Artfully interpreted as DD.00.  
+    # This hack converts DD.CC to DDCC
+    #   
+    params_hash[:sections_attributes].each do |index, section_hash|
+      new_price = (section_hash['price'].to_f * 100).to_i
+      section_hash['price'] = new_price
+    end
+    
+    update_attributes(params_hash)
+    upgrade_event
+  end
+  
+  #If this is a free event, and they've specified prices on this chart, then upgrade to a paid event
+  def upgrade_event
+    if !event.nil? && event.free? && has_paid_sections?
+      event.is_free = false
+      event.save
+    end    
   end
 
   def assign_to(event)

@@ -2,45 +2,35 @@
 - content_for :header do
   %h1 Contributions
 
-.context
-  -# %ul.context-buttons
-  -#   %li= button_to "Record Contribution", new_contribution_path, :method => :get
 
-  %h3 Range
-  #donations-search
-    %ul.kv
-      = form_tag contributions_path, :method => :get do
-        %li
-          .key= label_tag :start_date
-          .value= text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-        %li
-          .key= label_tag :end_date
-          .value= text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-        = submit_tag "Search"
+-# %ul.context-buttons
+-#   %li= button_to "Record Contribution", new_contribution_path, :method => :get, :class => "btn"
 
+#donations-search
+  = form_tag contributions_path, :method => :get, :class => 'form-inline' do
+    = text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+    = text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+    = submit_tag "Search", :class => "btn"
 
-.document
-  %h3 Contributions
-  - unless @search.results.empty?
-    %h4= "From #{l @search.start} to #{l @search.stop}"
-    #donations
-      %table.standalone.zebra
-        %thead
-          %tr	
-            %th Timestamp
-            %th Person
-            %th Amount
-            %th Non-deductible
-            %th Order
-        %tbody
-          - @search.results.each do |order|
-            - order.items.select(&:donation?).each do |item|
-              %tr
-                %td= l order.created_at_local_to_organization
-                %td= link_to_person order.person
-                %td= number_as_cents item.total_price
-                %td= number_as_cents item.nongift_amount
-                %td= link_to "view", order_path(order)
-      = will_paginate(@search.results)
-  - else
-    %h4= "No contributions found between #{l @search.start} and #{l @search.stop}"
+- unless @search.results.empty?
+  #donations
+    %table.table
+      %thead
+        %tr	
+          %th Order
+          %th Time
+          %th Person
+          %th Amount
+          %th Non-deductible
+      %tbody
+        - @search.results.each do |order|
+          - order.items.select(&:donation?).each do |item|
+            %tr
+              %td= link_to order.id, order_path(order.id)
+              %td= l order.created_at_local_to_organization
+              %td= link_to_person order.person
+              %td= number_as_cents item.total_price
+              %td= number_as_cents item.nongift_amount
+    = will_paginate(@search.results)
+- else
+  %h4= "No contributions found between #{l @search.start} and #{l @search.stop}"

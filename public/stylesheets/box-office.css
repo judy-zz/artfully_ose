@@ -1,0 +1,45 @@
+.box-office-form .section-description .name label {
+  font-weight: bold;
+  margin-bottom: 0px; }
+.box-office-form .section-description .description {
+  color: #666666; }
+.box-office-form #payment-controls {
+  margin-left: 0px; }
+
+#door-list {
+  border-top: 1px solid #cccccc; }
+
+#showtime-total-and-checkout {
+  margin-bottom: 20px; }
+
+#total .price {
+  font-size: 28px;
+  font-weight: bold; }
+
+ul.ui-autocomplete li.ui-menu-item {
+  background-color: white; }
+  ul.ui-autocomplete li.ui-menu-item a {
+    padding: 5px; }
+  ul.ui-autocomplete li.ui-menu-item a.ui-state-hover {
+    background-color: #eeeeee;
+    border: 0px;
+    margin: 0px; }
+  ul.ui-autocomplete li.ui-menu-item #search-result-name {
+    font-size: 10pt;
+    font-weight: normal; }
+  ul.ui-autocomplete li.ui-menu-item .search-result-details {
+    color: #666666;
+    font-size: 10pt;
+    font-weight: normal; }
+  ul.ui-autocomplete li.ui-menu-item #search-result-id {
+    display: none; }
+
+.comped-price {
+  text-decoration: line-through; }
+
+.block {
+  margin-bottom: 10px; }
+
+#sell-total .price {
+  font-size: 28px;
+  font-weight: bold; }

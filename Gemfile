@@ -16,11 +16,12 @@ gem 'acts-as-taggable-on', '~>2.1.0'
 gem 'haml'
 gem 'sass'
 gem 'dynamic_form'
-gem 'will_paginate', '~> 3.0.beta'
+gem 'will_paginate', '~> 3.0', :require => [ "will_paginate", "will_paginate/array" ]
+gem 'bootstrap-will_paginate'
 gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
-gem 'jquery-rails', '>= 1.0.12'
+gem 'jquery-rails', '>= 1.0.19'
 gem 's3', '>= 0.3.11'
 gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
 gem 'swiper', :path => "vendor/gems/swiper-0.0.1"
@@ -49,6 +50,7 @@ gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transitions', :require => ['transitions', 'active_record/transitions']
 gem 'sunspot_rails'
+gem 'gravatar_image_tag'
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
@@ -70,10 +72,17 @@ group :test, :development do
   gem 'awesome_print', :require => 'ap'
   gem 'faker'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
+<<<<<<< HEAD
   gem 'wirble'
+=======
+  gem 'sunspot_solr'
+>>>>>>> design-refresh
 end
 
 group :test do
+  gem 'autotest-rails'
+  gem 'autotest-fsevent'
+  gem 'autotest-growl'
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'autotest'

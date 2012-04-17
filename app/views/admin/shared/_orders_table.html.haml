@@ -1,10 +1,11 @@
-%table.standalone.zebra#order-table
+%table.table.zebra#order-table
   %thead
     %tr
       %th{:style=>'width:40px'} ID
       %th{:style=>'width:30px'} Tix
       %th{:style=>'width:30px'} Don
       %th Date
+      %th{:style=>'width:75px'} Tran ID
       %th Person
       %th Organization
       %th Total
@@ -23,6 +24,7 @@
             .hidden="donation"
         -unless order.created_at.nil?
           %td= l order.created_at_local_to_admins, :format => :short
+        %td= order.transaction_id
         %td=" #{order.person_last_name}, #{order.person_first_name}"
         %td= link_to order.organization_name, admin_organization_path(order.organization_id)
         %td= number_as_cents order.total

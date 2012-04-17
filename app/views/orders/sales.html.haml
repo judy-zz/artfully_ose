@@ -2,57 +2,39 @@
 - content_for :header do
   %h1 Sales
 
-.context
-  %h3 Search
-  #donations-search
-    %ul.kv
-      = form_tag sales_orders_path, :method => :get do
-        - if @events.present?
-          %li
-            .key= label_tag :event_id
-            .value= raw select_event_for_sales_search @events, :event_id, params[:event_id]
-        - if @event && @shows.present?
-          %li
-            .key= label_tag :show_id
-            .value= raw select_show_for_sales_search @shows, :show_id, params[:show_id]
-        %li
-          .key= label_tag :start_date
-          .value= text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-        %li
-          .key= label_tag :end_date
-          .value= text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker'
-        = submit_tag "Search"
+#donations-search
+  %ul.kv
+    = form_tag sales_orders_path, :method => :get, :class => 'form-inline' do
+      = text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+      = text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+      = submit_tag "Search", :class => "btn"
 
-.document
-  %h3 Sales
-  - unless @search.results.empty?
-    %h4
-      = "From #{l @search.start} to #{l @search.stop}"
-      = "for #{@event.name}" if @event
-      = "on #{l @show.datetime_local_to_event}" if @show
-    #tickets
-      %table.standalone.zebra
-        %thead
-          %tr
-            %th Order Time
-            %th Person
-            %th Method
-            %th Event and Show
-            %th Amount
-        %tbody
-          - @search.results.each do |order|
-            - order.items.select(&:ticket?).each_with_index do |item, index|
-              %tr
-                - if index == 0
-                  - rowspan = order.items.select(&:ticket?).size
-                  %td{:rowspan => rowspan}= link_to l(order.created_at_local_to_organization, :format => :short), order_path(order)
-                  %td{:rowspan => rowspan}= link_to "#{order.person.first_name} #{order.person.last_name}", person_path(order.person)
-                  %td{:rowspan => rowspan}= (order.payment_method || "")
-                %td 
-                  ="#{item.product.event.name}"
-                  %br
-                  ="#{l item.product.show.datetime_local_to_event}"
-                %td= number_as_cents item.price
-      = will_paginate(@search.results)
-  - else
-    %h4= "No sales found between #{l @search.start} and #{l @search.stop}"
+- unless @search.results.empty?
+  #tickets
+    %table.standalone.zebra.table
+      %thead
+        %tr
+          %th Order
+          %th Time
+          %th Person
+          %th Method
+          %th Event and Show
+          %th Amount
+      %tbody
+        - @search.results.each do |order|
+          - order.items.select(&:ticket?).each_with_index do |item, index|
+            %tr
+              - if index == 0
+                - rowspan = order.items.select(&:ticket?).size
+                %td{:rowspan => rowspan}= link_to order.id, order_path(order.id)
+                %td{:rowspan => rowspan}= l(order.created_at_local_to_organization, :format => :short)
+                %td{:rowspan => rowspan}= link_to "#{order.person.first_name} #{order.person.last_name}", person_path(order.person)
+                %td{:rowspan => rowspan}= (order.payment_method || "")
+              %td 
+                ="#{item.product.event.name}"
+                %br
+                ="#{l item.product.show.datetime_local_to_event}"
+              %td= number_as_cents item.price
+    = will_paginate(@search.results)
+- else
+  %h4= "No sales found between #{l @search.start} and #{l @search.stop}"

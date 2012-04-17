@@ -1,21 +1,21 @@
-= render :partial => 'tickets/on_sale/grouped_form', :locals => { :show => @show, :tickets => @tickets }
-= render :partial => 'tickets/off_sale/grouped_form', :locals => { :show => @show, :tickets => @tickets }
-= render :partial => 'tickets/delete/grouped_form', :locals => { :show => @show, :tickets => @tickets }
-= render :partial => 'comps/grouped_form', :locals => { :show => @show, :tickets => @tickets }
-
-#tickets.grouped-form-target
-  = form_tag do
-    %table#ticket-table.zebra
-      %thead
-        %tr
-          %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall
-          %th Section
-          %th Price
-          %th Status
-      %tbody
-        - tickets.each do |ticket|
-          %tr{:id => "row_item_#{ticket.id}", :class => ticket.state }
-            %td.grouped-checkbox= check_box_tag "item_#{ticket.id}", ticket.id, false, :disabled => true
-            %td= ticket.section.name
-            %td= number_as_cents ticket.price
-            %td= ticket.state.titleize
+%table.table
+  -@show.chart.sections.each do |section|
+    %tr
+      %td
+        %strong=section.name
+      %td="#{number_as_cents section.price}"
+      %td="#{section.summary.total} tickets"
+      %td="#{section.summary.available} available"
+      %td="#{section.summary.sold} sold"
+      %td="#{section.summary.comped} comped"
+      %td{:style => 'width: 30px'}
+        %ul.nav.in-table
+          %li.dropdown{:id => "#menu#{section.id}"}
+            =icon_link_to(' ', "#menu#{section.id}", 'icon-asterisk', 'dropdown-toggle dropdown btn btn-mini', '')
+            %ul.dropdown-menu
+              %li
+                =link_to "Put on sale", on_sale_sections_path(:id => section.id), :method => :post
+              %li
+                =link_to "Take off sale", off_sale_sections_path(:id => section.id), :method => :post
+              %li
+                =link_to "Add tickets", new_show_ticket_path(@show, :section_id => section.id)

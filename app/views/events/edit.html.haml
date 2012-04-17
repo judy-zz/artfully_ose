@@ -1,13 +1,40 @@
 - in_section :events
 - content_for :header do
-  %h1= t('.heading', :default => "Events")
-  %h2= t('.subheading', :default => "Manage your events")
+  =render :partial=>'header'
 
-.context
-  %h3 Editing an Event
-
-.document
-  %h3= "Edit #{@event.name}"
-  = render "shared/error_messages", :target => @event
-  = render :partial => 'form', :locals => { :event => @event, :templates => @templates }
+.row
+  .span3
+    - in_sub_section :details
+    =render :partial=>'menu'
+  .span9
+    = render "shared/error_messages", :target => @event
+    = form_for( @event, :html => { :class => 'form-horizontal' } ) do |form|
+      .control-group
+        =form.label :name, "Event name", :class => 'control-label'
+        .controls
+          =form.text_field :name, :placeholder=>"Event name"
+          
+      .control-group
+        =form.label :name, "Producer", :class => 'control-label'
+        .controls
+          =form.text_field :producer
+          
+      .control-group
+        =form.label :name, "Description", :class => 'control-label'
+        .controls
+          =form.text_area :description, :class => 'input-xlarge', :rows => '6'
+          
+      .control-group
+        =form.label :name, "Contact email", :class => 'control-label'
+        .controls
+          =form.text_field :contact_email, :placeholder=>"Event name"
+          
+      .control-group
+        =form.label :name, "Contact phone", :class => 'control-label'
+        .controls
+          =form.text_field :contact_phone, :placeholder=>"Event name"
+          
+      .form-actions
+        = form.submit "Save", :class => 'btn'
+    
 

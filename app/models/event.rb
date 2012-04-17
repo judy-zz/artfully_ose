@@ -6,6 +6,8 @@ class Event < ActiveRecord::Base
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
   has_many :reseller_attachments, :as => :attachable
+  
+  after_create :create_default_chart
 
   has_attached_file :image,
     :storage => :s3,
@@ -19,8 +21,7 @@ class Event < ActiveRecord::Base
       :thumb => "140x140#"
     }
 
-  validates_presence_of :name, :producer, :organization_id
-  validates :is_free, :immutable => {:message => "Cannot change free/paid event after an event has been created"}
+  validates_presence_of :name, :organization_id
 
   default_scope where(:deleted_at => nil)
   scope :published, includes(:shows).where(:shows => { :state => "published" })
@@ -41,6 +42,19 @@ class Event < ActiveRecord::Base
   def filter_charts(charts)
     charts.reject { |chart| already_has_chart(chart) }
   end
+  
+  def create_default_chart
+    self.charts.build({ :name => self.name, 
+                        :organization => self.organization, 
+                        :is_template => false }).save
+  end
+  
+  #
+  # Hack McHackerson. When we go back to multiple charts per event, this is where we start
+  #
+  def default_chart
+    charts.first
+  end
 
   def upcoming_shows(limit = 5)
     upcoming = shows.select { |show| show.datetime > DateTime.now.beginning_of_day }
@@ -54,13 +68,19 @@ class Event < ActiveRecord::Base
     played.take(limit)
   end
 
+  def next_public_show
+    upcoming_public_shows.empty? ? nil : upcoming_public_shows.first
+  end
+
   def upcoming_public_shows
     upcoming_shows(:all).select(&:published?)
   end
 
   def next_show
     shows.build(:datetime => Show.next_datetime(shows.last))
-    shows.pop
+    show = shows.pop
+    show.chart = default_chart.dup!
+    show
   end
 
   def as_widget_json(options = {})

@@ -43,4 +43,4 @@
                 = check_box_tag "tickets[]", ticket.id, false, :id => "ticket_#{ticket.id}"
                 = label_tag "ticket_#{ticket.id}", "#{ticket.section.name}, #{number_as_cents ticket.price}"
         %p
-          = submit_tag "Exchange these tickets"
+          = submit_tag "Exchange these tickets", :class => "btn"

@@ -1,16 +1,17 @@
 - content_for :header do
   %h1 Donations
 
-.context
-  %h3 Tips
-  %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
+.row
+  .span4
+    %h3 Tips
+    %p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin vehicula nisi eget lacus gravida at iaculis mi luctus. Vestibulum accumsan est eget lacus accumsan a condimentum leo volutpat. In congue rhoncus neque, ut tincidunt quam sagittis eget. In hac habitasse platea dictumst. Quisque non imperdiet magna.
 
-.document
-  %h3= @kit.type.underscore.titleize
-  #alternatives
-    - @kits.each do |kit|
-      .of2= render :partial => "#{kit.type.underscore.pluralize}/alternative"
+  .span8
+    %h3= @kit.type.underscore.titleize
+    #alternatives
+      - @kits.each do |kit|
+        .of2= render :partial => "#{kit.type.underscore.pluralize}/alternative"
 
-  %h3 I am none of these
-  %p Proin a lectus nisi. Aliquam volutpat malesuada eros, id scelerisque lacus varius a. Curabitur molestie quam at metus sollicitudin imperdiet. Cras dictum fermentum luctus. Pellentesque hendrerit metus nec lorem pulvinar nec malesuada mi pulvinar.
-  =link_to "Return to your kits", :back
+    %h3 I am none of these
+    %p Proin a lectus nisi. Aliquam volutpat malesuada eros, id scelerisque lacus varius a. Curabitur molestie quam at metus sollicitudin imperdiet. Cras dictum fermentum luctus. Pellentesque hendrerit metus nec lorem pulvinar nec malesuada mi pulvinar.
+    =link_to "Return to your kits", :back

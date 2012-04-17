@@ -1,21 +1,31 @@
-= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f|
-  %h3 Sign Up
-  = devise_error_messages!
-  %ul
-    %li
-      .label= f.label :email
-      .element= f.text_field :email
-    %li
-      .label= f.label :password
-      .element= f.password_field :password
-    %li
-      .label= f.label :password_confirmation, "Retype Password"
-      .element= f.password_field :password_confirmation
-    %li
-      .label{:style => "float:left"}= f.label :user_agreement, "User Agreement"
-      .element
-        = f.check_box :user_agreement
-        .description= "I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", user_agreement_path, :target => "_blank"}".html_safe
+= devise_error_messages!
 
-    %li
-      = f.submit "Sign up"
+= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => {:class => 'form-horizontal'}) do |f|  
+
+  %fieldset
+    %legend Sign Up
+
+    .control-group
+      = f.label :email, :class=>'control-label'
+      .controls= f.text_field :email
+    .control-group
+      = f.label :password, :class=>'control-label'
+      .controls= f.password_field :password
+    .control-group
+      = f.label :password_confirmation, "Retype Password", :class=>'control-label'
+      .controls= f.password_field :password_confirmation
+
+    .control-group
+      .controls
+        %label.checkbox
+          = f.check_box :newsletter_emails
+          I'd like to receive a monthly email about new Artful.ly features
+
+    .control-group
+      .controls
+        %label.checkbox
+          = f.check_box :user_agreement
+          I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", user_agreement_path, :target => "_blank"}
+
+    .form-actions
+      = f.submit "Sign up", :class => "btn btn-primary btn-large"

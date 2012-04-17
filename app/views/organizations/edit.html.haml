@@ -1,9 +1,7 @@
 - in_section :dashboard
 - content_for :header do
-  %h1 Organizations
+  %h1 Edit Organization
 
-.spread
-  %h3 Create your own
-  = form_for @organization do |form|
-    %ul= render :partial => 'organizations/form', :locals => { :form => form }
-    = form.submit "Update"
+= form_for @organization do |form|
+  %ul= render :partial => 'organizations/form', :locals => { :form => form }
+  = form.submit "Update", :class => 'btn'

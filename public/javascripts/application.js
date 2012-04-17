@@ -17,7 +17,9 @@ function createErrorFlashMessage(msg) {
 	$('#heading').after($(document.createElement('div'))
 							.addClass('flash')
 							.addClass('error')
-							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+							.addClass('alert')
+							.addClass('alert-error')
+							.html('<span>'+msg+'</span>'));
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();
@@ -39,7 +41,9 @@ function createFlashMessage(msg) {
 	$('#heading').after($(document.createElement('div'))
 							.addClass('flash')
 							.addClass('success')
-							.html('<span>'+msg+'</span><div class="close">✖</div>'));
+							.addClass('alert')
+							.addClass('alert-info')
+							.html('<span>'+msg+'</span>'));
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();
@@ -59,15 +63,17 @@ function setFlashMessage(msg) {
 
 $(document).ready(function() {
     
-  if (typeof(Zenbox) !== "undefined") {
-    Zenbox.init({
-      dropboxID:   "20042668",
-      url:         "https://artfully.zendesk.com",
-      tabID:       "help",
-      tabColor:    "black",
-      tabPosition: "Left"
-    });
-  }
+	/*********** NEW BOOTSTRAP JS ***********/
+	$(".alert").alert()
+	
+	$('.section-price-disabled').popover({trigger:'manual'})
+	                            .click(function(){ $(this).popover('toggle') });
+	
+	$('.dropdown-toggle').dropdown()
+	
+	/*********** NEW ARTFULLY JS ************/
+	
+	/*********** EXISTING ARTFUL.LY JS ******/
 
   $("form .description").siblings("input").focusin(function(){
     $("form .description").addClass("active");
@@ -128,20 +134,16 @@ $(document).ready(function() {
     return false;
   });
 
-  $(".popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Log Action"})
-
-  $(".popup-link").bind("ajax:complete", function(et, e){
-    $(".popup").dialog( "open" );
-    $(".popup").html(e.responseText);
+  $("#hear-action-link").bind("ajax:complete", function(et, e){
+    $("#hear-action-modal").html(e.responseText);
+    $("#hear-action-modal").modal( "show" );
     activateControls();
     return false;
   });
 
-  $("#new-note-popup").dialog({autoOpen: false, draggable:false, modal:true, width:600, title:"Add Note"})
-
   $(".new-note-link").bind("ajax:complete", function(et, e){
-    $("#new-note-popup").dialog( "open" );
     $("#new-note-popup").html(e.responseText);
+    $("#new-note-popup").modal( "show" );
     activateControls();
     return false;
   });
@@ -169,27 +171,27 @@ $(document).ready(function() {
       }
   });
 
-  $('.subject-tag').each(function() {
-	createControlsForTag($(this));
+  $('.tag').each(function() {
+		createControlsForTag($(this));
   });
 
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
-	var tagText = $('#new-tag-field').attr('value');
-	if(!validTagText(tagText)) {
-		$('.tag-error').text("Only letters, number, or dashes allowed in tags")
-		return false;
-	} else {
-		$('.tag-error').text("")
-	}
+		var tagText = $('#new-tag-field').attr('value');
+		if(!validTagText(tagText)) {
+			$('.tag-error').text("Only letters, number, or dashes allowed in tags")
+			return false;
+		} else {
+			$('.tag-error').text("")
+		}
 
-    newTagLi = $(document.createElement('li'));
-	newTagLi.addClass('tag').addClass('subject-tag').html(tagText).appendTo($('.tags'));
-	$('.tags').append("\n");
-	createControlsForTag(newTagLi);
-    $('#new-tag-field').attr('value', '');
+	  newTagLi = $(document.createElement('li'));
+		newTagLi.addClass('tag').addClass('rounder').html(tagText).appendTo($('.tags'));
+		$('.tags').append("\n");
+		createControlsForTag(newTagLi);
+	  $('#new-tag-field').attr('value', '');
 
-	bindControlsToListElements();
-	bindXButton();
+		bindControlsToListElements();
+		bindXButton();
   });
 
   bindControlsToListElements();
@@ -255,7 +257,7 @@ createControlsForTag = function(tagEl) {
 
 	controlsUl.append(deleteLi);
 
-    tagEl.append(controlsUl);
+  tagEl.append(controlsUl);
 	tagEl.append("\n");
 }
 

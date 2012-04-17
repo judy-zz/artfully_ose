@@ -3,28 +3,23 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
-    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
-    = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-    = stylesheet_link_tag "https://asset0.zendesk.com/external/zenbox/v2.4/zenbox.css"
-    = include_stylesheets :vendor, :application, :media => :screen
+    = include_stylesheets :vendor, :media => :screen
+    = include_stylesheets :application, :media => :screen
     = include_stylesheets :printing, :media => :print
     = csrf_meta_tag
     = render :partial => 'layouts/google_analytics'
   %body
-    #header
-      = render :partial => 'layouts/menu'
-    #content
-      .logo{ :id => active_section }
-      #page
-        #heading= yield :header
-        = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
-        - flash.discard
-        = yield
-    #footer
-      #current
-        #current-user= current_user.email
-        #current-org= link_to current_user.current_organization.name, current_user.current_organization if current_user.is_in_organization?
-    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
-    = render :partial => "shared/help_tab" unless Rails.env.development?
+    = render :partial => 'layouts/menu'
+    .container
+      #heading= yield :header
+      = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+      - flash.discard
+      = content_for?(:menu_sub_template) ? yield(:menu_sub_template) : yield
+      = render 'layouts/footer'
+
+    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
+    = include_javascripts :bootstrap
+    = render :partial => "shared/help_tab"
+    = render :partial => "shared/feedback_footer"
     = include_javascripts :vendor, :application, :custom
     = yield :custom_js

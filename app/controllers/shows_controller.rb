@@ -9,9 +9,8 @@ class ShowsController < ApplicationController
   end
 
   def index
-    authorize :manage, @event
-    @shows = @event.shows.paginate(:page => params[:page], :per_page => 10)
-    @next_show = @event.next_show
+    authorize! :manage, @event
+    @shows = Show.where(:event_id => @event.id).includes(:tickets).includes(:chart)
   end
 
   def duplicate
@@ -29,13 +28,19 @@ class ShowsController < ApplicationController
 
   def create
     @event = Event.find(params[:event_id])
-    @show = @event.shows.build(params[:show].merge(:organization => current_organization))
+    @show = @event.next_show
+    
+    #clear the sections and replace them with whatever they entered
+    @show.chart.sections = []
+
+    @show.chart.update_attributes_from_params(params[:show].delete(:chart))
+    @show.update_attributes(params[:show].merge(:organization => current_organization).merge(:chart_id => @show.chart.id))
     @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 
     if @show.save
       flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
-      redirect_to event_path(@event)
-    else
+      redirect_to event_show_path(@event, @show)
+    else  
       flash[:error] = "There was a problem creating your show."
       render :new
     end
@@ -189,7 +194,7 @@ class ShowsController < ApplicationController
 
   private
     def find_event
-      @event = Event.find(params[:event_id])
+      @event = Event.includes(:shows).find(params[:event_id])
     end
 
     def upcoming_shows

@@ -1,24 +1,26 @@
 - content_for :header do
   %h1= l(@show.datetime_local_to_event)
 
-.context
-  %h3 Settlement
-  - if @show.settleables.any?
-    %p= link_to "Run Settlement", new_admin_settlement_path(:show_id => @show.id)
-  - else
-    %p There are no items due for settlement.
+.row
 
-.document
-  %h3 Tickets
-  %table.zebra.standalone
-    %thead
-      %tr
-        %th Section
-        %th Price
-        %th Settlement
-    %tbody
-      - @show.tickets.each do |ticket|
+  .span4
+    %h3 Settlement
+    - if @show.settleables.any?
+      %p= link_to "Run Settlement", new_admin_settlement_path(:show_id => @show.id)
+    - else
+      %p There are no items due for settlement.
+
+  .span8
+    %h3 Tickets
+    %table.zebra.standalone
+      %thead
         %tr
-          %td= ticket.section
-          %td= number_as_cents ticket.price
-          %td= ticket.settlement_id || "None"
+          %th Section
+          %th Price
+          %th Settlement
+      %tbody
+        - @show.tickets.each do |ticket|
+          %tr
+            %td= ticket.section
+            %td= number_as_cents ticket.price
+            %td= ticket.settlement_id || "None"

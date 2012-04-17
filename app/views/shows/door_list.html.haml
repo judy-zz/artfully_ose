@@ -10,7 +10,7 @@
 .spread
   - unless @door_list.items.empty?
     #door-list
-      %table#door-list.standalone
+      %table#door-list.table
         %thead
           %tr
             %th
@@ -30,6 +30,6 @@
               %td= item.ticket.section.name
               %td= number_as_cents(item.ticket.sold_price)
               %td= ticket_reseller_name(item.ticket)
-            %tr{:style => 'border-bottom: 1px solid #999'}
+            %tr.no-border
               %td
               %td{:colspan => 6}= item.special_instructions

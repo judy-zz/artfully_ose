@@ -3,38 +3,40 @@
   %h1 Settlement Reports
 
 
-.spread
-  %h3 Schedule
-  %p Settlements are issued two business days after the show plays or the donation occurs. For example, a show on Monday night will be settled on Thursday.
-  %h3 Settlements
-  #settlements
-    - if @settlements.empty?
-      %p You have not received any settlements yet.
-    - else
-      %table.standalone.zebra
-        %thead
-          %tr
-            %th ID
-            %th Event
-            %th Show
-            %th Date
-            %th Transaction ID
-            %th Gross
-            %th Realized
-            %th Net
-        %tbody
-          - @settlements.each do |settlement|
-            %tr{:class => settlement.success? ? "succeeded" : "failed" }
-              %td= link_to settlement.id, settlement_path(settlement)
-              %td= link_to settlement.show.event.name, event_path(settlement.show.event) unless settlement.show.nil?
-              %td= link_to l(settlement.show.datetime_local_to_event, :format => :short), event_show_path(settlement.show.event, settlement.show) unless settlement.show.nil?
-              %td= l(settlement.created_at, :format => :date)
-              %td
-                -if settlement.success?
-                  =settlement.transaction_id
-                -else
-                  FAILED
-              %td= number_as_cents(settlement.gross)
-              %td= number_as_cents(settlement.realized_gross)
-              %td= number_as_cents(settlement.net)
-      = will_paginate @settlements
+.row
+  .span4
+    %h3 Schedule
+    %p Settlements are issued two business days after the show plays or the donation occurs. For example, a show on Monday night will be settled on Thursday.
+  .span8
+    %h3 Settlements
+    #settlements
+      - if @settlements.empty?
+        %p You have not received any settlements yet.
+      - else
+        %table.standalone.zebra.table
+          %thead
+            %tr
+              %th ID
+              %th Event
+              %th Show
+              %th Date
+              %th Transaction ID
+              %th Gross
+              %th Realized
+              %th Net
+          %tbody
+            - @settlements.each do |settlement|
+              %tr{:class => settlement.success? ? "succeeded" : "failed" }
+                %td= link_to settlement.id, settlement_path(settlement)
+                %td= link_to settlement.show.event.name, event_path(settlement.show.event) unless settlement.show.nil?
+                %td= link_to l(settlement.show.datetime_local_to_event, :format => :short), event_show_path(settlement.show.event, settlement.show) unless settlement.show.nil?
+                %td= l(settlement.created_at, :format => :date)
+                %td
+                  -if settlement.success?
+                    =settlement.transaction_id
+                  -else
+                    FAILED
+                %td= number_as_cents(settlement.gross)
+                %td= number_as_cents(settlement.realized_gross)
+                %td= number_as_cents(settlement.net)
+        = will_paginate @settlements

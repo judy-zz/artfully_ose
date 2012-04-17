@@ -13,7 +13,7 @@ class IndexController < ApplicationController
   def dashboard
     if current_user.is_in_organization?
       @events = current_user.current_organization.events.includes(:shows, :venue).paginate(:page => params[:page], :per_page => 10)
-      @recent_actions = Action.recent(current_user.current_organization, 5)
+      @recent_actions = Action.recent(current_user.current_organization, 10)
       @reseller_profile = current_user.current_organization.reseller_profile
 
       if @reseller_profile

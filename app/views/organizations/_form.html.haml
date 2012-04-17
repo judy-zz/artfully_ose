@@ -1,6 +1,6 @@
 %li
-  .label= form.label :name, "Organization Name"
-  .element= form.text_field :name
+  =form.label :name, "Organization Name"
+  =form.text_field :name, :class => 'input-xlarge'
 %li
-  .label= form.label :time_zone, "Time Zone"
-  .element= form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => "Eastern Time (US & Canada)"
+  =form.label :time_zone, "Time Zone"
+  =form.time_zone_select( :time_zone, ActiveSupport::TimeZone.us_zones, {:default => "Eastern Time (US & Canada)"}, {:class => 'input-xlarge'})

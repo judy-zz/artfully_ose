@@ -1,67 +1,45 @@
 - in_section :dashboard
 - content_for :header do
   %h1= @organization.name
-  %ul.from-here
-    %li= link_to "Edit Organization", edit_organization_path(@organization)
 
-.context
-  #memberships
-    %h3 Users
-    = render :partial => "memberships/list", :locals => { :organization => @organization }
-  #details
-    %h3 Details
-    %ul.kv
-      - unless @organization.legal_organization_name.blank?
-        %li
-          .key Legal Name
-          .value= @organization.legal_organization_name
-      - unless @organization.ein.blank?
-        %li
-          .key EIN
-          .value= @organization.ein
-      %li
-        .key Time Zone
-        .value= @organization.time_zone
-
-  - unless @organization.connected?
-    %h3 Connect to Fractured Atlas
-    %p This organization has not been connected to a Fractured Atlas membership.  Enter your Fractured Atlas username and password below to connect.
-    = render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
-  - else
-    %h3 Fractured Atlas
-    %p This organization is connected to a Fractured Atlas membership.
+%ul.kv
+  - unless @organization.legal_organization_name.blank?
+    %li.row-fluid
+      .key.span2 Legal Name
+      .value.span6= @organization.legal_organization_name
+  - unless @organization.ein.blank?
+    %li.row-fluid
+      .key.span2 EIN
+      .value.span6= @organization.ein
+  %li.row-fluid
+    .key.span2 Time Zone
+    .value.span6= @organization.time_zone
+  -unless @organization.connected?
+    %li.row-fluid
+      .key.span2 Fractured Atlas
+      .value.span6= link_to "connect now", "#faForm", 'data-toggle' => 'modal'
+  -else
+    %li.row-fluid
+      .key.span2 Fractured Atlas
+      .value.span6 Connected
     -if @organization.has_active_fiscally_sponsored_project?
-      %ul
-        %li
-          %h4 Fiscal Sponsorship
-          %ul.report
-            %li
-              %span.stat Project
-              %span.current= @organization.fiscally_sponsored_project.name || "&nbsp;".html_safe 
-            %li
-              %span.stat Website
-              %span.current= @organization.fiscally_sponsored_project.website || "&nbsp;".html_safe
-            %li
-              %span.stat Status
-              %span.current= @organization.fiscally_sponsored_project.status || "&nbsp;".html_safe
+      %li.row-fluid
+        .key.span2 Project
+        .value.span6= @organization.fiscally_sponsored_project.name || "&nbsp;".html_safe 
+      %li.row-fluid
+        .key.span2 Website
+        .value.span6= @organization.fiscally_sponsored_project.website || "&nbsp;".html_safe
+      %li.row-fluid
+        .key.span2 Status
+        .value.span6= @organization.fiscally_sponsored_project.status || "&nbsp;".html_safe
+    
+= link_to "Edit", edit_organization_path(@organization), :class => "btn"
 
-.document
-  - if can? :manage, current_user.current_organization
-    #new-membership
-      %h3 Add Users
-      %p Allow another Artful.ly user to work on this organization.
-      = form_tag organization_memberships_path(@organization.id), :action => "create" do
-        %ul
-          %li
-            .full.paired.element
-              .hidden.label= label_tag :user_email, "Email"
-              = text_field_tag :user_email, "", :placeholder => "Enter an email address..."
-              = submit_tag "Add"
-
-  #kits
-    %h3 Kits
-    - if can? :manage, current_user.current_organization
-      %p Kits are Artful.ly add-ons that provide specific functionality.
-    - else
-      %p= "Only the owner of this organization (#{current_user.current_organization.owner.email}) can make changes to kits."
+#organization-details.row
+  #kits.span4
     = render :partial => "kits/list", :locals => { :kits => @kits }
+
+  #memberships.span8
+    = render :partial => "memberships/list", :locals => { :organization => @organization }
+    
+= render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }

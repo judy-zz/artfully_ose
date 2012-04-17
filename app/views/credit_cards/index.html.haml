@@ -4,24 +4,24 @@
   %ul.from-here
     %li= link_to "New Credit Card", new_credit_card_path
 
-.context
-.document
-  %h3 Saved Cards
-  #credit_cards
-    %table.standalone
-      %thead
-        %tr
-          %th Name
-          %th Number
-          %th Expiration Date
-          %th Actions
-      %tbody
-        - @credit_cards.each do |credit_card|
+.row
+  .span8.offset4
+    %h3 Saved Cards
+    #credit_cards
+      %table.standalone
+        %thead
           %tr
-            %td= credit_card.cardholder_name
-            %td= credit_card.card_number
-            %td= credit_card.expiration_date.strftime "%m/%Y"
-            %td
-              = link_to "Edit", edit_credit_card_path(credit_card)
-              = link_to "Delete", credit_card_path(credit_card), :method => :delete, :confirm => 'Are you sure you want to remove this card?'
+            %th Name
+            %th Number
+            %th Expiration Date
+            %th Actions
+        %tbody
+          - @credit_cards.each do |credit_card|
+            %tr
+              %td= credit_card.cardholder_name
+              %td= credit_card.card_number
+              %td= credit_card.expiration_date.strftime "%m/%Y"
+              %td
+                = link_to "Edit", edit_credit_card_path(credit_card)
+                = link_to "Delete", credit_card_path(credit_card), :method => :delete, :confirm => 'Are you sure you want to remove this card?'
 

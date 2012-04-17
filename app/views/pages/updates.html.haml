@@ -4,13 +4,13 @@
   .span8
     -@posts.each do |post|
       .post
-        %h5=link_to post[:title], post[:link], :target => '_blank'
+        %h4=link_to post[:title], post[:link], :target => '_blank'
         %h6= post[:byline]
         = simple_format post[:entry].gsub('Read More »', '').gsub("\n","\n\n"), :class => 'blog'
         %p
           = link_to 'Read More »', post[:link], :target => '_blank'
 
-  .span6.offset1
+  .span4
     .icon
       = image_tag('pages/envelope.png', :class => 'icon')
     .sub-text

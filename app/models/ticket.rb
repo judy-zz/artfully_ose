@@ -9,7 +9,7 @@ class Ticket < ActiveRecord::Base
   belongs_to :cart
   
   # Can re-insert this when the polymorphism on the items side catches up
-  #has_many :items, :foreign_key => "product_id"
+  has_many :items, :foreign_key => "product_id"
 
   delegate :event, :to => :show
 
@@ -31,12 +31,12 @@ class Ticket < ActiveRecord::Base
     state :sold
     state :comped
 
-    event(:on_sale)   { transitions :from => [ :on_sale, :off_sale, :sold ],  :to => :on_sale   }
-    event(:off_sale)  { transitions :from => :on_sale,                        :to => :off_sale  }
-    event(:exchange)  { transitions :from => [ :on_sale, :off_sale ],         :to => :sold    }
-    event(:sell)      { transitions :from => :on_sale,                        :to => :sold      }
-    event(:comp)      { transitions :from => [ :on_sale, :off_sale ],         :to => :comped    }
-    event(:do_return) { transitions :from => [ :comped, :sold ],              :to => :on_sale   }
+    event(:on_sale)   { transitions :from => [ :on_sale, :off_sale ],   :to => :on_sale   }
+    event(:off_sale)  { transitions :from => [ :on_sale, :off_sale ],   :to => :off_sale  }
+    event(:exchange)  { transitions :from => [ :on_sale, :off_sale ],   :to => :sold    }
+    event(:sell)      { transitions :from => :on_sale,                  :to => :sold      }
+    event(:comp)      { transitions :from => [ :on_sale, :off_sale ],   :to => :comped    }
+    event(:do_return) { transitions :from => [ :comped, :sold ],        :to => :on_sale   }
   end
 
   def datetime
@@ -56,10 +56,6 @@ class Ticket < ActiveRecord::Base
     conditions[:state] ||= :on_sale
     conditions[:cart_id] = nil
     where(conditions).limit(limit)
-  end
-
-  def items
-    @items ||= Item.find_by_product(self)
   end
 
   def settlement_id
@@ -174,7 +170,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def destroyable?
-    !(sold? or comped?)
+    !sold? and !comped? and items.empty?
   end
 
   def compable?
@@ -246,7 +242,7 @@ class Ticket < ActiveRecord::Base
         tickets.map(&state)
         yield
       rescue Transitions::InvalidTransition
-        false
+        logger.info "Trying to transition ticket [#{}] on_sale, transition failed"
       end
     end
 end

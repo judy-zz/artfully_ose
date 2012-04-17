@@ -56,13 +56,11 @@ $(document).ready(function(){
     },
 
     generateControls: function(){
-      var controls = $(document.createElement('div')).addClass('table-controls'),
-          ul =       $(document.createElement('ul')).appendTo(controls);
+      var controls = $(document.createElement('div')).addClass('table-controls btn-group');
 
       $(".grouped-form").find("input:submit").each(function(){
         var original = this,
-            button = $(document.createElement('input')).attr({'type':'button', 'value':$(this).attr('value'), 'disabled':'disabled'}),
-            $li = $(document.createElement('li'));
+            button = $(document.createElement('input')).attr({'type':'button', 'value':$(this).attr('value'), 'disabled':'disabled'}).addClass("btn");
 
         $(original).attr({'disabled':'disabled'})
                    .bind('onEnable', function(){
@@ -83,7 +81,7 @@ $(document).ready(function(){
           }
         });
 
-        $li.append(button).appendTo(ul);
+        button.appendTo(controls);
       });
 
       controls.prependTo($(".grouped-form-target form"));

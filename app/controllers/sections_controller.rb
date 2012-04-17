@@ -1,5 +1,5 @@
 class SectionsController < ApplicationController
-  before_filter :find_chart
+  before_filter :find_chart, :except => [:on_sale, :off_sale]
 
   def new
     @section = Section.new
@@ -39,11 +39,25 @@ class SectionsController < ApplicationController
     @section.destroy
     redirect_to @chart
   end
+  
+  def on_sale
+    @section = Section.find(params[:id])
+    @section.put_on_sale
+    flash[:notice] = "Tickets in section #{@section.name} are now on sale"
+    redirect_to event_show_path(@section.chart.show.event, @section.chart.show)
+  end
+  
+  def off_sale
+    @section = Section.find(params[:id])
+    @section.take_off_sale
+    flash[:notice] = "Tickets in section #{@section.name} are now off sale"
+    redirect_to event_show_path(@section.chart.show.event, @section.chart.show)
+  end
 
   private
 
-  def find_chart
-    @chart = Chart.find(params[:chart_id])
-  end
+    def find_chart
+      @chart = Chart.find(params[:chart_id])
+    end
 
 end
