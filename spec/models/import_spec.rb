@@ -24,4 +24,32 @@ describe Import do
     end
   end
 
+  context "an example import from a customer" do
+    before :all do
+      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+
+      @csv_filename = Rails.root.join("spec", "support", "patron-import.csv")
+      @import = Factory.create(:import, s3_key: @csv_filename)
+      @import.cache_data
+      @import.import
+    end
+
+    it "should have 359 import rows" do
+      @import.import_rows.count.should == 358
+    end
+
+    it "should successfully import 0 people" do
+      Person.count.should == 0
+    end
+
+    it "should be failed" do
+      @import.status.should == "failed"
+    end
+
+    it "should have 2 duplicate email errors" do
+      @import.import_errors.count.should == 2
+      @import.import_errors.map(&:error_message).uniq.should == [ "Email has already been taken" ]
+    end
+  end
+
 end

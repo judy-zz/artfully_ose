@@ -118,7 +118,9 @@ class Import < ActiveRecord::Base
   end
 
   def csv_data
-    @csv_data ||=
+    return @csv_data if @csv_data
+
+    @csv_data =
       if File.file?(self.s3_key)
         File.read(self.s3_key)
       else
@@ -126,6 +128,14 @@ class Import < ActiveRecord::Base
         s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
         s3_object.content(true) if s3_object
       end
+
+    # Make sure the csv file is valid utf-8.
+    if @csv_data
+      @csv_data.encode! "UTF-8", :invalid => :replace, :undef => :replace, :replace => ""
+      @csv_data = @csv_data.chars.map { |c| c if c.valid_encoding? }.compact.join
+    end
+
+    @csv_data
   end
 
   def s3_service
