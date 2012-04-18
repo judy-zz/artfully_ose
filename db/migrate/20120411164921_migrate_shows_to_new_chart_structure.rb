@@ -19,7 +19,7 @@ class MigrateShowsToNewChartStructure < ActiveRecord::Migration
       end
       
       show.chart = new_chart
-      show.save      
+      show.save(:validate => false)      
     end
     Chart.set_callback(:create, :after, :create_first_section)
   end
