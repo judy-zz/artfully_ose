@@ -4,7 +4,7 @@
 
     %h3 Pending ticket offers
 
-    %table.ticket-offers-list
+    %table.table.ticket-offers-list
 
       %thead
         %th Organization
@@ -25,5 +25,5 @@
             %td.show-name= ticket_offer.show.show_time
             %td.section= ticket_offer.section.name
             %td.ticket-count= ticket_offer.count
-            %td.accept.button= link_to "Accept", accept_ticket_offer_path(ticket_offer)
-            %td.decline.button= link_to "Decline", decline_ticket_offer_path(ticket_offer)
+            %td.accept.button= link_to "Accept", accept_ticket_offer_path(ticket_offer), :class => "btn"
+            %td.decline.button= link_to "Decline", decline_ticket_offer_path(ticket_offer), :class => "btn"
