@@ -2,7 +2,7 @@
 
 .clearfix
 
-%table#reseller-profile-datatable
+%table.table#reseller-profile-datatable
   %thead
     %tr
       %th Name
@@ -20,23 +20,4 @@
             = profile.organization.name
         %td= profile.description
         %td= number_to_currency(profile.fee / 100.0)
-        %td= button_to "Offer Tickets", new_ticket_offer_path(:reseller_profile_id => profile.id)
-
-- content_for :custom_js do
-
-  :javascript
-
-    $(function () {
-      $("#reseller-profile-datatable").dataTable({
-        "iDisplayLength" : 20,
-        "bPaginate"      : true,
-        "bJQueryUI"      : true,
-        "sDom"           : '<"H"lf>t<"F"ip>',
-        "aoColumns"      : [
-          { "bSortable" : true },
-          { "bSortable" : false },
-          { "bSortable" : true },
-          { "bSortable" : false }
-        ]
-      });
-    });
+        %td= button_to "Offer Tickets", new_ticket_offer_path(:reseller_profile_id => profile.id), :class => :btn

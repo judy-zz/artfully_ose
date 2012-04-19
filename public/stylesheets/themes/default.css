@@ -323,13 +323,6 @@ form.jeditable button {
 .notice, .info, .success {
   background: #0a99b3;
   background: -moz-linear-gradient(top, #0a99b3 0%, #077083 100%);
-<<<<<<< HEAD
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083)); }
-  .notice a, .info a, .success a {
-    color: white;
-    font-weight: bold;
-    text-decoration: underline; }
-=======
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0a99b3), color-stop(100%, #077083));
   background-image: -khtml-gradient(linear, left top, left bottom, from(#0a99b3), to(#077083));
   background-image: -moz-linear-gradient(top, #0a99b3, #077083);
@@ -338,7 +331,6 @@ form.jeditable button {
   background-image: -webkit-linear-gradient(top, #0a99b3, #077083);
   background-image: -o-linear-gradient(top, #0a99b3, #077083);
   background-image: linear-gradient(top, #0a99b3, #077083); }
->>>>>>> design-refresh
 
 #artfully-alert {
   display: none; }

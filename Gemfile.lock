@@ -30,11 +30,7 @@ GEM
       Platform (>= 0.4.0)
       open4
     Platform (0.4.0)
-<<<<<<< HEAD
     ZenTest (4.6.2)
-=======
-    ZenTest (4.7.0)
->>>>>>> design-refresh
     abstract (1.0.0)
     actionmailer (3.0.9)
       actionpack (= 3.0.9)
@@ -80,19 +76,13 @@ GEM
       rails
     arel (2.0.10)
     athena_resource (0.0.1)
-<<<<<<< HEAD
     autotest (4.4.6)
       ZenTest (>= 4.4.1)
     autotest-fsevent (0.2.8)
       sys-uname
     autotest-growl (0.2.16)
-=======
-    autotest-fsevent (0.2.8)
-      sys-uname
-    autotest-growl (0.2.16)
     autotest-rails (4.1.2)
       ZenTest (~> 4.5)
->>>>>>> design-refresh
     awesome_print (0.4.0)
     aws-sdk (1.3.2)
     bcrypt-ruby (2.1.4)
@@ -265,13 +255,9 @@ GEM
       rsolr (~> 1.0.7)
     sunspot_rails (1.3.1)
       nokogiri
-<<<<<<< HEAD
-      sunspot (= 1.2.1)
-=======
       sunspot (= 1.3.1)
     sunspot_solr (1.3.1)
       escape (~> 0.0.4)
->>>>>>> design-refresh
     sys-uname (0.9.0)
       ffi (>= 1.0.0)
     term-ansicolor (1.0.7)
@@ -292,12 +278,8 @@ GEM
       timeliness (~> 0.3.3)
     warden (1.0.4)
       rack (>= 1.0)
-<<<<<<< HEAD
-    will_paginate (3.0.pre2)
-    wirble (0.1.3)
-=======
     will_paginate (3.0.3)
->>>>>>> design-refresh
+    wirble (0.1.3)
     xpath (0.1.4)
       nokogiri (~> 1.3)
     yui-compressor (0.9.6)
@@ -311,15 +293,10 @@ DEPENDENCIES
   activerecord-import
   acts-as-taggable-on (~> 2.1.0)
   athena_resource
-<<<<<<< HEAD
   autotest
   autotest-fsevent
   autotest-growl
-=======
-  autotest-fsevent
-  autotest-growl
   autotest-rails
->>>>>>> design-refresh
   awesome_print
   aws-sdk
   bootstrap-will_paginate
@@ -372,9 +349,5 @@ DEPENDENCIES
   transitions
   uuid
   validates_timeliness
-<<<<<<< HEAD
-  will_paginate (~> 3.0.beta)
-  wirble
-=======
   will_paginate (~> 3.0)
->>>>>>> design-refresh
+  wirble

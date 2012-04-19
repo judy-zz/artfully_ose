@@ -16,7 +16,7 @@
 
         #offers-to-me
 
-          %table.zebra
+          %table.table
             %thead
               %th Status
               %th Event
@@ -46,7 +46,7 @@
 
         %h3 Ticket offers by you
 
-        %table.zebra
+        %table.table
           %thead
             %th Status
             %th Event
@@ -71,9 +71,9 @@
                 %td= producer_offer_control(offer)
 
       - if @organization.events.count > 0
-        = link_to "Create a ticket offer", new_ticket_offer_path, :class => :cta
+        = link_to "Create a ticket offer", new_ticket_offer_path, :class => :btn
       - else
-        = link_to "Create an event", new_event_path, :class => :cta
+        = link_to "Create an event", new_event_path, :class => :btn
 
 - else
 
@@ -84,6 +84,6 @@
       %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
 
     - if @organization.events.count > 0
-      = link_to "Create a ticket offer", new_ticket_offer_path, :class => "cta-left-125"
+      = link_to "Create a ticket offer", new_ticket_offer_path, :class => :btn
     - else
-      = link_to "Create an event", new_event_path, :class => "cta-left-125"
+      = link_to "Create an event", new_event_path, :class => :btn

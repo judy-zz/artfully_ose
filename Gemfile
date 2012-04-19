@@ -72,11 +72,8 @@ group :test, :development do
   gem 'awesome_print', :require => 'ap'
   gem 'faker'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
-<<<<<<< HEAD
   gem 'wirble'
-=======
   gem 'sunspot_solr'
->>>>>>> design-refresh
 end
 
 group :test do
