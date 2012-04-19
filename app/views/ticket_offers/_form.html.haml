@@ -8,7 +8,7 @@
 
     %li
       = label_tag :event_id
-      = select_tag "event_id", options_from_collection_for_select(@organization.events, "id", "name", @ticket_offer.event_id), :include_blank => true
+      = select_tag "event_id", options_from_collection_for_select(@organization.events, "id", "name", @event_id), :include_blank => true
 
     %li
       = f.label :show_id
@@ -30,7 +30,7 @@
 
   .cancel-submit
     = link_to "Cancel", organization_path(@organization), :class => "btn btn-warning"
-    = f.submit "Send this offer", :class => "btn btn-primary"
+    = f.submit "Send this offer", :class => "btn"
 
 - content_for :custom_js do
 
@@ -103,6 +103,8 @@
       showSelector.change(loadSectionOptions);
       sectionSelector.change(loadCount);
 
+      loadShowOptions();
+      loadSectionOptions();
       loadCount();
 
     });

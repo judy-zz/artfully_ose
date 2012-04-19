@@ -7,10 +7,25 @@
     - in_sub_section :share
     =render :partial=>'menu'
   .span9
-    .row
-      .span10.offset1.storefront-links
 
-        %h1 Sell through Resellers
-        %p#storefront-text Offer tickets to this event to a reseller:
-        %blockquote#storefront-link
-          = link_to new_ticket_offer_url
+    %h1 Sell through a reseller
+
+    %table.table#reseller-profile-datatable
+      %thead
+        %tr
+          %th Name
+          %th Description
+          %th Fee
+          %th &nbsp;
+
+      %tbody
+        - @reseller_profiles.each do |profile|
+          %tr
+            %td
+              - if profile.url.present?
+                = link_to profile.organization.name, profile.url, :target => "_blank"
+              - else
+                = profile.organization.name
+            %td= profile.description
+            %td= number_to_currency(profile.fee / 100.0)
+            %td= button_to "Offer Tickets", new_ticket_offer_path(:reseller_profile_id => profile.id, :event_id => @event.id), :class => :btn

@@ -21,6 +21,8 @@ class TicketOffersController < ApplicationController
   def new
     @ticket_offer = TicketOffer.new(params[:ticket_offer])
     @ticket_offer.reseller_profile = ResellerProfile.find_by_id(params[:reseller_profile_id])
+    @event = Event.find(params[:event_id]) if params[:event_id].present?
+    @event_id = if @event then @event.id else @ticket_offer.event_id end
   end
 
   def create

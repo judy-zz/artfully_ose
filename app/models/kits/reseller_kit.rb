@@ -9,6 +9,14 @@ class ResellerKit < Kit
     end
   end
 
+  def friendly_name
+    "Reseller Ticketing"
+  end
+
+  def pitch
+    "Resell tickets"
+  end
+
   def no_owner?
     errors.add(:requirements, "You need to be part of an organization to activate this kit.") if organization.owner.nil?
     organization.owner.nil?

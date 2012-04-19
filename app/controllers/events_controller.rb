@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   respond_to :html, :json
 
-  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages ]
+  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages, :resell ]
   before_filter :upcoming_shows, :only => :show
   after_filter :save_event_to_session, :except => [:destroy, :index]
   after_filter :clear_event_from_session, :only => :destroy
@@ -103,6 +103,38 @@ class EventsController < ApplicationController
   end
 
   def resell
+    @organization = current_user.current_organization
+
+    @ticket_offer = TicketOffer.new(params[:ticket_offer])
+    @ticket_offer.reseller_profile = ResellerProfile.find_by_id(params[:reseller_profile_id])
+
+    # Get the master list of resellers.
+    @reseller_profiles = ResellerProfile.joins(:organization).order("organizations.name").all
+
+    # Grab the list of Events.
+    @events = @organization.events.includes(:shows)
+
+    # Build an EventID -> Shows hash.
+    @shows = @events.to_h { |event| [ event.id, event.shows.unplayed.all ] }
+
+    # Build a ShowID -> Sections hash.
+    @sections = @shows.values.flatten.to_h { |show| [ show.id, show.tickets.includes(:section).map(&:section).uniq ] }
+
+    # Build a list of ticket counts per section.
+    @counts = {}
+    @shows.map do |event_id, shows|
+      shows.each do |show|
+        show.
+          tickets.
+          resellable.
+          select("section_id, COUNT(*) AS count").
+          group("section_id").
+          each do |t|
+            @counts[show.id] ||= {}
+            @counts[show.id][t.section_id] = t.count
+          end
+      end
+    end
   end
 
   private
