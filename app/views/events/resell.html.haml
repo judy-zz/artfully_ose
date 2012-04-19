@@ -10,7 +10,7 @@
     .row
       .span10.offset1.storefront-links
 
-        %h1 Online storefront
-        %p#storefront-text Anyone can buy tickets at:
+        %h1 Sell through Resellers
+        %p#storefront-text Offer tickets to this event to a reseller:
         %blockquote#storefront-link
-          = link_to "#{store_event_url(@event)}".html_safe, store_event_url(@event)
+          = link_to new_ticket_offer_url

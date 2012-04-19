@@ -126,6 +126,7 @@ Artfully::Application.routes.draw do
   resources :events do
     get :widget,  :on => :member
     get :storefront_link,  :on => :member
+    get :resell, :on => :member
     get :prices,  :on => :member
     get :image,   :on => :member
     get :messages,   :on => :member

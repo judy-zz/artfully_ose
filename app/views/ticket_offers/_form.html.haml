@@ -7,32 +7,30 @@
   %ul
 
     %li
-      .label= label_tag :event_id
-      .element= select_tag "event_id", options_from_collection_for_select(@organization.events, "id", "name", @ticket_offer.event_id), :include_blank => true
+      = label_tag :event_id
+      = select_tag "event_id", options_from_collection_for_select(@organization.events, "id", "name", @ticket_offer.event_id), :include_blank => true
 
     %li
-      .label= f.label :show_id
-      .element
-        - if @ticket_offer.show && @ticket_offer.event
-          = f.select :show_id, options_from_collection_for_select(@ticket_offer.event.upcoming_shows.all, :id, :show_time, @ticket_offer.show_id)
-        - else
-          = f.select :show_id, []
+      = f.label :show_id
+      - if @ticket_offer.show && @ticket_offer.event
+        = f.select :show_id, options_from_collection_for_select(@ticket_offer.event.upcoming_shows.all, :id, :show_time, @ticket_offer.show_id)
+      - else
+        = f.select :show_id, []
 
     %li
-      .label= f.label :section_id
-      .element
-        - if @ticket_offer.show && @sections[@ticket_offer.show_id]
-          = f.select :section_id, options_from_collection_for_select(@sections[@ticket_offer.show_id], :id, :name, @ticket_offer.section_id)
-        - else
-          = f.select :section_id, []
+      = f.label :section_id
+      - if @ticket_offer.show && @sections[@ticket_offer.show_id]
+        = f.select :section_id, options_from_collection_for_select(@sections[@ticket_offer.show_id], :id, :name, @ticket_offer.section_id)
+      - else
+        = f.select :section_id, []
 
     %li
-      .label= f.label :count
-      .element= f.text_field :count
+      = f.label :count
+      = f.text_field :count
 
   .cancel-submit
-    = link_to "Cancel", organization_path(@organization)
-    = f.submit "Send this offer"
+    = link_to "Cancel", organization_path(@organization), :class => "btn btn-warning"
+    = f.submit "Send this offer", :class => "btn btn-primary"
 
 - content_for :custom_js do
 

@@ -102,6 +102,9 @@ class EventsController < ApplicationController
   def messages
   end
 
+  def resell
+  end
+
   private
     def save_event_to_session
       session[:event_id] = @event.id

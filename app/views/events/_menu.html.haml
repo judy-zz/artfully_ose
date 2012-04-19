@@ -23,3 +23,5 @@
     %ul.accordian-menu
       = active_link_to 'Storefront', storefront_link_event_path(@event)
       = active_link_to 'On Your Site', widget_event_path(@event)
+      - if @event.organization.has_kit?(:reseller)
+        = active_link_to 'Resellers', resell_event_path(@event)
