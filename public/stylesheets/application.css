@@ -264,3 +264,6 @@ tr.no-border td {
 
 #reseller-profile-datatable {
   margin-top: 25px; }
+
+.with-gap-above {
+  margin-top: 50px; }
