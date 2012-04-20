@@ -58,7 +58,7 @@ module ApplicationHelper
   $(document).ready(function(){
     artfully.configure({
       base_uri: '#{root_url}api/',
-      store_uri: '#{root_url}store/',
+      store_uri: '#{root_url}store/'
     });
     #{render :partial => "widgets/event", :locals => { :event => event } unless event.nil? }
     #{render :partial => "widgets/donation", :locals => { :organization => organization } unless organization.nil? }

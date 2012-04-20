@@ -19,7 +19,7 @@
     %section
       %h3 Recent Activity
       - if @recent_actions.blank?
-        %p= t(".no-actions", :default => "When some buys a ticket, makes a donation, or updates a record, it will be noted here. Get started by adding some new contacts to your People database.")
+        %p= t(".no-actions", :default => "When someone buys a ticket, makes a donation, or updates a record, it will be noted here. Get started by adding some new contacts to your People database.")
         = link_to "Add a Contact", new_person_path, :class => 'btn'
       - else
         %ul#recent-list

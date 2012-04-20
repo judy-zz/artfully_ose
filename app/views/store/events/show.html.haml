@@ -9,6 +9,7 @@
     #event
       %h1#logo= @event.name
       %h3#producer= @event.producer
+      %h2 Buy Tickets
 
       - @use_calendar = (@event.upcoming_public_shows.length > 5 || params[:calendar] == 'true')
 

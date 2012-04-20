@@ -17,7 +17,8 @@
           - if kit.fresh?
             %td.status= link_to "Add", new_kit_path(:type => kit.type.underscore), :class => "btn"
           - elsif kit.cancelled? && kit.type == "SponsoredDonationKit"
-            %td= "Contact support@artful.ly to learn about Fiscal Sponsorship for your organization"
+            - #%td= "Contact support@artful.ly to learn about Fiscal Sponsorship for your organization"
+            %td.status= link_to "Add", "#", :class => "btn disabled"
           - elsif kit.cancelled?
             %td= link_to "Reactivate #{t(kit.type.underscore)}", kit_path(kit), :method => :put
           - elsif kit.pending?

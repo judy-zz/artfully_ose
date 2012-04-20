@@ -1,5 +1,4 @@
 - if AdminMessage.active.count > 0
   - AdminMessage.active.each do |msg|
     .flash{"data-alert" => "alert", :class => [bootstrapped_type(:info), :info, "alert"]}
-      .close{"data-dismiss" => "alert"} &times;
       .admin-message= simple_format msg.message
