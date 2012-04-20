@@ -1,22 +1,22 @@
-#reseller-profile
+= render "shared/error_messages", :target => @reseller_profile
 
-  %h3 Reseller Profile
+= form_for [ @organization, @reseller_profile ] do |f|
 
-  = render "shared/error_messages", :target => @reseller_profile
+  .control-group
+    = f.label :url, "URL", :class => "control-label"
+    .controls
+      = f.text_field :url, :class => "input-xlarge"
 
-  = form_for [ @organization, @reseller_profile ] do |f|
+  .control-group
+    = f.label :description, "Description", :class => 'control-label'
+    .controls
+      = f.text_area :description, :class => 'input-xlarge', :rows => '6'
 
-    %ul
-      %li
-        .label= f.label :url
-        .element= f.text_field :url
-      %li
-        .label= f.label :description
-        .element= f.text_area :description
-      %li
-        .label= f.label :fee
-        .paired.element
-          = f.text_field :fee, :value => number_to_currency((@reseller_profile.fee || 100) * 0.01)
-          .description= "This fee is in addition to the $1 fee which Artful.ly collects."
+  .control-group
+    = f.label :fee, "Fee", :class => "control-label"
+    .controls
+      = f.text_field :fee, :value => number_to_currency((@reseller_profile.fee || 100) * 0.01)
+      %p.help-block This fee is in addition to the $1 fee which Artful.ly collects
 
-    = f.submit "Update Profile"
+  .form-actions
+    = render :partial => 'shared/submit_cancel', :locals => { :form => f, :cancel_path => root_path }

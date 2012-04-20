@@ -2,7 +2,9 @@
 - content_for :header do
   %h1 Reseller Settings
 
-.context
-  = render "profile_sidebar"
-.document
-  = render "form"
+.row
+  .span3
+    = render "profile_sidebar"
+  .span6
+    = render "shared/error_messages", :target => @reseller_profile
+    = render "form"
