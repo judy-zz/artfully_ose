@@ -41,15 +41,17 @@ class SectionsController < ApplicationController
   end
   
   def on_sale
+    @qty = params[:quantity].to_i
     @section = Section.find(params[:id])
-    @section.put_on_sale
+    @section.put_on_sale @qty
     flash[:notice] = "Tickets in section #{@section.name} are now on sale"
     redirect_to event_show_path(@section.chart.show.event, @section.chart.show)
   end
   
   def off_sale
+    @qty = params[:quantity].to_i
     @section = Section.find(params[:id])
-    @section.take_off_sale
+    @section.take_off_sale @qty
     flash[:notice] = "Tickets in section #{@section.name} are now off sale"
     redirect_to event_show_path(@section.chart.show.event, @section.chart.show)
   end

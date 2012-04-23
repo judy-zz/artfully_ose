@@ -14,8 +14,46 @@
             =icon_link_to(' ', "#menu#{section.id}", 'icon-asterisk', 'dropdown-toggle dropdown btn btn-mini', '')
             %ul.dropdown-menu
               %li
-                =link_to "Put on sale", on_sale_sections_path(:id => section.id), :method => :post
+                =link_to "Put on sale", "#putOnSale#{section.id}", 'data-toggle' => 'modal'
               %li
-                =link_to "Take off sale", off_sale_sections_path(:id => section.id), :method => :post
+                =link_to "Take off sale", "#takeOffSale#{section.id}", 'data-toggle' => 'modal'
               %li
                 =link_to "Add tickets", new_show_ticket_path(@show, :section_id => section.id)
+          
+
+-@show.chart.sections.each do |section|
+  .modal{:id => "takeOffSale#{section.id}"}
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      .row-fluid
+        .span10
+          %h3 Take Tickets Off Sale
+    .modal-body
+      .row-fluid
+        .span4 
+          =form_tag off_sale_sections_path(:id => section.id), :method => :post, :class=>'form-inline' do
+            =text_field_tag :quantity, section.summary.available, :class => 'span1'
+            %button.btn{:type=>'submit'}
+              Take off sale
+        .span8
+          %h6=section.name
+          = render :partial => 'shared/section_summary', :locals => { :section => section }
+          
+
+-@show.chart.sections.each do |section|
+  .modal{:id => "putOnSale#{section.id}"}
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      .row-fluid
+        .span10
+          %h3 Put Tickets On Sale
+    .modal-body
+      .row-fluid
+        .span4 
+          =form_tag on_sale_sections_path(:id => section.id), :method => :post, :class=>'form-inline' do
+            =text_field_tag :quantity, section.summary.off_sale, :class => 'span1'
+            %button.btn{:type=>'submit'}
+              Put on sale
+        .span8
+          %h6=section.name
+          = render :partial => 'shared/section_summary', :locals => { :section => section }

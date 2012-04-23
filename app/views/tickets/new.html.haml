@@ -25,22 +25,7 @@
       .row-fluid
         .span6
           %h6 About this section
-          %table.table
-            %tr
-              %td Price
-              %td=number_as_cents @section.price
-            %tr
-              %td Total Tickets
-              %td=@summary.total
-            %tr
-              %td On Sale
-              %td= @summary.available
-            %tr
-              %td Sold
-              %td=@summary.sold
-            %tr
-              %td Comped
-              %td=@summary.comped
+          = render :partial => 'shared/section_summary', :locals => { :section => @section }
         .span6
           %h6 About this show
           %table.table

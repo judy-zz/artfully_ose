@@ -24,14 +24,14 @@ class Section < ActiveRecord::Base
     @summary = SectionSummary.for_tickets(tickets)
   end
   
-  def put_on_sale
-    tickets.each do |t|
+  def put_on_sale(qty = 0)
+    tickets.off_sale.limit(qty).each do |t|
       t.put_on_sale
     end
   end
   
-  def take_off_sale
-    tickets.each do |t|
+  def take_off_sale(qty = 0)
+    tickets.on_sale.limit(qty).each do |t|
       t.take_off_sale
     end
   end
