@@ -2,7 +2,8 @@
   %h1= @event.name
   %h2 Administration
 
-.spread
-  %ul
-    - @event.shows.each do |show|
-      %li= link_to l(show.datetime_local_to_event), admin_organization_event_show_path(@event.organization_id, @event, show)
+.row
+  .span12
+    %ul
+      - @event.shows.each do |show|
+        %li= link_to l(show.datetime_local_to_event), admin_organization_event_show_path(@event.organization_id, @event, show)
