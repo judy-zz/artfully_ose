@@ -20,11 +20,11 @@
             = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "btn btn-mini", :remote => true)
             = link_to "Delete", "#delete-confirm-modal-#{note.id}", :class => "delete-confirm-link btn-mini btn-danger", "data-toggle" => "modal"
 
-            .modal.fade{:id => "delete-confirm-modal-#{note.id}"}
+            .modal{:id => "delete-confirm-modal-#{note.id}"}
               .modal-header
                 = link_to 'x', '#', :class => 'close', 'data-dismiss' => 'modal'
-                %h3 Delete a note from this person
+                %h3 Delete note
               .modal-body
-                = simple_format note.text
+                = simple_format "Are you sure you want to delete this note?  This cannot be undone."
               .modal-footer
-                = link_to "Delete this note", person_note_path(person, note), :method => :delete, :class => "delete-confirm-link btn btn-warning"
+                = link_to "Delete this note", person_note_path(person, note), :method => :delete, :class => "delete-confirm-link btn btn-danger"

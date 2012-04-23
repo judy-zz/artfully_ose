@@ -12,7 +12,7 @@ Feature: User accounts
       | user@example.com | changeme |
     When I fill in "Email" with "user@example.com"
     And I fill in "Password" with "changeme"
-    And I press "Sign in"
+    And I sign in
     Then I should see "Dashboard"
 
   Scenario: A user sees the splash page and logs in
@@ -23,7 +23,7 @@ Feature: User accounts
       | user@example.com | changeme |
     When I fill in "Email" with "user@example.com"
     And I fill in "Password" with "changeme"
-    And I press "Sign in"
+    And I sign in
     Then I should see "Dashboard"
 
   Scenario: A user signs out

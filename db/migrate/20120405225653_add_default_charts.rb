@@ -3,7 +3,7 @@ class AddDefaultCharts < ActiveRecord::Migration
     Event.all.each do |event|
       if event.charts.empty?
         puts "Adding default chart for #{event.id}"
-        event.charts.build(:organization_id => event.organization, :name => event.name, :is_template => false)
+        event.charts.build(:organization_id => event.organization.id, :name => event.name, :is_template => false)
         event.save
         puts "Added chart #{event.default_chart.id}"
       end

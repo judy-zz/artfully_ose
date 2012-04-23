@@ -1,7 +1,6 @@
 - in_section :reports
 - content_for :header do
-  %h1= "Settlement #{@settlement.id}"
-  %h2= "#{l(@settlement.created_at, :format => :date)}"
+  %h1= "Settlement #{@settlement.id}: #{l(@settlement.created_at, :format => :date)}"
 
 .row
   .span4
@@ -19,7 +18,7 @@
   .span8
     %h3 Details
     #items
-      %table.standalone.zebra
+      %table.table
         %thead
           %tr
             %th Order ID

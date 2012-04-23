@@ -10,7 +10,7 @@ class ShowsController < ApplicationController
 
   def index
     authorize! :manage, @event
-    @shows = Show.where(:event_id => @event.id).includes(:tickets).includes(:chart)
+    @shows = Show.where(:event_id => @event.id).includes(:tickets).includes(:chart).order('datetime ASC')
   end
 
   def duplicate
