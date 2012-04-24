@@ -1,11 +1,19 @@
 class Person < ActiveRecord::Base
   acts_as_taggable
 
-  belongs_to :organization
-  has_many :actions
-  has_one :address
-  has_many :phones
-  has_many :notes
+  belongs_to  :organization
+  has_many    :actions
+  has_many    :phones
+  has_many    :notes
+  has_one     :address
+  
+  #
+  # An array of has_many associations that should be merged with a person record is merge with another
+  # When an has_many association is added, it must be added here if the association is to be merged
+  #
+  def mergables
+    [:actions, :notes]
+  end
 
   validates_presence_of :organization_id
   validates_presence_of :person_info

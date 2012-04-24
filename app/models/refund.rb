@@ -2,7 +2,7 @@ class Refund
   attr_accessor :order, :refund_order, :items, :gateway_error_message
 
   BRAINTREE_UNSETTLED_MESSAGE = "Cannot refund a transaction unless it is settled. (91506)"
-  FRIENDLY_UNSETTLED_MESSAGE = "The processor cannot refund that tranaction yet. Please try again in a few hours."
+  FRIENDLY_UNSETTLED_MESSAGE = "The processor cannot refund that transaction yet. Please try again in a few hours."
 
   def initialize(order, items)
     self.order = order
