@@ -3,6 +3,8 @@
   var eventName = "#{@event.name}";
   var storefront_sync_store_order_path = "#{storefront_sync_store_order_path}";
   var storefront_create_store_checkout_path = "#{storefront_create_store_checkout_path}";
+- content_for :title do
+  Buy tickets to #{@event.name}
 #content
   #store
     #artfully-alert.flash.error
