@@ -5,14 +5,28 @@ class Person < ActiveRecord::Base
   has_many    :actions
   has_many    :phones
   has_many    :notes
+  has_many    :orders
+  has_many    :tickets, :foreign_key => 'buyer_id'
   has_one     :address
+  
+  default_scope where(:deleted_at => nil)
+
+  def destroy!
+    destroy
+  end
+
+  def destroy
+    update_attribute(:deleted_at, Time.now)
+  end
   
   #
   # An array of has_many associations that should be merged with a person record is merge with another
   # When an has_many association is added, it must be added here if the association is to be merged
   #
-  def mergables
-    [:actions, :notes]
+  # Tickets are a special case
+  #
+  def self.mergables
+    [:actions, :notes, :orders]
   end
 
   validates_presence_of :organization_id
@@ -63,6 +77,30 @@ class Person < ActiveRecord::Base
 
   def self.recent(organization, limit = 10)
     Person.where(:organization_id => organization).order('updated_at DESC').limit(limit)
+  end
+  
+  def self.merge(winner, loser)
+    unless winner.organization == loser.organization
+      raise "Trying to merge two people [#{winner.id}] [#{loser.id}] from different organizations [#{winner.organization.id}] [#{winner.organization.id}]"
+    end
+    
+    mergables.each do |mergable|
+      loser.send(mergable).each do |m|
+        m.update_attribute(:person, winner)
+      end
+    end
+    
+    loser.tickets.each do |ticket|
+      ticket.update_attribute(:buyer, winner)
+    end
+    
+    loser.tags.each do |t|
+      winner.tag_list << t.name unless winner.tag_list.include? t.name
+    end
+    
+    winner.save!
+    loser.destroy!
+    return winner
   end
   
   def self.find_by_email_and_organization(email, organization)
