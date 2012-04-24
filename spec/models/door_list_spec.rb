@@ -44,11 +44,15 @@ describe DoorList do
   describe "items" do
     let(:special_instructions) { "Seriously, that's like Eggs 101, Woodhouse." }
     let(:order) { Factory(:order, :person => buyer, :special_instructions => special_instructions) }
+
+    subject { DoorList.new show }
     
     before(:each) do
       tickets = 5.times.collect { Factory(:ticket, :state => :sold, :show => show, :buyer => buyer)}
       items = []
       tickets.each { |t| items << Factory(:item, :product => t, :order => order)}
+
+      subject.show.reload
     end
     
     describe "buyers without emails" do  
