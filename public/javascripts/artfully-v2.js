@@ -337,12 +337,18 @@ artfully.models = (function(){
           var $select,
               $form = jQuery(document.createElement('form')).appendTo($target),
               obj = this,
-              i;
+              i,
+              available = this.summary ? this.summary.available : 10;
 
           $select = jQuery(document.createElement('select')).attr({'name':'ticket_count'}).addClass('ticket_count').appendTo($form);
-          jQuery(document.createElement('option')).text("1 Ticket").attr('value', 1).appendTo($select);
-          for(i = 2; i <= 10; i++){
-            jQuery(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
+
+          if (available > 0) {
+            jQuery(document.createElement('option')).text("1 Ticket").attr('value', 1).appendTo($select);
+            for(i = 2; i <= available; i++) {
+              jQuery(document.createElement('option')).text(i + " Tickets").attr('value', i).appendTo($select);
+            }
+          } else {
+            jQuery(document.createElement('option')).text("No Tickets Available").attr('value', 0).appendTo($select);
           }
 
           jQuery(document.createElement('input')).attr('type','submit').val('Go').appendTo($form);
