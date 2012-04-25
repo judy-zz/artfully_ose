@@ -1,17 +1,13 @@
 - if events.blank?
-  = link_to "Create an Event", new_event_path, :class => 'cta-left-125'
+  = link_to "Create an Event", new_event_path, :class => 'btn'
 - else
-  %ul.detailed-list
+  %ul#event-list
     - events.each do |event|
-      %li
-        %h4= link_to event.name, event_path(event), :title => 'event-name'
-        %ul.controls
-          %li= link_to "Edit", edit_event_path(event) if can?(:edit, event)
-          %li= link_to "Delete", event_path(event), :method => :delete, :confirm => "Are you sure you want to delete #{event.name}?" if can?(:destroy, event)
-        %ul.details-long
-          %li
-            .key Venue
-            .value= event.venue.name
-          %li
-            .key Producer
-            .value= event.producer
+      %li.row-fluid.event-list-item
+        .span2
+          = render :partial => 'shared/event_image_icon', :locals => { :event => event }
+        .span6
+          %h4= link_to event.name, event_path(event), :title => 'event-name'
+          %ul.mini-stats
+            %li= "#{number_as_cents(event.glance.sales_played)} total played"
+            %li= "#{number_as_cents(event.glance.sales_advance)} advance sales"

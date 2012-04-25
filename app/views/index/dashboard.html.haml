@@ -3,35 +3,35 @@
 - content_for :header do
   %h1 Dashboard
 
-.sideboard
-  %h3 Organization
-  %p
-    - if current_user.is_in_organization?
-      You are a member of organization:
-      =link_to current_user.current_organization.name, organization_path(current_user.current_organization)
-    - else
-      You are not in an organization yet.  Ask your organization administrator to add you, or
-      =link_to "create your own.", new_organization_path
+= render :partial => 'layouts/admin_messages'
 
-- width = "75%" if @events.blank?
-.dashboard{ :style => "width: #{width}" }
-  #events
-    %h3 Events
-    - if @events.blank?
-      %p= t(".first-event", :default => "Create your first Event.")
-      = link_to "Create your first Event", new_event_path, :class => :cta
-    - else
+.row
+  .span4
+    %section
+      %h3 My Organization
+      %p
+        - if current_user.is_in_organization?
+          =link_to current_user.current_organization.name, organization_path(current_user.current_organization)
+        - else
+          You are not in an organization yet.  Ask your organization administrator to add you, or
+          =link_to "create your own.", new_organization_path
+
+    %section
+      %h3 Recent Activity
+      - if @recent_actions.blank?
+        %p= t(".no-actions", :default => "When someone buys a ticket, makes a donation, or updates a record, it will be noted here. Get started by adding some new contacts to your People database.")
+        = link_to "Add a Contact", new_person_path, :class => 'btn'
+      - else
+        %ul#recent-list
+          - @recent_actions.each do |action|
+            %li.row-fluid
+              .span2
+                = image_tag "actions/#{action.action_type.downcase}.png"
+              .span10
+                =person_link(action.person)
+                =action.sentence
+
+  .span8
+    %section
+      %h3 Events
       = render :partial => 'events/list', :locals => { :events => @events }
-
-  #people
-    %h3 People
-    - if @people.blank?
-      %p= t(".first-person", :default => "Add your Contacts.")
-      = link_to "Add a Contact", new_person_path, :class => :cta
-    - else
-      = render :partial => 'people/list', :locals => { :people => @people }
-
-.sideboard
-  - if !@events.blank?
-    %h3 Overview
-    = render :partial => 'events/glances', :locals => { :events => @events } unless @events.blank?

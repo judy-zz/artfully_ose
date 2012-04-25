@@ -9,6 +9,10 @@ Given /^I am part of an organization$/ do
   @current_user.organizations << @organization
 end
 
+And /^I view my organization page$/ do
+  click_link("Artful.ly")
+end
+
 Given /^the organization that owns "([^"]*)" has a donation kit$/ do |name|
   organization = Event.find_by_name(name).organization
   Factory(:regular_donation_kit, :state => :activated, :organization => organization)

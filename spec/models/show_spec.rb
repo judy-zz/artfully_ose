@@ -29,6 +29,19 @@ describe Show do
     subject.chart_id = nil
     subject.should_not be_valid
   end
+  
+  describe "after_save" do
+    it "should create the tickets, put them on sale, and be in the unpublished state" do
+      @show = Factory(:event).shows.build({ :organization => Factory(:organization), :chart => Factory(:assigned_chart) })
+      @show.datetime = DateTime.now + 1.day
+      @show.save
+      @show.state.should eq "unpublished"
+      @show.tickets.should_not be_empty
+      @show.tickets.each do |t|
+        t.should be_on_sale
+      end
+    end
+  end
 
   describe "#played" do
     it "should be played if the event is in the past" do
@@ -43,7 +56,7 @@ describe Show do
   end
 
   describe "#publish" do
-    subject { Factory(:show, :state => "built" ) }
+    subject { Factory(:show) }
 
     it "should mark the performance as on sale" do
       subject.publish!
@@ -52,9 +65,10 @@ describe Show do
   end
 
   describe "#unpublish" do
-    subject { Factory(:show, :state => "published" ) }
+    subject { Factory(:show) }
 
-    it "should mark the performance as off sale" do
+    it "should work" do
+      subject.publish!
       subject.unpublish!
       subject.should be_unpublished
     end
@@ -77,7 +91,7 @@ describe Show do
 
     describe "#bulk_on_sale" do
       it "puts all tickets on sale when :all is specified" do
-        Ticket.should_receive(:put_on_sale).with(subject.tickets)
+        Ticket.should_receive(:put_on_sale).at_least(:once).with(subject.tickets)
         subject.bulk_on_sale(:all)
       end
 
@@ -102,6 +116,7 @@ describe Show do
 
       it "fails by returning false if any of the tickets can not be taken off sale" do
         subject.tickets.first.state = :off_sale
+        subject.tickets.first.save
         outcome = subject.bulk_off_sale(subject.tickets.collect(&:id))
         outcome.should be false
       end
@@ -135,7 +150,7 @@ describe Show do
       s.destroy.should be_true
     end
     
-    it "is frowned upon if any tickets have been sold" do
+    it "is prevented if any tickets have been sold" do
       s = Factory(:show_with_tickets)
       s.bulk_on_sale(:all)
       s.tickets.first.sell_to(Factory(:person))
@@ -147,6 +162,14 @@ describe Show do
     it "is verboten it any tickets have been comped" do      
       s = Factory(:show_with_tickets)
       s.tickets.first.comp_to(Factory(:person))
+      s.should_not be_destroyable
+      s.destroy.should be_false
+    end
+    
+    it "is disallowed if any tickets have ever been involved in any tranaction" do
+      s = Factory(:show_with_tickets)
+      ticket = s.tickets.first
+      ticket.stub(:items).and_return(Array.wrap(Factory(:refunded_item, :product => ticket)))
       s.should_not be_destroyable
       s.destroy.should be_false
     end

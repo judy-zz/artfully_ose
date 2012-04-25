@@ -17,9 +17,9 @@
         font-weight: normal;
         font-style: normal;
       }
-    = include_stylesheets :pages
-    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"
-    = include_javascripts :pages
+    = include_stylesheets :application, :pages
+    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
+    = include_javascripts :bootstrap, :pages
     = render :partial => 'layouts/google_analytics'
     :javascript
       $(document).ready(function() {
@@ -27,16 +27,20 @@
       });
 
   %body
-    .topbar
-      .topbar-inner
-        .container
-          %h3= link_to 'Artful.ly', root_url, :class => 'brand'
-          %ul.nav.secondary-nav
-            = active_link_to 'FAQ', faq_path
-            = active_link_to 'Pricing', pricing_path
-            = active_link_to 'Features', features_path
-            = active_link_to 'Updates', updates_path
-            %li= link_to 'Sign Up', sign_up_path, :class => 'btn primary'
-            = active_link_to 'Sign in', new_user_session_path
+    - if user_signed_in?
+      = render :partial => 'layouts/menu'
+    - else
+      .navbar.navbar-fixed-top
+        .navbar-inner
+          .container
+            = link_to 'Artful.ly', root_url, :class => 'brand'
+            %ul.nav.pull-right
+              = active_link_to 'FAQ', faq_path
+              = active_link_to 'Pricing', pricing_path
+              = active_link_to 'Features', features_path
+              = active_link_to 'Updates', updates_path
+              %li= link_to 'Sign Up', sign_up_path, :class => 'btn primary'
+              = active_link_to 'Sign in', new_user_session_path
     .container
       =yield
+      = render 'layouts/footer'

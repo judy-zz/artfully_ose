@@ -1,0 +1,25 @@
+.nav.nav-accordian
+  = active_link_to 'Overview', event_path(@event)
+  %li.accordian{:class => active?(:details)}
+    = link_to 'Details', edit_event_path(@event)
+    %ul.accordian-menu
+      = active_link_to 'About', edit_event_path(@event)
+      = active_link_to 'Venue', edit_event_venue_path(@event)
+      = active_link_to 'Prices', prices_event_path(@event)
+      = active_link_to 'Image', image_event_path(@event)
+      = active_link_to 'Messages', messages_event_path(@event)
+  %li.accordian{:class => active?(:shows)}
+    = link_to 'Shows', event_shows_path(@event)
+    %ul.accordian-menu
+      %li.add
+        %a{:href => new_event_show_path(@event)}
+          %i.icon-plus-sign.icon-gray
+          Add show
+      - @event.shows.each do |show|
+        = active_link_to l(show.datetime_local_to_event, :format => :day_time), event_show_path(@event, show)
+
+  %li.accordian{:class => active?(:share)}
+    = link_to 'Share & Sell', storefront_link_event_path(@event)
+    %ul.accordian-menu
+      = active_link_to 'Storefront', storefront_link_event_path(@event)
+      = active_link_to 'On Your Site', widget_event_path(@event)

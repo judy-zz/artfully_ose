@@ -3,7 +3,11 @@ Given /^I am logged in$/ do
   visit new_user_session_path
   fill_in("Email", :with => @current_user.email)
   fill_in("Password", :with => @current_user.password)
-  click_button("Sign in")
+  click_button("Sign In")
+end
+
+And /^I sign in$/ do
+  click_button("Sign In")
 end
 
 Given /^I am logged in as a user with email "([^"]*)"$/ do |email|
@@ -11,7 +15,7 @@ Given /^I am logged in as a user with email "([^"]*)"$/ do |email|
   visit new_user_session_path
   fill_in("Email", :with => @current_user.email)
   fill_in("Password", :with => @current_user.password)
-  click_button("Sign in")
+  click_button("Sign In")
 end
 
 When /^I delete the (\d+)(?:st|nd|rd|th) user$/ do |pos|

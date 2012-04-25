@@ -1,8 +1,0 @@
-- in_section :events
-- content_for :header do
-  %h1 Chart Templates
-
-.spread
-  %h3 New Chart
-  = render "shared/error_messages", :target => @chart
-  = render :partial => 'form', :locals => { :chart => @chart }

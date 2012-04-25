@@ -2,44 +2,45 @@
   %h1 User Administration
   %h2= @user.email
 
-.context
-  %h3 Password Reset
-  = form_for @user, :url => admin_user_path(@user) do |f|
-    = f.hidden_field :reset_password, :value => true
-    = f.submit "Send Password Reset Instructions"
-  %h3 Sign in
-  = button_to "Sign in as #{@user.email}", sessions_admin_user_path(@user)
-.document
-  %h3 Suspend User
-  - if nil == @user.suspended_at
+.row
+  .span4
+    %h3 Password Reset
     = form_for @user, :url => admin_user_path(@user) do |f|
-      = f.hidden_field :suspend, :value => true
-      %ul
-        %li
-          .label
-            = f.label :suspension_reason, "Reason"
-          .element
-            = f.text_field :suspension_reason
-        %li
-          = f.submit "Suspend"
-  - else
-    %p
-      %strong= @user.email
-      has been suspended for the following reason:
-      %strong= @user.suspension_reason
-
-  #organizations
-    %h3 Organizations
-    - if @user.organizations.any?
-      %table.standalone
-        %thead
-          %tr
-            %th Name
-            %th Created Date
-        %tbody
-          - @user.organizations.each do |organization|
-            %tr
-              %td= link_to organization.name, admin_organization_path(organization)
-              %td= l organization.created_at, :format => :short
+      = f.hidden_field :reset_password, :value => true
+      = f.submit "Send Password Reset Instructions", :class => "btn"
+    %h3 Sign in
+    = button_to "Sign in as #{@user.email}", sessions_admin_user_path(@user), :class => "btn"
+  .span8
+    %h3 Suspend User
+    - if nil == @user.suspended_at
+      = form_for @user, :url => admin_user_path(@user) do |f|
+        = f.hidden_field :suspend, :value => true
+        %ul
+          %li
+            .label
+              = f.label :suspension_reason, "Reason"
+            .element
+              = f.text_field :suspension_reason
+          %li
+            = f.submit "Suspend", :class => "btn"
     - else
-      %p User is not part of any organizations.
+      %p
+        %strong= @user.email
+        has been suspended for the following reason:
+        %strong= @user.suspension_reason
+
+    #organizations
+      %h3 Organizations
+      - if @user.organizations.any?
+        %table.standalone
+          %thead
+            %tr
+              %th Name
+              %th Created Date
+          %tbody
+            - @user.organizations.each do |organization|
+              %tr
+                %td= link_to organization.name, admin_organization_path(organization)
+                %td= l organization.created_at, :format => :short
+      - else
+        %p User is not part of any organizations.

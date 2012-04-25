@@ -1,14 +1,13 @@
 - in_section :people
 - content_for :header do
-  %h1 Returns
+  %h1 Return Tickets
 
 .compact-spread
   = form_tag refunds_path do
     = hidden_field_tag :order_id, @order.id
     - @items.each do |item|
       = hidden_field_tag "items[]", item.id
-    %h3 Tickets
-    %table.standalone
+    %table.table
       %thead
         %tr
           %th
@@ -32,10 +31,10 @@
       %p
         Refund these tickets and return them to inventory
         %br
-        = submit_tag "Issue Refund and Return"
+        = submit_tag "Issue refund and return", :class => "btn"
     %p
       %br
     %p
-      Refund these tickets and keep the tickets marked as sold.
+      Refund these tickets and keep the tickets out of inventory.
       %br
-      = submit_tag "Issue Refund"
+      = submit_tag "Issue Refund", :class => "btn"

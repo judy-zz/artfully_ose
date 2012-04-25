@@ -1,46 +1,47 @@
 - content_for :header do
   %h1 Kits Administration
 
-.spread
-  %h3 Kits Awaiting Approval
+.row
+  .span12
+    %h3 Kits Awaiting Approval
 
-  #kits
-    %table.standalone#kits-table
-      %thead
-        %tr
-          %th Kit
-          %th State
-          %th Org Name
-          %th Created
-          %th Legal Name
-          %th EIN
-          %th
-      %tbody
-        -@pending_kits.each do |kit|
-        -org = kit.organization
+    #kits
+      %table.table#kits-table
+        %thead
           %tr
-            %td= t(kit.type.underscore)
-            %td= kit.state
-            %td= link_to kit.organization.name, admin_organization_path(org)
-            %td= l kit.updated_at, :format => :short
-            %td= kit.organization.legal_organization_name
-            %td= kit.organization.ein
-            %td= link_to "Approve", activate_admin_organization_kit_path(org, kit), :method => :put
+            %th Kit
+            %th State
+            %th Org Name
+            %th Created
+            %th Legal Name
+            %th EIN
+            %th
+        %tbody
+          -@pending_kits.each do |kit|
+          -org = kit.organization
+            %tr
+              %td= t(kit.type.underscore)
+              %td= kit.state
+              %td= link_to kit.organization.name, admin_organization_path(org)
+              %td= l kit.updated_at, :format => :short
+              %td= kit.organization.legal_organization_name
+              %td= kit.organization.ein
+              %td= link_to "Approve", activate_admin_organization_kit_path(org, kit), :method => :put, :class => 'btn'
   
-  %h3 All Kits
-  #kits
-    %table.standalone#all-kits-table
-      %thead
-        %tr
-          %th Kit
-          %th State
-          %th Org Name
-          %th Created
-      %tbody
-        -@kits.each do |kit|
-        -org = kit.organization
+    %h3 All Kits
+    #kits
+      %table.table#all-kits-table
+        %thead
           %tr
-            %td= t(kit.type.underscore)
-            %td= kit.state
-            %td= link_to kit.organization.name, admin_organization_path(org)
-            %td= l kit.updated_at, :format => :short
+            %th Kit
+            %th State
+            %th Org Name
+            %th Created
+        %tbody
+          -@kits.each do |kit|
+          -org = kit.organization
+            %tr
+              %td= t(kit.type.underscore)
+              %td= kit.state
+              %td= link_to kit.organization.name, admin_organization_path(org)
+              %td= l kit.updated_at, :format => :short

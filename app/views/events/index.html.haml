@@ -1,14 +1,7 @@
 - in_section :events
 - content_for :header do
   %h1= t('.heading', :default => "Events")
-  %h2= t('.subheading', :default => "Manage your events")
-  %ul.from-here
-    %li= link_to "New Event", new_event_path
 
-.document
-  %h3 Events
-  = render :partial => 'list', :locals => { :events => @events }
-
-.context
-  %h3 Overview
-  = render :partial => 'glances', :locals => { :events => @events } unless @events.blank?
+.row
+  .span8.offset2
+    = render :partial => 'list', :locals => { :events => @events }

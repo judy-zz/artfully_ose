@@ -64,6 +64,8 @@ Artfully::Application.configure do
   config.people_site        = 'http://184.73.209.105:8080/athena/'
   config.reports_site       = 'http://184.73.209.105:8080/athena/reports/'
   config.payments_element_name = '/payments'
+  
+  ActiveMerchant::Billing::Base.mode = :test
 
   #config.athena_resource_user = 'demo'
   #config.athena_resource_password = 'LiberateTheArts!'

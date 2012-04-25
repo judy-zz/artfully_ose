@@ -40,14 +40,14 @@ $("document").ready(function(){
     person = cleanJsonPerson(person)
 		updateSelectedPerson(person.id, person.first_name + " " + person.last_name, person.email, person.company_name)
 		clearNewPersonForm()
-    $("#new-person-popup").dialog("close")
+    $("#new-person-popup").modal('hide')
   });
 
   $("#new_person").bind("ajax:error", function(xhr, status, error){
     $(this).find("input:submit").removeAttr('disabled');
     data = eval("(" + status.responseText + ")");
     $(this).removeClass('loading')
-		$('#error', '#new-person-popup').after($(document.createElement('div')).addClass('flash').addClass('error').html(data.errors[0]));
+		$('#error', '#new-person-popup').after($(document.createElement('div')).addClass('flash').addClass('alert').addClass('alert-error').html(data.errors[0]));
   });
 	
 	$("input#search", "#the-details").autocomplete({
@@ -79,12 +79,5 @@ $("document").ready(function(){
 			var personCompanyName = $(person.item.value).filter("#search-result-company-name").html()
       updateSelectedPerson(personId, personName, personEmail, personCompanyName)
     }
-  });
-  
-  $("#new-person-popup").dialog({autoOpen: false, draggable:false, modal:true, width:500, height:225, title: 'Create New Person'})
-  $("#new-person-popup").removeClass('hidden')
-	$("#new-person-link").click(function(){
-    $("#new-person-popup").dialog("open")
-    return false;
   });
 });

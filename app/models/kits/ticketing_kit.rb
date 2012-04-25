@@ -12,6 +12,14 @@ class TicketingKit < Kit
     errors.add(:requirements, "You need at least one credit card to activate this kit.") if organization.owner.credit_cards.empty?
     organization.owner.credit_cards.empty?
   end
+  
+  def friendly_name
+    "Paid Event Ticketing"
+  end
+  
+  def pitch
+    "Sell tickets"
+  end
 
   def no_owner?
     errors.add(:requirements, "You need to be part of an organization to activate this kit.") if organization.owner.nil?

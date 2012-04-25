@@ -35,11 +35,18 @@ Artfully::Application.configure do
   config.reports_site     = 'http://localhost:8080/athena/reports/'
   config.payments_component = 'http://localhost:8080/payments/'
   config.payments_element_name = '/payments'
+  
+  ActiveMerchant::Billing::Base.mode = :test
 
   AthenaResource::USER_AGENT = "artful.ly"
   AthenaResource::USER = nil
   AthenaResource::PASSWORD = nil
   AthenaResource::AUTH_TYPE = nil
   
+end
+
+GravatarImageTag.configure do |config|
+  #This has to be fully qualified URL.  Gravatar serves up the default form it's servers, not the local filesystem
+  config.default_image = 'http://localhost:5000/images/glyphish/gray/111-user2x.png'
 end
 

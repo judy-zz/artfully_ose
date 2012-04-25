@@ -4,13 +4,15 @@
 
 = render "shared/error_messages", :target => @credit_card
 
-.tip
-  %h3 Tips!
-  %p If you want to change the number for your credit card, you should add a new card and then delete this one.
+.row
 
-.document
-  = form_for @credit_card, :url => credit_card_path(@credit_card) do |form|
-    %h3 Edit Card
-    %ul#credit_card
-      = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => form, :target => @credit_card }
-      = form.submit "Submit"
+  .span4
+    %h3 Tips!
+    %p If you want to change the number for your credit card, you should add a new card and then delete this one.
+
+  .span8
+    = form_for @credit_card, :url => credit_card_path(@credit_card) do |form|
+      %h3 Edit Card
+      %ul#credit_card
+        = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => form, :target => @credit_card }
+        = form.submit "Submit", :class => "btn"

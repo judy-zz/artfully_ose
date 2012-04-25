@@ -2,7 +2,7 @@
 - content_for :header do
   %h1 Create a New Contact
 
-.compact-spread
-  %h3 First Things First
-  = render :partial => "shared/error_messages", :locals => { :target => @person }
-  = render :partial => 'form', :locals => { :person => @person }
+.row
+  .span6.offset3
+    = render :partial => "shared/error_messages", :locals => { :target => @person }
+    = render :partial => 'form', :locals => { :person => @person }

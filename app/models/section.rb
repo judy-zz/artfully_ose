@@ -3,6 +3,7 @@ class Section < ActiveRecord::Base
   foundry :with => lambda { { :section_id => id, :price => price, :count => capacity } }
 
   belongs_to :chart
+  has_many :tickets
 
   validates :name, :presence => true
 
@@ -12,16 +13,30 @@ class Section < ActiveRecord::Base
   validates :capacity,  :presence => true,
                         :numericality => { :less_than_or_equal_to => 2000 }
 
+  validates :description, :length => { :maximum => 300 }
+
   def dup!
     Section.new(self.attributes.reject { |key, value| key == 'id' })
   end
 
-  def summarize(show_id)
-    tickets = Ticket.where(:show_id => show_id).where(:section_id => id)
+  def summarize
+    tickets = Ticket.where(:show_id => chart.show.id).where(:section_id => id)
     @summary = SectionSummary.for_tickets(tickets)
   end
   
-  def summary(show_id)
-    @summary || summarize(show_id)
+  def put_on_sale(qty = 0)
+    tickets.off_sale.limit(qty).each do |t|
+      t.put_on_sale
+    end
+  end
+  
+  def take_off_sale(qty = 0)
+    tickets.on_sale.limit(qty).each do |t|
+      t.take_off_sale
+    end
+  end
+  
+  def summary
+    @summary || summarize
   end
 end

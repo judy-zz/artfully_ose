@@ -1,0 +1,6 @@
+-if event.image?
+  =image_tag(event.image.url(:thumb), :width => 75, :height => 75) if event.image?
+-else
+  .no-image
+    #text
+      No image

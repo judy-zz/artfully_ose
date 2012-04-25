@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120222201906) do
+ActiveRecord::Schema.define(:version => 20120411164921) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -40,6 +40,16 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
+  end
+
+  add_index "addresses", ["person_id"], :name => "index_addresses_on_person_id"
+
+  create_table "admin_messages", :force => true do |t|
+    t.text     "message"
+    t.date     "starts_on"
+    t.date     "ends_on"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "admin_stats", :force => true do |t|
@@ -143,6 +153,11 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.string   "contact_email"
     t.text     "description"
     t.integer  "venue_id"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.string   "special_instructions_caption", :default => "Special Instructions"
+    t.boolean  "show_special_instructions",    :default => false
   end
 
   create_table "fiscally_sponsored_projects", :force => true do |t|
@@ -193,7 +208,7 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.integer  "net"
     t.string   "settlement_id"
     t.string   "fs_project_id"
-    t.string   "nongift_amount"
+    t.integer  "nongift_amount"
     t.boolean  "is_noncash"
     t.boolean  "is_stock"
     t.boolean  "is_anonymous"
@@ -260,6 +275,7 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.string   "old_mongo_id"
     t.string   "type"
     t.string   "payment_method"
+    t.text     "special_instructions"
   end
 
   create_table "organizations", :force => true do |t|
@@ -315,6 +331,7 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.integer "price"
     t.integer "chart_id"
     t.string  "old_mongo_id"
+    t.text    "description"
   end
 
   create_table "segments", :force => true do |t|
@@ -347,6 +364,9 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.integer  "organization_id"
     t.string   "old_mongo_id"
   end
+
+  add_index "shows", ["event_id"], :name => "index_shows_on_event_id"
+  add_index "shows", ["organization_id"], :name => "index_shows_on_organization_id"
 
   create_table "taggings", :force => true do |t|
     t.integer  "tag_id"
@@ -381,10 +401,12 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.integer  "section_id"
   end
 
+  add_index "tickets", ["organization_id"], :name => "index_tickets_on_organization_id"
+  add_index "tickets", ["show_id"], :name => "index_tickets_on_show_id"
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
+    t.string   "email",                               :default => "",   :null => false
     t.string   "encrypted_password",   :limit => 128, :default => ""
     t.string   "reset_password_token"
     t.string   "remember_token"
@@ -403,6 +425,7 @@ ActiveRecord::Schema.define(:version => 20120222201906) do
     t.datetime "invitation_sent_at"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
+    t.boolean  "newsletter_emails",                   :default => true, :null => false
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

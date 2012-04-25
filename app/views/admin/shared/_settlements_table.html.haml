@@ -1,11 +1,11 @@
-%table.standalone#settlement-table
+%table.table#settlement-table
   %thead
     %tr
       %th ID
       %th Org
       %th Show
       %th Date
-      %th Transaction ID
+      %th Tran ID
       %th Gross
       %th Realized
       %th Net
@@ -29,4 +29,4 @@
           -if !settlement.success?
             = form_tag new_admin_settlement_path, :method=>'get' do
               = hidden_field_tag "show_id", settlement.show_id
-              = submit_tag "Re-settle", :class => [ :mini, :full ]
+              = submit_tag "Re-settle", :class => [ :mini, :full, :btn ]

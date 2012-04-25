@@ -46,5 +46,17 @@ module Artfully
 
     # Load JSONP middleware.
     config.middleware.use Rack::JSONP
+  
+    config.BRAINTREE_MERCHANT_ID = ENV['BRAINTREE_MERCHANT_ID'] || 'bzy5dt9tm5x3jvys'
+    config.BRAINTREE_PUBLIC_KEY = ENV['BRAINTREE_PUBLIC_KEY'] || 'n8xrkpmvkdmgxqgc'
+    config.BRAINTREE_PRIVATE_KEY = ENV['BRAINTREE_PRIVATE_KEY'] || '6gnq5wzg79rtbq4v'
+    
   end
+end
+
+GravatarImageTag.configure do |config|
+  config.default_image = 'fake.jpg'
+  config.rating        = nil   # Set this if you change the rating of the images that will be returned ['G', 'PG', 'R', 'X']. Gravatar's default is G
+  config.size          = nil   # Set this to globally set the size of the gravatar image returned (1..512). Gravatar's default is 80
+  config.secure        = true 
 end

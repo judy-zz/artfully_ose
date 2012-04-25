@@ -2,33 +2,34 @@
 - content_for :header do
   %h1= t(".heading", :default => "Statement Reports")
 
-.context
-  %h3 Shows
-  = render :partial => "played_shows", :locals => { :event => @event, :played => @played }
-.document
-  -if @statement.nil?
-    %p
-      Please select a show
-  -else
-    %h3="Statement Report: #{@event.name}"
-    #statement_table
-      %table.standalone
-        %thead
-          %tr
-            %th{:style=>'width:200px'} Shows
-            %th{:style=>'width:100px'} Tickets Sold
-            %th{:style=>'width:50px'} Comps
-            %th{:style=>'width:100px'} Potential
-            %th{:style=>'width:100px'} Gross
-            %th{:style=>'width:100px'} Processing
-            %th{:style=>'width:100px'} Net
-        %tbody
-          %tr
-            %td=l @statement.datetime, :format => :short
-            %td=@statement.tickets_sold
-            %td=@statement.tickets_comped
-            %td=number_as_cents @statement.potential_revenue
-            %td
-              %strong=number_as_cents @statement.gross_revenue
-            %td=number_as_cents @statement.processing
-            %td=number_as_cents @statement.net_revenue
+.row
+  .span3
+    %h3 Shows
+    = render :partial => "played_shows", :locals => { :event => @event, :played => @played }
+  .span9
+    -if @statement.nil?
+      %p
+        Please select a show
+    -else
+      %h3="Statement Report: #{@event.name}"
+      #statement_table
+        %table.standalone.table
+          %thead
+            %tr
+              %th{:style=>'width:200px'} Shows
+              %th{:style=>'width:100px'} Tickets Sold
+              %th{:style=>'width:50px'} Comps
+              %th{:style=>'width:100px'} Potential
+              %th{:style=>'width:100px'} Gross
+              %th{:style=>'width:100px'} Processing
+              %th{:style=>'width:100px'} Net
+          %tbody
+            %tr
+              %td=l @statement.datetime, :format => :short
+              %td=@statement.tickets_sold
+              %td=@statement.tickets_comped
+              %td=number_as_cents @statement.potential_revenue
+              %td
+                %strong=number_as_cents @statement.gross_revenue
+              %td=number_as_cents @statement.processing
+              %td=number_as_cents @statement.net_revenue

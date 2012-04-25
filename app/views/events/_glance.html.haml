@@ -2,50 +2,33 @@
 - if report.nil?
   %p Report not yet available.
 - else
-  %ul
-    %li
-      %h4 Tickets
-      %ul.report
-        %li
-          %span.stat On Sale
-          %span.current= report.available_total
-        %li
-          %span.stat Comped
-          %span.current= report.comped_total
-        %li
-          %span.stat Sold
-          %span.current= report.sold_total
-        %li
-          %span.stat Sold Today
-          %span.current= report.sold_today
-        %li
-          %span.stat Total Played
-          %span.current= report.sold_played
-          %span.alternative= "(#{report.comped_played} Comped)"
-    %li
-      - if !@event.is_free?
-        %h4 Revenue
-        %ul.report
-          %li
-            %span.stat Total Sales
-            %span.current= number_as_cents(report.sales_total)
-
-          %li
-            %span.stat Sold Today
-            %span.current= number_as_cents(report.sales_today)
-
-          %li
-            %span.stat Advance Sales
-            %span.current= number_as_cents(report.sales_advance)
-
-          %li
-            %span.stat Total Played
-            %span.current= number_as_cents(report.sales_played)
-
-          %li
-            %span.stat Potential Remaining
-            %span.current= number_as_cents(report.potential_remaining)
-
-          %li
-            %span.stat Original Potential
-            %span.current= number_as_cents(report.potential_original)
+  %table.table.table-condensed
+    %tbody
+      %tr
+        %td On Sale
+        %td= report.available_total
+        %td
+      %tr
+        %td Comped
+        %td= report.comped_total
+        %td
+      %tr
+        %td Sold
+        %td= report.sold_total
+        %td= number_as_cents(report.sales_total)
+      %tr
+        %td Sold Today
+        %td= report.sold_today
+        %td= number_as_cents(report.sales_today)
+      %tr
+        %td Total Played
+        %td= report.sold_played
+        %td= number_as_cents(report.sales_played)
+      %tr
+        %td Potential Remaining
+        %td
+        %td= number_as_cents(report.potential_remaining)
+      %tr
+        %td Original Potential
+        %td
+        %td= number_as_cents(report.potential_original)

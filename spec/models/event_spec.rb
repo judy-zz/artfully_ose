@@ -20,10 +20,13 @@ describe Event do
   #   subject.venue = nil
   #   subject.should_not be_valid
   # end
-
-  it "should be invalid for with an empty producer" do
-    subject.producer = nil
-    subject.should_not be_valid
+  
+  it "should create a chart when the event is created" do
+    subject.charts.length.should eq 1
+    chart = subject.charts.first
+    chart.name.should eq subject.name
+    chart.organization.should eq subject.organization
+    chart.is_template.should be_false
   end
   
   describe "#upcoming_shows" do
@@ -40,36 +43,14 @@ describe Event do
     end
   end
   
-  describe "free and paid events" do
-    it "cannot be changed from paid to free once saved and vice versa" do
-      event = Factory(:paid_event)
-      event.save
-      event.is_free = true
-      event.save
-      event.errors.should_not be_empty
-      event.errors[:is_free].first.should eq "Cannot change free/paid event after an event has been created"
-      
-      event = Event.find(event.id)
-      event.is_free?.should be_false
-    end
-  end
-  
-  describe "chart assignment" do
-    it "should assign charts to itself"
-    it "should assign a free chart"
-    it "should assign free charts to itself if the event is free"
-    it "should not assign charts that have already been assigned"
-    it "should not assign a chart if the event is free and the chart contains paid sections"
-  end
-  
   describe "#as_widget_json" do
     subject { Factory(:event) }
   
     it "should not include performances that are on sale" do
       subject.shows = 2.times.collect { Factory(:show) }
-      subject.shows.first.state = "published"
+      subject.shows.first.publish!
       subject.stub(:charts).and_return([])
-  
+      
       json = JSON.parse(subject.as_widget_json.to_json)
       json["performances"].length.should eq 1
     end

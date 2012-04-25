@@ -1,43 +1,42 @@
 - in_section :reports
 - content_for :header do
-  %h1= "Settlement #{@settlement.id}"
-  %h2= "#{l(@settlement.created_at, :format => :date)}"
+  %h1= "Settlement #{@settlement.id}: #{l(@settlement.created_at, :format => :date)}"
 
-.overview
-  %h3 Overview
-  %ul.kv
-    %li
-      .key Gross
-      .value= number_as_cents(@settlement.gross)
-    %li
-      .key Realized
-      .value= number_as_cents(@settlement.realized_gross)
-    %li
-      .key Net
-      .value= number_as_cents(@settlement.net)
-
-.document
-  %h3 Details
-  #items
-    %table.standalone.zebra
-      %thead
-        %tr
-          %th Order ID
-          %th Type
-          %th Price
-      %tbody
-        - @settlement.items.each do |item|
+.row
+  .span4
+    %h3 Overview
+    %ul.kv
+      %li
+        .key Gross
+        .value= number_as_cents(@settlement.gross)
+      %li
+        .key Realized
+        .value= number_as_cents(@settlement.realized_gross)
+      %li
+        .key Net
+        .value= number_as_cents(@settlement.net)
+  .span8
+    %h3 Details
+    #items
+      %table.table
+        %thead
           %tr
-            %td=link_to "#{item.order.id}", order_path(item.order)
-            %td
-              - if item.product.kind_of? Ticket
-                %span Ticket
-                %span
-                  (
-                  = link_to "#{item.product.event.name}", event_path(item.product.event)
-                  ,
-                  = link_to "#{l item.product.show.datetime_local_to_event}", event_show_path(item.product.event, item.product.show)
-                  )
-              - if item.product.kind_of? Donation
-                %span Donation
-            %td= number_as_cents item.price
+            %th Order ID
+            %th Type
+            %th Price
+        %tbody
+          - @settlement.items.each do |item|
+            %tr
+              %td=link_to "#{item.order.id}", order_path(item.order)
+              %td
+                - if item.product.kind_of? Ticket
+                  %span Ticket
+                  %span
+                    (
+                    = link_to "#{item.product.event.name}", event_path(item.product.event)
+                    ,
+                    = link_to "#{l item.product.show.datetime_local_to_event}", event_show_path(item.product.event, item.product.show)
+                    )
+                - if item.product.kind_of? Donation
+                  %span Donation
+              %td= number_as_cents item.price

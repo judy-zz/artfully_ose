@@ -79,3 +79,8 @@ Artfully::Application.configure do
   AthenaResource::PASSWORD = ENV['ATHENA_RESOURCE_PASSWORD']
   AthenaResource::AUTH_TYPE = 'digest'
 end
+
+GravatarImageTag.configure do |config|
+  #This has to be fully qualified URL.  Gravatar serves up the default form it's servers, not the local filesystem
+  config.default_image = 'https://artfully-production.s3.amazonaws.com/images/glyphish/gray/111-user2x.png'
+end

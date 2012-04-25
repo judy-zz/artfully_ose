@@ -1,27 +1,23 @@
 - in_section :imports
-
 - content_for :header do
-  %h1= t(".heading", :default => "Imports / Exports")
+  %h1 Imports / Exports
 
-.compact-spread
+.row
 
-  %h3 Imports
-  %ul.detailed-list
-    - @imports.each do |import|
-      %li
-        %h4= link_to File.basename(import.s3_key), import_path(import)
-        %ul.details-long
-          %li= describe_import_status import
-  %p
-    %h4= link_to "Upload a new file to import", new_import_path
+  .span12
 
-  %br
+    %h3 Imports
+    %ul.detailed-list
+      - @imports.each do |import|
+        %li
+          %h4= link_to File.basename(import.s3_key), import_path(import)
+          %ul.details-long
+            %li= describe_import_status import
+    %p= link_to "Upload a new file to import", new_import_path, :class => "btn"
 
-  %h3 Exports
-  %ul
-    %li
-      %h4= link_to "Export all people currently in Artful.ly", contacts_export_index_path
-    %li
-      %h4= link_to "Export all donations currently in Artful.ly", donations_export_index_path
-    %li
-      %h4= link_to "Export all ticket sales currently in Artful.ly", ticket_sales_export_index_path
+    %br
+
+    %h3 Exports
+    %p= link_to "Export all people currently in Artful.ly", contacts_export_index_path, :class => "btn"
+    %p= link_to "Export all donations currently in Artful.ly", donations_export_index_path, :class => "btn"
+    %p= link_to "Export all ticket sales currently in Artful.ly", ticket_sales_export_index_path, :class => "btn"

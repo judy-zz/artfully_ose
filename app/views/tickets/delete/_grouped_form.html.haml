@@ -8,4 +8,4 @@
           .label-and-element
             = check_box_tag "selected_tickets[]", ticket.id, false, :id => "delete_ticket_#{ticket.id}", :class => "item_#{ticket.id}"
             = label_tag "item_#{ticket.id}", ticket.id
-    = submit_tag "Delete"
+    = submit_tag "Delete", :class => "btn"

@@ -1,0 +1,38 @@
+.row
+  .span6
+    =form_tag widgets_path, {:action=>'create', :remote=>'true', :id => 'widget-form', 'data-type' => 'html'} do
+      .control-group
+        %h4 I want to...
+        .controls
+          %label.radio
+            = radio_button_tag :widget_type, "event", true, :class => 'widget_type'
+            Sell tickets to an event
+          - if current_user.current_organization.can?(:receive, Donation)
+            %label.radio
+              = radio_button_tag :widget_type, "donations", false, :class => 'widget_type'
+              Receive donations
+            %label.radio
+              = radio_button_tag :widget_type, "both", false, :class => 'widget_type'
+              Both
+    
+      .control-group
+        %h4 Choose the event to sell tickets to
+        .controls
+          = select_tag :event_id, events_to_options(selected_event_id ||= nil), :id => 'event_id', :class => 'input-large'
+    
+      .control-group
+        %h4 Do you have jQuery installed on your website?
+        .controls
+          %label.radio
+            = radio_button_tag :jquery, "yes"
+            Yes
+          %label.radio
+            = radio_button_tag :jquery, "no"
+            No or don't know
+    
+      .form-actions
+        = submit_tag "Generate widget", :class => "btn btn-success"
+
+  .span6
+    .the-code.hidden
+      #widget-code

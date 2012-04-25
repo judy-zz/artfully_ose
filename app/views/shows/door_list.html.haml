@@ -1,16 +1,17 @@
 - in_section :events
 - content_for :header do
-  %h1 Tickets & Events
-  %h2= "Door List for #{l @show.datetime_local_to_event, :format => :long_with_day} show of #{@show.event.name} at #{@show.event.venue.name}"
+  %h1 Door List
+  %h2= "#{@show.event.name} at #{@show.event.venue.name}"
+  %h3= "#{l @show.datetime_local_to_event, :format => :long_with_day}"
 
   %ul.from-here
+    %li= link_to "Download as CSV", door_list_event_show_path(@event, @show, format: "csv")
     %li= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
 
 .spread
-  %h3= "Tickets (as of #{l @current_time})"
   - unless @door_list.items.empty?
     #door-list
-      %table#door-list.standalone
+      %table#door-list.table
         %thead
           %tr
             %th
@@ -28,4 +29,7 @@
               %td= item.buyer.email
               %td= item.ticket.section.name
               %td= number_as_cents(item.ticket.sold_price)
+            %tr.no-border
+              %td
+              %td{:colspan => 5}= item.special_instructions
 

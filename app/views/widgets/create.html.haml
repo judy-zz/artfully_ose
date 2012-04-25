@@ -1,0 +1,32 @@
+%h4
+  Installation
+%p
+  :escaped
+    Put this code in the <head> tag of your website
+%pre.code
+  :escaped
+    #{"<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js' type='text/javascript'></script>" if @jquery }
+    <script src='#{javascript_path("artfully")}' type='text/javascript'></script>
+    <script src='#{asset_path("vendor")}' type='text/javascript'></script>
+    #{"<link href='" + stylesheet_path("themes/default.css") + "' media='screen' rel='stylesheet' type='text/css'>"}
+    <script type='text/javascript'>
+      $(document).ready(function(){
+        artfully.configure({
+          base_uri: '#{root_url}api/',
+          store_uri: '#{root_url}store/',
+        });
+        #{render :partial => "widgets/event", :locals => { :event => @event } if @wants_event }
+        #{render :partial => "widgets/donation", :locals => { :organization => @organization } if @wants_donation }
+        #{"artfully.widgets.cart().init()" if @donation_extras }
+        #{"artfully.widgets.cart().display()" if @donation_extras }
+      });
+    </script>
+%h4
+  Display
+%p
+  :escaped
+    Put this code on your website where you would like ticketing or donation information to be displayed
+%pre.code
+  :escaped
+    #{"<div id='event'></div>" if @wants_event }
+    #{"<div id='donation'></div>" if @wants_donation }

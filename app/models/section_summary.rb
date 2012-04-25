@@ -9,4 +9,8 @@ class SectionSummary
     summary.available = tickets.select{|t| t.on_sale?}.size
     summary
   end
+  
+  def off_sale
+    total - available - sold - comped
+  end
 end

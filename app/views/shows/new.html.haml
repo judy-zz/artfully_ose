@@ -1,0 +1,36 @@
+- in_section :events
+- content_for :header do
+  =render :partial=>'events/header'
+
+.row
+  .span3
+    - in_sub_section :shows
+    =render :partial=>'events/menu'
+  .span9
+    = render "shared/error_messages", :target => @event
+    %h3 Add a show
+    .row-fluid
+      .span8.offset2
+        = form_for @show, :html => { :class => 'form-horizontal' }, :url => event_shows_path(@event, @show) do |show_form|
+          .control-group
+            = show_form.label "Date and time", :class => 'control-label'
+            .controls
+              = show_form.text_field :datetime, :value => l(@show.datetime_local_to_event, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+        
+
+          = show_form.fields_for :chart, @show.chart do |f|
+            %fieldset
+              %legend Ticket Types
+
+              = f.fields_for :sections do |builder|
+                = render 'events/section_fields', :f => builder
+
+              .control-group
+                .controls
+                  %i.icon-plus-sign.icon-gray
+                  = link_to_add_fields 'Add another ticket type', f, :sections, 'events'
+                        
+          .form-actions
+            = show_form.submit "Save", :class => 'btn'
+          
+            

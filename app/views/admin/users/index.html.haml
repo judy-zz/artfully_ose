@@ -1,36 +1,32 @@
 - content_for :header do
   %h1 User Administration
 
-.context
-  #search
-    %h3 Find a User
-    = form_tag admin_users_path, :method => :get do
-      %ul
-        %li
-          .hidden.label= label_tag :query, "Query"
-          .full.paired.element
-            = text_field_tag :query, params[:query], :placeholder => "Email address or organization name..."
-            = submit_tag "Search"
-  = link_to "Invite User", new_admin_user_path
-  = render :partial => "admin/stats/stats"
-.document
-  #users
-    %h3 All Users
-    %table.standalone
-      %thead
-        %tr
-          %th="Email"
-          %th="Org"
-          %th="Sign ins"
-          %th="Last sign in"
-          %th
-      %tbody
-        - @users.each do |user|
+.row
+  .span3
+    #search
+      %h3 Find a User
+      = form_tag admin_users_path, :method => :get, :class => 'form-search' do
+        = text_field_tag :query, params[:query]
+        = submit_tag "Search", :class => "btn"
+    = link_to "Invite User", new_admin_user_path
+  .span9
+    #users
+      %h3 All Users
+      %table.table
+        %thead
           %tr
-            %td=link_to user.email, admin_user_path(user)
-            %td
-              - user.memberships.each do |m|
-                =link_to m.organization.name, admin_organization_path(m.organization)
-            %td=user.sign_in_count
-            %td= l(user.last_sign_in_at) if user.last_sign_in_at.present?
-            %td= button_to "Sign in", sessions_admin_user_path(user), :class => :mini
+            %th="Email"
+            %th="Org"
+            %th="Sign ins"
+            %th="Last sign in"
+            %th
+        %tbody
+          - @users.each do |user|
+            %tr
+              %td=link_to user.email, admin_user_path(user)
+              %td
+                - user.memberships.each do |m|
+                  =link_to m.organization.name, admin_organization_path(m.organization)
+              %td=user.sign_in_count
+              %td= l(user.last_sign_in_at) if user.last_sign_in_at.present?
+              %td= button_to "Sign in", sessions_admin_user_path(user), :class => "mini btn"

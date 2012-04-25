@@ -16,3 +16,9 @@ Factory.define :admin_stats do |s|
   s.donations 0
   s.fafs_donations 0
 end
+
+Factory.define :admin_message do |f|
+  f.message "This is my message."
+  f.starts_on { Date.today }
+  f.ends_on { Date.today }
+end

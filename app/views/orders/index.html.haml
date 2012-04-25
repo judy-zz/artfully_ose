@@ -1,18 +1,13 @@
 - in_section :transactions
 - content_for :header do
-  %h1 Orders & Donations
-  %h2 Find and manage orders and donations
+  %h1 Orders
 
-.spread
-  %form
-    = form_tag orders_path, :method => :get do
-      %ul
-        %li
-          .full.paired.element
-            = text_field_tag :search, "", :placeholder => "Enter an order number..."
-            = submit_tag "Search"
+.order-search
+  = form_tag orders_path, {:method => :get, :class => 'super-search form-search'} do
+    = text_field_tag :search, "", :placeholder => "Enter an order number..."
+    = submit_tag "Search", :class => "btn"
 
-.spread
+#orders-table
   - if !params["search"].nil? && @results.empty?
     %p No orders matched your search.
   - elsif @results.nil?
@@ -24,7 +19,7 @@
       %h3 Search Results
 
     #orders
-      %table.standalone.zebra
+      %table.standalone.zebra.table
         %thead
           %tr
             %th ID

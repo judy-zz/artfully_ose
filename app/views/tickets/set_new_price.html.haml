@@ -2,30 +2,33 @@
 - content_for :header do
   %h1 Set new price
 
-.context
-.document
-  
-  #section
-    %h3 Tickets
-    %p= "You have selected the following #{pluralize @selected_tickets.count, "tickets"} to reprice:"
-    %ul
-      -@grouped_tickets.each do |section, prices|
-        %li
-          %h4= section
-          %ul.prices
-            -prices.each do |price, tickets|
-              %li
-                %div= "#{pluralize tickets.count, "ticket"}, at #{number_as_cents price} each"
+.row
+  .span4
+    &nbsp;
 
-  #form
-    %h3 New Price
-    =form_tag change_prices_show_tickets_path, :method => :put do
+  .span8
+    
+    #section
+      %h3 Tickets
+      %p= "You have selected the following #{pluralize @selected_tickets.count, "tickets"} to reprice:"
       %ul
-        %li
-          .label= label_tag :price, "Price"
-          .element= text_field_tag :price, '', :class => :currency, :size => 1
-      - @selected_tickets.each do |st|
-        = hidden_field_tag "selected_tickets[]", st
-      = submit_tag "Submit"
-  %p
-    =link_to "cancel", :back
+        -@grouped_tickets.each do |section, prices|
+          %li
+            %h4= section
+            %ul.prices
+              -prices.each do |price, tickets|
+                %li
+                  %div= "#{pluralize tickets.count, "ticket"}, at #{number_as_cents price} each"
+
+    #form
+      %h3 New Price
+      =form_tag change_prices_show_tickets_path, :method => :put do
+        %ul
+          %li
+            .label= label_tag :price, "Price"
+            .element= text_field_tag :price, '', :class => :currency, :size => 1
+        - @selected_tickets.each do |st|
+          = hidden_field_tag "selected_tickets[]", st
+        = submit_tag "Submit", :class => "btn"
+    %p
+      =link_to "cancel", :back
