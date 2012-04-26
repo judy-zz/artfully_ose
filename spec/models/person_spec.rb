@@ -13,7 +13,7 @@ describe Person do
   
   describe "mergables" do
     
-    let(:exceptions) { [:taggings, :base_tags, :tag_taggings, :tags, :phones, :tickets] }
+    let(:exceptions) { [:taggings, :base_tags, :tag_taggings, :tags, :tickets] }
     
     #This test is more of a reminder that when person gets a new has_many, it should
     #either be excluded explicitly here, or added to mergables
@@ -98,16 +98,17 @@ describe Person do
           ticket.buyer.should eq @merge_result
         end
       end
-      
+           
+      it "should merge the phones" do
+        @winner.phones.length.should eq 2
+        @winner.phones[0].kind.should eq 'Work'
+        @winner.phones[0].number.should eq '1234567890'
+        @winner.phones[1].kind.should eq 'Cell'
+        @winner.phones[1].number.should eq '3333333333'
+      end
            
       it "should paranoid delete the loser" do
         ::Person.unscoped.find(@loser.id).deleted_at.should_not be_nil
-      end
-           
-      it "should not merge the phones" do
-        @winner.phones.length.should eq 1
-        @winner.phones.first.kind.should eq 'Work'
-        @winner.phones.first.number.should eq '1234567890'
       end
            
       it "should not change the winner's address" do

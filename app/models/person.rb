@@ -26,7 +26,7 @@ class Person < ActiveRecord::Base
   # Tickets are a special case
   #
   def self.mergables
-    [:actions, :notes, :orders]
+    [:actions, :phones, :notes, :orders]
   end
 
   validates_presence_of :organization_id

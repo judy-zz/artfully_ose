@@ -136,6 +136,15 @@ class PeopleController < ApplicationController
   private
     def is_search(params)
       params[:commit].present?
+    end    
+    
+    def without_winner
+      if params[:winner]
+        @winner = Person.find(params[:winner])
+        render :merge and return
+      else
+        yield
+      end
     end
 
 end
