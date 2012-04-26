@@ -2,10 +2,9 @@
   %h1 Invite a User
 
 .row
-  .span12
+  .span8.offset2
     = form_for @user, :url => admin_users_path do |f|
-      %ul
-        %li
-          .label= f.label :email
-          .element= f.text_field :email
-      = f.submit "Send an invitation", :class => "btn"
+      .control-group
+        = f.label :email, :class => "control-label"
+        .controls= f.text_field :email
+      = render :partial => "shared/submit", :locals => { :submit_label => "Send an invitation" }
