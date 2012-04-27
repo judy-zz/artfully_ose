@@ -68,6 +68,7 @@ $(document).ready(function() {
 	
 	$('.section-price-disabled').popover({trigger:'manual'})
 	                            .click(function(){ $(this).popover('toggle') });
+	$('.section-price-disabled').popover('show');
 	
 	$('.dropdown-toggle').dropdown()
 	
