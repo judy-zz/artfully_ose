@@ -2,40 +2,42 @@
 - content_for :header do
   %h1 Returns
 
-.compact-spread
-  = form_tag refunds_path do
-    = hidden_field_tag :order_id, @order.id
-    - @items.each do |item|
-      = hidden_field_tag "items[]", item.id
-    %h3 Tickets
-    %table.standalone
-      %thead
-        %tr
-          %th
-            Event
-          %th
-            Show
-          %th
-            Price
-          %th
-            Sold
+.row
+  .span8.offset2
+    = form_tag refunds_path do
+
+      = hidden_field_tag :order_id, @order.id
+
       - @items.each do |item|
-        - if item.ticket?
+        = hidden_field_tag "items[]", item.id
+
+      %h3 Tickets
+
+      %table.standalone.table
+        %thead
           %tr
-            %td=item.product.show.event.name
-            %td=l item.product.show.datetime_local_to_event, :format => :short
-            %td=number_as_cents item.product.price
-            %td=number_as_cents item.price
-    %p
-      %br
-    -if @items.all?(&:returnable?)
-      %p
-        Refund these tickets and return them to inventory
-        %br
-        = submit_tag "Issue Refund and Return", :class => "btn"
-    %p
-      %br
-    %p
-      Refund these tickets and keep the tickets marked as sold.
-      %br
-      = submit_tag "Issue Refund", :class => "btn"
+            %th
+              Event
+            %th
+              Show
+            %th
+              Price
+            %th
+              Sold
+        - @items.each do |item|
+          - if item.ticket?
+            %tr
+              %td=item.product.show.event.name
+              %td=l item.product.show.datetime_local_to_event, :format => :short
+              %td=number_as_cents item.product.price
+              %td=number_as_cents item.price
+
+      -if @items.all?(&:returnable?)
+        %p
+          Refund these tickets and return them to inventory
+          %br
+          = submit_tag "Issue Refund and Return", :class => "btn"
+
+      %h4 Refund these tickets and keep the tickets marked as sold.
+
+      = render :partial => 'shared/submit', :locals => { :submit_label => "Issue Refund" }

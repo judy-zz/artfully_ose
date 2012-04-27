@@ -4,33 +4,33 @@
   %h2= "#{@show.event.name} at #{@show.event.venue.name}"
   %h3= "#{l @show.datetime_local_to_event, :format => :long_with_day}"
 
-  %ul.from-here
-    %li= link_to "Download as CSV", door_list_event_show_path(@event, @show, format: "csv")
-    %li= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
+  .btn-group
+    = link_to "Download as CSV", door_list_event_show_path(@event, @show, format: "csv"), :class => "btn"
+    = link_to_function "Toggle Printable View", "javascript:togglePrintPreview()", :class => 'btn button_link'
 
-.spread
-  - unless @door_list.items.empty?
-    #door-list
-      %table#door-list.table
-        %thead
-          %tr
-            %th
-            %th First
-            %th Last
-            %th Email
-            %th Section
-            %th Price
-            %th Seller
-        %tbody
-          - @door_list.items.each do |item|
+.row
+  .span12
+    - unless @door_list.items.empty?
+      #door-list
+        %table#door-list.table
+          %thead
             %tr
-              %td= "☐"
-              %td= item.buyer.first_name
-              %td= item.buyer.last_name
-              %td= item.buyer.email
-              %td= item.ticket.section.name
-              %td= number_as_cents(item.ticket.sold_price)
-              %td= ticket_reseller_name(item.ticket)
-            %tr.no-border
-              %td
-              %td{:colspan => 6}= item.special_instructions
+              %th
+              %th First
+              %th Last
+              %th Email
+              %th Section
+              %th Price
+          %tbody
+            - @door_list.items.each do |item|
+              %tr
+                %td= "☐"
+                %td= item.buyer.first_name
+                %td= item.buyer.last_name
+                %td= item.buyer.email
+                %td= item.ticket.section.name
+                %td= number_as_cents(item.ticket.sold_price)
+                %td= ticket_reseller_name(item.ticket)
+              %tr.no-border
+                %td
+                %td{:colspan => 6}= item.special_instructions
