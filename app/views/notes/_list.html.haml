@@ -17,7 +17,7 @@
           %td= l note.occurred_at, :format => :slashed_date unless note.occurred_at.nil?
           %td= truncate(note.text, :length => 300, :separator => ' ', :omission => '...')
           %td
-            = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "btn btn-mini", :remote => true)
+            = link_to("Edit", edit_person_note_path(person, note, :format => :html), :class => "btn btn-mini edit-note-link", :remote => true)
             = link_to "Delete", "#delete-confirm-modal-#{note.id}", :class => "delete-confirm-link btn-mini btn-danger", "data-toggle" => "modal"
 
             .modal{:id => "delete-confirm-modal-#{note.id}"}

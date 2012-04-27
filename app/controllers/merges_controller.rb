@@ -7,7 +7,8 @@ class MergesController < ApplicationController
       else
         @people = Person.recent(current_user.current_organization)
       end
-      @people = @people.paginate(:page => params[:page], :per_page => 10)    
+      @people = @people.paginate(:page => params[:page], :per_page => 20)  
+      @people = @people.reject { |person| person.id == @loser.id }  
       render :find_person
     end
   end

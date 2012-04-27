@@ -4,8 +4,9 @@
 
 .row
   .span4
-    = form_tag people_path, {:method => :get, :remote => true, :class => 'super-search form-search'} do
+    = form_tag new_merge_path, {:method => :get, :class => 'form-search'} do
       = hidden_field_tag :commit, "Search"
+      = hidden_field_tag :loser, @loser.id
       %ul
         %li
           = text_field_tag :search, "", :placeholder => "Email address or name", :class => "input-medium search-query"
@@ -30,7 +31,5 @@
             %td=link_to "Select", new_merge_path(:loser => @loser, :winner => person.id), :class=>'btn btn-small'
             %td.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
             %td.email= person.email
-            %td.tag-cell
-              = render :partial => 'shared/tags_uneditable', :locals => { :tag_list => person.tag_list }
 
       = will_paginate @people, :inner_window => 2, :outer_window => 0

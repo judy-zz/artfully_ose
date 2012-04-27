@@ -6,8 +6,6 @@
       %tr
         %td.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
         %td.email= person.email
-        %td.tag-cell
-          = render :partial => 'shared/tags_uneditable', :locals => { :tag_list => person.tag_list }
 - if !people.empty? and params[:search].present?
   .form-actions.row-fluid
     .pull-left
