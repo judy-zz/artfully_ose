@@ -16,7 +16,8 @@
         .value.website{"data-name" => "website", "data-url" => person_url(@person, :format => :json)}= @person.website
   %p      
     = link_to "Edit", edit_person_path(@person), :method => :get, :class => "btn"
-    = link_to "Merge", new_merge_path(:loser => @person), :method => :get, :class => "btn btn-warning"
+    - unless person.dummy?
+      = link_to "Merge", new_merge_path(:loser => @person), :method => :get, :class => "btn btn-warning"
 
 %h6 Phone Numbers
 %ul.kv
