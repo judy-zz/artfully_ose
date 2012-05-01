@@ -41,6 +41,7 @@ class Section < ActiveRecord::Base
   end
 
   def as_json(options = {})
+    options ||= {}
     super(:methods => :summary).merge(options)
   end
 end
