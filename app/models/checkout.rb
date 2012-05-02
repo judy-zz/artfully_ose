@@ -1,5 +1,5 @@
 class Checkout
-  attr_accessor :cart, :payment
+  attr_accessor :cart, :payment, :error
   attr_reader :order, :person
 
   def initialize(cart, payment)
@@ -11,11 +11,16 @@ class Checkout
   end
 
   def valid?
-    if cart.nil?
-      return !!cart
-    else
-      return (!!cart and !!payment and payment.valid?)
+    unless (!!cart and !!payment and payment.valid?)
+      return false
     end
+    
+    if cart.empty?
+      @error = "Your tickets have expired.  Please select your tickets again."
+      return false
+    end
+    
+    true
   end
 
   def finish
