@@ -205,6 +205,15 @@ ul#recent-list li {
   padding: 15px;
   margin-bottom: 15px; }
 
+.merge-confirm-block {
+  background-color: #eeeeee;
+  padding: 15px;
+  margin-bottom: 15px; }
+
+#merge-arrow {
+  text-align: center;
+  margin-bottom: 15px; }
+
 #admin #heading h1 {
   margin-bottom: 25px; }
 

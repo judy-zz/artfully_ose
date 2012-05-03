@@ -1,16 +1,38 @@
 class Person < ActiveRecord::Base
   acts_as_taggable
 
-  belongs_to :organization
-  has_many :actions
-  has_one :address
-  has_many :phones
-  has_many :notes
+  belongs_to  :organization
+  has_many    :actions
+  has_many    :phones
+  has_many    :notes
+  has_many    :orders
+  has_many    :tickets, :foreign_key => 'buyer_id'
+  has_one     :address
+  
+  default_scope where(:deleted_at => nil)
+
+  def destroy!
+    destroy
+  end
+
+  def destroy
+    update_attribute(:deleted_at, Time.now)
+  end
+  
+  #
+  # An array of has_many associations that should be merged with a person record is merge with another
+  # When an has_many association is added, it must be added here if the association is to be merged
+  #
+  # Tickets are a special case
+  #
+  def self.mergables
+    [:actions, :phones, :notes, :orders]
+  end
 
   validates_presence_of :organization_id
   validates_presence_of :person_info
 
-  validates :email, :uniqueness => {:scope => :organization_id}, :allow_blank => true
+  validates :email, :uniqueness => { :scope => [:organization_id, :deleted_at] }, :allow_blank => true
   after_commit { Sunspot.commit }
 
   searchable do
@@ -26,27 +48,28 @@ class Person < ActiveRecord::Base
   end
 
   comma do
+    email
     first_name
     last_name
-    email
     company_name
-    website
-    twitter_handle
-    facebook_url
-    linked_in_url
-    phones("Phone1 type") { |phones| phones[0] && phones[0].kind }
-    phones("Phone1 number") { |phones| phones[0] && phones[0].number }
-    phones("Phone2 type") { |phones| phones[1] && phones[1].kind }
-    phones("Phone2 number") { |phones| phones[1] && phones[1].number }
-    phones("Phone3 type") { |phones| phones[2] && phones[2].kind }
-    phones("Phone3 number") { |phones| phones[2] && phones[2].number }
-    tags { |tags| tags.join("|") }
     address("Address 1") { |address| address && address.address1 }
     address("Address 2") { |address| address && address.address2 }
     address("City") { |address| address && address.city }
     address("State") { |address| address && address.state }
     address("Zip") { |address| address && address.zip }
     address("Country") { |address| address && address.country }
+    phones("Phone1 type") { |phones| phones[0] && phones[0].kind }
+    phones("Phone1 number") { |phones| phones[0] && phones[0].number }
+    phones("Phone2 type") { |phones| phones[1] && phones[1].kind }
+    phones("Phone2 number") { |phones| phones[1] && phones[1].number }
+    phones("Phone3 type") { |phones| phones[2] && phones[2].kind }
+    phones("Phone3 number") { |phones| phones[2] && phones[2].number }
+    website
+    twitter_handle
+    facebook_url
+    linked_in_url
+    tags { |tags| tags.join("|") }
+    person_type
   end
 
   def self.find_by_import(import)
@@ -55,6 +78,30 @@ class Person < ActiveRecord::Base
 
   def self.recent(organization, limit = 10)
     Person.where(:organization_id => organization).order('updated_at DESC').limit(limit)
+  end
+  
+  def self.merge(winner, loser)
+    unless winner.organization == loser.organization
+      raise "Trying to merge two people [#{winner.id}] [#{loser.id}] from different organizations [#{winner.organization.id}] [#{winner.organization.id}]"
+    end
+    
+    mergables.each do |mergable|
+      loser.send(mergable).each do |m|
+        m.update_attribute(:person, winner)
+      end
+    end
+    
+    loser.tickets.each do |ticket|
+      ticket.update_attribute(:buyer, winner)
+    end
+    
+    loser.tags.each do |t|
+      winner.tag_list << t.name unless winner.tag_list.include? t.name
+    end
+    
+    winner.save!
+    loser.destroy!
+    return winner
   end
   
   def self.find_by_email_and_organization(email, organization)

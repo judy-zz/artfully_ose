@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120411164921) do
+ActiveRecord::Schema.define(:version => 20120424201117) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -307,6 +307,7 @@ ActiveRecord::Schema.define(:version => 20120411164921) do
     t.string   "facebook_url"
     t.string   "linked_in_url"
     t.integer  "import_id"
+    t.datetime "deleted_at"
   end
 
   create_table "phones", :force => true do |t|

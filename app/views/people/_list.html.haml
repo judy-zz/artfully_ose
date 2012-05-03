@@ -6,10 +6,6 @@
       %tr
         %td.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
         %td.email= person.email
-        %td.tag-cell
-          %ul.detailed-list.tags.pull-right{:id => "people-people-tags"}
-            - person.tag_list.each do |tag|
-              %li.tag.rounder= tag
 - if !people.empty? and params[:search].present?
   .form-actions.row-fluid
     .pull-left

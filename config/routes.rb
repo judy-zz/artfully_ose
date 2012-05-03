@@ -94,7 +94,7 @@ Artfully::Application.routes.draw do
     resources :actions
     resources :notes
     resources :phones, :only => [:create, :destroy]
-    resource  :address, :only => [:create, :update, :destroy]
+    resource  :address, :only => [:create, :update, :destroy]    
   end
   resources :segments
 
@@ -158,6 +158,7 @@ Artfully::Application.routes.draw do
   resources :exchanges, :only => [ :new, :create ]
   resources :returns, :only => :create
   resources :comps, :only => [ :new, :create ]
+  resources :merges, :only => [ :new, :create ]
 
   resources :imports do
     member do
