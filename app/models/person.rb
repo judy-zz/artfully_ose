@@ -41,10 +41,25 @@ class Person < ActiveRecord::Base
       address.to_s unless address.nil?
     end
     
+    text :tags do
+      taggings.map{ |tagging| tagging.tag.name }
+    end
+    
+    text :notes do
+      notes.map{ |note| note.text }
+    end
+    
     string :first_name, :last_name, :email
     string :organization_id do
       organization.id
     end
+  end
+
+  def self.search_index(query, organization)
+    self.search do
+      fulltext query
+      with(:organization_id).equal_to(organization.id)
+    end.results
   end
 
   comma do
@@ -141,13 +156,6 @@ class Person < ActiveRecord::Base
 
   def unstarred_actions
     actions.select { |action| action.unstarred? }
-  end
-
-  def self.search_index(query, organization)
-    self.search do
-      keywords query
-      with(:organization_id).equal_to(organization.id)
-    end.results
   end
 
   #
