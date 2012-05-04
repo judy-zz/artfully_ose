@@ -6,8 +6,8 @@ task :cron => :environment do
     Job::Settlement.run
   end
   
-  #Reindex people every four hours
-  if (Time.now.hour % 4 == 0)
+  #Reindex people every night
+  if (Time.now.hour == 4)
     Person.delay.reindex
   end
   
