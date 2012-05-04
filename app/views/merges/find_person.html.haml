@@ -29,7 +29,11 @@
         - @people.each do |person|
           %tr
             %td=link_to "Select", new_merge_path(:loser => @loser, :winner => person.id), :class=>'btn btn-small'
-            %td.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
-            %td.email= person.email
+            %td.name
+              = link_to "#{person.first_name} #{person.last_name}", person_url(person)
+              %br
+              = person.email
+            %td.tags
+              = render :partial => 'shared/tags_uneditable', :locals => { :tag_list => person.tag_list }
 
       = will_paginate @people, :inner_window => 2, :outer_window => 0
