@@ -13,36 +13,67 @@ describe Donation::Importer do
   end
 
   describe "processing donations" do
-    let(:donations) { Array.wrap(Factory(:fa_donation)) }
     
     describe "when the donation already exists" do
-      let(:donation) { Factory(:fa_donation)}
+      let(:donation) { Factory(:fa_donation) }
       let(:donor) { Factory(:person) }
     
       it "updates the existing order" do
         order = Factory(:order, :organization => organization, :fa_id => donation.id)
-        new_order = subject.send(:create_order, donation, organization, donor)
+        new_order = subject.send(:create_order, donation, organization)
         new_order.should eq order
       end
     
       it "does not create a new person under any circumstances" do
+        order = Factory(:order, :organization => organization, :fa_id => donation.id)
+        Person.should_not_receive(:save)
+        new_order = subject.send(:create_order, donation, organization)
+        new_order.should eq order      
       end
     end
       
     describe "when it is a new donation" do
+      let(:donation) { Factory(:fa_donation) }
+      
+      before(:each) do
+        Order.where(:fa_id => donation.id).should be_empty
+        @order = subject.send(:create_order, donation, organization)
+      end
+      
       it "creates a new order if one does not exist for the given fa_id" do
-        Order.delete_all(:fa_id => donation.id)
-        order = subject.send(:create_order, donation, organization, donor)
-        order.fa_id.should eq donation.id
+        @order.should_not be_new_record
+        @order.id.should_not be_nil
+        @order.fa_id.should eq donation.id
       end
     
       it "creates a new person if the person does not exist yet" do
+        p = @order.person
+        p.should_not be_new_record
+        p.first_name.should eq donation.donor.first_name
       end
-    
+    end
+      
+    describe "when it is a new donation with an existing donor email address" do    
+      let(:donation) { Factory(:fa_donation) }
+      
       it "does not create a person if the donor already exists" do
+        Order.where(:fa_id => donation.id).should be_empty
+        existing_person = Person.new({:organization_id => organization, :email => donation.donor.email})
+        existing_person.save
+        organization.people.length.should eq 1
+        @order = subject.send(:create_order, donation, organization)
+        @order.person.id.should eq existing_person.id
+        organization.people.length.should eq 1
       end
     
       it "creates a new person if there is no email address" do
+        organization.people.length.should eq 0
+        Order.delete_all(:fa_id => donation.id)
+        donation.donor.email = nil
+        @order = subject.send(:create_order, donation, organization)
+        p = @order.person
+        p.should_not be_new_record
+        organization.people.length.should eq 1
       end
     end
   end
