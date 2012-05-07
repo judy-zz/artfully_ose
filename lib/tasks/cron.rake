@@ -17,6 +17,8 @@ task :cron => :environment do
   end
   
   #Update FAFS projects.  Heroku runs cron hourly so this will run hourly
-  Job::FafsDonations.run
+  
+  #Temp fix to not update FAFS
+  #Job::FafsDonations.run
   
 end
