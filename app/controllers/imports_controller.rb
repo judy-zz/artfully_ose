@@ -1,5 +1,7 @@
 class ImportsController < ApplicationController
 
+  before_filter { authorize! :create, Import }
+
   def index
     @imports = organization.imports.all
   end
