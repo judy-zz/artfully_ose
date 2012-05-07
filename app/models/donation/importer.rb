@@ -27,6 +27,18 @@ class Donation::Importer
 
     private
 
+    #
+    # create_person is creating a new person no matter what.  It needs to NOT create this person unless this is a new donation
+    # If this is a new record, have this method return the person BUT WITHOUT PERSISTING THE RECORD.  Then, create_order
+    # can decide if it needs to be persisted
+    #
+    # Or, just merge the damned methods together
+    # 
+    # Also, I don't think fiscally_sponsored_project.refesh is properly setting the updated_at field
+    # Thus asking FA for all donations instead of the most recent
+    #
+    # And this can all be replaced with find_or_initialize_by
+    #
     def create_person(donor, organization)
       if donor.has_keys?
         ::Rails.logger.debug "Donor has email, matching to: #{donor.email}"
@@ -35,7 +47,7 @@ class Donation::Importer
       elsif donor.has_information?
         ::Rails.logger.debug "Donor has no email, but person info is present. Creating a new record."
         conditions = { :email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name, :organization_id => organization.id }
-        person = organization.people.create(conditions)
+        person = organization.people.build(conditions)
       else
         ::Rails.logger.debug "Donor has no information, creating dummy"
         person = organization.dummy
@@ -44,7 +56,12 @@ class Donation::Importer
     end
 
     def create_order(fa_donation, organization, donor)
-      order = Order.find_by_fa_id(fa_donation.id) || FaOrder.new(:organization => organization, :person => donor)
+      order = Order.find_by_fa_id(fa_donation.id) 
+      
+      if order.nil?
+        donor.save if donor.new_record?
+        order = FaOrder.new(:organization => organization, :person => donor)
+      end
 
       order.update_attributes({
         :created_at => DateTime.parse(fa_donation.date),
