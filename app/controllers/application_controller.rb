@@ -1,7 +1,9 @@
 class ApplicationController < ActionController::Base
+
   protect_from_forgery
 
   before_filter :authenticate_user!
+  before_filter :metric_logged_in
   layout :specify_layout
 
   delegate :current_organization, :to => :current_user
@@ -31,6 +33,7 @@ class ApplicationController < ActionController::Base
     end
 
   private
+
     # Overwriting the sign_out redirect path method
     # def after_sign_out_path_for(resource_or_scope)
     #   new_user_session_path
@@ -42,6 +45,14 @@ class ApplicationController < ActionController::Base
 
     def public_action?
       params[:controller] == "devise/invitations"
+    end
+  
+    def metric_logged_in
+      if current_user && !session[:metric_logged_in]
+        session[:metric_logged_in] = RestfulMetrics::Client.add_metric(ENV["RESTFUL_METRICS_APP"], "user_logged_in", 1)
+      elsif !current_user
+        session[:metric_logged_in] = false
+      end
     end
 
 end

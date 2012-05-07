@@ -121,8 +121,15 @@ describe Cart do
   end
 
   describe "#finish" do
+    subject { Factory(:cart_with_items) }
+
     it "should mark each item as sold" do
-      subject.items.each { |item| item.should_receive(:sell_to) }
+      subject.tickets.each { |ticket| ticket.should_receive(:sell_to) }
+      subject.finish(Factory(:person), Time.now)
+    end
+
+    it "should send a metric" do
+      RestfulMetrics::Client.should_receive(:add_compound_metric).with(ENV["RESTFUL_METRICS_APP"], "sale_complete", ["$100 - $249.99"])
       subject.finish(Factory(:person), Time.now)
     end
   end
