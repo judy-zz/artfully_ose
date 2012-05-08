@@ -1,6 +1,6 @@
 %p
   Good morning, here is your daily settlement summary:
-%p="#{pluralize(@shows.length, 'show')} scheduled for settlement.  Showtimes are localized to the event in which they are performed."
+%p="#{pluralize(@shows.length, 'show')} scheduled for reseller settlement.  Showtimes are localized to the event in which they are performed."
 %table
   %thead
     %th
@@ -24,6 +24,8 @@
       %th Event
       %th Show
       %th Show ID
+      %th Reseller
+      %th Reseller ID
       %th Date
       %th Transaction ID
       %th Gross
@@ -36,6 +38,8 @@
         %td= settlement.show.event.name
         %td= settlement.show.datetime_local_to_event
         %td= settlement.show.id
+        %td= settlement.organization.name
+        %td= settlement.organization.id
         %td= l(settlement.created_at, :format => :date)
         %td
           -if settlement.success?

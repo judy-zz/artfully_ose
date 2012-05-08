@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120411164921) do
+ActiveRecord::Schema.define(:version => 20120502175342) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -401,6 +401,7 @@ ActiveRecord::Schema.define(:version => 20120411164921) do
     t.integer  "show_id"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
+    t.string   "type"
   end
 
   create_table "shows", :force => true do |t|

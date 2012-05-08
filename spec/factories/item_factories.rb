@@ -2,6 +2,7 @@ Factory.define(:item) do |i|
   i.product { Factory(:sold_ticket) }
   i.price 1000
   i.association :order
+  i.reseller_net 100
 end
 
 Factory.define(:free_item, :parent => :item) do |i|

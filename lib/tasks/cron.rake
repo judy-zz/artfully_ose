@@ -4,6 +4,7 @@ task :cron => :environment do
   #Settlement, run at 5am
   if Time.now.hour == 5 
     Job::Settlement.run
+    Job::ResellerSettlement.run
   end
   
   #Reindex people every hour

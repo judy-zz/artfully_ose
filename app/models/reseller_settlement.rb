@@ -1,19 +1,7 @@
 require_or_load 'ach/exceptions'
-class Settlement < ActiveRecord::Base
+class ResellerSettlement < Settlement
   include Settlement::RangeFinding
   include AdminTimeZone
-
-  belongs_to :organization
-  belongs_to :show
-  has_many :items
-
-  after_save { Item.settle(items, self) if success? }
-
-  scope :before, lambda { |time| where("created_at < ?", time) }
-  scope :after,  lambda { |time| where("created_at > ?", time) }
-  scope :in_range, lambda { |start, stop| after(start).before(stop) }
-  
-  set_watch_for :created_at, :local_to => :self, :as => :admins
 
   def self.submit(organization_id, items, bank_account, show_id = nil)
     items = Array.wrap(items)
@@ -53,7 +41,7 @@ class Settlement < ActiveRecord::Base
       settlement.items          = items
       settlement.gross          = items.sum(&:price)
       settlement.realized_gross = items.sum(&:realized_price)
-      settlement.net            = items.sum(&:net)
+      settlement.net            = items.sum { |i| i.reseller_net.to_i }
       settlement.items_count    = items.size
 
       block.call(settlement) if block.present?
@@ -68,7 +56,8 @@ class Settlement < ActiveRecord::Base
   end
 
   def self.send_request(items, bank_account, memo)
-    request = ACH::Request.for(items.sum{ |i| i.net.to_i }, bank_account, memo)
+    net = items.sum { |i| i.reseller_net.to_i }
+    request = ACH::Request.for(net, bank_account, memo)
     request.submit
   end
 

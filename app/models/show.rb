@@ -137,6 +137,18 @@ class Show < ActiveRecord::Base
     items.reject(&:modified?)
   end
 
+  def reseller_settleables
+    settleables = {}
+
+    items.includes(:reseller_order).select(&:reseller_order).reject(&:modified?).each do |item|
+      reseller = item.reseller_order.organization
+      settleables[reseller] ||= []
+      settleables[reseller] << item
+    end
+
+    settleables
+  end
+
   def destroyable?
     (tickets_comped + tickets_sold).empty? && items.empty?
   end
