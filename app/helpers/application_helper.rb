@@ -14,8 +14,13 @@ module ApplicationHelper
   end
   
   #For use with Bootstraps icon %i classes
-  def icon_link_to(text, href, icon, class_names, id, remote=false)
-    "<a href='#{href}' class='#{class_names}' id='#{id}' #{"data-remote=true" if remote}><i class='#{icon}'></i> #{text}</a>".html_safe
+  def icon_link_to(text, href, icon, class_names, id, html_attributes={})
+    s = "<a href='#{href}' class='#{class_names}' id='#{id}' "
+    html_attributes.each do |k,v|
+      s = s + " #{k}=#{v} "
+    end
+    s = s + "><i class='#{icon}'></i> #{text}</a>"
+    s.html_safe
   end
   
   #

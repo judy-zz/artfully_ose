@@ -18,7 +18,25 @@
               %li
                 =link_to "Take off sale", "#takeOffSale#{section.id}", 'data-toggle' => 'modal'
               %li
-                =link_to "Add tickets", new_show_ticket_path(@show, :section_id => section.id)
+                =link_to "Add tickets", "#addTickets#{section.id}", 'data-toggle' => 'modal'
+          
+-@show.chart.sections.each do |section|
+  .modal{:id => "addTickets#{section.id}"}
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      .row-fluid
+        .span10
+          %h3 Add Tickets
+    .modal-body
+      .row-fluid
+        .span4 
+          = form_tag show_tickets_path(@show), :class => 'form-inline' do
+            = hidden_field_tag :section_id, section.id
+            = text_field_tag :quantity, "0", :placeholder => '0', :class => 'span1'
+            = submit_tag "Add Tickets", :class => "btn"
+        .span8
+          %h6=section.name
+          = render :partial => 'shared/section_summary', :locals => { :section => section }
           
 
 -@show.chart.sections.each do |section|

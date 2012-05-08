@@ -21,5 +21,7 @@
         .span2
           %h3 Tickets
         .span10
-          =icon_link_to("Add", new_show_ticket_path(@show), 'icon-plus-sign', 'btn', '')
+          =icon_link_to("Add New Ticket Type", new_chart_section_path(@show.chart, :format => :html), 'icon-plus-sign', 'btn', 'add-new-ticket-type-link', {"data-remote" => 'true'})
       = render :partial => 'ticket_table', :locals => { :show => @show, :tickets => @show.tickets }
+      
+#newTicketType.modal

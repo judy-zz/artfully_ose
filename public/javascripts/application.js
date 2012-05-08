@@ -135,6 +135,12 @@ $(document).ready(function() {
     return false;
   });
 
+  $("#add-new-ticket-type-link").bind("ajax:complete", function(et, e){
+    $("#newTicketType").html(e.responseText);
+    $("#newTicketType").modal( "show" );
+    return false;
+  });
+
   $("#hear-action-link,.edit-action-link").bind("ajax:complete", function(et, e){
     $("#hear-action-modal").html(e.responseText);
     $("#hear-action-modal").modal( "show" );

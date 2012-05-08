@@ -3,6 +3,7 @@ class SectionsController < ApplicationController
 
   def new
     @section = Section.new
+    render :layout => false
   end
 
   def create
