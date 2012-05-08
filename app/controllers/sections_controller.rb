@@ -2,7 +2,7 @@ class SectionsController < ApplicationController
   before_filter :find_chart, :except => [:on_sale, :off_sale]
 
   def new
-    @section = Section.new
+    @section = @chart.sections.build()
     render :layout => false
   end
 
