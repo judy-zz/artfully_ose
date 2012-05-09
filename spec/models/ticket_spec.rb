@@ -198,6 +198,11 @@ describe Ticket do
    describe "#sell_to" do
      let (:buyer) { Factory(:person) }
      subject { Factory(:ticket, :state => :on_sale) }
+
+     it "posts to restful metrics" do
+       RestfulMetrics::Client.should_receive(:add_metric).with(ENV["RESTFUL_METRICS_APP"], "ticket_sold", 1)
+       subject.sell_to(buyer).should be_true
+     end
    
      it "defaults to current time if time is not provided" do
        subject.sell_to(buyer)
