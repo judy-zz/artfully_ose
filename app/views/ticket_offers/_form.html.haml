@@ -2,12 +2,18 @@
 
   = f.hidden_field :reseller_profile_id
 
-  %h3 Ticket offer for #{@ticket_offer.reseller_profile.organization.name}
+  - if @event
+    %h3 Ticket offer for #{@ticket_offer.reseller_profile.organization.name} to #{@event.name}
+  - else
+    %h3 Ticket offer for #{@ticket_offer.reseller_profile.organization.name}
 
-  .control-group
-    = label_tag :event_id
-    .controls
-      = select_tag "event_id", options_from_collection_for_select(@organization.events, "id", "name", @event_id), :include_blank => true
+  - if @event
+    = hidden_field_tag "event_id", @event.id
+  - else
+    .control-group
+      = label_tag :event_id
+      .controls
+        = select_tag "event_id", options_from_collection_for_select(@organization.events, "id", "name", @event_id), :include_blank => true
 
   .control-group
     = f.label :show_id
@@ -31,7 +37,10 @@
       = f.text_field :count
 
   .form-actions
-    = render :partial => "shared/submit_cancel", :locals => { :form => f, :cancel_path => organization_path(@organization) }
+    - if @event
+      = render :partial => "shared/submit_cancel", :locals => { :form => f, :cancel_path => resell_event_path(@event) }
+    - else
+      = render :partial => "shared/submit_cancel", :locals => { :form => f, :cancel_path => organization_path(@organization) }
 
 - content_for :custom_js do
 
@@ -45,7 +54,7 @@
 
     $(function () {
 
-      var eventSelector = $("select#event_id");
+      var eventSelector = $("#event_id");
       var showSelector = $("select#ticket_offer_show_id");
       var sectionSelector = $("select#ticket_offer_section_id");
       var countInput = $("input#ticket_offer_count");
