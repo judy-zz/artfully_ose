@@ -18,16 +18,16 @@ class Donation::Importer
     def process(fa_donations, organization)
       ::Rails.logger.debug "Processing: #{fa_donations.size} fafs donations for org #{organization.id}"
       fa_donations.each do |fa_donation|
-        ::Rails.logger.debug "Processing: Donation with fa_id #{fa_donation.id} fafs donations for org #{organization.id}"
-        donor = create_person(fa_donation.donor, organization)
-        ::Rails.logger.debug "Using donor id #{donor.id}"
-        create_order(fa_donation, organization, donor)
+        create_order(fa_donation, organization)
       end
     end
 
     private
-
-    def create_person(donor, organization)
+    
+    #
+    # This should be replaced by Person.find_or_create when we go to Rails 3.2
+    #
+    def find_or_create_person(donor, organization)
       if donor.has_keys?
         ::Rails.logger.debug "Donor has email, matching to: #{donor.email}"
         conditions = { :email => donor.email, :first_name => donor.first_name, :last_name => donor.last_name, :organization_id => organization.id }
@@ -43,8 +43,13 @@ class Donation::Importer
       person
     end
 
-    def create_order(fa_donation, organization, donor)
-      order = Order.find_by_fa_id(fa_donation.id) || FaOrder.new(:organization => organization, :person => donor)
+    def create_order(fa_donation, organization)
+      order = Order.find_by_fa_id(fa_donation.id) 
+      
+      if order.nil?
+        person = find_or_create_person(fa_donation.donor, organization)
+        order = FaOrder.new(:organization => organization, :person => person)
+      end
 
       order.update_attributes({
         :created_at => DateTime.parse(fa_donation.date),

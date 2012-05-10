@@ -8,6 +8,7 @@ class FiscallySponsoredProject < ActiveRecord::Base
     begin
       project = FA::Project.find_active_by_member_id(fa_member_id)
       update_attributes(self.class.attributes_from(project))
+      touch
     rescue ActiveResource::ResourceNotFound
       logger.debug("No active FAFS project found for member id #{fa_member_id}")
       update_attributes(self.class.clear)
