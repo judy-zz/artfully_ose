@@ -17,7 +17,7 @@
       = content_for?(:menu_sub_template) ? yield(:menu_sub_template) : yield
       = render 'layouts/footer'
 
-    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
+    = include_javascripts :jquery
     = include_javascripts :bootstrap
     = render :partial => "shared/help_tab"
     = render :partial => "shared/feedback_footer"
