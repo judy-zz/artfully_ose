@@ -30,7 +30,7 @@ class Person < ActiveRecord::Base
   end
   
   def has_nothing?
-    actions.empty? && phones.empty? && notes.empty? && orders.empty? && tickets.empty? && address.nil?
+    actions.empty? && phones.empty? && notes.empty? && orders.empty? && tickets.empty? && address.nil? && import_id.nil?
   end
 
   validates_presence_of :organization_id
