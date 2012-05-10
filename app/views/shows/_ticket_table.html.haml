@@ -21,22 +21,29 @@
                 =link_to "Add tickets", "#addTickets#{section.id}", 'data-toggle' => 'modal'
           
 -@show.chart.sections.each do |section|
-  .modal{:id => "addTickets#{section.id}"}
-    .modal-header
+  .modal{:id => "addTickets#{section.id}", :style => "width: 650px"}
+    .modal-header 
       .close{'data-dismiss'=>'modal'} x
       .row-fluid
         .span10
           %h3 Add Tickets
     .modal-body
+      = form_tag show_tickets_path(@show), :class => 'form-inline' do
+        = hidden_field_tag :section_id, section.id
+        Add
+        = text_field_tag :quantity, "0", :placeholder => '0', :class => 'span1'
+        tickets to
+        %strong=section.name
+        and put them
+        = select_tag("todo", options_for_select(["off sale", "on sale"]), :class=>'input-small')
+        = submit_tag "Go", :class => "btn"
       .row-fluid
-        .span4 
-          = form_tag show_tickets_path(@show), :class => 'form-inline' do
-            = hidden_field_tag :section_id, section.id
-            = text_field_tag :quantity, "0", :placeholder => '0', :class => 'span1'
-            = submit_tag "Add Tickets", :class => "btn"
-        .span8
-          %h6=section.name
+        .span6
+          %h6="About #{section.name}"
           = render :partial => 'shared/section_summary', :locals => { :section => section }
+        .span6
+          %h6 About this show
+          = render :partial => 'shared/show_summary', :locals => { :show => show }
           
 
 -@show.chart.sections.each do |section|
@@ -47,15 +54,18 @@
         .span10
           %h3 Take Tickets Off Sale
     .modal-body
+      =form_tag off_sale_sections_path(:id => section.id), :method => :post, :class=>'form-inline' do
+        Quantity:
+        =text_field_tag :quantity, section.summary.available, :class => 'span1'
+        %button.btn{:type=>'submit'}
+          Take off sale
       .row-fluid
-        .span4 
-          =form_tag off_sale_sections_path(:id => section.id), :method => :post, :class=>'form-inline' do
-            =text_field_tag :quantity, section.summary.available, :class => 'span1'
-            %button.btn{:type=>'submit'}
-              Take off sale
-        .span8
-          %h6=section.name
+        .span6
+          %h6="About #{section.name}"
           = render :partial => 'shared/section_summary', :locals => { :section => section }
+        .span6
+          %h6 About this show
+          = render :partial => 'shared/show_summary', :locals => { :show => show }
           
 
 -@show.chart.sections.each do |section|
@@ -66,12 +76,15 @@
         .span10
           %h3 Put Tickets On Sale
     .modal-body
+      =form_tag on_sale_sections_path(:id => section.id), :method => :post, :class=>'form-inline' do
+        Quantity:
+        =text_field_tag :quantity, section.summary.off_sale, :class => 'span1'
+        %button.btn{:type=>'submit'}
+          Put on sale
       .row-fluid
-        .span4 
-          =form_tag on_sale_sections_path(:id => section.id), :method => :post, :class=>'form-inline' do
-            =text_field_tag :quantity, section.summary.off_sale, :class => 'span1'
-            %button.btn{:type=>'submit'}
-              Put on sale
-        .span8
-          %h6=section.name
+        .span6
+          %h6="About #{section.name}"
           = render :partial => 'shared/section_summary', :locals => { :section => section }
+        .span6
+          %h6 About this show
+          = render :partial => 'shared/show_summary', :locals => { :show => show }
