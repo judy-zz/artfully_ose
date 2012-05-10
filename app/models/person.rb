@@ -19,14 +19,51 @@ class Person < ActiveRecord::Base
     update_attribute(:deleted_at, Time.now)
   end
   
+  def dupe_code
+    "#{first_name} | #{last_name} | #{email}"
+  end
+  
+  def self.find_dupes_in(organization)
+    hash = {}
+    Person.where(:organization_id => organization.id)
+          .where(:import_id => nil)
+          .includes([:tickets, :actions, :notes, :orders]).each do |p|
+      if hash[p.dupe_code].nil?
+        hash[p.dupe_code] = Array.wrap(p)
+      else
+        hash[p.dupe_code] << p
+      end
+    end
+    hash
+  end
+
   #
-  # An array of has_many associations that should be merged with a person record is merge with another
+  # One off method.  Remove this when Libra's records are cleared up
+  #
+  def self.delete_dupes_in(organization)
+    find_dupes_in(organization).each do |k,v|
+      if v.length > 3
+        puts "Deleting [#{v.length}] of: #{v.first.id} #{v.first.first_name} #{v.first.last_name}"
+        v.reject! {|p| p.has_something?}
+        Person.delete v
+      end
+    end
+    
+    nil
+  end
+  
+  #
+  # An array of has_many associations that should be merged when a person record is merged with another
   # When an has_many association is added, it must be added here if the association is to be merged
   #
   # Tickets are a special case
   #
   def self.mergables
     [:actions, :phones, :notes, :orders]
+  end
+  
+  def has_something?
+    !has_nothing?
   end
   
   def has_nothing?
