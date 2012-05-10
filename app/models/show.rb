@@ -8,7 +8,6 @@ class Show < ActiveRecord::Base
   has_many :settlements
   has_many :items
   
-  after_create [:build!, :unpublish!]
   before_destroy :destroyable?
 
   validates_presence_of :datetime

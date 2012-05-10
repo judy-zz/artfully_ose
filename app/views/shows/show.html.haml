@@ -15,7 +15,7 @@
           =icon_link_to("Door List", door_list_event_show_path(@event, @show), 'icon-list', 'btn', '')
           =icon_link_to("Box Office", new_event_show_sales_path(@event,@show), 'icon-shopping-cart', 'btn', '')
       .span6
-        = render :partial => "glance", :locals => { :report => @show.glance }
+        = render :partial => "glance", :locals => { :report => @show.glance, :show => @show }
     #tickets
       .row-fluid
         .span2

@@ -263,9 +263,12 @@ tr.no-border td {
   font-size: 1.5em; }
 
 span.help {
-  background-color: yellow;
-  color: black;
-  padding: 5px;
-  -moz-border-radius: 5px 5px 5px 5px;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px; }
+  background-color: #666666;
+  color: white;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 14px;
+  padding: 4px;
+  -moz-border-radius: 6px 6px 6px 6px;
+  -webkit-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px; }
