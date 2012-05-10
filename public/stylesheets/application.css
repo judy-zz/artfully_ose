@@ -261,3 +261,11 @@ tr.no-border td {
 .admin-message {
   font-weight: bold;
   font-size: 1.5em; }
+
+span.help {
+  background-color: yellow;
+  color: black;
+  padding: 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px; }
