@@ -41,8 +41,8 @@ class Person < ActiveRecord::Base
   # One off method.  Remove this when Libra's records are cleared up
   #
   def self.delete_dupes_in(organization)
-    find_dupes_in(organization).each do |k,v|
-      if v.length > 3
+    Person.find_dupes_in(organization).each do |k,v|
+      if v.length > 100
         puts "Deleting [#{v.length}] of: #{v.first.id} #{v.first.first_name} #{v.first.last_name}"
         v.reject! {|p| p.has_something?}
         Person.delete v
