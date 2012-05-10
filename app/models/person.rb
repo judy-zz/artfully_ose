@@ -28,6 +28,10 @@ class Person < ActiveRecord::Base
   def self.mergables
     [:actions, :phones, :notes, :orders]
   end
+  
+  def has_nothing?
+    actions.empty? && phones.empty? && notes.empty? && orders.empty? && tickets.empty? && address.nil?
+  end
 
   validates_presence_of :organization_id
   validates_presence_of :person_info
