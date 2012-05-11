@@ -183,6 +183,10 @@ class Order < ActiveRecord::Base
     summary
   end
 
+  def credit?
+    payment_method.eql? 'Credit card'
+  end
+
   private
 
     #this used to do more.  Now it only does this
