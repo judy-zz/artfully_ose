@@ -13,9 +13,9 @@ class Job::ResellerSettlement < Job::Base
       shows_to_settle.each do |show|
         logger.info "Settling #{show.event.name}, #{show.datetime_local_to_organization}"
 
-        logger.error "#{show.organization.name} does not have a bank account." if show.organization.bank_account.nil?
         begin
           show.reseller_settleables.each do |reseller, items|
+            logger.error "#{show.organization.name} does not have a bank account." if reseller.bank_account.nil?
             settlements << ResellerSettlement.submit(reseller.id, items, reseller.bank_account, show.id)
           end
         rescue Exception => e
