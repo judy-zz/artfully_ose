@@ -167,6 +167,10 @@ class Person < ActiveRecord::Base
   # .first_name, .last_name, and .email
   #
   def self.find_or_create(customer, organization)
+    if customer.respond_to? :person_id
+      return Person.find(customer.person_id)
+    end
+    
     person = Person.find_by_email_and_organization(customer.email, organization)
       
     if person.nil?
