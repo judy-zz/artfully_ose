@@ -2,6 +2,7 @@
 # WebOrder, BoxOfficeOrder for example.  NOT DonationOrder, since orders may contain multiple different item types
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::TextHelper
   include ApplicationHelper
   include AdminTimeZone
   
@@ -107,31 +108,6 @@ class Order < ActiveRecord::Base
     items.select(&:exchangeable?)
   end
 
-  def items_detail
-    num_tickets = 0
-    sum_donations = 0
-
-    all_items.each{ |item|
-      if item.ticket?
-        num_tickets += 1
-      elsif item.donation?
-        sum_donations += item.price.to_i
-      end }
-
-    tickets = "#{num_tickets} ticket(s)"
-    donations = "$#{sum_donations/100.00} donation"
-
-    if num_tickets == 0
-      result = "#{[donations].to_sentence}"
-    elsif sum_donations == 0.0
-      result = "#{[tickets].to_sentence}"
-    else
-      result = "#{[tickets, donations].to_sentence}"
-    end
-
-    result.to_sentence
-  end
-
   def num_tickets
     all_tickets.size
   end
@@ -149,7 +125,7 @@ class Order < ActiveRecord::Base
   end
 
   def ticket_details
-    "#{num_tickets} ticket(s)"
+    pluralize(num_tickets, "ticket") + " to " + all_tickets.first.show.event.name
   end
   
   def to_comp!

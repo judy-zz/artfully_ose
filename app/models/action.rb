@@ -45,6 +45,10 @@ class Action < ActiveRecord::Base
   def sentence
     (verb + " " + details.uncapitalize)
   end
+  
+  def full_details
+    details
+  end
 
   def hear_action_subtypes
     [ "Email (sent)",

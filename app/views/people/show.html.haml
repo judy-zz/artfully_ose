@@ -21,9 +21,14 @@
         .span10=icon_link_to("Add", new_person_note_path(@person, :format => :html), 'icon-plus-sign', 'btn new-note-link', '', {"data-remote" => "true"})
 
     = render :partial=>'notes/list', :locals => { :person => @person, :notes => @person.notes, :subject => @person }
+    
 
-    %h3 Tags
-    = render :partial=>'shared/tags', :locals => { :tags => @person.tag_list, :subject => @person }
+    #orders
+      .row-fluid.form-actions
+        .span2
+          %h3 Orders
+
+    = render :partial=>'orders/by_person', :locals => { :orders => @orders }
 
     #hear-action-modal.modal
     #new-note-popup.modal

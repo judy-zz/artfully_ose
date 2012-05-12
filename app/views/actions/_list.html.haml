@@ -20,7 +20,7 @@
           %td.starred.starable{"data-person-id" => person.id, "data-type" => 'action', "data-action-id" => action.id }= (action.starred? ? "&#10029;" : "&#10025;").html_safe
           %td= l action.occurred_at_local_to_organization, :format => :short unless action.occurred_at.nil?
           %td="#{action.action_type.capitalize} - #{action.subtype unless action.subtype.nil?}"
-          %td= truncate(action.details, :length => 80, :separator => ' ', :omission => '...')
+          %td= truncate(action.full_details, :length => 100, :separator => ' ', :omission => '...')
           %td
             =link_to("Edit", edit_person_action_path(person, action, :format => :html, :type => :hear), :class => "btn btn-mini edit-action-link", :remote => true) if action.action_type == "Hear"
             =link_to("Edit", edit_person_action_path(person, action, :type => :give), :class => "btn btn-mini", :remote => true) if action.action_type == "Give" unless action.creator_id.nil?
