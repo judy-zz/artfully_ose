@@ -13,6 +13,15 @@ module ApplicationHelper
     end
   end
   
+  def full_details(action)
+    case action.type
+      when 'GetAction'
+        (action.full_details + " <a href='#{order_path(action.subject_id)}'><i class='icon-share-alt'></i></a>").html_safe
+      else
+        action.full_details
+    end
+  end
+  
   #For use with Bootstraps icon %i classes
   def icon_link_to(text, href, icon, class_names, id, html_attributes={})
     s = "<a href='#{href}' class='#{class_names}' id='#{id}' "

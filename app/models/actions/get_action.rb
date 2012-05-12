@@ -6,8 +6,4 @@ class GetAction < Action
   def verb
     "purchased"
   end
-  
-  def full_details
-    details + " ding!"
-  end
 end

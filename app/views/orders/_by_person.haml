@@ -6,6 +6,10 @@
       %th Event and Show
       %th Amount
   %tbody
+    - if orders.empty?
+      %tr
+        %td{:colspan => 4}
+          No orders for this person
     - orders.each do |order|
       - order.items.select(&:ticket?).each_with_index do |item, index|
         %tr

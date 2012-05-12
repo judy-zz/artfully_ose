@@ -155,11 +155,11 @@ class Person < ActiveRecord::Base
   end
 
   def starred_actions
-    actions.select { |action| action.starred? }
+    Action.where({ :person_id => id, :starred => true }).order(:occurred_at)
   end
 
   def unstarred_actions
-    actions.select { |action| action.unstarred? }
+    Action.where({ :person_id => id }).order('occurred_at desc').select{|a| a.unstarred?}
   end
 
   #
