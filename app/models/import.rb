@@ -83,8 +83,6 @@ class Import < ActiveRecord::Base
     else
       self.imported!
     end
-
-    Person.delay.reindex
   end
 
   def cache_data

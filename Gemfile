@@ -20,7 +20,6 @@ gem 'will_paginate', '~> 3.0', :require => [ "will_paginate", "will_paginate/arr
 gem 'bootstrap-will_paginate'
 gem 'copycopter_client'
 gem 'mail'
-gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.19'
 gem 's3', '>= 0.3.11'
 gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
