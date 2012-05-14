@@ -204,7 +204,7 @@ class Person < ActiveRecord::Base
   # .first_name, .last_name, and .email
   #
   def self.find_or_create(customer, organization)
-    if customer.respond_to? :person_id
+    if customer.respond_to? :person_id && !customer.person_id.nil?
       return Person.find(customer.person_id)
     end
     
