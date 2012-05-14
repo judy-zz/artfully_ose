@@ -26,6 +26,51 @@ describe Person do
     end
   end
   
+  describe "#find_by_customer" do
+    let(:organization) { Factory(:organization) }
+    it "should find by person_id if one is present" do
+      customer = AthenaCustomer.new({
+        :person_id => subject.id,
+        :email => "person@example.com",
+        :organization_id => organization.id
+      })
+      Person.should_receive(:find).with(customer.person_id)
+      p = Person.find_or_create(customer, organization)
+    end
+    
+    it "should find by email and org if no person_id is present" do
+      customer = AthenaCustomer.new({
+        :email => "person@example.com",
+        :organization_id => organization.id
+      })
+      params = {
+        :email => "person@example.com",
+        :organization_id => organization.id
+      }
+      Person.should_not_receive(:find).with(customer.person_id)
+      Person.should_receive(:find).with(:first, :conditions => params)
+      p = Person.find_or_create(customer, organization)
+    end
+    
+    it "should return a new person if no person_id or email is provided" do
+      customer = AthenaCustomer.new({
+        :organization_id  => organization.id,
+        :first_name       => "Russian"
+      })
+      params = {
+        :organization_id => organization.id,
+        :first_name       => "Russian"
+      }
+      Person.should_not_receive(:find).with(customer.person_id)
+      Person.should_not_receive(:find).with(:first, :conditions => params)
+      p = Person.find_or_create(customer, organization)
+      p.first_name.should         eq  customer.first_name
+      p.organization.id.should    eq  organization.id
+      p.last_name.should          be_nil
+      p.email.should              be_nil
+    end
+  end
+  
   describe "merging" do
     describe "different orgs" do   
       before(:each) do
