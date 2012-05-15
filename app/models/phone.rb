@@ -10,6 +10,6 @@ class Phone < ActiveRecord::Base
   end
 
   def self.kinds
-    [ "Work", "Home", "Cell", "Fax" ]
+    [ "Work", "Home", "Cell", "Fax", "Other" ]
   end
 end

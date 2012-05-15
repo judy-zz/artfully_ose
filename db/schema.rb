@@ -208,7 +208,7 @@ ActiveRecord::Schema.define(:version => 20120424201117) do
     t.integer  "net"
     t.string   "settlement_id"
     t.string   "fs_project_id"
-    t.integer  "nongift_amount"
+    t.integer  "nongift_amount",  :limit => 255
     t.boolean  "is_noncash"
     t.boolean  "is_stock"
     t.boolean  "is_anonymous"
@@ -244,21 +244,6 @@ ActiveRecord::Schema.define(:version => 20120424201117) do
     t.datetime "updated_at"
     t.datetime "occurred_at"
     t.integer  "organization_id"
-  end
-
-  create_table "order_view", :id => false, :force => true do |t|
-    t.integer  "id",                :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "transaction_id"
-    t.integer  "price"
-    t.integer  "service_fee"
-    t.integer  "fa_id"
-    t.integer  "organization_id"
-    t.integer  "person_id"
-    t.string   "organization_name"
-    t.string   "person_first_name"
-    t.string   "person_last_name"
   end
 
   create_table "orders", :force => true do |t|
@@ -302,7 +287,6 @@ ActiveRecord::Schema.define(:version => 20120424201117) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
-    t.string   "person_type"
     t.string   "twitter_handle"
     t.string   "facebook_url"
     t.string   "linked_in_url"
