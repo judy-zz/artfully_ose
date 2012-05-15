@@ -207,17 +207,20 @@ class Ticket < ActiveRecord::Base
 
   #Bulk creation of tickets should use this method to ensure all tickets are created the same
   #Reminder that this returns a ActiveRecord::Import::Result, not an array of tickets
-  def self.create_many(show, section, quantity=section.capacity)
+  def self.create_many(show, section, quantity, on_sale = false)
     new_tickets = []
     (0..quantity-1).each do
-      new_tickets << Ticket.new({
+      t = Ticket.new({
         :venue => show.event.venue.name,
         :price => section.price,
         :show => show,
         :organization => show.organization,
-        :section => section
+        :section => section,
       })
+      t.state = 'on_sale' if on_sale
+      new_tickets << t
     end
+    
     result = Ticket.import(new_tickets)
     result
   end
