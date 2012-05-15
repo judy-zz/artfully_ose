@@ -5,7 +5,7 @@
         %strong=section.name
       %td="#{number_as_cents section.price}"
       %td="#{section.summary.total} tickets"
-      %td="#{section.summary.available} available"
+      %td="#{section.summary.available} on sale"
       %td="#{section.summary.sold} sold"
       %td="#{section.summary.comped} comped"
       %td{:style => 'width: 30px'}
@@ -35,7 +35,7 @@
         tickets to
         %strong=section.name
         and put them
-        = select_tag("todo", options_for_select(["off sale", "on sale"]), :class=>'input-small')
+        = select_tag(:on_sale, options_for_select({"on sale" => "true", "off sale" => "false"}), :class=>'input-small')
         = submit_tag "Go", :class => "btn"
       .row-fluid
         .span6

@@ -47,7 +47,7 @@ class Chart < ActiveRecord::Base
     # This hack converts DD.CC to DDCC
     #   
     params_hash[:sections_attributes].each do |index, section_hash|
-      new_price = (section_hash['price'].to_f * 100).to_i
+      new_price = Section.price_to_cents(section_hash['price'])
       section_hash['price'] = new_price
     end
     

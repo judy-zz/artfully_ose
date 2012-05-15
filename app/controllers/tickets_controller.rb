@@ -26,17 +26,18 @@ class TicketsController < ApplicationController
     @show = Show.find(params[:show_id])
     @section = Section.find(params[:section_id])
     @quantity = params[:quantity].to_i
+    @on_sale = params[:on_sale] == "true"
 
     if @quantity > 1000
       flash[:error] = "You cannot add more than 1000 tickets at a time."
-      redirect_to new_show_ticket_path(@show, {:section_id => @section.id})      
+      redirect_to event_show_path(@show.event, @show)    
     elsif @quantity > 0
-      result = Ticket.create_many(@show, @section, @quantity)
+      result = Ticket.create_many(@show, @section, @quantity, @on_sale)
       flash[:notice] = "Successfully added #{to_plural(@quantity, 'tickets')}."
-      redirect_to event_show_path(@show.event_id, @show)
+      redirect_to event_show_path(@show.event, @show)
     else
       flash[:error] = "Enter a number greater than 0 to add tickets to the show."
-      redirect_to new_show_ticket_path(@show, {:section_id => @section.id})
+      redirect_to event_show_path(@show.event, @show)
     end
   end
 
