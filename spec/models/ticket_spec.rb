@@ -11,7 +11,7 @@ describe Ticket do
     it { should respond_to :sold_price }
     it { should respond_to :items }
   end
-
+  
   describe "available tickets" do
     let(:conditions) { Factory.attributes_for(:ticket, :state => :on_sale) }
   
@@ -198,7 +198,7 @@ describe Ticket do
    describe "#sell_to" do
      let (:buyer) { Factory(:person) }
      subject { Factory(:ticket, :state => :on_sale) }
-
+  
      it "posts to restful metrics" do
        RestfulMetrics::Client.should_receive(:add_metric).with(ENV["RESTFUL_METRICS_APP"], "ticket_sold", 1)
        subject.sell_to(buyer).should be_true
@@ -422,18 +422,21 @@ describe Ticket do
                            :show_id => show.id, 
                            :organization_id => show.organization.id, 
                            :price => section.price,
-                           :section_id => section.id)
+                           :section_id => section.id,
+                           :state => "off_sale")
     end
     
-    it "should default to section.capacity if there is no quantity" do
+    it "should put them on sale if I say so" do
       section.price = rand(40000)
-      tickets = Ticket.create_many(show, section)
-      tickets.num_inserts.should eq section.capacity
-      check_tix(section.capacity, :venue => show.event.venue.name, 
-                                 :show_id => show.id, 
-                                 :organization_id => show.organization.id, 
-                                 :price => section.price,
-                                 :section_id => section.id)
+      quantity = 13
+      tickets = Ticket.create_many(show, section, quantity, true)
+      tickets.num_inserts.should eq quantity
+      check_tix(quantity, :venue => show.event.venue.name, 
+                           :show_id => show.id, 
+                           :organization_id => show.organization.id, 
+                           :price => section.price,
+                           :section_id => section.id,
+                           :state => "on_sale")
     end
   end
 end
