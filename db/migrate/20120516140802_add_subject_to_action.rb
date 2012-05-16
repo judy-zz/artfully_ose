@@ -2,10 +2,10 @@ class AddSubjectToAction < ActiveRecord::Migration
   def self.up
     Action.all.each do |a|
       unless a.subject_id.nil?
-        o = Order.find(a.subject_id)
-        unless o.nil?
-          a.subject = o
+        begin
+          a.subject = Order.find(a.subject_id)
           a.save
+        rescue
         end
       end
     end
