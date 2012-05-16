@@ -16,7 +16,7 @@ module ApplicationHelper
   def full_details(action)
     case action.type
       when 'GetAction'
-        (action.full_details + " <a href='#{order_path(action.subject_id)}'><i class='icon-share-alt'></i></a>").html_safe
+        (action.full_details + " <a href='#{order_path(action.subject)}'><i class='icon-share-alt'></i></a>").html_safe
       else
         action.full_details
     end

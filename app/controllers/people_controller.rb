@@ -98,7 +98,7 @@ class PeopleController < ApplicationController
 
   def show
     @person = Person.find(params[:id])
-    @orders = Order.where(:person_id => @person.id).includes(:person, :items).order(:created_at).paginate(:page => params[:page], :per_page => 25)
+    @orders = Order.where(:person_id => @person.id).includes(:person, :actions, :items).order(:created_at).paginate(:page => params[:page], :per_page => 25)
     authorize! :view, @person
   end
 

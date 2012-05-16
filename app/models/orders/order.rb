@@ -14,6 +14,7 @@ class Order < ActiveRecord::Base
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
   has_many :items
+  has_many :actions, :foreign_key => "subject_id"
 
   attr_accessor :skip_actions
 
@@ -174,14 +175,12 @@ class Order < ActiveRecord::Base
       unless all_tickets.empty?
         action                  = GetAction.new
         action.person           = person
-        action.subject_id       = self.id
+        action.subject          = self
         action.organization_id  = organization.id
         action.details          = ticket_details
         action.occurred_at      = created_at
         action.subtype          = "Purchase"
 
-        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
-        logger.debug("Action: #{action.attributes}")
         action.save!
         action
       end
@@ -191,7 +190,7 @@ class Order < ActiveRecord::Base
       items.select(&:donation?).collect do |item|
         action                    = GiveAction.new
         action.person             = person
-        action.subject_id         = item.product_id
+        action.subject            = self
         action.organization_id    = organization.id
         action.details            = donation_details
         action.occurred_at        = created_at
