@@ -26,6 +26,15 @@ describe FiscallySponsoredProject do
       FA::Project.should_receive(:find_active_by_member_id).and_return(fa_project)
       subject.refresh
     end
+    
+    it "updates the updated_at on each refresh regardless if the attributes were updated" do
+      FA::Project.should_receive(:find_active_by_member_id).twice.and_return(fa_project)
+      subject.refresh
+      @first_refresh = subject.updated_at
+      sleep 2
+      subject.refresh
+      subject.updated_at.should > @first_refresh
+    end
 
     it "does not update attributes if the remote project is not found" do
       FA::Project.stub(:find_active_by_member_id).and_raise(ActiveResource::ResourceNotFound.new("Not Found"))

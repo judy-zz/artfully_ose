@@ -80,6 +80,8 @@ class Sale
       rescue Errno::ECONNREFUSED => e
         errors.add(:base, "Sorry but we couldn't connect to the payment processor.  Try again or use another payment type")
       rescue Exception => e
+        ::Rails.logger.error e
+        ::Rails.logger.error e.backtrace
         errors.add(:base, "We had a problem processing the sale")
       end
       success

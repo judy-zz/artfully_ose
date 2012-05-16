@@ -11,7 +11,7 @@
     = form.text_field :occurred_at, :value => l(@action.occurred_at, :format => :datetime_for_input), :readonly => true, :class => [:datetimepicker, 'input-xlarge']
 
     = form.label :details, "Details"
-    = form.text_area :details, :size => "25x5", :class => 'input-xlarge'
+    = form.text_area :details, :size => "25x5", :class => 'input-xxlarge'
 
     -unless @action.created_at.nil? or @action.creator.nil?
       = "Action created by #{@action.creator.email} on #{(l @action.created_at, :format => :long)}"

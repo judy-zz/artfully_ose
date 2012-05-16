@@ -313,6 +313,7 @@ ActiveRecord::Schema.define(:version => 20120502175342) do
     t.string   "facebook_url"
     t.string   "linked_in_url"
     t.integer  "import_id"
+    t.datetime "deleted_at"
   end
 
   create_table "phones", :force => true do |t|

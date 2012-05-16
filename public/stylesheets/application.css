@@ -26,17 +26,11 @@ ul.tags ul.controls {
       color: red; }
 
 .tag {
-  background: #f8930a;
-  background: -moz-linear-gradient(top, #f8930a 0%, #a85300 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f8930a), color-stop(100%, #a85300));
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f8930a), to(#a85300));
-  background-image: -moz-linear-gradient(top, #f8930a, #a85300);
-  background-image: -ms-linear-gradient(top, #f8930a, #a85300);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f8930a), color-stop(100%, #a85300));
-  background-image: -webkit-linear-gradient(top, #f8930a, #a85300);
-  background-image: -o-linear-gradient(top, #f8930a, #a85300);
-  background-image: linear-gradient(top, #f8930a, #a85300);
-  padding: 5px;
+  background-color: #f8930a;
+  border-right: 1px solid #a85300;
+  border-bottom: 1px solid #a85300;
+  padding: 2px 4px 2px 4px;
+  font-size: 10pt;
   color: #eeeeee; }
 
 .tag-error {
@@ -203,6 +197,15 @@ ul#recent-list li {
 #show-headline {
   background-color: #eeeeee;
   padding: 15px;
+  margin-bottom: 15px; }
+
+.merge-confirm-block {
+  background-color: #eeeeee;
+  padding: 15px;
+  margin-bottom: 15px; }
+
+#merge-arrow {
+  text-align: center;
   margin-bottom: 15px; }
 
 #admin #heading h1 {

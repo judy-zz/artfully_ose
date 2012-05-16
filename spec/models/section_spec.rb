@@ -11,6 +11,12 @@ describe Section do
   it { should respond_to :chart_id }
   it { should respond_to :description }
 
+  describe "put_on_sale" do  
+    before(:each) do
+      subject.stub(:tickets).and_return(5.times.collect { Factory(:ticket) } )
+    end
+  end
+
   describe "valid?" do
     it "should not be valid without a name" do
       subject.name = nil

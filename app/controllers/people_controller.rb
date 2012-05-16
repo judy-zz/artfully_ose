@@ -93,7 +93,7 @@ class PeopleController < ApplicationController
       @people = Person.recent(current_user.current_organization)
     end
 
-    @people = @people.paginate(:page => params[:page], :per_page => 10)
+    @people = @people.paginate(:page => params[:page], :per_page => 20)
   end
 
   def show
@@ -136,6 +136,15 @@ class PeopleController < ApplicationController
   private
     def is_search(params)
       params[:commit].present?
+    end    
+    
+    def without_winner
+      if params[:winner]
+        @winner = Person.find(params[:winner])
+        render :merge and return
+      else
+        yield
+      end
     end
 
 end

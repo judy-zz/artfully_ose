@@ -104,6 +104,7 @@ class Cart < ActiveRecord::Base
   end
 
   def finish(person, order_timestamp)
+    metric_sale_total
     tickets.each { |ticket| ticket.sell_to(person, order_timestamp) }
   end
 
@@ -138,9 +139,27 @@ class Cart < ActiveRecord::Base
   end
 
   private
+
     def pay_with_authorization(payment, options)
       options[:settle] = true if options[:settle].nil?
       payment.authorize! ? approve! : reject!
       payment.settle! if options[:settle] and approved?
     end
+
+    def metric_sale_total
+      bracket =
+        case self.total
+        when 0                  then "$0.00"
+        when (1 ... 1000)       then "$0.01 - $9.99"
+        when (1000 ... 2000)    then "$10 - $19.99"
+        when (2000 ... 5000)    then "$20 - $49.99"
+        when (5000 ... 10000)   then "$50 - $99.99"
+        when (10000 ... 25000)  then "$100 - $249.99"
+        when (25000 ... 50000)  then "$250 - $499.99"
+        else                         "$500 or more"
+        end
+
+      RestfulMetrics::Client.add_compound_metric(ENV["RESTFUL_METRICS_APP"], "sale_complete", [ bracket ])
+    end
+
 end

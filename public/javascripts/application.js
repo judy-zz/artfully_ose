@@ -68,6 +68,7 @@ $(document).ready(function() {
 	
 	$('.section-price-disabled').popover({trigger:'manual'})
 	                            .click(function(){ $(this).popover('toggle') });
+	$('.section-price-disabled').popover('show');
 	
 	$('.dropdown-toggle').dropdown()
 	
@@ -134,14 +135,14 @@ $(document).ready(function() {
     return false;
   });
 
-  $("#hear-action-link").bind("ajax:complete", function(et, e){
+  $("#hear-action-link,.edit-action-link").bind("ajax:complete", function(et, e){
     $("#hear-action-modal").html(e.responseText);
     $("#hear-action-modal").modal( "show" );
     activateControls();
     return false;
   });
 
-  $(".new-note-link").bind("ajax:complete", function(et, e){
+  $(".new-note-link,.edit-note-link").bind("ajax:complete", function(et, e){
     $("#new-note-popup").html(e.responseText);
     $("#new-note-popup").modal( "show" );
     activateControls();
@@ -171,7 +172,7 @@ $(document).ready(function() {
       }
   });
 
-  $('.tag').each(function() {
+  $('.tag.deletable').each(function() {
 		createControlsForTag($(this));
   });
 
@@ -185,7 +186,7 @@ $(document).ready(function() {
 		}
 
 	  newTagLi = $(document.createElement('li'));
-		newTagLi.addClass('tag').addClass('rounder').html(tagText).appendTo($('.tags'));
+		newTagLi.addClass('tag').addClass('deletable').addClass('rounder').html(tagText).appendTo($('.tags'));
 		$('.tags').append("\n");
 		createControlsForTag(newTagLi);
 	  $('#new-tag-field').attr('value', '');

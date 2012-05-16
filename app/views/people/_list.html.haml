@@ -4,12 +4,12 @@
   %table.table.people-list
     - people.each do |person|
       %tr
-        %td.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
-        %td.email= person.email
-        %td.tag-cell
-          %ul.detailed-list.tags.pull-right{:id => "people-people-tags"}
-            - person.tag_list.each do |tag|
-              %li.tag.rounder= tag
+        %td.name
+          = link_to "#{person.first_name} #{person.last_name}", person_url(person)
+          %br
+          = person.email
+        %td.tags
+          = render :partial => 'shared/tags_uneditable', :locals => { :tag_list => person.tag_list }
 - if !people.empty? and params[:search].present?
   .form-actions.row-fluid
     .pull-left

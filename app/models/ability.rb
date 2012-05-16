@@ -7,7 +7,14 @@ class Ability
     paid_ticketing_abilities_for(user) if user.current_organization.can? :access, :paid_ticketing
     person_abilities_for(user) if user.is_in_organization?
     order_ablilities_for(user) if user.is_in_organization?
+    import_ablilities_for(user) if user.is_in_organization?
     default_abilities_for(user)
+  end
+
+  def import_ablilities_for(user)
+    can :manage, Import do |chart|
+      user.is_in_organization?
+    end
   end
 
   def default_abilities_for(user)

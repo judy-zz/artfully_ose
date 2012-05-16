@@ -18,8 +18,8 @@ class Store::CheckoutsController < Store::StoreController
     @checkout = Checkout.for(current_cart, @payment)
 
     unless @checkout.valid?
-      flash[:error] = "An error occured while trying to validate your payment. Please review your information."
-      render :new and return
+      flash[:error] = @checkout.error || "An error occured while trying to validate your payment. Please review your information."
+      redirect_to(store_order_url) and return
     end
 
     with_confirmation do

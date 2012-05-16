@@ -32,8 +32,14 @@ class ShowsController < ApplicationController
     
     #clear the sections and replace them with whatever they entered
     @show.chart.sections = []
-
-    @show.chart.update_attributes_from_params(params[:show].delete(:chart))
+    chart_params = params[:show].delete(:chart)
+    
+    if(chart_params.nil? || chart_params.empty?)
+      flash[:error] = "Please specify at least one price level for your show."
+      render :new and return
+    end
+    
+    @show.chart.update_attributes_from_params(chart_params)
     @show.update_attributes(params[:show].merge(:organization => current_organization).merge(:chart_id => @show.chart.id))
     @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 

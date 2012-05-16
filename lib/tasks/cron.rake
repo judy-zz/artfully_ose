@@ -7,8 +7,10 @@ task :cron => :environment do
     Job::ResellerSettlement.run
   end
   
-  #Reindex people every hour
-  Person.delay.reindex
+  #Reindex people every night
+  if (Time.now.hour == 4)
+    Person.delay.reindex
+  end
   
   #AdminStats runs during the day
   if (7..18).include? Time.now.hour
@@ -16,6 +18,8 @@ task :cron => :environment do
   end
   
   #Update FAFS projects.  Heroku runs cron hourly so this will run hourly
+  
+  #Temp fix to not update FAFS
   Job::FafsDonations.run
   
 end

@@ -11,6 +11,7 @@ gem 'activerecord-import'
 
 gem 'delayed_job'
 gem 'acts-as-taggable-on', '~>2.1.0'
+gem 'restful_metrics'
 
 # Views and Rendering
 gem 'haml'
