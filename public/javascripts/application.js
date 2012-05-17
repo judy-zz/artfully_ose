@@ -73,6 +73,8 @@ $(document).ready(function() {
 	
 	$('.dropdown-toggle').dropdown()
 	
+	$('#nag').modal('show')
+	
 	/*********** NEW ARTFULLY JS ************/
 	
 	/*********** EXISTING ARTFUL.LY JS ******/

@@ -23,3 +23,17 @@
           
       .form-actions
         = f.submit "Save", :class => 'btn'
+
+-unless @event.shows.empty?        
+  #nag.modal
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      %h3 Editing Prices
+    .modal-body
+      %p
+        Changing prices on this screen 
+        %b
+          will not
+        change the prices on shows you have already created.  To edit pricing for existing shows, select a single show and edit pricing information for that specific show. 
+    .modal-footer
+      %button.btn.btn-success{'data-dismiss'=>'modal'} OK
