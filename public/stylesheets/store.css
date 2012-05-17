@@ -331,7 +331,9 @@ form.jeditable button {
 
 body {
   font-size: 11pt;
-  font-family: sans-serif; }
+  font-family: sans-serif;
+  width: 960px;
+  margin: 0 auto; }
 
 a {
   color: #077083;
@@ -763,6 +765,8 @@ table.calendar {
             #shopping-cart #steps #cart table tr td.remove a:hover {
               background: #bbbbbb;
               color: white; }
+          #shopping-cart #steps #cart table tr td.price {
+            text-align: right; }
           #shopping-cart #steps #cart table tr .over-limit {
             color: red; }
     #shopping-cart #steps .continue {
