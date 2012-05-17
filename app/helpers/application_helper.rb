@@ -14,12 +14,11 @@ module ApplicationHelper
   end
   
   def full_details(action)
-    case action.type
-      when 'GetAction'
-        (action.full_details + " <a href='#{order_path(action.subject_id)}'><i class='icon-share-alt'></i></a>").html_safe
-      else
-        action.full_details
+    s = action.full_details
+    if action.subject.is_a? Order
+      s = s + " <a href='#{order_path(action.subject)}'><i class='icon-share-alt'></i></a>"
     end
+    s.html_safe
   end
   
   #For use with Bootstraps icon %i classes
