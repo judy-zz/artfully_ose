@@ -27,7 +27,7 @@ class Checkout
     @person = Person.find_or_create(@customer, cart.organizations.first)
     #This should be a delayed_job, but DJ fails to deserialize something. When we move ot DJ 3.0 it might work
     @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
-    @person.add_phone_if_missing(@customer.phone)
+    @person.delay.add_phone_if_missing(@customer.phone)
     prepare_fafs_donations
     cart.pay_with(@payment)
     

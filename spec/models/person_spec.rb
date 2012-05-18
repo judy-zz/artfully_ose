@@ -21,6 +21,7 @@ describe Person do
       subject.add_phone_if_missing("555-555-5555")
       subject.phones.length.should eq 3
       subject.phones.last.number.should eq "555-555-5555"
+      subject.phones.last.kind.should eq "Other"
     end
     
     it "shouldn't add a nnumber if it already exists" do
