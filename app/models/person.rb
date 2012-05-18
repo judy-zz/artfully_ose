@@ -236,6 +236,12 @@ class Person < ActiveRecord::Base
     true
   end
 
+  def add_phone_if_missing(new_phone)
+    if (!new_phone.blank? and phones.where("number = ?", new_phone).empty?)
+      phones.create(:number => new_phone, :kind => "Other")
+    end
+  end
+
   private
     def person_info
       !(first_name.blank? and last_name.blank? and email.blank?)
