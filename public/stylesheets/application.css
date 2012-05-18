@@ -273,5 +273,5 @@ span.help {
   -webkit-border-radius: 6px 6px 6px 6px;
   border-radius: 6px 6px 6px 6px; }
 
-#show_datetime {
+input.datepicker, input.datetimepicker {
   cursor: pointer; }
