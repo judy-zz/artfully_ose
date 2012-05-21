@@ -48,13 +48,11 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.html do
         if results
-          flash[:notice] = "Person updated successfully!"
-          
-          #TODO: should be render
+          flash[:notice] = "Your changes have been saved"
           @person = Person.find(params[:id])
-          render :show
+          redirect_to person_url(@person)
         else
-          flash[:alert] = "Person could not be updated. Make sure it has a first name, last name or email address. "
+          flash[:alert] = "Sorry, we couldn't save your changes. Make sure you entered a first name, last name or email address."
           render :edit
         end
       end
