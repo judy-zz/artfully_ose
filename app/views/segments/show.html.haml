@@ -9,11 +9,12 @@
 
   .span8
     %table.table.people-list
-      - @segment.people.each do |person|
-        %tr
-          %td.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
-          %td.email= person.email
-          %td.tag-cell
-            %ul.detailed-list.tags.pull-right{:id => "people-people-tags"}
-              - person.tag_list.each do |tag|
-                %li.tag.rounder= tag
+      %tbody
+        - @segment.people.each do |person|
+          %tr
+            %td.name= link_to "#{person.first_name} #{person.last_name}", person_url(person)
+            %td.email= person.email
+            %td.tag-cell
+              %ul.detailed-list.tags.pull-right{:id => "people-people-tags"}
+                - person.tag_list.each do |tag|
+                  %li.tag.rounder= tag
