@@ -16,7 +16,7 @@ Feature: Refund Tickets
   Scenario: A producer refunds and returns a ticket
     Given I check the 1st ticket for a refund
     When I press "Refund"
-    And I press "Refund and Return"
+    And I press "Issue Refund and Return"
     Then I should see "Successfully refunded and returned 1 items."
 
   Scenario: A producer refunds a ticket without returning it to inventory

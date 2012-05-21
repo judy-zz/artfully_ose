@@ -26,7 +26,7 @@ Given /^there is an Event with special instructions with (\d+) Shows$/ do |show_
 end
 
 Given /^I view the (\d+)(?:st|nd|rd|th) [Ee]vent$/ do |pos|
-  within(:xpath, "(//ul[@class='detailed-list']/li)[#{pos.to_i}]") do
+  within(:xpath, "(//ul[@id='event-list']/li)[#{pos.to_i}]") do
     click_link "event-name"
   end
 end

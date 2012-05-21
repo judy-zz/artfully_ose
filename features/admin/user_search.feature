@@ -8,7 +8,7 @@ Feature: User Search
 
   Scenario: An admin searches by email address
     Given a user exists with an email of "user@example.com"
-    When I fill in "Query" with "user@example.com"
+    When I fill in "query" with "user@example.com"
     And I press "Search"
     Then I should see "user@example.com" in the search results
 
@@ -16,7 +16,7 @@ Feature: User Search
     Given a user exists with an email of "user@example.com"
     And an organization exists with a name of "FBI"
     And "user@example.com" is part of "FBI"
-    When I fill in "Query" with "F"
+    When I fill in "query" with "F"
     And I press "Search"
     Then I should see "user@example.com" in the search results
     And I should see "FBI"
@@ -24,6 +24,6 @@ Feature: User Search
   Scenario: An admin searches for a non-existent user
     Given there is no user with an email of "user@example.com"
     And there is no organization with a name of "user@example.com"
-    When I fill in "Query" with "user@example.com"
+    When I fill in "query" with "user@example.com"
     And I press "Search"
     Then I should not see "user@example.com" in the search results

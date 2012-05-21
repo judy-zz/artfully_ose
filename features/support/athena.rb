@@ -20,6 +20,7 @@ module AthenaHelpers
   end
 
   def setup_shows(shows = [])
+    shows.each { |s| s.build! }
     current_shows(shows)
   end
 

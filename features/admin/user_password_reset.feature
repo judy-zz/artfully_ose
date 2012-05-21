@@ -7,7 +7,7 @@ Feature: Admin Password Reset
     Given I am logged in as an admin
     And I follow "Users"
     And a user exists with an email of "user@example.com"
-    And I fill in "Query" with "user@example.com"
+    And I fill in "query" with "user@example.com"
     And I press "Search"
     And I follow "user@example.com"
     When I press "Send Password Reset Instructions"
