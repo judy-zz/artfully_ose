@@ -6,8 +6,8 @@ describe Statement do
   let(:event)           { Factory(:event) }
   let(:paid_chart)      { Factory(:assigned_chart, :event => event) }
   let(:free_chart)      { Factory(:chart_with_free_sections, :event => event) }
-  let(:paid_show)       { Factory(:show, :organization => Factory(:organization), :chart => paid_chart, :event => event) }
-  let(:free_show)       { Factory(:show, :organization => Factory(:organization), :chart => free_chart, :event => event) }
+  let(:paid_show)       { Factory(:show_with_tickets, :organization => Factory(:organization), :chart => paid_chart, :event => event) }
+  let(:free_show)       { Factory(:show_with_tickets, :organization => Factory(:organization), :chart => free_chart, :event => event) }
   let(:payment)         { Factory(:payment) }
   let(:cart)            { Factory(:cart_with_only_tickets, :tickets => show.tickets[6..8]) }
   
@@ -26,6 +26,7 @@ describe Statement do
     let(:statement)       { Statement.for_show(free_show, organization) }
     
     before(:each) do
+      Person.stub(:find_by_email_and_organization).and_return(Factory(:person))
       checkout.finish
     end
     
@@ -101,8 +102,9 @@ describe Statement do
     let(:statement)       { Statement.for_show(paid_show, organization) }
       
     before(:each) do
-      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => "{ success:true, transaction_id:'j59qrb' }")
-      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => "{ success : true }")
+      Person.stub(:find_by_email_and_organization).and_return(Factory(:person))
+      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => "{\"success\":true,\"transaction_id\":\"j59qrb\"}")
+      FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => "{\"success\":true }")
       
       checkout.finish
       paid_show.tickets[0..2].each do |t|
