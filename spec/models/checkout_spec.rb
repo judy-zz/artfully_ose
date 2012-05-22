@@ -161,7 +161,9 @@ describe Checkout do
         subject.finish
       end
       
-      it "should add the phone numebr to the person" do
+      it "should add the phone number to the person" do
+        Delayed::Worker.delay_jobs = false
+        
         subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
         subject.cart.stub(:organizations).and_return(Array.wrap(organization))
         Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(person)
