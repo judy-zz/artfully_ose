@@ -26,6 +26,7 @@ describe Statement do
     let(:statement)       { Statement.for_show(free_show, organization) }
     
     before(:each) do
+      Person.stub(:find_by_email_and_organization).and_return(Factory(:person))
       checkout.finish
     end
     
@@ -101,6 +102,7 @@ describe Statement do
     let(:statement)       { Statement.for_show(paid_show, organization) }
       
     before(:each) do
+      Person.stub(:find_by_email_and_organization).and_return(Factory(:person))
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => "{\"success\":true,\"transaction_id\":\"j59qrb\"}")
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => "{\"success\":true }")
       
