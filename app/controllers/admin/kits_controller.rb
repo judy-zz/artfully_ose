@@ -3,12 +3,17 @@ class Admin::KitsController < Admin::AdminController
     @kit = Kit.find(params[:id])
     @kit.approve!
     check_activation
-    redirect_to :back
+    redirect_to :admin_kits_path
+  end
+  
+  def cancel
+    @kit = Kit.find(params[:id])
+    @kit.cancel!
+    redirect_to :admin_kits_path
   end
 
   def index
     @pending_kits = Kit.where(:state => "pending")
-    @kits = Kit.all
   end
 
   private
