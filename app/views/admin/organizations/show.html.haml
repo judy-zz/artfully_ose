@@ -11,6 +11,25 @@
         %li=link_to "Events", "#events"
         %li=link_to "Settlements", "#settlements"
       
+      
+    %table.table.table-condensed
+      %tbody
+        %tr
+          %td
+            Created
+          %td
+            =l @organization.created_at, :format => :short
+        %tr
+          %td
+            Legal name
+          %td
+            =@organization.legal_organization_name
+        %tr
+          %td
+            EIN
+          %td
+            =@organization.ein
+        
     %table.table.table-condensed
       %tbody
         %tr
@@ -44,7 +63,7 @@
         %tr
           %td= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
           %td
-            = "#{user.email}"
+            =link_to user.email, admin_user_path(user)
             - if user == @organization.owner
               %br
               Organization administrator
@@ -59,10 +78,12 @@
         %tr
           %td= kit.friendly_name
           %td= kit.state
+          %td= l kit.created_at, :format => :short
           %td
+            -unless kit.cancelled? || kit.type == "SponsoredDonationKit"
+              = link_to "Cancel", cancel_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small btn-danger'
             -if kit.pending?
               = link_to "Approve", activate_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small'
-              = link_to "Cancel", cancel_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small btn-danger'
               
     %h3#bank-account Bank Account
     - if @organization.bank_account.nil?

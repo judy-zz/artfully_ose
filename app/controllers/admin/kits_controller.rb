@@ -3,13 +3,13 @@ class Admin::KitsController < Admin::AdminController
     @kit = Kit.find(params[:id])
     @kit.approve!
     check_activation
-    redirect_to :admin_kits_path
+    redirect_to :back
   end
   
   def cancel
     @kit = Kit.find(params[:id])
     @kit.cancel!
-    redirect_to :admin_kits_path
+    redirect_to :back
   end
 
   def index
