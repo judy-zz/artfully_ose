@@ -35,7 +35,7 @@
           =simple_format @event.description
     %h2 Venue
     #venue
-      =link_to image_tag("http://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
+      =link_to image_tag("https://maps.google.com/maps/api/staticmap?size=140x140&maptype=roadmap&markers=color:red|#{@event.venue.address_as_url_query}&sensor=false&zoom=15"), "http://maps.google.com/maps?q=#{@event.venue.address_as_url_query.html_safe}&z=15"
       %div
         %strong=@event.venue.name
       %div=@event.venue.street_as_string
