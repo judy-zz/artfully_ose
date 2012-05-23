@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120516140802) do
+ActiveRecord::Schema.define(:version => 20120523191841) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.string   "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "queue"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -427,6 +428,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.boolean  "newsletter_emails",                   :default => true, :null => false
+    t.string   "mailchimp_message"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

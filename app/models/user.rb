@@ -17,13 +17,14 @@ class User < ActiveRecord::Base
   scope :logged_in_more_than_once, where("users.sign_in_count > 1")
 
   after_create :metric_created
+  after_create { delay.push_to_mailchimp }
 
   def self.generate_password
     Devise.friendly_token
   end
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :user_agreement
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :user_agreement, :newsletter_emails
 
   def is_in_organization?
     @is_in_organization ||= memberships.any?
@@ -58,6 +59,18 @@ class User < ActiveRecord::Base
     return if query.blank?
     q = "%#{query}%"
     self.joins("LEFT OUTER JOIN memberships ON memberships.user_id = users.id").joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id").where("email like ? or organizations.name like ?", q, q)
+  end
+
+  def push_to_mailchimp
+    if newsletter_emails
+      g = Gibbon.new
+      result = g.list_subscribe({:id => ENV["MC_LIST_ID"], :email_address => email, :double_optin => false, :send_welcome => false})
+      self.mailchimp_message = (result == true) ?  "success" : result['error']
+      save
+      result
+    else
+      return false
+    end
   end
 
   private
