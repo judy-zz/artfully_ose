@@ -39,7 +39,7 @@
         -if @organization.connected?
           %tr
             %td FA ID
-            %td=@organization.fa_member_id
+            %td=link_to @organization.fa_member_id, "https://www.fracturedatlas.org/admin/Membership/view?id=#{@organization.fa_member_id}"
         -if @organization.has_active_fiscally_sponsored_project?
           %tr
             %td Project
