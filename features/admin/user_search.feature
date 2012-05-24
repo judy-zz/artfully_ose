@@ -4,7 +4,7 @@ Feature: User Search
 
   Background:
     Given I am logged in as an admin
-    And I follow "Users"
+    And I am on the admin users page
 
   Scenario: An admin searches by email address
     Given a user exists with an email of "user@example.com"

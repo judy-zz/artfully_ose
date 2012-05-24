@@ -27,6 +27,10 @@ module NavigationHelpers
     
     when /admin users page/
       admin_users_path
+    
+    when /admin organization page for "(.+)"/
+      o = Organization.find_by_name($1)
+      admin_organization_path(o)
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

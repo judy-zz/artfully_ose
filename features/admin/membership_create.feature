@@ -7,23 +7,21 @@ Feature: Organization Membership Create
     Given an organization exists with an name of "Fractured Atlas"
     And a user exists with an email of "user@example.com"
     And I am logged in as an admin
-    And I am on the admin root page
-    And I follow "Organizations"
-    And I follow "Fractured Atlas"
+    And I am on the admin organization page for "Fractured Atlas"
 
   Scenario: An admin adds a user to an organization
-    Given I fill in "Email" with "user@example.com"
+    Given I fill in "Add user" with "user@example.com"
     When I press "Add"
     Then "user@example.com" should be a part of "Fractured Atlas"
 
   Scenario: An admin tries to add a user that does not exist to an organization.
-    Given I fill in "Email" with "nobody@example.com"
+    Given I fill in "Add user" with "nobody@example.com"
     When I press "Add"
     Then an invite should have been sent to "nobody@example.com"
 
   Scenario: An admin tries to add the a user with an existing membership
     Given "user@example.com" is part of "Fractured Atlas"
-    And I fill in "Email" with "user@example.com"
+    And I fill in "Add user" with "user@example.com"
     When I press "Add"
     Then I should see "user@example.com is already a member of this organization."
 
