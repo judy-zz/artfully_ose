@@ -1,4 +1,5 @@
 require_or_load 'ach/exceptions'
+
 class ResellerSettlement < Settlement
   include Settlement::RangeFinding
   include AdminTimeZone
