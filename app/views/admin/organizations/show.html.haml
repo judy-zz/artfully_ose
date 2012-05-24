@@ -53,8 +53,8 @@
       
 
   .span9
-    %section
-      %h3#users Users
+    %section#users
+      %h3 Users
       = form_tag admin_organization_memberships_path(@organization.id), :action => "create", :class => 'form-inline' do
         = label_tag :user_email, "Add user"
         = text_field_tag :user_email, "", :placeholder => 'Email address'
@@ -73,8 +73,8 @@
               - unless user == @organization.owner
                 = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
     
-    %section
-      %h3#kits Kits
+    %section#kits
+      %h3 Kits
       %table.table#kits-list
         - @organization.kits.each do |kit|
           %tr
@@ -87,12 +87,11 @@
               -if kit.pending?
                 = link_to "Approve", activate_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small'
               
-    %section
-      %h3#bank-account Bank Account
+    %section#bank-account
+      %h3 Bank Account
       - if @organization.bank_account.nil?
         =icon_link_to("Add", new_admin_organization_bank_account_path(@organization), 'icon-plus-sign', 'btn', '')
       - else
-        =link_to "Edit", edit_admin_organization_bank_account_path(@organization), :class => 'btn'
         %table.table.table-condensed
           %tbody
             %tr
@@ -121,9 +120,11 @@
               %td= @organization.bank_account.zip
             %tr
               %td Phone
-              %td= @organization.bank_account.phone
-    %section
-      %h3#events Events
+              %td= @organization.bank_account.phone  
+        =link_to "Edit", edit_admin_organization_bank_account_path(@organization), :class => 'btn'
+    
+    %section#events
+      %h3 Events
       %table.table#events-table
         - @events.each do |event|
           %tr
@@ -133,6 +134,6 @@
               =event.shows.length
               shows
     
-    %section
-      %h3#settlements Settlements
+    %section#settlements
+      %h3 Settlements
       =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}
