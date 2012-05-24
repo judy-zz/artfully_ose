@@ -5,7 +5,7 @@
     = render :partial=>'person_summary_sidebar', :locals => { :person => @person }
 
   .span8
-    #actions
+    %section#actions
       .row-fluid.form-actions
         .span2
           %h3 Actions
@@ -14,7 +14,7 @@
           =icon_link_to("Give", new_contribution_path("contribution[person_id]" => @person.id), 'icon-gift', 'btn', '')
       = render :partial => 'actions/list', :locals => { :person => @person, :actions => (@person.starred_actions + @person.unstarred_actions ) }
 
-    #notes
+    %section#notes
       .row-fluid.form-actions
         .span2
           %h3 Notes
@@ -23,7 +23,7 @@
     = render :partial=>'notes/list', :locals => { :person => @person, :notes => @person.notes, :subject => @person }
     
 
-    #orders
+    %section#orders
       .row-fluid.form-actions
         .span2
           %h3 Orders

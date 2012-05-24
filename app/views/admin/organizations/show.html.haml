@@ -53,82 +53,86 @@
       
 
   .span9
-    %h3#users Users
-    = form_tag admin_organization_memberships_path(@organization.id), :action => "create", :class => 'form-inline' do
-      = label_tag :user_email, "Add user"
-      = text_field_tag :user_email, "", :placeholder => 'Email address'
-      = submit_tag "Add", :class => "btn"
-    %table.table#memberships
-      - @organization.users.each do |user|
-        %tr
-          %td= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
-          %td
-            =link_to user.email, admin_user_path(user)
-            - if user == @organization.owner
-              %br
-              Organization administrator
-          %td
-            = link_to "Sign in", sessions_admin_user_path(user), :method => 'post', :class => "btn btn-small"
-            - unless user == @organization.owner
-              = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
+    %section
+      %h3#users Users
+      = form_tag admin_organization_memberships_path(@organization.id), :action => "create", :class => 'form-inline' do
+        = label_tag :user_email, "Add user"
+        = text_field_tag :user_email, "", :placeholder => 'Email address'
+        = submit_tag "Add", :class => "btn"
+      %table.table#memberships
+        - @organization.users.each do |user|
+          %tr
+            %td= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
+            %td
+              =link_to user.email, admin_user_path(user)
+              - if user == @organization.owner
+                %br
+                Organization administrator
+            %td
+              = link_to "Sign in", sessions_admin_user_path(user), :method => 'post', :class => "btn btn-small"
+              - unless user == @organization.owner
+                = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
     
-    %h3#kits Kits
-    %table.table#kits-list
-      - @organization.kits.each do |kit|
-        %tr
-          %td= kit.friendly_name
-          %td= kit.state
-          %td= l kit.created_at, :format => :short
-          %td
-            -unless kit.cancelled? || kit.type == "SponsoredDonationKit"
-              = link_to "Cancel", cancel_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small btn-danger'
-            -if kit.pending?
-              = link_to "Approve", activate_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small'
+    %section
+      %h3#kits Kits
+      %table.table#kits-list
+        - @organization.kits.each do |kit|
+          %tr
+            %td= kit.friendly_name
+            %td= kit.state
+            %td= l kit.created_at, :format => :short
+            %td
+              -unless kit.cancelled? || kit.type == "SponsoredDonationKit"
+                = link_to "Cancel", cancel_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small btn-danger'
+              -if kit.pending?
+                = link_to "Approve", activate_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small'
               
-    %h3#bank-account Bank Account
-    - if @organization.bank_account.nil?
-      =icon_link_to("Add", new_admin_organization_bank_account_path(@organization), 'icon-plus-sign', 'btn', '')
-    - else
-      =link_to "Edit", edit_admin_organization_bank_account_path(@organization), :class => 'btn'
-      %table.table.table-condensed
-        %tbody
+    %section
+      %h3#bank-account Bank Account
+      - if @organization.bank_account.nil?
+        =icon_link_to("Add", new_admin_organization_bank_account_path(@organization), 'icon-plus-sign', 'btn', '')
+      - else
+        =link_to "Edit", edit_admin_organization_bank_account_path(@organization), :class => 'btn'
+        %table.table.table-condensed
+          %tbody
+            %tr
+              %td Routing Number
+              %td= @organization.bank_account.routing_number
+            %tr
+              %td Number
+              %td= @organization.bank_account.number
+            %tr
+              %td Account Type
+              %td= @organization.bank_account.account_type
+            %tr
+              %td Name
+              %td= @organization.bank_account.name
+            %tr
+              %td Address
+              %td= @organization.bank_account.address
+            %tr
+              %td City
+              %td= @organization.bank_account.city
+            %tr
+              %td State
+              %td= @organization.bank_account.state
+            %tr
+              %td Zip
+              %td= @organization.bank_account.zip
+            %tr
+              %td Phone
+              %td= @organization.bank_account.phone
+    %section
+      %h3#events Events
+      %table.table#events-table
+        - @events.each do |event|
           %tr
-            %td Routing Number
-            %td= @organization.bank_account.routing_number
-          %tr
-            %td Number
-            %td= @organization.bank_account.number
-          %tr
-            %td Account Type
-            %td= @organization.bank_account.account_type
-          %tr
-            %td Name
-            %td= @organization.bank_account.name
-          %tr
-            %td Address
-            %td= @organization.bank_account.address
-          %tr
-            %td City
-            %td= @organization.bank_account.city
-          %tr
-            %td State
-            %td= @organization.bank_account.state
-          %tr
-            %td Zip
-            %td= @organization.bank_account.zip
-          %tr
-            %td Phone
-            %td= @organization.bank_account.phone
-
-    %h3#events Events
-    %table.table#events-table
-      - @events.each do |event|
-        %tr
-          %td
-            =event.name
-          %td
-            =event.shows.length
-            shows
+            %td
+              =event.name
+            %td
+              =event.shows.length
+              shows
     
-    %h3#settlements Settlements
-    =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}
+    %section
+      %h3#settlements Settlements
+      =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}
