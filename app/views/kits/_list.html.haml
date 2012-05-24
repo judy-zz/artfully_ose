@@ -20,7 +20,7 @@
             - #%td= "Contact support@artful.ly to learn about Fiscal Sponsorship for your organization"
             %td.status= link_to "Add", "#", :class => "btn disabled"
           - elsif kit.cancelled?
-            %td= link_to "Reactivate #{t(kit.type.underscore)}", kit_path(kit), :method => :put
+            %td
           - elsif kit.pending?
             %td.status=icon_tag '11-clock@2x', :alt=>'pending'
           - elsif kit.activated?

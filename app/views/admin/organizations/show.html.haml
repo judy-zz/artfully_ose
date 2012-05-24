@@ -2,79 +2,138 @@
   %h1= @organization.name
 
 .row
+  .span3
+    .well
+      %ul.nav.nav-list
+        %li=link_to "Users", "#users"
+        %li=link_to "Kits", "#kits"
+        %li=link_to "Bank account", "#bank-account"
+        %li=link_to "Events", "#events"
+        %li=link_to "Settlements", "#settlements"
+      
+      
+    %table.table.table-condensed
+      %tbody
+        %tr
+          %td
+            Created
+          %td
+            =l @organization.created_at, :format => :short
+        %tr
+          %td
+            Legal name
+          %td
+            =@organization.legal_organization_name
+        %tr
+          %td
+            EIN
+          %td
+            =@organization.ein
+        
+    %table.table.table-condensed
+      %tbody
+        %tr
+          %td FA
+          %td
+            =@organization.connected? ? "Connected" : "Not connected"
+        -if @organization.connected?
+          %tr
+            %td FA ID
+            %td=@organization.fa_member_id
+        -if @organization.has_active_fiscally_sponsored_project?
+          %tr
+            %td Project
+            %td= @organization.fiscally_sponsored_project.name
+          %tr
+            %td Website
+            %td= @organization.fiscally_sponsored_project.website
+          %tr
+            %td Status
+            %td= @organization.fiscally_sponsored_project.status
+      
 
-  .span4
-    %h3 Add User
-    = form_tag admin_organization_memberships_path(@organization.id), :action => "create" do
-      = label_tag :user_email, "Email"
-      = text_field_tag :user_email
-      %br
-      = submit_tag "Add", :class => "btn"
-
-  .span8
-    %h3 Users (#{@organization.users.size})
-    %ul.detailed-list#memberships
-      - @organization.users.each do |user|
-        %li
-          %h4= "#{user.email}"
-          %ul.details
-            - if user == @organization.owner
-              Organization administrator
-            - else
-              %li= link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
-    %h3 Kits
-    - if @organization.kits.empty?
-      %p This organization does not have any kits.
-    - else
-      %ul.detailed-list
+  .span9
+    %section#users
+      %h3 Users
+      = form_tag admin_organization_memberships_path(@organization.id), :action => "create", :class => 'form-inline' do
+        = label_tag :user_email, "Add user"
+        = text_field_tag :user_email, "", :placeholder => 'Email address'
+        = submit_tag "Add", :class => "btn"
+      %table.table#memberships
+        - @organization.users.each do |user|
+          %tr
+            %td= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
+            %td
+              =link_to user.email, admin_user_path(user)
+              - if user == @organization.owner
+                %br
+                Organization administrator
+            %td
+              = link_to "Sign in", sessions_admin_user_path(user), :method => 'post', :class => "btn btn-small"
+              - unless user == @organization.owner
+                = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
+    
+    %section#kits
+      %h3 Kits
+      %table.table#kits-list
         - @organization.kits.each do |kit|
-          %li
-            %h4= kit.type
-            %ul.details
-              %li= link_to "Approve", activate_admin_organization_kit_path(@organization,kit), :method => :put if kit.pending?
-    %h3 Bank Account
-    - if @organization.bank_account.nil?
-      = link_to "Add a Bank Account", new_admin_organization_bank_account_path(@organization)
-    - else
-      %ul.kv
-        %li
-          .key Routing Number
-          .value= @organization.bank_account.routing_number
-
-        %li
-          .key Number
-          .value= @organization.bank_account.number
-
-        %li
-          .key Account Type
-          .value= @organization.bank_account.account_type
-
-        %li
-          .key Name
-          .value= @organization.bank_account.name
-
-        %li
-          .key Address
-          .value= @organization.bank_account.address
-
-        %li
-          .key City
-          .value= @organization.bank_account.city
-
-        %li
-          .key State
-          .value= @organization.bank_account.state
-
-        %li
-          .key Zip
-          .value= @organization.bank_account.zip
-
-        %li
-          .key Phone
-          .value= @organization.bank_account.phone
-      = link_to "Edit Bank Account", edit_admin_organization_bank_account_path(@organization)
-
-    %h3 Events
-    %ul
-      - @events.each do |event|
-        %li= event.name
+          %tr
+            %td= kit.friendly_name
+            %td= kit.state
+            %td= l kit.created_at, :format => :short
+            %td
+              -unless kit.cancelled? || kit.type == "SponsoredDonationKit"
+                = link_to "Cancel", cancel_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small btn-danger'
+              -if kit.pending?
+                = link_to "Approve", activate_admin_organization_kit_path(@organization, kit), :method => :put, :class => 'btn btn-small'
+              
+    %section#bank-account
+      %h3 Bank Account
+      - if @organization.bank_account.nil?
+        =icon_link_to("Add", new_admin_organization_bank_account_path(@organization), 'icon-plus-sign', 'btn', '')
+      - else
+        %table.table.table-condensed
+          %tbody
+            %tr
+              %td Routing Number
+              %td= @organization.bank_account.routing_number
+            %tr
+              %td Number
+              %td= @organization.bank_account.number
+            %tr
+              %td Account Type
+              %td= @organization.bank_account.account_type
+            %tr
+              %td Name
+              %td= @organization.bank_account.name
+            %tr
+              %td Address
+              %td= @organization.bank_account.address
+            %tr
+              %td City
+              %td= @organization.bank_account.city
+            %tr
+              %td State
+              %td= @organization.bank_account.state
+            %tr
+              %td Zip
+              %td= @organization.bank_account.zip
+            %tr
+              %td Phone
+              %td= @organization.bank_account.phone  
+        =link_to "Edit", edit_admin_organization_bank_account_path(@organization), :class => 'btn'
+    
+    %section#events
+      %h3 Events
+      %table.table#events-table
+        - @events.each do |event|
+          %tr
+            %td
+              =event.name
+            %td
+              =event.shows.length
+              shows
+    
+    %section#settlements
+      %h3 Settlements
+      =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}

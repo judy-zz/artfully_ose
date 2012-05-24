@@ -14,8 +14,9 @@ Feature: Door List Creation
     And a user named "Bob Patron" buys 3 tickets from the 1st show with instructions to "not mess up my order"
     When I go to the events page
     And I view the 1st event
+    And I follow "Shows"
     And I view the 1st show
-    And I press "Door List"
+    And I follow "Door List"
     Then I should see "Joe Patron"
     And I should see "Bob Patron"
     And I should see "not mess up my order"

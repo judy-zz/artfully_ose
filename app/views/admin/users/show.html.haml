@@ -4,25 +4,18 @@
 
 .row
   .span4
-    %h3 Password Reset
     = form_for @user, :url => admin_user_path(@user) do |f|
       = f.hidden_field :reset_password, :value => true
-      = f.submit "Send Password Reset Instructions", :class => "btn"
-    %h3 Sign in
-    = button_to "Sign in as #{@user.email}", sessions_admin_user_path(@user), :class => "btn"
+      = f.submit "Reset Password", :class => "btn"
+    = button_to "Sign in", sessions_admin_user_path(@user), :class => "btn"
   .span8
     %h3 Suspend User
     - if nil == @user.suspended_at
-      = form_for @user, :url => admin_user_path(@user) do |f|
+      = form_for @user, :url => admin_user_path(@user), :html=>{ :class=>'form-inline' } do |f|
         = f.hidden_field :suspend, :value => true
-        %ul
-          %li
-            .label
-              = f.label :suspension_reason, "Reason"
-            .element
-              = f.text_field :suspension_reason
-          %li
-            = f.submit "Suspend", :class => "btn"
+        = f.label :suspension_reason, "Reason"
+        = f.text_field :suspension_reason
+        = f.submit "Suspend", :class => "btn"
     - else
       %p
         %strong= @user.email
@@ -32,7 +25,7 @@
     #organizations
       %h3 Organizations
       - if @user.organizations.any?
-        %table.standalone
+        %table.table
           %thead
             %tr
               %th Name

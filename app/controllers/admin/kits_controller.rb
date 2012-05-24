@@ -5,10 +5,15 @@ class Admin::KitsController < Admin::AdminController
     check_activation
     redirect_to :back
   end
+  
+  def cancel
+    @kit = Kit.find(params[:id])
+    @kit.cancel!
+    redirect_to :back
+  end
 
   def index
     @pending_kits = Kit.where(:state => "pending")
-    @kits = Kit.all
   end
 
   private
