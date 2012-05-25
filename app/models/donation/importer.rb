@@ -64,7 +64,7 @@ class Donation::Importer
 
     def create_or_update_items(order, fa_donation, organization)
       if order.items.blank?
-        order.items << organization.items.build(item_attributes(fa_donation, organization, order))
+        order.items << Item.new(item_attributes(fa_donation, organization, order))
       else
         order.items.first.update_attributes(item_attributes(fa_donation, organization, order))
       end

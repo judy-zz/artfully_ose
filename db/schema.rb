@@ -1,3 +1,4 @@
+# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -16,7 +17,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.integer  "organization_id"
     t.integer  "person_id"
     t.datetime "occurred_at"
-    t.text     "details"
+    t.text     "details",         :limit => 255
     t.boolean  "starred"
     t.integer  "dollar_amount"
     t.datetime "created_at"
@@ -208,7 +209,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.integer  "net"
     t.string   "settlement_id"
     t.string   "fs_project_id"
-    t.integer  "nongift_amount"
+    t.integer  "nongift_amount",  :limit => 255
     t.boolean  "is_noncash"
     t.boolean  "is_stock"
     t.boolean  "is_anonymous"
@@ -244,21 +245,6 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.datetime "updated_at"
     t.datetime "occurred_at"
     t.integer  "organization_id"
-  end
-
-  create_table "order_view", :id => false, :force => true do |t|
-    t.integer  "id",                :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "transaction_id"
-    t.integer  "price"
-    t.integer  "service_fee"
-    t.integer  "fa_id"
-    t.integer  "organization_id"
-    t.integer  "person_id"
-    t.string   "organization_name"
-    t.string   "person_first_name"
-    t.string   "person_last_name"
   end
 
   create_table "orders", :force => true do |t|
@@ -327,7 +313,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
   end
 
   create_table "sections", :force => true do |t|
-    t.text    "name"
+    t.text    "name",         :limit => 255
     t.integer "capacity"
     t.integer "price"
     t.integer "chart_id"
@@ -345,7 +331,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.string   "transaction_id"
     t.string   "ach_response_code"
     t.string   "fail_message"
-    t.datetime "created_at"
+    t.datetime "created_at",        :limit => 255
     t.boolean  "success"
     t.integer  "gross"
     t.integer  "realized_gross"

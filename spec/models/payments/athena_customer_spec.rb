@@ -36,7 +36,9 @@ describe AthenaCustomer do
 
   describe "#save" do
     it "should issue a PUT when updating a customer" do
-      @customer = Factory(:customer, :id => "1")
+      FakeWeb.register_uri(:post, "http://localhost/payments/customers.json", :body => "{}")
+      @customer = Factory.create(:customer)
+      
       FakeWeb.register_uri(:put, "http://localhost/payments/customers/#{@customer.id}.json", :body => @customer.encode)
       @customer.save
 
