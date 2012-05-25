@@ -1,13 +1,13 @@
 source 'http://rubygems.org'
 gem 'rake', '0.8.7'
-gem 'rails', '3.0.10'
+gem 'rails', '3.1.2'
 gem 'rack-ssl-enforcer'
 gem 'rack-canonical-host'
 
 gem 'activemerchant', :require => 'active_merchant'
 
 gem 'athena_resource'
-gem 'activerecord-import'
+gem 'activerecord-import', '0.2.9'
 
 gem 'delayed_job'
 gem 'acts-as-taggable-on', '~>2.1.0'
@@ -19,7 +19,7 @@ gem 'sass'
 gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0', :require => [ "will_paginate", "will_paginate/array" ]
 gem 'bootstrap-will_paginate'
-gem 'copycopter_client'
+gem 'copycopter_client', '2.0.1'
 gem 'mail'
 gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.19'
@@ -30,7 +30,7 @@ gem 'jammit'
 gem 'jammit-s3', :path => "vendor/gems/jammit-s3-0.6.3"
 gem 'aws-sdk'
 gem 'paperclip', '>= 2.5.0'
-gem 'comma',     :path => "vendor/gems/comma-0.4.0"
+gem 'comma', '3.0.3'
 gem 'nokogiri' # for pulling in blog posts on index#updates
 
 # Authentication and Roles
@@ -43,7 +43,7 @@ gem 'validates_timeliness'
 
 gem 'uuid'
 gem 'thin'
-gem 'mysql2', '< 0.3'
+gem 'mysql2', "0.3.11"
 gem 'escape_utils'
 gem 'httparty'
 gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
@@ -54,7 +54,7 @@ gem 'sunspot_rails'
 gem 'gravatar_image_tag'
 
 group :test do
-  gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'sqlite3', '1.3.6'
   gem 'timecop'
 end
 
