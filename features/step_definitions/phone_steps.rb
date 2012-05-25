@@ -13,3 +13,9 @@ Then /^the person record for "([^"]*)" should not have "([^"]*)" as a "([^"]*)" 
   person = Person.find_by_email(email)
   person.phones.where(:number => number, :kind => kind).count == 0
 end
+
+And /^I save the phone number$/ do
+  within('form#new_phone') do
+    click_button "Add"
+  end  
+end
