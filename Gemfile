@@ -10,7 +10,7 @@ gem 'athena_resource'
 gem 'activerecord-import'
 
 gem 'delayed_job', '=3.0.2'
-gem 'delayed_job_active_record'
+gem 'delayed_job_active_record', '=0.3.2'
 gem 'acts-as-taggable-on', '~>2.1.0'
 gem 'restful_metrics'
 

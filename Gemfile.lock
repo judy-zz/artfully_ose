@@ -319,7 +319,7 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   delayed_job (= 3.0.2)
-  delayed_job_active_record
+  delayed_job_active_record (= 0.3.2)
   devise
   devise_invitable
   dynamic_form

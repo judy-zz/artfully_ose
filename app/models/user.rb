@@ -65,8 +65,7 @@ class User < ActiveRecord::Base
     if newsletter_emails
       g = Gibbon.new
       result = g.list_subscribe({:id => ENV["MC_LIST_ID"], :email_address => email, :double_optin => false, :send_welcome => false})
-      self.mailchimp_message = (result == true) ?  "success" : result['error']
-      save
+      update_attribute(:mailchimp_message, ((result == true) ?  "success" : result['error']) )
       result
     else
       return false
