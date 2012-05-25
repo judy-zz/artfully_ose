@@ -29,19 +29,6 @@ describe Show do
     subject.chart_id = nil
     subject.should_not be_valid
   end
-  
-  describe "after_save" do
-    it "should create the tickets, put them on sale, and be in the unpublished state" do
-      @show = Factory(:event).shows.build({ :organization => Factory(:organization), :chart => Factory(:assigned_chart) })
-      @show.datetime = DateTime.now + 1.day
-      @show.save
-      @show.state.should eq "unpublished"
-      @show.tickets.should_not be_empty
-      @show.tickets.each do |t|
-        t.should be_on_sale
-      end
-    end
-  end
 
   describe "#played" do
     it "should be played if the event is in the past" do
@@ -59,6 +46,7 @@ describe Show do
     subject { Factory(:show) }
 
     it "should mark the performance as on sale" do
+      subject.build!
       subject.publish!
       subject.should be_published
     end
@@ -68,6 +56,7 @@ describe Show do
     subject { Factory(:show) }
 
     it "should work" do
+      subject.build!
       subject.publish!
       subject.unpublish!
       subject.should be_unpublished
@@ -101,10 +90,10 @@ describe Show do
         outcome.should_not be true
       end
 
-      it "fails by returning false if any of the tickets can not be put on sale" do
+      it "returns a message if any of the tickets cannot be put on sale" do
         subject.tickets.first.update_attribute(:state, :comped)
         outcome = subject.bulk_on_sale(subject.tickets.collect(&:id))
-        outcome.should be false
+        outcome.should be_a String
       end
     end
 
@@ -112,13 +101,6 @@ describe Show do
       it "takes tickets off sale" do
         Ticket.should_receive(:take_off_sale).with(subject.tickets)
         subject.bulk_off_sale(subject.tickets.collect(&:id))
-      end
-
-      it "fails by returning false if any of the tickets can not be taken off sale" do
-        subject.tickets.first.state = :off_sale
-        subject.tickets.first.save
-        outcome = subject.bulk_off_sale(subject.tickets.collect(&:id))
-        outcome.should be false
       end
     end
 
