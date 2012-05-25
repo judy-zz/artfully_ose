@@ -11,6 +11,10 @@ describe Statement do
   let(:payment)         { Factory(:payment) }
   let(:cart)            { Factory(:cart_with_only_tickets, :tickets => show.tickets[6..8]) }
   
+  before(:each) do
+    Cart.any_instance.stub(:organizations).and_return(Array.wrap(organization))
+  end
+  
   describe "nil show" do
     it "should return an empty statement if the show is nil" do
       st = Statement.for_show(nil, organization)

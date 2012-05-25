@@ -14,5 +14,5 @@ Factory.define :cart_with_free_items, :parent => :cart do |o|
   end
 end
 
-Factory.define :cart_with_only_tickets, :parent => :cart do |o|
+Factory.define :cart_with_only_tickets, :parent => :cart do |o|  
 end
