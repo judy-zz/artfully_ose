@@ -1,4 +1,5 @@
 class FA::Base < ActiveResource::Base
+  self.format = :xml
   self.site = Artfully::Application.config.fractured_atlas
 
   self.auth_type = :digest

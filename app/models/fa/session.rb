@@ -8,6 +8,18 @@ class FA::Session < FA::Base
     session.authenticate
     session
   end
+  
+  #
+  # HACK: This is a deep, deep hack which overrides functionality introcused in ActiveResource 3.1
+  # AR 3.1 won't even return the id of a record for the find method if the record doesn't 
+  # report that it has persisted.  This being FA authentication, we're not persisting anything,
+  # just authenticating.  So, we hack persisted? here so that the reload call in authenticate will work
+  #
+  # See: http://rubydoc.info/docs/rails/3.1.1/ActiveModel/Conversion#to_key-instance_method
+  #
+  def persisted?
+    true
+  end
 
   def authenticate
     begin
