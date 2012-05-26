@@ -30,7 +30,7 @@ class AthenaCreditCard < AthenaResource::Base
     }.sum % 10 == 0
   end
 
-  def load(attributes = {})
+  def load(attributes, remove_root = false)
     attributes = attributes.dup
     prepare_attr!(attributes) if needs_date_parse(attributes)
     prepare_customer!(attributes) if needs_customer(attributes)

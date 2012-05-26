@@ -57,7 +57,9 @@ describe AthenaCustomer do
 
   describe "#destroy" do
     it "should issue a DELETE when destroying a customer" do
-      @customer = Factory(:customer, :id => "1")
+      FakeWeb.register_uri(:post, "http://localhost/payments/customers.json", :body => "{}")
+      @customer = Factory.create(:customer)
+      
       FakeWeb.register_uri(:delete, "http://localhost/payments/customers/#{@customer.id}.json", :status => "204")
       @customer.destroy
 

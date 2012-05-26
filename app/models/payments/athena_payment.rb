@@ -39,7 +39,7 @@ class AthenaPayment < AthenaResource::Base
     lambda { |item| item.realized_price * 0.035 }
   end
 
-  def load(attributes = [])
+  def load(attributes, remove_root = false)
     @attributes['billing_address'] = AthenaAddress.new(attributes.delete('billing_address')) if attributes.has_key? 'billing_address'
     @attributes['credit_card'] = AthenaCreditCard.new(attributes.delete('athena_credit_card')) if attributes.has_key? 'athena_credit_card'
     @attributes['customer'] = AthenaCustomer.new(attributes.delete('athena_customer')) if attributes.has_key? 'athena_customer'

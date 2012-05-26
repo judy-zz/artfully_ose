@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe AthenaCreditCard do
+  
   subject { Factory(:credit_card) }
 
   %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|
@@ -41,7 +42,8 @@ describe AthenaCreditCard do
     end
 
     it "should not include the credit card number when updating a card" do
-      @card = Factory(:credit_card_with_id)
+      FakeWeb.register_uri(:post, "http://localhost/payments/cards.json", :body => "{}")
+      @card = Factory.create(:credit_card_with_id)
       FakeWeb.register_uri(:put, "http://localhost/payments/cards/#{@card.id}.json", :body => @card.encode)
       @card.save
       FakeWeb.last_request.body.should_not match /cardNumber/
@@ -49,7 +51,8 @@ describe AthenaCreditCard do
   end
 
   it "should parse the date into a Date object when fetching a remote resource" do
-    card = Factory(:credit_card)
+    FakeWeb.register_uri(:post, "http://localhost/payments/cards.json", :body => "{}")
+    card = Factory.create(:credit_card)
     FakeWeb.register_uri(:get, "http://localhost/payments/cards/#{card.id}.json", :body => card.encode)
     remote = AthenaCreditCard.find(card.id)
     remote.expiration_date.kind_of?(Date).should be_true
@@ -67,7 +70,8 @@ describe AthenaCreditCard do
 
   describe "#save" do
     it "should issue a PUT when updating a card" do
-      @card = Factory(:credit_card, :id => "1")
+      FakeWeb.register_uri(:post, "http://localhost/payments/cards.json", :body => "{}")
+      @card = Factory.create(:credit_card, :id => "1")
       FakeWeb.register_uri(:put, "http://localhost/payments/cards/#{@card.id}.json", :body => @card.encode)
       @card.save
 
@@ -86,7 +90,8 @@ describe AthenaCreditCard do
 
   describe "#destroy" do
     it "should issue a DELETE when destroying a card" do
-      @card = Factory(:credit_card, :id => "1")
+      FakeWeb.register_uri(:post, "http://localhost/payments/cards.json", :body => "{}")
+      @card = Factory.create(:credit_card, :id => "1")
       FakeWeb.register_uri(:delete, "http://localhost/payments/cards/#{@card.id}.json", :status => "204")
       @card.destroy
 

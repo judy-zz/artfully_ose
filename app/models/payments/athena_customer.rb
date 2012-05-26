@@ -13,7 +13,7 @@ class AthenaCustomer < AthenaResource::Base
     attribute 'credit_cards', :string
   end
 
-  def load(attributes)
+  def load(attributes, remove_root = false)
     credit_cards = attributes.delete("credit_cards")
     unless credit_cards.blank?
       self.credit_cards = credit_cards.map do |credit_card|
