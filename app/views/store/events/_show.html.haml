@@ -7,8 +7,8 @@
       %h4.day_and_month
         = show.datetime_local_to_event.strftime("%A, %B")
         = show.datetime_local_to_event.strftime("%e").to_i.ordinalize
-      %h5.time
-        = show.datetime_local_to_event.strftime("%l:%M %p")
+
+      = show.datetime_local_to_event.strftime("%l:%M %p")
 
   .sections{:style => 'display:none;'}
     - show.chart.sections.each do |section|
@@ -34,4 +34,4 @@
           = hidden_field_tag :ticket_price, section.price / 100.0
           = hidden_field_tag :showing_name, "#{show.datetime_local_to_event.strftime("%A, %B")} #{show.datetime_local_to_event.strftime("%e").to_i.ordinalize} at #{show.datetime_local_to_event.strftime("%l:%M %p")}" # Monday, January, 23rd at 3:15 pm
           = select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
-          = submit_tag 'Add to cart'
+          = submit_tag 'Add to cart', :class => 'btn btn-primary'
