@@ -10,7 +10,7 @@ class FA::User < FA::Base
   validates_presence_of :email,     :if => lambda { username.blank? }
   validates_presence_of :password
 
-  def load(attrs)
+  def load(attrs, remove_root = false)
     hash_password(attrs) if attrs.has_key?(:password)
     super
   end
