@@ -65,7 +65,7 @@ describe Order do
       actions.should have(2).donation_actions
       actions.each do |action|
         action.should be_valid
-        donations.should include action.subject
+        action.subject.should eq subject
       end
     end
   end
