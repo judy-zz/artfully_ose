@@ -48,6 +48,7 @@ describe Event do
   
     it "should not include performances that are on sale" do
       subject.shows = 2.times.collect { Factory(:show) }
+      subject.shows.first.build!
       subject.shows.first.publish!
       subject.stub(:charts).and_return([])
       

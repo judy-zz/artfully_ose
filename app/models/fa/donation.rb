@@ -47,10 +47,7 @@ class FA::Donation < FA::Base
       url = "/donations.xml?fs_project_id=#{fa_project_id}"
       url = url + "&updated_at-gt=#{CGI.escape(since.to_s)}" unless since.nil?
       logger.info "Getting donations from #{url}"
-      response = self.connection.get(url)
-      collection = response[self.element_name]  
-      collection = Array.wrap(collection) unless collection.kind_of? Array    
-      collection.collect! { |record| instantiate_record(record, {}) }    
+      donations = get_from(url)     
     rescue ActiveResource::ResourceNotFound => e
       logger.info "No donations found"
       []
@@ -67,10 +64,7 @@ class FA::Donation < FA::Base
       url = "/donations.xml?FsProject.member_id=#{fa_member_id}"
       url = url + "&updated_at-gt=#{CGI.escape(since.to_s)}" unless since.nil?
       logger.info "Getting donations from #{url}"
-      response = self.connection.get(url)
-      collection = response[self.element_name]  
-      collection = Array.wrap(collection) unless collection.kind_of? Array    
-      collection.collect! { |record| instantiate_record(record, {}) }    
+      donations = get_from(url)  
     rescue ActiveResource::ResourceNotFound => e
       logger.info "No donations found"
       []
@@ -79,6 +73,10 @@ class FA::Donation < FA::Base
       logger.info e.backtrace
       []
     end
+  end
+  
+  def self.get_from(url)
+    instantiate_collection(Array.wrap(format.decode(self.connection.get(url).body)[self.element_name]))
   end
 
   def donor=(d)

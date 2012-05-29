@@ -98,7 +98,7 @@ class Import < ActiveRecord::Base
 
     csv_data.gsub!(/\\"(?!,)/, '""') # Fix improperly escaped quotes.
 
-    FasterCSV.parse(csv_data, :headers => false) do |row|
+    CSV.parse(csv_data, :headers => false) do |row|
       if self.import_headers.nil?
         self.import_headers = row.to_a
         self.save!
@@ -108,7 +108,7 @@ class Import < ActiveRecord::Base
     end
 
     self.pending!
-  rescue FasterCSV::MalformedCSVError => e
+  rescue CSV::MalformedCSVError => e
     error_message = "There was an error while parsing the CSV document: #{e.message}"
     self.import_errors.create!(:error_message => error_message)
     self.failed!
@@ -119,7 +119,7 @@ class Import < ActiveRecord::Base
 
   def csv_data
     return @csv_data if @csv_data
-
+    
     @csv_data =
       if File.file?(self.s3_key)
         File.read(self.s3_key)
