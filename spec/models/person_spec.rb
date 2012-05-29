@@ -204,6 +204,7 @@ describe Person do
       subject.address.should_not be_nil
       subject.address.to_s.should eq addr1.to_s
       subject.notes.length.should eq num_notes + 1
+      Address.all.length.should eq 1
     end
   
     it "should not update when nil address supplied" do
