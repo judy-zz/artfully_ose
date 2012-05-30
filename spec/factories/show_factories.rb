@@ -11,6 +11,8 @@ end
 
 Factory.define(:show_with_tickets, :parent => :show) do |s|
   s.after_create do |show|
+    # tickets.each do |t|
+    # end
     show.build!
     show.publish!
   end
