@@ -10,7 +10,7 @@ Given /^I am part of an organization$/ do
 end
 
 And /^I view my organization page$/ do
-  click_link("Artful.ly")
+  step %{I am on the organization page for "#{@current_user.current_organization.name}"}
 end
 
 Given /^the organization that owns "([^"]*)" has a donation kit$/ do |name|

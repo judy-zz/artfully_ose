@@ -25,6 +25,10 @@ module NavigationHelpers
     when /events page/
       events_path
     
+    when /the organization page for "(.+)"/
+      o = Organization.find_by_name($1)
+      organization_path(o)
+    
     when /admin users page/
       admin_users_path
     

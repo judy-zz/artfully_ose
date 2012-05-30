@@ -10,6 +10,10 @@ Then /^the regular donation kit for "([^"]*)" should be activated$/ do |name|
   organization.kits.first.should be_activated
 end
 
+Given /^I activate the "([^"]*)"$/ do |kit_type|
+  click_link("add_#{kit_type.downcase.gsub(' ', '_')}")
+end
+
 Given /^there is a pending sponsored donation kit application for "([^"]*)"$/ do |name|
   organization = Factory(:organization, :name => name)
   organization.users << Factory(:user)

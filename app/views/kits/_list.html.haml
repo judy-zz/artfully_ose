@@ -15,7 +15,7 @@
       %tr
         -if can? :manage, current_user.current_organization
           - if kit.fresh?
-            %td.status= link_to "Add", new_kit_path(:type => kit.type.underscore), :class => "btn"
+            %td.status= link_to "Add", new_kit_path(:type => kit.type.underscore), :class => "btn", :id => "add_#{kit.type.underscore}"
           - elsif kit.cancelled? && kit.type == "SponsoredDonationKit"
             - #%td= "Contact support@artful.ly to learn about Fiscal Sponsorship for your organization"
             %td.status= link_to "Add", "#", :class => "btn disabled"
