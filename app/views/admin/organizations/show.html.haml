@@ -60,18 +60,19 @@
         = text_field_tag :user_email, "", :placeholder => 'Email address'
         = submit_tag "Add", :class => "btn"
       %table.table#memberships
-        - @organization.users.each do |user|
-          %tr
-            %td= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
-            %td
-              =link_to user.email, admin_user_path(user)
-              - if user == @organization.owner
-                %br
-                Organization administrator
-            %td
-              = link_to "Sign in", sessions_admin_user_path(user), :method => 'post', :class => "btn btn-small"
-              - unless user == @organization.owner
-                = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
+        %tbody
+          - @organization.users.each do |user|
+            %tr
+              %td= gravatar_image_tag(user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
+              %td
+                =link_to user.email, admin_user_path(user)
+                - if user == @organization.owner
+                  %br
+                  Organization administrator
+              %td
+                = link_to "Sign in", sessions_admin_user_path(user), :method => 'post', :class => "btn btn-small"
+                - unless user == @organization.owner
+                  = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
     
     %section#kits
       %h3 Kits

@@ -12,8 +12,6 @@ Feature: Organization Membership Create
 
   Scenario: An admin removes a user from an organization
     Given I am logged in as an admin
-    And I am on the admin root page
-    And I follow "Organizations"
-    And I follow "Fractured Atlas"
-    When I click the link to remove "user@example.com"
+    And I am on the admin organization page for "Fractured Atlas"
+    When I remove "user@example.com" as an admin
     Then "user@example.com" should not be a part of "Fractured Atlas"

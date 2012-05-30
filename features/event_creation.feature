@@ -6,10 +6,7 @@ Feature: Event creation
     Given I am logged in
     And I am part of an organization with access to the ticketing kit
     And I am on the new event page
-    When I fill in the following event details:
-    | name      | venue      | city     | state | producer      |
-    | Some Name | Some Venue | New York | NY    | Some Producer |
+    When I fill in my event details of "Some Name" and "Some Venue"
     And I press "Create Event"
     And I should see "Some Name"
-    And I should see "Some Venue"
-    And I should see "New York, NY"
+    And I should see "Producer"

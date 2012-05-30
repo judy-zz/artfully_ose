@@ -1,12 +1,6 @@
-When /^(?:|I )fill in the following event details:$/ do |table|
-  event = event_from_table_row(table.hashes.first)
-  setup_event(event)
-
-  step %{I fill in "Name" with "#{event.name}"}
-  step %{I fill in "event[venue_attributes][name]" with "#{event.venue.name}"}
-  step %{I fill in "Producer" with "#{event.producer}"}
-  step %{I fill in "City*" with "#{event.venue.city}"}
-  step %{I select "#{us_states.invert[event.venue.state]}" from "State"}
+When /^I fill in my event details of "([^"]*)" and "([^"]*)"$/ do |event_name, venue_name|
+  step %{I fill in "I'm organizing" with "#{event_name}"}
+  step %{I fill in "that happens at" with "#{venue_name}"}  
 end
 
 Given /^there is an [Ee]vent with (\d+) [Ss]hows$/ do |show_count|

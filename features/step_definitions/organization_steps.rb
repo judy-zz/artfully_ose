@@ -41,6 +41,12 @@ Given /^"([^"]*)" is part of "([^"]*)"$/ do |email, organization|
   organization.users << user
 end
 
+When /^I remove "([^"]*)" as an admin$/ do |email|
+  within(:xpath, "//table[@id='memberships']/tbody/tr[contains(.,'#{email}')]") do
+    click_link "Remove"
+  end
+end
+
 When /^I click the link to remove "([^"]*)"$/ do |email|
   within(:xpath, "//ul/li[contains(.,'#{email}')]") do
     click_link "Remove"

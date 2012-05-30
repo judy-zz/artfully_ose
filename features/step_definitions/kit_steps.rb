@@ -14,6 +14,10 @@ Given /^I activate the "([^"]*)"$/ do |kit_type|
   click_link("add_#{kit_type.downcase.gsub(' ', '_')}")
 end
 
+Then /^I should see a pending image$/ do
+    page.should have_xpath("//img[@alt='pending']")
+end
+
 Given /^there is a pending sponsored donation kit application for "([^"]*)"$/ do |name|
   organization = Factory(:organization, :name => name)
   organization.users << Factory(:user)
