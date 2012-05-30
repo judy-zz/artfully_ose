@@ -36,8 +36,6 @@ end
 
 When /^I check (\d+) tickets$/ do |num|
   num.to_i.times do |pos|
-    within(:xpath, "(//ul[@id='ticket-drilldown']/li)[#{pos + 1}]") do
-      check("tickets[]")
-    end
+    check("ticket_#{pos.to_i + 1}")
   end
 end
