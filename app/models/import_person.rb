@@ -24,10 +24,13 @@ class ImportPerson
     :facebook_page    => [ "Facebook url", "Facebook", "Facebook address", "Facebook page" ],
     :linkedin_page    => [ "Linked in url", "LinkedIn url", "LinkedIn", "LinkedIn address", "LinkedIn page" ],
     :tags             => [ "Tags" ],
-    :person_type      => [ "Person Type", "Type", "Contact Type" ]
+    :person_type      => [ "Person Type" ]
   }
 
   # Enumerated columns default to the last value if the data value is not valid.
+  #
+  # With the way the current code is using instance_variable_get, columns that use an enumeration
+  # cannot accept multiple column names.  We can only have one column name map to person_type
   ENUMERATIONS = {
     :person_type => [ "Individual", "Corporation", "Foundation", "Government", "Other" ]
   }
@@ -61,7 +64,7 @@ class ImportPerson
   end
 
   def check_enumeration(field, value)
-    if enum = ENUMERATIONS[field]
+    if enum = ENUMERATIONS[field]      
       if index = enum.map(&:downcase).index(value.to_s.downcase)
         enum[index]
       else
