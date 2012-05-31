@@ -91,8 +91,8 @@ module ApplicationHelper
     cents.to_i / 100.00
   end
 
-  def number_as_cents(cents)
-    number_to_currency(number_to_dollars(cents))
+  def number_as_cents(cents, options = {})
+    number_to_currency(number_to_dollars(cents), options)
   end
 
   def sorted_us_state_names
