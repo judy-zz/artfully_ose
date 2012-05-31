@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120525142226) do
+ActiveRecord::Schema.define(:version => 20120530174435) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -278,6 +278,8 @@ ActiveRecord::Schema.define(:version => 20120525142226) do
     t.string   "payment_method"
     t.text     "special_instructions"
   end
+
+  add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
 
   create_table "organizations", :force => true do |t|
     t.string   "name"
