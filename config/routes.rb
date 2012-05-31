@@ -151,6 +151,9 @@ Artfully::Application.routes.draw do
     collection do
       get :sales
     end
+    member do
+      get :resend
+    end
   end
 
   resources :contributions

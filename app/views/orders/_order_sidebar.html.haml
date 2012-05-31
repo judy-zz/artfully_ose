@@ -33,3 +33,23 @@
     %h6.key-full Special Instructions
   %li
     .value #{order.special_instructions}
+  %li
+    %h6.key-full Actions
+    =icon_link_to("Resend receipt", "#receipt", 'icon-share-alt', 'btn', '', {'data-toggle' => 'modal'})
+    
+#receipt.modal
+  -if @person.email.blank?
+    .modal-body
+      %p Artful.ly cannot email a receipt because we have no email address on file for this person.  
+      %p
+        =link_to "Update the person record", person_path(@person) 
+        to add an email, then try again.
+    .modal-footer
+      =link_to "OK", "#", :class => "btn", 'data-dismiss'=>'modal' 
+  -else
+    .modal-body
+      Click "Resend receipt" to email a duplicate receipt to  
+      %strong="#{@person.email}"
+    .modal-footer
+      =link_to "Resend receipt", resend_order_path(@order), :class => "btn btn-success"
+      =link_to "Cancel", "#", :class => "btn btn-danger", 'data-dismiss'=>'modal'  

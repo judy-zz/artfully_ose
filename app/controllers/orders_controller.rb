@@ -16,6 +16,15 @@ class OrdersController < ApplicationController
     @total = @order.total
   end
 
+  def resend
+    authorize! :view, Order
+    @order = Order.find(params[:id])
+    OrderMailer.delay.confirmation_for(@order)
+    
+    flash[:notice] = "A copy of the order receipt has been sent to #{@order.person.email}"
+    redirect_to order_url(@order)
+  end
+
   def sales
     authorize! :view, Order
     @search = SaleSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
