@@ -59,7 +59,7 @@ describe Checkout do
   end
 
   describe "cash payments" do
-    let(:payment)         { CashPayment.new(Factory(:person)) }
+    let(:payment)         { CashPayment.new(Factory(:customer)) }
     let(:cart_with_item)  { Factory(:cart_with_items) }
     subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
   
@@ -163,21 +163,35 @@ describe Checkout do
           :last_name       => payment.customer.last_name
         }
       }
+      
+      let(:person) { Factory(:person,attributes) }
   
       it "should create a person record when finishing with a new customer" do
         subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
         subject.cart.stub(:organizations).and_return(Array.wrap(organization))
         Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(nil)
-        Person.should_receive(:create).with(attributes).and_return(Factory(:person,attributes))
+        Person.should_receive(:create).with(attributes).and_return(person)
         subject.finish
       end
   
       it "should not create a person record when the person already exists" do
         subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
         subject.cart.stub(:organizations).and_return(Array.wrap(organization))
-        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(Factory(:person,attributes))
+        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(person)
         Person.should_not_receive(:create)
         subject.finish
+      end
+      
+      it "should add the phone number to the person" do
+        Delayed::Worker.delay_jobs = false
+        
+        subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
+        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(person)
+        Person.should_not_receive(:create)
+        person.should_receive(:add_phone_if_missing).with(payment.customer.phone)
+        subject.finish
+                
       end
     end
   end

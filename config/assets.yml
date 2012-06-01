@@ -28,6 +28,9 @@ javascripts:
     - public/javascripts/pages/**/*.js
     - public/javascripts/pages/*.js
 
+  jquery:
+    - public/javascripts/jquery.js
+    
   vendor:
     - public/javascripts/jquery/**/*.js
     

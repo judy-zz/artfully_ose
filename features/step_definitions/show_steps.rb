@@ -9,6 +9,18 @@ When /^I view the (\d+)(?:st|nd|rd|th) [Ss]how in the list of shows$/ do |pos|
   end
 end
 
+Given /^I take tickets off sale for the (\d+)st section$/ do |pos|
+  within(:xpath, "(//table[@id='ticket-type-table']/tr)[#{pos.to_i}]") do
+    click_link "Take off sale"
+  end
+end
+
+Given /^I put tickets on sale for the (\d+)st section$/ do |pos|
+  within(:xpath, "(//table[@id='ticket-type-table']/tr)[#{pos.to_i}]") do
+    click_link "Put on sale"
+  end
+end
+
 When /^I view the (\d+)(?:st|nd|rd|th) [Ss]how$/ do |pos|
   @show = current_shows[pos.to_i - 1]
   within("table tbody tr:nth-child(#{pos.to_i})") do
@@ -36,7 +48,6 @@ end
 
 Given /^the (\d+)(?:st|nd|rd|th) [Ss]how is on sale$/ do |pos|
   show = current_shows[pos.to_i - 1]
-  show.bulk_on_sale(:all)
   show.publish!
 end
 

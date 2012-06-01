@@ -37,4 +37,4 @@
           = form.text_field :details
       .form-actions
         = submit_tag "Save", :class => "btn"
-        = link_to "Cancel", contributions_path, :class => "btn"
+        = link_to "Cancel", person_path(@contribution.person_id), :class => "btn"

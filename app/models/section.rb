@@ -18,6 +18,10 @@ class Section < ActiveRecord::Base
   def dup!
     Section.new(self.attributes.reject { |key, value| key == 'id' })
   end
+  
+  def self.price_to_cents(price_in_dollars)
+    (price_in_dollars.to_f * 100).to_i
+  end
 
   def summarize
     tickets = Ticket.where(:show_id => chart.show.id).where(:section_id => id)

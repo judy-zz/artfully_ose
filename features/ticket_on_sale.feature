@@ -7,12 +7,19 @@ Feature: Putting Tickets on Sale
     And I am part of an organization with access to the ticketing kit
     And there is an Event with 3 Shows
     And the 1st show has had tickets created
-    And I follow "Events"
+    And I am on the events page
     And I view the 1st event
+    And I follow "Shows"
     And I view the 1st show
-
+    
+  Scenario: A producer takes tickets off sale
+    Given I take tickets off sale for the 1st section
+    Then I should see "Take Tickets Off Sale"
+    And I fill in "quantity" with "1"
+    And I follow "Take off sale"
+    
   Scenario: A producer puts tickets for a show on sale
-    Given I check the 1st ticket to put on sale
-    And I press "Put on Sale"
-    And I press "Put on Sale"
-    Then the 1st ticket should be on sale
+    Given I put tickets on sale for the 1st section
+    Then I should see "Put Tickets On Sale"
+    And I fill in "quantity" with "1"
+    And I follow "Put on sale"

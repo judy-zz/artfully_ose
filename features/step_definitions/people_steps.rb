@@ -10,6 +10,11 @@ end
 Given /^I search for the person "([^"]*)"$/ do |email|
 end
 
+Given /^"([^"]*)" is in the index$/ do |email|
+  Person.stub(:search_index).and_return(Array.wrap(Person.where(:email => email)))
+end
+
+
 Given /^there are (\d+) people tagged with "([^"]*)"$/ do |quantity, tag|
   @tag = tag
   @people = quantity.to_i.times.collect do
@@ -27,13 +32,13 @@ Given /^I search for people tagged with "([^"]*)"$/ do |tag|
 end
 
 Then /^I should see (\d+) people$/ do |count|
-  page.should have_xpath("//ul[@class='people-list']/li", :count => count.to_i)
+  page.should have_xpath("//table[@class='table people-list']/tbody/tr", :count => count.to_i)
 end
 
-Given /^my organization has a dummy person record$/ do
-  Factory(:dummy, :organization => @current_user.current_organization)
+Given /^I am looking at "([^" ]*) ([^" ]*)"$/ do |first_name, last_name|
+  @person ||= Factory(:person, :first_name => first_name, :last_name => last_name, :organization => @current_user.current_organization)
+  visit(person_path(@person))
 end
-
 
 Given /^I view the people record for "([^"]*)"$/ do |email|
   @person ||= Factory(:person, :email => email, :organization => @current_user.current_organization)

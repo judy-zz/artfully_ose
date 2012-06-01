@@ -265,8 +265,24 @@ tr.no-border td {
   font-weight: bold;
   font-size: 1.5em; }
 
+<<<<<<< HEAD
 #reseller-profile-datatable {
   margin-top: 25px; }
 
 .with-gap-above {
   margin-top: 50px; }
+=======
+span.help {
+  background-color: #666666;
+  color: white;
+  font-weight: bold;
+  margin-left: 20px;
+  font-size: 14px;
+  padding: 4px;
+  -moz-border-radius: 6px 6px 6px 6px;
+  -webkit-border-radius: 6px 6px 6px 6px;
+  border-radius: 6px 6px 6px 6px; }
+
+input.datepicker, input.datetimepicker {
+  cursor: pointer; }
+>>>>>>> master

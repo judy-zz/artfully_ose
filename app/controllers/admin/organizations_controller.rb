@@ -5,8 +5,8 @@ class Admin::OrganizationsController < Admin::AdminController
 
   def show
     @organization = Organization.find(params[:id])
-    @events = @organization.events
-    @users = User.all
+    @events = @organization.events.includes(:shows)
+    @settlements = @organization.settlements
   end
 
   def new

@@ -1,6 +1,6 @@
 %h2="#{@person.first_name} #{@person.last_name}"
 
-#contact-information
+%section#contact-information
   -# #image
   -#   = gravatar_image_tag(@person.email, :alt => 'User icon', :class => 'large-grav bordered', :gravatar => { :size => 128 })
   #details
@@ -19,27 +19,33 @@
     - unless person.dummy?
       = link_to "Merge", new_merge_path(:loser => @person), :method => :get, :class => "btn btn-warning"
 
-%h6 Phone Numbers
-%ul.kv
-  - person.phones.each do |phone|
-    %li.row-fluid
-      .span3= phone.kind
-      .span7= phone.number
-      .span2= link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :class=>'btn btn-danger btn-mini', :confirm => "Are you sure you want to delete #{phone.number}?"
+%section 
+  %h6 Phone Numbers
+  %ul.kv
+    - person.phones.each do |phone|
+      %li.row-fluid
+        .span3= phone.kind
+        .span7= phone.number
+        .span2= link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :class=>'btn btn-danger btn-mini', :confirm => "Are you sure you want to delete #{phone.number}?"
 
-= form_for([person, Phone.new]) do |form|
-  .row-fluid
-    .hidden= form.label(:number, "Number")
-    .hidden= form.label(:kind, "Kind")
-    = form.select(:kind, options_for_select(Phone.kinds), {}, {:class => 'span3', :style=>'margin-left:0px'})
-    = form.text_field(:number, :placeholder => "555-123-1234", :class => 'span6')
-    = form.submit "Add", :class => "btn span2"
+  = form_for([person, Phone.new]) do |form|
+    .row-fluid
+      .hidden= form.label(:number, "Number")
+      .hidden= form.label(:kind, "Kind")
+      = form.select(:kind, options_for_select(Phone.kinds), {}, {:class => 'span3', :style=>'margin-left:0px'})
+      = form.text_field(:number, :placeholder => "555-123-1234", :class => 'span6')
+      = form.submit "Add", :class => "btn span2"
 
-%h6 Address
-- if @person.address.present?
-  = render @person.address
-  = button_to "Edit", "#", :id => "update-mailing-address", :class => "btn"
-- else
-  = button_to "Add", "#", :id => "create-mailing-address", :class => "btn"
+%section
+  %h6 Tags
+  = render :partial=>'shared/tags', :locals => { :tags => @person.tag_list, :subject => @person }
 
-= render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address || @person.build_address }
+%section
+  %h6 Address
+  - if @person.address.present?
+    = render @person.address
+    = button_to "Edit", "#", :id => "update-mailing-address", :class => "btn"
+  - else
+    = button_to "Add", "#", :id => "create-mailing-address", :class => "btn"
+
+  = render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address || @person.build_address }

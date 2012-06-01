@@ -14,7 +14,7 @@ Feature: Import Contacts
   Scenario: A user approves a new import
     When I upload a new import file "simple-export.csv"
     And I am on the import page
-    And I follow "Approve this import"
+    And I follow "Approve"
     Then the import's status should be approved
 
   Scenario: A user approves a new import and it is performed

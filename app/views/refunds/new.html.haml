@@ -16,28 +16,20 @@
       %table.standalone.table
         %thead
           %tr
-            %th
-              Event
-            %th
-              Show
-            %th
-              Price
-            %th
-              Sold
-        - @items.each do |item|
-          - if item.ticket?
-            %tr
-              %td=item.product.show.event.name
-              %td=l item.product.show.datetime_local_to_event, :format => :short
-              %td=number_as_cents item.product.price
-              %td=number_as_cents item.price
-
-      -if @items.all?(&:returnable?)
-        %p
-          Refund these tickets and return them to inventory
-          %br
-          = submit_tag "Issue Refund and Return", :class => "btn"
-
-      %h4 Refund these tickets and keep the tickets marked as sold.
-
-      = render :partial => 'shared/submit', :locals => { :submit_label => "Issue Refund" }
+            %td=item.product.show.event.name
+            %td=l item.product.show.datetime_local_to_event, :format => :short
+            %td=number_as_cents item.product.price
+            %td=number_as_cents item.price
+    %p
+      %br
+    -if @items.all?(&:returnable?)
+      %p
+        Refund these tickets and return them to inventory
+        %br
+        = submit_tag "Issue Refund and Return", :class => "btn"
+    %p
+      %br
+    %p
+      Refund these tickets and keep the tickets out of inventory.
+      %br
+      = submit_tag "Issue Refund", :class => "btn"

@@ -9,7 +9,6 @@ Feature: Storefront for an event that requires special instructions
 
   Scenario: A customer wants to buy tickets to my show
     Given the customer goes to the storefront for my event
-    Then show me the page
     And the customer should see the published shows
     And all the checkout panel links
     And the special instructions link

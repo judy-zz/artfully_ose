@@ -43,13 +43,24 @@ class ShowsController < ApplicationController
     @show.update_attributes(params[:show].merge(:organization => current_organization).merge(:chart_id => @show.chart.id))
     @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 
-    if @show.save
+    @show.build!
+    if publishing_show?
+      @show.publish!
+    else
+      @show.unpublish!
+    end
+
+    if @show.save      
       flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
       redirect_to event_show_path(@event, @show)
     else  
       flash[:error] = "There was a problem creating your show."
       render :new
     end
+  end
+  
+  def publishing_show?
+    ("Save and Publish" == params[:commit])
   end
 
   def show
@@ -115,19 +126,6 @@ class ShowsController < ApplicationController
   def published
     @show = Show.find(params[:show_id])
     authorize! :show, @show
-
-    if @show.tickets.empty?
-      respond_to do |format|
-        format.html do
-          flash[:error] = 'Please create tickets for this show before putting it on sale'
-          redirect_to event_show_url(@show.event, @show)
-        end
-
-        format.json { render :json => { :errors => ['Please create tickets for this show before putting it on sale'] } }
-      end
-
-      return
-    end
 
     with_confirmation do
       @show.publish!

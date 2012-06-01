@@ -20,7 +20,7 @@ class ContributionsController < ApplicationController
   def create
     @contribution = create_contribution
     @contribution.save
-    redirect_to contributions_path
+    redirect_to person_path params[:contribution][:person_id]
   end
 
   private

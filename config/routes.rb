@@ -48,6 +48,7 @@ Artfully::Application.routes.draw do
 
       resources :kits do
         put :activate, :on => :member
+        put :cancel, :on => :member
       end
 
       resources :memberships

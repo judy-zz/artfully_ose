@@ -2,42 +2,21 @@ class SectionsController < ApplicationController
   before_filter :find_chart, :except => [:on_sale, :off_sale]
 
   def new
-    @section = Section.new
+    @section = @chart.sections.build()
+    render :layout => false
   end
 
   def create
     @section = Section.new
-
+    params[:section][:price] = Section.price_to_cents(params[:section][:price])
     @section.update_attributes(params[:section])
     @section.chart_id = @chart.id
-
     if @section.save
-      redirect_to chart_url(@chart)
+      Ticket.create_many(@chart.show, @section, @section.capacity, true)
     else
-      render :template => 'sections/new'
+      flash[:error] = "We couldn't save your ticket type because " + @section.errors.full_messages.to_sentence
     end
-  end
-
-  def edit
-    @section = Section.find(params[:id])
-  end
-
-  def update
-    @section = Section.find(params[:id])
-    @section.update_attributes(params[:section])
-    @section.chart_id = @chart.id
-
-    if @section.save
-      redirect_to @chart
-    else
-      render :template => 'sections/edit'
-    end
-  end
-
-  def destroy
-    @section = Section.find(params[:id])
-    @section.destroy
-    redirect_to @chart
+    redirect_to event_show_path(@chart.show.event, @chart.show)
   end
   
   def on_sale
@@ -59,7 +38,7 @@ class SectionsController < ApplicationController
   private
 
     def find_chart
-      @chart = Chart.find(params[:chart_id])
+      @chart = Chart.find(params[:chart_id] || params[:section][:chart_id])
     end
 
 end

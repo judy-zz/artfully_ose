@@ -10,7 +10,7 @@ Feature: Bank Account Creation
 
 
   Scenario: An admin adds a bank account to an organization
-    Given I follow "Add a Bank Account"
+    Given I add a bank account
     When I fill in the following:
       | Routing number | 111111118            |
       | Number         | 32152401253215240125 |
@@ -25,6 +25,6 @@ Feature: Bank Account Creation
     And the organization "Fractured Atlas" should have a bank account
 
   Scenario: An admin attempts to add a new bank account without fields
-    Given I follow "Add a Bank Account"
+    Given I add a bank account
     And I press "Create"
     And the organization "Fractured Atlas" should not have a bank account

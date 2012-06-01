@@ -9,7 +9,6 @@ class Show < ActiveRecord::Base
   has_many :settlements
   has_many :items
   
-  after_create [:build!, :unpublish!]
   before_destroy :destroyable?
 
   has_many :reseller_attachments, :as => :attachable

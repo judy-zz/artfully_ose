@@ -2,6 +2,7 @@
 # WebOrder, BoxOfficeOrder for example.  NOT DonationOrder, since orders may contain multiple different item types
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::TextHelper
   include ApplicationHelper
   include AdminTimeZone
   
@@ -13,6 +14,7 @@ class Order < ActiveRecord::Base
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
   has_many :items
+  has_many :actions, :foreign_key => "subject_id"
 
   attr_accessor :skip_actions
 
@@ -141,31 +143,6 @@ class Order < ActiveRecord::Base
     items.select(&:exchangeable?)
   end
 
-  def items_detail
-    num_tickets = 0
-    sum_donations = 0
-
-    all_items.each{ |item|
-      if item.ticket?
-        num_tickets += 1
-      elsif item.donation?
-        sum_donations += item.price.to_i
-      end }
-
-    tickets = "#{num_tickets} ticket(s)"
-    donations = "$#{sum_donations/100.00} donation"
-
-    if num_tickets == 0
-      result = "#{[donations].to_sentence}"
-    elsif sum_donations == 0.0
-      result = "#{[tickets].to_sentence}"
-    else
-      result = "#{[tickets, donations].to_sentence}"
-    end
-
-    result.to_sentence
-  end
-
   def num_tickets
     all_tickets.size
   end
@@ -183,7 +160,7 @@ class Order < ActiveRecord::Base
   end
 
   def ticket_details
-    "#{num_tickets} ticket(s)"
+    pluralize(num_tickets, "ticket") + " to " + all_tickets.first.show.event.name
   end
   
   def to_comp!
@@ -217,6 +194,10 @@ class Order < ActiveRecord::Base
     summary
   end
 
+  def credit?
+    payment_method.eql? 'Credit card'
+  end
+
   private
 
     #this used to do more.  Now it only does this
@@ -228,14 +209,12 @@ class Order < ActiveRecord::Base
       unless all_tickets.empty?
         action                  = GetAction.new
         action.person           = person
-        action.subject_id       = self.id
+        action.subject          = self
         action.organization_id  = organization.id
         action.details          = ticket_details
         action.occurred_at      = created_at
         action.subtype          = "Purchase"
 
-        logger.debug("Creating action: #{action}, with org id #{action.organization_id}")
-        logger.debug("Action: #{action.attributes}")
         action.save!
         action
       end
@@ -245,7 +224,7 @@ class Order < ActiveRecord::Base
       items.select(&:donation?).collect do |item|
         action                    = GiveAction.new
         action.person             = person
-        action.subject_id         = item.product_id
+        action.subject            = self
         action.organization_id    = organization.id
         action.details            = donation_details
         action.occurred_at        = created_at

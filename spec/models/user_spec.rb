@@ -87,6 +87,38 @@ describe User do
     end
   end
 
+  RSpec::Matchers.define :include_this_email do |expected|
+    match do |actual|
+      actual[:email_address].should eq expected
+    end
+  end
+
+  describe "with regards to mailchimp, it" do
+    before(:each) do
+      Delayed::Worker.delay_jobs = false
+    end
+    
+    it "should subscribe the user to mailchimp if they opted in" do
+      @user = User.new({:email => Faker::Internet.email, :password => 'password', :newsletter_emails => true})
+      Gibbon.any_instance.should_receive(:list_subscribe).with(include_this_email(@user.email)).and_return(true)
+      @user.save
+    end
+    
+    it "should store any error messages" do
+      @user = User.new({:email => Faker::Internet.email, :password => 'password', :newsletter_emails => true})
+      Gibbon.any_instance.should_receive(:list_subscribe).with(include_this_email(@user.email)).and_return({'error' => 'an error'})
+      @user.save
+      @user = User.find(@user.id)
+      @user.mailchimp_message.should eq "an error"
+    end
+    
+    it "should not subscribe the user if they did not opt in" do
+      @user = User.new({:email => Faker::Internet.email, :password => 'password', :newsletter_emails => false})
+      Gibbon.any_instance.should_not_receive(:list_subscribe)
+      @user.save
+    end
+  end
+
   describe "organizations" do
     let(:organization) { Factory(:organization) }
 

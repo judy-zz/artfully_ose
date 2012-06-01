@@ -10,8 +10,8 @@ Feature: Bank Account Creation
     And I follow "Fractured Atlas"
 
   Scenario: An admin edits the bank account for an organization
-    Given I follow "Edit Bank Account"
-    When I fill in the following:
+    When I edit the bank account
+    And I fill in the following:
       | Routing number | 111111118            |
       | Number         | 32152401253215240125 |
       | Name           | Joe Smith            |
@@ -34,7 +34,7 @@ Feature: Bank Account Creation
     And I should see "Updated bank account for Fractured Atlas"
 
   Scenario: An admin does not put in proper data for an organization
-    Given I follow "Edit Bank Account"
+    When I edit the bank account
     And I fill in "NaN" for "Routing number"
     And I press "Update"
     And I should see "Unable to update bank account for Fractured Atlas"

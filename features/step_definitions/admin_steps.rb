@@ -8,5 +8,17 @@ Given /^I am logged in as an admin$/ do
 end
 
 And /^I search for "([^"]*)"$/ do |email|
-  fill_in(:query, :with => email)
+  fill_in("query", :with => email)
+end
+
+When /^I edit the bank account$/ do
+  within("#bank-account") do
+    step %{I follow "Edit"}
+  end
+end
+
+When /^I add a bank account$/ do
+  within("#bank-account") do
+    step %{I follow "Add"}
+  end
 end

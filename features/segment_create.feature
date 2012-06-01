@@ -8,6 +8,7 @@ Feature: Order creation
     And there are 5 people tagged with "donor"
     And I search for people tagged with "donor"
     When I press "New List Segment"
-    And I fill in "Name" with "New Segment"
+    And I fill in "segment_name" with "New Segment"
     And I save the list segment
+    And show me the page
     Then I should see 5 people

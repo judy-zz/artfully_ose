@@ -58,8 +58,7 @@ describe Donation::Importer do
       
       it "does not create a person if the donor already exists" do
         Order.where(:fa_id => donation.id).should be_empty
-        existing_person = Person.new({:organization_id => organization, :email => donation.donor.email})
-        existing_person.save
+        existing_person = organization.people.create({:email => donation.donor.email})
         organization.people.length.should eq 1
         @order = subject.send(:create_order, donation, organization)
         @order.person.id.should eq existing_person.id

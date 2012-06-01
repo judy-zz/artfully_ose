@@ -14,7 +14,7 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def index
-    @users = find_users || User.all
+    @users = find_users
   end
 
   def show
@@ -52,7 +52,7 @@ class Admin::UsersController < Admin::AdminController
 
   private
     def find_users
-      return if params[:query].blank?
+      return [] if params[:query].blank?
       User.like(params[:query])
     end
 end

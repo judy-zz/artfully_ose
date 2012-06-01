@@ -5,11 +5,11 @@ Feature: Admin Password Reset
 
   Scenario: An admin send's password reset instructions to a user
     Given I am logged in as an admin
-    And I follow "Users"
+    And I am on the admin users page
     And a user exists with an email of "user@example.com"
-    And I fill in "Query" with "user@example.com"
+    And I fill in "query" with "user@example.com"
     And I press "Search"
     And I follow "user@example.com"
-    When I press "Send Password Reset Instructions"
+    When I press "Reset Password"
     Then a reset password email was sent to "user@example.com"
     And I should see "Instructions to reset this password have been emailed to user@example.com."

@@ -11,6 +11,27 @@ describe Person do
     subject.notes.length.should eq 1
   end
   
+  describe "adding phone number" do
+    before(:each) do
+      subject.phones.create(:number => "333-333-3333")
+      subject.phones.create(:number => "444-444-4444")
+    end
+    
+    it "should add the number" do
+      subject.add_phone_if_missing("555-555-5555")
+      subject.phones.length.should eq 3
+      subject.phones.last.number.should eq "555-555-5555"
+      subject.phones.last.kind.should eq "Other"
+    end
+    
+    it "shouldn't add a nnumber if it already exists" do
+      subject.add_phone_if_missing("444-444-4444")
+      subject.phones.length.should eq 2
+      subject.phones.first.number.should eq "333-333-3333"
+      subject.phones.last.number.should eq "444-444-4444"
+    end
+  end
+  
   describe "mergables" do
     
     let(:exceptions) { [:taggings, :base_tags, :tag_taggings, :tags, :tickets] }
@@ -169,7 +190,7 @@ describe Person do
       end
     end
   end
-
+  
   context "updating address" do
     let(:addr1)     { Address.new(:address1 => '123 A St.') }
     let(:addr2)     { Address.new(:address1 => '234 B Ln.') }

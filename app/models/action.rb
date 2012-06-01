@@ -2,6 +2,7 @@ class Action < ActiveRecord::Base
   belongs_to :person
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :organization
+  belongs_to :subject, :polymorphic => true
 
   validates_presence_of :occurred_at
   validates_presence_of :person_id
@@ -31,7 +32,7 @@ class Action < ActiveRecord::Base
     self.details = params[:details]
 
     self.person = person
-    self.subject_id = person.id
+    self.subject = person
   end
 
   def unstarred?
@@ -44,6 +45,10 @@ class Action < ActiveRecord::Base
   
   def sentence
     (verb + " " + details.uncapitalize)
+  end
+  
+  def full_details
+    details
   end
 
   def hear_action_subtypes

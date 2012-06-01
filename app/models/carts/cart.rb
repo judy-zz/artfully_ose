@@ -43,6 +43,7 @@ class Cart < ActiveRecord::Base
   end
 
   def set_timeout(ticket)
+    save if new_record?
     self.delay(:run_at => Time.now + 10.minutes).expire_ticket(ticket)
   end
 

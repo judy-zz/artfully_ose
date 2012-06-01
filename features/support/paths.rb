@@ -17,7 +17,20 @@ module NavigationHelpers
 
     when /the approve import page/
       @import.should_not be_nil
-      approve_import_path @import
+      approve_import_path @import    
+      
+    when /people search page/
+      people_path
+    
+    when /events page/
+      events_path
+    
+    when /admin users page/
+      admin_users_path
+    
+    when /admin organization page for "(.+)"/
+      o = Organization.find_by_name($1)
+      admin_organization_path(o)
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

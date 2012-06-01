@@ -1,8 +1,8 @@
 Given /^I have found the user "([^"]*)" to suspend$/ do |email|
-  step %{I am on the admin root page}
+  step %{I am on the admin users page}
   step %{a user exists with an email of "user@example.com"}
   step %{I follow "Users"}
-  step %{I fill in "Query" with "#{email}"}
+  step %{I fill in "query" with "#{email}"}
   step %{I press "Search"}
   step %{I follow "#{email}"}
 end

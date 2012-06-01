@@ -24,8 +24,10 @@
     =f.label :capacity, "Capacity", :class => 'control-label'
     .controls
       =f.text_field :capacity, :class => 'span1'
-
-      %span.remove-fields-link
-        = f.hidden_field :_destroy
-        %i.icon-minus-sign.icon-gray
-        = link_to_remove_fields "remove", f
+      
+      - show_remove_links = true if show_remove_links.nil?
+      - if show_remove_links
+        %span.remove-fields-link
+          = f.hidden_field :_destroy
+          %i.icon-minus-sign.icon-gray
+          = link_to_remove_fields "remove", f

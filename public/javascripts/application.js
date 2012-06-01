@@ -69,8 +69,11 @@ $(document).ready(function() {
 	$('.section-price-disabled').popover({trigger:'manual'})
 	                            .click(function(){ $(this).popover('toggle') });
 	$('.section-price-disabled').popover('show');
+	$('.help').popover()
 	
 	$('.dropdown-toggle').dropdown()
+	
+	$('#nag').modal('show')
 	
 	/*********** NEW ARTFULLY JS ************/
 	
@@ -132,6 +135,12 @@ $(document).ready(function() {
   $(".search-help-popup").dialog({autoOpen: false, draggable:false, modal:true, width:700, title:"Search help"})
   $("#search-help-link").click(function(){
     $(".search-help-popup").dialog("open")
+    return false;
+  });
+
+  $("#add-new-ticket-type-link").bind("ajax:complete", function(et, e){
+    $("#newTicketType").html(e.responseText);
+    $("#newTicketType").modal( "show" );
     return false;
   });
 

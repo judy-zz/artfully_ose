@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe DoorList do
   disconnect_sunspot  
-  let(:show)                  { Factory(:show) }
+  let(:show)                  { Factory(:show_with_tickets) }
   let(:buyer)                 { Factory(:person) }
   let(:buyer_without_email)   { Factory(:person_without_email) }
   let(:special_instructions)  { "Seriously, that's like Eggs 101, Woodhouse." }
@@ -16,7 +16,6 @@ describe DoorList do
       end   
       show.tickets[0..2].each { |t| t.sell_to buyer }
       show.tickets[3..4].each { |t| t.sell_to buyer_without_email }
-      
       @door_list = DoorList.new(show)
     end
     

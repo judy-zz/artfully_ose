@@ -3,7 +3,7 @@ require 'spec_helper'
 describe AdminMessage do
 
   context "an admin message that expired yesterday" do
-    subject { Factory.create :admin_message, :starts_on => Date.yesterday, :ends_on => Date.yesterday }
+    subject { Factory.create :admin_message, :starts_on => DateTime.now - 3.days, :ends_on => DateTime.now - 2.days }
     
     it "should not be in the active list" do
       subject.save

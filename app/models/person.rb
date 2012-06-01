@@ -192,11 +192,11 @@ class Person < ActiveRecord::Base
   end
 
   def starred_actions
-    actions.select { |action| action.starred? }
+    Action.where({ :person_id => id, :starred => true }).order(:occurred_at)
   end
 
   def unstarred_actions
-    actions.select { |action| action.unstarred? }
+    Action.where({ :person_id => id }).order('occurred_at desc').select{|a| a.unstarred?}
   end
 
   #
@@ -234,6 +234,12 @@ class Person < ActiveRecord::Base
       end
     end
     true
+  end
+
+  def add_phone_if_missing(new_phone)
+    if (!new_phone.blank? and phones.where("number = ?", new_phone).empty?)
+      phones.create(:number => new_phone, :kind => "Other")
+    end
   end
 
   private
