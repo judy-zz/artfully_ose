@@ -14,6 +14,8 @@
   %br
   = "Order total: $#{format("%.2f", (@order.total/100.0))}"
   %br
+  = "Payment method: #{@order.payment_method}"
+  %br
   = "Service fee: $#{format("%.2f", (@order.service_fee.to_i/100.0))}"
   %br
 

@@ -10,6 +10,7 @@ Order confirmation
 = "Order number: #{@order.id}"
 = "Purchase Date: #{l(@order.created_at)}"
 = "Order total: $#{format("%.2f", (@order.total/100.0))}"
+= "Payment method: #{@order.payment_method}"
 = "Service fee: $#{format("%.2f", (@order.service_fee.to_i/100.0))}"
 
 ="==================="
