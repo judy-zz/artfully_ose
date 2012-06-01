@@ -35,7 +35,7 @@
     .value #{order.special_instructions}
   %li
     %h6.key-full Actions
-    =icon_link_to("Resend receipt", "#receipt", 'icon-share-alt', 'btn', '', {'data-toggle' => 'modal'})
+    =icon_link_to("Resend Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
     
 #receipt.modal
   -if @person.email.blank?
@@ -51,5 +51,5 @@
       Click "Resend Receipt" to email a duplicate receipt to  
       %strong="#{@person.email}"
     .modal-footer
-      =link_to "Resend receipt", resend_order_path(@order), :class => "btn btn-success"
+      =link_to "Resend Receipt", resend_order_path(@order), :class => "btn btn-success"
       =link_to "Cancel", "#", :class => "btn btn-danger", 'data-dismiss'=>'modal'  

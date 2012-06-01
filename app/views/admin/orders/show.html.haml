@@ -1,0 +1,18 @@
+- content_for :header do
+  %h1="Order #{@order.id}"
+
+.row
+  .span3
+    = render :partial => 'order_sidebar', :locals => { :order => @order, :person => @order.person, :total => @order.total }
+  .span9
+    = render :partial=>'item_table', :locals => { :order => @order }
+
+- unless @order.children.empty?
+  - @order.children.each do |child|
+    %hr
+    .row
+      .span3
+        = render :partial => 'order_sidebar', :locals => { :order => child, :person => @person, :total => child.total }
+      .span9
+        - unless child.items.empty?
+          = render :partial => 'item_table', :locals => { :order => child }

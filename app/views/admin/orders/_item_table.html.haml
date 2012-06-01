@@ -1,0 +1,22 @@
+#items
+  %table.zebra.table
+    %thead
+      %tr
+        %th Item
+        %th Price
+        %th Settled
+    %tbody
+      - order.all_items.each do |item|
+        %tr{:id => "row_item_#{item.id}", :class => item.state}
+          %td.item-description
+            - if item.product_type.eql?("Ticket")
+              %span Ticket
+              %span
+                to #{link_to "#{item.product.event.name}", event_path(item.product.event)},
+                #{link_to "#{l item.product.datetime}", event_show_path(item.product.show.event, item.product.show)}
+            - if item.product_type.eql?("Donation")
+              %span Donation
+          %td.price= amount_and_nongift item
+          %td.settlement
+            -if item.settled? && !item.settlement.nil?
+              ="#{l item.settlement.created_at, :format => :short} (#{item.settlement.id})"
