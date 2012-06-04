@@ -1,14 +1,21 @@
 desc "This task is called by the Heroku cron add-on"
 task :cron => :environment do
   
-  #Settlement, run at 5am
-  if Time.now.hour == 5 
-    Job::Settlement.run
+  #Calculate everyone's lifetime value
+  if (Time.new.hour == 3)
+    Person.all.each do |p|
+      p.delay.calculate_lifetime_value
+    end
   end
   
   #Reindex people every night
   if (Time.now.hour == 4)
     Person.delay.reindex
+  end
+  
+  #Settlement, run at 5am
+  if Time.now.hour == 5 
+    Job::Settlement.run
   end
   
   #AdminStats runs during the day
@@ -17,8 +24,6 @@ task :cron => :environment do
   end
   
   #Update FAFS projects.  Heroku runs cron hourly so this will run hourly
-  
-  #Temp fix to not update FAFS
   Job::FafsDonations.run
   
 end
