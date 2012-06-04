@@ -32,8 +32,10 @@ class Organization < ActiveRecord::Base
   # We aren't interested in FAFS donations, so override lifetime_orders
   # to only include Artfully orders
   #
+  # This needs to be modified to exclude
+  #
   def lifetime_orders
-    orders.where('fa_id is null')
+    orders.where('transaction_id is not null')
   end
 
   def owner
