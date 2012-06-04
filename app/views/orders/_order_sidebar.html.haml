@@ -34,8 +34,8 @@
   %li
     .value #{order.special_instructions}
   %li
-    %h6.key-full Actions
     - if order.parent.nil?
+      %h6.key-full Actions
       =icon_link_to("Resend Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
     
 #receipt.modal
