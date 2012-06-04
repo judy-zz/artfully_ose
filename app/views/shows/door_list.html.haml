@@ -4,9 +4,10 @@
   %h2= "#{@show.event.name} at #{@show.event.venue.name}"
   %h3= "#{l @show.datetime_local_to_event, :format => :long_with_day}"
 
-  %ul.from-here
-    %li= link_to "Download as CSV", door_list_event_show_path(@event, @show, format: "csv")
-    %li= link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'button_link')
+  .from-here
+    =link_to "Download as CSV", door_list_event_show_path(@event, @show, format: "csv"), :class => "btn"
+    =link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'btn')
+    =icon_link_to("Return to show", event_show_path(@show.event, @show), 'icon-share-alt', 'btn', '')
 
 .spread
   - unless @door_list.items.empty?

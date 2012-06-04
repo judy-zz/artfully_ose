@@ -60,10 +60,6 @@ module ApplicationHelper
     block.call(menu)
     menu.render_menu
   end
-  
-  def person_link(person)
-    link_to "#{person.first_name} #{person.last_name}", person_url(person)
-  end
 
   def widget_script(event, organization)
     return <<-EOF
@@ -91,8 +87,8 @@ module ApplicationHelper
     cents.to_i / 100.00
   end
 
-  def number_as_cents(cents)
-    number_to_currency(number_to_dollars(cents))
+  def number_as_cents(cents, options = {})
+    number_to_currency(number_to_dollars(cents), options)
   end
 
   def sorted_us_state_names

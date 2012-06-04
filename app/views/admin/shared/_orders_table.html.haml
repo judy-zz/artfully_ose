@@ -13,7 +13,7 @@
   %tbody
     - orders.each do |order|
       %tr
-        %td=order.id
+        %td=link_to order.id, admin_order_path(order)
         %td
           - if order.has_ticket?
             =check_mark
@@ -25,7 +25,9 @@
         -unless order.created_at.nil?
           %td= l order.created_at_local_to_admins, :format => :short
         %td= order.transaction_id
-        %td=" #{order.person_last_name}, #{order.person_first_name}"
+        %td="#{order.person_first_name} #{order.person_last_name}"
         %td= link_to order.organization_name, admin_organization_path(order.organization_id)
         %td= number_as_cents order.total
         %td= number_as_cents order.service_fee
+
+=will_paginate @orders
