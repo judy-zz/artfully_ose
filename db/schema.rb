@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120602190408) do
+ActiveRecord::Schema.define(:version => 20120604181829) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -290,6 +290,7 @@ ActiveRecord::Schema.define(:version => 20120602190408) do
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "lifetime_value",          :default => 0
   end
 
   create_table "people", :force => true do |t|

@@ -1,4 +1,6 @@
 class Person < ActiveRecord::Base
+  include Valuation::LifetimeValue
+  
   acts_as_taggable
 
   belongs_to  :organization
@@ -35,22 +37,6 @@ class Person < ActiveRecord::Base
       end
     end
     hash
-  end
-  
-  #
-  # Calculate the lifetime value for a person by summing the price of all items 
-  # attached to orders attached to this person.  Save the value in lifetime_value.
-  # Return the value
-  #
-  # This could be done (probably faster) in a single sql SELECT SUM suery 
-  #
-  def calculate_lifetime_value
-    self.lifetime_value = 0
-    orders.each do |o|
-      o.items.each { |i| self.lifetime_value = self.lifetime_value + i.price}
-    end
-    save
-    lifetime_value
   end
 
   #
@@ -252,6 +238,7 @@ class Person < ActiveRecord::Base
     true
   end
 
+  # The name of this method makes no sense
   def add_phone_if_missing(new_phone)
     if (!new_phone.blank? and phones.where("number = ?", new_phone).empty?)
       phones.create(:number => new_phone, :kind => "Other")

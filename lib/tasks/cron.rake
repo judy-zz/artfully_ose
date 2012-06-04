@@ -1,5 +1,12 @@
 desc "This task is called by the Heroku cron add-on"
 task :cron => :environment do
+
+  #Calculate all org's lifetime value
+  if (Time.new.hour == 2)
+    Organization.all.each do |o|
+      o.delay.calculate_lifetime_value
+    end
+  end
   
   #Calculate everyone's lifetime value
   if (Time.new.hour == 3)
