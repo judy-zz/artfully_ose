@@ -35,7 +35,8 @@
     .value #{order.special_instructions}
   %li
     %h6.key-full Actions
-    =icon_link_to("Resend Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
+    - if order.parent.nil?
+      =icon_link_to("Resend Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
     
 #receipt.modal
   -if @person.email.blank?
