@@ -14,7 +14,7 @@ module ApplicationHelper
   end
   
   def full_details(action)
-    s = action.full_details
+    s = truncate(action.full_details, :length => 100, :separator => ' ', :omission => '...')
     if action.subject.is_a? Order
       s = s + " <a href='#{order_path(action.subject)}'><i class='icon-share-alt'></i></a>"
     end

@@ -53,7 +53,6 @@
   %h4 Donations
   %ul.donation-list
     - @order.donations.each do |item|
-      - donation = item.product
       %li
-        %span.price= "$#{format("%.2f", (donation.amount/100.00))}:"
-        %span.name= "Donation to #{donation.organization.name_for_donations}"
+        %span.price= "$#{format("%.2f", (item.price/100.00))}:"
+        %span.name= "Donation to #{@order.organization.name_for_donations}"

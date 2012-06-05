@@ -38,6 +38,5 @@ Order confirmation
 - unless @order.donations.empty?
   Donations
   - @order.donations.each do |item|
-    - donation = item.product
-    = "$#{format("%.2f", (donation.amount/100.00))}:"
-    = "Donation to #{donation.organization.name_for_donations}"
+    = "$#{format("%.2f", (item.price/100.00))}:"
+    = "Donation to #{@order.organization.name_for_donations}"
