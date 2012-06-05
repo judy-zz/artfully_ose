@@ -54,7 +54,37 @@
           %td.supplement="#{@summary.settlements.num_failed_settlements} failed"
           %td.supplement=""
     %h3 Artful.ly Processed Orders
-    =render :partial => "admin/shared/orders_table", :locals => {:orders => @artfully_orders}
+    %table.table.zebra#order-table
+      %thead
+        %tr
+          %th{:style=>'width:40px'} ID
+          %th{:style=>'width:30px'} Tix
+          %th{:style=>'width:30px'} Don
+          %th Date
+          %th{:style=>'width:75px'} Tran ID
+          %th Person
+          %th Organization
+          %th Total
+          %th Fee
+      %tbody
+        - @artfully_orders.each do |order|
+          %tr
+            %td=link_to order.id, admin_order_path(order)
+            %td
+              - if order.has_ticket?
+                =check_mark
+                .hidden="ticket"
+            %td
+              - if order.has_donation?
+                =check_mark
+                .hidden="donation"
+            -unless order.created_at.nil?
+              %td= l order.created_at_local_to_admins, :format => :short
+            %td= order.transaction_id
+            %td="#{order.person_first_name} #{order.person_last_name}"
+            %td= link_to order.organization_name, admin_organization_path(order.organization_id)
+            %td= number_as_cents order.total
+            %td= number_as_cents order.service_fee
 
     %h3 Settlements
     =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}
