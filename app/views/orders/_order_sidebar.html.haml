@@ -34,12 +34,18 @@
   %li
     .value #{order.special_instructions}
   %li
-    - if order.parent.nil? && !person.dummy? && order.fa_id.nil?
+    - if order.parent.nil? && !person.dummy?
       %h6.key-full Actions
       =icon_link_to("Resend Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
     
 #receipt.modal
-  -if @person.email.blank?
+  -if order.is_fafs?
+    .modal-body
+      %p Artful.ly cannot resend a receipt because this donation was made through Fractured Atlas.  We'll have this feature in place soon!  
+    .modal-footer
+      =link_to "OK", "#", :class => "btn", 'data-dismiss'=>'modal'
+       
+  -elsif person.email.blank?
     .modal-body
       %p Artful.ly cannot email a receipt because we do not have an email address on file for this person.  
       %p
@@ -47,10 +53,11 @@
         to add an email, then try again.
     .modal-footer
       =link_to "OK", "#", :class => "btn", 'data-dismiss'=>'modal' 
+      
   -else
     .modal-body
       Click "Resend Receipt" to email a duplicate receipt to  
-      %strong="#{@person.email}"
+      %strong="#{person.email}"
     .modal-footer
-      =link_to "Resend Receipt", resend_order_path(@order), :class => "btn btn-success"
+      =link_to "Resend Receipt", resend_order_path(order), :class => "btn btn-success"
       =link_to "Cancel", "#", :class => "btn btn-danger", 'data-dismiss'=>'modal'  
