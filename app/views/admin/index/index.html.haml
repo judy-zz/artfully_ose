@@ -1,5 +1,12 @@
 .row
   .span4
+    #search
+      %h3 Find a User
+      = form_tag admin_users_path, :method => :get, :class => 'form-search' do
+        = text_field_tag :query, params[:query], :placeholder => 'Email, name, or org name'
+        = submit_tag "Search", :class => "btn"
+    
+    %h3 Stats
     = render :partial => "admin/stats/stats"
   .span8
     %h3 

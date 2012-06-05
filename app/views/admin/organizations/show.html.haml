@@ -2,61 +2,6 @@
   %h1= @organization.name
 
 .row
-  .span3
-    .well
-      %ul.nav.nav-list
-        %li=link_to "Users", "#users"
-        %li=link_to "Kits", "#kits"
-        %li=link_to "Bank account", "#bank-account"
-        %li=link_to "Events", "#events"
-        %li=link_to "Settlements", "#settlements"
-      
-      
-    %table.table.table-condensed
-      %tbody
-        %tr
-          %td
-            Created
-          %td
-            =l @organization.created_at, :format => :short
-        %tr
-          %td
-            Value
-          %td
-            =number_as_cents @organization.lifetime_value
-        %tr
-          %td
-            Legal name
-          %td
-            =@organization.legal_organization_name
-        %tr
-          %td
-            EIN
-          %td
-            =@organization.ein
-        
-    %table.table.table-condensed
-      %tbody
-        %tr
-          %td FA
-          %td
-            =@organization.connected? ? "Connected" : "Not connected"
-        -if @organization.connected?
-          %tr
-            %td FA ID
-            %td=link_to @organization.fa_member_id, "https://www.fracturedatlas.org/admin/Membership/view?id=#{@organization.fa_member_id}"
-        -if @organization.has_active_fiscally_sponsored_project?
-          %tr
-            %td Project
-            %td= @organization.fiscally_sponsored_project.name
-          %tr
-            %td Website
-            %td= @organization.fiscally_sponsored_project.website
-          %tr
-            %td Status
-            %td= @organization.fiscally_sponsored_project.status
-      
-
   .span9
     %section#users
       %h3 Users
@@ -142,3 +87,56 @@
     %section#settlements
       %h3 Settlements
       =render :partial => "admin/shared/settlements_table", :locals => {:settlements => @settlements}
+  .span3
+    .well
+      %ul.nav.nav-list
+        %li=link_to "Users", "#users"
+        %li=link_to "Kits", "#kits"
+        %li=link_to "Bank account", "#bank-account"
+        %li=link_to "Events", "#events"
+        %li=link_to "Settlements", "#settlements"
+      
+      
+    %table.table.table-condensed
+      %tbody
+        %tr
+          %td
+            Created
+          %td
+            =l @organization.created_at, :format => :short
+        %tr
+          %td
+            Value
+          %td
+            =number_as_cents @organization.lifetime_value
+        %tr
+          %td
+            Legal name
+          %td
+            =@organization.legal_organization_name
+        %tr
+          %td
+            EIN
+          %td
+            =@organization.ein
+        
+    %table.table.table-condensed
+      %tbody
+        %tr
+          %td FA
+          %td
+            =@organization.connected? ? "Connected" : "Not connected"
+        -if @organization.connected?
+          %tr
+            %td FA ID
+            %td=link_to @organization.fa_member_id, "https://www.fracturedatlas.org/admin/Membership/view?id=#{@organization.fa_member_id}"
+        -if @organization.has_active_fiscally_sponsored_project?
+          %tr
+            %td Project
+            %td= @organization.fiscally_sponsored_project.name
+          %tr
+            %td Website
+            %td= @organization.fiscally_sponsored_project.website
+          %tr
+            %td Status
+            %td= @organization.fiscally_sponsored_project.status
