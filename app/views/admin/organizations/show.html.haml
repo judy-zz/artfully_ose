@@ -21,6 +21,11 @@
             =l @organization.created_at, :format => :short
         %tr
           %td
+            Value
+          %td
+            =number_as_cents @organization.lifetime_value
+        %tr
+          %td
             Legal name
           %td
             =@organization.legal_organization_name

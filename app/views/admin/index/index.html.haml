@@ -1,8 +1,24 @@
-- content_for :header do
-  %h1 Administration
-
 .row
   .span4
     = render :partial => "admin/stats/stats"
   .span8
-    %p= "You are signed in as #{current_admin.email}"
+    %h3 
+      Top Organizations    
+    %table.table
+      %thead
+        %tr
+          %td Organization
+          %td Owner
+          %td Lifetime Sales
+      %tbody
+        -@top_organizations.each do |organization|
+          %tr
+            %td= link_to organization.name, admin_organization_path(organization)
+            %td= link_to organization.owner.email, admin_user_path(organization.owner) unless organization.owner.nil?
+            %td= number_as_cents organization.lifetime_value
+    %p
+      %span.label.label-info
+        What's a top organization?
+      This table lists the top 10 organizations listed by total Artful.ly value (gross Artful.ly processed sales).  The list is updated nightly.
+        
+      
