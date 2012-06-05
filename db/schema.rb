@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120604181829) do
+ActiveRecord::Schema.define(:version => 20120605184851) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -314,6 +314,9 @@ ActiveRecord::Schema.define(:version => 20120604181829) do
     t.datetime "deleted_at"
     t.integer  "lifetime_value",  :default => 0
   end
+
+  add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
+  add_index "people", ["organization_id"], :name => "index_people_on_organization_id"
 
   create_table "phones", :force => true do |t|
     t.string   "kind"

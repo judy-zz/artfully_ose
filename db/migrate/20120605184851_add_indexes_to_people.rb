@@ -5,5 +5,7 @@ class AddIndexesToPeople < ActiveRecord::Migration
   end
 
   def self.down
+    remove_index :people, [:organization_id, :email]
+    remove_index :people, :organization_id
   end
 end
