@@ -49,14 +49,16 @@ class Contribution
       :organization_id  => @organization_id,
       :occurred_at      => @occurred_at,
       :details          => @details,
-      :person_id        => @person_id
+      :person_id        => @person_id,
+      :subject          => @order
     })
   end
 
   def build_order
     attributes = {
       :person_id       => @person_id,
-      :organization_id => @organization_id
+      :organization_id => @organization_id,
+      :details         => @details
     }
 
     ApplicationOrder.new(attributes).tap do |order|

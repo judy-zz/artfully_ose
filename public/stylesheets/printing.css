@@ -1,26 +1,13 @@
-@import url(reset.css);
+@import url(bootstrap.css);
 
 .navbar, .footer {
     display:none;
 }
 
-table {
-    width: 100%;
-    position: relative;
-    top: 0px;
+ul {
+  list-style: none;
 }
 
-table thead th {
-    background: white;
-    text-transform:uppercase;
-    font-weight:normal;
-    border-bottom:1px solid #ccc;
-}
-
-a:link, a:visited {
-    color: #520;
-    background: transparent;
-    text-decoration: underline;
-    font-size: 10pt;
-    font-weight: normal;
+.modal {
+  display: none;
 }

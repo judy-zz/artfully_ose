@@ -31,7 +31,7 @@ Artfully::Application.routes.draw do
     resources :finances, :only => [ :index ]
     resources :shows, :only => [ :index ]
     resources :settlements, :only => [ :index, :new, :create ]
-    resources :orders, :only => [ :index ] do
+    resources :orders, :only => [ :index, :show ] do
       collection do
         get 'all' 
         get 'artfully'
@@ -150,6 +150,9 @@ Artfully::Application.routes.draw do
   resources :orders do
     collection do
       get :sales
+    end
+    member do
+      get :resend
     end
   end
 

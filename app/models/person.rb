@@ -1,4 +1,6 @@
 class Person < ActiveRecord::Base
+  include Valuation::LifetimeValue
+  
   acts_as_taggable
 
   belongs_to  :organization
@@ -238,6 +240,7 @@ class Person < ActiveRecord::Base
     true
   end
 
+  # The name of this method makes no sense
   def add_phone_if_missing(new_phone)
     if (!new_phone.blank? and phones.where("number = ?", new_phone).empty?)
       phones.create(:number => new_phone, :kind => "Other")

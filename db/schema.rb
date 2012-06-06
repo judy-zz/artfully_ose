@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120516140802) do
+ActiveRecord::Schema.define(:version => 20120605184851) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -129,6 +129,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.string   "locked_by"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "queue"
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
@@ -264,6 +265,8 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.text     "special_instructions"
   end
 
+  add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
+
   create_table "organizations", :force => true do |t|
     t.string   "name"
     t.string   "time_zone"
@@ -273,6 +276,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.string   "website"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "lifetime_value",          :default => 0
   end
 
   create_table "people", :force => true do |t|
@@ -294,7 +298,11 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.string   "linked_in_url"
     t.integer  "import_id"
     t.datetime "deleted_at"
+    t.integer  "lifetime_value",  :default => 0
   end
+
+  add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
+  add_index "people", ["organization_id"], :name => "index_people_on_organization_id"
 
   create_table "phones", :force => true do |t|
     t.string   "kind"
@@ -413,6 +421,7 @@ ActiveRecord::Schema.define(:version => 20120516140802) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.boolean  "newsletter_emails",                   :default => true, :null => false
+    t.string   "mailchimp_message"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

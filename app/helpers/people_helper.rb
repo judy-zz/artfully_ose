@@ -3,13 +3,20 @@ module PeopleHelper
     link_to person.first_name + ' ' + person.last_name, person_path(person)
   end
   
-  def link_to_person(person)
+  def display_name(person)
     if person.nil?
-      puts "(none)"
+      "(none)"
+    elsif person.dummy?
+      "Anonymous"
     elsif person.last_name.blank? && person.first_name.blank?
-      link_to "Unknown", person_path(person)
+      person.email
     else
-      link_to "#{person.last_name}, #{person.first_name}", person_path(person)
+      "#{person.first_name} #{person.last_name}"
     end
+  end
+  
+  #yuck
+  def link_to_person(person)
+    link_to display_name(person), person_path(person)
   end
 end

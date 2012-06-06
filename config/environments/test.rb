@@ -57,4 +57,9 @@ Artfully::Application.configure do
   ENV["S3_BUCKET"] = "test"
   ENV["ACCESS_KEY_ID"] = "ABC1234567890DEFGHJK"
   ENV["SECRET_ACCESS_KEY"] = "abcdef12345+abcdef1234512345123451234512"
+  
+  #Dummy mailchimp values
+  ENV["MC_API_KEY"]="d-us1"
+  ENV["MC_LIST_ID"]="d"
+
 end

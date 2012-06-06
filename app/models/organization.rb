@@ -1,4 +1,6 @@
 class Organization < ActiveRecord::Base
+  include Valuation::LifetimeValue
+  
   has_many :events
   has_many :charts
   has_many :shows
@@ -25,6 +27,14 @@ class Organization < ActiveRecord::Base
   validates :legal_organization_name, :presence => true, :if => :updating_tax_info
 
   scope :linked_to_fa, where("fa_member_id is not null")
+
+  #
+  # We aren't interested in FAFS donations, so override lifetime_orders
+  # to only include Artfully orders  see: Valuation::LifetimeValue
+  #
+  def lifetime_orders
+    orders.where('transaction_id is not null')
+  end
 
   def owner
     users.first
