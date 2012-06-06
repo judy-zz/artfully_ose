@@ -3,6 +3,11 @@ Artfully::Application.configure do
   #enforce SSL unless we're on /pages
   config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer
   
+  #Basic auth
+  config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
+    [u, p] == ['fracturedatlas', 'frenchpress']
+  end
+  
   # Settings specified here will take precedence over those in config/environment.rb
 
   # The production environment is meant for finished, "live" apps.
