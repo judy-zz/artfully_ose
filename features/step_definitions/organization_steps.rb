@@ -1,3 +1,5 @@
+include ApplicationHelper
+
 Given /^"([^"]*)" is part of an organization$/ do |email|
   user = User.find_by_email(email)
   user.organizations << Factory(:organization)
@@ -25,6 +27,20 @@ end
 Given /^I am part of an organization "([^"]*)"$/ do |name|
   @current_user.organizations << Organization.new(:name => name)
 end
+
+Given /^the organization "([^"]*)" has a lifetime value of "([^"]*)"$/ do |name, value_in_cents|
+  o = Organization.find_by_name(name)
+  o.lifetime_value = value_in_cents.to_i
+  o.save
+end
+
+Then /^the lifetime value should show "([^"]*)"$/ do |value_in_cents|
+  step %{I should see "Value"}
+  within('#lifetime-value-display') do
+    step %{I should see "#{number_as_cents(value_in_cents)}"}
+  end
+end
+
 
 Given /^I create a new organization called "([^"]*)"$/ do |name|
   @current_user.organizations << Organization.new(:name => name)
