@@ -16,3 +16,5 @@ solr/
 .powenv
 .powder
 .autotest
+.sass-cache
+.sass-cache/
