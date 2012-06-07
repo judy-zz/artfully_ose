@@ -44,8 +44,9 @@ module ApplicationHelper
   end
   
   #This is for the widget generator, DO NOT use anywhere else
+  #Broke with asset pipeline
   def asset_path(asset)
-    javascript_path(asset).gsub(/javascripts/, 'assets')
+    #javascript_path(asset).gsub(/javascripts/, 'assets')
   end
   
   def events_to_options(selected_event_id = nil)
