@@ -1,3 +1,8 @@
+//= require jquery
+//= require jquery_ujs
+//= require_self
+//= require_tree .
+
 zebra = function(table) {
     $("tr", table).removeClass("odd");
     $("tr", table).removeClass("even");
