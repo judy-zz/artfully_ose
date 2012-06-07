@@ -12,7 +12,22 @@
   #shopping-cart form {
     margin-bottom: 0; }
 
+<<<<<<< HEAD
 #shopping-cart-controls {
+=======
+#reseller-profile textarea {
+  height: 100px; }
+
+.flash {
+  display: block;
+  font-family: "Arial", sans-serif;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-align: left;
+  -moz-border-radius: 4px 4px 4px 4px;
+  -webkit-border-radius: 4px 4px 4px 4px;
+  border-radius: 4px 4px 4px 4px;
+>>>>>>> resellers
   color: white;
   padding: 10px 5px 10px 27px;
   cursor: pointer;

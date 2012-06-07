@@ -159,13 +159,22 @@ $(document).ready(function() {
   });
 
   var eventId = $("#calendar").attr("data-event");
-  $('#calendar').fullCalendar({
-    height: 500,
-    events: '/events/'+ eventId + '.json',
-    eventClick: function(calEvent, jsEvent, view){
-      window.location = '/events/'+ eventId + '/shows/' + calEvent.id
-    }
-  });
+  var resellerEventId = $("#calendar").attr("data-reseller-event");
+  var organizationId = $("#calendar").attr("data-organization");
+  if (eventId !== undefined) {
+    $('#calendar').fullCalendar({
+      height: 500,
+      events: '/events/' + eventId + '.json',
+      eventClick: function(calEvent, jsEvent, view){
+        window.location = '/events/'+ eventId + '/shows/' + calEvent.id;
+      }
+    });
+  } else if (resellerEventId !== undefined && organizationId !== undefined) {
+    $('#calendar').fullCalendar({
+      height: 500,
+      events: '/organizations/' + organizationId + '/reseller_events/' + resellerEventId + '.json'
+    });
+  }
   $('#tabs').tabs({
       show: function(event, ui) {
           $('#calendar').fullCalendar('render');

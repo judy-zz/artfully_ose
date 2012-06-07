@@ -53,12 +53,14 @@ $(document).ready(function () {
     $(this).find(":submit").removeAttr('disabled');
     $row.removeClass("pending built published unpublished destroyable")
     $row.addClass(show.state);
-    if(show.destroyable == true) {
-			$row.addClass("destroyable");
+		if(show.glance !== undefined) {
+	    if(show.destroyable == true) {
+				$row.addClass("destroyable");
+			}
+	    $row.find(".available_value").html(show.glance.tickets.available);
+	    $row.find(".gross_value").html(show.glance.tickets.sold.gross);
+	    $row.find(".comped_value").html(show.glance.tickets.comped);
 		}
-    $row.find(".available_value").html(show.glance.tickets.available);
-    $row.find(".gross_value").html(show.glance.tickets.sold.gross);
-    $row.find(".comped_value").html(show.glance.tickets.comped);
   });
 
   $("form.sprited").live("ajax:error", function(xhr, status, error){

@@ -24,6 +24,7 @@ class Ticket < ActiveRecord::Base
 
   scope :played, joins(:show).merge(Show.played)
   scope :unplayed, joins(:show).merge(Show.unplayed)
+  scope :resellable, where(:state => "on_sale")
 
   state_machine do
     state :off_sale
@@ -177,6 +178,10 @@ class Ticket < ActiveRecord::Base
     on_sale? or off_sale?
   end
 
+  def resellable?
+    on_sale?
+  end
+
   def destroy
     super if destroyable?
   end
@@ -203,6 +208,16 @@ class Ticket < ActiveRecord::Base
 
   def repriceable?
     not committed?
+  end
+
+  def reseller
+    order =
+      Reseller::Order.
+        includes(:organization, :items).
+        where("items.product_type" => "Ticket", "items.product_id" => id).
+        first
+
+    order.organization if order
   end
 
   #Bulk creation of tickets should use this method to ensure all tickets are created the same

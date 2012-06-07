@@ -1,0 +1,30 @@
+%p
+  Good morning, here is your monthly reseller settlement summary:
+
+%p="#{pluralize(@settlements.length, 'reseller settlement')} were processed."
+%table.standalone.zebra
+  %thead
+    %tr
+      %th ID
+      %th Reseller ID
+      %th Reseller
+      %th Date
+      %th Transaction ID
+      %th Gross
+      %th Realized
+      %th Net
+  %tbody
+    - @settlements.each do |settlement|
+      %tr
+        %td= settlement.id
+        %td= settlement.organization.id
+        %td= settlement.organization.name
+        %td= l(settlement.created_at, :format => :date)
+        %td
+          -if settlement.success?
+            =settlement.transaction_id
+          -else
+            FAILED (#{settlement.ach_response_code})
+        %td= number_as_cents(settlement.gross)
+        %td= number_as_cents(settlement.realized_gross)
+        %td= number_as_cents(settlement.net)

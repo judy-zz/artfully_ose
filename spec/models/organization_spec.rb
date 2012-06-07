@@ -144,4 +144,69 @@ describe Organization do
       subject.send(:update_kits)
     end
   end
+
+  describe "#events_with_sales" do
+    let(:org2) { Factory(:organization_with_reselling) }
+    subject { Factory(:organization_with_reselling) }
+
+    before do
+      # An event produced and sold by this organization.
+      create_event_with_a_sale subject
+
+      # An event produced by this organization and sold by a reseller.
+      create_event_with_a_sale subject, org2
+
+      # An event produced by another organization and sold by this organization.
+      create_event_with_a_sale org2, subject
+
+      # An event produced and sold by another organization.
+      create_event_with_a_sale org2
+    end
+
+    it "should have its own events with sales and events it has resold" do
+      subject.should have(3).events_with_sales
+    end
+
+    def create_event_with_a_sale(producer, reseller = nil)
+      FakeWeb.register_uri :post, "http://localhost:8982/solr/update?wt=ruby", :body => ""
+
+      person = Factory(:person)
+
+      order =
+        if reseller
+          Factory(:reseller_order, :organization => reseller, :person => person)
+        else
+          Factory(:order, :organization => producer, :person => person)
+        end
+
+      event = Factory(:event, :organization => producer)
+      show = Factory(:show, :event => event, :organization => producer)
+      ticket = Factory(:ticket, :show => show, :organization => producer, :state => :sold)
+
+      item =
+        if reseller
+          Factory(:item, :product => ticket, :order => nil, :reseller_order => order, :show => show)
+        else
+          Factory(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
+        end
+
+      order.items << item
+      order.save!
+
+      order.reload
+      producer.reload
+      reseller.reload if reseller
+
+      producer.should_not == reseller
+      order.should have(1).items
+      event.should have(1).shows
+
+      if reseller
+        order.organization.should_not == item.show.organization
+        order.items.first.show.should == show
+        order.should have(1).external_order
+        order.external_orders.first.organization.should == producer
+      end
+    end
+  end
 end

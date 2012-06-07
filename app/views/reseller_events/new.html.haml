@@ -1,0 +1,10 @@
+- in_section :events
+- content_for :header do
+  %h1= t('.heading', :default => "Reseller Events")
+
+.context
+  %h3 Creating a Reseller Event
+  %p= "Required fields are marked with an asterisk"
+
+.document
+  = render "form", :organization => @organization, :event => @reseller_event

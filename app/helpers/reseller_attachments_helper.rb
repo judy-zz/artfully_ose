@@ -1,0 +1,2 @@
+module ResellerAttachmentsHelper
+end

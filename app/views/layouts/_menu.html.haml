@@ -9,6 +9,13 @@
             %li= link_to "All Events", events_path
             %li= link_to "New Event", new_event_path
             %li= link_to "Widgets", new_widget_path
+            - if current_user.current_organization.has_kit?(:reseller)
+              - if current_user.current_organization.reseller_profile
+                %li= link_to "Reseller Settings", edit_organization_reseller_profile_path(current_user.current_organization, current_user.current_organization.reseller_profile)
+                %li= link_to "Reseller Events", organization_reseller_events_path(current_user.current_organization)
+              - else
+                %li= link_to "Reseller Settings", new_organization_reseller_profile_path(current_user.current_organization)
+            %li= link_to "Reseller Offers", ticket_offers_path
 
         %li{ :class => "dropdown #{active?(:people)}" }
           = nav_dropdown "People"

@@ -1,0 +1,14 @@
+- content_for :header do
+  %h1 Reseller Offers
+
+.row
+
+  .span3
+    Copycopter stuff here about offering tickets to resellers.  Fees.  What one can expect.  Tickets are not reserves until sold.  Etc...
+
+  .span8
+    - if !@ticket_offer.reseller_profile
+      = render "select_reseller_profile"
+    - else
+      = render "shared/error_messages", :target => @ticket_offer
+      = render :partial => 'form', :locals => { :show => @show }

@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe ImportsHelper do
+describe ResellerShow do
 end

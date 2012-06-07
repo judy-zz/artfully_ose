@@ -2,24 +2,19 @@
 - content_for :header do
   %h1 Return Tickets
 
-.compact-spread
-  = form_tag refunds_path do
-    = hidden_field_tag :order_id, @order.id
-    - @items.each do |item|
-      = hidden_field_tag "items[]", item.id
-    %table.table
-      %thead
-        %tr
-          %th
-            Event
-          %th
-            Show
-          %th
-            Price
-          %th
-            Sold
+.row
+  .span8.offset2
+    = form_tag refunds_path do
+
+      = hidden_field_tag :order_id, @order.id
+
       - @items.each do |item|
-        - if item.ticket?
+        = hidden_field_tag "items[]", item.id
+
+      %h3 Tickets
+
+      %table.standalone.table
+        %thead
           %tr
             %td=item.product.show.event.name
             %td=l item.product.show.datetime_local_to_event, :format => :short

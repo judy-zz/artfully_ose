@@ -4,11 +4,14 @@ class Show < ActiveRecord::Base
   belongs_to :chart
 
   has_many :tickets, :dependent => :destroy
+  has_many :ticket_offers, :dependent => :destroy
 
   has_many :settlements
   has_many :items
   
   before_destroy :destroyable?
+
+  has_many :reseller_attachments, :as => :attachable
 
   validates_presence_of :datetime
   validates_presence_of :chart_id
@@ -98,12 +101,17 @@ class Show < ActiveRecord::Base
     copy
   end
 
+  def show_time
+    I18n.l(datetime_local_to_event, :format => :long_with_day)
+  end
+
   def as_json(options={})
     { "id" => id,
       "chart_id" => chart.id,
       "state" => state,
-      "destroyable" => destroyable?,
-      "show_time" => I18n.l( datetime_local_to_event, :format => :long_with_day)
+      "show_time" => show_time,
+      "datetime" => datetime_local_to_event,
+      "destroyable" => destroyable?
     }
   end
 
@@ -126,6 +134,18 @@ class Show < ActiveRecord::Base
 
   def settleables
     items.reject(&:modified?)
+  end
+
+  def reseller_settleables
+    settleables = {}
+
+    items.includes(:reseller_order).select(&:reseller_order).reject(&:modified?).each do |item|
+      reseller = item.reseller_order.organization
+      settleables[reseller] ||= []
+      settleables[reseller] << item
+    end
+
+    settleables
   end
 
   def destroyable?
@@ -154,6 +174,24 @@ class Show < ActiveRecord::Base
 
   def compable_tickets
     tickets.select(&:compable?)
+  end
+
+  def as_widget_json(options = {})
+    as_json.merge(:event => event.as_json, :venue => event.venue.as_json, :chart => chart.as_json)
+  end
+
+  def <=>(obj)
+    return -1 unless obj.kind_of? Show
+
+    if self.event == obj.event
+      self.datetime <=> obj.datetime
+    else
+      self.event <=> obj.event
+    end
+  end
+
+  def reseller_sold_count
+    self.ticket_offers.inject(0) { |sum, to| sum + to.sold }
   end
 
   private

@@ -1,0 +1,108 @@
+.table-controls
+  @include rounded-corners(3px, 3px, 0, 0)
+  border: 1px solid #ccc
+  padding: .5em
+  background: #eee
+  border-bottom: 1px solid #ddd
+  overflow: auto
+  ul
+    li
+      display: inline
+      input
+        @include rounded-corners(0, 0, 0, 0)
+        border-right: none
+      &:first-child input
+        @include rounded-corners(7px, 0, 0, 7px)
+      &:last-child input
+        @include rounded-corners(0, 7px, 7px, 0)
+        border-right: 1px solid #bbb
+
+table
+  width: 100%
+  display: table !important
+  border: 1px solid #ccc
+  border-top: none
+  font-size: .9em
+  tr.failed
+    background-color: lighten($red, 40%) !important
+    td
+      background-color: lighten($red, 40%) !important
+  td, th
+    padding: .5em
+    &.checkbox
+      width: 1em
+  td
+    color: #666
+  td.supplement
+    color: #888
+  th
+    color: #666
+    @include gradient(#eee, #e0e0e0)
+    font-weight: bold
+    border: 1px solid #ccc
+    border-top: none
+
+table.standalone
+  border: 1px solid #ccc
+
+table.example-contact
+  margin-bottom: 25px
+  border-width: 0px
+  td.label
+    width: 150px
+    font-weight: bold
+
+td.numeric
+  width: auto
+  text-align: right
+
+tfoot tr
+  @include gradient(#eee, #e0e0e0)
+  font-weight: bold
+  border-top: 1px solid #ccc
+
+.zebra .even
+  background: rgba(7, 112, 131, 0.1)
+
+.zebra tbody tr td:nth-child(odd)
+  background: rgba(255,255,255,0.5)
+
+.filter
+  float: right
+
+
+.DataTables_sort_wrapper
+  padding-right: 20px
+  position: relative
+  span
+    margin-top: -8px
+    position: absolute
+    right: 0
+    top: 50%
+
+.dataTables_length, .dataTables_info
+  margin: .25em
+  float: left
+  line-height: 19px
+  font-weight: normal
+
+.dataTables_paginate, .dataTables_filter
+  margin: .25em
+  float: none
+  text-align: right
+  padding: 0 10px
+
+.dataTables_wrapper
+  .ui-widget-header
+    @include gradient(#bbb, #aaa, 14%, 100%)
+    @include rounded-corners(0, 0, 0, 0)
+    border: 1px solid #ccc
+
+.dataTables_wrapper th
+  cursor: pointer
+
+#reseller-profile-datatable
+  tr.even
+    background-color: #EEE
+  tr.odd
+    background-color: #FFF

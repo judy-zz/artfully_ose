@@ -75,7 +75,7 @@ module ApplicationHelper
 <script>
     EOF
   end
-  
+
   def amount_and_nongift(item)
     str = number_as_cents item.total_price
     str += " (#{number_as_cents item.nongift_amount} Non-deductible)" unless item.nongift_amount.nil?
@@ -160,6 +160,35 @@ module ApplicationHelper
       "West Virginia"        =>"WV",
       "Wyoming"              =>"WY"
     }
+  end
+
+  def verb_for_save(record)
+    record.new_record? ? "Create" : "Update"
+  end
+
+  def select_event_for_sales_search events, event_id, default
+    options =
+      [
+        content_tag(:option, " --- All Events --- ", :value => ""),
+        content_tag(:option, "", :value => ""),
+        options_from_collection_for_select(events, :id, :name, default)
+      ].join
+
+    select_tag event_id, raw(options)
+  end
+
+  def select_show_for_sales_search shows, show_id, default
+    options =
+      [
+        content_tag(:option, " --- All Shows --- ", :value => ""),
+        content_tag(:option, "", :value => ""),
+        shows.map do |show|
+          selected = "selected" if show.id == default.to_i
+          content_tag(:option, l(show.datetime_local_to_event), :value => show.id, :selected => selected)
+        end.join
+      ].join
+
+    select_tag show_id, raw(options)
   end
 
   def nav_dropdown(text, link='#')

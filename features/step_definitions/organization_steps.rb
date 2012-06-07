@@ -24,6 +24,12 @@ Given /^I am part of an organization with access to the ticketing kit$/ do
   @current_user.organizations << Factory(:organization_with_ticketing)
 end
 
+Given /^I am part of an organization with access to the reselling kit$/ do
+  @current_user ||= Factory(:user)
+  @current_user.organizations << Factory(:organization_with_reselling)
+  @organization = @current_user.current_organization
+end
+
 Given /^I am part of an organization "([^"]*)"$/ do |name|
   @current_user.organizations << Organization.new(:name => name)
 end
@@ -101,4 +107,8 @@ end
 
 Given /^there is no organization with a name of "([^"]*)"$/ do |name|
   Organization.find_by_name(name).should be_blank
+end
+
+Then /^my organization should have the "([^"]*)" kit$/ do |kit|
+  @current_user.current_organization.has_kit?(kit).should be_true
 end

@@ -227,6 +227,24 @@ describe Show do
     end
   end
 
+  describe "#reseller_settleables" do
+    let(:order) { Factory.create(:reseller_order) }
+    let(:items) { 10.times.collect { Factory(:item, :show_id => subject.id, :reseller_order => order) } }
+    before(:each) do
+      subject.items = items
+      subject.save!
+    end
+
+    it "finds the settleable line items for the performance" do
+      subject.reseller_settleables.keys.should eq [ order.organization ]
+    end
+
+    it "rejects line items that have been settled already" do
+      items.first.update_attributes! :state => "settled"
+      subject.reseller_settleables[order.organization].should have(9).items
+    end
+  end
+
   describe ".next_datetime" do
     context "without a starting performance datetime" do
       subject { Show.next_datetime(nil) }

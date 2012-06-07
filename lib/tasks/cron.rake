@@ -14,7 +14,7 @@ task :cron => :environment do
       p.delay.calculate_lifetime_value
     end
   end
-  
+
   #Reindex people every night
   if (Time.now.hour == 4)
     Person.delay.reindex
@@ -24,13 +24,18 @@ task :cron => :environment do
   if Time.now.hour == 5 
     Job::Settlement.run
   end
-  
+
+  #Reseller Settlement, run at 5am on the 3rd of each month.
+  if Time.now.hour == 5 && Time.now.mday == 3
+    Job::ResellerSettlement.run
+  end
+
   #AdminStats runs during the day
   if (7..18).include? Time.now.hour
     Job::AdminStats.run
   end
-  
+
   #Update FAFS projects.  Heroku runs cron hourly so this will run hourly
   Job::FafsDonations.run
-  
+
 end

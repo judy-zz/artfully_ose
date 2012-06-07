@@ -18,6 +18,9 @@ class OrganizationsController < ApplicationController
 
     @fa_user = FA::User.new
     @kits = @organization.available_kits
+
+    @reseller_profile = @organization.reseller_profile
+    @reseller_profile ||= ResellerProfile.new if @organization.has_kit?(:reseller)
   end
 
   def new

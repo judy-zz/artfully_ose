@@ -1,0 +1,23 @@
+%h3 Find a reseller
+
+.clearfix
+
+%table.table#reseller-profile-datatable
+  %thead
+    %tr
+      %th Name
+      %th Description
+      %th Fee
+      %th &nbsp;
+
+  %tbody
+    - @reseller_profiles.each do |profile|
+      %tr
+        %td
+          - if profile.url.present?
+            = link_to profile.organization.name, profile.url, :target => "_blank"
+          - else
+            = profile.organization.name
+        %td= profile.description
+        %td= number_to_currency(profile.fee / 100.0)
+        %td= button_to "Offer Tickets", new_ticket_offer_path(:reseller_profile_id => profile.id), :class => :btn

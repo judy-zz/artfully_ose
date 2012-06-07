@@ -68,7 +68,7 @@ class ShowsController < ApplicationController
     authorize! :view, @show
 
     @show.tickets = @show.tickets
-    @tickets = @show.tickets
+    @tickets = @show.tickets.includes(:section)
   end
 
   def edit

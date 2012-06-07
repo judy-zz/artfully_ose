@@ -3,7 +3,10 @@ Artfully::Application.routes.draw do
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index
+    resources :shows, :only => :show
     resources :organizations, :only => [] do
+      resources :events
+      resources :shows
       get :authorization
     end
   end
@@ -33,7 +36,7 @@ Artfully::Application.routes.draw do
     resources :settlements, :only => [ :index, :new, :create ]
     resources :orders, :only => [ :index, :show ] do
       collection do
-        get 'all' 
+        get 'all'
         get 'artfully'
       end
     end
@@ -61,10 +64,32 @@ Artfully::Application.routes.draw do
   devise_for :admins
 
   resources :organizations do
+    resources :reseller_attachments
+    resources :reseller_profiles
+    resources :reseller_events do
+      resources :reseller_attachments
+      resources :reseller_shows do
+        member do
+          put :publish
+          put :unpublish
+        end
+      end
+    end
     put :tax_info, :on => :member
     resources :memberships
     member do
       post :connect
+    end
+  end
+
+  resources :ticket_offers do
+    collection do
+      post "/new", :to => "ticket_offers#new"
+      get "/create", :to => "ticket_offers#create"
+    end
+    member do
+      get :accept
+      get :decline
     end
   end
 
@@ -102,6 +127,7 @@ Artfully::Application.routes.draw do
   resources :events do
     get :widget,  :on => :member
     get :storefront_link,  :on => :member
+    get :resell, :on => :member
     get :prices,  :on => :member
     get :image,   :on => :member
     get :messages,   :on => :member

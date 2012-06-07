@@ -4,6 +4,7 @@ class Store::OrdersController < Store::StoreController
   layout "cart"
   skip_before_filter :verify_authenticity_token
   after_filter :add_p3p_header
+  before_filter :initialize_cart
 
   def show
     @donations = current_cart.generate_donations
@@ -11,17 +12,17 @@ class Store::OrdersController < Store::StoreController
 
   def create
     handle_order(params)
-    redirect_to store_order_url
+    redirect_to redirection_destination
   end
 
   def update
     handle_order(params)
-    redirect_to store_order_url
+    redirect_to redirection_destination
   end
 
   def destroy
     current_cart.destroy
-    redirect_to store_order_url
+    redirect_to redirection_destination
   end
 
   # used by hosted storefront
@@ -63,6 +64,10 @@ class Store::OrdersController < Store::StoreController
   end
 
   private
+    def initialize_cart
+      current_cart params[:reseller_id]
+    end
+
     def handle_order(params)
       handle_tickets(params[:tickets]) if params.has_key? :tickets
       handle_donation(params[:donation]) if params.has_key? :donation
@@ -73,8 +78,13 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_tickets(ids)
-      logger.info("current_cart: #{current_cart}")
-      current_cart << Ticket.find(ids)
+      Ticket.find(ids).each do |ticket|
+        if current_cart.can_hold? ticket
+          current_cart << ticket
+        else
+          flash[:error] = "Your cart cannot hold any more tickets."
+        end
+      end
     end
 
     def handle_donation(data)
@@ -88,5 +98,9 @@ class Store::OrdersController < Store::StoreController
     
     def add_p3p_header
       response.headers["P3P"] = "CP=\"IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT\""
+    end
+
+    def redirection_destination
+      store_order_url reseller_id: params[:reseller_id]
     end
 end

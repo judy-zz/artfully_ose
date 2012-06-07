@@ -19,6 +19,10 @@ class Cart < ActiveRecord::Base
   def items
     self.tickets + self.donations
   end
+    
+  def checkout_class
+    Checkout
+  end
 
   def clear!
     clear_tickets
@@ -125,6 +129,14 @@ class Cart < ActiveRecord::Base
 
   def organizations_from_tickets
     Organization.find(tickets.collect(&:organization_id))
+  end
+
+  def can_hold?(ticket)
+    true
+  end
+
+  def reseller_is?(reseller)
+    reseller == nil
   end
 
   private

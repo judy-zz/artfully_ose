@@ -61,7 +61,6 @@ describe Comp do
       (0..2).each do |i|
         selected_tickets << tickets[i].id
       end
-      Ticket.should_receive(:find).exactly(3).times.and_return(tickets[0], tickets[1], tickets[2])
       @comp = Comp.new(show, selected_tickets, recipient, benefactor)
       @comp.reason = "comment"
       @comp.submit
@@ -97,7 +96,6 @@ describe Comp do
     
     before(:each) do 
       selected_tickets = tickets[0..1]
-      Ticket.should_not_receive(:find)
       @comp = Comp.new(show, selected_tickets, recipient, benefactor)
       @comp.reason = "comment"
       @comp.submit

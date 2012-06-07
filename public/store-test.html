@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Alexander!</title>
+
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js'></script>
+<script src='http://artfully.dev/javascripts/artfully-v2.js'></script>
+
+<link href='http://artfully.dev/stylesheets/themes/default.css' media='screen' rel='stylesheet' type='text/css'>
+
+<script>
+  //<![CDATA[
+    $(document).ready(function(){
+      artfully.configure({
+        base_uri: 'http://artfully.dev/api/',
+        store_uri: 'http://artfully.dev/store/'
+      });
+      artfully.reseller(8);
+      artfully.widgets.show().display(35);
+    });
+  //]]>
+</script>
+
+	</head>
+<body>
+  <div id="header-color">
+  </div>
+	<div id="content">
+    <div id="event"></div>
+    <div id="artfully-show"></div>
+	</div>
+</body>
+</html>

@@ -3,6 +3,8 @@ class Item < ActiveRecord::Base
   belongs_to :order
   belongs_to :show
   belongs_to :settlement
+  belongs_to :reseller_order, :class_name => "Reseller::Order"
+  belongs_to :product, :polymorphic => true
   
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge
@@ -67,16 +69,13 @@ class Item < ActiveRecord::Base
     where(:product_type => product.class.to_s).where(:product_id => product.id)
   end
 
-  def product
-    @product ||= find_product
-  end
-
   def product=(product)
     set_product_details_from product
     set_prices_from product
     set_show_from product if product.respond_to? :show_id
     self.state = "purchased"
-    @product = product
+    self.product_id = if product then product.id end
+    self.product_type = if product then product.class.name end
   end
 
   def dup!
@@ -188,16 +187,4 @@ class Item < ActiveRecord::Base
       self.show_id = prod.show_id
     end
 
-    def find_product
-      return if self.product_id.nil?
-
-      begin
-        klass = Kernel.const_get(product_type)
-        klass.find(product_id)
-      rescue NameError
-        return nil
-      rescue ActiveResource::ResourceNotFound
-        return nil
-      end
-    end
 end

@@ -8,18 +8,19 @@ class KitsController < ApplicationController
     authorize! :edit, current_user.current_organization
     @kit = Kernel.const_get(params[:type].camelize).new
     @kit.organization = current_user.current_organization
+
     if @kit.requirements_met?
       render "#{@kit.type.underscore.pluralize}/activate"
     else
       render "#{@kit.type.underscore.pluralize}/requirements"
     end
   end
-  
+
   def requirements
     authorize! :edit, current_user.current_organization
     @kit = Kernel.const_get(params[:type].camelize).new
     @kit.organization = current_user.current_organization
-    
+
     render "#{@kit.type.underscore.pluralize}/requirements"
   end
 

@@ -1,0 +1,49 @@
+= render "shared/error_messages", :target => event
+
+= form_for([ organization, event ]) do |form|
+
+  %legend Reseller Event
+  .hr
+  %fieldset
+    %ul
+      %li
+        .label= form.label :name, "Name*"
+        .element= form.text_field :name
+      %li
+        .label= form.label :producer, "Producer*"
+        .element= form.text_field :producer
+      %li
+        .label= form.label :description, "Description"
+        .element= form.text_area :description, :rows => 6
+      %li
+        .label= form.label :url, "URL"
+        .element= form.text_field :url
+
+  %legend Venue
+  .hr
+  = form.fields_for :venue_attributes, event.venue do |venue_form|
+    %fieldset
+      %ul
+        %li
+          .label= venue_form.label :name, "Name*"
+          .element= venue_form.text_field :name
+        %li
+          .label= venue_form.label :address1, "Address Line 1"
+          .element= venue_form.text_field :address1
+        %li
+          .label= venue_form.label :address2, "Address Line 2"
+          .element= venue_form.text_field :address2
+        %li
+          .label= venue_form.label :city, "City*"
+          .element= venue_form.text_field :city
+        %li
+          .label= venue_form.label :state, "State / Province*"
+          .element= venue_form.select(:state, options_for_select(sorted_us_state_names, event.venue.state))
+        %li
+          .label= venue_form.label :zip, "Zip / Postal Code"
+          .element= venue_form.text_field :zip
+        %li
+          .label= venue_form.label :time_zone, "Time Zone*"
+          .element= venue_form.time_zone_select :time_zone, ActiveSupport::TimeZone.us_zones, :default => current_user.current_organization.time_zone
+
+  = form.submit "#{verb_for_save event} Event"

@@ -27,7 +27,22 @@ class OrdersController < ApplicationController
 
   def sales
     authorize! :view, Order
-    @search = SaleSearch.new(params[:start], params[:stop], current_user.current_organization) do |results|
+
+    @organization = current_user.current_organization
+    @event = Event.find_by_id(params[:event_id]) if params[:event_id].present?
+    @events = @organization.events_with_sales
+    @show = @event.shows.find_by_id(params[:show_id]) if @event && params[:show_id].present?
+    @shows = @event.shows_with_sales(@organization) if @event
+
+    search_terms = {
+      :start        => params[:start],
+      :stop         => params[:stop],
+      :organization => current_user.current_organization,
+      :event        => @event,
+      :show         => @show
+    }
+
+    @search = SaleSearch.new(search_terms) do |results|
       results.paginate(:page => params[:page], :per_page => 25)
     end
   end

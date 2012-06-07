@@ -1,0 +1,91 @@
+- in_section :events
+- content_for :header do
+  %h1= t('.heading', :default => "Reseller Offers")
+
+- if (@offers_to_me && @offers_to_me.count > 0) || (@my_offers && @my_offers.count > 0)
+
+  .row
+
+    .span12
+
+      - if current_user.current_organization.has_kit?(:reseller) && current_user.current_organization.reseller_profile
+
+        %h3 Ticket Offers
+
+        %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
+
+        - if @reseller_profile
+
+          #offers-to-me
+
+            %table.table
+              %thead
+                %th Status
+                %th Event
+                %th Section
+                %th Time
+                %th Price
+                %th Available
+                %th Sold
+                %th Total
+                %th
+              %tbody
+                - @offers_to_me.each do |offer|
+                  %tr
+                    %td= h offer.status
+                    %td= link_to(offer.event.name, store_event_path(offer.event)) if offer.event
+                    %td= h offer.section.name if offer.section
+                    %td= l offer.show.datetime_local_to_event if offer.show
+                    %td= number_to_currency(offer.section.price * 0.01)
+                    %td= offer.available
+                    %td= offer.sold
+                    %td= offer.count
+                    %td= reseller_offer_control(offer)
+
+      - if @organization.events.count > 0
+
+        #offers-by-me
+
+          %h3 Ticket offers by you
+
+          %table.table
+            %thead
+              %th Status
+              %th Event
+              %th Section
+              %th Time
+              %th Price
+              %th Available
+              %th Sold
+              %th Total
+              %th
+            %tbody
+              - @my_offers.each do |offer|
+                %tr
+                  %td= h offer.status
+                  %td= h offer.event.name if offer.event
+                  %td= h offer.section.name if offer.section
+                  %td= l offer.show.datetime_local_to_event if offer.show
+                  %td= number_to_currency(offer.section.price * 0.01)
+                  %td= offer.available
+                  %td= offer.sold
+                  %td= offer.count
+                  %td= producer_offer_control(offer)
+
+        - if @organization.events.count > 0
+          = link_to "Create a ticket offer", new_ticket_offer_path, :class => :btn
+        - else
+          = link_to "Create an event", new_event_path, :class => :btn
+
+- else
+
+  .document
+    %h3 Ticket Offers
+
+    - if current_user.current_organization.has_kit?(:reseller) && current_user.current_organization.reseller_profile
+      %p= t(".ticket_offers", :default => "Offers made to you by producers will appear here.")
+
+    - if @organization.events.count > 0
+      = link_to "Create a ticket offer", new_ticket_offer_path, :class => :btn
+    - else
+      = link_to "Create an event", new_event_path, :class => :btn

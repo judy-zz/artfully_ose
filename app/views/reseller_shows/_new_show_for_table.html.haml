@@ -1,0 +1,7 @@
+= form_for [ organization, show.event, show ] do |f|
+
+  %td
+    = f.text_field :datetime, :value => l(show.datetime_local_to_reseller_event, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+
+  %td
+    = f.submit "Create New", :class => [ :mini, :full ]

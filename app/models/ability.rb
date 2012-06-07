@@ -74,6 +74,24 @@ class Ability
     can :manage, Chart do |chart|
       user.current_organization.can? :manage, chart
     end
+
+    can :manage, TicketOffer do |ticket_offer|
+      ticket_offer.organization == user.current_organization
+    end
+
+    can :manage, TicketOffer do |ticket_offer|
+      profile1 = ticket_offer.reseller_profile
+      profile2 = user.current_organization.reseller_profile
+      profile1 && profile2 && profile1 == profile2
+    end
+
+    can :manage, ResellerProfile do |reseller_profile|
+      reseller_profile.organization == user.current_organization
+    end
+
+    can :manage, ResellerEvent do |reseller_event|
+      reseller_event.organization == user.current_organization
+    end
   end
 
   def paid_ticketing_abilities_for(user)

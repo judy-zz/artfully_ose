@@ -1,0 +1,44 @@
+- in_section :events
+- content_for :header do
+  %h1= t('.heading', :default => "Reseller Events")
+
+.row
+
+  .span3
+
+    %h3 Your Events
+
+    %p= t('.events', :default => "Your events will appear here.")
+
+  .span9
+
+    - if @reseller_events.present?
+      %table.table
+        %thead
+          %th Name
+          %th Venue
+          %th Description
+        %tbody
+          - @reseller_events.each do |event|
+            %tr
+              %td= link_to event.name, organization_reseller_event_path(@organization, event), :name => 'event-name'
+              %td #{event.venue.name}<br>#{event.venue.city}, #{event.venue.state}
+              %td= event.description
+
+    = link_to "Create an Event", new_organization_reseller_event_path(@organization), :class => 'btn'
+
+    - if @reselling_offers.present?
+      %h3.with-gap-above Shows You Are Reselling
+      %table.table
+        %thead
+          %th Name
+          %th Date &amp; Time
+          %th Venue
+          %th Description
+        %tbody
+          - @reselling_offers.each do |offer|
+            %tr
+              %td= link_to offer.event.name, store_event_path(offer.event), :name => 'event-name'
+              %td= I18n.l(offer.show.datetime_local_to_event, :format => :long_with_day)
+              %td= offer.event.venue.name
+              %td= offer.event.description

@@ -4,11 +4,16 @@ gem 'rails', '3.1.2'
 gem 'rack-ssl-enforcer'
 gem 'rack-canonical-host'
 
-gem 'activemerchant', :require => 'active_merchant'
+#rails 3.1
+group :assets do
+  gem 'sass-rails', "  ~> 3.1.0"
+  gem 'coffee-rails', "~> 3.1.0"
+  gem 'uglifier'
+end
 
+gem 'activemerchant', :require => 'active_merchant'
 gem 'athena_resource'
 gem 'activerecord-import', '0.2.9'
-
 gem 'delayed_job', '=3.0.2'
 gem 'delayed_job_active_record', '=0.3.2'
 gem 'acts-as-taggable-on', '~>2.1.0'
@@ -25,7 +30,6 @@ gem 'will_paginate', '~> 3.0', :require => [ "will_paginate", "will_paginate/arr
 gem 'bootstrap-will_paginate'
 gem 'copycopter_client', '2.0.1'
 gem 'mail'
-gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.19'
 gem 's3', '>= 0.3.11'
 gem 'set_watch_for', :path => "vendor/gems/set_watch_for-0.0.1"
@@ -74,7 +78,7 @@ group :test do
 end
 
 group :deployment do
-  gem 'heroku'
+  gem 'heroku', "> 2.20"
 end
 
 group :test, :development do
@@ -83,5 +87,6 @@ group :test, :development do
   gem 'launchy'
   gem 'awesome_print', :require => 'ap'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
+  gem 'wirble'
   gem 'sunspot_solr'
 end

@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe ExportHelper do
+describe ResellerEvent do
 end

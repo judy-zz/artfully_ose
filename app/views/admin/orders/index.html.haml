@@ -4,5 +4,6 @@
     = link_to "Processed by Artfully", artfully_admin_orders_path, :class => "btn #{controller.action_name == 'artfully' && 'active'}"
     = link_to "All", all_admin_orders_path, :class => "btn #{controller.action_name == 'all' && 'active'}"
     
-.spread
-  =render :partial => "admin/shared/orders_table", :locals => {:orders => @orders}
+.row
+  .span12
+    = render :partial => "admin/shared/orders_table", :locals => {:orders => @orders}

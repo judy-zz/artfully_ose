@@ -90,7 +90,7 @@ $(document).ready(function(){
   });
 
   // click "remove" on a cart item
-  $(document).on('click', 'td.remove a', function(e) {
+  $(document).delegate('td.remove a', 'click', function(e) {
     e.preventDefault();
     $(this).parents('tr').remove();
     updateTotal();
@@ -99,7 +99,7 @@ $(document).ready(function(){
   })
 
   // change drop down on tickets in cart
-  $(document).on('change', '#cart select.ticket-count', function(e) {
+  $(document).delegate('#cart select.ticket-count', 'change', function(e) {
     updateQuantityInCart();
     updateTotal();
     $('.formatCurrency').formatCurrency();

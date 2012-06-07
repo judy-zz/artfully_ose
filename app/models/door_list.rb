@@ -1,22 +1,24 @@
 class DoorList
+  attr_reader :show
   extend ::ApplicationHelper
 
-  attr_accessor :show
-
   def initialize(show)
-    self.show = show
+    @show = show
+  end
+
+  def tickets
+    @tickets ||= Ticket.where(:show_id => show.id).includes(:buyer, :cart).select(&:committed?)
   end
 
   def items
-    @items ||= Ticket.where(:show_id => show.id).includes(:buyer).select(&:committed?).collect do |ticket|
-      Item.new(ticket, ticket.buyer)
-    end.sort{ |a,b| (a.ticket.buyer.last_name || "") <=> (b.ticket.buyer.last_name || "") }
+    @items ||= tickets.map { |t| Item.new t, t.buyer }.sort
   end
 
   private
+
     class Item
       attr_accessor :ticket, :buyer, :special_instructions
-
+      
       comma do
         buyer("First Name") { |buyer| buyer.first_name }
         buyer("Last Name") { |buyer| buyer.last_name }
@@ -30,6 +32,10 @@ class DoorList
         self.ticket = ticket
         self.buyer = buyer
         self.special_instructions = ticket.special_instructions
+      end
+
+      def <=>(obj)
+        (self.ticket.buyer.last_name || "") <=> (obj.ticket.buyer.last_name || "")
       end
     end
 end

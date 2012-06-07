@@ -1,0 +1,26 @@
+= form_for [ @organization, @reseller_attachment ], :html => { :multipart => true } do |f|
+
+  = render "shared/error_messages", :target => @reseller_attachment
+
+  = f.hidden_field :attachable_id
+  = f.hidden_field :attachable_type
+
+  %h3 Attach to #{@reseller_attachment.attachable.name}
+
+  %ul
+
+    %li
+      .label
+        = f.label :image
+        - if @reseller_attachment.image.present?
+          = image_tag @reseller_attachment.image.url, :width => 100
+      .element
+        = f.file_field :image
+
+    %li
+      .label= f.label :comment
+      .element= f.text_area :comment, :rows => 5
+
+  .cancel-submit
+    = link_to "Cancel", organization_reseller_events_path(@organization)
+    = f.submit "Upload Image"

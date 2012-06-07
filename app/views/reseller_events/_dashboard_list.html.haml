@@ -1,0 +1,13 @@
+- if @reselling_events.count > 0
+
+  %h3 You can sell tickets to the following events
+
+  - @reselling_events.each do |event|
+    %p= event.name
+
+- if @reseller_events.count > 0
+
+  %h3 Your custom reseller events
+
+  - @reseller_events.each do |event|
+    %p= event.name

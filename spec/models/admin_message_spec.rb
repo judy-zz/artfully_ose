@@ -13,6 +13,7 @@ describe AdminMessage do
 
   context "an admin message that expires tomorrow" do
     subject { Factory.create :admin_message, :message => 'hi', :starts_on => Date.yesterday, :ends_on => Date.tomorrow }
+    before { subject } # Make sure subject is loaded.
 
     it "should be in the active list" do
       subject.save

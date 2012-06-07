@@ -21,4 +21,5 @@ class StatementsController < ApplicationController
     @played = @event.played_shows(:all)
     @statement = Statement.for_show(@show, current_user.current_organization)
   end
+
 end

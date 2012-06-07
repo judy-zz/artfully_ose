@@ -1,0 +1,11 @@
+- if not show.played?
+
+  = form_for [ :publish, show.organization, show.event, show ], :remote => true, :'data-type' => :json, :method => :put, :html => { :class => "sprited built unpublished" }do |f|
+    = f.submit "Publish", :class => [ :mini, :half ]
+    .confirmation.dialog
+      %p= "You are publishing the #{l show.datetime_local_to_event} showing of #{show.event.name}."
+
+  = form_for [ :unpublish, show.organization, show.event, show ], :remote => true, :'data-type' => :json, :method => :put, :html => { :class => "sprited built published" } do |f|
+    = f.submit "Unpublish", :class => [ :mini, :half ]
+    .confirmation.dialog
+      %p= "You are unpublishing the #{l show.datetime_local_to_event} showing of #{show.event.name}."

@@ -18,6 +18,7 @@ s3_upload_files:
   - public/stylesheets/reset.css
   - public/stylesheets/themes/default.css
   - public/javascripts/artfully.js
+  - public/javascripts/artfully-v2.js
 
 javascripts:
   splash:
@@ -93,6 +94,7 @@ stylesheets:
     - public/stylesheets/jquery/jquery-ui.css
     - public/stylesheets/jquery/jquery.visualize.css
     - public/stylesheets/jquery/fullcalendar.css
+    - public/stylesheets/jquery/jquery.fancybox-1.3.4.css
 
   printing:
     - public/stylesheets/printing.css

@@ -2,6 +2,10 @@ class Checkout
   attr_accessor :cart, :payment, :error
   attr_reader :order, :person
 
+  def self.for(cart, payment)
+    cart.checkout_class.new(cart, payment)
+  end
+
   def initialize(cart, payment)
     @cart = cart
     @payment = payment
@@ -28,6 +32,7 @@ class Checkout
     #This should be a delayed_job, but DJ fails to deserialize something. When we move ot DJ 3.0 it might work
     @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
     @person.delay.add_phone_if_missing(@customer.phone)
+
     prepare_fafs_donations
     cart.pay_with(@payment)
     
@@ -77,14 +82,19 @@ class Checkout
   end
 
   private
-
-    def create_order(order_timestamp)
+    def create_sub_orders(order_timestamp)
+      created_orders = []
       cart.organizations.each do |organization|
         @order = new_order(organization, order_timestamp, @person)
         @order.save!
         OrderMailer.confirmation_for(order).deliver unless @person.dummy? || @person.email.blank?
-        @order
+        created_orders << @order
       end
+      created_orders
+    end
+
+    def create_order(order_timestamp)
+      create_sub_orders(order_timestamp)
     end
 
     def order_class

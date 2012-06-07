@@ -1,0 +1,64 @@
+- in_section :events
+- content_for :header do
+  %h1= link_to @reseller_event.name, organization_reseller_event_path(@organization, @reseller_event)
+  %h6
+    = @reseller_event.producer
+    &mdash;
+    = "#{@venue.name} #{@venue.city}, #{@venue.state} [#{time_zone_description(@venue.time_zone)}]"
+
+.context
+
+  %ul.context-buttons
+    %li= button_to "Edit Event", edit_organization_reseller_event_path(@organization, @reseller_event), :method => :get
+    %li
+      - if @reseller_attachment
+        = button_to "Edit Image", edit_organization_reseller_attachment_path(@organization, @reseller_attachment), :method => :get
+      - else
+        = button_to "Upload Image", new_organization_reseller_event_reseller_attachment_path(@organization, @reseller_event), :method => :get
+
+  - if @reseller_attachment && @reseller_attachment.image.present?
+    .context-thumbnail= image_tag @reseller_attachment.image.url
+
+  %h3 At a Glance
+  %ul
+    %li
+      %h4 Summary
+      %ul.report
+        - if @reseller_event.producer.present?
+          %li
+            %span.stat Producer
+            %span.current= @reseller_event.producer
+        - if @reseller_event.url.present?
+          %li
+            %span.stat URL
+            %span.current= link_to @reseller_event.url
+
+.document
+  #tabs
+    %ul
+      %li
+        %a{ :href => '#tabs-1'}
+          Shows
+      %li
+        %a{ :href => '#tabs-2'}
+          Calendar
+
+    #tabs-1
+      #shows
+        %table.standalone.zebra
+          %thead
+            %tr
+              %th Show
+              %th Actions
+          %tbody
+            - @shows.each do |show|
+              %tr{ :class => show.state }
+                %td= l show.datetime_local_to_event, :format => :short
+                %td= render :partial => "reseller_shows/controls", :locals => { :show => show }
+            %tr
+              = render :partial => 'reseller_shows/new_show_for_table', :locals => { :organization => @organization, :event => @reseller_event, :show => @next_reseller_show }
+        = will_paginate @shows
+
+    #tabs-2
+      #this-week
+        #calendar{ :"data-reseller-event" => @reseller_event.id, :"data-organization" => @organization.id }

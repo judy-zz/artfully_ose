@@ -1,0 +1,24 @@
+- in_section :events
+
+- content_for :header do
+  %h1 Reseller Offers
+
+.row
+
+  .span3
+    %p
+      You are declining an offer of tickets from #{@ticket_offer.organization.name} for #{pluralize @ticket_offer.count, "ticket"} to #{@ticket_offer.event.name} on #{l @ticket_offer.show.datetime_local_to_event, :format => :short}
+    %p
+      = t(".list", :default => "")
+
+  .span9
+    = form_for [ @ticket_offer ] do |f|
+      = f.hidden_field :status, :value => "rejected"
+
+      .control-group
+        %h3 Send a note explaining why you're declining these tickets (optional).  Your note will be included the producer's notification email.
+        .controls
+          = f.text_area :rejection_reason, :size => "15x5", :class => "input-xlarge"
+
+      .form-actions
+        = render :partial => "shared/submit_cancel", :locals => { :form => f, :cancel_path => ticket_offers_path }

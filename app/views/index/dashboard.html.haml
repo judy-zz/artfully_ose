@@ -33,5 +33,8 @@
 
   .span8
     %section
+
+      = render :partial => "ticket_offers/list", :locals => { :ticket_offers => @ticket_offers }
+
       %h3 Events
       = render :partial => 'events/list', :locals => { :events => @events }

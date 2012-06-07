@@ -1,0 +1,120 @@
+= form_for [ @ticket_offer ] do |f|
+
+  = f.hidden_field :reseller_profile_id
+
+  - if @event
+    %h3 Ticket offer for #{@ticket_offer.reseller_profile.organization.name} to #{@event.name}
+  - else
+    %h3 Ticket offer for #{@ticket_offer.reseller_profile.organization.name}
+
+  - if @event
+    = hidden_field_tag "event_id", @event.id
+  - else
+    .control-group
+      = label_tag :event_id
+      .controls
+        = select_tag "event_id", options_from_collection_for_select(@organization.events, "id", "name", @event_id), :include_blank => true
+
+  .control-group
+    = f.label :show_id
+    .controls
+      - if @ticket_offer.show && @ticket_offer.event
+        = f.select :show_id, options_from_collection_for_select(@ticket_offer.event.upcoming_shows.all, :id, :show_time, @ticket_offer.show_id)
+      - else
+        = f.select :show_id, []
+
+  .control-group
+    = f.label :section_id
+    .controls
+      - if @ticket_offer.show && @sections[@ticket_offer.show_id]
+        = f.select :section_id, options_from_collection_for_select(@sections[@ticket_offer.show_id], :id, :name, @ticket_offer.section_id)
+      - else
+        = f.select :section_id, []
+
+  .control-group
+    = f.label :count
+    .controls
+      = f.text_field :count
+
+  .form-actions
+    - if @event
+      = render :partial => "shared/submit_cancel", :locals => { :form => f, :cancel_path => resell_event_path(@event) }
+    - else
+      = render :partial => "shared/submit_cancel", :locals => { :form => f, :cancel_path => organization_path(@organization) }
+
+- content_for :custom_js do
+
+  :javascript
+
+    var shows = #{@shows.to_json};
+    var sections = #{@sections.to_json};
+    var counts = #{@counts.to_json};
+    var defaultEventId = #{@ticket_offer.event_id.to_json};
+    var defaultShowId = #{@ticket_offer.show_id.to_json};
+
+    $(function () {
+
+      var eventSelector = $("#event_id");
+      var showSelector = $("select#ticket_offer_show_id");
+      var sectionSelector = $("select#ticket_offer_section_id");
+      var countInput = $("input#ticket_offer_count");
+
+      function loadShowOptions() {
+        var eventId = eventSelector.val()
+        var eventShows = shows[eventId];
+        var showOptions = showSelector.get(0).options;
+
+        showOptions.length = 0;
+
+        for (var i = 0; i < eventShows.length; ++i) {
+          showOptions[i] = new Option(eventShows[i].show_time, eventShows[i].id, false, false);
+        }
+
+        if (showOptions.length === 0) {
+          showOptions[i] = new Option("--- No Upcoming Shows Found ---", 0, true, false);
+        }
+
+        loadSectionOptions();
+      }
+
+      function loadSectionOptions() {
+        var showId = showSelector.val();
+        var showSections = sections[showId];
+        var sectionOptions = sectionSelector.get(0).options;
+
+        console.log(showId);
+
+        sectionOptions.length = 0;
+
+        for (var i = 0; showSections && i < showSections.length; ++i) {
+          sectionOptions[i] = new Option(showSections[i].name, showSections[i].id, i === 0, i === 0);
+        }
+
+        if (sectionOptions.length === 0) {
+          sectionOptions[i] = new Option("--- No Sections Found ---", 0, true, false);
+        }
+
+        loadCount();
+      }
+
+      function loadCount() {
+        var showId = showSelector.val();
+        var sectionId = sectionSelector.val();
+
+        if (counts[showId] !== undefined) {
+          var count = counts[showId][sectionId];
+          countInput.val(count);
+        } else {
+          countInput.val("");
+        }
+      }
+
+      eventSelector.change(loadShowOptions);
+      showSelector.change(loadSectionOptions);
+      sectionSelector.change(loadCount);
+
+      loadShowOptions();
+      loadSectionOptions();
+      loadCount();
+
+    });
