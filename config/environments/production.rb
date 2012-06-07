@@ -3,6 +3,15 @@ Artfully::Application.configure do
   #Remember CononicalHost in config/initializers/cononical_host.rb
   #This will kill us if we move to subdomains and can't figure out why subdomains don't work
   
+  # Compress JavaScripts and CSS
+  config.assets.compress = true
+
+  # Don't fallback to assets pipeline if a precompiled asset is missed
+  config.assets.compile = false
+
+  # Generate digests for assets URLs
+  config.assets.digest = true
+  
   #enforce SSL unless we're on /pages
   config.middleware.insert_before ActionDispatch::Cookies, Rack::SslEnforcer
 

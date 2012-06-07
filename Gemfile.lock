@@ -1,10 +1,4 @@
 PATH
-  remote: vendor/gems/comma-0.4.0
-  specs:
-    comma (0.4.0)
-      activesupport (>= 2.2.2)
-
-PATH
   remote: vendor/gems/jammit-s3-0.6.3
   specs:
     jammit-s3 (0.6.0.2)
@@ -31,20 +25,20 @@ GEM
       open4
     Platform (0.4.0)
     ZenTest (4.7.0)
-    abstract (1.0.0)
-    actionmailer (3.0.9)
-      actionpack (= 3.0.9)
-      mail (~> 2.2.19)
-    actionpack (3.0.9)
-      activemodel (= 3.0.9)
-      activesupport (= 3.0.9)
-      builder (~> 2.1.2)
-      erubis (~> 2.6.6)
-      i18n (~> 0.5.0)
-      rack (~> 1.2.1)
-      rack-mount (~> 0.6.14)
-      rack-test (~> 0.5.7)
-      tzinfo (~> 0.3.23)
+    actionmailer (3.1.2)
+      actionpack (= 3.1.2)
+      mail (~> 2.3.0)
+    actionpack (3.1.2)
+      activemodel (= 3.1.2)
+      activesupport (= 3.1.2)
+      builder (~> 3.0.0)
+      erubis (~> 2.7.0)
+      i18n (~> 0.6)
+      rack (~> 1.3.5)
+      rack-cache (~> 1.1)
+      rack-mount (~> 0.8.2)
+      rack-test (~> 0.6.1)
+      sprockets (~> 2.1.0)
     active_utils (1.0.3)
       activesupport (>= 2.3.11)
       i18n
@@ -56,25 +50,26 @@ GEM
       i18n
       json (>= 1.5.1)
       money (<= 3.7.1)
-    activemodel (3.0.9)
-      activesupport (= 3.0.9)
-      builder (~> 2.1.2)
-      i18n (~> 0.5.0)
-    activerecord (3.0.9)
-      activemodel (= 3.0.9)
-      activesupport (= 3.0.9)
-      arel (~> 2.0.10)
-      tzinfo (~> 0.3.23)
-    activerecord-import (0.2.8)
-      activerecord (~> 3.0pre)
-      activerecord (~> 3.0pre)
-    activeresource (3.0.9)
-      activemodel (= 3.0.9)
-      activesupport (= 3.0.9)
-    activesupport (3.0.9)
+    activemodel (3.1.2)
+      activesupport (= 3.1.2)
+      builder (~> 3.0.0)
+      i18n (~> 0.6)
+    activerecord (3.1.2)
+      activemodel (= 3.1.2)
+      activesupport (= 3.1.2)
+      arel (~> 2.2.1)
+      tzinfo (~> 0.3.29)
+    activerecord-import (0.2.9)
+      activerecord (~> 3.0)
+      activerecord (~> 3.0)
+    activeresource (3.1.2)
+      activemodel (= 3.1.2)
+      activesupport (= 3.1.2)
+    activesupport (3.1.2)
+      multi_json (~> 1.0)
     acts-as-taggable-on (2.1.1)
       rails
-    arel (2.0.10)
+    arel (2.2.3)
     athena_resource (0.0.1)
     autotest-fsevent (0.2.8)
       sys-uname
@@ -82,42 +77,46 @@ GEM
     autotest-rails (4.1.2)
       ZenTest (~> 4.5)
     awesome_print (0.4.0)
-    aws-sdk (1.3.4)
-      httparty (~> 0.7)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
-      uuidtools (~> 2.1)
+    aws-sdk (1.3.2)
     bcrypt-ruby (2.1.4)
     bootstrap-will_paginate (0.0.7)
       will_paginate
     braintree (2.13.4)
       builder (>= 2.0.0)
-    builder (2.1.2)
+    builder (3.0.0)
     cancan (1.6.5)
-    capybara (1.1.1)
+    capybara (1.1.2)
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
-    childprocess (0.2.2)
+    childprocess (0.2.3)
       ffi (~> 1.0.6)
     cocaine (0.2.1)
+    coffee-rails (3.1.1)
+      coffee-script (>= 2.2.0)
+      railties (~> 3.1.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.3.3)
+    comma (3.0.3)
     configuration (1.2.0)
-    copycopter_client (1.0.3)
-      i18n (~> 0.5.0)
+    copycopter_client (2.0.1)
+      i18n (>= 0.5.0)
       json
     crack (0.1.8)
-    cucumber (1.1.1)
+    cucumber (1.1.4)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.2)
-      gherkin (~> 2.6.0)
+      gherkin (~> 2.7.1)
       json (>= 1.4.6)
       term-ansicolor (>= 1.0.6)
-    cucumber-rails (1.1.1)
-      capybara (>= 1.1.1)
-      cucumber (>= 1.1.0)
+    cucumber-rails (1.2.1)
+      capybara (>= 1.1.2)
+      cucumber (>= 1.1.3)
       nokogiri (>= 1.5.0)
     daemons (1.1.4)
     database_cleaner (0.6.7)
@@ -135,13 +134,14 @@ GEM
       rails (>= 3.0.0, < 3.2)
     diff-lcs (1.1.3)
     dynamic_form (1.1.4)
-    erubis (2.6.6)
-      abstract (>= 1.0.0)
+    erubis (2.7.0)
     escape (0.0.4)
     escape_utils (0.2.3)
     eventmachine (0.12.10)
     exceptional (2.0.32)
       rack
+    execjs (1.4.0)
+      multi_json (~> 1.0)
     factory_girl (1.3.3)
     factory_girl_rails (1.0.1)
       factory_girl (~> 1.3)
@@ -149,9 +149,8 @@ GEM
     faker (0.9.5)
       i18n (~> 0.4)
     fakeweb (1.3.0)
-    fastercsv (1.5.4)
-    ffi (1.0.9)
-    gherkin (2.6.2)
+    ffi (1.0.11)
+    gherkin (2.7.1)
       json (>= 1.4.6)
     gibbon (0.3.5)
       httparty (> 0.6.0)
@@ -161,33 +160,34 @@ GEM
       rdoc
     gravatar_image_tag (1.0.0)
     haml (3.1.2)
-    heroku (2.3.6)
+    heroku (2.20.1)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
+      rubyzip
       term-ansicolor (~> 1.0.5)
+    hike (1.2.1)
     httparty (0.7.8)
       crack (= 0.1.8)
-    i18n (0.5.0)
+    i18n (0.6.0)
     jammit (0.6.3)
       yui-compressor (>= 0.9.3)
     jquery-rails (1.0.19)
       railties (~> 3.0)
       thor (~> 0.14)
-    json (1.6.1)
-    json_pure (1.6.1)
+    json (1.7.3)
     launchy (0.4.0)
       configuration (>= 0.0.5)
     macaddr (1.0.0)
-    mail (2.2.19)
-      activesupport (>= 2.3.6)
+    mail (2.3.3)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
-    mime-types (1.17.2)
+    mime-types (1.18)
     mimemagic (0.1.8)
     money (3.7.1)
       i18n (~> 0.4)
-    mysql2 (0.2.11)
+    multi_json (1.0.4)
+    mysql2 (0.3.11)
     newrelic_rpm (3.1.1)
     nokogiri (1.5.2)
     open4 (1.1.0)
@@ -197,36 +197,43 @@ GEM
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
-    polyglot (0.3.1)
+    polyglot (0.3.3)
     pr_geohash (1.0.0)
     proxies (0.2.1)
-    rack (1.2.4)
+    rack (1.3.6)
+    rack-cache (1.2)
+      rack (>= 0.4)
     rack-canonical-host (0.0.3)
       rack (>= 1.0.0)
     rack-jsonp-middleware (0.0.5)
       rack
-    rack-mount (0.6.14)
+    rack-mount (0.8.3)
       rack (>= 1.0.0)
+    rack-ssl (1.3.2)
+      rack
     rack-ssl-enforcer (0.2.4)
-    rack-test (0.5.7)
+    rack-test (0.6.1)
       rack (>= 1.0)
-    rails (3.0.9)
-      actionmailer (= 3.0.9)
-      actionpack (= 3.0.9)
-      activerecord (= 3.0.9)
-      activeresource (= 3.0.9)
-      activesupport (= 3.0.9)
+    rails (3.1.2)
+      actionmailer (= 3.1.2)
+      actionpack (= 3.1.2)
+      activerecord (= 3.1.2)
+      activeresource (= 3.1.2)
+      activesupport (= 3.1.2)
       bundler (~> 1.0)
-      railties (= 3.0.9)
+      railties (= 3.1.2)
     rails-footnotes (3.7.5.rc4)
       rails (>= 3.0.0)
-    railties (3.0.9)
-      actionpack (= 3.0.9)
-      activesupport (= 3.0.9)
+    railties (3.1.2)
+      actionpack (= 3.1.2)
+      activesupport (= 3.1.2)
+      rack-ssl (~> 1.3.2)
+      rake (>= 0.8.7)
       rdoc (~> 3.4)
-      thor (~> 0.14.4)
+      thor (~> 0.14.6)
     rake (0.8.7)
-    rdoc (3.6.1)
+    rdoc (3.12)
+      json (~> 1.4)
     rest-client (1.6.7)
       mime-types (>= 1.16)
     restful_metrics (1.1.2)
@@ -248,19 +255,26 @@ GEM
       railties (~> 3.0)
       rspec (~> 2.6.0)
     ruby-hmac (0.4.0)
-    rubyzip (0.9.4)
+    rubyzip (0.9.5)
     s3 (0.3.11)
       proxies (~> 0.2.0)
-    sass (3.1.2)
-    selenium-webdriver (2.10.0)
+    sass (3.1.19)
+    sass-rails (3.1.6)
+      actionpack (~> 3.1.0)
+      railties (~> 3.1.0)
+      sass (>= 3.1.10)
+      tilt (~> 1.3.2)
+    selenium-webdriver (2.15.0)
       childprocess (>= 0.2.1)
-      ffi (= 1.0.9)
-      json_pure
+      ffi (~> 1.0.9)
+      multi_json (~> 1.0.4)
       rubyzip
     shoulda (2.11.3)
-    sqlite3 (1.3.3)
-    sqlite3-ruby (1.3.3)
-      sqlite3 (>= 1.3.3)
+    sprockets (2.1.3)
+      hike (~> 1.2)
+      rack (~> 1.0)
+      tilt (~> 1.1, != 1.3.0)
+    sqlite3 (1.3.6)
     sunspot (1.3.1)
       escape (~> 0.0.4)
       pr_geohash (~> 1.0)
@@ -278,20 +292,25 @@ GEM
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
     thor (0.14.6)
+    tilt (1.3.3)
     timecop (0.3.5)
     timeliness (0.3.4)
     transitions (0.0.11)
-    treetop (1.4.9)
+    treetop (1.4.10)
+      polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.28)
+    tzinfo (0.3.33)
+    uglifier (1.2.4)
+      execjs (>= 0.3.0)
+      multi_json (>= 1.0.2)
     uuid (2.3.2)
       macaddr (~> 1.0)
-    uuidtools (2.1.2)
     validates_timeliness (3.0.6)
       timeliness (~> 0.3.3)
     warden (1.0.4)
       rack (>= 1.0)
     will_paginate (3.0.3)
+    wirble (0.1.3)
     xpath (0.1.4)
       nokogiri (~> 1.3)
     yajl-ruby (0.8.3)
@@ -303,7 +322,7 @@ PLATFORMS
 
 DEPENDENCIES
   activemerchant
-  activerecord-import
+  activerecord-import (= 0.2.9)
   acts-as-taggable-on (~> 2.1.0)
   athena_resource
   autotest-fsevent
@@ -314,8 +333,9 @@ DEPENDENCIES
   bootstrap-will_paginate
   cancan
   capybara
-  comma!
-  copycopter_client
+  coffee-rails (~> 3.1.0)
+  comma (= 3.0.3)
+  copycopter_client (= 2.0.1)
   cucumber-rails
   database_cleaner
   delayed_job (= 3.0.2)
@@ -328,40 +348,42 @@ DEPENDENCIES
   factory_girl_rails (= 1.0.1)
   faker
   fakeweb
-  fastercsv
   gibbon
   gravatar_image_tag
   haml
-  heroku
+  heroku (> 2.20)
   httparty
   jammit
   jammit-s3!
   jquery-rails (>= 1.0.19)
   launchy
   mail
-  mysql2 (< 0.3)
+  mysql2 (= 0.3.11)
   newrelic_rpm
   nokogiri
   paperclip (>= 2.5.0)
   rack-canonical-host
   rack-jsonp-middleware
   rack-ssl-enforcer
-  rails
+  rails (= 3.1.2)
   rails-footnotes (>= 3.7.5.rc4)
   rake (= 0.8.7)
   restful_metrics
   rspec-rails (>= 2.1)
   s3 (>= 0.3.11)
   sass
+  sass-rails (~> 3.1.0)
   set_watch_for!
   shoulda
-  sqlite3-ruby
+  sqlite3 (= 1.3.6)
   sunspot_rails
   sunspot_solr
   swiper!
   thin
   timecop
   transitions
+  uglifier
   uuid
   validates_timeliness
   will_paginate (~> 3.0)
+  wirble

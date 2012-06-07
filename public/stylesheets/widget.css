@@ -266,6 +266,9 @@ form.jeditable button {
   display: inline-block;
   width: 36px; }
 
+#reseller-profile textarea {
+  height: 100px; }
+
 .flash {
   display: block;
   font-family: "Arial", sans-serif;
@@ -328,6 +331,10 @@ form.jeditable button {
   background-image: -webkit-linear-gradient(top, #0a99b3, #077083);
   background-image: -o-linear-gradient(top, #0a99b3, #077083);
   background-image: linear-gradient(top, #0a99b3, #077083); }
+  .notice a, .info a, .success a {
+    color: white;
+    font-weight: bold;
+    text-decoration: underline; }
 
 #content {
   margin: 10px 2%;
