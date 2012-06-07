@@ -17,9 +17,9 @@
         font-weight: normal;
         font-style: normal;
       }
-    = include_stylesheets :application, :pages
+    = stylesheet_link_tag :application, :pages
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
-    = include_javascripts :bootstrap, :pages
+    = javascript_include_tag :bootstrap, :pages
     = render :partial => 'layouts/google_analytics'
     :javascript
       $(document).ready(function() {

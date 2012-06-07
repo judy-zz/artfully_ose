@@ -2,7 +2,7 @@
 - content_for :header do
   =render :partial=>'header'
 - content_for :custom_js do
-  = include_javascripts :widget_generator
+  = javascript_include_tag :widget_generator
   
 .row
   .span3

@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    = include_stylesheets :cart
+    = stylesheet_link_tag :cart
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
     = csrf_meta_tag
@@ -18,7 +18,7 @@
           = yield :controls
 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"
-    = include_javascripts :widget_cart
+    = javascript_include_tag :widget_cart
     :javascript
       $("document").ready(function(){
         $(".currency").each(function(index, element){

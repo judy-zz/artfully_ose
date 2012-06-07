@@ -5,8 +5,8 @@
     = favicon_link_tag
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
     = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
-    = include_stylesheets :vendor, :application, :media => :screen
-    = include_stylesheets :printing, :media => :print
+    = stylesheet_link_tag :vendor, :application, :media => :screen
+    = stylesheet_link_tag :printing, :media => :print
     = csrf_meta_tag
 
   %body{:id => "admin"}
@@ -19,5 +19,5 @@
       = yield
 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
-    = include_javascripts :vendor, :application, :custom, :bootstrap
+    = javascript_include_tag :vendor, :application, :custom, :bootstrap
     = yield :custom_js

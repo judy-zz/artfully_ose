@@ -2,7 +2,7 @@
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
   %head
     %title= "#{yield :title}"
-    = include_stylesheets :storefront
+    = stylesheet_link_tag :storefront
     = render :partial => 'layouts/google_analytics'
   %body
     .container
@@ -11,4 +11,4 @@
       = yield
 
     = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
-    = include_javascripts :storefront
+    = javascript_include_tag :storefront
