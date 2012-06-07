@@ -78,7 +78,7 @@ $(document).ready(function(){
     currentSectionId = $('li.active a').attr('href');
 
     // dont switch if continue is disabled
-    if (!($(currentSectionId+' .continue a').hasClass('disabled'))) {
+    if (!($(currentSectionId+' form-actions a').hasClass('disabled'))) {
 
       // validate section before switching tabs
       if (validateSection(currentSectionId)) {
@@ -108,8 +108,8 @@ $(document).ready(function(){
 });
 
 function updateOrderOnServer() {
-  $('#cart .continue a').addClass('disabled');
-  $('.continue #cart-total').hide();
+  $('#cart .form-actions a').addClass('disabled');
+  $('.form-actions #cart-total').hide();
   $('#cart .over-limit').remove();
   var params = {};
 
@@ -174,15 +174,15 @@ function updateOrderOnServer() {
       }
       
       // todo validate amount
-      $('.continue #cart-total').html(data.total / 100.0);
-      $('.continue #cart-total').show();
+      $('.form-actions #cart-total').html(data.total / 100.0);
+      $('.form-actions #cart-total').show();
 
       $('.formatCurrency').formatCurrency();
 			
 			if(data.tickets.length > 0 || data.donations.length > 0) {
-      	$('#cart .continue a').removeClass('disabled');		
+      	$('#cart .form-actions a').removeClass('disabled');		
 			} else {
-      	$('#cart .continue a').addClass('disabled');	
+      	$('#cart .form-actions a').addClass('disabled');	
 			}
 
     },
@@ -218,7 +218,7 @@ function updateRequiredFields() {
 }
 
 function getTotal() {
-	cartTotal = $('.continue #cart-total').html()
+	cartTotal = $('.form-actions #cart-total').html()
 	if (cartTotal === undefined || cartTotal == "") {
 		return 0;
 	} else if (cartTotal.indexOf('$') > -1){
@@ -290,7 +290,16 @@ function switchTabs(newSectionId) {
 function validateSection(sectionId) {
   var everythingValid = true;
   $(sectionId + ' input.required').each(function() {
-    v = $('#shopping-cart-form').validate().element("#" + $(this).attr('id'));
+    v = $('#shopping-cart-form').validate({
+      errorElement: "span",
+      errorClass:'help-inline',
+      highlight: function(element, errorClass) {
+        $(element).parents('.control-group').addClass('error');
+      },
+      unhighlight: function(element, errorClass) {
+        $(element).parents('.control-group').removeClass('error');
+      }
+    }).element("#" + $(this).attr('id'));
     if (!(v)) {everythingValid = false};
   });
   return everythingValid;
@@ -356,5 +365,5 @@ function updateTotal() {
   $('[data-price]').each(function() {
     total += parseFloat($(this).attr('data-price'));
   });
-  $('.continue #cart-total').html(total);
+  $('.form-actions #cart-total').html(total);
 }

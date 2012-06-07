@@ -101,10 +101,17 @@ stylesheets:
     - public/stylesheets/themes/default.css
 
   storefront:
+    - public/stylesheets/bootstrap.css
+    - public/stylesheets/bootstrap-overrides.css
+    - public/stylesheets/cart.css
+    - public/stylesheets/store.css
+
+  cart:
     - public/stylesheets/reset.css
     - public/stylesheets/formalize.css
     - public/stylesheets/cart.css
     - public/stylesheets/store.css
+    - public/stylesheets/widget.css
 
   bootstrap:
     - public/stylesheets/bootstrap.css

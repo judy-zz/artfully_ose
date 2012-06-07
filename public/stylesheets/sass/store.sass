@@ -1,37 +1,16 @@
-@import "grid"
-@import "stack-layout"
 @import "colors"
 @import "mixins"
-@import "forms"
-@import "flash"
 
 body
-  font:
-    size: 11pt
-    family: sans-serif
-  width: 960px
-  margin: 0 auto
+  padding-top: 10px
 
 a
   color: $compliment
   text-decoration: none
 
-h1, h2, h3, h4
-  @include stack-content
-  
-h1
-  font-family: "Helvetica" !important
-  @include stack-content
-  font-size: 2.5em
-  color: $compliment
- 
-h2
-  color: #BFBFBF
-  text-transform: uppercase
-  font-size: 16px
-  font-weight: bold
-  margin-bottom: 12px
-  margin-top: 20px
+h6
+  font-size: 18px
+  line-height: 27px
   
 h3
   font-size: 1em
@@ -46,7 +25,6 @@ h4
 #venue
   line-height: 1.4em
   font-size: 1em
-  margin-bottom: .5em
   strong
     font-weight: bold
   a
@@ -59,15 +37,13 @@ h4
     @include rounded-corners(4px,4px,4px,4px)
     img
       @include rounded-corners(4px,4px,4px,4px)
-  
-#content
-  margin: 10px 2%
-  width: 96%
-  @include stack-layout
+
+.side-section
+  margin-bottom: 20px
+  clear: both
+  overflow: hidden
 
 #sidebar
-  @include section
-  @extend .stack1of3
   margin-top: 54px
   h2
     color: #BFBFBF
@@ -78,15 +54,13 @@ h4
     // line-height: 36px
 
 #store
-  @include section
-  @extend .stack2of3
 
 .sections .section-name
   color: $compliment
 
 .kv
   li
-    line-height: 2 * $line_height
+
   .key, .value
     display: inline-block
   .key
@@ -99,13 +73,6 @@ h4
   p
     line-height: 1.4em
     margin-bottom: 5px
-  input[type="text"]
-    width: 30%
-  input[type="submit"]
-    @include gradient(#2086a6, #175c71)
-    color: #fff
-    text-shadow: none
-    font-weight: normal
 
 #description
   img
@@ -118,22 +85,12 @@ h4
 
 #contact
   line-height: 1.4em
-  margin-bottom: 30px
 
 img#logo
   float: left
   margin-right: 10px
 
 h1#logo
-  padding-top: 10px
-  font-weight: bold
-  color: #404040
-  margin: 0
-  &::after
-    clear: none
-
-h3#producer
-  color: #404040
   
 ul#shows
   clear: both
@@ -185,11 +142,10 @@ ul#shows
         p
           margin-bottom: 10px
           line-height: 1.4em
+        select
+          width: 100px
         input[type="submit"]
-          @include gradient(#2086a6, #175c71)
-          color: #fff
-          text-shadow: none
-          font-weight: normal
+          margin-top: -8px
 
 .calendar-month
   margin-bottom: 50px
@@ -211,6 +167,7 @@ table.calendar
     font-size: 10px
     font-family: Verdana, sans-serif
     vertical-align: middle
+    line-height: 25px
     &.filler
       border: none
     &.show
@@ -261,150 +218,71 @@ table.calendar
           line-height: 14px
           display: block
           color: #999
-    fieldset
-      ul
-        list-style: none
-        li
-          list-style: none
-          clear: both
-          margin-bottom: 10px
-          &#agreement
-            margin-left: 0
-            .label
-              width: 100%
-              display: inline
-          .label
-            width: 20%
-            display: inline-block
-            vertical-align: top
-            float: left
-            font-weight: bold
-          .element
-            width: 80%
-            display: inline-block
-            vertical-align: top
-            text-align: left
-            input
-              width: 50%
-              float: left
-              margin-right: 10px
-              &.error
-                border: 1px solid red
-                background-image: none
-            textarea
-              float: none
-            select
-              width: 50%
-              float: left
-              margin-right: 10px
-              &.error
-                border: 1px solid red
-                background-image: none
-            input.small, select.small
-              width: 22%
-              display: inline
-              margin-right: 10px
-            select.small
-              float: left
-            #expiration-slash
-              float: left
-              padding-right: 10px
-          label.error
-            background-image: none
-            color: red
-            float: left
-            &.checkbox
-              margin-top: -15px
-              font-weight: normal
-        li.stacked
-          .label
-            width: 100%
-            float: none
-            clear: both
-          .element
-            width: 100%
-            display: inline-block
-            vertical-align: top
-            text-align: left
-            textarea
-              float: none
-          
-    .tab-pane
-      display: none
-      &.active
-        display: block
-    #cart
-      width: 100%
-      table
-        margin-bottom: 30px
-        width: 100%
-        font-size: 13px
-        color: #666
-        tbody
-          width: 100%
-        tr
-          width: 100%
-          h5
-            color: #222
-            font-weight: bold
-            font-size: 15px
-            line-height: 18px
-          td
-            padding: 10px
-            &.quantity input
-              width: 90px
-          td.remove a
-            background: #eee
-            padding: 5px 10px
-            color: #fff
-            @include rounded-corners(15px, 15px, 15px, 15px)
-            font-size: 12px
-            &:hover
-              background: darken(#eee, 20%)
-              color: #fff
-          td.edit-item
-          td.price
-            text-align: right
-          .over-limit
-            color: red
-    .continue
-      padding: 20px
-      @include gradient(#ccc, #e6e6e6)
-      overflow: hidden
-      h4
-        font-weight: bold
-        color: #333
-        margin-top: 15px
-        float: right
-        margin-right: 20px
-    .continue a, #complete-purchase
-      float: right
-      width: 200px
+          &:hover
+            text-decoration: none
+  lable.error
+    color: red
+  .tab-pane
+    display: none
+    &.active
       display: block
-      @include rounded-corners(2px, 2px, 2px, 2px)
-      @include inset-text
-      @include gradient($compliment_highlight, $compliment, 14%, 100%)
-      border: 1px solid $compliment_shadow
-      font-size: 1em
-      text-align: center
-      font-weight: bold
-      line-height: 40px
-      &.disabled
-        @include gradient(#999, #ccc, 14%, 100%)
-        border: 1px solid #666
-    #user_agreement
-      height: 100px
-      border: 1px solid #ccc
-      padding: 10px
-      overflow-y: scroll
+
+  #cart
+    width: 100%
+    table
+      margin-bottom: 30px
+      width: 100%
       font-size: 13px
-      margin-bottom: 20px
-      p
-        margin-bottom: 13px
-    #thanks
-      p
-        margin-bottom: 10px
-        line-height: 1.4em
+      color: #666
+      tbody
+        width: 100%
+      tr
+        width: 100%
+        h5
+          color: #222
+          font-weight: bold
+          font-size: 15px
+          line-height: 18px
+        td
+          padding: 10px
+          &.quantity input
+            width: 90px
+        td.remove a
+          background: #eee
+          padding: 5px 10px
+          color: #fff
+          @include rounded-corners(15px, 15px, 15px, 15px)
+          font-size: 12px
+          &:hover
+            background: darken(#eee, 20%)
+            color: #fff
+            text-decoration: none
+        td.edit-item
+        td.price
+          text-align: right
+        .over-limit
+          color: red
+  .form-actions
+    h4
+      font-weight: bold
+      color: #333
+      margin-top: 10px
+      float: right
+      margin-right: 20px
+
+  #user_agreement
+    height: 100px
+    border: 1px solid #ccc
+    padding: 10px
+    overflow-y: scroll
+    font-size: 13px
+    margin-bottom: 20px
+    p
+      margin-bottom: 13px
+  #thanks
+    p
+      margin-bottom: 10px
+      line-height: 1.4em
 
 .hidden
   display: none !important

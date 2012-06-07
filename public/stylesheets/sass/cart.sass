@@ -1,21 +1,34 @@
-@import "grid"
-@import "stack-layout"
 @import "colors"
 @import "mixins"
-@import "forms"
-@import "flash"
 
-#content
-  margin: 10px 2%
-  width: 96%
-  @include stack-layout
+#shopping-cart
+  position: fixed
+  bottom: 0
+  left: 0
+  right: 0
+  border-top: 1px solid #aaa
+  background-color: rgba(255,255,255,0.9)
+  &.shown #shopping-cart-controls
+    background: #333333 url('/images/icons/down_arrow.png') no-repeat 10px center
+  &.hidden #shopping-cart-controls
+    background: #333333 url('/images/icons/up_arrow.png') no-repeat 10px center
+  form
+    margin-bottom: 0
+
+#shopping-cart-controls
+  color: #fff
+  padding: 10px 5px 10px 27px
+  cursor: pointer
+  font-size: .9em
+
+#shopping-cart-controls .timer
+  float: right
 
 a
   color: $compliment
   text-decoration: none
 
 #cart, #controls
-  @include section
   > *
     margin-top: 0
     margin-bottom: 0
@@ -103,10 +116,26 @@ a
   text-transform: capitalize
 
 #customer-confirmation, #credit_card-confirmation, #billing_address-confirmation
-  @include section
-  @extend .stack1of4
   > *
     margin: 0
+
+#purchase
+  .controls
+    margin: 0
+    label.error
+      color: #b94a48
+
+#special-instructions
+  .control-group
+    .control-label
+      width: auto
+      float: none
+      text-align: left
+    .controls
+      margin: 0
+      textarea
+        width: 95%
+        height: 100px
 
 #steps
   padding-bottom: 20px
