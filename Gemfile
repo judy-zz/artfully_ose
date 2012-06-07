@@ -60,6 +60,17 @@ gem 'gravatar_image_tag'
 group :test do
   gem 'sqlite3', '1.3.6'
   gem 'timecop'
+  gem "rspec-rails", ">= 2.1"
+  gem 'shoulda'
+  gem 'fakeweb'
+  gem 'faker'
+  gem 'factory_girl_rails', "= 1.0.1"
+  
+  gem 'autotest-rails'
+  gem 'autotest-fsevent'
+  gem 'autotest-growl'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
 end
 
 group :deployment do
@@ -67,23 +78,10 @@ group :deployment do
 end
 
 group :test, :development do
-  gem "rspec-rails", ">= 2.1"
-  gem 'shoulda'
-  gem 'fakeweb'
-  gem 'factory_girl_rails', "= 1.0.1"
   gem 'nokogiri'
   gem 'capybara'
   gem 'launchy'
   gem 'awesome_print', :require => 'ap'
-  gem 'faker'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
   gem 'sunspot_solr'
-end
-
-group :test do
-  gem 'autotest-rails'
-  gem 'autotest-fsevent'
-  gem 'autotest-growl'
-  gem 'cucumber-rails'
-  gem 'database_cleaner'
 end
