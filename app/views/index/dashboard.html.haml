@@ -26,7 +26,8 @@
           - @recent_actions.each do |action|
             %li.row-fluid
               .span2
-                = image_tag "actions/#{action.action_type.downcase}.png"
+                -# = image_tag "actions/#{action.action_type.downcase}.png"
+                = "[#{action.action_type.downcase}]"
               .span10
                 =link_to_person (action.person)
                 =action.sentence

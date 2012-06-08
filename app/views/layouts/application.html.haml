@@ -3,9 +3,9 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
-    = stylesheet_link_tag :vendor, :media => :screen
-    = stylesheet_link_tag :application, :media => :screen
-    = stylesheet_link_tag :printing, :media => :print
+    -# = stylesheet_link_tag :vendor, :media => :screen
+    -# = stylesheet_link_tag "application"
+    -# = stylesheet_link_tag :printing, :media => :print
     = csrf_meta_tag
     = render :partial => 'layouts/google_analytics'
   %body
@@ -17,9 +17,9 @@
       = content_for?(:menu_sub_template) ? yield(:menu_sub_template) : yield
       = render 'layouts/footer'
 
-    = javascript_include_tag :jquery
-    = javascript_include_tag :bootstrap
+    -# = javascript_include_tag :jquery
+    -# = javascript_include_tag :bootstrap
     = render :partial => "shared/help_tab"
     = render :partial => "shared/feedback_footer"
-    = javascript_include_tag :vendor, :application, :custom
+    -# = javascript_include_tag :vendor, :application, :custom
     = yield :custom_js
