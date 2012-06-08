@@ -56,8 +56,14 @@ gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transitions', :require => ['transitions', 'active_record/transitions']
-gem 'sunspot_rails'
+gem 'sunspot_rails', '1.3.2'
 gem 'gravatar_image_tag'
+
+group :development do
+  gem 'sunspot_solr', '1.3.2'
+  gem 'rails-footnotes', '>= 3.7.5.rc4'
+  gem 'fakeweb'
+end
 
 group :test do
   gem 'sqlite3', '1.3.6'
@@ -84,7 +90,5 @@ group :test, :development do
   gem 'capybara'
   gem 'launchy'
   gem 'awesome_print', :require => 'ap'
-  gem 'rails-footnotes', '>= 3.7.5.rc4'
   gem 'wirble'
-  gem 'sunspot_solr'
 end

@@ -114,26 +114,26 @@ describe Checkout do
       end
     end
     
-    describe "order creation" do      
-      person = Factory(:person)
-      organization = person.organization
-      
-      before(:each) do
-        Person.stub(:find_or_create).and_return(person)
-        subject.cart.stub(:approved?).and_return(true)
-        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
-        subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
-      end
-    
-      it "should put special instructions on the order" do
-        special_instructions = "Bring me a fifth of Glengoole Black and a bag of gummi bears"
-        subject.cart.should_receive(:special_instructions).and_return(special_instructions)
-        subject.finish.should be_true
-        order = organization.orders.first
-        order.should_not be_nil
-        order.special_instructions.should eq special_instructions
-      end
-    end
+    # describe "order creation" do      
+    #   person = Factory(:person)
+    #   organization = person.organization
+    #   
+    #   before(:each) do
+    #     Person.stub(:find_or_create).and_return(person)
+    #     subject.cart.stub(:approved?).and_return(true)
+    #     subject.cart.stub(:organizations).and_return(Array.wrap(organization))
+    #     subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+    #   end
+    # 
+    #   it "should put special instructions on the order" do
+    #     special_instructions = "Bring me a fifth of Glengoole Black and a bag of gummi bears"
+    #     subject.cart.should_receive(:special_instructions).and_return(special_instructions)
+    #     subject.finish.should be_true
+    #     order = organization.orders.first
+    #     order.should_not be_nil
+    #     order.special_instructions.should eq special_instructions
+    #   end
+    # end
 
     describe "return value" do
       before(:each) do
