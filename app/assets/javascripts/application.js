@@ -1,7 +1,8 @@
 //= require jquery
 //= require jquery_ujs
+//= require_directory ./jquery
+//= require bootstrap
 //= require_self
-//= require_tree .
 
 zebra = function(table) {
     $("tr", table).removeClass("odd");
@@ -93,8 +94,6 @@ $(document).ready(function() {
   $(".zebra tbody").each(function(){
     zebra($(this));
   });
-
-  $('input, textarea').placeholder();
 
   $(".close").click(function(){
     $(this).closest('.flash').remove();

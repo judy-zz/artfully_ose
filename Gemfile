@@ -6,8 +6,8 @@ gem 'rack-canonical-host'
 
 #rails 3.1
 group :assets do
-  gem 'sass-rails', "  ~> 3.1.0"
-  gem 'coffee-rails', "~> 3.1.0"
+  gem 'sass-rails', "3.1.1"
+  gem 'coffee-rails', "3.1.1"
   gem 'uglifier'
 end
 
