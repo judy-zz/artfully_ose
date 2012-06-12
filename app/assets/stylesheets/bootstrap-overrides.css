@@ -1,4 +1,15 @@
 
+/*
+ * Wonk for asset pipeline
+ */
+[class^="icon-"],
+[class*=" icon-"] {
+  background-image: url("/assets/glyphicons-halflings.png");
+}
+.icon-white {
+  background-image: url("/assets/glyphicons-halflings-white.png");
+}
+
 .navbar-inner, .navbar .fill {
   background-color: #175c71;
   background-repeat: repeat-x;
@@ -33,7 +44,7 @@
 }
 
 .navbar a.brand {
-  background-image: url('/images/pages/logo-white-topbar.png');
+  background-image: url('/assets/pages/logo-white-topbar.png');
   background-repeat: no-repeat;
   background-position: 18px 7px;
   text-indent: 5000px;
