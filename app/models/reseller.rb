@@ -91,7 +91,9 @@ module Reseller
       items.each do |item|
         order = orders[item.product.organization.id] || external_orders.build
         
-        item.reseller_net        = @organization.reseller_profile.fee
+        puts "crap #{organization}"
+        
+        item.reseller_net        = organization.reseller_profile.fee
         order.organization       = item.product.organization
         order.person             = Person.find_or_create(@person, item.product.organization)
         order.transaction_id     = transaction_id

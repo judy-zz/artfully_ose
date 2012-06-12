@@ -79,6 +79,7 @@ group :test do
   gem 'autotest-growl'
   gem 'cucumber-rails'
   gem 'database_cleaner'
+  gem 'spork-rails'
 end
 
 group :deployment do
