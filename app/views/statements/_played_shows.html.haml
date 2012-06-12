@@ -1,7 +1,7 @@
 - if played.empty?
   %p There are no played shows.
 - else
-  %ul.detailed-list#of_shows
+  %ul.nav.nav-pills.nav-stacked#of_shows
     - played.each do |show|
-      %li
-        %h4= link_to (l show.datetime_local_to_event, :format => :short), statement_path(show), :title => 'show-datetime'
+      %li{:class => @show.id == show.id ? :active : :unselected }
+        = link_to (l show.datetime_local_to_event, :format => :short), statement_path(show), :title => 'show-datetime'
