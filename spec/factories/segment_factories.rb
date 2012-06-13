@@ -1,4 +1,4 @@
-Factory.define(:segment, :default_strategy => :build) do |ls|
+Factory.define(:segment) do |ls|
   ls.name "Some List Segment"
   ls.association :organization
 end
