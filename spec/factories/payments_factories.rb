@@ -70,12 +70,13 @@ Factory.define :customer_with_id_and_person_id, :parent => :customer do |c|
 end
 
 Factory.define :customer_with_credit_cards, :parent => :customer_with_id do |c|
-  c.credit_cards { [ Factory(:credit_card) ] }
+  c.credit_cards { [ Factory.build(:credit_card) ] }
 end
+
 Factory.define :payment, :class => AthenaPayment do |p|
   p.amount 100
   p.billing_address { Factory.build(:athena_address) }
-  p.credit_card { Factory(:credit_card) }
+  p.credit_card { Factory.build(:credit_card) }
   p.customer { Factory.build(:customer) }
   p.transaction_id "j59qrb"
 end

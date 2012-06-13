@@ -1,6 +1,8 @@
 Factory.define(:item) do |i|
-  i.product { Factory(:sold_ticket) }
-  i.price 1000
+  i.product { Factory.build(:sold_ticket) }
+  
+  #price is going to be assigned when product is called.  Setting it here will not work
+  
   i.association :order
   i.reseller_net 100
 end
