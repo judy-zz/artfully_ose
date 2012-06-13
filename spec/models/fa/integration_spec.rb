@@ -3,7 +3,7 @@ require 'spec_helper'
 describe FA::Integration do
     context "integration" do
       before(:each) do
-        @user = Factory(:fa_user_with_member_id)
+        @user = Factory.build(:fa_user_with_member_id)
         @organization = Factory(:organization)
       end
 

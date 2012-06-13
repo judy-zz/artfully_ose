@@ -1,10 +1,10 @@
-Factory.define :fa_user, :class => FA::User, :default_strategy => :build do |f|
+Factory.define :fa_user, :class => FA::User do |f|
   f.email "user@fracturedatlas.org"
   f.username "user"
   f.password "password"
 end
 
-Factory.define :fa_project, :class => FA::Project, :default_strategy => :build do |f|
+Factory.define :fa_project, :class => FA::Project do |f|
   f.id          "10000"
   f.member_id   "1"
   f.name        "Sample project"
@@ -15,21 +15,21 @@ Factory.define :fa_project, :class => FA::Project, :default_strategy => :build d
   f.status      "Active"
 end
 
-Factory.define :fa_user_with_member_id, :class => FA::User, :default_strategy => :build do |f|
+Factory.define :fa_user_with_member_id, :class => FA::User do |f|
   f.email "user@fracturedatlas.org"
   f.username "user"
   f.password "password"
   f.member_id 44539
 end
 
-Factory.define :fa_donor, :class => FA::Donor, :default_strategy => :build do |donor|
+Factory.define :fa_donor, :class => FA::Donor do |donor|
   donor.first_name "Jim"
   donor.last_name "Mississippi"
   donor.email "jim@mississippi.org"
   donor.anonymous "Yes"
 end
 
-Factory.define :fa_donation, :class => FA::Donation, :default_strategy => :build do |d|
+Factory.define :fa_donation, :class => FA::Donation do |d|
   d.id              345
   d.amount          "40.00"
   d.nongift         "10.00"
@@ -42,5 +42,5 @@ Factory.define :fa_donation, :class => FA::Donation, :default_strategy => :build
   d.fs_available_on "2010-09-03"
   d.is_anonymous    "1"
 
-  d.donor { Factory(:fa_donor) }
+  d.donor { Factory.build(:fa_donor) }
 end

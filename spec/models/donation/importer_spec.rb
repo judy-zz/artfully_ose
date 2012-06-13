@@ -15,7 +15,7 @@ describe Donation::Importer do
   describe "processing donations" do
     
     describe "when the donation already exists" do
-      let(:donation) { Factory(:fa_donation) }
+      let(:donation) { Factory.build(:fa_donation) }
       let(:donor) { Factory(:person) }
     
       it "updates the existing order" do
@@ -33,7 +33,7 @@ describe Donation::Importer do
     end
       
     describe "when it is a new donation" do
-      let(:donation) { Factory(:fa_donation) }
+      let(:donation) { Factory.build(:fa_donation) }
       
       before(:each) do
         Order.where(:fa_id => donation.id).should be_empty
@@ -54,7 +54,7 @@ describe Donation::Importer do
     end
       
     describe "when it is a new donation with an existing donor email address" do    
-      let(:donation) { Factory(:fa_donation) }
+      let(:donation) { Factory.build(:fa_donation) }
       
       it "does not create a person if the donor already exists" do
         Order.where(:fa_id => donation.id).should be_empty
@@ -79,7 +79,7 @@ describe Donation::Importer do
   
   describe "create_or_update_items" do
     let(:order) { Factory(:order) }
-    let(:donation) { Factory(:fa_donation)}
+    let(:donation) { Factory.build(:fa_donation)}
   
     it "creates a new item for the donation if it is a new order" do
       subject.send(:create_or_update_items, order, donation, organization)
@@ -96,7 +96,7 @@ describe Donation::Importer do
   
   describe ".item_attributes" do
     let(:order) { Factory(:order) }
-    let(:donation) { Factory(:fa_donation)}
+    let(:donation) { Factory.build(:fa_donation)}
     let(:item) { subject.send(:item_attributes, donation, organization, order) }
   
     it "creates a hash of attributes for new item creation" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FA::Session do
-  let(:user) { Factory(:fa_user) }
+  let(:user) { Factory.build(:fa_user) }
   subject { FA::Session.new(:user => user) }
 
   before(:each) do

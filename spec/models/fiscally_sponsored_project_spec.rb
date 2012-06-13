@@ -3,7 +3,7 @@ require 'spec_helper'
 describe FiscallySponsoredProject do
   subject { Factory(:fiscally_sponsored_project) }
 
-  let(:fa_project){ Factory(:fa_project) }
+  let(:fa_project){ Factory.build(:fa_project) }
   let(:organization){ Factory(:organization) }
 
   describe ".attributes_from" do

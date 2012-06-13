@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FA::User do
-  subject { Factory(:fa_user) }
+  subject { Factory.build(:fa_user) }
 
   it { should be_valid }
 
