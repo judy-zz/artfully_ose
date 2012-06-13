@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe ACH::Account do
-  subject { Factory(:ach_account) }
+  subject { Factory.build(:ach_account) }
 
   let(:hsh) {
     {

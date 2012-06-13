@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe ACH::Request do
-  let(:customer)    { Factory(:ach_customer) }
-  let(:account)     { Factory(:ach_account) }
+  let(:customer)    { Factory.build(:ach_customer) }
+  let(:account)     { Factory.build(:ach_account) }
   let(:transaction) { ACH::Transaction.new(123400, "Test Transaction") }
   subject { ACH::Request.new(transaction, customer, account) }
 

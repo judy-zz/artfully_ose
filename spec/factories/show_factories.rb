@@ -28,6 +28,6 @@ Factory.define(:settleable_show, :parent => :show_with_tickets) do |s|
   end
 end
 
-Factory.define(:expired_show, :parent => :show, :default_strategy => :build) do |s|
+Factory.define(:expired_show, :parent => :show) do |s|
   s.datetime { DateTime.now - 1.day}
 end

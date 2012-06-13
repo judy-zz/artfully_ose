@@ -127,7 +127,7 @@ describe Ticket do
   
   describe "#expired?" do
     it "is considered to be expired if the show time is in the past" do
-      subject.show = Factory(:expired_show)
+      subject.show = Factory.build(:expired_show)
       subject.should be_expired
     end
   
