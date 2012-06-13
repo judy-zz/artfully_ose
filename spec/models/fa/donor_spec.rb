@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe FA::Donor do
-  let(:payment) { Factory(:payment) }
+  let(:payment) { Factory.build(:payment) }
   subject { FA::Donor.extract_from(payment) }
 
   describe ".extract_from" do

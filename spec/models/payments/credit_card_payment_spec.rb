@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe CreditCardPayment do
-  let(:customer){ Factory(:customer_with_id) }
-  let(:card){ Factory(:credit_card) }
+  let(:customer){ Factory.build(:customer_with_id) }
+  let(:card){ Factory.build(:credit_card) }
 
   subject { CreditCardPayment.for_card_and_customer(card, customer)}
 

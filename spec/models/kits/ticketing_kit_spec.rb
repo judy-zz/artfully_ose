@@ -31,7 +31,7 @@ describe TicketingKit do
     end
 
     it "should be activatable with credit cards and an organization" do
-      owner.stub(:credit_cards).and_return(1.times.collect { Factory(:credit_card) } )
+      owner.stub(:credit_cards).and_return(1.times.collect { Factory.build(:credit_card) } )
       subject.organization.stub(:owner).and_return(owner)
       subject.requirements_met?.should be_true
     end
@@ -49,7 +49,7 @@ describe TicketingKit do
     end
 
     it "should be valid if the user has at least one credit card" do
-      subject.organization.owner.credit_cards << Factory(:credit_card)
+      subject.organization.owner.credit_cards << Factory.build(:credit_card)
       subject.should be_valid
     end
   end

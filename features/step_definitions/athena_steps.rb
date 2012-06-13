@@ -23,5 +23,5 @@ Given /^I can refund tickets through Braintree$/ do
 end
 
 Given /^I can save Customers to ATHENA$/ do
-  FakeWeb.register_uri(:post, "http://localhost/payments/customers.json", :body => Factory(:customer_with_id).encode)
+  FakeWeb.register_uri(:post, "http://localhost/payments/customers.json", :body => Factory.build(:customer_with_id).encode)
 end

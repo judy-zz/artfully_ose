@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Checkout do
   disconnect_sunspot
-  let(:payment) { Factory(:payment) }
-  let(:payment_without_email) { Factory(:payment_without_email) }
+  let(:payment) { Factory.build(:payment) }
+  let(:payment_without_email) { Factory.build(:payment_without_email) }
   let(:order) { Factory(:cart) }
   
   subject { Checkout.new(order, payment) }
@@ -59,7 +59,7 @@ describe Checkout do
   end
   
   describe "cash payments" do
-    let(:payment)         { CashPayment.new(Factory(:customer)) }
+    let(:payment)         { CashPayment.new(Factory.build(:customer)) }
     let(:cart_with_item)  { Factory(:cart_with_items) }
     subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
   

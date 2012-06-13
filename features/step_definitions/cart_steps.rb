@@ -1,5 +1,5 @@
 Given /^I enter my payment details$/ do
-  payment = Factory(:payment)
+  payment = Factory.build(:payment)
 
   with_scope('"#customer"') do
     fill_in("First Name",:with => payment.customer.first_name)

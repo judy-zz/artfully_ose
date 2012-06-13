@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe AthenaCreditCard do
   
-  subject { Factory(:credit_card) }
+  subject { Factory.build(:credit_card) }
 
   %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|
     it { should respond_to attribute.underscore }
@@ -31,13 +31,13 @@ describe AthenaCreditCard do
   end
 
   describe "#encode" do
-    subject { Factory(:credit_card).encode }
+    subject { Factory.build(:credit_card).encode }
     %w( cardNumber expirationDate cardholderName cvv ).each do |attribute|
       it { should match(attribute) }
     end
 
     it "should use the MM/YY format when encoding the expiration date to JSON" do
-      @card = Factory(:credit_card)
+      @card = Factory.build(:credit_card)
       @card.encode.should match(/\"expirationDate\":\"#{@card.expiration_date.strftime('%m\/%Y')}\"/)
     end
 
@@ -60,7 +60,7 @@ describe AthenaCreditCard do
 
   describe "#find" do
     it "should find the card by id" do
-      FakeWeb.register_uri(:get, "http://localhost/payments/cards/1.json", :body => Factory(:credit_card, :id => 1).encode)
+      FakeWeb.register_uri(:get, "http://localhost/payments/cards/1.json", :body => Factory.build(:credit_card, :id => 1).encode)
       @card = AthenaCreditCard.find(1)
 
       FakeWeb.last_request.method.should == "GET"

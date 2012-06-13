@@ -6,7 +6,7 @@ sample_single_donation = "<donations><donation><id>40951</id><date>2010-06-02</d
 
 describe FA::Donation do
   let(:donation) { Factory(:sponsored_donation) }
-  let(:payment) { Factory(:payment) }
+  let(:payment) { Factory.build(:payment) }
   subject { FA::Donation.from(donation, payment) }
 
   describe ".find_by_member_id" do
@@ -87,7 +87,7 @@ describe FA::Donation do
   end
 
   describe FA::Donation::CreditCard do
-    let(:payment) { Factory(:payment) }
+    let(:payment) { Factory.build(:payment) }
     subject { FA::Donation::CreditCard.extract_from(payment) }
 
     describe ".extract_from" do

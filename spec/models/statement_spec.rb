@@ -8,7 +8,7 @@ describe Statement do
   let(:free_chart)      { Factory(:chart_with_free_sections, :event => event) }
   let(:paid_show)       { Factory(:show_with_tickets, :organization => Factory(:organization), :chart => paid_chart, :event => event) }
   let(:free_show)       { Factory(:show_with_tickets, :organization => Factory(:organization), :chart => free_chart, :event => event) }
-  let(:payment)         { Factory(:payment) }
+  let(:payment)         { Factory.build(:payment) }
   let(:cart)            { Factory(:cart_with_only_tickets, :tickets => show.tickets[6..8]) }
   
   describe "nil show" do

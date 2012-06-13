@@ -34,7 +34,7 @@ end
 Given /^there is a pending ticketing kit application for "([^"]*)"$/ do |name|
   organization = Factory(:organization, :name => name)
   user = Factory(:user)
-  user.customer = Factory(:customer_with_credit_cards)
+  user.customer = Factory.build(:customer_with_credit_cards)
   organization.users << user
   organization.kits << TicketingKit.new
 end

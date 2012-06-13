@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe AthenaPayment do
-  subject { Factory(:payment) }
+  subject { Factory.build(:payment) }
 
   %w( amount customer credit_card billing_address ).each do |attribute|
     it { should respond_to attribute }
@@ -15,7 +15,7 @@ describe AthenaPayment do
     end
 
     it "should be invalid without an amount" do
-      subject = Factory(:payment, :amount => nil)
+      subject = Factory.build(:payment, :amount => nil)
       subject.should_not be_valid
     end
 
@@ -47,7 +47,7 @@ describe AthenaPayment do
     end
 
     it "should accept nested attributes for billing address" do
-      billing_address = Factory(:athena_address)
+      billing_address = Factory.build(:athena_address)
       subject.billing_address = billing_address
       subject.billing_address.attributes.should == billing_address.attributes
     end
@@ -59,13 +59,13 @@ describe AthenaPayment do
     end
 
     it "should accept nested attributes for credit card" do
-      credit_card = Factory(:credit_card)
+      credit_card = Factory.build(:credit_card)
       subject.credit_card = credit_card
       subject.credit_card.attributes.should == credit_card.attributes
     end
 
     it "should accept nested attributes for customer" do
-      customer = Factory(:customer)
+      customer = Factory.build(:customer)
       subject.customer = customer
       subject.customer.attributes.should == customer.attributes
     end

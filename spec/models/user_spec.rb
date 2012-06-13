@@ -41,7 +41,7 @@ describe User do
     it { should respond_to(:customer) }
 
     it "should fetch the remote customer record" do
-      @customer = Factory(:customer_with_id)
+      @customer = Factory.build(:customer_with_id)
       subject.customer_id = @customer.id
       FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :body => @customer.encode)
       subject.customer.should eq(@customer)
@@ -53,7 +53,7 @@ describe User do
     end
 
     it "should update the customer id when assigning a new customer record" do
-      subject.customer = Factory(:customer, :id => 2)
+      subject.customer = Factory.build(:customer, :id => 2)
       subject.customer_id.should eq(2)
     end
 
@@ -74,14 +74,14 @@ describe User do
     end
 
     it "should return any credit cards associated with the customer record" do
-      customer = Factory(:customer_with_credit_cards)
+      customer = Factory.build(:customer_with_credit_cards)
       subject.customer = customer
       subject.credit_cards.should eq customer.credit_cards
     end
 
     it "should delegate credit card assignemnt to the customer" do
-      subject.customer = Factory(:customer_with_id)
-      credit_card = Factory(:credit_card)
+      subject.customer = Factory.build(:customer_with_id)
+      credit_card = Factory.build(:credit_card)
       subject.credit_cards << credit_card
       subject.credit_cards.should eq subject.customer.credit_cards
     end

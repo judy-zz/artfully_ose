@@ -5,15 +5,15 @@ Given /^I navigate to my credit cards page$/ do
 end
 
 When /^I fill in valid credit card details$/ do
-  card = Factory(:credit_card_with_id)
+  card = Factory.build(:credit_card_with_id)
   When %{I fill in "Cardholder Name" with "#{card.cardholder_name}"}
   When %{I fill in "Number" with "#{card.card_number}"}
   When %{I fill in "CVV" with "#{card.cvv}"}
 end
 
 Given /^I have (\d+) saved credit cards$/ do |quantity|
-  cards = quantity.to_i.times.collect { Factory(:credit_card_with_id) }
-  @customer = Factory(:customer_with_id)
+  cards = quantity.to_i.times.collect { Factory.build(:credit_card_with_id) }
+  @customer = Factory.build(:customer_with_id)
   @customer.credit_cards = cards
   @current_user.customer = @customer
   @current_user.save
@@ -23,11 +23,11 @@ end
 Given /^there are (\d+) saved credit cards for "([^"]*)"$/ do |quantity, email|
   cards = []
   quantity.to_i.times do
-    card = Factory(:credit_card_with_id)
+    card = Factory.build(:credit_card_with_id)
     cards << card
     FakeWeb.register_uri(:any, "http://localhost/payments/cards/#{card.id}.json", :status => 200, :body => card.encode)
   end
-  @customer = Factory(:customer_with_id)
+  @customer = Factory.build(:customer_with_id)
   @customer.credit_cards = cards
   current_user = User.find_by_email(email)
   current_user.customer = @customer
@@ -55,13 +55,13 @@ end
 
 When /^I update (\d+)st credit card details with:$/ do |pos, table|
   Given %{I follow "Edit" for the 1st credit card}
-  card = Factory(:credit_card_with_id, table.hashes.first)
+  card = Factory.build(:credit_card_with_id, table.hashes.first)
   @customer.credit_cards[pos.to_i-1].cardholder_name = card.cardholder_name
   FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :status => 200, :body => @customer.encode)
 end
 
 Then /^the (\d+)(?:st|nd|rd|th) credit card should be:$/ do |pos, table|
-  card = Factory(:credit_card, table.hashes.first)
+  card = Factory.build(:credit_card, table.hashes.first)
 
   within(:xpath, "(//tbody/tr)[#{pos.to_i}]") do
     Then %{I should see "#{card.cardholder_name}"}
