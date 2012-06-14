@@ -1,9 +1,8 @@
 class Job::ResellerSettlement < Job::Base
   class << self
     def run
-      end_of_last_month = Date.today.beginning_of_month - 1
-      beginning_of_last_month = end_of_last_month.beginning_of_month
-      settle_shows_in(beginning_of_last_month .. end_of_last_month)
+      range = ResellerSettlement.range_for(DateTime.now)
+      settle_shows_in(range)
     end
 
     def settle_shows_in(range)

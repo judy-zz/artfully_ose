@@ -8,7 +8,7 @@ describe Job::ResellerSettlement do
     
     it "should call the methods using a date range" do
       range = (DateTime.now.beginning_of_month.to_date .. DateTime.now.end_of_month.to_date)
-      Job::ResellerSettlement.should_receive(:settle_shows_in).with(range)
+      Job::ResellerSettlement.should_receive(:settle_shows_in).with(ResellerSettlement.range_for(DateTime.now))
       Job::ResellerSettlement.run
     end
     
@@ -19,7 +19,7 @@ describe Job::ResellerSettlement do
       show.datetime = range[0]
       show.save(:validate => false)
 
-      Job::ResellerSettlement.should_receive(:settle_donations_in)
+      Job::ResellerSettlement.should_receive(:settle_shows_in)
       ResellerSettlement.should_receive(:submit).with(organization.id, show.reseller_settleables, organization.bank_account, show.id).and_return(settlement)
       Job::ResellerSettlement.run
     end
@@ -31,7 +31,7 @@ describe Job::ResellerSettlement do
       show.datetime = range[0] - 1.minute
       show.save(:validate => false)
 
-      Job::ResellerSettlement.should_receive(:settle_donations_in)
+      Job::ResellerSettlement.should_receive(:settle_shows_in)
       ResellerSettlement.should_not_receive(:submit)
       Job::ResellerSettlement.run
     end
@@ -78,40 +78,5 @@ describe Job::ResellerSettlement do
     it "should recover and continue settling if there is a problem" do
       Job::ResellerSettlement.settle_shows_in(ResellerSettlement.range_for(DateTime.now))
     end
-  end
-
-  describe ".settle_donations_in" do
-    let(:orders) { 3.times.collect { Factory(:order) } }
-
-    let(:donations_for_first_org)   { 2.times.collect{ Factory(:item, :product_type => "Donation")}}
-    let(:donations_for_second_org)  { 2.times.collect{ Factory(:item, :product_type => "Donation")}}
-
-    let(:organizations) { 3.times.collect { Factory(:organization, :bank_account => Factory(:bank_account)) } }
-    let(:settlement) { mock(:reseller_settlement, :submit => nil) }
-
-    before(:each) do
-      donations_for_first_org.each { |donation| donation.stub(:order).and_return(orders.first) }
-      orders.first.stub(:organization).and_return(organizations.first)
-      orders.first.stub(:all_donations).and_return(donations_for_first_org)
-
-      donations_for_second_org.each { |donation| donation.stub(:order).and_return(orders.second) }
-      orders.second.stub(:organization).and_return(organizations.second)
-      orders.second.stub(:all_donations).and_return(donations_for_second_org)
-
-      orders.third.stub(:organization).and_return(organizations.third)
-      orders.third.stub(:all_donations).and_return([])
-
-      Order.stub(:in_range).and_return(orders)
-    end
-
-    it "creates and submit a ResellerSettlement for each organization for all donations" do
-      ResellerSettlement.should_receive(:submit).with(organizations.first.id, donations_for_first_org, organizations.first.bank_account).and_return(settlement)
-      ResellerSettlement.should_receive(:submit).with(organizations.second.id, donations_for_second_org, organizations.second.bank_account).and_return(settlement)
-      
-      #This tests the case where an org has ticket sales in range but no donations.  ResellerSettlement was creating an empty settlement
-      ResellerSettlement.should_not_receive(:submit).with(organizations.third.id, [], organizations.third.bank_account)
-      
-      Job::ResellerSettlement.settle_donations_in(ResellerSettlement.range_for(DateTime.now))
-    end 
   end
 end

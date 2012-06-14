@@ -2,6 +2,12 @@ module Settlement::RangeFinding
   extend ActiveSupport::Concern
 
   module ClassMethods
+    def range_for_previous_month(now)
+      stop = Date.today.beginning_of_month - 1
+      start = stop.beginning_of_month
+      [ start, stop ]
+    end
+    
     def range_for(now)
       start = start_from(now.beginning_of_day)
       stop  = offset_from(start)

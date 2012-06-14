@@ -144,7 +144,8 @@ class Organization < ActiveRecord::Base
   def items_sold_as_reseller_during(date_range)
     Reseller::Order.
       includes(:items => :show).
-      where("shows.datetime" => date_range, "organization_id" => id).
+      where("shows.datetime" >= date_range[0], "organization_id" => id).
+      where("shows.datetime" <= date_range[1], "organization_id" => id).
       map(&:items).
       flatten.
       find_all { |item| date_range === item.show.datetime.to_date }

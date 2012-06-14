@@ -17,6 +17,10 @@ class ResellerSettlement < Settlement
       settlement.show_id           = show_id
     end
   end
+  
+  def self.range_for(now)
+    range_for_previous_month(now)
+  end
 
   private
 
