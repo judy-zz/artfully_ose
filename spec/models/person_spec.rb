@@ -103,8 +103,8 @@ describe Person do
       items = 3.times.collect { Factory(:item, :order => order) }
       
       person.lifetime_value.should eq 0
-      person.calculate_lifetime_value.should eq 3000
-      person.lifetime_value.should eq 3000
+      person.calculate_lifetime_value.should eq 15000
+      person.lifetime_value.should eq 15000
     end
   end
   
