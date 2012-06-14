@@ -8,7 +8,8 @@ Factory.define(:item) do |i|
 end
 
 Factory.define(:free_item, :parent => :item) do |i|
-  i.price 0
+  i.product { Factory.create(:free_ticket) }
+  i.association :order
 end
 
 Factory.define(:fa_item, :parent => :item) do |i|

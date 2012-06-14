@@ -25,7 +25,7 @@ describe Refund do
 
   describe "#submit" do
     before(:each) do
-      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(successful_response)
+      gateway.should_receive(:refund).with(15600, order.transaction_id).and_return(successful_response)
       
       subject.items.each { |i| i.stub(:return!) }
       subject.items.each { |i| i.stub(:refund!) }
