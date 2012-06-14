@@ -1,5 +1,5 @@
 Factory.define(:item) do |i|
-  i.product { Factory.build(:sold_ticket) }
+  i.product { Factory.create(:sold_ticket) }
   
   #price is going to be assigned when product is called.  Setting it here will not work
   

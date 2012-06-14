@@ -106,7 +106,7 @@ describe Refund do
       subject.items.each { |i| i.should_not_receive(:return!) }
       subject.items.each { |i| i.should_not_receive(:refund!) }
       subject.should_not_receive(:create_refund_order)
-      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(unsettled_response)
+      gateway.should_receive(:refund).with(15600, order.transaction_id).and_return(unsettled_response)
     end
     
     it "should display a friendlier error to the user" do
@@ -127,13 +127,13 @@ describe Refund do
     end
   
     it "should return true if the refund was successful" do
-      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(successful_response)
+      gateway.should_receive(:refund).with(15600, order.transaction_id).and_return(successful_response)
       subject.submit
       subject.should be_successful
     end
   
     it "should return false if the refund was not successful" do
-      gateway.should_receive(:refund).with(3600, order.transaction_id).and_return(fail_response)
+      gateway.should_receive(:refund).with(15600, order.transaction_id).and_return(fail_response)
       subject.submit
       subject.should_not be_successful
     end
@@ -149,12 +149,12 @@ describe Refund do
     it "should return the amount for only those orders being refunded" do
       refundable_items = items[0..1]
       partial_refund = Refund.new(order, refundable_items)
-      partial_refund.refund_amount.should eq 2400
+      partial_refund.refund_amount.should eq 10400
     end
     
     it "should issue a refund for the amount being refunded" do
       refundable_items = items[0..1]
-      gateway.should_receive(:refund).with(2400, order.transaction_id).and_return(successful_response)
+      gateway.should_receive(:refund).with(10400, order.transaction_id).and_return(successful_response)
       partial_refund = Refund.new(order, refundable_items)
       partial_refund.submit
       partial_refund.items.length.should eq 2

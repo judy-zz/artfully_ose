@@ -11,9 +11,9 @@ describe Item do
   
   it "should report total_proce as the price plus the nongift_amount" do
     item = Factory.build(:fa_item)
-    item.price.should eq 1000
+    item.price.should eq 5000
     item.nongift_amount.should eq 400
-    item.total_price.should eq 1400
+    item.total_price.should eq 5400
   end
   
   describe "#order" do
