@@ -57,22 +57,6 @@ describe Item do
     end
   end
   
-  describe "#product" do
-    it "finds the product using product_type and product_id" do
-      subject.instance_variable_set(:@product, nil)
-      subject.product_type = "Ticket"
-      subject.product_id = 1
-      Ticket.should_receive(:find).with(1, :select => nil, :include => nil)
-      subject.product
-  
-      subject.instance_variable_set(:@product, nil)
-      subject.product_type = "Donation"
-      subject.product_id = 1
-      Donation.should_receive(:find).with(1, :select => nil, :include => nil)
-      subject.product
-    end
-  end
-  
   describe "#product=" do
     let(:product) { Factory(:ticket) }
     before(:each) do 
