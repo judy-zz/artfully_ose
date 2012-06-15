@@ -16,33 +16,37 @@ Factory.define(:fa_item, :parent => :item) do |i|
   i.nongift_amount 400
 end
 
-#
-# These stopped working since the move to Rails 3.1 and FactoryGirl 2.5
-# Haven't hand time to run down why. It is because item.product gets run after item.state for some reason
-# and the call to product resets the state.
-#
-
 Factory.define(:settled_item, :class => Item) do |i|
   i.product { Factory(:ticket, :state => :sold) }
-  i.state   "settled"
+  i.after_build do |i|
+    i.state="settled"
+  end
 end
 
 Factory.define(:comped_item, :class => Item) do |i|
   i.product { Factory(:ticket, :state => :comped) }
-  i.state   "comped"
+  i.after_build do |i|
+    i.state="comped"
+  end
 end
 
 Factory.define(:exchanged_item, :class => Item) do |i|
   i.product { Factory(:ticket, :state => :on_sale) }
-  i.state   "exchanged"
+  i.after_build do |i|
+    i.state="exchanged"
+  end
 end
 
 Factory.define(:exchangee_item, :class => Item) do |i|
   i.product { Factory(:ticket, :state => :sold) }
-  i.state   "exchangee"
+  i.after_build do |i|
+    i.state="exchangee"
+  end
 end
 
 Factory.define(:refunded_item, :class => Item) do |i|
   i.product { Factory(:ticket, :state => :on_sale) }
-  i.state   "refunded"
+  i.after_build do |i|
+    i.state="refunded"
+  end
 end
