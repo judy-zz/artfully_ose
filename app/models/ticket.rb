@@ -9,7 +9,6 @@ class Ticket < ActiveRecord::Base
 
   belongs_to :cart
   
-  # Can re-insert this when the polymorphism on the items side catches up
   has_many :items, :foreign_key => "product_id"
 
   delegate :event, :to => :show

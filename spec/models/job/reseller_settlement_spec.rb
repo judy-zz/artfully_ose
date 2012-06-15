@@ -18,7 +18,7 @@ describe Job::ResellerSettlement do
       show = Factory(:show, :organization => organization, :event => Factory(:event))
       show.datetime = range[0]
       show.save(:validate => false)
-
+  
       Job::ResellerSettlement.should_receive(:settle_shows_in)
       ResellerSettlement.should_receive(:submit).with(organization.id, show.reseller_settleables, organization.bank_account, show.id).and_return(settlement)
       Job::ResellerSettlement.run
@@ -30,24 +30,24 @@ describe Job::ResellerSettlement do
       show = Factory(:show, :organization => organization, :event => Factory(:event))
       show.datetime = range[0] - 1.minute
       show.save(:validate => false)
-
+  
       Job::ResellerSettlement.should_receive(:settle_shows_in)
       ResellerSettlement.should_not_receive(:submit)
       Job::ResellerSettlement.run
     end
   end
-
+  
   describe ".settle_shows_in" do
     let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
     let(:shows) { 3.times.collect{ Factory(:show, :organization => organization, :event => Factory(:event)) } }
     let(:settlement) { Factory (:reseller_settlement) }
-
+  
     before(:each) do
       settlement.stub(:submit).and_return(nil)
       shows.each { |show| show.stub(:reseller_settleables).and_return(5.times.collect{ Factory(:item) } ) }
       Show.stub(:in_range).and_return(shows)
     end
-
+  
     it "should not settle a show if it is part of a deleted event" do
       shows.first.event.destroy
       shows.reject(&:event_deleted?).each do |show|
@@ -55,7 +55,7 @@ describe Job::ResellerSettlement do
       end
       Job::ResellerSettlement.settle_shows_in(ResellerSettlement.range_for(DateTime.now))
     end
-
+  
     it "creates and submit a ResellerSettlement for each show" do
       shows.each do |show|
         ResellerSettlement.should_receive(:submit).with(organization.id, show.reseller_settleables, organization.bank_account, show.id).and_return(settlement)
@@ -65,17 +65,11 @@ describe Job::ResellerSettlement do
   end  
   
   describe "when disaster strikes" do
-    let(:organization) { Factory(:organization, :bank_account => Factory(:bank_account)) }
-    let(:shows) { 3.times.collect{ Factory(:show, :organization => organization, :event => Factory(:event)) } }
-    let(:settlement) { Factory (:reseller_settlement) }
-
-    before(:each) do
-      ResellerSettlement.should_receive(:submit).exactly(3).times.and_raise(Exception.new)
-      shows.each { |show| show.stub(:reseller_settleables).and_return(5.times.collect{ Factory(:item) } ) }
-      Show.stub(:in_range).and_return(shows)
-    end
+    let(:organizations) { 2.times.collect {Factory(:organization, :bank_account => Factory(:bank_account)) } }
     
     it "should recover and continue settling if there is a problem" do
+      Organization.any_instance.stub(:items_sold_as_reseller_during).and_return(Array.wrap(Factory(:item)))
+      ResellerSettlement.should_receive(:submit).exactly(Organization.all.size).times.and_raise(Exception.new)
       Job::ResellerSettlement.settle_shows_in(ResellerSettlement.range_for(DateTime.now))
     end
   end

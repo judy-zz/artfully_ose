@@ -7,11 +7,10 @@ class Job::ResellerSettlement < Job::Base
 
     def settle_shows_in(range)
       logger.info "Settling shows..."
-
       settlements = []
-
       Organization.find_in_batches do |organizations|
         organizations.each do |organization|
+          
           begin
             items = organization.items_sold_as_reseller_during(range)
             if items.length > 0
