@@ -23,7 +23,6 @@ gem 'sass'
 gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0', :require => [ "will_paginate", "will_paginate/array" ]
 gem 'bootstrap-will_paginate'
-gem 'copycopter_client'
 gem 'mail'
 gem 'fastercsv'
 gem 'jquery-rails', '>= 1.0.19'

@@ -105,9 +105,6 @@ GEM
       ffi (~> 1.0.6)
     cocaine (0.2.1)
     configuration (1.2.0)
-    copycopter_client (1.0.3)
-      i18n (~> 0.5.0)
-      json
     crack (0.1.8)
     cucumber (1.1.1)
       builder (>= 2.1.2)
@@ -315,7 +312,6 @@ DEPENDENCIES
   cancan
   capybara
   comma!
-  copycopter_client
   cucumber-rails
   database_cleaner
   delayed_job (= 3.0.2)
