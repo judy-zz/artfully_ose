@@ -28,7 +28,6 @@ gem 'sass'
 gem 'dynamic_form'
 gem 'will_paginate', '~> 3.0', :require => [ "will_paginate", "will_paginate/array" ]
 gem 'bootstrap-will_paginate'
-gem 'copycopter_client', '2.0.1'
 gem 'mail'
 gem 'jquery-rails', '>= 1.0.19'
 gem 's3', '>= 0.3.11'
@@ -72,8 +71,8 @@ group :test do
   gem 'shoulda'
   gem 'fakeweb'
   gem 'faker'
-  gem 'factory_girl', '~> 2.0.0', :require => false
-  gem 'factory_girl_rails', '~> 1.1.0', :require => false
+  gem 'factory_girl', '~> 2.0.0'
+  gem 'factory_girl_rails', '~> 1.1.0'
   
   gem 'autotest-rails'
   gem 'autotest-fsevent'
