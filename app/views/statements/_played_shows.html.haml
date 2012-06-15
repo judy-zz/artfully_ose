@@ -3,5 +3,5 @@
 - else
   %ul.nav.nav-pills.nav-stacked#of_shows
     - played.each do |show|
-      %li{:class => @show.id == show.id ? :active : :unselected }
+      %li{:class => get_selected_class(@show, show) }
         = link_to (l show.datetime_local_to_event, :format => :short), statement_path(show), :title => 'show-datetime'

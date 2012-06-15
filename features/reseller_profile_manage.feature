@@ -12,16 +12,16 @@ Feature: Resellers have profiles
 
   Scenario: A user wants to see their reseller profile
     When I follow "Reseller Settings"
-    Then I should see "Url"
+    Then I should see "URL"
     And I should see "Description"
 
   Scenario: A user wants to update their reseller profile
     When I follow "Reseller Settings"
-    And I fill in "Url" with "http://example.com"
+    And I fill in "URL" with "http://example.com"
     And I fill in "Description" with "a great example"
     And I fill in "Fee" with "$2.71"
-    And I press "Update Profile"
+    And I press "Save"
     And I follow "Reseller Settings"
-    Then the "Url" field should contain "http://example.com"
+    Then the "URL" field should contain "http://example.com"
     And the "Description" field should contain "a great example"
     And the "Fee" field should contain "\$2.71"

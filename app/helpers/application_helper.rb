@@ -13,6 +13,17 @@ module ApplicationHelper
     end
   end
   
+  #
+  # For use with the nav-pills to select an intem based on a current selection
+  # Will protect against nil by using try on the object
+  #
+  # returns 'active' if selected_object.id = menu_object.id
+  # 'unselected' otherwise
+  #
+  def get_selected_class(selected_object, menu_object)
+    selected_object.try(:id) == menu_object.id ? "active" : "unselected"
+  end
+  
   def full_details(action)
     s = truncate(action.full_details, :length => 100, :separator => ' ', :omission => '...')
     if action.subject.is_a? Order

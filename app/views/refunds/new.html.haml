@@ -11,10 +11,19 @@
       - @items.each do |item|
         = hidden_field_tag "items[]", item.id
 
-      %h3 Tickets
-
-      %table.standalone.table
-        %thead
+    %table.table
+      %thead
+        %tr
+          %th
+            Event
+          %th
+            Show
+          %th
+            Price
+          %th
+            Sold
+      - @items.each do |item|
+        - if item.ticket?
           %tr
             %td=item.product.show.event.name
             %td=l item.product.show.datetime_local_to_event, :format => :short

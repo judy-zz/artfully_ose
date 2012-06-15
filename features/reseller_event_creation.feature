@@ -10,7 +10,6 @@ Feature: Resellers create events
 
   Scenario: A reseller creates an event
     When I follow "Reseller Events"
-    And I follow "Create an Event"
     And I fill in the following:
        | reseller_event_name                   | A Time to ROCK!          |
        | reseller_event_producer               | Great Productions Studio |

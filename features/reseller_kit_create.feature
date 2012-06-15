@@ -9,15 +9,15 @@ Feature: Reseller Kit
     Given I am logged in
     And I have 2 saved credit cards
     And I create a new organization called "Fractured Atlas"
-    When I follow "My Organization"
-    And I follow "Activate Reseller Kit"
+    And I view my organization page
+    And I activate the "Reseller Kit"
     And I press "Submit Activation Request"
     Then I should see "Your request has been sent in for approval."
 
   Scenario: A user activates the ticketing kit without a credit card
     Given I am logged in
     And I create a new organization called "Fractured Atlas"
-    When I follow "My Organization"
-    And I follow "Activate Reseller Kit"
+    And I view my organization page
+    And I activate the "Reseller Kit"
     And I press "Submit Activation Request"
     Then I should see "Your request has been sent in for approval."
