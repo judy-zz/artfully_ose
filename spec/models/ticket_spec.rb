@@ -61,12 +61,15 @@ describe Ticket do
     
     it "should return the settled item" do
       ticket = Factory(:ticket)
+      
+      #I HATE doing this here, but see problems in item_factories
       items = [   
-        Factory.create(:exchanged_item, :product=>ticket),
-        Factory.create(:refunded_item, :product=>ticket),
-        Factory.create(:settled_item, :product=>ticket)
+        Item.new(:state => "exchanged"),
+        Item.new(:state => "refunded"),
+        Item.new(:state => "settled")
         ]
       
+      ticket.stub!(:items).and_return(items)
       ticket.items.each {|i| puts "4 #{i.state}"}
       
       ticket.sold_item.should eq items[2]
