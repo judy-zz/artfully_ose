@@ -129,7 +129,8 @@ class Organization < ActiveRecord::Base
     standard =
       Order.
         includes(:items => { :show => :event }).
-        where("orders.organization_id = ? AND orders.type != ?", self.id, Reseller::Order.name).
+        where("orders.organization_id = ?", self.id).
+        reject { |o| o.kind_of? Reseller::Order }.
         map { |o| o.items.map(&:show) }
 
     reseller =
@@ -143,8 +144,6 @@ class Organization < ActiveRecord::Base
 
   def items_sold_as_reseller_during(date_range)
     date_range = Range.new(*date_range) if date_range.kind_of? Array
-
-    items = Item.includes(:show).all { |item| date_range === item.show.datetime.to_date }
 
     Reseller::Order.
       includes(:items => :show).
