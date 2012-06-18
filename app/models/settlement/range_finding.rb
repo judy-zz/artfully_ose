@@ -3,7 +3,7 @@ module Settlement::RangeFinding
 
   module ClassMethods
     def range_for_previous_month(now)
-      stop = Date.today.beginning_of_month - 1
+      stop = now.to_date.beginning_of_month - 1
       start = stop.beginning_of_month
       [ start, stop ]
     end

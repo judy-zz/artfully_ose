@@ -2,7 +2,7 @@ class Job::ResellerSettlement < Job::Base
   class << self
     def run
       range = ResellerSettlement.range_for(DateTime.now)
-      settle_shows_in(range)
+      self.settle_shows_in(range)
     end
 
     def settle_shows_in(range)
@@ -10,7 +10,6 @@ class Job::ResellerSettlement < Job::Base
       settlements = []
       Organization.find_in_batches do |organizations|
         organizations.each do |organization|
-          
           begin
             items = organization.items_sold_as_reseller_during(range)
             if items.length > 0
