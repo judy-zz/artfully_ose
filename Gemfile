@@ -40,8 +40,8 @@ gem 'comma', '3.0.3'
 gem 'nokogiri' # for pulling in blog posts on index#updates
 
 # Authentication and Roles
-gem 'devise'
-gem 'devise_invitable'
+gem 'devise', '=1.4.9'
+gem 'devise_invitable', '=0.6.1'
 gem 'cancan'
 
 # Validations
