@@ -18,6 +18,7 @@ gem 'delayed_job', '=3.0.2'
 gem 'delayed_job_active_record', '=0.3.2'
 gem 'acts-as-taggable-on', '~>2.1.0'
 gem 'restful_metrics'
+gem 'copycopter_client', '2.0.1'
 
 #Mailchimp
 gem 'gibbon'
@@ -71,8 +72,8 @@ group :test do
   gem 'shoulda'
   gem 'fakeweb'
   gem 'faker'
-  gem 'factory_girl', '~> 2.0.0', :require => false
-  gem 'factory_girl_rails', '~> 1.1.0', :require => false
+  gem 'factory_girl', '~> 2.0.0'
+  gem 'factory_girl_rails', '~> 1.1.0'
   
   gem 'autotest-rails'
   gem 'autotest-fsevent'
