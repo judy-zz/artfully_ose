@@ -231,7 +231,7 @@ section {
   border-radius: 0 0 4px 4px;
 }
 .icon-gray {
-  background-image: url("../images/glyphicons-halflings-gray.png");
+  background-image: url("/assets/glyphicons-halflings-gray.png");
 }
 
 .btn-primary {
