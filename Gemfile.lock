@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/fracturedatlas/athena_resource.git
+  revision: 152fe9d1672f2228c2419ba7d9243a4c98672d69
+  specs:
+    athena_resource (0.0.2)
+
 PATH
   remote: vendor/gems/set_watch_for-0.0.1
   specs:
@@ -12,20 +18,19 @@ GEM
   remote: http://rubygems.org/
   specs:
     ZenTest (4.7.0)
-    actionmailer (3.1.2)
-      actionpack (= 3.1.2)
-      mail (~> 2.3.0)
-    actionpack (3.1.2)
-      activemodel (= 3.1.2)
-      activesupport (= 3.1.2)
+    actionmailer (3.2.6)
+      actionpack (= 3.2.6)
+      mail (~> 2.4.4)
+    actionpack (3.2.6)
+      activemodel (= 3.2.6)
+      activesupport (= 3.2.6)
       builder (~> 3.0.0)
       erubis (~> 2.7.0)
-      i18n (~> 0.6)
-      rack (~> 1.3.5)
-      rack-cache (~> 1.1)
-      rack-mount (~> 0.8.2)
+      journey (~> 1.0.1)
+      rack (~> 1.4.0)
+      rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
-      sprockets (~> 2.1.0)
+      sprockets (~> 2.1.3)
     active_utils (1.0.3)
       activesupport (>= 2.3.11)
       i18n
@@ -37,27 +42,27 @@ GEM
       i18n
       json (>= 1.5.1)
       money (<= 3.7.1)
-    activemodel (3.1.2)
-      activesupport (= 3.1.2)
+    activemodel (3.2.6)
+      activesupport (= 3.2.6)
       builder (~> 3.0.0)
-      i18n (~> 0.6)
-    activerecord (3.1.2)
-      activemodel (= 3.1.2)
-      activesupport (= 3.1.2)
-      arel (~> 2.2.1)
+    activerecord (3.2.6)
+      activemodel (= 3.2.6)
+      activesupport (= 3.2.6)
+      arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
     activerecord-import (0.2.9)
       activerecord (~> 3.0)
       activerecord (~> 3.0)
-    activeresource (3.1.2)
-      activemodel (= 3.1.2)
-      activesupport (= 3.1.2)
-    activesupport (3.1.2)
+    activeresource (3.2.6)
+      activemodel (= 3.2.6)
+      activesupport (= 3.2.6)
+    activesupport (3.2.6)
+      i18n (~> 0.6)
       multi_json (~> 1.0)
     acts-as-taggable-on (2.1.1)
       rails
-    arel (2.2.3)
-    athena_resource (0.0.1)
+    addressable (2.2.8)
+    arel (3.0.2)
     autotest-fsevent (0.2.8)
       sys-uname
     autotest-growl (0.2.16)
@@ -79,12 +84,12 @@ GEM
       rack-test (>= 0.5.4)
       selenium-webdriver (~> 2.0)
       xpath (~> 0.1.4)
-    childprocess (0.2.3)
+    childprocess (0.3.2)
       ffi (~> 1.0.6)
     cocaine (0.2.1)
-    coffee-rails (3.1.1)
+    coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
-      railties (~> 3.1.0)
+      railties (~> 3.2.0)
     coffee-script (2.2.0)
       coffee-script-source
       execjs
@@ -146,7 +151,7 @@ GEM
       json (> 1.4.0)
       rdoc
     gravatar_image_tag (1.0.0)
-    haml (3.1.2)
+    haml (3.1.6)
     heroku (2.20.1)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
@@ -156,24 +161,27 @@ GEM
     httparty (0.7.8)
       crack (= 0.1.8)
     i18n (0.6.0)
+    journey (1.0.4)
     jquery-rails (1.0.19)
       railties (~> 3.0)
       thor (~> 0.14)
     json (1.7.3)
     launchy (0.4.0)
       configuration (>= 0.0.5)
+    libwebsocket (0.1.3)
+      addressable
     macaddr (1.0.0)
-    mail (2.3.3)
+    mail (2.4.4)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.18)
     money (3.7.1)
       i18n (~> 0.4)
-    multi_json (1.0.4)
+    multi_json (1.3.6)
     mysql2 (0.3.11)
     newrelic_rpm (3.1.1)
-    nokogiri (1.5.3)
+    nokogiri (1.5.4)
     orm_adapter (0.0.7)
     paperclip (2.5.2)
       activerecord (>= 2.3.0)
@@ -183,37 +191,35 @@ GEM
     polyglot (0.3.3)
     pr_geohash (1.0.0)
     proxies (0.2.1)
-    rack (1.3.6)
+    rack (1.4.1)
     rack-cache (1.2)
       rack (>= 0.4)
     rack-canonical-host (0.0.3)
       rack (>= 1.0.0)
     rack-jsonp-middleware (0.0.5)
       rack
-    rack-mount (0.8.3)
-      rack (>= 1.0.0)
     rack-ssl (1.3.2)
       rack
     rack-ssl-enforcer (0.2.4)
     rack-test (0.6.1)
       rack (>= 1.0)
-    rails (3.1.2)
-      actionmailer (= 3.1.2)
-      actionpack (= 3.1.2)
-      activerecord (= 3.1.2)
-      activeresource (= 3.1.2)
-      activesupport (= 3.1.2)
+    rails (3.2.6)
+      actionmailer (= 3.2.6)
+      actionpack (= 3.2.6)
+      activerecord (= 3.2.6)
+      activeresource (= 3.2.6)
+      activesupport (= 3.2.6)
       bundler (~> 1.0)
-      railties (= 3.1.2)
+      railties (= 3.2.6)
     rails-footnotes (3.7.5.rc4)
       rails (>= 3.0.0)
-    railties (3.1.2)
-      actionpack (= 3.1.2)
-      activesupport (= 3.1.2)
+    railties (3.2.6)
+      actionpack (= 3.2.6)
+      activesupport (= 3.2.6)
       rack-ssl (~> 1.3.2)
       rake (>= 0.8.7)
       rdoc (~> 3.4)
-      thor (~> 0.14.6)
+      thor (< 2.0, >= 0.14.6)
     rake (0.8.7)
     rdoc (3.12)
       json (~> 1.4)
@@ -237,19 +243,18 @@ GEM
       activesupport (~> 3.0)
       railties (~> 3.0)
       rspec (~> 2.6.0)
-    rubyzip (0.9.5)
+    rubyzip (0.9.9)
     s3 (0.3.11)
       proxies (~> 0.2.0)
     sass (3.1.19)
-    sass-rails (3.1.1)
-      actionpack (~> 3.1.0)
-      railties (~> 3.1.0)
-      sass (>= 3.1.4)
-      tilt (~> 1.3.2)
-    selenium-webdriver (2.15.0)
-      childprocess (>= 0.2.1)
-      ffi (~> 1.0.9)
-      multi_json (~> 1.0.4)
+    sass-rails (3.2.5)
+      railties (~> 3.2.0)
+      sass (>= 3.1.10)
+      tilt (~> 1.3)
+    selenium-webdriver (2.24.0)
+      childprocess (>= 0.2.5)
+      libwebsocket (~> 0.1.3)
+      multi_json (~> 1.0)
       rubyzip
     shoulda (2.11.3)
     spork (1.0.0rc3)
@@ -259,7 +264,7 @@ GEM
     sprockets (2.1.3)
       hike (~> 1.2)
       rack (~> 1.0)
-      tilt (~> 1.1, != 1.3.0)
+      tilt (!= 1.3.0, ~> 1.1)
     sqlite3 (1.3.6)
     sunspot (1.3.2)
       pr_geohash (~> 1.0)
@@ -275,7 +280,7 @@ GEM
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
-    thor (0.14.6)
+    thor (0.15.3)
     tilt (1.3.3)
     timecop (0.3.5)
     timeliness (0.3.4)
@@ -284,9 +289,9 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.33)
-    uglifier (1.2.4)
+    uglifier (1.2.5)
       execjs (>= 0.3.0)
-      multi_json (>= 1.0.2)
+      multi_json (~> 1.3)
     uuid (2.3.2)
       macaddr (~> 1.0)
     validates_timeliness (3.0.6)
@@ -306,7 +311,7 @@ DEPENDENCIES
   activemerchant
   activerecord-import (= 0.2.9)
   acts-as-taggable-on (~> 2.1.0)
-  athena_resource
+  athena_resource!
   autotest-fsevent
   autotest-growl
   autotest-rails
@@ -315,7 +320,7 @@ DEPENDENCIES
   bootstrap-will_paginate
   cancan
   capybara
-  coffee-rails (= 3.1.1)
+  coffee-rails (= 3.2.2)
   comma (= 3.0.3)
   copycopter_client (= 2.0.1)
   cucumber-rails
@@ -346,14 +351,14 @@ DEPENDENCIES
   rack-canonical-host
   rack-jsonp-middleware
   rack-ssl-enforcer
-  rails (= 3.1.2)
+  rails (= 3.2.6)
   rails-footnotes (>= 3.7.5.rc4)
   rake (= 0.8.7)
   restful_metrics
   rspec-rails (>= 2.1)
   s3 (>= 0.3.11)
   sass
-  sass-rails (= 3.1.1)
+  sass-rails (= 3.2.5)
   set_watch_for!
   shoulda
   spork-rails
@@ -364,7 +369,7 @@ DEPENDENCIES
   thin
   timecop
   transitions
-  uglifier
+  uglifier (= 1.2.5)
   uuid
   validates_timeliness
   will_paginate (~> 3.0)

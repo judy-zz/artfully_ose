@@ -1,18 +1,18 @@
 source 'http://rubygems.org'
 gem 'rake', '0.8.7'
-gem 'rails', '3.1.2'
+gem 'rails', '3.2.6'
 gem 'rack-ssl-enforcer'
 gem 'rack-canonical-host'
 
 #rails 3.1
 group :assets do
-  gem 'sass-rails', "3.1.1"
-  gem 'coffee-rails', "3.1.1"
-  gem 'uglifier'
+  gem 'sass-rails', "3.2.5"
+  gem 'coffee-rails', "3.2.2"
+  gem 'uglifier', "1.2.5"
 end
 
 gem 'activemerchant', :require => 'active_merchant'
-gem 'athena_resource'
+gem 'athena_resource', :git => "git://github.com/fracturedatlas/athena_resource.git"
 gem 'activerecord-import', '0.2.9'
 gem 'delayed_job', '=3.0.2'
 gem 'delayed_job_active_record', '=0.3.2'
