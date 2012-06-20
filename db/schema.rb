@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120605184851) do
+ActiveRecord::Schema.define(:version => 20120620003825) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -70,19 +70,20 @@ ActiveRecord::Schema.define(:version => 20120605184851) do
   end
 
   create_table "admins", :force => true do |t|
-    t.string   "email",                               :default => "", :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
-    t.integer  "sign_in_count",                       :default => 0
+    t.string   "email",                                 :default => "", :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.integer  "failed_attempts",                     :default => 0
+    t.integer  "failed_attempts",                       :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
   end
 
   add_index "admins", ["email"], :name => "index_admins_on_email", :unique => true
@@ -472,17 +473,18 @@ ActiveRecord::Schema.define(:version => 20120605184851) do
     t.integer  "section_id"
   end
 
+  add_index "tickets", ["cart_id"], :name => "index_tickets_on_cart_id"
   add_index "tickets", ["organization_id"], :name => "index_tickets_on_organization_id"
+  add_index "tickets", ["section_id", "show_id", "state"], :name => "index_tickets_on_section_id_and_show_id_and_state"
   add_index "tickets", ["show_id"], :name => "index_tickets_on_show_id"
   add_index "tickets", ["state"], :name => "index_tickets_on_state"
 
   create_table "users", :force => true do |t|
-    t.string   "email",                               :default => "",   :null => false
-    t.string   "encrypted_password",   :limit => 128, :default => ""
+    t.string   "email",                                 :default => "",   :null => false
+    t.string   "encrypted_password",     :limit => 128, :default => ""
     t.string   "reset_password_token"
-    t.string   "remember_token"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                       :default => 0
+    t.integer  "sign_in_count",                         :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -492,12 +494,13 @@ ActiveRecord::Schema.define(:version => 20120605184851) do
     t.string   "customer_id"
     t.datetime "suspended_at"
     t.string   "suspension_reason"
-    t.string   "invitation_token",     :limit => 60
+    t.string   "invitation_token",       :limit => 60
     t.datetime "invitation_sent_at"
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
-    t.boolean  "newsletter_emails",                   :default => true, :null => false
+    t.boolean  "newsletter_emails",                     :default => true, :null => false
     t.string   "mailchimp_message"
+    t.datetime "reset_password_sent_at"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
