@@ -1,3 +1,14 @@
+/*!
+ * Bootstrap v2.0.2
+ *
+ * Copyright 2012 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ * 
+ *= require_self
+ */
 .navbar .btn.primary {
   margin-top: 3px;
   padding-top: 5px;
@@ -96,16 +107,16 @@ ul.features {
 }
 ul.features li {
   padding-left: 23px;
-  background: url('/images/pages/todo.png') no-repeat;
+  background: url('/assets/pages/todo.png') no-repeat;
   padding-top: 3px;
   padding-bottom: 20px;
 }
 ul.features li.soon {
-  background: url('/images/pages/todo-soon.png') no-repeat;
+  background: url('/assets/pages/todo-soon.png') no-repeat;
 }
 .hero-unit {
   color: #fff;
-  background: #000 url('/images/pages/hero.png') no-repeat 0 -80px;
+  background: #000 url('/assets/pages/hero.png') no-repeat 0 -80px;
   margin-top: -25px;
   padding-bottom: 0;
   padding-top: 180px;
@@ -165,7 +176,7 @@ ol#success li .number {
   color: #2086a6;
   font-family: 'Bree Serif', Helvetica, Arial, sans-serif !important;
   font-size: 35px;
-  background: url('/images/pages/number.png') no-repeat;
+  background: url('/assets/pages/number.png') no-repeat;
   width: 66px;
   height: 43px;
   float: left;

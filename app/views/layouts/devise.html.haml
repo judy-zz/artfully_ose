@@ -4,8 +4,8 @@
     %title= "#{yield :title} : Artful.ly"
     %link{ :rel => "shortcut icon", :href => "/favicon.ico", :type => "image/x-icon"}
 
+    = stylesheet_link_tag :bootstrap, :media => :screen
     = stylesheet_link_tag :application, :media => :screen
-    = stylesheet_link_tag :printing, :media => :print
     = csrf_meta_tag
     = render :partial => 'layouts/google_analytics'
   %body
@@ -16,5 +16,5 @@
           = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
           - flash.discard
           = yield
-    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js"
+    = javascript_include_tag :application
     = javascript_include_tag :bootstrap
