@@ -1,4 +1,6 @@
-== Artful.ly glossary
+# Artful.ly
+
+## Artful.ly glossary
 
 * _User_ - A singe row in the users table.
 * _Organization_ - Organizations are made up of many users.  Right now, users can only be part of one organization.  Eventually they'll be allowed to join more than one organization.  They're joined through the memberships table.
