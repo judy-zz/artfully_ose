@@ -19,25 +19,24 @@ module Ticket::Foundry
     end
   end
 
-  module InstanceMethods
-    def create_tickets
-      Ticket.import(build_tickets)
-    end
+  def create_tickets
+    Ticket.import(build_tickets)
+  end
 
-    def build_tickets
-      foundry_template.collect(&:build).flatten
-    end
+  def build_tickets
+    foundry_template.collect(&:build).flatten
+  end
 
-    def foundry_template
-      if respond_to?(:foundry_using_next)
-        template = next_template
-        template.each { |template| template.update_attributes(foundry_attributes) }
-      else
-        Ticket::Template.new(foundry_attributes)
-      end
+  def foundry_template
+    if respond_to?(:foundry_using_next)
+      template = next_template
+      template.each { |template| template.update_attributes(foundry_attributes) }
+    else
+      Ticket::Template.new(foundry_attributes)
     end
+  end
 
-    private
+  private
 
     def next_template
       if foundry_using_next.respond_to?(:collect)
@@ -46,5 +45,4 @@ module Ticket::Foundry
         Array.wrap(foundry_using_next.foundry_template)
       end
     end
-  end
 end

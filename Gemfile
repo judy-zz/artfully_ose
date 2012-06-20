@@ -12,7 +12,7 @@ group :assets do
 end
 
 gem 'activemerchant', :require => 'active_merchant'
-gem 'athena_resource', :git => "git://github.com/fracturedatlas/athena_resource.git"
+gem 'athena_resource', '0.0.3', :git => "git://github.com/fracturedatlas/athena_resource.git"
 gem 'activerecord-import', '0.2.9'
 gem 'delayed_job', '=3.0.2'
 gem 'delayed_job_active_record', '=0.3.2'
@@ -68,12 +68,12 @@ end
 group :test do
   gem 'sqlite3', '1.3.6'
   gem 'timecop'
-  gem "rspec-rails", ">= 2.1"
+  gem "rspec-rails", "~> 2.10.0"
   gem 'shoulda'
   gem 'fakeweb'
   gem 'faker'
-  gem 'factory_girl', '~> 2.0.0'
-  gem 'factory_girl_rails', '~> 1.1.0'
+  gem 'factory_girl', '~> 2.0.0', :require => false
+  gem 'factory_girl_rails', '~> 1.1.0', :require => false
   
   gem 'autotest-rails'
   gem 'autotest-fsevent'
