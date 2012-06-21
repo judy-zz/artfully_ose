@@ -7,13 +7,13 @@
     %h3 Overview
     %ul.kv
       %li
-        .key Gross
+        %h6.key Gross
         .value= number_as_cents(@settlement.gross)
       %li
-        .key Realized
+        %h6.key Realized
         .value= number_as_cents(@settlement.realized_gross)
       %li
-        .key Net
+        %h6.key Net
         .value= number_as_cents(@settlement.net)
   .span8
     %h3 Details

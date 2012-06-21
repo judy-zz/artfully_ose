@@ -1,4 +1,6 @@
-@import url(bootstrap.css);
+/*
+ *= require_self
+ */
 
 .navbar, .footer {
     display:none;
