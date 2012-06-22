@@ -34,10 +34,10 @@
             .name= label_tag "quantities[#{section.id}]", "#{truncate(section.name, :length => 25)} #{number_as_cents(section.price)}"
             .description{:id => "remaining_#{section.id}"}="#{@tickets_remaining[section.id]} remaining"
           .span3
-            = select_tag "quantities[#{section.id}]", options_for_select(0..10, @sale.quantities[section.id]), :class => @tickets_remaining[section.id] > 0 ? 'ticket-quantity-select input-mini' : 'hidden ticket-quantity-select input-mini'
+            = select_tag "quantities[#{section.id}]", options_for_select(0..20, @sale.quantities[section.id]), :class => @tickets_remaining[section.id] > 0 ? 'ticket-quantity-select input-mini' : 'hidden ticket-quantity-select input-mini'
             .sold-out{:id => "sold_out_#{section.id}", :class => @tickets_remaining[section.id] > 0 ? 'hidden' : ''}
-              %i.icon-exclamation-sign
-              sold out
+              %span.label.label-success
+                sold-out
 
     .span4
       %h6 Customer

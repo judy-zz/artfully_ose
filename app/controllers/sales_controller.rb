@@ -13,6 +13,15 @@ class SalesController < ApplicationController
     setup_defaults
   end
 
+
+  #
+  # This needs a significant refactor.  There is no way to maintain the sale object
+  # across requests.  Because of this the number of locked tickets proliferates.
+  #
+  # Refactor this to maintain the cart across requests and clear the cart on successful sale
+  #
+  # In the meantime, BoxOffice::Cart has been jenked to just not lock tickets.
+  #
   def create
     @sale = Sale.new(@show, @show.chart.sections, params[:quantities])
     if checking_out?
