@@ -17,7 +17,7 @@ $(document).ready(function(){
   $('.title').first().addClass('active');
 
   // when calendar is clicked
-  $('td.show').click(function() {
+  $('td.has_show').click(function() {
     $("ul#shows li").hide();
     var date = $(this).attr('data-date');
     $("ul#shows li[data-date='" + date + "']").show();
