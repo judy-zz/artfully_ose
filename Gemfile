@@ -81,6 +81,7 @@ group :test do
   gem 'cucumber-rails'
   gem 'database_cleaner'
   gem 'spork-rails'
+  gem "therubyracer", :require => 'v8'
 end
 
 group :deployment do
