@@ -4,6 +4,8 @@ require 'spork'
 #require 'spork/ext/ruby-debug'
 
 Spork.prefork do
+  require 'factory_girl'
+  require 'factory_girl_rails'
 
   ENV["RAILS_ENV"] = 'test'
   require File.expand_path("../../config/environment", __FILE__)
@@ -32,10 +34,9 @@ Spork.prefork do
     end
   end
   
-  ActiveSupport::Dependencies.clear
+  #ActiveSupport::Dependencies.clear
 end
 
 Spork.each_run do
- require 'factory_girl'
- require 'factory_girl_rails'
+  FactoryGirl.reload
 end

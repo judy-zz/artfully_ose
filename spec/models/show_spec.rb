@@ -131,12 +131,6 @@ describe Show do
         outcome = subject.bulk_on_sale(subject.tickets.collect(&:id))
         outcome.should_not be true
       end
-  
-      it "returns a message if any of the tickets cannot be put on sale" do
-        subject.tickets.first.update_attribute(:state, :comped)
-        outcome = subject.bulk_on_sale(subject.tickets.collect(&:id))
-        outcome.should be_a String
-      end
     end
   
     describe "bulk_off_sale" do

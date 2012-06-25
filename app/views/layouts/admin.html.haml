@@ -13,7 +13,7 @@
       = render 'admin/shared/menu'
     .container
       #heading= yield :header
-      = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+      = render :partial => 'layouts/flash', :locals => { :flash => flash }
       - flash.discard
       = yield
 

@@ -1,6 +1,6 @@
 class OrderView < ActiveRecord::Base
-  set_table_name 'order_view'
-  set_primary_key :id
+  self.table_name = 'order_view'
+  self.primary_key = 'id'
   has_many :items, :foreign_key => 'order_id'
   
   default_scope :order => 'created_at DESC'

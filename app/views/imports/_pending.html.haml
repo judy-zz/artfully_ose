@@ -7,8 +7,8 @@
     %p #{pluralize @import.rows.count, "contact"} found in this import file
 
     .btn-group
-      = link_to "Approve", approve_import_path(import), :confirm => "Are you sure you want to approve this import?", :class => "btn"
-      = link_to "Delete", import_path(import), :confirm => "Are you sure you want to delete this import?", :method => :delete, :class => "btn"
+      = link_to "Approve", approve_import_path(import), :data => {:confirm => "Are you sure you want to approve this import?"}, :class => "btn"
+      = link_to "Delete", import_path(import), :data => {:confirm => "Are you sure you want to delete this import?"}, :method => :delete, :class => "btn"
       = link_to "Back", imports_path, :class => "btn"
 
   .span9

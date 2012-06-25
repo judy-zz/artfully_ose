@@ -13,7 +13,7 @@
       = render :partial => 'layouts/devise_menu'
       .row
         #content.span6.offset3
-          = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+          = render :partial => 'layouts/flash', :locals => { :flash => flash }
           - flash.discard
           = yield
     = javascript_include_tag :application

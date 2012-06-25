@@ -12,7 +12,7 @@
     = render :partial => 'layouts/menu'
     .container
       #heading= yield :header
-      = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+      = render :partial => 'layouts/flash', :locals => { :flash => flash }
       - flash.discard
       = content_for?(:menu_sub_template) ? yield(:menu_sub_template) : yield
       = render 'layouts/footer'

@@ -72,8 +72,8 @@ group :test do
   gem 'shoulda'
   gem 'fakeweb'
   gem 'faker'
-  gem 'factory_girl', '~> 2.0.0', :require => false
-  gem 'factory_girl_rails', '~> 1.1.0', :require => false
+  gem 'factory_girl', '~> 2.1.0'
+  gem 'factory_girl_rails', '~> 1.2.0'
   
   gem 'autotest-rails'
   gem 'autotest-fsevent'
