@@ -19,3 +19,10 @@
 * ATHENA Payments - You can download ATHENA here: http://github.com/fracturedatlas/ATHENA.  If that's too much trouble you can point to our demo ATHENA.  See `config/environments/demo.rb` 
 
 * Solr - We use solr for indexing.  Starting the app with `foreman start` will spin up a local solr instance.  You'll only need this if you're working with people or checkout.
+
+## Admins
+
+Admins are their own model.  To create an admin, call `bundle exec rake admin:create["admin@artfullyhq.com","password"]`  That will create an addmin with the specified user and password.  Admins login at
+
+    http://localhost:port/admin
+    
