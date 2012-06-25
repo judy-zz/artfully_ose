@@ -5,7 +5,7 @@ class OrdersController < ApplicationController
       @results = search(params[:search]).paginate(:page => params[:page], :per_page => 25)
       redirect_to order_path(@results.first.id) if @results.length == 1
     else
-      @results = current_organization.orders.all.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
+      @results = current_organization.orders.includes(:person, :items).all.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
     end
   end
 

@@ -30,31 +30,23 @@ class ShowsController < ApplicationController
     @event = Event.find(params[:event_id])
     @show = @event.next_show
     
-    #clear the sections and replace them with whatever they entered
-    @show.chart.sections = []
-    chart_params = params[:show].delete(:chart)
-    
+    chart_params = params[:show].delete(:chart)    
     if(chart_params.nil? || chart_params.empty?)
       flash[:error] = "Please specify at least one price level for your show."
       render :new and return
     end
     
+    #clear the sections and replace them with whatever they entered
+    @show.chart.sections = []
     @show.chart.update_attributes_from_params(chart_params)
     @show.update_attributes(params[:show].merge(:organization => current_organization).merge(:chart_id => @show.chart.id))
     @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 
-    @show.build!
-    if publishing_show?
-      @show.publish!
-    else
-      @show.unpublish!
-    end
-
-    if @show.save      
+    if @show.go!(publishing_show?)      
       flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
       redirect_to event_show_path(@event, @show)
     else  
-      flash[:error] = "There was a problem creating your show."
+      flash[:error] = "There was a problem creating your show: #{@show.errors.full_messages.reject{|e| e.end_with? "be blank"}.to_sentence}"
       render :new
     end
   end

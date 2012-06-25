@@ -15,7 +15,8 @@
                 %li= link_to "Reseller Events", organization_reseller_events_path(current_user.current_organization)
               - else
                 %li= link_to "Reseller Settings", new_organization_reseller_profile_path(current_user.current_organization)
-            %li= link_to "Reseller Offers", ticket_offers_path
+            - if current_admin
+              %li= link_to "Reseller Offers", ticket_offers_path
 
         %li{ :class => "dropdown #{active?(:people)}" }
           = nav_dropdown "People"

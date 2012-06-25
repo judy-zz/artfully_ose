@@ -14,12 +14,14 @@
     %table.table
       %thead
         %tr
+          %td
           %td Organization
           %td Owner
           %td Lifetime Sales
       %tbody
-        -@top_organizations.each do |organization|
+        -@top_organizations.each_with_index do |organization, num|
           %tr
+            %td= "#{num+1}"
             %td= link_to organization.name, admin_organization_path(organization)
             %td= link_to organization.owner.email, admin_user_path(organization.owner) unless organization.owner.nil?
             %td= number_as_cents organization.lifetime_value

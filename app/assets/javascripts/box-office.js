@@ -1,3 +1,6 @@
+//= require "inline-people-search"
+//= require_self
+
 function bulletedListItem(person){
   var $li = $("li.template").clone().removeClass("template hidden"),
       $label = $(document.createElement("label")).attr({

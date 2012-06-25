@@ -13,7 +13,7 @@ class Section < ActiveRecord::Base
   validates :capacity,  :presence => true,
                         :numericality => { :less_than_or_equal_to => 2000 }
 
-  validates :description, :length => { :maximum => 300 }
+  validates :description, :length => { :maximum => 500 }
 
   def dup!
     Section.new(self.attributes.reject { |key, value| key == 'id' })

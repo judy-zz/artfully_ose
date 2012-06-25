@@ -1,7 +1,11 @@
 class Show < ActiveRecord::Base
+  include Ticket::Foundry  
+  include Ticket::Reporting
+  include ActiveRecord::Transitions
+  
   belongs_to :organization
   belongs_to :event
-  belongs_to :chart
+  belongs_to :chart, :autosave => true
 
   has_many :tickets, :dependent => :destroy
   has_many :ticket_offers, :dependent => :destroy
@@ -27,12 +31,10 @@ class Show < ActiveRecord::Base
   scope :played, lambda { where("shows.datetime < ?", Time.now) }
   scope :unplayed, lambda { where("shows.datetime > ?", Time.now) }
 
-  include Ticket::Foundry
   foundry :using => :chart, :with => lambda {{:show_id => id, :organization_id => organization_id}}
 
-  include Ticket::Reporting
+  delegate :free?, :to => :event
 
-  include ActiveRecord::Transitions
   state_machine do
     
     #pending and built are deprecated, left in only because we have shows in production which are built
@@ -46,7 +48,15 @@ class Show < ActiveRecord::Base
     event(:unpublish) { transitions :from => [ :built, :published ], :to => :unpublished }
   end
 
-  delegate :free?, :to => :event
+  #wraps build, publish (or unpublish), and save
+  def go!(and_publish = true)
+    return false if !valid?
+    transaction do
+      build    
+      and_publish ? publish! : unpublish!
+      save
+    end
+  end
 
   def create_and_on_sale_tickets
     create_tickets

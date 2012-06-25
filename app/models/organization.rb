@@ -71,7 +71,7 @@ class Organization < ActiveRecord::Base
   end
 
   def available_kits
-    Kit.pad_with_new_kits(kits)
+    Kit.pad_with_new_kits(kits).reject{ |kit| kit.type == "ResellerKit" }
   end
 
   def authorization_hash

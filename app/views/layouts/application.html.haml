@@ -3,10 +3,9 @@
   %head
     %title= "#{yield :title} : Artful.ly"
     = favicon_link_tag
-    -# = stylesheet_link_tag :vendor, :media => :screen
-    = stylesheet_link_tag "bootstrap"
+    = stylesheet_link_tag "bootstrap", :media => [:screen, :print]
     = stylesheet_link_tag "application"
-    -# = stylesheet_link_tag :printing, :media => :print
+    = stylesheet_link_tag :printing, :media => :print
     = csrf_meta_tag
     = render :partial => 'layouts/google_analytics'
   %body
