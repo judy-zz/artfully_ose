@@ -1,39 +1,38 @@
-.hr
-%ul.report
-  %li
-    %span.stat Users
-    %span.current= @stats.users
-  %li
-    %span.stat Signins > 1
-    %span.current= @stats.logged_in_more_than_once
-  %li
-    %span.stat Organizations
-    %span.current= @stats.organizations
-  %li
-    %span.stat FA connections
-    %span.current= @stats.fa_connected_orgs
-  %li
-    %span.stat Active FAFS
-    %span.current= @stats.active_fafs_projects
-.hr
-%ul.report
-  %li
-    %span.stat Ticketing Kits
-    %span.current= @stats.ticketing_kits
-  %li
-    %span.stat Donation Kits
-    %span.current= @stats.donation_kits
-.hr
-%ul.report
-  %li
-    %span.stat Tickets
-    %span.current= @stats.tickets
-  %li
-    %span.stat Tickets Sold
-    %span.current= @stats.tickets_sold
-  %li
-    %span.stat Regular Donations
-    %span.current= @stats.donations
-  %li
-    %span.stat FAFS Donations
-    %span.current= @stats.fafs_donations
+%table.table.table-condensed
+  %tr
+    %td Users
+    %td{:style => 'width: 70px; text-align:right'}= @stats.users
+  %tr
+    %td Signins > 1
+    %td{:style => 'width: 70px; text-align:right'}= @stats.logged_in_more_than_once
+  %tr
+    %td Organizations
+    %td{:style => 'width: 70px; text-align:right'}= @stats.organizations
+  %tr
+    %td FA connections
+    %td{:style => 'width: 70px; text-align:right'}= @stats.fa_connected_orgs
+  %tr
+    %td Active FAFS
+    %td{:style => 'width: 70px; text-align:right'}= @stats.active_fafs_projects
+    
+%table.table.table-condensed
+  %tr
+    %td Ticketing Kits
+    %td{:style => 'width: 70px; text-align:right'}= @stats.ticketing_kits
+  %tr
+    %td Donation Kits
+    %td{:style => 'width: 70px; text-align:right'}= @stats.donation_kits
+    
+%table.table.table-condensed
+  %tr
+    %td Tickets
+    %td{:style => 'width: 70px; text-align:right'}= @stats.tickets
+  %tr
+    %td Tickets Sold
+    %td{:style => 'width: 70px; text-align:right'}= @stats.tickets_sold
+  %tr
+    %td Regular Donations
+    %td{:style => 'width: 70px; text-align:right'}= @stats.donations
+  %tr
+    %td FAFS Donations
+    %td{:style => 'width: 70px; text-align:right'}= @stats.fafs_donations
