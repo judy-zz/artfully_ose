@@ -30,13 +30,7 @@ module Artfully
     
     #For asset precompilation on Heroku
     config.assets.initialize_on_precompile = false
-    config.assets.precompile += ['pages.css'
-                                ,'printing.css'
-                                ,'bootstrap.css'
-                                ,'bootstrap-overrides.css'
-                                ,'box-office.js'
-                                ,'storefront.js'
-                                ,'bootstrap.js']
+    config.assets.precompile += ['pages.css', 'printing.css', 'bootstrap.css', 'bootstrap-overrides.css', 'box-office.js', 'storefront.js', 'bootstrap.js']
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
