@@ -13,8 +13,10 @@ Artfully::Application.configure do
   config.assets.digest = true
   
   #Basic auth
-  config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
-    [u, p] == ['fracturedatlas', 'frenchpress']
+  if ENV['BASIC_AUTH_ENABLED'].eql? "true"
+    config.middleware.insert_after(::Rack::Lock, "::Rack::Auth::Basic", "Staging") do |u, p|
+      [u, p] == ['fracturedatlas', 'frenchpress']
+    end
   end
   
   # Settings specified here will take precedence over those in config/environment.rb
