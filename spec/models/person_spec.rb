@@ -306,12 +306,11 @@ describe Person do
       Person.find_by_email_and_organization("person@example.com", organization)
     end
 
-    # TODO: This spec is failing.  
-    # it "should return nil if it doesn't find anyone" do
-    #   email = "person@example.com"
-    #   p = Person.find_by_email_and_organization(email, organization)
-    #   p.should eq nil
-    # end
+    it "should return an empty array if it doesn't find anyone" do
+      email = "person@example.com"
+      p = Person.find_by_email_and_organization(email, organization)
+      p.should eq []
+    end
     
     it "should return nil if the email address is nil" do
       p = Factory(:person_without_email, :organization => organization)
