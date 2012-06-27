@@ -76,14 +76,14 @@
           });
         },
         captureTabs: function(){
-          $panels.find(".element:last input:last, .element:last select:last").bind('keydown', function(e){
+          $panels.find("input:last, select:last").bind('keydown', function(e){
             if (e.keyCode === 9 && !e.shiftKey) {
               methods.slide("right");
               e.preventDefault();
             }
           });
 
-          $panels.find(".element:first input:first, .element:last select:first").bind('keydown', function(e){
+          $panels.find("input:first, select:first").bind('keydown', function(e){
             if (e.keyCode === 9 && e.shiftKey) {
               methods.slide("left");
               e.preventDefault();

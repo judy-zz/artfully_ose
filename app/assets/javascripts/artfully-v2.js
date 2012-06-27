@@ -463,7 +463,7 @@ artfully.models = (function(){
       modelCache.donation = {
         message: function($key){
           var messages = {
-            'regular': "Help support the show by adding a donation to your order! Contributions are tax-deductible to the extent permitted by law.",
+            'regular': "Donate now and help support our programs. Contributions are tax-deductible to the extent permitted by law.",
             'sponsored': this.fsp_name + " is a fiscally sponsored project of Fractured Atlas, a non-profit arts service organization. Contributions for the purposes of " + this.fsp_name  + " must be made payable to Fractured Atlas and are tax-deductible to the extent permitted by law."
           };
           return messages[$key] || "";
