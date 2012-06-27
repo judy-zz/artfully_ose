@@ -2,12 +2,12 @@
   .viewport
     %ol
       %li#customer
-        %h3 Customer Information
+        %h3 Tell Us About You
         = render :partial => 'athena_customers/form', :locals => { :parent_form => payment_form, :target => @payment.customer }
 
       -unless @payment.amount.zero?
         %li#credit_card
-          %h3 Credit Card Information
+          %h3 Payment Information
           = render :partial => 'athena_credit_cards/form', :locals => { :parent_form => payment_form, :target => @payment.credit_card }
 
       %li#billing_address
@@ -15,10 +15,11 @@
         = render :partial => 'athena_addresses/form', :locals => { :parent_form => payment_form, :target => @payment.billing_address, :address_type => :billing_address }
 
       %li#confirmation
-        %ul
-          %li
-            .label= payment_form.label :user_agreement, "User Agreement"
-            .element
-              .checkbox= payment_form.check_box :user_agreement
-              .checkbox-text= label_tag "athena_payment[user_agreement]", "I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", user_agreement_path, :target => "_blank"}".html_safe
+        %h6 Please Accept The User Agreement
+        .control-group
+          .controls
+            %label.checkbox
+              = payment_form.check_box :user_agreement
+              ="I have read, understand and accept the terms and conditions of the #{link_to "User Agreement", user_agreement_path, :target => "_blank"}".html_safe
               = payment_form.error_message_on(:user_agreement, :prepend_text => "The user agreement ", :css_class => "form-error")
+        #confirmation-info.row-fluid

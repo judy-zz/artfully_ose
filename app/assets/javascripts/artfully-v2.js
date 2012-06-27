@@ -1,3 +1,8 @@
+//= require jquery
+//= require jquery_ujs
+//= require_directory ./jquery
+//= require_self
+
 (function(window, document, undefined){
   window.artfully = {};
   window.artfully.config = {};

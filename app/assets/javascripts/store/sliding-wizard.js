@@ -57,8 +57,8 @@
           $ol.css('margin-left', methods.calculateMarginFor(pos));
         },
         addNavigation: function(){
-          $next = $(document.createElement('input')).addClass('next').attr({'type':'button','value':'Next \u2192'}).appendTo($wizard);
-          $back = $(document.createElement('input')).addClass('back').attr({'type':'button','value':'\u2190 Back'}).appendTo($wizard);
+          $next = $(document.createElement('input')).addClass('next').addClass('btn').attr({'type':'button','value':'Next \u2192'}).appendTo($wizard);
+          $back = $(document.createElement('input')).addClass('back').addClass('btn').attr({'type':'button','value':'\u2190 Back'}).appendTo($wizard);
           $back.attr('disabled','disabled');
 
           $wizard.bind("onLastSlideIn", function(){ methods.hideButton($next); });
@@ -95,7 +95,7 @@
           });
         },
         addSubmitLink: function(){
-          $(document.createElement('a')).attr({'href':'#'}).addClass('disabled').html("Complete Purchase").appendTo("#checkout-now.disabled");
+          $(document.createElement('a')).attr({'href':'#'}).addClass('disabled').addClass('btn').addClass('btn-success').addClass('btn-large').html("Complete Purchase").appendTo("#checkout-now.disabled");
         },
         slide: function(direction){
           switch(direction){
@@ -176,6 +176,7 @@ $(document).ready(function(){
 
 function updateConfirmation(){
   $confirmation = $("#confirmation");
+	$confirmationInfo = $("#confirmation-info");
 
   $("#confirmation-title").remove();
   $("#customer-confirmation").remove();
@@ -184,46 +185,35 @@ function updateConfirmation(){
 
   $(document.createElement('h3')).attr('id','confirmation-title').html("Confirmation").prependTo($confirmation);
 
-  $(document.createElement('div')).attr('id','customer-confirmation').appendTo($confirmation);
-  $(document.createElement('div')).attr('id','credit_card-confirmation').appendTo($confirmation);
-  $(document.createElement('div')).attr('id','billing_address-confirmation').appendTo($confirmation);
+  $(document.createElement('div')).attr('id','customer-confirmation').attr('class','span4').appendTo($confirmationInfo);
+  $(document.createElement('div')).attr('id','credit_card-confirmation').attr('class','span4').appendTo($confirmationInfo);
+  $(document.createElement('div')).attr('id','billing_address-confirmation').attr('class','span4').appendTo($confirmationInfo);
 
 
   $(document.createElement('h4')).html("Customer Information").appendTo($("#customer-confirmation"));
   var customer = $("#customer").find("input:visible, select").serializeArray();
-  $.each(customer, function(i,field){
-    key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-    value = field.value;
-    $(document.createElement('p')).html(key + ": " + value).appendTo($("#customer-confirmation"));
-  });
+
+  $(document.createElement('div')).html($('#athena_payment_athena_customer_first_name').val() + " " + $('#athena_payment_athena_customer_last_name').val()).appendTo($("#customer-confirmation"));
+	$(document.createElement('div')).html($('#athena_payment_athena_customer_phone').val()).appendTo($("#customer-confirmation"));
+	$(document.createElement('div')).html($('#athena_payment_athena_customer_email').val()).appendTo($("#customer-confirmation"));
+
 
   var creditCard = $("#credit_card").find("input:visible, select").serializeArray();
   if (creditCard.length > 0){
       $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
   }
 
-  var expiration = [];
-  $.each(creditCard, function(i,field){
-    key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-    value = field.value;
-    if(!key.match(/(\di)/)){
-      $(document.createElement('p')).html(key + ": " + value).appendTo($("#credit_card-confirmation"));
-    } else {
-      expiration.push(value);
-    }
-  });
+	var ccField = $('#athena_payment_athena_credit_card_card_number').val()
+  $(document.createElement('div')).html($('#athena_payment_athena_credit_card_cardholder_name').val()).appendTo($("#credit_card-confirmation"));
+	$(document.createElement('div')).html("**********" + ccField.substr(ccField.length-4,ccField.length-1)).appendTo($("#credit_card-confirmation"));
+	$(document.createElement('div')).html($('#athena_payment_athena_credit_card_expiration_date_2i').val() + "/" + $('#athena_payment_athena_credit_card_expiration_date_1i').val()).appendTo($("#credit_card-confirmation"));
 
-  if(expiration.length > 0){
-    $(document.createElement('p')).html("Expiration: " + expiration[0] + "/" + expiration[1]).appendTo($("#credit_card-confirmation"));
-  }
-
-  $(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
-  var address = $("#billing_address").find("input:visible, select").serializeArray();
-  $.each(address, function(i,field){
-    key = field.name.match(/\]\[(.*)\]$/)[1].replace(/_/,' ');
-    value = field.value;
-    $(document.createElement('p')).html(key + ": " + value).appendTo($("#billing_address-confirmation"));
-  });
+	$(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
+	
+	$(document.createElement('div')).html($('#athena_payment_billing_address_street_address1').val()).appendTo($("#billing_address-confirmation"));
+	$(document.createElement('div')).html($('#athena_payment_billing_address_city').val()).appendTo($("#billing_address-confirmation"));
+	$(document.createElement('div')).html($('#athena_payment_billing_address_state').val()).appendTo($("#billing_address-confirmation"));
+	$(document.createElement('div')).html($('#athena_payment_billing_address_postal_code').val()).appendTo($("#billing_address-confirmation"));
 
   $(document.createElement('input')).attr({'type':'hidden', 'name':'confirmation','value':'1'}).appendTo($("#billing_address-confirmation"));
 }

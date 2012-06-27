@@ -24,7 +24,7 @@ class Section < ActiveRecord::Base
   end
 
   def summarize
-    tickets = Ticket.where(:show_id => chart.show.id).where(:section_id => id)
+    tickets = Ticket.where(:section_id => id)
     @summary = SectionSummary.for_tickets(tickets)
   end
   

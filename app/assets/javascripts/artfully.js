@@ -1,3 +1,6 @@
+//= require_directory ./jquery
+//= require_self
+
 (function(window, document, undefined){
   window.artfully = {};
   window.artfully.config = {};

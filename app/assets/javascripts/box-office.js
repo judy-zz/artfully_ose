@@ -1,4 +1,4 @@
-//= require "inline-people-search"
+//= require "custom/inline-people-search"
 //= require_self
 
 function bulletedListItem(person){

@@ -1,24 +1,21 @@
 !!!
 %html
   %head
-    = stylesheet_link_tag :cart
-    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Raleway:100'
-    = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Arimo:regular,italic,bold"
+    = stylesheet_link_tag :bootstrap, "widget-cart"
     = csrf_meta_tag
     = render :partial => 'layouts/google_analytics'
   %body
-    #content
-      #page
-        #cart
+    .container
+      .row
+        #cart.span9
           = yield :header
           = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
           - flash.discard
           = yield
-        #controls
+        #controls.span3
           = yield :controls
 
-    = javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"
-    = javascript_include_tag :widget_cart
+    = javascript_include_tag "widget-cart"
     :javascript
       $("document").ready(function(){
         $(".currency").each(function(index, element){

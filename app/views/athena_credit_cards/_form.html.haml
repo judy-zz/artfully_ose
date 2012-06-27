@@ -1,22 +1,21 @@
 = parent_form.fields_for target do |cc_form|
-  %ul
-    %li
-      .label= cc_form.label :cardholder_name, "Cardholder Name"
-      .element
-        = cc_form.text_field :cardholder_name
-        = cc_form.error_message_on(:cardholder_name, :prepend_text => "Cardholder name ", :css_class => "form-error")
-    %li
-      .label= cc_form.label :card_number, "Number"
-      .element
-        = cc_form.text_field :card_number, :disabled => !target.new_record?
-        = cc_form.error_message_on(:card_number, :prepend_text => "Card number ", :css_class => "form-error")
-    %li
-      .label= cc_form.label :cvv, "CVV"
-      .element
-        = cc_form.text_field :cvv, :disabled => !target.new_record?
-        = cc_form.error_message_on(:cvv, :prepend_text => "CVV ", :css_class => "form-error")
-    %li
-      .label= cc_form.label :expiration_date, "Expiration Date"
-      .element.date_field
-        = cc_form.date_select :expiration_date, :order => [:month, :year], :use_month_numbers => true, :start_year => Time.now.year, :end_year => Time.now.year + 10
-        = cc_form.error_message_on(:expiration_date, :prepend_text => "Expiration date ", :css_class => "form-error")
+  .control-group
+    = cc_form.label :cardholder_name, "Cardholder Name", :class => "control-label"
+    .controls
+      = cc_form.text_field :cardholder_name, :class => "span6"
+      = cc_form.error_message_on(:cardholder_name, :prepend_text => "Cardholder name ", :css_class => "form-error")
+  .control-group
+    = cc_form.label :card_number, "Number", :class => "control-label"
+    .controls
+      = cc_form.text_field :card_number, :disabled => !target.new_record?, :class => "span6"
+      = cc_form.error_message_on(:card_number, :prepend_text => "Card number ", :css_class => "form-error")
+  .control-group
+    = cc_form.label :cvv, "CVV", :class => "control-label"
+    .controls
+      = cc_form.text_field :cvv, :disabled => !target.new_record?, :class => "span6"
+      = cc_form.error_message_on(:cvv, :prepend_text => "CVV ", :css_class => "form-error")
+  .control-group
+    = cc_form.label :expiration_date, "Expiration Date", :class => "control-label"
+    .controls.date_field
+      = cc_form.date_select :expiration_date, :order => [:month, :year], :use_month_numbers => true, :start_year => Time.now.year, :end_year => Time.now.year + 10
+      = cc_form.error_message_on(:expiration_date, :prepend_text => "Expiration date ", :css_class => "form-error")

@@ -55,10 +55,9 @@ module ApplicationHelper
   end
   
   #This is for the widget generator, DO NOT use anywhere else
-  #Broke with asset pipeline
-  # def asset_path(asset)
-  #   javascript_path(asset).gsub(/javascripts/, 'assets')
-  # end
+  def fully_qualified_asset_path(asset)
+    "#{request.protocol}#{request.host_with_port}#{asset_path(asset)}"
+  end
   
   def events_to_options(selected_event_id = nil)
     @events = current_user.current_organization.events

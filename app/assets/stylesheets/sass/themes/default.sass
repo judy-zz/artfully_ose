@@ -1,5 +1,3 @@
-@import "../_grid"
-@import "../_stack-layout"
 @import "../_colors"
 @import "../_mixins"
 @import "../_flash"
@@ -43,16 +41,17 @@
   background-color: rgba(255,255,255,0.9)
 
 #shopping-cart-controls
-  color: #fff
+  color: white
   padding: 10px 5px 10px 27px
   cursor: pointer
   font-size: .9em
-
+  font-family: Arial
+  
 #shopping-cart
   &.shown #shopping-cart-controls
-    background: #333333 url('/images/icons/down_arrow.png') no-repeat 10px center
+    background: #333333 url('/assets/icons/down_arrow.png') no-repeat 10px center
   &.hidden #shopping-cart-controls
-    background: #333333 url('/images/icons/up_arrow.png') no-repeat 10px center
+    background: #333333 url('/assets/icons/up_arrow.png') no-repeat 10px center
 
 #shopping-cart-controls .timer
   float: right

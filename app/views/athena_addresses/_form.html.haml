@@ -1,21 +1,18 @@
 = parent_form.fields_for address_type, target do |addr_form|
-  %ul
-    %li
-      .label= addr_form.label :street_address1, "Street Address"
-      .element
-        = addr_form.text_field :street_address1
-        = addr_form.error_message_on(:street_address1, :prepend_text => "Street address ", :css_class => "form-error")
-    %li
-      .label= label_tag "", "City & State"
-      .hidden.label= addr_form.label :city, "City"
-      .hidden.label= addr_form.label :state, "State"
-      .double.element
-        = addr_form.text_field :city
-        = addr_form.select(:state, options_for_select(sorted_us_state_names))
-        = addr_form.error_message_on(:city, :prepend_text => "City ", :css_class => "form-error")
-        = addr_form.error_message_on(:state, :prepend_text => "State ", :css_class => "form-error")
-    %li
-      .label= addr_form.label :postal_code, "Postal Code"
-      .element
-        = addr_form.text_field :postal_code
-        = addr_form.error_message_on(:postal_code, :prepend_text => "Postal code ", :css_class => "form-error")
+  .control-group
+    = addr_form.label :street_address1, "Street Address", :class => "control-label"
+    .controls
+      = addr_form.text_field :street_address1, :class => "span6"
+      = addr_form.error_message_on(:street_address1, :prepend_text => "Street address ", :css_class => "form-error")
+  .control-group
+    = label_tag "", "City & State", :class => "control-label"
+    .double.controls
+      = addr_form.text_field :city
+      = addr_form.select(:state, options_for_select(sorted_us_state_names), :class => "span3")
+      = addr_form.error_message_on(:city, :prepend_text => "City ", :css_class => "form-error")
+      = addr_form.error_message_on(:state, :prepend_text => "State ", :css_class => "form-error")
+  .control-group
+    = addr_form.label :postal_code, "Postal Code", :class => "control-label"
+    .controls
+      = addr_form.text_field :postal_code, :class => "span6"
+      = addr_form.error_message_on(:postal_code, :prepend_text => "Postal code ", :css_class => "form-error")

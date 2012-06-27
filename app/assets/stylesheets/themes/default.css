@@ -378,9 +378,9 @@ form.jeditable button {
   font-size: 0.9em; }
 
 #shopping-cart.shown #shopping-cart-controls {
-  background: #333333 url("/images/icons/down_arrow.png") no-repeat 10px center; }
+  background: #333333 url("/assets/icons/down_arrow.png") no-repeat 10px center; }
 #shopping-cart.hidden #shopping-cart-controls {
-  background: #333333 url("/images/icons/up_arrow.png") no-repeat 10px center; }
+  background: #333333 url("/assets/icons/up_arrow.png") no-repeat 10px center; }
 
 #shopping-cart-controls .timer {
   float: right; }
