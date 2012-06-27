@@ -6,8 +6,11 @@ Then /^I should see (\d+) tickets to "([^"]*)" at "([^"]*)" for \$(\d+)$/ do |qu
 end
 
 Then /^I should see (\d+) tickets?$/ do |quantity|
-  #+1 for the service fee
-  page.should have_xpath("//li[@class='ticket']", :count => quantity.to_i + 1)
+  page.should have_xpath("//tr[@class='ticket']", :count => quantity.to_i)
+end
+
+Then /^I should see a ticket fee$/ do
+  page.should have_xpath("//tr[@class='ticket ticket-fee']", :count => 1)
 end
 
 Given /^there are (\d+) ticket sales$/ do |arg1|

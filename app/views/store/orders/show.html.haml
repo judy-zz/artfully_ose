@@ -15,7 +15,7 @@
   - current_cart.tickets.each do |ticket|
     %tr.ticket= render ticket
   - if current_cart.fee_in_cents > 0
-    %tr.ticket
+    %tr.ticket.ticket-fee
       %td.item.fee= "Service fee"
       %td.price= number_as_cents current_cart.fee_in_cents
   - current_cart.donations.each do |donation|

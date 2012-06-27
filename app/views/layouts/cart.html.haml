@@ -9,7 +9,7 @@
       .row
         #cart.span9
           = yield :header
-          = render :partial => 'layouts/flash.html', :locals => { :flash => flash }
+          = render :partial => 'layouts/flash', :locals => { :flash => flash }
           - flash.discard
           = yield
         #controls.span3
