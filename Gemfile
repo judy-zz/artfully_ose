@@ -63,6 +63,8 @@ group :development do
   gem 'sunspot_solr', '1.3.2'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
   gem 'fakeweb'
+  gem 'guard'
+  gem 'guard-rspec'
 end
 
 group :test do
