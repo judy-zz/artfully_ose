@@ -200,13 +200,12 @@ function updateConfirmation(){
 
   var creditCard = $("#credit_card").find("input:visible, select").serializeArray();
   if (creditCard.length > 0){
-      $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));
+      $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));	
+      var ccField = $('#athena_payment_athena_credit_card_card_number').val()
+      $(document.createElement('div')).html($('#athena_payment_athena_credit_card_cardholder_name').val()).appendTo($("#credit_card-confirmation"));
+	    $(document.createElement('div')).html("**********" + ccField.substr(ccField.length-4,ccField.length-1)).appendTo($("#credit_card-confirmation"));
+	    $(document.createElement('div')).html($('#athena_payment_athena_credit_card_expiration_date_2i').val() + "/" + $('#athena_payment_athena_credit_card_expiration_date_1i').val()).appendTo($("#credit_card-confirmation"));
   }
-
-	var ccField = $('#athena_payment_athena_credit_card_card_number').val()
-  $(document.createElement('div')).html($('#athena_payment_athena_credit_card_cardholder_name').val()).appendTo($("#credit_card-confirmation"));
-	$(document.createElement('div')).html("**********" + ccField.substr(ccField.length-4,ccField.length-1)).appendTo($("#credit_card-confirmation"));
-	$(document.createElement('div')).html($('#athena_payment_athena_credit_card_expiration_date_2i').val() + "/" + $('#athena_payment_athena_credit_card_expiration_date_1i').val()).appendTo($("#credit_card-confirmation"));
 
 	$(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
 	
