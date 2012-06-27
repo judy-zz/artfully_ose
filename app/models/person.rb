@@ -156,6 +156,8 @@ class Person < ActiveRecord::Base
     loser.tags.each do |t|
       winner.tag_list << t.name unless winner.tag_list.include? t.name
     end
+
+    winner.lifetime_value += loser.lifetime_value
     
     winner.save!
     loser.destroy!

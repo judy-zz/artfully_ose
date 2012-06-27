@@ -132,6 +132,7 @@ describe Person do
         @winning_address = Factory(:address, :person => @winner)
         @winner.address = @winning_address
         @winner.tag_list = 'east, west'
+        @winner.lifetime_value = 2000
         @winner.save
         
         @loser = Factory(:person, :organization => @organization)
@@ -143,6 +144,7 @@ describe Person do
         @losing_address = Factory(:address, :person => @loser)
         @loser.address = @losing_address
         @loser.tag_list = 'west, north, south'
+        @loser.lifetime_value = 1000
         @loser.save
         
         @merge_result = Person.merge(@winner, @loser)
@@ -203,6 +205,10 @@ describe Person do
         @winner.tag_list.should include('north')
         @winner.tag_list.should include('south')
         @winner.tag_list.length.should eq 4
+      end
+
+      it "should add the winner's and loser's lifetime values" do
+        @merge_result.lifetime_value.should eq 3000
       end
     end
   end
