@@ -56,13 +56,15 @@ gem 'rack-jsonp-middleware', :require => 'rack/jsonp'
 gem 'exceptional'
 gem 'newrelic_rpm'
 gem 'transitions', :require => ['transitions', 'active_record/transitions']
-gem 'sunspot_rails', '1.3.2'
+gem 'sunspot_rails', '1.3.3'
 gem 'gravatar_image_tag'
 
 group :development do
-  gem 'sunspot_solr', '1.3.2'
+  gem 'sunspot_solr', '1.3.3'
   gem 'rails-footnotes', '>= 3.7.5.rc4'
   gem 'fakeweb'
+  gem 'guard'
+  gem 'guard-rspec'
 end
 
 group :test do
