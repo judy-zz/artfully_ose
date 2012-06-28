@@ -32,7 +32,7 @@ class FA::Donor < FA::Base
     xml.instruct! unless options[:skip_instruct]
     xml.donor do
       attributes.each do |k,v|
-        xml.tag!(k.dasherize, v)
+        xml.tag!(k, v)
       end
     end
   end

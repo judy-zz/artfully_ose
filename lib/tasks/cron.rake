@@ -26,9 +26,9 @@ task :cron => :environment do
   end
 
   #Reseller Settlement, run at 5am on the 3rd of each month.
-  if Time.now.hour == 5 && Time.now.mday == 3
-    Job::ResellerSettlement.run
-  end
+  # if Time.now.hour == 5 && Time.now.mday == 3
+  #   Job::ResellerSettlement.run
+  # end
 
   #AdminStats runs during the day
   if (7..18).include? Time.now.hour

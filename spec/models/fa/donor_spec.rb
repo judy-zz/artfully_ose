@@ -27,7 +27,7 @@ describe FA::Donor do
   #So, now we serialize by hand and we have a test.
   it "should serialize to xml in order" do
     s = subject.to_xml
-    target_xml = ("<?xmlversion=\"1.0\"encoding=\"utf-8\"?><donor><email>"+subject.email+"</email><first-name>"+subject.first_name+"</first-name><last-name>"+subject.last_name+"</last-name><address1>"+subject.address1+"</address1><city>"+subject.city+"</city><state>"+subject.state+"</state><zip>"+subject.zip+"</zip><country>US</country></donor>").gsub(/\s/,'').downcase
+    target_xml = ("<?xmlversion=\"1.0\"encoding=\"utf-8\"?><donor><email>"+subject.email+"</email><first_name>"+subject.first_name+"</first_name><last_name>"+subject.last_name+"</last_name><address1>"+subject.address1+"</address1><city>"+subject.city+"</city><state>"+subject.state+"</state><zip>"+subject.zip+"</zip><country>US</country></donor>").gsub(/\s/,'').downcase
     s.gsub(/\s/,'').downcase.should eq target_xml
   end
 end
