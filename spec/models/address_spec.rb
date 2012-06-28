@@ -20,7 +20,7 @@ describe Address do
     
     it "should return the existing address if it exists" do
       person = Factory(:person)
-      address = Factory(:address, :person_id => person.id, :id => 1000)     
+      address = Factory(:address, :person_id => person.id)     
       Address.should_not_receive(:create)
       existing_address = Address.find_or_create(person.id)
       existing_address.should eq address
