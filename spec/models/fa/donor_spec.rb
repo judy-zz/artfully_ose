@@ -21,4 +21,13 @@ describe FA::Donor do
     subject.email = nil
     subject.should_not have_keys
   end
+  
+  #It seems stupid to test xml serialization, but this has broken twice on us: once on the move from Ruby 1.8 to 1.9, 
+  # and again on Rails 3.0 -> Rails 3.2
+  #So, now we serialize by hand and we have a test.
+  it "should serialize to xml in order" do
+    s = subject.to_xml
+    target_xml = ("<?xmlversion=\"1.0\"encoding=\"utf-8\"?><donor><email>"+subject.email+"</email><first-name>"+subject.first_name+"</first-name><last-name>"+subject.last_name+"</last-name><address1>"+subject.address1+"</address1><city>"+subject.city+"</city><state>"+subject.state+"</state><zip>"+subject.zip+"</zip><country>US</country></donor>").gsub(/\s/,'').downcase
+    s.gsub(/\s/,'').downcase.should eq target_xml
+  end
 end
