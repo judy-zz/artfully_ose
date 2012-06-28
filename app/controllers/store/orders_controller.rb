@@ -88,6 +88,11 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_donation(data)
+      if data[:amount].to_i == 0
+        flash[:error] = "Please enter a donation amount."
+        return
+      end
+      
       donation = Donation.new
 
       donation.amount = data[:amount]
