@@ -19,7 +19,10 @@
     - unless person.dummy?
       = link_to "Merge", new_merge_path(:loser => @person), :method => :get, :class => "btn btn-warning"
 
-%section 
+%section
+  %h6 Created
+  .value= @person.created_at.to_date.to_formatted_s(:long_ordinal)
+%section
   %h6 Phone Numbers
   %ul.kv
     - person.phones.each do |phone|
