@@ -1,11 +1,14 @@
 Artfully::Application.configure do
   config.log_level = :debug
 
-  # Do not compress assets
-  config.assets.compress = false
+  # Compress JavaScripts and CSS
+  config.assets.compress = true
 
-  # Expands the lines which load the assets
-  config.assets.debug = true
+  # Don't fallback to assets pipeline if a precompiled asset is missed
+  config.assets.compile = false
+
+  # Generate digests for assets URLs
+  config.assets.digest = true
 
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
