@@ -20,6 +20,8 @@
 
 * Solr - We use solr for indexing.  Starting the app with `foreman start` will spin up a local solr instance.  You'll only need this if you're working with people or checkout.
 
+* S3 - If you're going to be uploading images or working with imports, you'll need valid S3 keys: `ACCESS_KEY_ID, SECRET_ACCESS_KEY, S3_BUCKET=artfully-demo`
+
 ## Admins
 
 Admins are their own model.  To create an admin, call `bundle exec rake admin:create["admin@artfullyhq.com","password"]`  That will create an addmin with the specified user and password.  Admins login at
