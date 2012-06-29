@@ -185,7 +185,7 @@ module ApplicationHelper
         options_from_collection_for_select(events, :id, :name, default)
       ].join
 
-    select_tag event_id, raw(options)
+    select_tag event_id, raw(options), :class => "span2"
   end
 
   def select_show_for_sales_search shows, show_id, default
@@ -199,7 +199,7 @@ module ApplicationHelper
         end.join
       ].join
 
-    select_tag show_id, raw(options)
+    select_tag show_id, raw(options), :class => "span3"
   end
 
   def nav_dropdown(text, link='#')

@@ -2,15 +2,14 @@
 - content_for :header do
   %h1 Contributions
 
-
--# %ul.context-buttons
--#   %li= button_to "Record Contribution", new_contribution_path, :method => :get, :class => "btn"
-
 #donations-search
-  = form_tag contributions_path, :method => :get, :class => 'form-inline' do
+  = form_tag contributions_path, :method => :get, :class => 'well form-inline' do
+    = label_tag :start, "From", :class => "control-label"
     = text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+    = label_tag :start, "To", :class => "control-label"
     = text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
-    = submit_tag "Search", :class => "btn"
+    .pull-right
+      = submit_tag "Search", :class => "btn"
 
 - unless @search.results.empty?
   #donations

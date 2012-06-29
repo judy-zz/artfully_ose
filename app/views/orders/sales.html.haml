@@ -3,29 +3,23 @@
   %h1 Sales
 
 #donations-search
-  = form_tag sales_orders_path, :method => :get, :class => 'form-horizontal' do
-    - if @events.present?
-      .control-group
-        = label_tag :event_id, nil, :class => "control-label"
-        .controls= raw select_event_for_sales_search @events, :event_id, params[:event_id]
-    - if @event && @shows.present?
-      .control-group
-        = label_tag :show_id, nil, :class => "control-label"
-        .controls= raw select_show_for_sales_search @shows, :show_id, params[:show_id]
-    .control-group
-      = label_tag :start, "Starting Date", :class => "control-label"
-      .controls= text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
-    .control-group
-      = label_tag :stop, "Ending Date", :class => "control-label"
-      .controls= text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
-    .btn-toolbar.form-actions
-      .btn-group
-        = submit_tag "Search", :class => "btn"
+  = form_tag sales_orders_path, :method => :get, :class => 'form-inline' do
+    .control-group.well
+      = label_tag :start, "From", :class => "control-label"
+      = text_field_tag :start,"#{l @search.start, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
 
-%h3
-  = "From #{l @search.start} to #{l @search.stop}"
-  = "for #{@event.name}" if @event
-  = "on #{l @show.datetime_local_to_event}" if @show
+      = label_tag :stop, "To", :class => "control-label"
+      = text_field_tag :stop, "#{l @search.stop, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+
+      - if @events.present?
+        = label_tag :event_id, nil, :class => "control-label"
+        = raw select_event_for_sales_search @events, :event_id, params[:event_id]
+      - if @event && @shows.present?
+        = label_tag :show_id, nil, :class => "control-label"
+        = raw select_show_for_sales_search @shows, :show_id, params[:show_id]
+        
+      .pull-right
+        = submit_tag "Search", :class => "btn"
 
 - if @search.results.present?
 
