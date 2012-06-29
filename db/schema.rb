@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120620003825) do
+ActiveRecord::Schema.define(:version => 20120629183613) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -229,6 +229,10 @@ ActiveRecord::Schema.define(:version => 20120620003825) do
     t.integer  "reseller_net"
     t.integer  "reseller_order_id"
   end
+
+  add_index "items", ["created_at"], :name => "index_items_on_created_at"
+  add_index "items", ["order_id"], :name => "index_items_on_order_id"
+  add_index "items", ["show_id"], :name => "index_items_on_show_id"
 
   create_table "kits", :force => true do |t|
     t.string   "state"
