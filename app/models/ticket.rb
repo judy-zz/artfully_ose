@@ -21,9 +21,9 @@ class Ticket < ActiveRecord::Base
     sold.where("sold_at < ?", datetime)
   end
 
-  scope :played, joins(:show).merge(Show.played)
-  scope :unplayed, joins(:show).merge(Show.unplayed)
-  scope :resellable, where(:state => "on_sale")
+  scope :played,      lambda { joins(:show).merge(Show.played) }
+  scope :unplayed,    lambda { joins(:show).merge(Show.unplayed) }
+  scope :resellable,  lambda { where(:state => "on_sale") }
 
   state_machine do
     state :off_sale
