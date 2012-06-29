@@ -1,6 +1,6 @@
 class FA::Donor < FA::Base
   self.element_name = "donor"
-  include ActiveModel::Serializers::Xml
+  # include ActiveModel::Serializers::Xml
 
   attr_accessor :email, :first_name, :last_name, :company_name, :address1, :city, :state, :zip, :country, :anonymous
 
@@ -24,9 +24,20 @@ class FA::Donor < FA::Base
     [ email, first_name, last_name ].any?
   end
 
-  #order matters here, we use these in to_xml to adhered to the FA schema which is an xs:sequence
-  #see: http://api.fracturedatlas.org/donations.xsd
-  #Note: Ruby 1.8.7 doens't preserve hash order.  FA validation will fail.
+  #options are ignored besides :indent, :builder, and :skip_instruct
+  def to_xml(options = {})
+    require 'builder'
+    options[:indent] ||= 0
+    xml = options[:builder] ||= ::Builder::XmlMarkup.new(:indent => options[:indent])
+    xml.instruct! unless options[:skip_instruct]
+    xml.donor do
+      attributes.each do |k,v|
+        xml.tag!(k, v)
+      end
+    end
+  end
+
+  # order matters here because of the FA xsd sequence, see to_xml
   def attributes
     {
       'email'        => email,

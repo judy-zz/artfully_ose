@@ -8,7 +8,7 @@
       = hidden_field_tag :commit, "Search"
       %ul
         %li
-          = text_field_tag :search, "", :placeholder => "Email address or name", :class => "input-medium search-query"
+          = text_field_tag :search, "", :placeholder => "Email, name, or tag...", :class => "input-medium search-query"
           = submit_tag "Search", :class => 'btn'
   .span8.super-search-results
     - if @people.empty?
