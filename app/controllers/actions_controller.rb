@@ -24,7 +24,8 @@ class ActionsController < ApplicationController
     @person = Person.find(params[:person_id])
 
     @action = Action.create_of_type(params[:action_type])
-    @action.set_params(params[:artfully_action], @person, current_user)
+    @action.set_params(params[:artfully_action], @person)
+    @action.set_creator(current_user)
 
     logger.debug(@action.valid?)
     logger.debug(@action.errors)
@@ -43,7 +44,7 @@ class ActionsController < ApplicationController
     @person = Person.find params[:person_id]
 
     @action = Action.find params[:id]
-    @action.set_params(params[:artfully_action], @person, current_user)
+    @action.set_params(params[:artfully_action], @person)
 
     if @action.valid? && @action.save!
       flash[:notice] = "Action updated successfully!"

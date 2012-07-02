@@ -21,11 +21,8 @@ class Action < ActiveRecord::Base
     end
   end
 
-  def set_params(params, person, curr_user)
+  def set_params(params, person)
     params ||= {}
-    #params = prepare_datetime(params,curr_user.current_organization.time_zone)
-    self.creator_id = curr_user.id
-    self.organization_id = curr_user.current_organization.id
 
     self.occurred_at = params[:occurred_at]
     self.subtype = params[:subtype]
@@ -33,6 +30,11 @@ class Action < ActiveRecord::Base
 
     self.person = person
     self.subject = person
+  end
+
+  def set_creator(user)
+    self.creator_id = user.id
+    self.organization_id = user.current_organization.id
   end
 
   def unstarred?
