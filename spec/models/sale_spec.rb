@@ -80,7 +80,9 @@ describe Sale do
       BoxOffice::Checkout.should_receive(:new).and_return(checkout)
       checkout.should_receive(:finish).and_return(true)
       checkout.should_receive(:person).and_return(Factory(:person))
+      subject.cart.tickets.size.should eq 2
       subject.sell(payment)
+      subject.cart.tickets.size.should eq 2
       subject.sale_made.should be_true
     end
   end
