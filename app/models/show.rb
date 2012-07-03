@@ -25,11 +25,11 @@ class Show < ActiveRecord::Base
   set_watch_for :datetime, :local_to => :event
   set_watch_for :datetime, :local_to => :unscoped_event
 
-  scope :before, lambda { |time| where("shows.datetime <= ?", time) }
-  scope :after,  lambda { |time| where("shows.datetime >= ?", time) }
-  scope :in_range, lambda { |start, stop| after(start).before(stop) }
-  scope :played, lambda { where("shows.datetime < ?", Time.now) }
-  scope :unplayed, lambda { where("shows.datetime > ?", Time.now) }
+  scope :before,    lambda { |time| where("shows.datetime <= ?", time) }
+  scope :after,     lambda { |time| where("shows.datetime >= ?", time) }
+  scope :in_range,  lambda { |start, stop| after(start).before(stop) }
+  scope :played,    lambda { where("shows.datetime < ?", Time.now) }
+  scope :unplayed,  lambda { where("shows.datetime > ?", Time.now) }
 
   foundry :using => :chart, :with => lambda {{:show_id => id, :organization_id => organization_id}}
 
