@@ -47,7 +47,7 @@ Artfully::Application.configure do
   config.stage_site       = 'http://localhost:8080/athena/'
   config.people_site      = 'http://localhost:8080/athena/'
   config.reports_site     = 'http://localhost:8080/athena/reports/'
-  config.payments_component = 'http://184.73.209.105:8080/payments/'
+  config.payments_component = 'http://athena.fracturedatlas.org:8080/payments/'
   config.payments_element_name = '/payments'
   
   ActiveMerchant::Billing::Base.mode = :test
