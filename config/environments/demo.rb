@@ -4,11 +4,16 @@ Artfully::Application.configure do
   # Compress JavaScripts and CSS
   config.assets.compress = true
 
+  # Expands the lines which load the assets
+  config.assets.debug = true
+
   # Don't fallback to assets pipeline if a precompiled asset is missed
-  config.assets.compile = false
+  # false in production
+  config.assets.compile = true
 
   # Generate digests for assets URLs
-  config.assets.digest = true
+  # true in production
+  config.assets.digest = false
 
   # The production environment is meant for finished, "live" apps.
   # Code is not reloaded between requests
@@ -64,12 +69,12 @@ Artfully::Application.configure do
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
 
-  config.tickets_site       = 'http://184.73.209.105:8080/athena/'
-  config.payments_component = 'http://184.73.209.105:8080/payments/'
-  config.orders_component   = 'http://184.73.209.105:8080/athena/'
-  config.stage_site         = 'http://184.73.209.105:8080/athena/'
-  config.people_site        = 'http://184.73.209.105:8080/athena/'
-  config.reports_site       = 'http://184.73.209.105:8080/athena/reports/'
+  config.tickets_site       = 'http://athena.fracturedatlas.org:8080/athena/'
+  config.payments_component = 'http://athena.fracturedatlas.org:8080/payments/'
+  config.orders_component   = 'http://athena.fracturedatlas.org:8080/athena/'
+  config.stage_site         = 'http://athena.fracturedatlas.org:8080/athena/'
+  config.people_site        = 'http://athena.fracturedatlas.org:8080/athena/'
+  config.reports_site       = 'http://athena.fracturedatlas.org:8080/athena/reports/'
   config.payments_element_name = '/payments'
   
   ActiveMerchant::Billing::Base.mode = :test

@@ -16,7 +16,7 @@ class Sale
     @tickets     = []
     
     #This is irritating, it means you can't add tickets to a sale later
-    load_tickets
+    load_tickets      
     cart.tickets << tickets
   end
 
@@ -70,7 +70,6 @@ class Sale
     end
     
     def sell_tickets(payment)
-      cart.tickets << tickets
       checkout = BoxOffice::Checkout.new(cart, payment)
       begin
         success = checkout.finish
