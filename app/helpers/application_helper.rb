@@ -228,4 +228,9 @@ module ApplicationHelper
     end
     link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
   end
+
+  # This will be in Rails 4. Delete it when we upgrade!
+  def date_field_tag(name, value = nil, options = {})
+    text_field_tag(name, value, options.stringify_keys.update("type" => "date"))
+  end
 end
