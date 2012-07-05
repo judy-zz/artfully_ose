@@ -7,6 +7,14 @@ Artfully::Application.configure do
   # Expands the lines which load the assets
   config.assets.debug = true
 
+  # Don't fallback to assets pipeline if a precompiled asset is missed
+  # false in production
+  config.assets.compile = true
+
+  # Generate digests for assets URLs
+  # true in production
+  config.assets.digest = false
+
   # Settings specified here will take precedence over those in config/environment.rb
 
   # The production environment is meant for finished, "live" apps.
