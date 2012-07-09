@@ -12,7 +12,19 @@ describe Search do
       end
       let(:person1) {Factory(:person, organization: organization, address: Factory(:address, zip: subject.zip))}
       let(:person2) {Factory(:person, organization: organization, address: Factory(:address, zip: subject.zip + 1))}
-      it "should return a list of people that match the criteria" do
+      it "should return the people that match" do
+        subject.people.should     include person1
+        subject.people.should_not include person2
+      end
+    end
+
+    context "with a state" do
+      before(:each) do
+        subject.state = "PA"
+      end
+      let(:person1) {Factory(:person, organization: organization, address: Factory(:address, state: "PA"))}
+      let(:person2) {Factory(:person, organization: organization, address: Factory(:address, state: "NY"))}
+      it "should return the people that match" do
         subject.people.should     include person1
         subject.people.should_not include person2
       end

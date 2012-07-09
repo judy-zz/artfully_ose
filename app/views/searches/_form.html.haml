@@ -22,7 +22,8 @@
 
   = f.label :zip, "Location"
   = f.number_field :zip, in: 10000..99999, placeholder: "Zipcode", class: "input-small"
-  / = f.select :state, options_for_select(sorted_us_state_names), prompt: "State", class: "input-small"
+  -# TODO This doesn't automatically fill in the state! Please fix me!
+  = f.select :state, options_for_select(sorted_us_state_names), selected: search.state, prompt: "State", class: "input-small"
 
   .control
     = f.submit "Search", :class => 'btn'
