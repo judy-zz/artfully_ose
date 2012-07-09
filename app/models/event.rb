@@ -1,4 +1,6 @@
 class Event < ActiveRecord::Base
+  include EventPresenter
+
   belongs_to :organization
   belongs_to :venue
   accepts_nested_attributes_for :venue
@@ -83,25 +85,6 @@ class Event < ActiveRecord::Base
     show = shows.pop
     show.chart = default_chart.dup!
     show
-  end
-
-  def as_widget_json(options = {})
-    as_json(options.merge(:methods => ['shows', 'charts', 'venue'])).merge('performances' => upcoming_public_shows.as_json)
-  end
-
-  def as_full_calendar_json
-    shows.collect do |p|
-      { :title  => '',
-        :start  => p.datetime_local_to_event,
-        :allDay => false,
-        :color  => '#077083',
-        :id     => p.id
-      }
-    end
-  end
-
-  def as_json(options = {})
-    super(options)
   end
 
   def assign_chart(chart)

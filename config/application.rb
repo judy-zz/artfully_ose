@@ -39,6 +39,7 @@ module Artfully
     config.autoload_paths += %W(#{config.root}/lib)
     config.autoload_paths += Dir["#{config.root}/lib/**/"] # include all subdirectories
     config.autoload_paths += Dir["#{Rails.root.to_s}/app/models/**/"]
+    config.autoload_paths += %W(#{Rails.root}/app/presenters)
 
 
     # Only load the plugins named here, in the order given (default is alphabetical).

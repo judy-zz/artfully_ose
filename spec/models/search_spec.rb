@@ -6,6 +6,21 @@ describe Search do
   let(:organization) {Factory(:organization)}
 
   describe "#people" do
+    context "with an event" do
+      before(:each) do
+        subject.event_id = event.id
+        ticket.sell_to buyer
+      end
+      let(:buyer) {Factory(:person, organization: organization)}
+      let(:nonbuyer) {Factory(:person, organization: organization)}
+      let(:event)   {Factory(:event, organization: organization)}
+      let(:show)    {Factory(:show, event: event)}
+      let(:ticket)  {Factory(:ticket, show: show)}
+      it "should return the people that match" do
+        subject.people.should     include buyer
+        subject.people.should_not include nonbuyer
+      end
+    end
     context "with a zipcode" do
       before(:each) do
         subject.zip = 10001
