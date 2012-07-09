@@ -1,0 +1,29 @@
+= form_for search, url: searches_path, method: "POST", html: {class: 'form-vertical advanced-search'} do |f|
+  = hidden_field :commit, "Search"
+
+  / = f.label :event, "Event"
+  / = f.text_field :event, placeholder: "Romeo and Juliet"
+
+  / = f.label :donations, "Minimum Total Donations"
+  / .input-prepend
+  /   %span.add-on $
+  /   = f.text_field :donations, placeholder: "0.00", class: "input-small"
+
+  / = f.label :donations_min, "Donations Date Range"
+  / .control
+  /   = f.date_field :donations_min_date
+  /   %span.range-separator to
+  /   = f.date_field :donations_max_date
+
+  / = f.label :lifetime_value, "Min. Lifetime Value (Ticket Sales and Donations)"
+  / .input-prepend
+  /   %span.add-on $
+  /   = f.text_field :donations_min, :placeholder => "0.00", class: "input-small"
+
+  = f.label :zip, "Location"
+  = f.number_field :zip, in: 10000..99999, placeholder: "Zipcode", class: "input-small"
+  / = f.select :state, options_for_select(sorted_us_state_names), prompt: "State", class: "input-small"
+
+  .control
+    = f.submit "Search", :class => 'btn'
+    = link_to "Simple Search", people_path

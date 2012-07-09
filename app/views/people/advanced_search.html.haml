@@ -4,34 +4,26 @@
 
 .row
   .span4
-    = form_tag people_path, {:method => :get, :remote => true, :class => 'form-vertical'} do
+    = form_tag people_path, {:method => :get, :remote => true, :class => 'form-vertical advanced-search'} do
       = hidden_field_tag :commit, "Search"
       = label_tag :event, "Event"
-      = text_field_tag :event, "", :placeholder => "Romeo and Juliet"
-      = label_tag :donations_min, "Total Donations"
+      = text_field_tag :event, "", placeholder: "Romeo and Juliet"
+      = label_tag :donations, "Minimum Total Donations"
+      .input-prepend
+        %span.add-on $
+        = text_field_tag :donations, "", placeholder: "0.00", class: "input-small"
+      = label_tag :donations_min, "Donations Date Range"
       .control
-        .input-prepend
-          %span.add-on $
-          = text_field_tag :donations_min, "", :placeholder => "Minimum", :class => "input-small"
-        to
-        .input-prepend
-          %span.add-on $
-          = text_field_tag :donations_max, "", :placeholder => "Maximum", :class => "input-small"
-      = date_field_tag :donations_min_date, "", :class => "input-small"
-      to
-      = date_field_tag :donations_max_date, "", :class => "input-small"
-      = label_tag :lifetime_value, "Lifetime Value (Tix Sales and Donations)"
-      .control
-        .input-prepend
-          %span.add-on $
-          = text_field_tag :donations_min, "", :placeholder => "Minimum", :class => "input-small"
-        to
-        .input-prepend
-          %span.add-on $
-          = text_field_tag :donations_max, "", :placeholder => "Maximum", :class => "input-small"
+        = date_field_tag :donations_min_date, ""
+        %span.range-separator to
+        = date_field_tag :donations_max_date, ""
+      = label_tag :lifetime_value, "Min. Lifetime Value (Ticket Sales and Donations)"
+      .input-prepend
+        %span.add-on $
+        = text_field_tag :donations_min, "", :placeholder => "0.00", class: "input-small"
       = label_tag :zipcode, "Location"
       = number_field_tag :zipcode, "", in: 10000..99999, :placeholder => "Zipcode", :class => "input-small"
-      = text_field_tag :state, "", :placeholder => "State", :class => "input-small"
+      = select_tag :state, options_for_select(sorted_us_state_names), prompt: "State", class: "input-small"
       .control
         = submit_tag "Search", :class => 'btn'
         = link_to "Simple Search", people_path

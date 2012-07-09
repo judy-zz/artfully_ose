@@ -262,8 +262,20 @@ span.help
 input.datepicker, input.datetimepicker
   cursor: pointer
 
-.form-vertical ul li
-  margin-bottom: 1em
+.form-vertical > input,
+.form-vertical > select,
+.form-vertical > .control,
+.form-vertical > .input-prepend
+  margin-bottom: 1.5em
 
-.form-vertical ul li .btn
-  margin-right: 1em
+.form-vertical > .control > input
+  margin-bottom: 0
+
+.advanced-search input[type="date"]
+  width: 125px
+
+.advanced-search .range-separator
+  width: 20px
+  display: inline-block
+  text-align: center
+

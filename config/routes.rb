@@ -1,5 +1,7 @@
 Artfully::Application.routes.draw do
 
+  resources :searches, only: [:new, :create, :show]
+
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index

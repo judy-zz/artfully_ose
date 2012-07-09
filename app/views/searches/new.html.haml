@@ -1,0 +1,12 @@
+- content_for :header do
+  %h1 People
+
+.row
+  .span4
+    = render partial: "form", locals: {search: @search}
+  .span8.super-search-results
+    - if @search.people.empty?
+      %p No results found.
+    - else
+      %table.table.people-list= render @search.people
+      = will_paginate @people, :inner_window => 2, :outer_window => 0 unless @people.empty?
