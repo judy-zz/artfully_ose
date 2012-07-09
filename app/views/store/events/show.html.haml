@@ -1,6 +1,6 @@
 :javascript
-  var organizationId = #{@event.organization.id};
-  var eventName = "#{@event.name}";
+  var organizationId = #{h @event.organization.id};
+  var eventName = "#{h @event.name}";
   var storefront_sync_store_order_path = "#{storefront_sync_store_order_path}";
   var storefront_create_store_checkout_path = "#{storefront_create_store_checkout_path}";
 - content_for :title do

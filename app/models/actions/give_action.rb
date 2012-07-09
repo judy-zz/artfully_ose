@@ -3,10 +3,10 @@ class GiveAction < Action
     "Give"
   end
 
-  def set_params(params, person, organization)
+  def set_params(params, person)
     params ||= {}
     self.dollar_amount = params[:dollar_amount]
-    super(params, person, organization)
+    super(params, person)
   end
   
   def sentence
