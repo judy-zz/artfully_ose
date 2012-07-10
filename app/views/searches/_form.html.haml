@@ -15,10 +15,10 @@
   /   %span.range-separator to
   /   = f.date_field :donations_max_date
 
-  / = f.label :lifetime_value, "Min. Lifetime Value (Ticket Sales and Donations)"
-  / .input-prepend
-  /   %span.add-on $
-  /   = f.text_field :donations_min, :placeholder => "0.00", class: "input-small"
+  = f.label :lifetime_value, "Min. Lifetime Value (Ticket Sales and Donations)"
+  .input-prepend
+    %span.add-on $
+    = f.text_field :lifetime_value, :placeholder => "0.00", class: "input-small"
 
   = f.label :zip, "Location"
   = f.number_field :zip, in: 10000..99999, placeholder: "Zipcode", class: "input-small"

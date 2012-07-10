@@ -21,6 +21,20 @@ describe Search do
         subject.people.should_not include nonbuyer
       end
     end
+    context "with a lifetime value" do
+      before(:each) do
+        subject.lifetime_value = 15000
+      end
+      let(:person1) {Factory(:person, organization: organization, lifetime_value: 20000)}
+      let(:person2) {Factory(:person, organization: organization, lifetime_value: 10000)}
+      it "should return the people that match" do
+        puts person1.inspect
+        puts person2.inspect
+        puts subject.inspect
+        subject.people.should     include person1
+        subject.people.should_not include person2
+      end
+    end
     context "with a zipcode" do
       before(:each) do
         subject.zip = 10001

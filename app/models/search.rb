@@ -13,9 +13,10 @@ class Search < ActiveRecord::Base
   def find_people
     people = Person.where(organization_id: organization_id)
     people = people.joins(:address)
-    people = people.joins(tickets: {shows: :events}).where("events.id" => event_id) unless event_id.blank?
+    people = people.joins(tickets: {show: :event}).where("events.id" => event_id) unless event_id.blank?
     people = people.where("addresses.zip" => zip) unless zip.blank?
     people = people.where("addresses.state" => state) unless state.blank?
+    people = people.where("people.lifetime_value >= ?", lifetime_value) unless lifetime_value.blank?
     people
   end
 end
