@@ -1,5 +1,7 @@
 class Search < ActiveRecord::Base
-  attr_accessible :zip, :state, :event_id
+  attr_accessible :zip, :state, :event_id,
+                  :min_lifetime_value, :max_lifetime_value,
+                  :min_lifetime_donations, :max_lifetime_donations
   belongs_to :organization
   belongs_to :event
   validates_presence_of :organization_id
@@ -16,8 +18,10 @@ class Search < ActiveRecord::Base
     people = people.joins(tickets: {show: :event}).where("events.id" => event_id) unless event_id.blank?
     people = people.where("addresses.zip" => zip) unless zip.blank?
     people = people.where("addresses.state" => state) unless state.blank?
-    people = people.where("people.lifetime_value >= ?", lifetime_value) unless lifetime_value.blank?
-    people = people.where("people.lifetime_donations >= ?", lifetime_donations) unless lifetime_donations.blank?
+    people = people.where("people.lifetime_value >= ?", min_lifetime_value) unless min_lifetime_value.blank?
+    people = people.where("people.lifetime_value <= ?", max_lifetime_value) unless max_lifetime_value.blank?
+    people = people.where("people.lifetime_donations >= ?", min_lifetime_donations) unless min_lifetime_donations.blank?
+    people = people.where("people.lifetime_donations <= ?", max_lifetime_donations) unless max_lifetime_donations.blank?
     people
   end
 end

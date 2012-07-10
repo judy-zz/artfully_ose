@@ -2,12 +2,17 @@
   = hidden_field :commit, "Search"
 
   = f.label :event_id, "Event"
-  = f.select :event_id, options_for_select(@event_options), prompt: ""
+  = f.select :event_id, options_for_select(@event_options), include_blank: ""
 
-  = f.label :lifetime_donations, "Min. Lifetime Donations"
-  .input-prepend
-    %span.add-on $
-    = f.text_field :lifetime_donations, placeholder: "0.00", class: "input-small"
+  = f.label :min_lifetime_donations, "Lifetime Donations"
+  .control
+    .input-prepend
+      %span.add-on $
+      = f.text_field :min_lifetime_donations, placeholder: "min", class: "input-small"
+    %span.range-separator to
+    .input-prepend
+      %span.add-on $
+      = f.text_field :max_lifetime_donations, placeholder: "max", class: "input-small"
 
   / = f.label :donations_min, "Donations Date Range"
   / .control
@@ -15,15 +20,20 @@
   /   %span.range-separator to
   /   = f.date_field :donations_max_date
 
-  = f.label :lifetime_value, "Min. Lifetime Value (Ticket Sales and Donations)"
-  .input-prepend
-    %span.add-on $
-    = f.text_field :lifetime_value, :placeholder => "0.00", class: "input-small"
+  = f.label :min_lifetime_value, "Lifetime Value (Ticket Sales and Donations)"
+  .control
+    .input-prepend
+      %span.add-on $
+      = f.text_field :min_lifetime_value, :placeholder => "min", class: "input-small"
+    %span.range-separator to
+    .input-prepend
+      %span.add-on $
+      = f.text_field :max_lifetime_value, :placeholder => "max", class: "input-small"
 
   = f.label :zip, "Location"
   = f.number_field :zip, in: 10000..99999, placeholder: "Zipcode", class: "input-small"
   -# TODO This doesn't automatically fill in the state! Please fix me!
-  = f.select :state, options_for_select(sorted_us_state_names), selected: search.state, prompt: "State", class: "input-small"
+  = f.select :state, options_for_select(sorted_us_state_names), selected: search.state, include_blank: "State", class: "input-small"
 
   .control
     = f.submit "Search", :class => 'btn'
