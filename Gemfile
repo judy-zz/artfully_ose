@@ -19,7 +19,6 @@ gem 'delayed_job_active_record', '=0.3.2'
 gem 'acts-as-taggable-on', '~>2.1.0'
 gem 'restful_metrics'
 gem 'copycopter_client', '2.0.1'
-gem 'squeel'
 
 #Mailchimp
 gem 'gibbon'
