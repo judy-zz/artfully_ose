@@ -12,7 +12,7 @@ class Search < ActiveRecord::Base
 
   def find_people
     people = Person.where(organization_id: organization_id)
-    people = people.joins(:address)
+    people = people.joins(:address) unless zip.blank? && state.blank?
     people = people.joins(tickets: {show: :event}).where("events.id" => event_id) unless event_id.blank?
     people = people.where("addresses.zip" => zip) unless zip.blank?
     people = people.where("addresses.state" => state) unless state.blank?

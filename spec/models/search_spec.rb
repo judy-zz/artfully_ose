@@ -8,17 +8,19 @@ describe Search do
   describe "#people" do
     context "with an event" do
       before(:each) do
+        event = Factory(:event, organization: organization).tap{|e| e.save!}
+        show = Factory(:show, event: event).tap{|e| e.save!}
+        ticket = Factory(:ticket, show: show).tap{|e| e.save!}
+        @buyer = Factory(:person, organization: organization).tap{|e| e.save!}
+        @nonbuyer = Factory(:person, organization: organization).tap{|e| e.save!}
+        ticket.sell_to @buyer
         subject.event_id = event.id
-        ticket.sell_to buyer
       end
-      let(:buyer) {Factory(:person, organization: organization)}
-      let(:nonbuyer) {Factory(:person, organization: organization)}
-      let(:event)   {Factory(:event, organization: organization)}
-      let(:show)    {Factory(:show, event: event)}
-      let(:ticket)  {Factory(:ticket, show: show)}
       it "should return the people that match" do
-        subject.people.should     include buyer
-        subject.people.should_not include nonbuyer
+        subject.people.should include @buyer
+      end
+      it "should not return the people that don't match" do
+        subject.people.should_not include @nonbuyer
       end
     end
     context "with a lifetime value" do
@@ -28,10 +30,9 @@ describe Search do
       let(:person1) {Factory(:person, organization: organization, lifetime_value: 20000)}
       let(:person2) {Factory(:person, organization: organization, lifetime_value: 10000)}
       it "should return the people that match" do
-        puts person1.inspect
-        puts person2.inspect
-        puts subject.inspect
-        subject.people.should     include person1
+        subject.people.should include person1
+      end
+      it "should not return the people that don't match" do
         subject.people.should_not include person2
       end
     end
@@ -42,7 +43,9 @@ describe Search do
       let(:person1) {Factory(:person, organization: organization, address: Factory(:address, zip: subject.zip))}
       let(:person2) {Factory(:person, organization: organization, address: Factory(:address, zip: subject.zip + 1))}
       it "should return the people that match" do
-        subject.people.should     include person1
+        subject.people.should include person1
+      end
+      it "should not return the people that don't match" do
         subject.people.should_not include person2
       end
     end
@@ -54,7 +57,9 @@ describe Search do
       let(:person1) {Factory(:person, organization: organization, address: Factory(:address, state: "PA"))}
       let(:person2) {Factory(:person, organization: organization, address: Factory(:address, state: "NY"))}
       it "should return the people that match" do
-        subject.people.should     include person1
+        subject.people.should include person1
+      end
+      it "should not return the people that don't match" do
         subject.people.should_not include person2
       end
     end
