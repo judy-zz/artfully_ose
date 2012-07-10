@@ -36,6 +36,19 @@ describe Search do
         subject.people.should_not include person2
       end
     end
+    context "with a lifetime donations" do
+      before(:each) do
+        subject.lifetime_donations = 15000
+      end
+      let(:person1) {Factory(:person, organization: organization, lifetime_donations: 20000)}
+      let(:person2) {Factory(:person, organization: organization, lifetime_donations: 10000)}
+      it "should return the people that match" do
+        subject.people.should include person1
+      end
+      it "should not return the people that don't match" do
+        subject.people.should_not include person2
+      end
+    end
     context "with a zipcode" do
       before(:each) do
         subject.zip = 10001

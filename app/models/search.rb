@@ -17,6 +17,7 @@ class Search < ActiveRecord::Base
     people = people.where("addresses.zip" => zip) unless zip.blank?
     people = people.where("addresses.state" => state) unless state.blank?
     people = people.where("people.lifetime_value >= ?", lifetime_value) unless lifetime_value.blank?
+    people = people.where("people.lifetime_donations >= ?", lifetime_donations) unless lifetime_donations.blank?
     people
   end
 end

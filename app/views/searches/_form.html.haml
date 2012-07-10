@@ -4,10 +4,10 @@
   = f.label :event_id, "Event"
   = f.select :event_id, options_for_select(@event_options), prompt: ""
 
-  / = f.label :donations, "Minimum Total Donations"
-  / .input-prepend
-  /   %span.add-on $
-  /   = f.text_field :donations, placeholder: "0.00", class: "input-small"
+  = f.label :lifetime_donations, "Min. Lifetime Donations"
+  .input-prepend
+    %span.add-on $
+    = f.text_field :lifetime_donations, placeholder: "0.00", class: "input-small"
 
   / = f.label :donations_min, "Donations Date Range"
   / .control

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120710184927) do
+ActiveRecord::Schema.define(:version => 20120710195857) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -324,7 +324,8 @@ ActiveRecord::Schema.define(:version => 20120710184927) do
     t.string   "linked_in_url"
     t.integer  "import_id"
     t.datetime "deleted_at"
-    t.integer  "lifetime_value",  :default => 0
+    t.integer  "lifetime_value",     :default => 0
+    t.integer  "lifetime_donations", :default => 0
   end
 
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
@@ -391,11 +392,12 @@ ActiveRecord::Schema.define(:version => 20120710184927) do
   create_table "searches", :force => true do |t|
     t.integer  "organization_id"
     t.string   "zip"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.string   "state"
     t.integer  "event_id"
     t.integer  "lifetime_value"
+    t.integer  "lifetime_donations"
   end
 
   create_table "sections", :force => true do |t|

@@ -1,5 +1,6 @@
 class Person < ActiveRecord::Base
   include Valuation::LifetimeValue
+  include Valuation::LifetimeDonations
   
   acts_as_taggable
 
@@ -158,6 +159,7 @@ class Person < ActiveRecord::Base
     end
 
     winner.lifetime_value += loser.lifetime_value
+    winner.lifetime_donations += loser.lifetime_donations
     
     winner.save!
     loser.destroy!
