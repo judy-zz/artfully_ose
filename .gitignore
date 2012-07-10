@@ -13,7 +13,8 @@ public/assets
 .rvmrc
 .rbenv-version
 log/
-solr/
+solr/data
+solr/pids
 .powenv
 .powder
 .autotest

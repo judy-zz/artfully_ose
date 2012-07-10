@@ -57,10 +57,19 @@
 }
 
 .feedback-footer .navbar-inner {
-  background-image: none;
   background-color: #ccc;
+  background-image: none;
   font-weight: normal;
-  padding: 5px 0px;
+}
+
+.feedback-footer .navbar-inner .container {
+  background-image: url('/assets/falogo_footer.png');
+  background-repeat: no-repeat;
+  background-position: 0px center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 95px;
+  width: 1030px;
 }
 
 .feedback-footer .navbar-inner a {
