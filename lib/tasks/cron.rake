@@ -12,6 +12,7 @@ task :cron => :environment do
   if (Time.new.hour == 3)
     Person.all.each do |p|
       p.delay.calculate_lifetime_value
+      p.delay.calculate_lifetime_donations
     end
   end
 
