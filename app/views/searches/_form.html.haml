@@ -14,11 +14,11 @@
       %span.add-on $
       = f.text_field :max_lifetime_donations, placeholder: "max", class: "input-small"
 
-  / = f.label :donations_min, "Donations Date Range"
-  / .control
-  /   = f.date_field :donations_min_date
-  /   %span.range-separator to
-  /   = f.date_field :donations_max_date
+  = f.label :donations_min_date, "Donations Date Range"
+  .control
+    = f.date_field :donations_min_date
+    %span.range-separator to
+    = f.date_field :donations_max_date
 
   = f.label :min_lifetime_value, "Lifetime Value (Ticket Sales and Donations)"
   .control

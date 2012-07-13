@@ -7,6 +7,11 @@ Factory.define(:item) do |i|
   i.reseller_net 100
 end
 
+Factory.define(:donation_item, :parent => :item) do |i|
+  i.product { Factory.create(:donation) }
+  i.association :order
+end
+
 Factory.define(:free_item, :parent => :item) do |i|
   i.product { Factory.create(:free_ticket) }
   i.association :order

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120710202617) do
+ActiveRecord::Schema.define(:version => 20120711202817) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -392,14 +392,16 @@ ActiveRecord::Schema.define(:version => 20120710202617) do
   create_table "searches", :force => true do |t|
     t.integer  "organization_id"
     t.string   "zip"
-    t.datetime "created_at",             :null => false
-    t.datetime "updated_at",             :null => false
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
     t.string   "state"
     t.integer  "event_id"
     t.integer  "min_lifetime_value"
-    t.integer  "min_lifetime_donations"
+    t.integer  "min_donations_amount"
     t.integer  "max_lifetime_value"
-    t.integer  "max_lifetime_donations"
+    t.integer  "max_donations_amount"
+    t.datetime "min_donations_date"
+    t.datetime "max_donations_date"
   end
 
   create_table "sections", :force => true do |t|
