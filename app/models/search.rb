@@ -16,9 +16,9 @@ class Search < ActiveRecord::Base
   def find_people
     column_names = Person.column_names.collect {|cn| "people.#{cn}" }
 
-    people = Person.where(organization_id: organization_id)
+    people = Person.where(:organization_id => organization_id)
     people = people.joins(:address) unless zip.blank? && state.blank?
-    people = people.joins(tickets: {show: :event}).where("events.id" => event_id) unless event_id.blank?
+    people = people.joins(:tickets => {:show => :event}).where("events.id" => event_id) unless event_id.blank?
     people = people.where("addresses.zip" => zip) unless zip.blank?
     people = people.where("addresses.state" => state) unless state.blank?
     people = people.where("people.lifetime_value >= ?", min_lifetime_value) unless min_lifetime_value.blank?
@@ -39,5 +39,3 @@ class Search < ActiveRecord::Base
     people
   end
 end
-
-# puts Person.joins(:orders => :items).sum("items.price")
