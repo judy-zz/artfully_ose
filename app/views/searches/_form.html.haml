@@ -4,21 +4,21 @@
   = f.label :event_id, "Event"
   = f.select :event_id, options_for_select(@event_options), include_blank: ""
 
-  = f.label :min_lifetime_donations, "Lifetime Donations"
+  = f.label :min_donations_amount, "Lifetime Donations"
   .control
     .input-prepend
       %span.add-on $
-      = f.text_field :min_lifetime_donations, placeholder: "min", class: "input-small"
+      = f.text_field :min_donations_amount, placeholder: "min", class: "input-small"
     %span.range-separator to
     .input-prepend
       %span.add-on $
-      = f.text_field :max_lifetime_donations, placeholder: "max", class: "input-small"
+      = f.text_field :max_donations_amount, placeholder: "max", class: "input-small"
 
-  = f.label :donations_min_date, "Donations Date Range"
+  = f.label :min_donations_date, "Donations Date Range"
   .control
-    = f.date_field :donations_min_date
+    = date_field_tag "search[min_donations_date]"
     %span.range-separator to
-    = f.date_field :donations_max_date
+    = date_field_tag "search[max_donations_date]"
 
   = f.label :min_lifetime_value, "Lifetime Value (Ticket Sales and Donations)"
   .control
