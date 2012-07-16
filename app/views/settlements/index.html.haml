@@ -2,40 +2,45 @@
 - content_for :header do
   %h1 Settlements
 
-%p
-  %h3 Schedule
-  %p Settlements are issued two business days after the show plays or the donation occurs. For example, a show on Monday night will be settled on Thursday.
-.row
-  .span12
-    %h3 Settlements
-    #settlements
-      - if @settlements.empty?
-        %p You have not received any settlements yet.
-      - else
-        %table.standalone.zebra.table
-          %thead
-            %tr
-              %th ID
-              %th Event
-              %th Show
-              %th Date
-              %th Transaction ID
-              %th Gross
-              %th Realized
-              %th Net
-          %tbody
-            - @settlements.each do |settlement|
-              %tr{:class => settlement.success? ? "succeeded" : "failed" }
-                %td= link_to settlement.id, settlement_path(settlement)
-                %td= link_to settlement.show.event.name, event_path(settlement.show.event) unless settlement.show.nil?
-                %td= link_to l(settlement.show.datetime_local_to_event, :format => :short), event_show_path(settlement.show.event, settlement.show) unless settlement.show.nil?
-                %td= l(settlement.created_at, :format => :date)
-                %td
-                  -if settlement.success?
-                    =settlement.transaction_id
-                  -else
-                    FAILED
-                %td= number_as_cents(settlement.gross)
-                %td= number_as_cents(settlement.realized_gross)
-                %td= number_as_cents(settlement.net)
-        = will_paginate @settlements
+%section.row
+  .span4
+    %h3 What?
+    All credit card transactions processed by Artful.ly will be sent to your organization via electronic transfer to the bank account that we have on file for your organization.
+  .span4
+    %h3 When?
+    Artful.ly will issue the transfer two business days after a show has played.  You'll receive one transfer per show.  Donations are sent to your account two business days after the donation is made.
+  .span4
+    %h3 Where?
+    After we issue the transfer, banks vary on how quickly they process the transaction.  The transfer should post to your account within 2-7 days.  If you have questions, please <a href='https://artfully.zendesk.com/tickets/new'>contact us</a>.
+%section
+  #settlements
+    - if @settlements.empty?
+      %p You have not received any settlements yet.
+    - else
+      %table.standalone.zebra.table
+        %thead
+          %tr
+            %th ID
+            %th Event
+            %th Show
+            %th Date
+            %th Transaction ID
+            %th Gross
+            %th Realized
+            %th Net
+        %tbody
+          - @settlements.each do |settlement|
+            %tr{:class => settlement.success? ? "succeeded" : "failed" }
+              %td= link_to settlement.id, settlement_path(settlement)
+              %td= link_to settlement.show.event.name, event_path(settlement.show.event) unless settlement.show.nil?
+              %td= link_to l(settlement.show.datetime_local_to_event, :format => :short), event_show_path(settlement.show.event, settlement.show) unless settlement.show.nil?
+              %td= l(settlement.created_at, :format => :date)
+              %td
+                -if settlement.success?
+                  =settlement.transaction_id
+                -else
+                  FAILED
+              %td= number_as_cents(settlement.gross)
+              %td= number_as_cents(settlement.realized_gross)
+              %td= number_as_cents(settlement.net)
+      = will_paginate @settlements
