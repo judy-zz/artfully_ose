@@ -39,4 +39,6 @@ end
 
 Spork.each_run do
   FactoryGirl.reload
+  # Dir["#{Rails.root}/lib/**/*.rb"].each { |lib| load lib }
+  Dir["#{Rails.root}/app/models/*.rb"].each { |model| load model }
 end
