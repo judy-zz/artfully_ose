@@ -1,0 +1,33 @@
+.fields.section-fields
+  .control-group
+    =f.label :name, "Name", :class => 'control-label'
+    .controls
+      =f.text_field :name, :placeholder => 'Type 1'
+      
+  .control-group
+    =f.label :description, "Description", :class => 'control-label'
+    .controls
+      =f.text_area :description, :size => '10x5'
+
+  .control-group
+    =f.label :price, "Price", :class => 'control-label'
+    .controls
+      .input-prepend
+        %span.add-on $
+        - if can? :create, :paid_events
+          =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price', :value => number_as_cents(f.object.price, :format => "%n")
+        - else
+          %span.section-price-disabled{'data-content' => "#{link_to "Enable paid ticketing", organization_path(current_user.current_organization)} to set prices on your events".html_safe}
+            =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price-disabled disabled', :value => number_as_cents(f.object.price, :format => "%n"), :disabled => 'disabled'
+
+  .control-group
+    =f.label :capacity, "Capacity", :class => 'control-label'
+    .controls
+      =f.text_field :capacity, :class => 'span1'
+      
+      - show_remove_links = true if show_remove_links.nil?
+      - if show_remove_links
+        %span.remove-fields-link
+          = f.hidden_field :_destroy
+          %i.icon-minus-sign.icon-gray
+          = link_to_remove_fields "remove", f

@@ -1,0 +1,13 @@
+- if events.blank?
+  = link_to "Create an Event", new_event_path, :class => 'btn'
+- else
+  %ul#event-list
+    - events.each do |event|
+      %li.row-fluid.event-list-item
+        .span2
+          = render :partial => 'shared/event_image_icon', :locals => { :event => event }
+        .span6
+          %h4= link_to event.name, event_path(event), :title => 'event-name'
+          %ul.mini-stats
+            %li= "#{number_as_cents(event.glance.sales_played)} total played"
+            %li= "#{number_as_cents(event.glance.sales_advance)} advance sales"

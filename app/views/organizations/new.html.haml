@@ -1,0 +1,16 @@
+- in_section :dashboard
+- content_for :header do
+  %h1 Organizations
+
+.row
+  .span4
+    %h3 About
+    %p Before using Artful.ly, you need to be a member of an organization.
+    %p
+      %strong If you want to join an existing organization, contact the administrator of that organization so they can add you.
+    %p If you want to start your own organization, fill out the details on the right and click "Create".
+  .span8
+    %h3 Create your own
+    = form_for @organization do |form|
+      %ul= render :partial => 'organizations/form', :locals => { :form => form }
+      = form.submit "Create", :class => "btn"

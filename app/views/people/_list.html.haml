@@ -1,0 +1,23 @@
+- if people.empty?
+  %p No results found.
+- else
+  %table.table.people-list
+    - people.each do |person|
+      %tr
+        %td.name
+          = link_to "#{person.first_name} #{person.last_name}", person_url(person)
+          %br
+          = person.email
+        %td.tags
+          = render :partial => 'shared/tags_uneditable', :locals => { :tag_list => person.tag_list }
+- if !people.empty? and params[:search].present?
+  .form-actions.row-fluid
+    .pull-left
+      = form_for(Segment.new(:terms => params[:search]), :url => new_segment_path, :html => {:method => :get}) do |form|
+        = form.hidden_field :terms
+        = form.submit "New List Segment", :class => "btn"
+
+    .pull-left
+      = form_tag(people_path(:format => :csv), :method => :get) do
+        = hidden_field_tag :search, params[:search]
+        = submit_tag "Export CSV", :class => "btn"

@@ -1,0 +1,25 @@
+- content_for :controls do
+  - unless current_cart.empty?
+    #total.centered
+      %span Your total is
+      .price= number_as_cents current_cart.total
+    %ol#steps.centered
+      %li.active Customer Information
+      -unless current_cart.total.zero?
+        %li Credit Card Information
+      %li Billing Address
+      %li Confirmation
+    #checkout-now.disabled.centered
+    #clear-cart.centered
+      = link_to "Back to Cart", store_order_path(current_cart)
+
+= form_tag store_checkout_path, :class => "sliding-wizard form-horizontal" do
+  - if @needs_confirmation
+    = hidden_field_tag :confirmation, 1
+    = render :partial => 'athena_customers/athena_customer', :object => @payment.customer
+    = render :partial => 'athena_credit_cards/athena_credit_card', :object => @payment.credit_card
+    = render :partial => 'athena_addresses/athena_address', :object => @payment.billing_address
+
+  = render :partial => 'athena_payments/form', :locals => {:payment => @payment}
+  = submit_tag "Purchase"
+

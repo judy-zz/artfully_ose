@@ -1,0 +1,58 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      = link_to 'Artful.ly', root_path, :class => 'brand'
+      %ul.nav
+        %li{ :class => "dropdown #{active?(:events)}" }
+          = nav_dropdown "Events"
+          %ul.dropdown-menu
+            %li= link_to "All Events", events_path
+            %li= link_to "New Event", new_event_path
+            %li= link_to "Widgets", new_widget_path
+            - if current_user.current_organization.has_kit?(:reseller)
+              - if current_user.current_organization.reseller_profile
+                %li= link_to "Reseller Settings", edit_organization_reseller_profile_path(current_user.current_organization, current_user.current_organization.reseller_profile)
+                %li= link_to "Reseller Events", organization_reseller_events_path(current_user.current_organization)
+              - else
+                %li= link_to "Reseller Settings", new_organization_reseller_profile_path(current_user.current_organization)
+            - if current_admin
+              %li= link_to "Reseller Offers", ticket_offers_path
+
+        %li{ :class => "dropdown #{active?(:people)}" }
+          = nav_dropdown "People"
+          %ul.dropdown-menu
+            %li= link_to "New Contact", new_person_path
+            %li= link_to "Search", people_path
+            %li= link_to "List Segments", segments_path
+
+        %li{ :class => "dropdown #{active?(:reports)}" }
+          = nav_dropdown "Reports"
+          %ul.dropdown-menu
+            %li= link_to "Statements", statements_path
+            %li= link_to "Settlements", settlements_path
+            %li= link_to "Imports / Exports", imports_path
+
+        %li{ :class => "dropdown #{active?(:transactions)}"}
+          = nav_dropdown "Transactions"
+          %ul.dropdown-menu
+            %li= link_to "Sales", sales_orders_path
+            %li= link_to "Contributions", contributions_path
+            %li= link_to "Search", orders_path
+
+      %ul.nav.pull-right
+        %li{ :class => "dropdown #{active?(:help)}" }
+          = nav_dropdown "Help"
+          %ul.dropdown-menu
+            %li= link_to_function "Ask a question", "Zenbox.show()"
+            %li= link_to "Request a feature", "http://artfully.zendesk.com/forums/318163-feature-requests", :target => "_blank"
+            %li= link_to "Knowledge Base", "http://artfully.zendesk.com/home", :target => "_blank"
+            
+        %li.divider-vertical
+        %li.dropdown
+          = gravatar_image_tag(current_user.email, :alt => 'User icon', :class => 'nav-grav', :gravatar => { :size => 32 })
+        %li.dropdown
+          = nav_dropdown current_user.email
+          %ul.dropdown-menu
+            -if current_user.is_in_organization? 
+              %li= link_to "My Organization", organization_path(current_user.current_organization)
+            %li= link_to "Sign Out", destroy_user_session_path

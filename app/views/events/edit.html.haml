@@ -1,0 +1,40 @@
+- in_section :events
+- content_for :header do
+  =render :partial=>'header'
+
+.row
+  .span3
+    - in_sub_section :details
+    =render :partial=>'menu'
+  .span9
+    = render "shared/error_messages", :target => @event
+    = form_for( @event, :html => { :class => 'form-horizontal' } ) do |form|
+      .control-group
+        =form.label :name, "Event name", :class => 'control-label'
+        .controls
+          =form.text_field :name, :class => 'input-xlarge', :placeholder=>"Event name"
+          
+      .control-group
+        =form.label :name, "Producer", :class => 'control-label'
+        .controls
+          =form.text_field :producer, :class => 'input-xlarge'
+          
+      .control-group
+        =form.label :name, "Description", :class => 'control-label'
+        .controls
+          =form.text_area :description, :class => 'input-xlarge', :rows => '6'
+          
+      .control-group
+        =form.label :name, "Contact email", :class => 'control-label'
+        .controls
+          =form.text_field :contact_email, :class => 'input-xlarge', :placeholder=>"Email"
+          
+      .control-group
+        =form.label :name, "Contact phone", :class => 'control-label'
+        .controls
+          =form.text_field :contact_phone, :class => 'input-xlarge', :placeholder=>"Phone"
+          
+      .form-actions
+        = form.submit "Save", :class => 'btn'
+    
+

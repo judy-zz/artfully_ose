@@ -1,0 +1,15 @@
+- in_section :people
+- content_for :header do
+  %h1 List Segments
+
+.row
+  .span8.offset2
+    - if @segments.empty?
+      %p= "You have no list segments yet! #{link_to "Create one", people_path} by searching for people.".html_safe
+    - else
+      %ul.detailed-list
+        - @segments.each do |segment|
+          %li
+            %h4= link_to segment.name, segment
+            %ul.details-long
+              %li= pluralize(segment.length, 'person')

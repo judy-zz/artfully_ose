@@ -1,0 +1,8 @@
+.upsell
+  .description= "Help support #{target.organization.name_for_donations} by adding a donation to your order."
+  = form_for target, :url => store_order_url, :html=>{ :class=>'form-inline' } do |f|
+    = hidden_field_tag "donation[organization_id]", target.organization.id
+    = f.label :amount, "Add a Donation"
+    = f.text_field :amount, :class => :currency
+    = f.submit "Make Donation", :class => 'btn'
+
