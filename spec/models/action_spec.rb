@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe Action do
   disconnect_sunspot
-  
+
   subject { Factory(:get_action) }
   let(:organization) { Factory(:organization)}
   let(:user) { Factory(:user) }
   let(:person) { Factory(:person) }
 
-  before(:all) do
+  before(:each) do
     user.organizations << organization
   end
 
