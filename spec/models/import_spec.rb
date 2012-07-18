@@ -12,7 +12,7 @@ describe Import do
       FakeWeb.register_uri(:get, "http://localhost/athena/people.json?_limit=500&_start=0&importId=#{@import.id}", :body => "[]")
       FakeWeb.register_uri(:get, %r{http://localhost/athena/people.json\?email=.*&organizationId=.*}, :body => nil)
     end
-  
+
     it "should import a total of three records" do
       @person = Person.new
       @person.stub(:save).and_return(true)
@@ -41,15 +41,15 @@ describe Import do
     it "should successfully import 0 people" do
       Person.count.should == 0
     end
-  
+
     it "should be failed" do
       @import.status.should == "failed"
     end
-  
+
     it "should have 2 duplicate email errors" do
       @import.import_errors.count.should == 2
-      @import.import_errors.map(&:error_message).uniq.should == [ "Email has already been taken" ]
+      @import.import_errors.map{|e| e.error_message.split(", ")}.flatten.uniq.should == [ "Email has already been taken" ]
     end
-    end
+  end
 
 end
