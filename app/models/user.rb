@@ -54,7 +54,7 @@ class User < ActiveRecord::Base
   def credit_cards
     customer.nil? ? [] : delegated_credit_cards
   end
-  
+
   def self.like(query = "")
     return if query.blank?
     q = "%#{query}%"

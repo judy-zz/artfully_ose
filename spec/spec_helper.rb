@@ -25,7 +25,7 @@ Spork.prefork do
     config.before(:each) { FakeWeb.clean_registry }
     config.before(:each) { FakeWeb.last_request = nil }
     config.before(:all) { FakeWeb.allow_net_connect = false }
-  
+
     # Set some dummy S3 values.
     config.before(:all) do
       ENV["S3_BUCKET"] = "rspec"
@@ -33,7 +33,7 @@ Spork.prefork do
       ENV["SECRET_ACCESS_KEY"] = "abcdef12345+abcdef1234512345123451234512"
     end
   end
-  
+
   #ActiveSupport::Dependencies.clear
 end
 
