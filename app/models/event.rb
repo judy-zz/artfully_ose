@@ -9,7 +9,7 @@ class Event < ActiveRecord::Base
   has_many :tickets, :through => :shows
   has_many :reseller_attachments, :as => :attachable
   validate :validate_contact_phone
-  
+
   after_create :create_default_chart
 
   has_attached_file :image,
@@ -27,7 +27,7 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name, :organization_id
 
-  default_scope where(:deleted_at => nil)
+  default_scope where(:deleted_at => nil).order("created_at DESC")
   scope :published, includes(:shows).where(:shows => { :state => "published" })
 
   delegate :time_zone, :to => :venue
@@ -46,13 +46,13 @@ class Event < ActiveRecord::Base
   def filter_charts(charts)
     charts.reject { |chart| already_has_chart(chart) }
   end
-  
+
   def create_default_chart
-    self.charts.build({ :name => self.name, 
-                        :organization => self.organization, 
+    self.charts.build({ :name => self.name,
+                        :organization => self.organization,
                         :is_template => false }).save
   end
-  
+
   #
   # Hack McHackerson. When we go back to multiple charts per event, this is where we start
   #
@@ -132,7 +132,7 @@ class Event < ActiveRecord::Base
   end
 
   private
-  
+
     #
     # This is a pretty basic validation to prevent them from entering an email in the phone
     # number field (we saw this in usability testing)
@@ -144,7 +144,7 @@ class Event < ActiveRecord::Base
         errors.add(:contact_phone, "doesn't look like a phone number.  Your changes have not been saved.")
       end
     end
-  
+
     def already_has_chart(chart)
       !self.charts.select{|c| c.name == chart.name }.empty?
     end
