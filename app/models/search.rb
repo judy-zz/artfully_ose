@@ -17,6 +17,7 @@ class Search < ActiveRecord::Base
     column_names = Person.column_names.collect {|cn| "people.#{cn}" }
 
     people = Person.where(:organization_id => organization_id)
+    people = people.order('lower(last_name) ASC')
     people = people.joins(:address) unless zip.blank? && state.blank?
     people = people.joins(:tickets => {:show => :event}).where("events.id" => event_id) unless event_id.blank?
     people = people.where("addresses.zip" => zip) unless zip.blank?
@@ -36,6 +37,6 @@ class Search < ActiveRecord::Base
       people = people.having("total_donations >= ?", min_donations_amount) unless min_donations_amount.blank?
       people = people.having("total_donations <= ?", max_donations_amount) unless max_donations_amount.blank?
     end
-    people
+    people.uniq
   end
 end
