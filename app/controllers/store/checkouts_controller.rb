@@ -11,10 +11,14 @@ class Store::CheckoutsController < Store::StoreController
     unless current_cart.unfinished?
       redirect_to store_order_url(current_cart), :notice => "This order is already finished!" and return
     end
+    
+    puts "$$$"
+    puts params[:payment]
+    puts "$$$"
 
-    @payment = Payment.new(params[:athena_payment])
+    @payment = Payment.new(params[:payment])
     #The user_agreement parameter doesn't get set automatically, not sure why
-    @payment.user_agreement = params[:athena_payment][:user_agreement]
+    @payment.user_agreement = params[:payment][:user_agreement]
     @checkout = Checkout.for(current_cart, @payment)
 
     unless @checkout.valid?

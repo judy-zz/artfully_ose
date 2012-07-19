@@ -92,50 +92,52 @@
       .tab-pane#contact-info
         = fields_for "payment[customer]" do |customer|
           .control-group
-            = athena_customer.label :first_name, "First Name", :class => 'control-label required'
-            .controls= athena_customer.text_field :first_name, :class => 'required'
+            = customer.label :first_name, "First Name", :class => 'control-label required'
+            .controls= customer.text_field :first_name, :class => 'required'
           .control-group
-            = athena_customer.label :last_name, "Last Name", :class => 'control-label required'
-            .controls= athena_customer.text_field :last_name, :class => 'required'
+            = customer.label :last_name, "Last Name", :class => 'control-label required'
+            .controls= customer.text_field :last_name, :class => 'required'
           .control-group
-            = athena_customer.label :email, "Email", :class => 'control-label required'
-            .controls= athena_customer.text_field :email, :class => 'required', :type => 'email'
+            = customer.label :email, "Email", :class => 'control-label required'
+            .controls= customer.text_field :email, :class => 'required', :type => 'email'
           .control-group
-            = athena_customer.label :phone, "Phone", :class => 'control-label required'
-            .controls= athena_customer.text_field :phone, :class => 'required'
+            = customer.label :phone, "Phone", :class => 'control-label required'
+            .controls= customer.text_field :phone, :class => 'required'
         .form-actions
           = link_to 'Next »', '#payment-details', 'data-toggle' => 'tab', :class => 'btn btn-primary btn-large pull-right'
       
       .tab-pane#payment-details
         #payment-details-fields
-          = fields_for "athena_payment[athena_credit_card]" do |card|
+          = fields_for "payment[credit_card]" do |card|
             .control-group
-              = card.label :cardholder_name, "Cardholder Name", :class => 'control-label nonzero-total'
-              .controls= card.text_field :cardholder_name, :class => 'nonzero-total'
+              = card.label :name, "Cardholder Name", :class => 'control-label nonzero-total'
+              .controls= card.text_field :name, :class => 'nonzero-total'
+              
             .control-group
-              = card.label :card_number, "Card Number", :class => 'control-label nonzero-total'
-              .controls= card.text_field :card_number, :class => 'nonzero-total', :type => 'creditcard'
+              = card.label :number, "Card Number", :class => 'control-label nonzero-total'
+              .controls= card.text_field :number, :class => 'nonzero-total', :type => 'creditcard'
+              
             .control-group
-              = card.label :cvv, "CVV", :class => 'control-label nonzero-total'
+              = card.label :verification_value, "CVV", :class => 'control-label nonzero-total'
               .controls
-                = card.text_field :cvv, :class => 'span1 nonzero-total'
+                = card.text_field :verification_value, :class => 'span1 nonzero-total'
                 = image_tag 'storefront/cvv.gif'
+                
             .control-group
               = card.label :expiration, "Expiration", :class => 'control-label nonzero-total'
               .controls
-                = card.select 'expiration_date(2i)', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "span1 nonzero-total"
+                = card.select 'month', options_for_select((1..12).map{|m| "%02d" % m}), {}, :class => "span1 nonzero-total"
                 \/
-                = card.select 'expiration_date(1i)', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "span1 nonzero-total"
-                = card.hidden_field 'expiration_date(3i)', :value => 1
+                = card.select 'year', options_for_select(Date.today.year..Date.today.year+10), {}, :class => "span1 nonzero-total"
         #payment-details-message.hidden
           No payment details are necessary. Click Next to continue.
         .form-actions
           = link_to 'Next »', '#billing-address', 'data-toggle' => 'tab', :class => 'btn btn-primary btn-large pull-right'
       
       .tab-pane#billing-address
-        = fields_for "athena_payment[billing_address]" do |address|
+        = fields_for "payment[customer][address]" do |address|
           .control-group
-            = address.label :street_address1, "Billing Address", :class => 'control-label required'
+            = address.label :address1, "Billing Address", :class => 'control-label required'
             .controls= address.text_field :street_address1, :class => 'required'
           .control-group
             = address.label :city, "City", :class => 'control-label required'
@@ -144,7 +146,7 @@
             = address.label :state, "State", :class => 'control-label required'
             .controls= address.select(:state, options_for_select(sorted_us_state_names), :class => 'required')
           .control-group
-            = address.label :postal_code, "Postal Code", :class => 'control-label required'
+            = address.label :zip, "Postal Code", :class => 'control-label required'
             .controls= address.text_field :postal_code, :class => 'required span2'
         .form-actions
           - if @event.show_special_instructions
@@ -166,7 +168,7 @@
           .controls
             %label.checkbox
               I have read, understand and accept the terms and conditions of the User Agreement below.
-              = check_box_tag "[athena_payment][user_agreement]", 1, false, :id => 'agreement-checkbox'
+              = check_box_tag "payment[user_agreement]", 1, false, :id => 'agreement-checkbox'
             %label.error.checkbox{:style => 'display:none;'} Please agree to the terms and conditions.
           
         #user_agreement

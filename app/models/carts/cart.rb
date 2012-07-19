@@ -142,6 +142,29 @@ class Cart < ActiveRecord::Base
   private
 
     def pay_with_authorization(payment, options)
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts payment.inspect
+      puts payment.credit_card.first_name	 
+      puts payment.credit_card.issue_number	 
+      puts payment.credit_card.last_name	 
+      puts payment.credit_card.month	 
+      puts payment.credit_card.number	 
+      puts payment.credit_card.start_month	 
+      puts payment.credit_card.start_year	 
+      puts payment.credit_card.type	 
+      puts payment.credit_card.verification_value	 
+      puts payment.credit_card.year
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts "@@@@@@"
+      puts "@@@@@@"
+      
       response = payment.purchase(options)
       response.success? ? approve! : reject!
     end
