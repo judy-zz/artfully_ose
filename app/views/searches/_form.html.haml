@@ -2,7 +2,7 @@
   = hidden_field :commit, "Search"
 
   = f.label :event_id, "Event"
-  = f.select :event_id, options_for_select(@event_options), include_blank: ""
+  = f.select :event_id, options_for_select(@event_options, selected: search.event_id), include_blank: ""
 
   = f.label :min_donations_amount, "Lifetime Donations"
   .control
@@ -16,9 +16,9 @@
 
   = f.label :min_donations_date, "Donations Date Range"
   .control
-    = date_field_tag "search[min_donations_date]"
+    = date_field_tag "search[min_donations_date]", search.min_donations_date.try(:strftime, "%F"), max: Time.now.strftime("%F")
     %span.range-separator to
-    = date_field_tag "search[max_donations_date]"
+    = date_field_tag "search[max_donations_date]", search.max_donations_date.try(:strftime, "%F"), max: Time.now.strftime("%F")
 
   = f.label :min_lifetime_value, "Lifetime Value (Ticket Sales and Donations)"
   .control
@@ -33,7 +33,7 @@
   = f.label :zip, "Location"
   = f.number_field :zip, in: 10000..99999, placeholder: "Zipcode", class: "input-small"
   -# TODO This doesn't automatically fill in the state! Please fix me!
-  = f.select :state, options_for_select(sorted_us_state_names), selected: search.state, include_blank: "State", class: "input-small"
+  = f.select :state, options_for_select(sorted_us_state_names, selected: search.state), include_blank: "State", class: "input-small"
 
   .control
     = f.submit "Search", :class => 'btn'
