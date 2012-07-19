@@ -30,7 +30,7 @@ function createErrorFlashMessage(msg) {
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();
-	})	
+	})
 }
 
 function setErrorMessage(msg) {
@@ -54,7 +54,7 @@ function createFlashMessage(msg) {
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();
-	})	
+	})
 }
 
 function setFlashMessage(msg) {
@@ -69,21 +69,21 @@ function setFlashMessage(msg) {
 }
 
 $(document).ready(function() {
-    
+
 	/*********** NEW BOOTSTRAP JS ***********/
 	$(".alert").alert()
-	
+
 	$('.section-price-disabled').popover({trigger:'manual'})
 	                            .click(function(){ $(this).popover('toggle') });
 	$('.section-price-disabled').popover('show');
 	$('.help').popover()
-	
+
 	$('.dropdown-toggle').dropdown()
-	
+
 	$('#nag').modal('show')
-	
+
 	/*********** NEW ARTFULLY JS ************/
-	
+
 	/*********** EXISTING ARTFUL.LY JS ******/
 
   $("form .description").siblings("input").focusin(function(){
@@ -293,6 +293,9 @@ function activateControls() {
   });
 
   $(".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+  if (!Modernizr.inputtypes.date) {
+    $('input[type="date"]' ).datepicker({dateFormat: 'yy-mm-dd'});
+  }
   $('.datetimepicker').datetimepicker({dateFormat: 'yy-mm-dd', timeFormat:'hh:mm tt', ampm: true });
 }
 
