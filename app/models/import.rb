@@ -117,7 +117,7 @@ class Import < ActiveRecord::Base
 
   def csv_data
     return @csv_data if @csv_data
-    
+
     @csv_data =
       if File.file?(self.s3_key)
         File.read(self.s3_key)
