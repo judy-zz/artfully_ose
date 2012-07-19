@@ -18,12 +18,6 @@ describe Search do
         search.event_id = @event.id
       end
       it "should return the people that match" do
-        # pending "TODO: Feature works, but the specs don't yet!"
-        puts search.inspect
-        puts @ticket.inspect
-        puts @show.inspect
-        puts @event.inspect
-        puts @buyer.inspect
         search.people.should include @buyer
       end
       it "should not return the people that don't match" do
@@ -39,23 +33,6 @@ describe Search do
       let(:too_high)   {Factory(:person, organization: organization, lifetime_value: 20000)}
       let(:just_right) {Factory(:person, organization: organization, lifetime_value: 15000)}
       let(:too_low)    {Factory(:person, organization: organization, lifetime_value: 10000)}
-      it "should return the people that match" do
-        search.people.should include just_right
-      end
-      it "should not return the people that don't match" do
-        search.people.should_not include too_high
-        search.people.should_not include too_low
-      end
-    end
-
-    context "with lifetime donations" do
-      before(:each) do
-        search.min_donations_amount = 11000
-        search.max_donations_amount = 19000
-      end
-      let(:too_high)   {Factory(:person, organization: organization, lifetime_donations: 20000)}
-      let(:just_right) {Factory(:person, organization: organization, lifetime_donations: 15000)}
-      let(:too_low)    {Factory(:person, organization: organization, lifetime_donations: 10000)}
       it "should return the people that match" do
         search.people.should include just_right
       end
@@ -83,6 +60,24 @@ describe Search do
         search.people.should include person1
       end
       it "should not return the people that don't match" do
+        search.people.should_not include person2
+      end
+    end
+
+    context "with a range of donation dates but no amounts" do
+      let(:person1) {Factory(:person, organization: organization)}
+      let(:person2) {Factory(:person, organization: organization)}
+      before(:each) do
+        search.min_donations_date   = 1.month.ago
+        search.max_donations_date   = 1.month.from_now
+        # Each donation item should be worth $10.
+        Factory(:order, created_at: Time.now, person: person1) << Factory(:donation, amount: 1000)
+        Factory(:order, created_at: Time.now, person: person2) << Factory(:ticket)
+      end
+      it "should return the first person with a higher donation amount" do
+        search.people.should include person1
+      end
+      it "should not return the people with no donations (or donations of less than a dollar)" do
         search.people.should_not include person2
       end
     end
