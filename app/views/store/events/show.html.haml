@@ -90,7 +90,7 @@
           %h4#cart-total.formatCurrency
 
       .tab-pane#contact-info
-        = fields_for "athena_payment[athena_customer]" do |athena_customer|
+        = fields_for "payment[customer]" do |customer|
           .control-group
             = athena_customer.label :first_name, "First Name", :class => 'control-label required'
             .controls= athena_customer.text_field :first_name, :class => 'required'

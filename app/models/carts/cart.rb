@@ -142,9 +142,8 @@ class Cart < ActiveRecord::Base
   private
 
     def pay_with_authorization(payment, options)
-      options[:settle] = true if options[:settle].nil?
-      payment.authorize! ? approve! : reject!
-      payment.settle! if options[:settle] and approved?
+      response = payment.purchase(options)
+      response.success? ? approve! : reject!
     end
 
     def metric_sale_total
