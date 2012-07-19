@@ -4,7 +4,7 @@
   = f.label :event_id, "Event"
   = f.select :event_id, options_for_select(@event_options, selected: search.event_id), include_blank: ""
 
-  = f.label :min_donations_amount, "Lifetime Donations"
+  = f.label :min_donations_amount, "Donations"
   .control
     .input-prepend
       %span.add-on $
