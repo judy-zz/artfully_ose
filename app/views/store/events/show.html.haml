@@ -138,7 +138,7 @@
         = fields_for "payment[customer][address]" do |address|
           .control-group
             = address.label :address1, "Billing Address", :class => 'control-label required'
-            .controls= address.text_field :street_address1, :class => 'required'
+            .controls= address.text_field :address1, :class => 'required'
           .control-group
             = address.label :city, "City", :class => 'control-label required'
             .controls= address.text_field :city, :class => 'required'
@@ -147,7 +147,7 @@
             .controls= address.select(:state, options_for_select(sorted_us_state_names), :class => 'required')
           .control-group
             = address.label :zip, "Postal Code", :class => 'control-label required'
-            .controls= address.text_field :postal_code, :class => 'required span2'
+            .controls= address.text_field :zip, :class => 'required span2'
         .form-actions
           - if @event.show_special_instructions
             = link_to 'Next »', '#special-instructions', 'data-toggle' => 'tab', :class => 'btn btn-primary btn-large pull-right'
