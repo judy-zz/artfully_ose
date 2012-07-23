@@ -7,7 +7,7 @@ Given /^"([^"]*)" is part of an organization$/ do |email|
 end
 
 Given /^I am part of an organization$/ do
-  @organization = Factory(:organization)
+  @organization = Factory(:organization_with_timezone)
   @current_user.organizations << @organization
 end
 

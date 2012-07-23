@@ -25,16 +25,16 @@ class ContributionsController < ApplicationController
 
   private
 
-  def contributors
-    if params[:terms].present?
-      people = Person.search_index(params[:terms].dup, current_user.current_organization)
-      flash[:error] = "No people matched your search terms." if people.empty?
+    def contributors
+      if params[:terms].present?
+        people = Person.search_index(params[:terms].dup, current_user.current_organization)
+        flash[:error] = "No people matched your search terms." if people.empty?
+      end
+      people || []
     end
-    people || []
-  end
 
-  def create_contribution
-    params[:contribution] ||= {}
-    Contribution.new(params[:contribution].merge(:organization_id => current_user.current_organization.id))
-  end
+    def create_contribution
+      params[:contribution] ||= {}
+      Contribution.new(params[:contribution].merge({:organization_id => current_user.current_organization.id, :creator_id => current_user.id}))
+    end
 end
