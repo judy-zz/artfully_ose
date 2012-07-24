@@ -103,19 +103,15 @@ class SalesController < ApplicationController
       params[:person_id].blank? ? @dummy : Person.find(params[:person_id])
     end
 
-    def payment
-      case params[:payment_method]
-      when 'cash'
-        CashPayment.new(person.to_customer)
-      when 'comp'
-        CompPayment.new(current_user, person)
-      when 'credit_card_swipe'
-        card = AthenaCreditCard.from_swipe(params[:credit_card][:card_number])
-        CreditCardPayment.for_card_and_customer(card, person.to_customer)
-      when 'credit_card_manual'
-        card = AthenaCreditCard.new(params[:credit_card])
-        CreditCardPayment.for_card_and_customer(card, person.to_customer)
+    def payment            
+      if Swiper.can_parse? params[:credit_card][:card_number]
+        params[:credit_card][:card_number] = Swiper.parse(params[:credit_card][:card_number])
       end
+      params[:benefactor] = current_user
+      
+      payment = Payment.create(params[:payment_method], params)
+      payment.customer = person
+      payment
     end
   
     def has_card_info?

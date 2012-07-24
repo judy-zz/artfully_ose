@@ -63,9 +63,9 @@ class Sale
   private
 
     def comp_tickets(payment)
-      @comp = Comp.new(tickets.first.show, tickets, payment.person, payment.benefactor)
+      @comp = Comp.new(tickets.first.show, tickets, payment.customer, payment.benefactor)
       @comp.submit
-      @buyer = payment.person
+      @buyer = @comp.recipient
       true
     end
     
@@ -75,7 +75,6 @@ class Sale
         success = checkout.finish
         @buyer = checkout.person
         errors.add(:base, "payment was not accepted") and return if !success
-        settle(checkout, success) if (success and !payment.requires_settlement?)
       rescue Errno::ECONNREFUSED => e
         errors.add(:base, "Sorry but we couldn't connect to the payment processor.  Try again or use another payment type")
       rescue Exception => e

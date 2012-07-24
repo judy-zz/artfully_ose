@@ -3,7 +3,7 @@ class Store::CheckoutsController < Store::StoreController
 
   def new
     redirect_to(store_order_url, :alert => "This order is empty!") if current_cart.empty?
-    @payment = Payment.new
+    @payment = CreditCardPayment.new
     @checkout = Checkout.new(current_cart, @payment)
   end
 
@@ -12,7 +12,7 @@ class Store::CheckoutsController < Store::StoreController
       redirect_to store_order_url(current_cart), :notice => "This order is already finished!" and return
     end
 
-    @payment = Payment.new(params[:payment])
+    @payment = CreditCardPayment.new(params[:payment])
     #The user_agreement parameter doesn't get set automatically, not sure why
     @payment.user_agreement = params[:payment][:user_agreement]
     @checkout = Checkout.for(current_cart, @payment)
@@ -38,7 +38,7 @@ class Store::CheckoutsController < Store::StoreController
       render :json => "This order is already finished!", :status => :unprocessable_entity and return
     end
 
-    @payment = Payment.new(params[:payment])
+    @payment = CreditCardPayment.new(params[:payment])
     #The user_agreement parameter doesn't get set automatically, not sure why
     @payment.user_agreement = params[:payment][:user_agreement]
     current_cart.special_instructions = params[:special_instructions]
