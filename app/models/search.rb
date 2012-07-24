@@ -1,5 +1,5 @@
 class Search < ActiveRecord::Base
-  attr_accessible :zip, :state, :event_id,
+  attr_accessible :zip, :state, :event_id, :tagging,
                   :min_lifetime_value, :max_lifetime_value,
                   :min_donations_amount, :max_donations_amount,
                   :min_donations_date, :max_donations_date
@@ -18,6 +18,7 @@ class Search < ActiveRecord::Base
 
     people = Person.where(:organization_id => organization_id)
     people = people.order('lower(last_name) ASC')
+    people = people.tagged_with(tagging) unless tagging.blank?
     people = people.joins(:address) unless zip.blank? && state.blank?
     people = people.joins(:tickets => {:show => :event}).where("events.id" => event_id) unless event_id.blank?
     people = people.where("addresses.zip" => zip) unless zip.blank?

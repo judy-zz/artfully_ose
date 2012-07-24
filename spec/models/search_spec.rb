@@ -109,6 +109,24 @@ describe Search do
         search.people.should_not include person2
       end
     end
+
+    context "with a tagging" do
+      before(:each) do
+        search.tagging = "first_tag"
+      end
+      let(:person1) {Factory(:person, organization: organization)}
+      let(:person2) {Factory(:person, organization: organization)}
+      before(:each) do
+        person1.tap{|p| p.tag_list = "first_tag, second_tag"}.save!
+        person2.tap{|p| p.tag_list = "third_tag"}.save!
+      end
+      it "should return the people that match" do
+        search.people.should include person1
+      end
+      it "should not return the people that don't match" do
+        search.people.should_not include person2
+      end
+    end
   end
 
 end

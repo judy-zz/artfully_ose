@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120711202817) do
+ActiveRecord::Schema.define(:version => 20120723192841) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -402,6 +402,7 @@ ActiveRecord::Schema.define(:version => 20120711202817) do
     t.integer  "max_donations_amount"
     t.datetime "min_donations_date"
     t.datetime "max_donations_date"
+    t.string   "tagging"
   end
 
   create_table "sections", :force => true do |t|
