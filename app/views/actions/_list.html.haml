@@ -23,4 +23,3 @@
           %td= full_details(action)
           %td
             =link_to("Edit", edit_person_action_path(person, action, :format => :html, :type => :hear), :class => "btn btn-mini edit-action-link", :remote => true) if action.action_type == "Hear"
-            =link_to("Edit", edit_person_action_path(person, action, :type => :give), :class => "btn btn-mini", :remote => true) if action.action_type == "Give" unless action.creator_id.nil?

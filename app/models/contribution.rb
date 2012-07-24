@@ -2,7 +2,7 @@ class Contribution
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
-  attr_reader :contributor, :person_id, :subtype, :amount, :occurred_at, :details, :organization_id
+  attr_reader :contributor, :person_id, :subtype, :amount, :occurred_at, :details, :organization_id, :creator_id
 
   def initialize(params = {})
     load(params)
@@ -11,13 +11,16 @@ class Contribution
 
   def save
     @order  = build_order
-    @order.save!
+    Order.transaction do
+      @order.save!
+      @order.update_attribute(:created_at, @occurred_at)
 
-    @item   = build_item(@order, @amount)
-    @item.save!
+      @item   = build_item(@order, @amount)
+      @item.save!
 
-    @action = build_action
-    @action.save!
+      @action = build_action
+      @action.save!
+    end
   end
 
   def has_contributor?
@@ -36,7 +39,8 @@ class Contribution
     @organization_id = params[:organization_id]
     @occurred_at     = ActiveSupport::TimeZone.create(Organization.find(@organization_id).time_zone).parse(params[:occurred_at]) if params[:occurred_at].present?
     @details         = params[:details]
-    @person_id  = params[:person_id]
+    @person_id       = params[:person_id]
+    @creator_id      = params[:creator_id]
   end
 
   def find_contributor
@@ -50,7 +54,8 @@ class Contribution
       :occurred_at      => @occurred_at,
       :details          => @details,
       :person_id        => @person_id,
-      :subject          => @order
+      :subject          => @order,
+      :creator_id       => @creator_id
     })
   end
 
@@ -61,7 +66,7 @@ class Contribution
       :details         => @details
     }
 
-    ApplicationOrder.new(attributes).tap do |order|
+    order = ApplicationOrder.new(attributes).tap do |order|
       order.skip_actions = true
     end
   end

@@ -14,6 +14,21 @@ Given /^"([^"]*)" is in the index$/ do |email|
   Person.stub(:search_index).and_return(Array.wrap(Person.where(:email => email)))
 end
 
+Then /^I enter a donation of "([^"]*)" on "([^"]*)"$/ do |amount, date|
+  fill_in("Dollar Value", :with => amount)
+  fill_in("Date and Time", :with => date)
+  click_button("Save")
+end
+
+Then /^I search for contributions between "([^"]*)" and "([^"]*)"$/ do |from, to|
+  fill_in("From", :with => from)
+  fill_in("To", :with => to)
+  click_button("Search")
+end
+
+Then /^I should see the contribution of "([^"]*)" from "([^"]*)" made on "([^"]*)"$/ do |amount, name, date|
+  find('tr', text: name).should have_content(amount)
+end
 
 Given /^there are (\d+) people tagged with "([^"]*)"$/ do |quantity, tag|
   @tag = tag

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120723192841) do
+ActiveRecord::Schema.define(:version => 20120723195036) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
