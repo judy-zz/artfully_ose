@@ -4,10 +4,10 @@ module EventPresenter
     def options_for_select_by_organization(organization)
       where(organization_id: organization.id).collect do |event|
         [event.name, event.id]
-      end
+      end.sort{|a, b| a[0] <=> b[0]}
     end
   end
-  
+
   module InstanceMethods
     def to_s
       self.name || ""

@@ -1,10 +1,12 @@
 = form_for search, url: searches_path, method: "POST", html: {class: 'form-vertical advanced-search'} do |f|
   = hidden_field :commit, "Search"
-
-  = f.label :event_id, "Event"
+  %h3 Tag
+  = f.text_field :tagging, placeholder: "Tag Name"
+  %h3 Events
   = f.select :event_id, options_for_select(@event_options, selected: search.event_id), include_blank: ""
 
-  = f.label :min_donations_amount, "Donations"
+  %h3 Donations
+  = f.label :min_donations_amount, "Total Donations"
   .control
     .input-prepend
       %span.add-on $
@@ -13,14 +15,13 @@
     .input-prepend
       %span.add-on $
       = f.text_field :max_donations_amount, placeholder: "max", class: "input-small"
-
-  = f.label :min_donations_date, "Donations Date Range"
   .control
     = date_field_tag "search[min_donations_date]", search.min_donations_date.try(:strftime, "%F"), max: Time.now.strftime("%F")
     %span.range-separator to
     = date_field_tag "search[max_donations_date]", search.max_donations_date.try(:strftime, "%F"), max: Time.now.strftime("%F")
 
-  = f.label :min_lifetime_value, "Lifetime Value (Ticket Sales and Donations)"
+  %h3 Value
+  = f.label :min_lifetime_value, "Lifetime Value (Purchases and Donations)"
   .control
     .input-prepend
       %span.add-on $
@@ -30,10 +31,9 @@
       %span.add-on $
       = f.text_field :max_lifetime_value, :placeholder => "max", class: "input-small"
 
-  = f.label :zip, "Location"
+  %h3 Location
   = f.number_field :zip, in: 10000..99999, placeholder: "Zipcode", class: "input-small"
-  -# TODO This doesn't automatically fill in the state! Please fix me!
-  = f.select :state, options_for_select(sorted_us_state_names, selected: search.state), include_blank: "State", class: "input-small"
+  = f.select :state, options_for_select(sorted_us_state_names, selected: search.state), {include_blank: "State"}, {class: "input-medium"}
 
   .control
     = f.submit "Search", :class => 'btn'
