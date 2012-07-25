@@ -3,7 +3,7 @@ class Store::CheckoutsController < Store::StoreController
 
   def new
     redirect_to(store_order_url, :alert => "This order is empty!") if current_cart.empty?
-    @payment = CreditCardPayment.new
+    @payment = WidgetPayment.new
     @checkout = Checkout.new(current_cart, @payment)
   end
 
@@ -12,7 +12,7 @@ class Store::CheckoutsController < Store::StoreController
       redirect_to store_order_url(current_cart), :notice => "This order is already finished!" and return
     end
 
-    @payment = CreditCardPayment.new(params[:payment])
+    @payment = WidgetPayment.new(params[:payment])
     @checkout = Checkout.for(current_cart, @payment)
 
     unless @checkout.valid?
