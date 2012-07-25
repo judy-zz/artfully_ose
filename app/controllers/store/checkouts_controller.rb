@@ -13,8 +13,6 @@ class Store::CheckoutsController < Store::StoreController
     end
 
     @payment = CreditCardPayment.new(params[:payment])
-    #The user_agreement parameter doesn't get set automatically, not sure why
-    @payment.user_agreement = params[:payment][:user_agreement]
     @checkout = Checkout.for(current_cart, @payment)
 
     unless @checkout.valid?
