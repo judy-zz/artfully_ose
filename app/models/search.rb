@@ -23,8 +23,8 @@ class Search < ActiveRecord::Base
     people = people.joins(:tickets => {:show => :event}).where("events.id" => event_id) unless event_id.blank?
     people = people.where("addresses.zip" => zip) unless zip.blank?
     people = people.where("addresses.state" => state) unless state.blank?
-    people = people.where("people.lifetime_value >= ?", min_lifetime_value) unless min_lifetime_value.blank?
-    people = people.where("people.lifetime_value <= ?", max_lifetime_value) unless max_lifetime_value.blank?
+    people = people.where("people.lifetime_value >= ?", min_lifetime_value * 100.0) unless min_lifetime_value.blank?
+    people = people.where("people.lifetime_value <= ?", max_lifetime_value * 100.0) unless max_lifetime_value.blank?
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
       people = people.joins(:orders => :items)
       people = people.where("orders.created_at >= ?", min_donations_date) unless min_donations_date.blank?
@@ -35,9 +35,9 @@ class Search < ActiveRecord::Base
       if min_donations_amount.blank?
         people = people.having("total_donations >= 1")
       else
-        people = people.having("total_donations >= ?", min_donations_amount)
+        people = people.having("total_donations >= ?", min_donations_amount * 100.0)
       end
-      people = people.having("total_donations <= ?", max_donations_amount) unless max_donations_amount.blank?
+      people = people.having("total_donations <= ?", max_donations_amount * 100.0) unless max_donations_amount.blank?
     end
     people.uniq
   end

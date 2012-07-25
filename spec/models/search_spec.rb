@@ -27,8 +27,8 @@ describe Search do
 
     context "with lifetime values" do
       before(:each) do
-        search.min_lifetime_value = 11000
-        search.max_lifetime_value = 19000
+        search.min_lifetime_value = 110
+        search.max_lifetime_value = 190
       end
       let(:too_high)   {Factory(:person, organization: organization, lifetime_value: 20000)}
       let(:just_right) {Factory(:person, organization: organization, lifetime_value: 15000)}
@@ -48,8 +48,8 @@ describe Search do
       before(:each) do
         search.min_donations_date   = 1.month.ago
         search.max_donations_date   = 1.month.from_now
-        search.min_donations_amount = 500
-        search.max_donations_amount = 1500
+        search.min_donations_amount = 5
+        search.max_donations_amount = 15
         # Each donation item should be worth $10.
         Factory(:order, created_at: 2.months.ago,      person: person1) << Factory(:donation)
         Factory(:order, created_at: Time.now,          person: person1) << Factory(:donation)
