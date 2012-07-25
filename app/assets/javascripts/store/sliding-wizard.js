@@ -193,26 +193,26 @@ function updateConfirmation(){
   $(document.createElement('h4')).html("Customer Information").appendTo($("#customer-confirmation"));
   var customer = $("#customer").find("input:visible, select").serializeArray();
 
-  $(document.createElement('div')).html($('#widget_payment_customer_first_name').val() + " " + $('#widget_payment_customer_last_name').val()).appendTo($("#customer-confirmation"));
-	$(document.createElement('div')).html($('#widget_payment_customer_phone').val()).appendTo($("#customer-confirmation"));
-	$(document.createElement('div')).html($('#widget_payment_customer_email').val()).appendTo($("#customer-confirmation"));
+  $(document.createElement('div')).html($('#payment_customer_first_name').val() + " " + $('#payment_customer_last_name').val()).appendTo($("#customer-confirmation"));
+	$(document.createElement('div')).html($('#payment_customer_phone').val()).appendTo($("#customer-confirmation"));
+	$(document.createElement('div')).html($('#payment_customer_email').val()).appendTo($("#customer-confirmation"));
 
 
   var creditCard = $("#credit_card").find("input:visible, select").serializeArray();
   if (creditCard.length > 0){
       $(document.createElement('h4')).html("Credit Card Information").appendTo($("#credit_card-confirmation"));	
-      var ccField = $('#widget_payment_credit_card_number').val()
-      $(document.createElement('div')).html($('#widget_payment_credit_card_name').val()).appendTo($("#credit_card-confirmation"));
+      var ccField = $('#payment_credit_card_number').val()
+      $(document.createElement('div')).html($('#payment_credit_card_name').val()).appendTo($("#credit_card-confirmation"));
 	    $(document.createElement('div')).html("**********" + ccField.substr(ccField.length-4,ccField.length-1)).appendTo($("#credit_card-confirmation"));
-	    $(document.createElement('div')).html($('#widget_payment_credit_card_month').val() + "/" + $('#widget_payment_credit_card_year').val()).appendTo($("#credit_card-confirmation"));
+	    $(document.createElement('div')).html($('#payment_credit_card_month').val() + "/" + $('#payment_credit_card_year').val()).appendTo($("#credit_card-confirmation"));
   }
 
 	$(document.createElement('h4')).html("Billing Address").appendTo($("#billing_address-confirmation"));
 	
-	$(document.createElement('div')).html($('#widget_payment_billing_address_address1').val()).appendTo($("#billing_address-confirmation"));
-	$(document.createElement('div')).html($('#widget_payment_billing_address_city').val()).appendTo($("#billing_address-confirmation"));
-	$(document.createElement('div')).html($('#widget_payment_billing_address_state').val()).appendTo($("#billing_address-confirmation"));
-	$(document.createElement('div')).html($('#widget_payment_billing_address_zip').val()).appendTo($("#billing_address-confirmation"));
+	$(document.createElement('div')).html($('#payment_customer_address_address1').val()).appendTo($("#billing_address-confirmation"));
+	$(document.createElement('div')).html($('#payment_customer_address_city').val()).appendTo($("#billing_address-confirmation"));
+	$(document.createElement('div')).html($('#payment_customer_address_state').val()).appendTo($("#billing_address-confirmation"));
+	$(document.createElement('div')).html($('#payment_customer_address_zip').val()).appendTo($("#billing_address-confirmation"));
 
   $(document.createElement('input')).attr({'type':'hidden', 'name':'confirmation','value':'1'}).appendTo($("#billing_address-confirmation"));
 }

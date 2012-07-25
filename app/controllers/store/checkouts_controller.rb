@@ -13,14 +13,16 @@ class Store::CheckoutsController < Store::StoreController
     end
 
     @payment = WidgetPayment.new(params[:payment])
-    @checkout = Checkout.for(current_cart, @payment)
-
+    @credit_card_payment = CreditCardPayment.new(params[:payment])
+    @checkout = Checkout.for(current_cart, @credit_card_payment)
+    @payment.amount = @credit_card_payment.amount
+    
     unless @checkout.valid?
       flash[:error] = @checkout.error || "An error occured while trying to validate your payment. Please review your information."
       #redirect_to store_order_url and return
       render :new and return
     end
-
+    
     with_confirmation do
       if @checkout.finish
         redirect_to store_order_url(current_cart), :notice => 'Thank you for your order!'
