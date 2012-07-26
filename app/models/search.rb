@@ -28,7 +28,7 @@ class Search < ActiveRecord::Base
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
       people = people.joins(:orders => :items)
       people = people.where("orders.created_at >= ?", min_donations_date) unless min_donations_date.blank?
-      people = people.where("orders.created_at <= ?", max_donations_date) unless max_donations_date.blank?
+      people = people.where("orders.created_at <= ?", max_donations_date + 1.day) unless max_donations_date.blank?
       people = people.where("items.product_type = 'Donation'")
       people = people.group("people.id")
       people = people.select(column_names + ["SUM(items.price) AS total_donations"])

@@ -71,7 +71,7 @@ describe Search do
         search.min_donations_date   = 1.month.ago
         search.max_donations_date   = 1.month.from_now
         # Each donation item should be worth $10.
-        Factory(:order, created_at: Time.now, person: person1) << Factory(:donation, amount: 1000)
+        Factory(:order, created_at: 1.month.from_now, person: person1) << Factory(:donation, amount: 1000)
         Factory(:order, created_at: Time.now, person: person2) << Factory(:ticket)
       end
       it "should return the first person with a higher donation amount" do
