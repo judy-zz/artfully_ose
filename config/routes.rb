@@ -10,10 +10,15 @@ Rails.application.routes.draw do
       get :authorization
     end
   end
+  
+  namespace :widget do
+    resource :order, :only => [:show, :create, :update, :destroy]
+    resource :checkout
+  end
 
   namespace :store do
     resources :events, :only => :show
-    resource :order, :only => [:show, :create, :update, :destroy, :storefront_sync] do
+    resource :order, :only => [:storefront_sync] do
       collection do
         post :storefront_sync
       end
