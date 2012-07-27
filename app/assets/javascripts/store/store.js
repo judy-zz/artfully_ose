@@ -136,7 +136,7 @@ function updateOrderOnServer() {
   }
 
   $.ajax({
-    url: storefront_sync_store_order_path,
+    url: sync_store_order_path,
     type: "POST",
     data: params,
     success: function(data) {
@@ -251,7 +251,7 @@ function checkout() {
     $('#purchase .error').hide();
     $.ajax({
       type: 'POST',
-      url: storefront_create_store_checkout_path,
+      url: store_checkout_path,
       data: $("form#shopping-cart-form").serialize(),
       success: function(data) {
         $('#nav').hide();
