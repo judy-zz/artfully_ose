@@ -21,7 +21,7 @@ class EventsController < ApplicationController
 
   def index
     authorize! :view, Event
-    @events = current_organization.events.paginate(:page => params[:page], :per_page => 25)
+    @events = current_organization.events.includes(:shows, :venue).order('updated_at DESC')
   end
 
   def show
