@@ -25,7 +25,6 @@ require "s3"
 require "validates_timeliness"
 
 require "uuid"
-require "mysql2"
 require "sunspot_rails"                     
 require "gravatar_image_tag"
 require "cancan"
