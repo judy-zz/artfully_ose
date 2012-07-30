@@ -26,7 +26,8 @@ require "validates_timeliness"
 
 require "uuid"
 require "mysql2"
-
+require "sunspot_rails"                     
+require "gravatar_image_tag"
 
 module ArtfullyOse
 end
