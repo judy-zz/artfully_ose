@@ -19,5 +19,7 @@ require "aws-sdk"
 require "paperclip"
 require "comma"
 
+require "s3"
+
 module ArtfullyOse
 end
