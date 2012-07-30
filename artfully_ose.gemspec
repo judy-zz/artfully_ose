@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.6"
-  s.add_dependency "transitions"
+  s.add_dependency "transitions", "0.0.11"
   s.add_dependency "devise", "=2.0.4"
   s.add_dependency "devise_invitable", "=1.0.2"
   
