@@ -29,6 +29,9 @@ require "mysql2"
 require "sunspot_rails"                     
 require "gravatar_image_tag"
 require "cancan"
+require "dynamic_form"
+require "mail"
+require "gibbon"
 
 module ArtfullyOse
 end
