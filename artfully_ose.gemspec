@@ -26,6 +26,9 @@ Gem::Specification.new do |s|
   s.add_dependency "activerecord-import", "0.2.9"
   s.add_dependency "acts-as-taggable-on", "~>2.1.0"
   s.add_dependency "haml"
+
+  s.add_dependency "will_paginate", '~> 3.0'
+  s.add_dependency "bootstrap-will_paginate"
   
   s.add_development_dependency "sqlite3"
 end

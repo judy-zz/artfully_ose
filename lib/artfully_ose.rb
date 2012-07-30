@@ -12,5 +12,8 @@ require "acts-as-taggable-on"
 
 require "haml"
 
+require "will_paginate"
+require "will_paginate/array"
+
 module ArtfullyOse
 end
