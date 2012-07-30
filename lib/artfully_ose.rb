@@ -20,6 +20,7 @@ require "paperclip"
 require "comma"
 
 require "s3"
+require "validates_timeliness"
 
 module ArtfullyOse
 end

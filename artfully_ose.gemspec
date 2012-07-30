@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency "comma", '3.0.3'
   
   s.add_dependency "s3", '>= 0.3.11'
+  s.add_dependency "validates_timeliness"
   
   s.add_development_dependency "sqlite3"
 end
