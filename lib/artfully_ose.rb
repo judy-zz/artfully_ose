@@ -15,5 +15,9 @@ require "haml"
 require "will_paginate"
 require "will_paginate/array"
 
+require "aws-sdk"
+require "paperclip"
+require "comma"
+
 module ArtfullyOse
 end

@@ -30,5 +30,10 @@ Gem::Specification.new do |s|
   s.add_dependency "will_paginate", '~> 3.0'
   s.add_dependency "bootstrap-will_paginate"
   
+
+  s.add_dependency "aws-sdk"
+  s.add_dependency "paperclip", '>= 2.5.0'
+  s.add_dependency "comma", '3.0.3'
+  
   s.add_development_dependency "sqlite3"
 end
