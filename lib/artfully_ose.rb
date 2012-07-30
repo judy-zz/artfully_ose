@@ -10,5 +10,7 @@ require "delayed_job_active_record"
 require "activerecord-import"
 require "acts-as-taggable-on"
 
+require "haml"
+
 module ArtfullyOse
 end
