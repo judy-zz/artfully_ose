@@ -1,9 +1,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-# Maintain your gem's version:
 require "artfully_ose/version"
 
-# Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "artfully_ose"
   s.version     = ArtfullyOse::VERSION
@@ -17,7 +15,16 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.6"
-  # s.add_dependency "jquery-rails"
-
+  s.add_dependency "devise", "=2.0.4"
+  s.add_dependency "devise_invitable", "=1.0.2"
+  
+  s.add_dependency "activemerchant"
+  s.add_dependency "braintree", "~> 2.16.0"
+  
+  s.add_dependency "delayed_job", "=3.0.2"
+  s.add_dependency "delayed_job_active_record", "=0.3.2"
+  s.add_dependency "activerecord-import", "0.2.9"
+  s.add_dependency "acts-as-taggable-on", "~>2.1.0"
+  
   s.add_development_dependency "sqlite3"
 end
