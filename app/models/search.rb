@@ -26,12 +26,12 @@ class Search < ActiveRecord::Base
     people = people.where("people.lifetime_value >= ?", min_lifetime_value * 100.0) unless min_lifetime_value.blank?
     people = people.where("people.lifetime_value <= ?", max_lifetime_value * 100.0) unless max_lifetime_value.blank?
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
+      column_names << "SUM(items.price + items.nongift_amount) AS total_donations"
       people = people.joins(:orders => :items)
       people = people.where("orders.created_at >= ?", min_donations_date) unless min_donations_date.blank?
       people = people.where("orders.created_at <= ?", max_donations_date + 1.day) unless max_donations_date.blank?
       people = people.where("items.product_type = 'Donation'")
       people = people.group("people.id")
-      people = people.select(column_names + ["SUM(items.price) AS total_donations"])
       if min_donations_amount.blank?
         people = people.having("total_donations >= 1")
       else
@@ -39,6 +39,6 @@ class Search < ActiveRecord::Base
       end
       people = people.having("total_donations <= ?", max_donations_amount * 100.0) unless max_donations_amount.blank?
     end
-    people.uniq
+    people.select(column_names).uniq
   end
 end
