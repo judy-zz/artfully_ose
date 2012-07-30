@@ -39,6 +39,7 @@ Gem::Specification.new do |s|
   s.add_dependency "validates_timeliness"
   s.add_dependency "sunspot_rails", "1.3.3"                            
   s.add_dependency "gravatar_image_tag"
+  s.add_dependency "cancan"
   
   s.add_dependency "uuid"
 end

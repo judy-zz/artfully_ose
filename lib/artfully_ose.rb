@@ -28,6 +28,7 @@ require "uuid"
 require "mysql2"
 require "sunspot_rails"                     
 require "gravatar_image_tag"
+require "cancan"
 
 module ArtfullyOse
 end
