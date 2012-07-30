@@ -1,4 +1,6 @@
 require "artfully_ose/engine"
+require "transitions"
+require "active_record/transitions"
 require "devise"
 require "devise_invitable"
 
@@ -21,6 +23,10 @@ require "comma"
 
 require "s3"
 require "validates_timeliness"
+
+require "uuid"
+require "mysql2"
+
 
 module ArtfullyOse
 end

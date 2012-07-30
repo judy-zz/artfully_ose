@@ -15,6 +15,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails", "~> 3.2.6"
+  s.add_dependency "transitions"
   s.add_dependency "devise", "=2.0.4"
   s.add_dependency "devise_invitable", "=1.0.2"
   
@@ -29,7 +30,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "will_paginate", '~> 3.0'
   s.add_dependency "bootstrap-will_paginate"
-  
 
   s.add_dependency "aws-sdk"
   s.add_dependency "paperclip", '>= 2.5.0'
@@ -38,5 +38,5 @@ Gem::Specification.new do |s|
   s.add_dependency "s3", '>= 0.3.11'
   s.add_dependency "validates_timeliness"
   
-  s.add_development_dependency "sqlite3"
+  s.add_dependency "uuid"
 end
