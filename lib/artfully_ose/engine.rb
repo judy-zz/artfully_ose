@@ -17,5 +17,13 @@ module ArtfullyOse
       app.config.s3.access_key_id        = ENV['S3_ACCESS_KEY_ID']
       app.config.s3.secret_access_key    = ENV['S3_SECRET_ACCESS_KEY']
     end
+    
+    initializer "artfully_ose.google_analytics_config" do |app|      
+      puts "ArtfullyOse: Initializing Google Analytics config"
+      GoogleAnalytcsConfig = Struct.new(:account, :domain)
+      app.config.google_analytics           = GoogleAnalytcsConfig.new
+      app.config.google_analytics.account   = ENV['GA_ACCOUNT']
+      app.config.google_analytics.domain    = ENV['GA_DOMAIN']
+    end
   end
 end
