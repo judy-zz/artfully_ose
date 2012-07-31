@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root :to => 'index#dashboard', :constraints => lambda{|r| r.env["warden"].authenticate?(:scope => :user) }
+
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index
@@ -15,9 +17,6 @@ Rails.application.routes.draw do
     resources :events, :only => :show
     resource :order, :only => [:sync] do      
       post :sync, :on => :collection
-      # collection do
-      #   post :sync
-      # end
     end
     resource :checkout, :only => :create
   end
