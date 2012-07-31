@@ -137,8 +137,8 @@ class Import < ActiveRecord::Base
   end
 
   def s3_service
-    access_key_id     = ENV["ACCESS_KEY_ID"]
-    secret_access_key = ENV["SECRET_ACCESS_KEY"]
+    access_key_id     = Artfully::Application.config.s3.access_key_id
+    secret_access_key = Artfully::Application.config.s3.secret_access_key
 
     S3::Service.new(:access_key_id => access_key_id, :secret_access_key => secret_access_key)
   end

@@ -13,9 +13,9 @@ class Refund
     return_items = options[:and_return] || false
 
     gateway = ActiveMerchant::Billing::BraintreeGateway.new(
-      :merchant_id => Artfully::Application.config.BRAINTREE_MERCHANT_ID,
-      :public_key  => Artfully::Application.config.BRAINTREE_PUBLIC_KEY,
-      :private_key => Artfully::Application.config.BRAINTREE_PRIVATE_KEY
+      :merchant_id => Artfully::Application.config.braintree.merchant_id,
+      :public_key  => Artfully::Application.config.braintree.public_key,
+      :private_key => Artfully::Application.config.braintree.private_key
     )
 
     if refund_amount > 0

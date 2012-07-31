@@ -13,11 +13,11 @@ class Event < ActiveRecord::Base
   has_attached_file :image,
     :storage => :s3,
     :path => ":attachment/:id/:style.:extension",
-    :bucket => ENV["S3_BUCKET"],
+    :bucket => Artfully::Application.config.s3.bucket,
     :s3_protocol => 'https',
     :s3_credentials => {
-      :access_key_id => ENV["ACCESS_KEY_ID"],
-      :secret_access_key => ENV["SECRET_ACCESS_KEY"]
+      :access_key_id => Artfully::Application.config.s3.access_key_id,
+      :secret_access_key => Artfully::Application.config.s3.secret_access_key
     },
     :styles => {
       :thumb => "140x140#"
