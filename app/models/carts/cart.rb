@@ -97,6 +97,7 @@ class Cart < ActiveRecord::Base
   def pay_with(payment, options = {})
     @payment = payment
 
+    #TODO: Move the requires_authorization? check into the payments classes.  Cart shouldn't care
     if payment.requires_authorization?
       pay_with_authorization(payment, options)
     else
