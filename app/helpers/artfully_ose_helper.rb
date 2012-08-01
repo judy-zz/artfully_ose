@@ -1,4 +1,4 @@
-module ApplicationHelper
+module ArtfullyOseHelper
   include LinkHelper
   include ActionView::Helpers::NumberHelper
 
