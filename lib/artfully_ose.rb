@@ -32,5 +32,7 @@ require "dynamic_form"
 require "mail"
 require "gibbon"
 
+require "set_watch_for"
+
 module ArtfullyOse
 end
