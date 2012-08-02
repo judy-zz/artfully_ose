@@ -10,9 +10,6 @@ class OrganizationAbility
     can :manage, Show, :organization_id => organization.id
     can :manage, Chart, :organization_id => organization.id
     can :manage, Ticket, :organization_id => organization.id
-    can :manage, TicketOffer, :organization_id => organization.id
-    can :manage, TicketOffer, :reseller_profile => { :organization_id => organization.id }
-
     can :manage, Person, :organization_id => organization.id
     can :manage, Segment, :organization_id => organization.id
     can :manage, Order, :organization_id => organization.id
