@@ -39,6 +39,10 @@ class Organization < ActiveRecord::Base
   def lifetime_orders
     orders.where('transaction_id is not null')
   end
+  
+  def reseller_profile
+    nil
+  end
 
   def owner
     users.first
