@@ -25,5 +25,10 @@ module ArtfullyOse
       app.config.google_analytics.account   = ENV['GA_ACCOUNT']
       app.config.google_analytics.domain    = ENV['GA_DOMAIN']
     end
+   
+    initializer "artfully_ose.autoload_paths", :before => :set_autoload_paths do |app|
+      puts "ArtfullyOse: Setting up additional autoload paths"
+      app.config.autoload_paths += Dir["#{config.root}/app/models/**/"]
+    end
   end
 end
