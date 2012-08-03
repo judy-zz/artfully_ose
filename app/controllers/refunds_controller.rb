@@ -1,4 +1,4 @@
-class RefundsController < ApplicationController
+class RefundsController < ArtfullyOseController
   def new
     @order = Order.find(params[:order_id])
     @items = params[:items].collect { |item_id| Item.find(item_id) }

@@ -1,4 +1,4 @@
-class ReturnsController < ApplicationController
+class ReturnsController < ArtfullyOseController
   def create
     order = Order.find(params[:order_id])
     items = params[:items].collect { |item_id| Item.find(item_id) }

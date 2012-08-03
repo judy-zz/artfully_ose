@@ -1,4 +1,4 @@
-class StatementsController < ApplicationController
+class StatementsController < ArtfullyOseController
 
   def index
     authorize! :view, Statement

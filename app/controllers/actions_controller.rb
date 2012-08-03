@@ -1,4 +1,4 @@
-class ActionsController < ApplicationController
+class ActionsController < ArtfullyOseController
 
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message

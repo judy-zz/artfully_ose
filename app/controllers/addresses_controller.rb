@@ -1,4 +1,4 @@
-class AddressesController < ApplicationController
+class AddressesController < ArtfullyOseController
   before_filter :find_person
 
   def create

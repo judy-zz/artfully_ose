@@ -1,4 +1,4 @@
-class ExportController < ApplicationController
+class ExportController < ArtfullyOseController
 
   def contacts
     @organization = current_user.current_organization

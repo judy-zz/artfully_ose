@@ -1,4 +1,4 @@
-class SectionsController < ApplicationController
+class SectionsController < ArtfullyOseController
   before_filter :find_chart, :except => [:on_sale, :off_sale]
 
   def new

@@ -1,4 +1,4 @@
-class SegmentsController < ApplicationController
+class SegmentsController < ArtfullyOseController
   def index
     authorize! :view, Segment
     @segments = current_organization.segments

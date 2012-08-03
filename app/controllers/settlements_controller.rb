@@ -1,4 +1,4 @@
-class SettlementsController < ApplicationController
+class SettlementsController < ArtfullyOseController
   def index
     unless current_user.current_organization.id.nil?
       @settlements = current_organization.settlements

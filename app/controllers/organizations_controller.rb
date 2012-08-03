@@ -1,4 +1,4 @@
-class OrganizationsController < ApplicationController
+class OrganizationsController < ArtfullyOseController
   rescue_from CanCan::AccessDenied do |exception|
     flash[:alert] = exception.message
     redirect_to root_path

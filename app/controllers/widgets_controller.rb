@@ -1,7 +1,7 @@
 #
 # This is the widget builder that orgs use to build widget code to deploy on their website.  Used from within the app
 #
-class WidgetsController < ApplicationController
+class WidgetsController < ArtfullyOseController
   def new
   end
   

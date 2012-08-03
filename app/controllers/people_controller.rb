@@ -1,4 +1,4 @@
-class PeopleController < ApplicationController
+class PeopleController < ArtfullyOseController
   respond_to :html, :json
 
   def new

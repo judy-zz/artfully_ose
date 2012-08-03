@@ -1,4 +1,4 @@
-class ContributionsController < ApplicationController
+class ContributionsController < ArtfullyOseController
   def index
     authorize! :manage, Order
 

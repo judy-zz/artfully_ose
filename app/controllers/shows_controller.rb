@@ -1,4 +1,4 @@
-class ShowsController < ApplicationController
+class ShowsController < ArtfullyOseController
   before_filter :find_event, :only => [ :index, :show, :new, :edit ]
   before_filter :check_for_charts, :only => [ :index, :new ]
   before_filter :upcoming_shows, :only => [ :index, :show ]

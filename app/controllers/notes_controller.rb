@@ -1,4 +1,4 @@
- class NotesController < ApplicationController
+ class NotesController < ArtfullyOseController
   before_filter :find_person
 
   def new

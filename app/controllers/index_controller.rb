@@ -1,4 +1,4 @@
-class IndexController < ApplicationController
+class IndexController < ArtfullyOseController
 
   skip_before_filter :authenticate_user!, :only => [:index]
 

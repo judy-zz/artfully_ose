@@ -1,4 +1,4 @@
-class MergesController < ApplicationController
+class MergesController < ArtfullyOseController
   def new
     @loser = Person.find(params[:loser])
     without_winner do

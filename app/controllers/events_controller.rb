@@ -1,4 +1,4 @@
-class EventsController < ApplicationController
+class EventsController < ArtfullyOseController
   respond_to :html, :json
 
   before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages, :resell ]

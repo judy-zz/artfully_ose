@@ -1,4 +1,4 @@
-class OrdersController < ApplicationController
+class OrdersController < ArtfullyOseController
   def index
     authorize! :manage, Order
     if params[:search]

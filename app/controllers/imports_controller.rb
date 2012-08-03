@@ -1,4 +1,4 @@
-class ImportsController < ApplicationController
+class ImportsController < ArtfullyOseController
 
   before_filter { authorize! :create, Import }
 

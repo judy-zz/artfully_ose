@@ -1,4 +1,4 @@
-class CompsController < ApplicationController
+class CompsController < ArtfullyOseController
   def new
     @show = Show.find(params[:show_id])
     @selected_tickets = params[:selected_tickets]

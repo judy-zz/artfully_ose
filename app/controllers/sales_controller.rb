@@ -1,4 +1,4 @@
-class SalesController < ApplicationController
+class SalesController < ArtfullyOseController
   before_filter :find_event, :find_show, :find_people, :find_dummy
   before_filter :create_door_list, :only => ['show', 'new']
 

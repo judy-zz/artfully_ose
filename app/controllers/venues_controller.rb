@@ -1,4 +1,4 @@
-class VenuesController < ApplicationController
+class VenuesController < ArtfullyOseController
   def edit
     @event = Event.find(params[:event_id])
     authorize! :edit, @event

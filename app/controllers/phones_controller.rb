@@ -1,4 +1,4 @@
-class PhonesController < ApplicationController
+class PhonesController < ArtfullyOseController
   before_filter :find_person
 
   def create
