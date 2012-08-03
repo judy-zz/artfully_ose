@@ -21,10 +21,6 @@ module ArtfullyOse
         user.current_organization.can?( :view, organization )
       end
 
-      can :view, Settlement do |settlement|
-        user.is_in_organization?
-      end
-
       can :view, Statement do |statement|
         user.is_in_organization?
       end
