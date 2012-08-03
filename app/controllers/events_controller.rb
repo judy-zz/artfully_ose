@@ -27,7 +27,6 @@ class EventsController < ApplicationController
   def show
     authorize! :view, @event
     @shows = @event.shows.paginate(:page => params[:page], :per_page => 25)
-    @next_show = @event.next_show
 
     @charts = current_organization.charts.template
     @chart = Chart.new
