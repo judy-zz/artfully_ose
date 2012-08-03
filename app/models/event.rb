@@ -9,6 +9,8 @@ class Event < ActiveRecord::Base
   validate :validate_contact_phone
   
   after_create :create_default_chart
+  
+  attr_accessible :name, :producer, :description, :contact_email, :contact_phone
 
   has_attached_file :image,
     :storage => :s3,
