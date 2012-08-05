@@ -12,17 +12,6 @@ Factory.define(:free_item, :parent => :item) do |i|
   i.association :order
 end
 
-Factory.define(:fa_item, :parent => :item) do |i|
-  i.nongift_amount 400
-end
-
-Factory.define(:settled_item, :class => Item) do |i|
-  i.product { Factory(:ticket, :state => :sold) }
-  i.after_build do |i|
-    i.state="settled"
-  end
-end
-
 Factory.define(:comped_item, :class => Item) do |i|
   i.product { Factory(:ticket, :state => :comped) }
   i.after_build do |i|

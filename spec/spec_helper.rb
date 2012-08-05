@@ -1,19 +1,20 @@
 require 'rubygems'
 require 'spork'
+require 'fakeweb'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
 Spork.prefork do
   require 'factory_girl'
   require 'factory_girl_rails'
-  FactoryGirl.definition_file_paths.push('#{File.dirname(__FILE__)}/factories') 
+  FactoryGirl.definition_file_paths.push('#{File.dirname(__FILE__)}/factories')
+  FactoryGirl.find_definitions
 
   ENV["RAILS_ENV"] = 'test'
   require File.expand_path("../dummy/config/environment.rb",  __FILE__)
   require 'rspec/rails'
   require 'cancan/matchers'
   require 'sunspot/rails/spec_helper'
-  FactoryGirl.find_definitions
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.
@@ -35,12 +36,9 @@ Spork.prefork do
       ENV["SECRET_ACCESS_KEY"] = "abcdef12345+abcdef1234512345123451234512"
     end
   end
-  
-  #ActiveSupport::Dependencies.clear
 end
 
 Spork.each_run do
   FactoryGirl.reload
   Dir["#{File.dirname(__FILE__)}/../app/models/*.rb"].each { |model| load model }
-  Dir["#{File.dirname(__FILE__)}/../lib/artfully_ose/app/models/*.rb"].each { |model| load model }
 end
