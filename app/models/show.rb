@@ -2,6 +2,8 @@ class Show < ActiveRecord::Base
   include Ticket::Foundry  
   include Ticket::Reporting
   include ActiveRecord::Transitions
+
+  attr_accessible :datetime
   
   belongs_to :organization
   belongs_to :event

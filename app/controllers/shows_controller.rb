@@ -39,7 +39,9 @@ class ShowsController < ArtfullyOseController
     #clear the sections and replace them with whatever they entered
     @show.chart.sections = []
     @show.chart.update_attributes_from_params(chart_params)
-    @show.update_attributes(params[:show].merge(:organization => current_organization).merge(:chart_id => @show.chart.id))
+    @show.update_attributes(params[:show])
+    @show.organization = current_organization
+    @show.chart_id = @show.chart.id
     @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 
     if @show.go!(publishing_show?)      

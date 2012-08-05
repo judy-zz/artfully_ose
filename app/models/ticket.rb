@@ -1,6 +1,8 @@
 class Ticket < ActiveRecord::Base
 
   include ActiveRecord::Transitions
+  
+  attr_accessible :section_id, :price, :venue
 
   belongs_to :buyer, :class_name => "Person"
   belongs_to :show
