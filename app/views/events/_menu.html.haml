@@ -18,9 +18,4 @@
       - @event.shows.each do |show|
         = active_link_to l(show.datetime_local_to_event, :format => :day_time), event_show_path(@event, show)
 
-  %li.accordian{:class => active?(:share)}
-    = link_to 'Share & Sell', storefront_link_event_path(@event)
-    %ul.accordian-menu
-      = active_link_to 'Storefront', storefront_link_event_path(@event)
-      = active_link_to 'On Your Site', widget_event_path(@event)
-      -# = active_link_to 'Resellers', resell_event_path(@event)
+  = render :partial => 'events/share_and_sell', :locals => { :event => @event }

@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
-  attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes
+  attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes,
+                  :show_special_instructions, :special_instructions_caption
   
   belongs_to :organization
   belongs_to :venue
