@@ -6,6 +6,7 @@
           %th.grouped-checkbox= check_box_tag :all, nil, false, :class => :checkall
           %th Item
           %th Price
+          %th
       %tbody
         - order.all_items.each do |item|
           %tr{:id => "row_item_#{item.id}", :class => item.state}
@@ -19,3 +20,6 @@
               - if item.product_type.eql?("Donation")
                 %span Donation
             %td.price= amount_and_nongift item
+            %td.state
+              -if item.product_type.eql? 'Ticket'
+                = item.state.capitalize

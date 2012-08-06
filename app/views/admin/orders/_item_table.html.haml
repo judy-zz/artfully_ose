@@ -4,6 +4,7 @@
       %tr
         %th Item
         %th Price
+        %th
         %th Settled
     %tbody
       - order.all_items.each do |item|
@@ -17,6 +18,7 @@
             - if item.product_type.eql?("Donation")
               %span Donation
           %td.price= amount_and_nongift item
+          %td.state= item.state.capitalize
           %td.settlement
             -if item.settled? && !item.settlement.nil?
               ="#{l item.settlement.created_at, :format => :short} (#{item.settlement.id})"
