@@ -1,4 +1,6 @@
 class Event < ActiveRecord::Base
+  attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes
+  
   belongs_to :organization
   belongs_to :venue
   accepts_nested_attributes_for :venue
@@ -9,8 +11,6 @@ class Event < ActiveRecord::Base
   validate :validate_contact_phone
   
   after_create :create_default_chart
-  
-  attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image
 
   has_attached_file :image,
     :storage => :s3,  
@@ -50,9 +50,10 @@ class Event < ActiveRecord::Base
   end
   
   def create_default_chart
-    self.charts.build({ :name => self.name, 
-                        :organization => self.organization, 
-                        :is_template => false }).save
+    chart = self.charts.build({ :name => self.name, 
+                        :is_template => false })
+    chart.organization = self.organization
+    chart.save
   end
   
   #
