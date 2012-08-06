@@ -7,15 +7,31 @@
     - in_sub_section :details
     =render :partial=>'menu'
   .span9
-    .row
-      .span4
+    .row-fluid
+      .span8
         = render "shared/error_messages", :target => @event
+
+        .instructions.row-fluid
+          .span2
+            =icon_tag('266-upload@2x', {:alt => "instructions", :align => "left"})
+          .span10
+            %p
+              Spruce up your storefront with an image for your event!  Your image will be displayed within Artful.ly as well as on 
+              =link_to "your storefront", store_event_url(@event)
+              where patrons will purchase tickets.
+            %ul{:style => "list-style-type: circle;"}
+              %li Image size is limited to 1 MB
+              %li Only .jpg, .jpeg, .gif, and .png file formats are supported
+              %li Your image will be cropped square
+              %li You can come back to this page to change the image at any time
         = form_for( @event, :html => { :multipart => true } ) do |form|
           .control-group
-            =form.label :image, "Upload a new image", :class => 'control-label'
+            =form.label :image, "Choose your image:", :class => 'control-label'
             .controls
               =form.file_field :image
+
           .form-actions
             = form.submit "Upload", :class => 'btn'
-      .span8
-        =image_tag(@event.image.url) if @event.image?        
+
+    .image-display
+      =image_tag(@event.image.url) if @event.image?        

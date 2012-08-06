@@ -10,10 +10,10 @@ class Event < ActiveRecord::Base
   
   after_create :create_default_chart
   
-  attr_accessible :name, :producer, :description, :contact_email, :contact_phone
+  attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image
 
   has_attached_file :image,
-    :storage => :s3,
+    :storage => :s3,  
     :path => ":attachment/:id/:style.:extension",
     :bucket => Rails.configuration.s3.bucket,
     :s3_protocol => 'https',
@@ -24,6 +24,8 @@ class Event < ActiveRecord::Base
     :styles => {
       :thumb => "140x140#"
     }
+  validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new {|model| model.image }
+  validates_attachment_content_type :image, :content_type => ["image/jpeg", "image/gif", "image/png"]
 
   validates_presence_of :name, :organization_id
 
