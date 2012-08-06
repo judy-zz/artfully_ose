@@ -449,7 +449,7 @@ describe Ticket do
     end
   
     it "should have a reseller if it's in a reseller order" do
-      reseller_order = Factory :reseller_order
+      reseller_order = FactoryGirl.build(:reseller_order)
       reseller_order << ticket
       reseller_order.save!
   
