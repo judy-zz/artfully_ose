@@ -2,6 +2,7 @@ class Show < ActiveRecord::Base
   include Ticket::Foundry  
   include Ticket::Reporting
   include ActiveRecord::Transitions
+  include Resellable::Show
 
   attr_accessible :datetime
   
@@ -10,7 +11,6 @@ class Show < ActiveRecord::Base
   belongs_to :chart, :autosave => true
 
   has_many :tickets, :dependent => :destroy
-  has_many :ticket_offers, :dependent => :destroy
 
   has_many :settlements
   has_many :items
