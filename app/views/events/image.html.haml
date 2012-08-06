@@ -16,13 +16,11 @@
             =icon_tag('266-upload@2x', {:alt => "instructions", :align => "left"})
           .span10
             %p
-              Spruce up your storefront with an image for your event!  Your image will be displayed within Artful.ly as well as on 
-              =link_to "your storefront", store_event_url(@event)
-              where patrons will purchase tickets.
+              ="Spruce up this event with an image! This image will be displayed on both the Storefront page #{link_to "your storefront", store_event_url(@event)} (where patrons will purchase tickets) and within your Artful.ly management pages.".html_safe
             %ul{:style => "list-style-type: circle;"}
               %li Image size is limited to 1 MB
               %li Only .jpg, .jpeg, .gif, and .png file formats are supported
-              %li Your image will be cropped square
+              %li Your image will be displayed with equal height and width
               %li You can come back to this page to change the image at any time
         = form_for( @event, :html => { :multipart => true } ) do |form|
           .control-group
