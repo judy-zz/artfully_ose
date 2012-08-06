@@ -5,9 +5,9 @@ describe Refund do
   include BraintreeTestHelper
   
   disconnect_sunspot
-  let(:items) { 3.times.collect { Factory(:item)}}
-  let(:free_items) { 3.times.collect { Factory(:free_item)}}
-  let(:order) { Factory(:order, :service_fee => 600, :items => (items + free_items)) }
+  let(:items) { 3.times.collect { FactoryGirl.build(:item)}}
+  let(:free_items) { 3.times.collect { FactoryGirl.build(:free_item)}}
+  let(:order) { FactoryGirl.build(:order, :service_fee => 600, :items => (items + free_items)) }
   subject { Refund.new(order, items) }
 
   before(:each) do
@@ -64,7 +64,7 @@ describe Refund do
   
   describe "refunding an item from an order with just free items" do
     before(:each) do
-      @free_order = Factory(:order, :service_fee => 0, :items => free_items)
+      @free_order = FactoryGirl.build(:order, :service_fee => 0, :items => free_items)
       @free_order.items.each { |i| i.stub(:return!) }
       @free_order.items.each { |i| i.stub(:refund!) } 
     end

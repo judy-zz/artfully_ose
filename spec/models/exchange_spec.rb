@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Exchange do
   disconnect_sunspot
-  let(:order)       { Factory(:order) }
-  let(:items)       { 3.times.collect { Factory(:item) } }
-  let(:event)       { Factory(:event, :organization => order.organization) }
-  let(:tickets)     { 3.times.collect { Factory(:ticket, :state => :on_sale, :organization => order.organization) } }
+  let(:order)       { FactoryGirl.build(:order) }
+  let(:items)       { 3.times.collect { FactoryGirl.build(:item) } }
+  let(:event)       { FactoryGirl.build(:event, :organization => order.organization) }
+  let(:tickets)     { 3.times.collect { FactoryGirl.build(:ticket, :state => :on_sale, :organization => order.organization) } }
 
   subject { Exchange.new(order, items, tickets) }
 
@@ -44,7 +44,7 @@ describe Exchange do
     end
 
     it "should not be valid if any of the tickets belong to another organization" do
-      subject.tickets.first.organization = Factory(:organization)
+      subject.tickets.first.organization = FactoryGirl.build(:organization)
       subject.should_not be_valid
     end
   end

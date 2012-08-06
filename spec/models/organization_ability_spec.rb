@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe OrganizationAbility do
-  let(:organization) { Factory(:organization) }
+  let(:organization) { FactoryGirl.build(:organization) }
 
   it "should check each kit for added abilities" do
     organization.kits << RegularDonationKit.new(:state => 'activated')

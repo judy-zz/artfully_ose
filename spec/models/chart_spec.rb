@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Chart do
-  subject { Factory(:chart) }
+  subject { FactoryGirl.build(:chart) }
 
   it { should respond_to :name }
   it { should respond_to :is_template }
@@ -22,8 +22,8 @@ describe Chart do
 
   describe "upgrading the event" do
     it "should update the event from free to paid if a paid section has been added to a free event" do
-      @chart = Factory(:chart)
-      @chart.event = Factory(:free_event)
+      @chart = FactoryGirl.build(:chart)
+      @chart.event = FactoryGirl.build(:free_event)
       @chart.event.should be_free
       @chart.sections << Section.new({:price => 30, :name => 'one', :capacity => 30})
       @chart.upgrade_event
@@ -31,14 +31,14 @@ describe Chart do
     end
     
     it "should not update the event if the event is nil" do
-      @chart = Factory(:chart)
+      @chart = FactoryGirl.build(:chart)
       @chart.event = nil
       @chart.upgrade_event
     end
     
     it "should not update the event when all free sections" do
-      @chart = Factory(:chart)
-      @chart.event = Factory(:free_event)
+      @chart = FactoryGirl.build(:chart)
+      @chart.event = FactoryGirl.build(:free_event)
       @chart.event.should be_free
       @chart.sections << Section.new({:price => 0, :name => 'one', :capacity => 30})
       @chart.upgrade_event
@@ -48,7 +48,7 @@ describe Chart do
   end
 
   # it "should always order sections by price descending" do
-  #   @chart = Factory(:chart)
+  #   @chart = FactoryGirl.build(:chart)
   #   @chart.name = 'Chartie'
   #   @chart.sections << Section.new({:price => 30, :name => 'one', :capacity => 30})
   #   @chart.sections << Section.new({:price => 40, :name => 'two', :capacity => 30})
@@ -63,7 +63,7 @@ describe Chart do
   # end
   # 
   # it "creates a default based on an event" do
-  #   @event = Factory(:event)
+  #   @event = FactoryGirl.build(:event)
   #   @chart = Chart.default_chart_for(@event)
   # 
   #   @chart.name.should eq Chart.get_default_name(@event.name)
@@ -73,14 +73,14 @@ describe Chart do
   # 
   # describe "#as_json" do
   #   it "includes the sections in the output" do
-  #     subject.sections << Factory(:section)
+  #     subject.sections << FactoryGirl.build(:section)
   #     subject.as_json['sections'].should_not be_empty
   #   end
   # end
   # 
   # describe "#copy!" do
   #   before(:each) do
-  #     subject.sections = 2.times.collect { Factory(:section) }
+  #     subject.sections = 2.times.collect { FactoryGirl.build(:section) }
   #   end
   # 
   #   let(:copy) { subject.copy! }
@@ -100,7 +100,7 @@ describe Chart do
   # 
   # describe "#dup!" do
   #   before(:each) do
-  #     subject.sections = 2.times.collect { Factory(:section) }
+  #     subject.sections = 2.times.collect { FactoryGirl.build(:section) }
   #   end
   # 
   #   let(:copy) { subject.dup! }

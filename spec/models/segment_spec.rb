@@ -1,5 +1,5 @@
 require 'spec_helper'
 
 describe Segment do
-  subject { Factory.build(:segment) }
+  subject { FactoryGirl.build(:segment) }
 end

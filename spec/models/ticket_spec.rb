@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ticket do
   disconnect_sunspot
-  subject { Factory(:ticket) }
+  subject { FactoryGirl.build(:ticket) }
 
   describe "attributes" do
     it { should respond_to :venue }
@@ -13,10 +13,10 @@ describe Ticket do
   end
   
   describe "available tickets" do
-    let(:conditions) { Factory.attributes_for(:ticket, :state => :on_sale) }
+    let(:conditions) { FactoryGirl.attributes_for(:ticket, :state => :on_sale) }
   
     before(:each) do
-      10.times.collect { Factory(:ticket, conditions) }
+      10.times.collect { FactoryGirl.build(:ticket, conditions) }
     end
   
     it "adds a limit of 4 tickets if no limit is specified" do
@@ -36,23 +36,23 @@ describe Ticket do
   
   describe "items and sold_item and special_instructions" do
     it "should return the list of items that it is associated with" do
-      ticket = Factory(:ticket)
+      ticket = FactoryGirl.build(:ticket)
       
       items = [
-        Factory(:item, :product=>ticket),      
-        Factory(:exchanged_item, :product=>ticket),
-        Factory(:refunded_item, :product=>ticket)
+        FactoryGirl.build(:item, :product=>ticket),      
+        FactoryGirl.build(:exchanged_item, :product=>ticket),
+        FactoryGirl.build(:refunded_item, :product=>ticket)
         ]
   
       ticket.items.should eq items
     end
     
     it "should return the item associated with its most recent sale" do
-      ticket = Factory(:ticket)
+      ticket = FactoryGirl.build(:ticket)
       items = [
-        Factory(:item, :product=>ticket),      
-        Factory(:exchanged_item, :product=>ticket),
-        Factory(:refunded_item, :product=>ticket)
+        FactoryGirl.build(:item, :product=>ticket),      
+        FactoryGirl.build(:exchanged_item, :product=>ticket),
+        FactoryGirl.build(:refunded_item, :product=>ticket)
         ]
       
       ticket.sold_item.should eq items[0]
@@ -60,12 +60,12 @@ describe Ticket do
     end
     
     it "should return the settled item" do
-      ticket = Factory(:ticket)
+      ticket = FactoryGirl.build(:ticket)
       
       items = [     
-        Factory(:exchanged_item, :product=>ticket),
-        Factory(:refunded_item, :product=>ticket),
-        Factory(:settled_item, :product=>ticket)    
+        FactoryGirl.build(:exchanged_item, :product=>ticket),
+        FactoryGirl.build(:refunded_item, :product=>ticket),
+        FactoryGirl.build(:settled_item, :product=>ticket)    
         ]
       
       ticket.sold_item.should eq items[2]
@@ -73,20 +73,20 @@ describe Ticket do
     end
     
     it "should return nil if there is no sold item" do
-      ticket = Factory(:ticket)
+      ticket = FactoryGirl.build(:ticket)
       items = [  
-        Factory(:exchanged_item, :product=>ticket),
-        Factory(:refunded_item, :product=>ticket)
+        FactoryGirl.build(:exchanged_item, :product=>ticket),
+        FactoryGirl.build(:refunded_item, :product=>ticket)
         ]
       ticket.sold_item.should be_nil   
     end
     
     it "should return the comp if there is no purchased item" do
-      ticket = Factory(:ticket)
+      ticket = FactoryGirl.build(:ticket)
       items = [
-        Factory(:comped_item, :product=>ticket),      
-        Factory(:exchanged_item, :product=>ticket),
-        Factory(:refunded_item, :product=>ticket)
+        FactoryGirl.build(:comped_item, :product=>ticket),      
+        FactoryGirl.build(:exchanged_item, :product=>ticket),
+        FactoryGirl.build(:refunded_item, :product=>ticket)
         ]
       
       ticket.sold_item.should eq items[0]
@@ -94,11 +94,11 @@ describe Ticket do
     end
     
     it "should return the exchangee item if there is no comp" do
-      ticket = Factory(:ticket)
+      ticket = FactoryGirl.build(:ticket)
       items = [
-        Factory(:exchangee_item, :product=>ticket),      
-        Factory(:exchanged_item, :product=>ticket),
-        Factory(:refunded_item, :product=>ticket)
+        FactoryGirl.build(:exchangee_item, :product=>ticket),      
+        FactoryGirl.build(:exchanged_item, :product=>ticket),
+        FactoryGirl.build(:refunded_item, :product=>ticket)
         ]
       
       ticket.sold_item.should eq items[0]
@@ -107,19 +107,19 @@ describe Ticket do
     
     it "should return the special instructions from the sold item" do
       special_instructions = "I'm not saying I invented the turtleneck."
-      ticket = Factory(:ticket)
-      order = Factory(:order, :special_instructions => special_instructions)
-      settled_item = Factory(:settled_item, :product=>ticket, :order => order)
+      ticket = FactoryGirl.build(:ticket)
+      order = FactoryGirl.build(:order, :special_instructions => special_instructions)
+      settled_item = FactoryGirl.build(:settled_item, :product=>ticket, :order => order)
       items = [
-        Factory(:refunded_item, :product=>ticket),
+        FactoryGirl.build(:refunded_item, :product=>ticket),
         settled_item
         ]      
       ticket.special_instructions.should eq special_instructions
     end
     
     it "should return special_instructions of nil if there is no sold_item" do
-      ticket = Factory(:ticket)
-      refunded_item = Factory(:refunded_item, :product=>ticket)
+      ticket = FactoryGirl.build(:ticket)
+      refunded_item = FactoryGirl.build(:refunded_item, :product=>ticket)
       items = Array.wrap(refunded_item)   
       refunded_item.should_not_receive(:order)
       ticket.special_instructions.should be_nil      
@@ -133,13 +133,13 @@ describe Ticket do
     end
   
     it "is not considered to be expired if the show time is in the future" do
-      subject.show = Factory(:show)
+      subject.show = FactoryGirl.build(:show)
       subject.should_not be_expired
     end
   end
   
   describe "#on_sale?" do
-    subject { Factory(:ticket, :state => "on_sale") }
+    subject { FactoryGirl.build(:ticket, :state => "on_sale") }
     it { should be_on_sale }
     it { should_not be_off_sale }
   end
@@ -160,13 +160,13 @@ describe Ticket do
   end
   
   describe "#off_sale?" do
-    subject { Factory(:ticket, :state => :off_sale) }
+    subject { FactoryGirl.build(:ticket, :state => :off_sale) }
     it { should be_off_sale }
     it { should_not be_on_sale }
   end
   
   describe "#off_sale!" do
-    subject { Factory(:ticket, :state => :on_sale) }
+    subject { FactoryGirl.build(:ticket, :state => :on_sale) }
   
     it { should respond_to :off_sale! }
   
@@ -197,8 +197,8 @@ describe Ticket do
    end
    
    describe "#sell_to" do
-     let (:buyer) { Factory(:person) }
-     subject { Factory(:ticket, :state => :on_sale) }
+     let (:buyer) { FactoryGirl.build(:person) }
+     subject { FactoryGirl.build(:ticket, :state => :on_sale) }
   
      it "posts to restful metrics" do
        RestfulMetrics::Client.should_receive(:add_metric).with(ENV["RESTFUL_METRICS_APP"], "ticket_sold", 1)
@@ -238,8 +238,8 @@ describe Ticket do
    end
    
    describe "#comp_to" do
-     let (:buyer) { Factory(:person) }
-     subject { Factory(:ticket, :state => :on_sale) }
+     let (:buyer) { FactoryGirl.build(:person) }
+     subject { FactoryGirl.build(:ticket, :state => :on_sale) }
    
      it "marks the ticket as comped" do
        subject.comp_to(buyer)
@@ -331,14 +331,14 @@ describe Ticket do
      end
      
      it "should not be destroyable if it has ever been associated with an order" do
-       subject.stub(:items).and_return([Factory(:item)])
+       subject.stub(:items).and_return([FactoryGirl.build(:item)])
        subject.should_not be_destroyable
      end
      
    end
    
    describe "return!" do
-     subject { Factory(:sold_ticket) }
+     subject { FactoryGirl.build(:sold_ticket) }
    
      it "removes the buyer from the item" do
        subject.return!
@@ -358,7 +358,7 @@ describe Ticket do
    end
    
    describe "#put_on_sale" do
-     let(:tickets) { 5.times.collect { Factory(:ticket, :state => :off_sale) } }
+     let(:tickets) { 5.times.collect { FactoryGirl.build(:ticket, :state => :off_sale) } }
    
      it "sends a request to patch the state of all tickets" do
        Ticket.put_on_sale(tickets)
@@ -379,7 +379,7 @@ describe Ticket do
    end
    
   describe "#take_off_sale" do
-    let(:tickets) { 5.times.collect { Factory(:ticket, :state => :on_sale) } }
+    let(:tickets) { 5.times.collect { FactoryGirl.build(:ticket, :state => :on_sale) } }
   
     it "takes tickets off sale" do
       Ticket.take_off_sale(tickets)
@@ -400,9 +400,9 @@ describe Ticket do
   end
   
   describe "create_many" do
-    let(:organization) { Factory(:organization) }
-    let(:show) { Factory(:show, :event => Factory(:event), :organization => organization) }
-    let(:section) { Factory(:section) }
+    let(:organization) { FactoryGirl.build(:organization) }
+    let(:show) { FactoryGirl.build(:show, :event => FactoryGirl.build(:event), :organization => organization) }
+    let(:section) { FactoryGirl.build(:section) }
     
     def check_tix(quantity, hash)
       created_tickets = Ticket.where(hash)

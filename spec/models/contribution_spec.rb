@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Contribution do
   disconnect_sunspot
-  let(:organization){ Factory(:organization_with_timezone) }
-  let(:person) { Factory(:person) }
+  let(:organization){ FactoryGirl.build(:organization_with_timezone) }
+  let(:person) { FactoryGirl.build(:person) }
   let(:attributes) do
     {
       :subtype         => "Donation (Cash)",
@@ -53,7 +53,7 @@ describe Contribution do
   end
 
   describe "build_item" do
-    let(:order) { Factory(:order) }
+    let(:order) { FactoryGirl.build(:order) }
     let(:item) { subject.send(:build_item, order, 100 )}
 
     it "sets the order id for the item to the given order" do

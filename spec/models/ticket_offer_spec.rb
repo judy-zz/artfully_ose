@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe TicketOffer do
 
-  subject { Factory(:ticket_offer) }
+  subject { FactoryGirl.build(:ticket_offer) }
 
   it "should be valid" do
     subject.should be_valid
@@ -103,7 +103,7 @@ describe TicketOffer do
       section = ticket_offer.section
 
       @tickets[0, count].each do |ticket|
-        order.items << Factory(:item, product: ticket, order: nil, reseller_order: order, show: show)
+        order.items << FactoryGirl.build(:item, product: ticket, order: nil, reseller_order: order, show: show)
       end
 
       order.save!

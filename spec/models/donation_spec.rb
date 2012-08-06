@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Donation do
-  subject { Factory(:donation) }
+  subject { FactoryGirl.build(:donation) }
 
   it { should be_valid }
 

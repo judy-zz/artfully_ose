@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe User do
-  subject { Factory(:user) }
+  subject { FactoryGirl.build(:user) }
 
   it "should be valid with a valid email address" do
     subject.email = "example@example.com"
@@ -97,7 +97,7 @@ describe User do
   end
 
   describe "organizations" do
-    let(:organization) { Factory(:organization) }
+    let(:organization) { FactoryGirl.build(:organization) }
 
     it { should respond_to :organizations }
     it { should respond_to :memberships }

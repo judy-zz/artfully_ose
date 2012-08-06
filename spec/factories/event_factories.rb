@@ -1,29 +1,32 @@
-Factory.define :event do |e|
-  e.name "Some Event"
-  e.producer "Some Producer"
-  e.association :organization
-  e.association :venue
-end
-
-Factory.define :paid_event, :parent => :event do |e|
-  e.after_create do |event|
-    event.is_free = false
+FactoryGirl.define do
+  factory :event do
+    name "Some Event"
+    producer "Some Producer"
+    association :organization
+    association :venue
   end
-end
 
-Factory.define :free_event, :parent => :event do |e|
-  e.after_create do |event|
-    event.is_free = true
+  factory :paid_event, :parent => :event do
+    after(:create) do |event|
+      event.is_free = false
+    end
   end
-end
 
-Factory.define :venue do |venue|
-  venue.name            "Venue Theater"
-  venue.address1        { Faker::Address.street_address }
-  venue.address2        { Faker::Address.secondary_address }
-  venue.city            { Faker::Address.city }
-  venue.state           { Faker::Address.us_state }
-  venue.zip             { Faker::Address.zip_code }
-  venue.country         "United States"
-  venue.time_zone       "Mountain Time (US & Canada)"
+  factory :free_event, :parent => :event do
+    after(:create) do |event|
+      event.is_free = true
+    end
+  end
+
+  factory :venue do
+    name            "Venue Theater"
+    address1        { Faker::Address.street_address }
+    address2        { Faker::Address.secondary_address }
+    city            { Faker::Address.city }
+    state           { Faker::Address.us_state }
+    zip             { Faker::Address.zip_code }
+    country         "United States"
+    time_zone       "Mountain Time (US & Canada)"
+  end
+
 end

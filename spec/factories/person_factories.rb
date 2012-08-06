@@ -1,14 +1,16 @@
-Factory.define :person do |p|
-  p.email           { Faker::Internet.email}
-  p.first_name      { Faker::Name.first_name }
-  p.last_name       { Faker::Name.last_name }
-  p.association     :organization
-end
+FactoryGirl.define do
+  factory :person do
+    email           { Faker::Internet.email}
+    first_name      { Faker::Name.first_name }
+    last_name       { Faker::Name.last_name }
+    association     :organization
+  end
 
-Factory.define :person_without_email, :parent => :person do |p|
-  p.email nil
-end
+  factory :person_without_email, :parent => :person do
+    email nil
+  end
 
-Factory.define(:dummy, :parent => :person) do |p|
-  p.dummy true
+  factory :dummy, :parent => :person do
+    dummy true
+  end
 end

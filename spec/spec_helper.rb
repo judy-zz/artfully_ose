@@ -7,11 +7,12 @@ require 'fakeweb'
 Spork.prefork do
   require 'factory_girl'
   require 'factory_girl_rails'
-  FactoryGirl.definition_file_paths.push('#{File.dirname(__FILE__)}/factories')
-  FactoryGirl.find_definitions
-
+  require 'faker'
+  
   ENV["RAILS_ENV"] = 'test'
   require File.expand_path("../dummy/config/environment.rb",  __FILE__)
+  FactoryGirl.definition_file_paths << File.join(File.dirname(__FILE__), 'factories')
+  FactoryGirl.find_definitions
   require 'rspec/rails'
   require 'cancan/matchers'
   require 'sunspot/rails/spec_helper'
@@ -21,6 +22,8 @@ Spork.prefork do
   Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
   RSpec.configure do |config|
+    config.include FactoryGirl::Syntax::Methods
+
     config.mock_with :rspec
 
     config.use_transactional_fixtures = true

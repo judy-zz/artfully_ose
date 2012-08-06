@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Organization do
-  subject { Factory(:organization) }
+  subject { FactoryGirl.build(:organization) }
 
   it { should respond_to :name }
   it { should respond_to :users }
@@ -13,7 +13,7 @@ describe Organization do
 
   describe ".owner" do
     it "should return the first user as the owner of the organization" do
-      user = Factory(:user)
+      user = FactoryGirl.build(:user)
       subject.users << user
       subject.owner.should eq user
     end
@@ -54,13 +54,13 @@ describe Organization do
     end
 
     it "should attempt to activate the kit before saving" do
-      kit = Factory(:ticketing_kit)
+      kit = FactoryGirl.build(:ticketing_kit)
       kit.should_receive(:activate!)
       subject.kits << kit
     end
 
     it "should not attempt to activate the kit if is new before saving" do
-      kit = Factory(:ticketing_kit, :state => :activated)
+      kit = FactoryGirl.build(:ticketing_kit, :state => :activated)
       kit.should_not_receive(:activate!)
       subject.kits << kit
     end
@@ -146,8 +146,8 @@ describe Organization do
   end
 
   describe "#events_with_sales" do
-    let(:org2) { Factory(:organization_with_reselling) }
-    subject { Factory(:organization_with_reselling) }
+    let(:org2) { FactoryGirl.build(:organization_with_reselling) }
+    subject { FactoryGirl.build(:organization_with_reselling) }
 
     before do
       # An event produced and sold by this organization.
@@ -170,24 +170,24 @@ describe Organization do
     def create_event_with_a_sale(producer, reseller = nil)
       FakeWeb.register_uri :post, "http://localhost:8982/solr/update?wt=ruby", :body => ""
 
-      person = Factory(:person)
+      person = FactoryGirl.build(:person)
 
       order =
         if reseller
-          Factory(:reseller_order, :organization => reseller, :person => person)
+          FactoryGirl.build(:reseller_order, :organization => reseller, :person => person)
         else
-          Factory(:order, :organization => producer, :person => person)
+          FactoryGirl.build(:order, :organization => producer, :person => person)
         end
 
-      event = Factory(:event, :organization => producer)
-      show = Factory(:show, :event => event, :organization => producer)
-      ticket = Factory(:ticket, :show => show, :organization => producer, :state => :sold)
+      event = FactoryGirl.build(:event, :organization => producer)
+      show = FactoryGirl.build(:show, :event => event, :organization => producer)
+      ticket = FactoryGirl.build(:ticket, :show => show, :organization => producer, :state => :sold)
 
       item =
         if reseller
-          Factory(:item, :product => ticket, :order => nil, :reseller_order => order, :show => show)
+          FactoryGirl.build(:item, :product => ticket, :order => nil, :reseller_order => order, :show => show)
         else
-          Factory(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
+          FactoryGirl.build(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
         end
 
       order.items << item

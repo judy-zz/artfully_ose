@@ -1,11 +1,16 @@
-Factory.define :section do |s|
-  s.name "General"
-  s.capacity 5
-  s.price 1000
+FactoryGirl.define do
+FactoryGirl.define do
+  factory :section do
+    name "General"
+    capacity 5
+    price 1000
+  end
+
+  factory :free_section, :class => Section do
+    name 'Balcony'
+    capacity 5
+    price 0
+  end
 end
 
-Factory.define :free_section, :class => Section do |section|
-  section.name 'Balcony'
-  section.capacity 5
-  section.price 0
 end

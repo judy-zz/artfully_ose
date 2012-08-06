@@ -10,13 +10,13 @@ describe Kit do
     end
 
     it "does not create a new instance if the array has one of that type" do
-      kits = Array.wrap(Factory(:ticketing_kit))
+      kits = Array.wrap(FactoryGirl.build(:ticketing_kit))
       padded = Kit.pad_with_new_kits(kits)
       padded.select{ |kit| kit.type == "TicketingKit" }.should have(1).kit
     end
 
     it "does not create a new instance if the array has a kit listed as an alternative" do
-      kit = Factory(:regular_donation_kit)
+      kit = FactoryGirl.build(:regular_donation_kit)
       padded = Kit.pad_with_new_kits(Array.wrap(kit))
       padded.select{ |k| kit.alternatives.include? k.class }.should be_empty
     end

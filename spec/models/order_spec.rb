@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Order do
   disconnect_sunspot
-  subject { Factory(:order) }
+  subject { FactoryGirl.build(:order) }
 
   describe "payment" do
     it "returns a new Payment based on the transaction ID" do
@@ -13,20 +13,20 @@ describe Order do
   
   describe "total" do
     it "should report the prices and non-gift amounts to all items" do
-      order = Factory(:order)
-      order << Factory(:sponsored_donation)
+      order = FactoryGirl.build(:order)
+      order << FactoryGirl.build(:sponsored_donation)
       order.items.first.nongift_amount = 400
       order.total.should eq 1400
     end
   end
 
   describe "#ticket_summary" do
-    let(:organization)  { Factory(:organization) }
-    let(:show0)         { Factory(:show, :organization => organization) }
-    let(:show1)         { Factory(:show, :organization => organization) }
-    let(:tickets0) { 3.times.collect { Factory(:ticket, :show => show0) } }
-    let(:tickets1) { 2.times.collect { Factory(:ticket, :show => show1) } }
-    let(:donations) { 2.times.collect { Factory(:donation, :organization => organization) } }
+    let(:organization)  { FactoryGirl.build(:organization) }
+    let(:show0)         { FactoryGirl.build(:show, :organization => organization) }
+    let(:show1)         { FactoryGirl.build(:show, :organization => organization) }
+    let(:tickets0) { 3.times.collect { FactoryGirl.build(:ticket, :show => show0) } }
+    let(:tickets1) { 2.times.collect { FactoryGirl.build(:ticket, :show => show1) } }
+    let(:donations) { 2.times.collect { FactoryGirl.build(:donation, :organization => organization) } }
 
     subject do
       Order.new.tap do |order|
@@ -59,7 +59,7 @@ describe Order do
     end
   
     it "generates a valid donation action for each donation" do
-      donations = 2.times.collect { Factory(:donation) }
+      donations = 2.times.collect { FactoryGirl.build(:donation) }
       subject << donations
       actions = subject.send(:create_donation_actions)
       actions.should have(2).donation_actions
@@ -71,9 +71,9 @@ describe Order do
   end
   
   describe "generating orders" do
-    let(:organization) { Factory(:organization) }
-    let(:tickets) { 3.times.collect { Factory(:ticket) } }
-    let(:donations) { 2.times.collect { Factory(:donation, :organization => organization) } }
+    let(:organization) { FactoryGirl.build(:organization) }
+    let(:tickets) { 3.times.collect { FactoryGirl.build(:ticket) } }
+    let(:donations) { 2.times.collect { FactoryGirl.build(:donation, :organization => organization) } }
   
     subject do
       Order.new.tap do |order|

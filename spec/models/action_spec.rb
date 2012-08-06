@@ -3,10 +3,10 @@ require 'spec_helper'
 describe Action do
   disconnect_sunspot
   
-  subject { Factory(:get_action) }
-  let(:organization) { Factory(:organization)}
-  let(:user) { Factory(:user) }
-  let(:person) { Factory(:person) }
+  subject { FactoryGirl.build(:get_action) }
+  let(:organization) { FactoryGirl.build(:organization)}
+  let(:user) { FactoryGirl.build(:user) }
+  let(:person) { FactoryGirl.build(:person) }
 
   before(:all) do
     user.organizations << organization

@@ -6,7 +6,7 @@ describe Import do
     before do
       @headers = ["First Name", "Last Name", "Email"]
       @rows = [%w(John Doe john@does.com), %w(Jane Wane wane@jane.com), %w(Foo Bar foo@bar.com)]
-      @import = Factory.create(:import)
+      @import = FactoryGirl.create(:import)
       @import.stub(:headers) { @headers }
       @import.stub(:rows) { @rows }
       FakeWeb.register_uri(:get, "http://localhost/athena/people.json?_limit=500&_start=0&importId=#{@import.id}", :body => "[]")
@@ -29,7 +29,7 @@ describe Import do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
 
       @csv_filename = Rails.root.join("spec", "support", "patron-import.csv")
-      @import = Factory.create(:import, s3_key: @csv_filename)
+      @import = FactoryGirl.create(:import, s3_key: @csv_filename)
       @import.cache_data
       @import.import
     end

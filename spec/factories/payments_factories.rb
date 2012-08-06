@@ -1,3 +1,5 @@
-Factory.define :credit_card_payment do |p|
-  p.amount 100
+FactoryGirl.define do
+  factory :credit_card_payment do
+    amount 100
+  end
 end

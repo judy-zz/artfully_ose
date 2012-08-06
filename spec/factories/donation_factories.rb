@@ -1,12 +1,14 @@
-Factory.define :donation do |d|
-  d.amount 1000
-  d.association :organization
+FactoryGirl.define do
+factory :donation do
+  amount 1000
+  association :organization
 end
 
-Factory.define :sponsored_donation, :parent => :donation do |d|
-  d.after_create do |donation|
+factory :sponsored_donation, :parent => :donation do
+  after(:create) do |donation|
     donation.organization.fiscally_sponsored_project = FiscallySponsoredProject.new
     donation.organization.fiscally_sponsored_project.fs_project_id = 1
     donation.organization.save
   end
+end
 end

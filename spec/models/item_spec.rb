@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Item do
   disconnect_sunspot
-  subject { Factory(:item) }
+  subject { FactoryGirl.build(:item) }
 
   it "is not valid with an invalid product type" do
     subject.product_type = "SomethingElse"
@@ -29,7 +29,7 @@ describe Item do
   end
   
   describe ".for" do
-    let(:product) { Factory(:ticket) }
+    let(:product) { FactoryGirl.build(:ticket) }
     subject { Item.for(product, lambda { |item| item.realized_price * 0.035 }) }
   
     it { should be_an Item }
@@ -58,7 +58,7 @@ describe Item do
   end
   
   describe "#product=" do
-    let(:product) { Factory(:ticket) }
+    let(:product) { FactoryGirl.build(:ticket) }
     before(:each) do 
       subject.per_item_processing_charge = lambda { |item| item.realized_price * 0.035 }
       subject.product = product
@@ -73,7 +73,7 @@ describe Item do
     end
   
     context "a donation" do
-      let(:donation) { Factory(:donation) }
+      let(:donation) { FactoryGirl.build(:donation) }
       before(:each) { subject.product = donation }
   
       it "sets the price to the price of the donation" do
@@ -92,7 +92,7 @@ describe Item do
   end
   
   describe "a ticket" do
-    let(:ticket) { Factory(:ticket) }
+    let(:ticket) { FactoryGirl.build(:ticket) }
     subject { Item.new }
     before(:each) do
       subject.per_item_processing_charge = lambda { |item| item.realized_price * 0.035 }
@@ -123,12 +123,12 @@ describe Item do
   end
   
   describe "#ticket?" do
-    subject { Factory(:item, :product => Factory(:sold_ticket)) }
+    subject { FactoryGirl.build(:item, :product => FactoryGirl.build(:sold_ticket)) }
     it { should be_a_ticket }
   end
   
   describe "#donation?" do
-    subject { Factory(:item, :product => Factory(:donation)) }
+    subject { FactoryGirl.build(:item, :product => FactoryGirl.build(:donation)) }
     it { should be_a_donation }
   end
   

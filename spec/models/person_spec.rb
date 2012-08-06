@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Person do
   disconnect_sunspot
-  subject { Factory(:person) }
+  subject { FactoryGirl.build(:person) }
 
   it "should accept a note" do
     subject.notes.length.should eq 0
@@ -48,7 +48,7 @@ describe Person do
   end
   
   describe "#find_by_customer" do
-    let(:organization) { Factory(:organization) }
+    let(:organization) { FactoryGirl.build(:organization) }
     it "should find by person_id if one is present" do
       customer = AthenaCustomer.new({
         :person_id => subject.id,
@@ -94,13 +94,13 @@ describe Person do
   
   describe "calculating lifetime value" do
     it "should report a lifetime value of zero for a new record" do
-      Factory(:person).lifetime_value.should eq 0
+      FactoryGirl.build(:person).lifetime_value.should eq 0
     end
     
     it "should calculate the lifetime value" do
-      person = Factory(:person)
-      order = Factory(:order, :person => person)
-      items = 3.times.collect { Factory(:item, :order => order) }
+      person = FactoryGirl.build(:person)
+      order = FactoryGirl.build(:order, :person => person)
+      items = 3.times.collect { FactoryGirl.build(:item, :order => order) }
       
       person.lifetime_value.should eq 0
       person.calculate_lifetime_value.should eq 15000
@@ -111,8 +111,8 @@ describe Person do
   describe "merging" do
     describe "different orgs" do   
       before(:each) do
-        @winner = Factory(:person, :organization => Factory(:organization))
-        @loser = Factory(:person, :organization => Factory(:organization))
+        @winner = FactoryGirl.build(:person, :organization => FactoryGirl.build(:organization))
+        @loser = FactoryGirl.build(:person, :organization => FactoryGirl.build(:organization))
       end
        
       it "should throw an exception if the two person records are in different orgs" do
@@ -122,26 +122,26 @@ describe Person do
     
     describe "a happier path" do
       before(:each) do
-        @organization = Factory(:organization)
-        @winner = Factory(:person, :organization => @organization)
-        @winner.actions << Factory(:get_action, :person => @winner)
-        @winner.orders  << Factory(:order, :person => @winner)
-        @winner.tickets << Factory(:ticket, :buyer => @winner)
+        @organization = FactoryGirl.build(:organization)
+        @winner = FactoryGirl.build(:person, :organization => @organization)
+        @winner.actions << FactoryGirl.build(:get_action, :person => @winner)
+        @winner.orders  << FactoryGirl.build(:order, :person => @winner)
+        @winner.tickets << FactoryGirl.build(:ticket, :buyer => @winner)
         @winner.notes.build(:text => 'winner')
         @winner.phones.build({:kind => 'Work', :number=>'1234567890'})
-        @winning_address = Factory(:address, :person => @winner)
+        @winning_address = FactoryGirl.build(:address, :person => @winner)
         @winner.address = @winning_address
         @winner.tag_list = 'east, west'
         @winner.lifetime_value = 2000
         @winner.save
         
-        @loser = Factory(:person, :organization => @organization)
-        @loser.actions << Factory(:get_action, :person => @loser)
-        @loser.orders  << Factory(:order, :person => @loser)
-        @loser.tickets << Factory(:ticket, :buyer => @loser)
+        @loser = FactoryGirl.build(:person, :organization => @organization)
+        @loser.actions << FactoryGirl.build(:get_action, :person => @loser)
+        @loser.orders  << FactoryGirl.build(:order, :person => @loser)
+        @loser.tickets << FactoryGirl.build(:ticket, :buyer => @loser)
         @loser.notes.build(:text => 'loser')
         @loser.phones.build({:kind => 'Cell', :number=>'3333333333'})
-        @losing_address = Factory(:address, :person => @loser)
+        @losing_address = FactoryGirl.build(:address, :person => @loser)
         @loser.address = @losing_address
         @loser.tag_list = 'west, north, south'
         @loser.lifetime_value = 1000
@@ -297,7 +297,7 @@ describe Person do
   end
   
   describe "#find_by_email_and_organization" do
-    let(:organization) { Factory(:organization) }
+    let(:organization) { FactoryGirl.build(:organization) }
   
     before(:each) do
       Person.stub(:find).and_return
@@ -319,7 +319,7 @@ describe Person do
     end
     
     it "should return nil if the email address is nil" do
-      p = Factory(:person_without_email, :organization => organization)
+      p = FactoryGirl.build(:person_without_email, :organization => organization)
       Person.find_by_email_and_organization(nil, organization).should be_nil
     end
   end
@@ -332,13 +332,13 @@ describe Person do
   describe "uniqueness" do
     subject { Factory.build(:person) }
     it "should not be valid if another person record exists with that email for the organization" do
-      Factory(:person, :email => subject.email, :organization => subject.organization)
+      FactoryGirl.build(:person, :email => subject.email, :organization => subject.organization)
       subject.should_not be_valid
     end
   end
   
   describe "#dummy_for" do
-    let(:organization) { Factory(:organization) }
+    let(:organization) { FactoryGirl.build(:organization) }
     it "fetches the dummy record for the organization" do
       person = Person.dummy_for(organization)
       Person.dummy_for(organization).should eq person

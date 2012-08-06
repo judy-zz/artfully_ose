@@ -1,9 +1,12 @@
-Factory.define(:address) do |a|
-  a.address1        { Faker::Address.street_address }
-  a.address2        { Faker::Address.secondary_address }
-  a.city            { Faker::Address.city }
-  a.state           { Faker::Address.us_state }
-  a.zip             { Faker::Address.zip_code }
-  a.country         "United States"
-  a.person_id       0
+FactoryGirl.define do
+factory :address do
+  address1        { Faker::Address.street_address }
+  address2        { Faker::Address.secondary_address }
+  city            { Faker::Address.city }
+  state           { Faker::Address.us_state }
+  zip             { Faker::Address.zip_code }
+  country         "United States"
+  person_id       0
+end
+
 end

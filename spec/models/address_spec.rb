@@ -6,21 +6,21 @@ describe Address do
   let(:keys) { [ :address1, :address2, :city, :state, :zip, :country ] }
   let(:aaaa) { kv = Hash.new; for k in keys do kv[k] = 'a' end; kv }
   let(:bbbb) { kv = Hash.new; for k in keys do kv[k] = 'b' end; kv }
-  subject { Factory(:address, aaaa) }
-  let(:addra) { Factory(:address, aaaa) }
-  let(:addrb) { Factory(:address, bbbb) }
+  subject { FactoryGirl.build(:address, aaaa) }
+  let(:addra) { FactoryGirl.build(:address, aaaa) }
+  let(:addrb) { FactoryGirl.build(:address, bbbb) }
 
   describe "find_or_create" do
     it "should create a new address is none is found for a given person" do
-      person = Factory(:person)
+      person = FactoryGirl.build(:person)
       address = Address.find_or_create(person.id)
       address.should_not be_nil
       address.person.should eq person
     end
     
     it "should return the existing address if it exists" do
-      person = Factory(:person)
-      address = Factory(:address, :person_id => person.id)     
+      person = FactoryGirl.build(:person)
+      address = FactoryGirl.build(:address, :person_id => person.id)     
       Address.should_not_receive(:create)
       existing_address = Address.find_or_create(person.id)
       existing_address.should eq address

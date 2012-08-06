@@ -1,41 +1,40 @@
-Factory.define(:item) do |i|
-  i.product { Factory.create(:sold_ticket) }
-  
-  #price is going to be assigned when product is called.  Setting it here will not work
-  
-  i.association :order
-  i.reseller_net 100
-end
-
-Factory.define(:free_item, :parent => :item) do |i|
-  i.product { Factory.create(:free_ticket) }
-  i.association :order
-end
-
-Factory.define(:comped_item, :class => Item) do |i|
-  i.product { Factory(:ticket, :state => :comped) }
-  i.after_build do |i|
-    i.state="comped"
+FactoryGirl.define do
+  factory :item do
+    product { FactoryGirl.create(:sold_ticket) }
+    association :order
+    reseller_net 100
   end
-end
 
-Factory.define(:exchanged_item, :class => Item) do |i|
-  i.product { Factory(:ticket, :state => :on_sale) }
-  i.after_build do |i|
-    i.state="exchanged"
+  factory :free_item, :parent => :item do
+    product { FactoryGirl.create(:free_ticket) }
+    association :order
   end
-end
 
-Factory.define(:exchangee_item, :class => Item) do |i|
-  i.product { Factory(:ticket, :state => :sold) }
-  i.after_build do |i|
-    i.state="exchangee"
+  factory :comped_item, :class => Item do
+    product { FactoryGirl.create(:ticket, :state => :comped) }
+    after(:build) do |i|
+      i.state="comped"
+    end
   end
-end
 
-Factory.define(:refunded_item, :class => Item) do |i|
-  i.product { Factory(:ticket, :state => :on_sale) }
-  i.after_build do |i|
-    i.state="refunded"
+  factory :exchanged_item, :class => Item do
+    product { FactoryGirl.create(:ticket, :state => :on_sale) }
+    after(:build) do |i|
+      i.state="exchanged"
+    end
+  end
+
+  factory :exchangee_item, :class => Item do
+    product { FactoryGirl.create(:ticket, :state => :sold) }
+    after(:build) do |i|
+      i.state="exchangee"
+    end
+  end
+
+  factory :refunded_item, :class => Item do
+    product { FactoryGirl.create(:ticket, :state => :on_sale) }
+    after(:build) do |i|
+      i.state="refunded"
+    end
   end
 end

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Return do
   disconnect_sunspot
-  let(:order) { Factory(:order) }
-  let(:items) { 3.times.collect { Factory(:item) } }
+  let(:order) { FactoryGirl.build(:order) }
+  let(:items) { 3.times.collect { FactoryGirl.build(:item) } }
   subject { Return.new(order, items) }
 
   describe "#submit" do

@@ -1,6 +1,9 @@
-Factory.define :import do |f|
-  f.user { Factory(:user_in_organization) }
-  f.s3_bucket { "example-bucket" }
-  f.s3_key { "example-key" }
-  f.s3_etag { Digest::MD5.hexdigest("value") }
+FactoryGirl.define do
+  factory :import do
+    user { Factory(:user_in_organization) }
+    s3_bucket { "example-bucket" }
+    s3_key { "example-key" }
+    s3_etag { Digest::MD5.hexdigest("value") }
+  end
+
 end

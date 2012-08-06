@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe Statement do
   disconnect_sunspot  
-  let(:organization)    { Factory(:organization) }
-  let(:event)           { Factory(:event) }
-  let(:paid_chart)      { Factory(:assigned_chart, :event => event) }
-  let(:free_chart)      { Factory(:chart_with_free_sections, :event => event) }
-  let(:paid_show)       { Factory(:show_with_tickets, :organization => Factory(:organization), :chart => paid_chart, :event => event) }
-  let(:free_show)       { Factory(:show_with_tickets, :organization => Factory(:organization), :chart => free_chart, :event => event) }
-  let(:payment)         { Factory.build(:payment) }
-  let(:cart)            { Factory(:cart_with_only_tickets, :tickets => show.tickets[6..8]) }
+  let(:organization)    { FactoryGirl.build(:organization) }
+  let(:event)           { FactoryGirl.build(:event) }
+  let(:paid_chart)      { FactoryGirl.build(:assigned_chart, :event => event) }
+  let(:free_chart)      { FactoryGirl.build(:chart_with_free_sections, :event => event) }
+  let(:paid_show)       { FactoryGirl.build(:show_with_tickets, :organization => FactoryGirl.build(:organization), :chart => paid_chart, :event => event) }
+  let(:free_show)       { FactoryGirl.build(:show_with_tickets, :organization => FactoryGirl.build(:organization), :chart => free_chart, :event => event) }
+  let(:payment)         { FactoryGirl.build(:payment) }
+  let(:cart)            { FactoryGirl.build(:cart_with_only_tickets, :tickets => show.tickets[6..8]) }
   
   describe "nil show" do
     it "should return an empty statement if the show is nil" do
@@ -21,12 +21,12 @@ describe Statement do
   
   describe "free show" do
     let(:tickets)         { free_show.tickets[6..8] }
-    let(:cart)            { Factory(:cart_with_only_tickets, :tickets => tickets) }
+    let(:cart)            { FactoryGirl.build(:cart_with_only_tickets, :tickets => tickets) }
     let(:checkout)        { Checkout.new(cart, payment) }  
     let(:statement)       { Statement.for_show(free_show, organization) }
     
     before(:each) do
-      Person.stub(:find_by_email_and_organization).and_return(Factory(:person))
+      Person.stub(:find_by_email_and_organization).and_return(FactoryGirl.build(:person))
       checkout.finish
     end
     
@@ -61,7 +61,7 @@ describe Statement do
   
   describe "no tickets sold" do
     let(:tickets)         { paid_show.tickets[6..8] }
-    let(:cart)            { Factory(:cart_with_only_tickets, :tickets => tickets) }
+    let(:cart)            { FactoryGirl.build(:cart_with_only_tickets, :tickets => tickets) }
     let(:checkout)        { Checkout.new(cart, payment) }  
     let(:statement)       { Statement.for_show(paid_show, organization) }
     
@@ -97,12 +97,12 @@ describe Statement do
   describe "happy path" do
       
     let(:tickets)         { paid_show.tickets[6..8] }
-    let(:cart)            { Factory(:cart_with_only_tickets, :tickets => tickets) }
+    let(:cart)            { FactoryGirl.build(:cart_with_only_tickets, :tickets => tickets) }
     let(:checkout)        { Checkout.new(cart, payment) }  
     let(:statement)       { Statement.for_show(paid_show, organization) }
       
     before(:each) do
-      Person.stub(:find_by_email_and_organization).and_return(Factory(:person))
+      Person.stub(:find_by_email_and_organization).and_return(FactoryGirl.build(:person))
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => "{\"success\":true,\"transaction_id\":\"j59qrb\"}")
       FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => "{\"success\":true }")
       

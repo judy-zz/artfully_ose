@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Sale do
   disconnect_sunspot
-  let(:show){Factory(:show)}
-  let(:chart){Factory(:chart_with_sections)}
+  let(:show){FactoryGirl.build(:show)}
+  let(:chart){FactoryGirl.build(:chart_with_sections)}
   let(:quantities) { {chart.sections.first.id.to_s => "2"} }
 
   subject { Sale.new(show, chart.sections, quantities) }
@@ -20,7 +20,7 @@ describe Sale do
   describe "load tickets" do
     before(:each) do
       tix = Array.new(2)
-      tix.collect! { Factory(:ticket, :section => chart.sections.first)}
+      tix.collect! { FactoryGirl.build(:ticket, :section => chart.sections.first)}
       Ticket.stub(:available).and_return(tix)
     end
     
@@ -33,20 +33,20 @@ describe Sale do
   describe "#sell" do
     let(:order) { mock(:order, :items => []) }
     
-    let (:compee) { Factory(:person) }
+    let (:compee) { FactoryGirl.build(:person) }
   
     let(:payment) { mock(:cash_payment, 
                          :customer => Factory.build(:customer_with_id), 
                          :amount= => nil, 
                          :requires_settlement? => false) }
   
-    let(:comp_payment) { CompPayment.new(Factory(:user), Factory(:person)) }
+    let(:comp_payment) { CompPayment.new(FactoryGirl.build(:user), FactoryGirl.build(:person)) }
                          
     let(:checkout) { mock(:checkout, :order => order)}
     
     before(:each) do
       tix = Array.new(2)
-      tix.collect! { Factory(:ticket, :section => chart.sections.first)}
+      tix.collect! { FactoryGirl.build(:ticket, :section => chart.sections.first)}
       Ticket.stub(:available).and_return(tix)
     end
        
@@ -79,7 +79,7 @@ describe Sale do
     it "creates a new BoxOffice::Checkout and a new BoxOfficeCart" do
       BoxOffice::Checkout.should_receive(:new).and_return(checkout)
       checkout.should_receive(:finish).and_return(true)
-      checkout.should_receive(:person).and_return(Factory(:person))
+      checkout.should_receive(:person).and_return(FactoryGirl.build(:person))
       subject.cart.tickets.size.should eq 2
       subject.sell(payment)
       subject.cart.tickets.size.should eq 2

@@ -1,15 +1,17 @@
-Factory.define :user do |u|
-  u.email { Faker::Internet.email }
-  u.password 'password'
-  
-  u.after_build do |user|
-    user.stub(:push_to_mailchimp).and_return(false)
+FactoryGirl.define do
+  factory :user do
+    email { Faker::Internet.email }
+    password 'password'
+    
+    after(:build) do |user|
+      user.stub(:push_to_mailchimp).and_return(false)
+    end
+    
   end
-  
-end
 
-Factory.define(:user_in_organization, :parent => :user) do |u|
-  u.after_create do |user|
-    user.organizations << Factory(:organization)
+  factory :user_in_organization, :parent => :user do
+    after(:create) do |user|
+      user.organizations << Factory(:organization)
+    end
   end
 end

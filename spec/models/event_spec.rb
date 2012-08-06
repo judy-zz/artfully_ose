@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Event do
-  subject { Factory(:event) }
+  subject { FactoryGirl.build(:event) }
 
   it { should be_valid }
 
@@ -31,7 +31,7 @@ describe Event do
   
   describe "#upcoming_shows" do
     it "should default to a limit of 5 performances" do
-      subject.shows = 10.times.collect { Factory(:show, :datetime => (DateTime.now + 1.day)) }
+      subject.shows = 10.times.collect { FactoryGirl.build(:show, :datetime => (DateTime.now + 1.day)) }
       subject.upcoming_shows.should have(5).shows
     end
   
@@ -44,10 +44,10 @@ describe Event do
   end
   
   describe "#as_widget_json" do
-    subject { Factory(:event) }
+    subject { FactoryGirl.build(:event) }
   
     it "should not include performances that are on sale" do
-      subject.shows = 2.times.collect { Factory(:show) }
+      subject.shows = 2.times.collect { FactoryGirl.build(:show) }
       subject.shows.first.build!
       subject.shows.first.publish!
       subject.stub(:charts).and_return([])

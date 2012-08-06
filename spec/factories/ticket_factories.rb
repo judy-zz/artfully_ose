@@ -1,27 +1,29 @@
-Factory.define :ticket do |t|
-  t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
-  t.price 5000
-  t.association :show
-  t.association :organization
-  t.association :section
-end
-
-Factory.define :free_ticket, :parent => :ticket do |t|
-  t.venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
-  t.price 0
-  t.association :show
-  t.association :organization
-end
-
-Factory.define :comped_ticket, :parent => :ticket do |t|
-  t.after_create do |ticket|
-    ticket.comp_to(Factory(:person))
+FactoryGirl.define do
+  factory :ticket do
+    venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
+    price 5000
+    association :show
+    association :organization
+    association :section
   end
-end
 
-Factory.define :sold_ticket, :parent => :ticket do |t|
-  t.state :sold
-  t.after_create do |ticket|
-    ticket.sell_to(Factory(:person))
+  factory :free_ticket, :parent => :ticket do
+    venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
+    price 0
+    association :show
+    association :organization
+  end
+
+  factory :comped_ticket, :parent => :ticket do
+    after(:create) do |ticket|
+      ticket.comp_to :person
+    end
+  end
+
+  factory :sold_ticket, :parent => :ticket do
+    state :sold
+    after(:create) do |ticket|
+      ticket.sell_to :person
+    end
   end
 end

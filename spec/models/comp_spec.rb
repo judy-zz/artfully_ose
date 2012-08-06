@@ -2,11 +2,11 @@ require 'spec_helper'
 
 describe Comp do
   disconnect_sunspot
-  let(:organization) { Factory(:organization) }
-  let(:show) { Factory(:show) }
-  let(:benefactor) { Factory(:user_in_organization) }
-  let(:tickets) { 10.times.collect { Factory(:ticket, :show => show) } }
-  let(:recipient) { Factory(:person, :organization => benefactor.current_organization) }
+  let(:organization) { FactoryGirl.build(:organization) }
+  let(:show) { FactoryGirl.build(:show) }
+  let(:benefactor) { FactoryGirl.build(:user_in_organization) }
+  let(:tickets) { 10.times.collect { FactoryGirl.build(:ticket, :show => show) } }
+  let(:recipient) { FactoryGirl.build(:person, :organization => benefactor.current_organization) }
 
   describe "should not be valid if" do
     it "it doesnt have a recipient" do
@@ -20,7 +20,7 @@ describe Comp do
     end
     
     it "the benefactor and recipient are from different organizations" do
-      new_recipient = Factory(:person)
+      new_recipient = FactoryGirl.build(:person)
       selected_tickets = [] 
       (0..2).each do |i|
         selected_tickets << tickets[i].id

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Checkout do
   disconnect_sunspot
-  let(:payment) { Factory.build(:credit_card_payment, :customer => Factory.build(:person)) }
-  let(:order) { Factory(:cart) }
+  let(:payment) { FactoryGirl.build(:credit_card_payment, :customer => Factory.build(:person)) }
+  let(:order) { FactoryGirl.build(:cart) }
   
   subject { Checkout.new(order, payment) }
   
@@ -15,13 +15,13 @@ describe Checkout do
     
     #This happens if the tickets expired while they're entering payment information
     it "should not be valid without tickets" do
-      subject = Checkout.new(Factory(:cart), payment)
+      subject = Checkout.new(FactoryGirl.build(:cart), payment)
       subject.should_not be_valid
       subject.error.should eq "Your tickets have expired.  Please select your tickets again."
     end
     
     it "should not be valid without a payment if the order total > 0 (Not Free)" do
-      subject = Checkout.new(Factory(:cart_with_items), payment)
+      subject = Checkout.new(FactoryGirl.build(:cart_with_items), payment)
       subject.payment = nil
       subject.should_not be_valid
     end
@@ -35,7 +35,7 @@ describe Checkout do
     end
   
     it "should be valid without a payment if the cart total is 0 (Free)" do
-      subject = Checkout.new(Factory(:cart_with_free_items), payment)
+      subject = Checkout.new(FactoryGirl.build(:cart_with_free_items), payment)
       subject.payment.credit_card = nil
       subject.should be_valid
     end
@@ -46,7 +46,7 @@ describe Checkout do
     end
     
     it "should not be valid if the payment is invalid and cart total > 0 (Not Free)" do
-      subject = Checkout.new(Factory(:cart_with_items), payment)
+      subject = Checkout.new(FactoryGirl.build(:cart_with_items), payment)
       subject.payment.stub(:valid?).and_return(false)
       subject.should_not be_valid
     end
@@ -59,12 +59,12 @@ describe Checkout do
   
   describe "cash payments" do
     let(:payment)         { CashPayment.new(Factory.build(:person)) }
-    let(:cart_with_item)  { Factory(:cart_with_items) }
+    let(:cart_with_item)  { FactoryGirl.build(:cart_with_items) }
     subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
   
     it "should always approve orders with cash payments" do
       subject.stub(:create_order).and_return(BoxOffice::Order.new)
-      Person.stub(:find_or_create).and_return(Factory(:person))
+      Person.stub(:find_or_create).and_return(FactoryGirl.build(:person))
       subject.finish.should be_true
     end
   end
@@ -77,26 +77,26 @@ describe Checkout do
     describe "people without emails" do
       it "should receive an email for dummy records" do
         OrderMailer.should_not_receive(:confirmation_for)
-        Person.stub(:find_or_create).and_return(Factory(:dummy))
-        subject.cart.stub(:organizations).and_return([Factory(:dummy).organization])
+        Person.stub(:find_or_create).and_return(FactoryGirl.build(:dummy))
+        subject.cart.stub(:organizations).and_return([FactoryGirl.build(:dummy).organization])
         subject.cart.stub(:approved?).and_return(true)
         subject.finish.should be_true
       end
   
       it "should receive an email if we don't have an email address for the buyer" do
         OrderMailer.should_not_receive(:confirmation_for)
-        Person.stub(:find_or_create).and_return(Factory(:person_without_email))
-        subject.cart.stub(:organizations).and_return([Factory(:person_without_email).organization])
+        Person.stub(:find_or_create).and_return(FactoryGirl.build(:person_without_email))
+        subject.cart.stub(:organizations).and_return([FactoryGirl.build(:person_without_email).organization])
         subject.cart.stub(:approved?).and_return(true)
         subject.finish.should be_true
       end
     end
     
     describe "order creation" do  
-      organization = Factory(:organization)
+      organization = FactoryGirl.build(:organization)
       
       before(:each) do    
-        person = Factory(:person, :organization => organization)
+        person = FactoryGirl.build(:person, :organization => organization)
         Person.stub(:find_or_create).and_return(person)
         subject.cart.stub(:approved?).and_return(true)
         subject.cart.stub(:organizations).and_return(Array.wrap(organization))
@@ -114,7 +114,7 @@ describe Checkout do
     end
     
     # describe "order creation" do      
-    #   person = Factory(:person)
+    #   person = FactoryGirl.build(:person)
     #   organization = person.organization
     #   
     #   before(:each) do
@@ -136,8 +136,8 @@ describe Checkout do
 
     describe "return value" do
       before(:each) do
-        Person.stub(:find_or_create).and_return(Factory(:person))
-        subject.cart.stub(:organizations).and_return(Array.wrap(Factory(:person).organization))
+        Person.stub(:find_or_create).and_return(FactoryGirl.build(:person))
+        subject.cart.stub(:organizations).and_return(Array.wrap(FactoryGirl.build(:person).organization))
       end
   
       it "returns true if the order was approved" do
@@ -154,7 +154,7 @@ describe Checkout do
     describe "people creation" do
   
       let(:email){ payment.customer.email }
-      let(:organization){ Factory(:organization) }
+      let(:organization){ FactoryGirl.build(:organization) }
       let(:attributes){
         { :email           => email,
           :organization_id => organization.id,
@@ -163,7 +163,7 @@ describe Checkout do
         }
       }
       
-      let(:person) { Factory(:person, attributes) }
+      let(:person) { FactoryGirl.build(:person, attributes) }
   
       
       #TODO: For some reason, turning off delayed jobs in this method causes 

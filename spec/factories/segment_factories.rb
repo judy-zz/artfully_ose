@@ -1,4 +1,6 @@
-Factory.define(:segment) do |ls|
-  ls.name "Some List Segment"
-  ls.association :organization
+FactoryGirl.define do
+  factory :segment do
+    name "Some List Segment"
+    association :organization
+  end
 end

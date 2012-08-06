@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Ability do
   describe "Producers with free ticketing" do
-    let(:user) { Factory(:user) }
-    let(:organization) { Factory(:organization) }
+    let(:user) { FactoryGirl.build(:user) }
+    let(:organization) { FactoryGirl.build(:organization) }
 
     subject do
       user.organizations << organization
@@ -16,20 +16,20 @@ describe Ability do
     end
 
     describe "and are creating tickets with priced sections" do
-      sections =  Array.wrap(Factory(:section, :price => 1000))
+      sections =  Array.wrap(FactoryGirl.build(:section, :price => 1000))
       it { should_not be_able_to(:create_tickets, sections) }
     end
 
     describe "and are creating tickets with free sections" do
       sections = Array.new
-      sections << Factory(:free_section)
+      sections << FactoryGirl.build(:free_section)
       it { should be_able_to(:create_tickets, sections) }
     end
   end
 
   describe "Producers who have upgraded to paid ticketing" do
-    let(:user) { Factory(:user) }
-    let(:organization) { Factory(:organization_with_ticketing) }
+    let(:user) { FactoryGirl.build(:user) }
+    let(:organization) { FactoryGirl.build(:organization_with_ticketing) }
 
     subject do
       user.organizations << organization
@@ -37,44 +37,44 @@ describe Ability do
     end
 
     describe "and events" do
-      it { should be_able_to(:manage, Factory(:event, :organization_id => organization.id)) }
+      it { should be_able_to(:manage, FactoryGirl.build(:event, :organization_id => organization.id)) }
       it { should be_able_to(:create, Event) }
 
-      it { should_not be_able_to(:manage, Factory(:event, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:manage, FactoryGirl.build(:event, :organization_id => organization.id + 1)) }
 
       it "should not be able to delete an event where the shows cannot be deleted also" do
-        event = Factory(:event, :organization_id => organization.id)
+        event = FactoryGirl.build(:event, :organization_id => organization.id)
         event.stub(:shows).and_return(3.times.collect { mock(:show, :live? => true) })
         subject.should_not be_able_to(:destroy, event)
       end
     end
 
     describe "and shows" do
-      it { should be_able_to(:manage, Factory(:show, :organization_id => organization.id)) }
+      it { should be_able_to(:manage, FactoryGirl.build(:show, :organization_id => organization.id)) }
       it { should be_able_to(:create, Show) }
 
-      it { should_not be_able_to(:manage, Factory(:show, :organization_id => organization.id + 1)) }
-      it { should_not be_able_to(:edit, Factory(:show).stub(:live? => true)) }
+      it { should_not be_able_to(:manage, FactoryGirl.build(:show, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:edit, FactoryGirl.build(:show).stub(:live? => true)) }
     end
 
     describe "and charts" do
-      let(:chart) { Factory(:chart, :organization_id => organization.id) }
+      let(:chart) { FactoryGirl.build(:chart, :organization_id => organization.id) }
 
       it { should be_able_to :view, chart }
       it { should be_able_to :manage, chart }
-      it { should_not be_able_to(:manage, Factory(:chart, :organization_id => organization.id + 1)) }
-      it { should_not be_able_to(:view, Factory(:chart, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:manage, FactoryGirl.build(:chart, :organization_id => organization.id + 1)) }
+      it { should_not be_able_to(:view, FactoryGirl.build(:chart, :organization_id => organization.id + 1)) }
     end
 
     describe "and tickets" do
-      it { should be_able_to(:manage, Factory(:ticket, :organization => organization)) }
+      it { should be_able_to(:manage, FactoryGirl.build(:ticket, :organization => organization)) }
       it { should be_able_to(:manage, Ticket) }
       it { should be_able_to(:bulk_edit, Ticket) }
     end
   end
 
   describe "Producers who are not in an organization" do
-    let(:user) { Factory(:user) }
+    let(:user) { FactoryGirl.build(:user) }
     subject { Ability.new(user) }
 
     describe "working with events" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Section do
-  subject { Factory(:section) }
+  subject { FactoryGirl.build(:section) }
 
   it { should be_valid }
 
@@ -13,7 +13,7 @@ describe Section do
 
   describe "put_on_sale" do  
     before(:each) do
-      subject.stub(:tickets).and_return(5.times.collect { Factory(:ticket) } )
+      subject.stub(:tickets).and_return(5.times.collect { FactoryGirl.build(:ticket) } )
     end
   end
 
