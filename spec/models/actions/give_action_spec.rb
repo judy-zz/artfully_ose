@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe GiveAction do
   disconnect_sunspot
-  subject { Factory(:give_action) }
+  subject { FactoryGirl.build(:give_action) }
 
   it { should be_valid }
 

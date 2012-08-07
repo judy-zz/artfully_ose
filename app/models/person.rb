@@ -13,6 +13,8 @@ class Person < ActiveRecord::Base
   
   default_scope where(:deleted_at => nil)
 
+  attr_accessible :first_name, :last_name, :email, :dummy, :organization_id
+
   def destroy!
     destroy
   end

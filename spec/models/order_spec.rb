@@ -52,7 +52,7 @@ describe Order do
   end
 
   describe "#save" do
-    subject { Factory.build(:order, :created_at => Time.now) }
+    subject { FactoryGirl.build(:order, :created_at => Time.now) }
     it "creates a purchase action after save" do
       subject.should_receive(:create_purchase_action)
       subject.save

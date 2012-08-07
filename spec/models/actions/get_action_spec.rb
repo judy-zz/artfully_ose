@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe GetAction do
   disconnect_sunspot
-  subject { Factory(:get_action) }
+  subject { FactoryGirl.build(:get_action) }
   it { should be_valid }
 
   describe ".valid?" do

@@ -330,7 +330,7 @@ describe Person do
   end
   
   describe "uniqueness" do
-    subject { Factory.build(:person) }
+    subject { FactoryGirl.build(:person) }
     it "should not be valid if another person record exists with that email for the organization" do
       FactoryGirl.build(:person, :email => subject.email, :organization => subject.organization)
       subject.should_not be_valid

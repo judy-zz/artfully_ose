@@ -4,7 +4,7 @@ require 'active_merchant_test_helper'
 describe Cart do
   disconnect_sunspot
   include ActiveMerchantTestHelper
-  subject { Factory(:cart) }
+  subject { FactoryGirl.build(:cart) }
 
   it "should be marked as unfinished in the started state" do
     subject.state = :started
@@ -33,8 +33,8 @@ describe Cart do
   end
 
   describe "ticket fee" do
-    let(:tickets) { 2.times.collect { Factory(:ticket) } }
-    let(:free_tickets) { 2.times.collect { Factory(:free_ticket) } }
+    let(:tickets) { 2.times.collect { FactoryGirl.build(:ticket) } }
+    let(:free_tickets) { 2.times.collect { FactoryGirl.build(:free_ticket) } }
 
     it "should have a fee of 0 if there are no tickets" do
       subject.fee_in_cents.should eq 0
@@ -53,7 +53,7 @@ describe Cart do
     end
 
     it "should have a 0 fee if there is a donation" do
-      donation = Factory(:donation)
+      donation = FactoryGirl.build(:donation)
       subject.donations << donation
       subject.fee_in_cents.should eq 0
       subject << tickets
@@ -114,28 +114,28 @@ describe Cart do
   end
 
   describe "#finish" do
-    subject { Factory(:cart_with_items) }
+    subject { FactoryGirl.build(:cart_with_items) }
 
     it "should mark each item as sold" do
       subject.tickets.each { |ticket| ticket.should_receive(:sell_to) }
-      subject.finish(Factory(:person), Time.now)
+      subject.finish(FactoryGirl.build(:person), Time.now)
     end
 
     it "should send a metric" do
       RestfulMetrics::Client.should_receive(:add_compound_metric).with(ENV["RESTFUL_METRICS_APP"], "sale_complete", ["$100 - $249.99"])
-      subject.finish(Factory(:person), Time.now)
+      subject.finish(FactoryGirl.build(:person), Time.now)
     end
   end
 
   describe "organizations" do
     it "includes the organizations for the included donations" do
-      donation = Factory(:donation)
+      donation = FactoryGirl.build(:donation)
       subject.donations << donation
       subject.organizations.should include donation.organization
     end
 
     it "includes the organizations for the included tickets" do
-      ticket = Factory(:ticket)
+      ticket = FactoryGirl.build(:ticket)
 
       subject.tickets << ticket
       subject.organizations.should include ticket.organization
@@ -150,7 +150,7 @@ describe Cart do
     end
 
     it "should clear when there is one donation" do
-      donation = Factory(:donation)
+      donation = FactoryGirl.build(:donation)
       subject.donations << donation
       donations = subject.clear_donations
       subject.donations.size.should eq 0
@@ -159,8 +159,8 @@ describe Cart do
     end
 
     it "should clear when there are two donations" do
-      donation = Factory(:donation)
-      donation2 = Factory(:donation)
+      donation = FactoryGirl.build(:donation)
+      donation2 = FactoryGirl.build(:donation)
       subject.donations << donation
       subject.donations << donation2
       donations = subject.clear_donations
@@ -172,7 +172,7 @@ describe Cart do
   end
 
   describe ".generate_donations" do
-    let(:tickets) { 2.times.collect { Factory(:ticket) } }
+    let(:tickets) { 2.times.collect { FactoryGirl.build(:ticket) } }
     let(:organizations) { tickets.collect(&:organization) }
 
     before(:each) do

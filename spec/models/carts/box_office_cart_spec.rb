@@ -8,8 +8,8 @@ describe BoxOffice::Cart do
       subject = BoxOffice::Cart.new
     end
 
-    let(:tickets) { 2.times.collect { Factory(:ticket) } }
-    let(:free_tickets) { 2.times.collect { Factory(:free_ticket) } }
+    let(:tickets) { 2.times.collect { FactoryGirl.build(:ticket) } }
+    let(:free_tickets) { 2.times.collect { FactoryGirl.build(:free_ticket) } }
 
     it "should have a fee of 0 regardless of number of tickets" do
       subject.fee_in_cents.should eq 0
@@ -29,7 +29,7 @@ describe BoxOffice::Cart do
     end
 
     it "should have a 0 fee if there is a donation" do
-      donation = Factory(:donation)
+      donation = FactoryGirl.build(:donation)
       subject.donations << donation
       subject.fee_in_cents.should eq 0
       subject << tickets

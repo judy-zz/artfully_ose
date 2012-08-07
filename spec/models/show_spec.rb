@@ -243,7 +243,7 @@ describe Show do
   end
 
   describe "#settleables" do
-    let(:items) { 10.times.collect{ Factory.build(:item, :show_id => subject.id) } }
+    let(:items) { 10.times.collect{ FactoryGirl.build(:item, :show_id => subject.id) } }
     before(:each) do
       subject.items = items
     end
@@ -260,24 +260,6 @@ describe Show do
     it "rejects line items that have been settled already" do
       subject.items.first.state = "settled"
       subject.settleables.should have(9).items
-    end
-  end
-
-  describe "#reseller_settleables" do
-    let(:order) { Factory.create(:reseller_order) }
-    let(:items) { 10.times.collect { FactoryGirl.build(:item, :show_id => subject.id, :reseller_order => order) } }
-    before(:each) do
-      subject.items = items
-      subject.save!
-    end
-
-    it "finds the settleable line items for the performance" do
-      subject.reseller_settleables.keys.should eq [ order.organization ]
-    end
-
-    it "rejects line items that have been settled already" do
-      items.first.update_attributes! :state => "settled"
-      subject.reseller_settleables[order.organization].should have(9).items
     end
   end
 

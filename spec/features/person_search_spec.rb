@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe "Searching for People", :requires_solr => true do
-  let!(:organization) {Factory(:organization)}
-  let!(:person) { Factory(:person, 
+  let!(:organization) {FactoryGirl.build(:organization)}
+  let!(:person) { FactoryGirl.build(:person, 
                           first_name: "ABCDEFG",
                           last_name: "HIJKLMNOP",
                           # tag: "QRSTUVWXYZ"

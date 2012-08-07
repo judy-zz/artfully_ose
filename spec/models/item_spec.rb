@@ -10,7 +10,7 @@ describe Item do
   end
   
   it "should report total_proce as the price plus the nongift_amount" do
-    item = Factory.build(:fa_item)
+    item = FactoryGirl.build(:fa_item)
     item.price.should eq 5000
     item.nongift_amount.should eq 400
     item.total_price.should eq 5400

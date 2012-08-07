@@ -9,12 +9,12 @@ FactoryGirl.define do
 
     show do |to|
       event = Factory :event, organization: to.organization
-      Factory.create :show, event: event
+      FactoryGirl.create :show, event: event
     end
 
     section do |to|
       chart = Factory :chart, event: to.show.event, organization: to.organization
-      Factory.create :section, chart: chart
+      FactoryGirl.create :section, chart: chart
     end
   end
 end

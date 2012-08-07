@@ -21,7 +21,7 @@ FactoryGirl.define do
     association :organization, :factory => :organization_with_bank_account
     after(:create) do |show|
       show.tickets.each do |ticket|
-        ticket.sell_to(Factory(:person))
+        ticket.sell_to(FactoryGirl.build(:person))
         Item.for(ticket).save
       end
     end

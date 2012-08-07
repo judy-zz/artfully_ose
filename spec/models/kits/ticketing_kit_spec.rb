@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 describe TicketingKit do
-  subject { Factory(:ticketing_kit) }
-  let(:owner) { Factory(:user) }
+  subject { FactoryGirl.build(:ticketing_kit) }
+  let(:owner) { FactoryGirl.build(:user) }
 
   before(:each) do
     subject.organization.users << owner
@@ -31,7 +31,7 @@ describe TicketingKit do
     end
 
     it "should be activatable with credit cards and an organization" do
-      owner.stub(:credit_cards).and_return(1.times.collect { Factory.build(:credit_card) } )
+      owner.stub(:credit_cards).and_return(1.times.collect { FactoryGirl.build(:credit_card) } )
       subject.organization.stub(:owner).and_return(owner)
       subject.requirements_met?.should be_true
     end
@@ -49,20 +49,20 @@ describe TicketingKit do
     end
 
     it "should be valid if the user has at least one credit card" do
-      subject.organization.owner.credit_cards << Factory.build(:credit_card)
+      subject.organization.owner.credit_cards << FactoryGirl.build(:credit_card)
       subject.should be_valid
     end
   end
 
   describe "abilities" do
-    subject { Factory(:ticketing_kit, :state => "activated") }
+    subject { FactoryGirl.build(:ticketing_kit, :state => "activated") }
 
     it "should return a block for the Ability to use" do
       subject.abilities.should be_a Proc
     end
 
     it "should grant the organization the ability to receive donations" do
-      organization = Factory(:organization)
+      organization = FactoryGirl.build(:organization)
       organization.kits << subject
       organization.should be_able_to :access, :paid_ticketing
     end

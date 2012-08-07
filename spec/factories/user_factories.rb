@@ -11,7 +11,7 @@ FactoryGirl.define do
 
   factory :user_in_organization, :parent => :user do
     after(:create) do |user|
-      user.organizations << Factory(:organization)
+      user.organizations << FactoryGirl.build(:organization)
     end
   end
 end

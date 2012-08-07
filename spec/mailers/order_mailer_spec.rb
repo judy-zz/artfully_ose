@@ -3,11 +3,11 @@ require "spec_helper"
 describe OrderMailer do
   disconnect_sunspot
   describe "order confirmation email" do
-    let(:order) { Factory(:order) }
+    let(:order) { FactoryGirl.build(:order) }
     subject { OrderMailer.confirmation_for(order) }
 
     before(:each) do
-      order.stub(:items).and_return(10.times.collect{ Factory(:item)})
+      order.stub(:items).and_return(10.times.collect{ FactoryGirl.build(:item)})
       subject.deliver
     end
 

@@ -2,7 +2,7 @@ class Chart < ActiveRecord::Base
   include Ticket::Foundry
   foundry :using => :sections, :with => lambda { { :venue => event.venue.name } }
 
-  attr_accessible :name, :is_template, :event_id, :organization_id, :old_mongo_id, :sections_attributes
+  attr_accessible :name, :is_template, :event_id, :organization_id, :old_mongo_id, :sections_attributes, :organization, :event
 
   belongs_to :event
   belongs_to :organization

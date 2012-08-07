@@ -9,21 +9,21 @@ end
 
 factory :organization_with_bank_account, :parent => :organization do
   after(:create) do |organization|
-    organization.bank_account = Factory(:bank_account)
+    organization.bank_account = FactoryGirl.build(:bank_account)
   end
 end
 
 factory :organization_with_ticketing, :parent => :organization do
-  after(:create) { |organization| Factory(:ticketing_kit, :state => :activated, :organization => organization) }
+  after(:create) { |organization| FactoryGirl.build(:ticketing_kit, :state => :activated, :organization => organization) }
 end
 
 factory :organization_with_reselling, :parent => :organization do
-  after(:create) { |org| Factory(:reseller_kit, :state => :activated, :organization => org) }
-  after(:create) { |org| Factory(:reseller_profile, :organization => org) }
+  after(:create) { |org| FactoryGirl.build(:reseller_kit, :state => :activated, :organization => org) }
+  after(:create) { |org| FactoryGirl.build(:reseller_profile, :organization => org) }
 end
 
 factory :organization_with_donations, :parent => :organization do
-  after(:create) { |organization| Factory(:regular_donation_kit, :state => :activated, :organization => organization) }
+  after(:create) { |organization| FactoryGirl.build(:regular_donation_kit, :state => :activated, :organization => organization) }
 end
 
 factory :connected_organization, :parent => :organization do

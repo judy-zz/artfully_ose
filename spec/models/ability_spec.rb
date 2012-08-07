@@ -2,13 +2,10 @@ require 'spec_helper'
 
 describe Ability do
   describe "Producers with free ticketing" do
-    let(:user) { FactoryGirl.build(:user) }
-    let(:organization) { FactoryGirl.build(:organization) }
-
-    subject do
-      user.organizations << organization
-      Ability.new(user)
-    end
+    let(:user) { FactoryGirl.create(:user) }
+    let(:organization) { FactoryGirl.create(:organization) }
+    before(:each) {user.organizations << organization}
+    subject {Ability.new(user)}
 
     #this is for events_controller.new, not .create
     describe "who are creating an event" do
