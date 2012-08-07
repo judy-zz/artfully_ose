@@ -3,5 +3,9 @@ module Ext
     module Show    
 
     end
+    
+    module Organization
+    
+    end
   end
 end

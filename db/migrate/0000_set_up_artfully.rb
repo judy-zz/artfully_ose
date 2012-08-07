@@ -32,21 +32,6 @@ class SetUpArtfully < ActiveRecord::Migration
 
     add_index "addresses", ["person_id"], :name => "index_addresses_on_person_id"
 
-    create_table "bank_accounts" do |t|
-      t.string   "routing_number"
-      t.string   "number"
-      t.string   "account_type"
-      t.string   "name"
-      t.string   "address"
-      t.string   "city"
-      t.string   "state"
-      t.string   "zip"
-      t.string   "phone"
-      t.integer  "organization_id"
-      t.datetime "created_at"
-      t.datetime "updated_at"
-    end
-
     create_table "carts" do |t|
       t.string   "state"
       t.string   "transaction_id"
@@ -182,20 +167,6 @@ class SetUpArtfully < ActiveRecord::Migration
       t.integer  "organization_id"
     end
 
-    create_table "order_view", :id => false do |t|
-      t.integer  "id",                :default => 0, :null => false
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.string   "transaction_id"
-      t.integer  "price"
-      t.integer  "service_fee"
-      t.integer  "organization_id"
-      t.integer  "person_id"
-      t.string   "organization_name"
-      t.string   "person_first_name"
-      t.string   "person_last_name"
-    end
-
     create_table "orders" do |t|
       t.string   "transaction_id"
       t.integer  "price"
@@ -300,17 +271,6 @@ class SetUpArtfully < ActiveRecord::Migration
 
     create_table "tags" do |t|
       t.string "name"
-    end
-
-    create_table "ticket_offers" do |t|
-      t.integer  "organization_id"
-      t.integer  "show_id"
-      t.integer  "section_id"
-      t.string   "status",              :default => "creating", :null => false
-      t.integer  "count",               :default => 0,          :null => false
-      t.datetime "created_at"
-      t.datetime "updated_at"
-      t.text     "rejection_reason"
     end
 
     create_table "tickets" do |t|

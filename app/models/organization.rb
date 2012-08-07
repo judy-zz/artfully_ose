@@ -1,36 +1,29 @@
 class Organization < ActiveRecord::Base
   include Valuation::LifetimeValue
+  include Ext::Resellable::Organization
+  include Ext::Integrations::Organization
   
   has_many :events
   has_many :charts
   has_many :shows
   has_many :tickets
-  has_many :ticket_offers
 
   has_many :people
   has_many :segments
 
   has_many :memberships
-  has_one  :bank_account
   has_many :orders
   has_many :items
 
-  has_many :settlements
-  has_one  :fiscally_sponsored_project
   has_many :users, :through => :memberships
   has_many :kits, :before_add => :check_for_duplicates,
                   :after_add => lambda { |u,k| k.activate! unless k.activated? }
 
   has_many :imports
-  
-  has_one :reseller_profile
-  has_many :reseller_events, :through => :reseller_profile
 
   validates_presence_of :name
   validates :ein, :presence => true, :if => :updating_tax_info
   validates :legal_organization_name, :presence => true, :if => :updating_tax_info
-
-  scope :linked_to_fa, where("fa_member_id is not null")
 
   #
   # We aren't interested in FAFS donations, so override lifetime_orders
@@ -38,10 +31,6 @@ class Organization < ActiveRecord::Base
   #
   def lifetime_orders
     orders.where('transaction_id is not null')
-  end
-  
-  def reseller_profile
-    nil
   end
 
   def owner
@@ -70,10 +59,6 @@ class Organization < ActiveRecord::Base
     !(ein.blank? or legal_organization_name.blank?)
   end
 
-  def connected?
-    fa_member_id.present?
-  end
-
   def available_kits
     Kit.pad_with_new_kits(kits).reject{ |kit| kit.type == "ResellerKit" }
   end
@@ -82,31 +67,6 @@ class Organization < ActiveRecord::Base
     { :authorized   => can?(:receive, Donation),
       :type         => donation_type,
       :fsp_name     => name_for_donations  }
-  end
-
-  def name_for_donations
-    has_active_fiscally_sponsored_project? ? fiscally_sponsored_project.name : name
-  end
-
-  def fsp
-    fiscally_sponsored_project || build_fiscally_sponsored_project(:fa_member_id => fa_member_id)
-  end
-
-  def has_active_fiscally_sponsored_project?
-    connected? and fsp.active?
-  end
-
-  def has_fiscally_sponsored_project?
-    connected? and fiscally_sponsored_project.present?
-  end
-
-  #Before calling this method, organization must have already been conected to an FA membership
-  #and have fa_member_id set
-  def refresh_active_fs_project
-    if fa_member_id.present?
-      fsp.refresh
-      update_kits
-    end
   end
 
   def donations
@@ -144,17 +104,6 @@ class Organization < ActiveRecord::Base
         map { |o| o.items.map(&:show) }
 
     (standard + reseller).flatten.compact.uniq.sort
-  end
-
-  def items_sold_as_reseller_during(date_range)
-    date_range = Range.new(*date_range) if date_range.kind_of? Array
-
-    Reseller::Order.
-      includes(:items => :show).
-      where("shows.datetime" => date_range, "organization_id" => id).
-      map(&:items).
-      flatten.
-      find_all { |item| date_range === item.show.datetime.to_date }
   end
 
   private

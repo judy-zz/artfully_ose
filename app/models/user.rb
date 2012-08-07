@@ -33,17 +33,6 @@ class User < ActiveRecord::Base
   def membership_in(organization)
     memberships.where(:organization_id => organization.id).limit(1).first
   end
-
-  def customer
-    @customer ||= find_customer
-  end
-
-  def customer=(customer)
-    unless customer.nil? or customer.id.nil?
-      @customer, self.customer_id = customer, customer.id
-      save
-    end
-  end
   
   def self.like(query = "")
     return if query.blank?
@@ -63,15 +52,6 @@ class User < ActiveRecord::Base
   end
 
   private
-
-    def find_customer
-      begin
-        return AthenaCustomer.find(self.customer_id)
-      rescue ActiveResource::ResourceNotFound
-        update_attribute(:customer_id, nil) && save
-        return nil
-      end unless self.customer_id.nil?
-    end
 
     def metric_created
       RestfulMetrics::Client.add_metric(ENV["RESTFUL_METRICS_APP"], "user_created", 1)
