@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120730144952) do
+ActiveRecord::Schema.define(:version => 20120807174950) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -415,10 +415,13 @@ ActiveRecord::Schema.define(:version => 20120730144952) do
   end
 
   create_table "segments", :force => true do |t|
-    t.string  "name"
-    t.string  "terms"
-    t.integer "organization_id"
+    t.string  "name",            :null => false
+    t.integer "organization_id", :null => false
+    t.integer "search_id",       :null => false
   end
+
+  add_index "segments", ["organization_id"], :name => "index_segments_on_organization_id"
+  add_index "segments", ["search_id"], :name => "index_segments_on_search_id"
 
   create_table "settlements", :force => true do |t|
     t.string   "transaction_id"
