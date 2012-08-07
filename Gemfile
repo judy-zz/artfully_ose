@@ -10,5 +10,28 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 
-# To use debugger
-# gem 'debugger'
+group :test, :development do
+  gem 'sqlite3'
+  gem 'rspec-rails', "~> 2.10.0"
+  gem 'nokogiri'
+  gem 'capybara'
+  gem 'timecop'
+  gem 'shoulda'
+  gem 'fakeweb'
+  gem 'faker'
+  gem 'factory_girl', '~> 4.0'
+  gem 'factory_girl_rails', '~> 4.0'
+  
+  gem 'autotest-rails'
+  gem 'autotest-fsevent'
+  gem 'autotest-growl'
+  gem 'cucumber-rails'
+  gem 'database_cleaner'
+  gem 'spork-rails'
+  gem "therubyracer", :require => 'v8'
+  gem 'guard'
+  gem 'guard-rspec'
+  gem 'launchy'
+  gem 'awesome_print', :require => 'ap'
+  gem 'wirble'
+end

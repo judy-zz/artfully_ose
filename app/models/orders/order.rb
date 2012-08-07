@@ -4,7 +4,6 @@ class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TextHelper
   include ArtfullyOseHelper
-  include AdminTimeZone
   
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge
@@ -196,6 +195,10 @@ class Order < ActiveRecord::Base
 
   def credit?
     payment_method.eql? 'Credit card'
+  end
+  
+  def time_zone
+    "Eastern Time (US & Canada)"
   end
 
   private
