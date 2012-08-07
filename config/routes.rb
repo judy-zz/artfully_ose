@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  root :to => 'index#dashboard', :constraints => lambda{|r| r.env["warden"].authenticate?(:scope => :user) }
-
   namespace :api do
     resources :events, :only => :show
     resources :tickets, :only => :index
@@ -149,5 +147,7 @@ Rails.application.routes.draw do
   match '/people/:id/tag/:tag' => 'people#untag', :as => :untag, :via => "delete"
 
   match '/dashboard' => 'index#dashboard', :constraints => lambda{|r| r.env["warden"].authenticate?}
+
+  root :to => 'index#dashboard'
 
 end

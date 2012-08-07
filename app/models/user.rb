@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  include Ext::DeviseConfiguration
+
   has_many :shows
   has_many :orders
   has_many :imports
@@ -7,12 +9,6 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :organizations, :through => :memberships
   validates_acceptance_of :user_agreement
-
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :confirmable, :lockable and :timeoutable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :suspendable, :invitable
 
   scope :logged_in_more_than_once, where("users.sign_in_count > 1")
 

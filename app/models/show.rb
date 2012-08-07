@@ -2,7 +2,7 @@ class Show < ActiveRecord::Base
   include Ticket::Foundry  
   include Ticket::Reporting
   include ActiveRecord::Transitions
-  include Resellable::Show
+  include Ext::Resellable::Show
 
   attr_accessible :datetime
   
