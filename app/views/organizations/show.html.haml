@@ -3,35 +3,9 @@
   %h1= @organization.name
 
 %ul.kv
-  - unless @organization.legal_organization_name.blank?
-    %li.row-fluid
-      .key.span2 Legal Name
-      .value.span6= @organization.legal_organization_name
-  - unless @organization.ein.blank?
-    %li.row-fluid
-      .key.span2 EIN
-      .value.span6= @organization.ein
   %li.row-fluid
     .key.span2 Time Zone
     .value.span6= @organization.time_zone
-  -unless @organization.connected?
-    %li.row-fluid
-      .key.span2 Fractured Atlas
-      .value.span6= link_to "connect now", "#faForm", 'data-toggle' => 'modal'
-  -else
-    %li.row-fluid
-      .key.span2 Fractured Atlas
-      .value.span6 Connected
-    -if @organization.has_active_fiscally_sponsored_project?
-      %li.row-fluid
-        .key.span2 Project
-        .value.span6= @organization.fiscally_sponsored_project.name || "&nbsp;".html_safe 
-      %li.row-fluid
-        .key.span2 Website
-        .value.span6= @organization.fiscally_sponsored_project.website || "&nbsp;".html_safe
-      %li.row-fluid
-        .key.span2 Status
-        .value.span6= @organization.fiscally_sponsored_project.status || "&nbsp;".html_safe
     
 - if can? :manage, current_user.current_organization
   = link_to "Edit", edit_organization_path(@organization), {:class => "btn"}
@@ -42,5 +16,3 @@
 
   #memberships.span8
     = render :partial => "memberships/list", :locals => { :organization => @organization }
-    
-= render :partial => 'connection_form', :locals => { :organization => @organization, :fa_user => @fa_user }
