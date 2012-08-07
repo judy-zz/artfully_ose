@@ -46,4 +46,6 @@ Gem::Specification.new do |s|
   s.add_dependency "set_watch_for", "0.0.1"
   
   s.add_dependency "uuid", "2.3.5"
+  
+  s.add_development_dependency "sunspot_solr", "1.3.3"
 end
