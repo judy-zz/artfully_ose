@@ -3,6 +3,8 @@ class Organization < ActiveRecord::Base
   include Ext::Resellable::Organization
   include Ext::Integrations::Organization
   
+  attr_accessible :name, :time_zone
+  
   has_many :events
   has_many :charts
   has_many :shows

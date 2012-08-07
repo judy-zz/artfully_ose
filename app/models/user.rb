@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   include Ext::DeviseConfiguration
+  include Ext::Integrations::User
 
   has_many :shows
   has_many :orders
@@ -8,12 +9,8 @@ class User < ActiveRecord::Base
 
   has_many :memberships
   has_many :organizations, :through => :memberships
-  validates_acceptance_of :user_agreement
 
   scope :logged_in_more_than_once, where("users.sign_in_count > 1")
-
-  after_create :metric_created
-  after_create { delay.push_to_mailchimp }
 
   def self.generate_password
     Devise.friendly_token
@@ -39,22 +36,4 @@ class User < ActiveRecord::Base
     q = "%#{query}%"
     self.joins("LEFT OUTER JOIN memberships ON memberships.user_id = users.id").joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id").where("email like ? or organizations.name like ?", q, q)
   end
-
-  def push_to_mailchimp
-    if newsletter_emails
-      g = Gibbon.new
-      result = g.list_subscribe({:id => ENV["MC_LIST_ID"], :email_address => email, :double_optin => false, :send_welcome => false})
-      update_attribute(:mailchimp_message, ((result == true) ?  "success" : result['error']) )
-      result
-    else
-      return false
-    end
-  end
-
-  private
-
-    def metric_created
-      RestfulMetrics::Client.add_metric(ENV["RESTFUL_METRICS_APP"], "user_created", 1)
-    end
-
 end

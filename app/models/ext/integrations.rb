@@ -1,5 +1,8 @@
 module Ext
   module Integrations
+    module User
+    end
+    
     module Organization
       def connected?
         false
