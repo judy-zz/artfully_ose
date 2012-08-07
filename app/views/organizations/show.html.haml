@@ -11,8 +11,5 @@
   = link_to "Edit", edit_organization_path(@organization), {:class => "btn"}
 
 #organization-details.row
-  #kits.span4
-    = render :partial => "kits/list", :locals => { :kits => @kits }
-
-  #memberships.span8
+  #memberships.span12
     = render :partial => "memberships/list", :locals => { :organization => @organization }
