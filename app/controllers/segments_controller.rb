@@ -13,11 +13,6 @@ class SegmentsController < ApplicationController
     end
   end
 
-  def new
-    authorize! :create, Segment
-    @segment = current_organization.segments.build(params[:segment])
-  end
-
   def create
     authorize! :create, Segment
     @segment = current_organization.segments.build(params[:segment])
