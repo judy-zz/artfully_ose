@@ -12,10 +12,20 @@
       = will_paginate @people, :inner_window => 2, :outer_window => 0
       .form-actions.row-fluid
         .pull-left
-          = form_for(@segment, :url => new_segment_path, :html => {:method => :get}) do |form|
-            = form.hidden_field :search_id, :value => @search.id
-            = form.submit "New List Segment", :class => "btn"
+          %a.btn{"data-toggle" => "modal", :href => "#segment-modal"} Create List Segment
         .pull-left
           = form_tag(people_path(:format => :csv), :method => :get) do
             = hidden_field_tag :search, params[:search]
             = submit_tag "Export CSV", :class => "btn"
+
+#segment-modal.modal.fade
+  = form_for(@segment) do |form|
+    .modal-header
+      %button.close{"data-dismiss" => "modal", :type => "button"} ×
+      %h3 Create List Segment
+    .modal-body
+      = form.hidden_field :search_id, :value => @search.id
+      = form.text_field :name, :placeholder => "Name your list segment..."
+    .modal-footer
+      %a.btn{"data-dismiss" => "modal", :href => "#"} Close
+      = form.submit "Save", :class => "btn btn-primary"
