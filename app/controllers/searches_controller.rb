@@ -14,6 +14,7 @@ class SearchesController < ApplicationController
 
   def show
     @search = Search.find(params[:id])
+    @segment = Segment.new
     prepare_search_and_people
   end
 

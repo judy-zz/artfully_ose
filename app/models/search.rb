@@ -7,8 +7,16 @@ class Search < ActiveRecord::Base
   belongs_to :event
   validates_presence_of :organization_id
 
+  def length
+    people.length
+  end
+
   def people
     @people ||= find_people
+  end
+
+  def description
+     
   end
 
   private

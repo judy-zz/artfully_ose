@@ -1,5 +1,5 @@
 class Segment < ActiveRecord::Base
-  attr_accessible :organization, :search, :name
+  attr_accessible :organization, :search_id, :name
 
   belongs_to :organization
   belongs_to :search
@@ -8,9 +8,9 @@ class Segment < ActiveRecord::Base
   validates_presence_of :search_id
   validates :name, :presence => true, :length => { :maximum => 128 }
 
-  delegate :length, :to => :people
+  delegate :length, :to => :search
 
   def people
-    @people ||= Person.search_index(terms, organization)
+    @people ||= search.people
   end
 end

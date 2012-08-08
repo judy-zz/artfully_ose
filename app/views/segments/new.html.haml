@@ -6,7 +6,7 @@
 .row
   .span4
     = form_for(@segment) do |form|
-      = form.hidden_field :terms
+      = form.hidden_field :search_id
       = form.text_field :name, :placeholder => "Name your list segment..."
       %br
       = form.submit "Create", :class => "btn"
