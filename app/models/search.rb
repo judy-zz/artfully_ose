@@ -16,7 +16,13 @@ class Search < ActiveRecord::Base
   end
 
   def description
-     
+    conditions = []
+    conditions << "bought tickets for #{event.name}" unless event_id.blank?
+    if conditions.blank?
+      return "All people."
+    else
+      return "People that #{conditions.to_sentence}."
+    end
   end
 
   private
