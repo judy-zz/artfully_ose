@@ -120,6 +120,7 @@ class PeopleController < ArtfullyOseController
 
   def tag
     @person = Person.find(params[:id])
+    authorize! :edit, @person
     @person.tag_list << params[:tag]
     @person.save
     render :nothing => true
@@ -127,6 +128,7 @@ class PeopleController < ArtfullyOseController
 
   def untag
     @person = Person.find(params[:id])
+    authorize! :edit, @person
     @person.tag_list.remove(params[:tag])
     @person.save
     render :nothing => true

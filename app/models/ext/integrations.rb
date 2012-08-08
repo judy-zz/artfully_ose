@@ -4,6 +4,19 @@ module Ext
     end
     
     module Organization
+      def self.included(base)
+        base.class_eval do
+          after_create do
+            [TicketingKit,RegularDonationKit].each do |klass|
+              kit = klass.new
+              kit.state = 'activated'
+              kit.organization = self
+              kit.save
+            end
+          end
+        end
+      end
+      
       def connected?
         false
       end 

@@ -5,11 +5,12 @@
 .row
   .span4
     %h3 About
-    %p= t(".about")
+    %p= t(".about", :default => "Statements are an explanation of a sales for a specific show ")
   .span8
     %h3 Events
     - if @events.blank?
-      = link_to "Create an Event", new_event_path, :class => 'cta-left-125'
+      %p You haven't create any events yet!
+      = link_to "Create an Event", new_event_path, :class => 'btn'
     - else
       %ul.nav.nav-pills.nav-stacked#event-list
         - @events.each do |event|
