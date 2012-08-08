@@ -1,4 +1,5 @@
 class Address < ActiveRecord::Base
+  attr_accessible :address1, :address2, :city, :state, :zip, :country
   belongs_to :person
 
   validates :person_id, :presence => true

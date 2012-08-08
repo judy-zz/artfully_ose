@@ -1,5 +1,5 @@
 class Segment < ActiveRecord::Base
-
+  attr_accessible :terms
   belongs_to :organization
 
   validates :organization_id, :presence => true

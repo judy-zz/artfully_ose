@@ -1,6 +1,8 @@
 class Note < ActiveRecord::Base
-    belongs_to :person
-    belongs_to :user
-    belongs_to :organization
+  attr_accessible :occurred_at, :text
+  
+  belongs_to :person
+  belongs_to :user
+  belongs_to :organization
 end
 

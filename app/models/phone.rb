@@ -1,4 +1,5 @@
 class Phone < ActiveRecord::Base
+  attr_accessible :kind, :number
   belongs_to :person
 
   #This method is here solely to parse phones in the Athena migration

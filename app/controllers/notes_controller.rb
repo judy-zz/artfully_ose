@@ -8,7 +8,10 @@
   end
 
   def create
-    @person.notes.create(params[:note].merge({:user => current_user, :organization => current_user.current_organization}))
+    note = @person.notes.build(params[:note])
+    note.user = current_user
+    note.organization = current_user.current_organization
+    note.save
     redirect_to @person
   end
 

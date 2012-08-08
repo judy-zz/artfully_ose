@@ -57,7 +57,7 @@ module Ext
         # incorrect for Reseller::Order.
 
         standard =
-          Order.
+          ::Order.
             includes(:items => { :show => :event }).
             where("orders.organization_id = ?", self.id).
             reject { |o| o.kind_of? Reseller::Order }.
@@ -65,6 +65,38 @@ module Ext
 
         standard.flatten.compact.uniq.sort
       end
+    end
+    
+    module Order
+      def self.included(base)
+        base.extend ClassMethods
+      end
+      
+      module ClassMethods
+        def sale_search(search)        
+          standard = ::Order.includes(:items => { :show => :event })
+
+          if search.start   
+            standard = standard.after(search.start)
+          end
+
+          if search.stop   
+            standard = standard.before(search.stop)
+          end
+
+          if search.organization
+            standard = standard.where('orders.organization_id = ?', search.organization.id)
+          end
+
+          if search.show
+            standard = standard.where("shows.id = ?", search.show.id)
+          elsif search.event
+            standard = standard.where("events.id = ?", search.event.id)
+          end
+
+          standard.all
+        end
+      end     
     end
   end
 end
