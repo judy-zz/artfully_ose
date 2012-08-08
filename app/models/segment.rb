@@ -9,6 +9,7 @@ class Segment < ActiveRecord::Base
   validates :name, :presence => true, :length => { :maximum => 128 }
 
   delegate :length, :to => :search
+  delegate :description, :to => :search
 
   def people
     @people ||= search.people

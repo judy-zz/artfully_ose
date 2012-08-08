@@ -5,6 +5,7 @@
   .span4
     = render partial: "form", locals: {search: @search}
   .span8.super-search-results
+    %h4= @search.description
     %table.table.people-list
       - @people.each do |person|
         = render partial: "person", locals: {person: person}
