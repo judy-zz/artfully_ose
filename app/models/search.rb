@@ -17,7 +17,45 @@ class Search < ActiveRecord::Base
 
   def description
     conditions = []
-    conditions << "bought tickets for #{event.name}" unless event_id.blank?
+    conditions << "are tagged with #{tagging}" if tagging.present?
+    conditions << "bought tickets for #{event.name}" if event_id.present?
+    if zip.present? || state.present?
+      locations = []
+      locations << state if state.present?
+      locations << "the zipcode of #{zip}" if zip.present?
+      conditions << "are located within #{locations.to_sentence}"
+    end
+    if min_lifetime_value.present? && max_lifetime_value.present?
+      conditions << "have a lifetime value between $#{min_lifetime_value} and $#{max_lifetime_value}"
+    elsif min_lifetime_value.present?
+      conditions << "have a minimum lifetime value of $#{min_lifetime_value}"
+    elsif max_lifetime_value.present?
+      conditions << "have a maximum lifetime value of $#{max_lifetime_value}"
+    end
+
+    unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
+      if min_donations_amount.present? && max_donations_amount.present?
+        string = "made between $#{min_donations_amount} and $#{max_donations_amount} in donations"
+      elsif min_donations_amount.present?
+        string = "made a total minimum of $#{min_donations_amount} donations"
+      elsif max_donations_amount.present?
+        string = "made no more than $#{max_donations_amount} total donations"
+      else
+        string = "made any donations"
+      end
+
+      if min_donations_date.present? && max_donations_date.present?
+        string << " from #{min_donations_date.strftime('%D')} to #{max_donations_date.strftime('%D')}"
+      elsif min_donations_date.present?
+        string << " after #{min_donations_date.strftime('%D')}"
+      elsif max_donations_date.present?
+        string << " before #{max_donations_date.strftime('%D')}"
+      else
+        string << " over their lifetime"
+      end
+      conditions << string
+    end
+
     if conditions.blank?
       return "All people."
     else

@@ -42,6 +42,9 @@ describe Search do
       search.people.should_not include too_high
       search.people.should_not include too_low
     end
+    specify "#description should include relevant text" do
+      search.description.should match /have a lifetime value between \$110 and \$190/
+    end
   end
 
   context "with a range of donations" do
@@ -64,6 +67,9 @@ describe Search do
     specify "#people should not return the people that don't match" do
       search.people.should_not include person2
     end
+    specify "#description should include relevant text" do
+      search.description.should match /made between \$5 and \$15 in donations from #{1.month.ago.strftime('%D')} to #{1.month.from_now.strftime('%D')}/
+    end
   end
 
   context "with a range of donation dates but no amounts" do
@@ -82,6 +88,9 @@ describe Search do
     specify "#people should not return the people with no donations (or donations of less than a dollar)" do
       search.people.should_not include person2
     end
+    specify "#description should include relevant text" do
+      search.description.should match /made any donations from #{1.month.ago.strftime('%D')} to #{1.month.from_now.strftime('%D')}/
+    end
   end
 
   context "with a zipcode" do
@@ -96,6 +105,9 @@ describe Search do
     specify "#people should not return the people that don't match" do
       search.people.should_not include person2
     end
+    specify "#description should include relevant text" do
+      search.description.should match /are located within the zipcode of 10001/
+    end
   end
 
   context "with a state" do
@@ -109,6 +121,9 @@ describe Search do
     end
     specify "#people should not return the people that don't match" do
       search.people.should_not include person2
+    end
+    specify "#description should include relevant text" do
+      search.description.should match /are located within PA/
     end
   end
 
@@ -128,6 +143,10 @@ describe Search do
     specify "#people should not return the people that don't match" do
       search.people.should_not include person2
     end
+    specify "#description should include relevant text" do
+      search.description.should match /are tagged with first_tag/
+    end
+
   end
 
 end
