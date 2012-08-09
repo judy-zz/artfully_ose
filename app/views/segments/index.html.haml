@@ -11,5 +11,4 @@
         - @segments.each do |segment|
           %li
             %h4= link_to segment.name, segment
-            %ul.details-long
-              %li= segment.description
+            .details-long= segment.description.html_safe
