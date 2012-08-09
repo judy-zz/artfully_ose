@@ -37,9 +37,9 @@ class Search < ActiveRecord::Base
       if min_donations_amount.present? && max_donations_amount.present?
         string = "made between $#{min_donations_amount} and $#{max_donations_amount} in donations"
       elsif min_donations_amount.present?
-        string = "made a total minimum of $#{min_donations_amount} donations"
+        string = "made a total minimum of $#{min_donations_amount} in donations"
       elsif max_donations_amount.present?
-        string = "made no more than $#{max_donations_amount} total donations"
+        string = "made no more than $#{max_donations_amount} in total donations"
       else
         string = "made any donations"
       end
@@ -51,7 +51,7 @@ class Search < ActiveRecord::Base
       elsif max_donations_date.present?
         string << " before #{max_donations_date.strftime('%D')}"
       else
-        string << " over their lifetime"
+        string << " overall"
       end
       conditions << string
     end
