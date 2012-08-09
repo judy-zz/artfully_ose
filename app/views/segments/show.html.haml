@@ -1,11 +1,15 @@
 - in_section :people
 - content_for :header do
-  %h1= @segment.name
+  %h1
+    List Segment:
+    = @segment.name
 
 .row
   .span4
     %h3 Export
-    %p= "Export to this list segment to #{link_to('CSV', segment_path(@segment, :format => :csv))}.".html_safe
+    %p
+      To view all the data on patrons in this segment, including mailing address and phone numbers, export this segment to
+      = link_to('CSV', segment_path(@segment, :format => :csv))
 
   .span8
     %table.table.people-list
