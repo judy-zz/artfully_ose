@@ -23,7 +23,7 @@ describe Search do
       search.people.should_not include @nonbuyer
     end
     specify "#description should include relevant text" do
-      search.description.should match /bought tickets for #{@event.name}/
+      search.description.should match /Bought tickets for #{@event.name}/
     end
   end
 
@@ -43,7 +43,7 @@ describe Search do
       search.people.should_not include too_low
     end
     specify "#description should include relevant text" do
-      search.description.should match /have a lifetime value between \$110 and \$190/
+      search.description.should match /Have a lifetime value between \$110 and \$190/
     end
   end
 
@@ -68,7 +68,7 @@ describe Search do
       search.people.should_not include person2
     end
     specify "#description should include relevant text" do
-      search.description.should match /made between \$5 and \$15 in donations from #{1.month.ago.strftime('%D')} to #{1.month.from_now.strftime('%D')}/
+      search.description.should match /Made between \$5 and \$15 in donations from #{1.month.ago.strftime('%D')} to #{1.month.from_now.strftime('%D')}/
     end
   end
 
@@ -89,7 +89,7 @@ describe Search do
       search.people.should_not include person2
     end
     specify "#description should include relevant text" do
-      search.description.should match /made any donations from #{1.month.ago.strftime('%D')} to #{1.month.from_now.strftime('%D')}/
+      search.description.should match /Made any donations from #{1.month.ago.strftime('%D')} to #{1.month.from_now.strftime('%D')}/
     end
   end
 
@@ -106,7 +106,7 @@ describe Search do
       search.people.should_not include person2
     end
     specify "#description should include relevant text" do
-      search.description.should match /are located within the zipcode of 10001/
+      search.description.should match /Are located within the zipcode of 10001/
     end
   end
 
@@ -123,7 +123,7 @@ describe Search do
       search.people.should_not include person2
     end
     specify "#description should include relevant text" do
-      search.description.should match /are located within PA/
+      search.description.should match /Are located within PA/
     end
   end
 
@@ -144,7 +144,7 @@ describe Search do
       search.people.should_not include person2
     end
     specify "#description should include relevant text" do
-      search.description.should match /are tagged with first_tag/
+      search.description.should match /Are tagged with first_tag/
     end
 
   end
