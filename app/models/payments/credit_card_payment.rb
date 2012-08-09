@@ -43,9 +43,9 @@ class CreditCardPayment < ::Payment
   
   def gateway
     @gateway ||= ActiveMerchant::Billing::BraintreeGateway.new(
-        :merchant_id => Artfully::Application.config.braintree.merchant_id,
-        :public_key  => Artfully::Application.config.braintree.public_key,
-        :private_key => Artfully::Application.config.braintree.private_key
+        :merchant_id => Rails.configuration.braintree.merchant_id,
+        :public_key  => Rails.configuration.braintree.public_key,
+        :private_key => Rails.configuration.braintree.private_key
       )
   end
   

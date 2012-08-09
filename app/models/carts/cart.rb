@@ -44,7 +44,10 @@ class Cart < ActiveRecord::Base
 
   def set_timeout(ticket)
     save if new_record?
-    self.delay(:run_at => Time.now + 10.minutes).expire_ticket(ticket)
+    
+    if Delayed::Worker.delay_jobs
+      self.delay(:run_at => Time.now + 10.minutes).expire_ticket(ticket)
+    end
   end
 
   def expire_ticket(ticket)
@@ -79,7 +82,7 @@ class Cart < ActiveRecord::Base
   end
 
   def <<(tkts)
-    tickets << tkts
+    self.tickets << tkts
   end
 
   def total

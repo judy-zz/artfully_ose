@@ -33,7 +33,7 @@ class Show < ActiveRecord::Base
   scope :played,    lambda { where("shows.datetime < ?", Time.now) }
   scope :unplayed,  lambda { where("shows.datetime > ?", Time.now) }
 
-  foundry :using => :chart, :with => lambda {{:show_id => id, :organization_id => organization_id}}
+  foundry :using => :chart, :with => lambda {{:show_id => self.id, :organization_id => organization_id}}
 
   delegate :free?, :to => :event
 
@@ -41,7 +41,7 @@ class Show < ActiveRecord::Base
     
     #pending and built are deprecated, left in only because we have shows in production which are built
     state :pending
-    state :built, :enter => :create_and_on_sale_tickets
+    state :built, :exit => :create_and_on_sale_tickets
     state :published
     state :unpublished
 
@@ -54,7 +54,7 @@ class Show < ActiveRecord::Base
   def go!(and_publish = true)
     return false if !valid?
     transaction do
-      build    
+      build!    
       and_publish ? publish! : unpublish!
       save
     end

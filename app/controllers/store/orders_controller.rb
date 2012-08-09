@@ -9,7 +9,6 @@ class Store::OrdersController < Store::StoreController
       ticket_ids = []
       over_section_limit = []
       params[:sections].each_value do |section|
-        puts "#{section[:section_id]}: #{section[:limit]}"
         ids = Ticket.available(
           {
             :section_id => section[:section_id],
@@ -37,7 +36,7 @@ class Store::OrdersController < Store::StoreController
 
   private
 
-    def handle_order(params)
+    def handle_order(params)        
       handle_tickets(params[:tickets]) if params.has_key? :tickets
       handle_donation(params[:donation]) if params.has_key? :donation
 

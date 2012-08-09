@@ -26,6 +26,7 @@ class Ticket::Template
     count = @attributes.delete(:count).to_i
     organization_id = @attributes.delete(:organization_id)
     show_id = @attributes.delete(:show_id)
+    
     tickets = []
     count.times.collect do 
       t = Ticket.new(attributes)
