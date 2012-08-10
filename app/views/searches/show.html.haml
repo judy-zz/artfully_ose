@@ -7,9 +7,12 @@
   .span8.super-search-results
     %h4.details-long= @search.description.html_safe
     %table.table.people-list
-      - @people.each do |person|
-        = render partial: "person", locals: {person: person}
-    - unless @people.blank?
+      - if @people.blank?
+        %h3 No results.
+      - else
+        - @people.each do |person|
+          = render partial: "person", locals: {person: person}
+    - if @people.present?
       = will_paginate @people, :inner_window => 2, :outer_window => 0
     .form-actions.row-fluid
       .pull-left
