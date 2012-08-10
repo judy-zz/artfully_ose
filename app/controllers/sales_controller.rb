@@ -103,10 +103,18 @@ class SalesController < ArtfullyOseController
       params[:person_id].blank? ? @dummy : Person.find(params[:person_id])
     end
 
-    def payment            
-      if Swiper.can_parse? params[:credit_card][:card_number]
-        params[:credit_card][:card_number] = Swiper.parse(params[:credit_card][:card_number])
+    def payment                    
+      if Swiper.can_parse? params[:credit_card][:number]
+        swiped_data = Swiper.parse(params[:credit_card][:number])
+        params[:credit_card][:name] = swiped_data.track1.cardholder_name
+        params[:credit_card][:number] = swiped_data.track1.primary_account_number
+        params[:credit_card][:month] = swiped_data.track1.expiration_month
+        params[:credit_card][:year] = swiped_data.track1.expiration_year
       end
+      
+        puts "                          ***"
+        puts params[:credit_card][:number]
+        puts "                          ***"
       params[:benefactor] = current_user
       
       payment = Payment.create(params[:payment_method], params)
