@@ -55,7 +55,10 @@ class CreditCardPayment < ::Payment
   
   #purchase submits for auth and passes a flag to merchant to settle immediately
   def purchase(options={})
+    ::Rails.logger.debug("Sending purchase request to Braintree")
     response = gateway.purchase(self.amount, credit_card, options)
+    ::Rails.logger.debug("Received response: #{response.message}")
+    ::Rails.logger.debug(response.inspect)
     self.transaction_id = response.authorization
     response
   end

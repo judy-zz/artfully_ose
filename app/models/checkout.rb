@@ -1,4 +1,9 @@
 class Checkout
+  include ActiveSupport::Callbacks
+  define_callbacks :payment
+  
+  include Ext::Callbacks::Checkout
+  
   attr_accessor :cart, :payment, :error
   attr_reader :order, :person
 
@@ -29,52 +34,20 @@ class Checkout
   def finish
     @person = Person.find_or_create(@customer, cart.organizations.first)
     @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
-    prepare_fafs_donations
-    cart.pay_with(@payment)
+
+    run_callbacks :payment do
+      cart.pay_with(@payment)
+    end
+    
+    ::Rails.logger.debug("Payment made, cart is approved: [#{cart.approved?}]")
     
     if cart.approved?
-      process_fafs_donations
       order_timestamp = Time.now
       create_order(order_timestamp)
       cart.finish(@person, order_timestamp)
     end
-
+      
     cart.approved?
-  end
-
-  #This is done in two steps so that we can process the tickets, ensure that the CC is valid etc...
-  #Then process with FA
-  def prepare_fafs_donations
-    organization = cart.organizations.first
-    return if organization.nil?
-
-    ::Rails.logger.info "Processing FAFS donations"
-    if !organization.nil? && organization.has_active_fiscally_sponsored_project?
-      ::Rails.logger.info "Organization #{organization.id} has an active FSP"
-      @fafs_donations = cart.clear_donations
-      donation_total = @fafs_donations.inject(0) { |sum, donation| sum += donation.amount }
-      ::Rails.logger.info "Payment amount is #{@payment.amount}"
-      @payment.reduce_amount_by(donation_total)
-      ::Rails.logger.info "Payment has been reduced to #{@payment.amount}"
-    else
-      ::Rails.logger.info "Organization #{organization.id} does not have an active FSP"
-    end
-  end
-
-  #This is done in two steps so that we can process the tickets, ensure that the CC is valid etc...
-  #Then process with FA
-  def process_fafs_donations
-    if !@fafs_donations.blank? && @fafs_donations.first.organization.has_active_fiscally_sponsored_project?
-      ::Rails.logger.info "Processing: #{@fafs_donations.size} fafs donations"
-      @fafs_donations.each do |donation|
-        ::Rails.logger.info "Processing donation for #{donation.amount}"
-        fa_donation = FA::Donation.from(donation, payment)
-        fa_donation.save
-        ::Rails.logger.info "Donation processed"
-      end
-    else
-      ::Rails.logger.info "Either no donations to process or this org does not have an active fsp"
-    end
   end
 
   private

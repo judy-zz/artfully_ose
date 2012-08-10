@@ -1,6 +1,6 @@
 class DoorList
   attr_reader :show
-  extend ::ApplicationHelper
+  extend ::ArtfullyOseHelper
 
   def initialize(show)
     @show = show

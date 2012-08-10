@@ -255,15 +255,11 @@ function checkout() {
       data: $("form#shopping-cart-form").serialize(),
       success: function(data) {
         $('#nav').hide();
-        // console.log("SUCCESS!");
-        // console.log(data);
         $('.tab-pane').hide();
         $('.tab-pane#thanks').show();
       },
       error: function(data) {
         $('#nav li').removeClass('active');
-        // console.log("ERROR!");
-        // console.log(data);
         $('.tab-pane').hide();
         $('.tab-pane#result').show();
         $('.tab-pane#result').html("<h4>Your payment did not go through.</h4><p>" + data.responseText + ".</p>");

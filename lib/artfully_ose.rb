@@ -34,6 +34,7 @@ require "mail"
 require "gibbon"
 
 require "set_watch_for"
+require "restful_metrics"
 
 module ArtfullyOse
 end
