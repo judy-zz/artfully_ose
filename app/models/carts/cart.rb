@@ -58,15 +58,6 @@ class Cart < ActiveRecord::Base
     self.tickets.reject{|t| t.price == 0}
   end
 
-  #
-  # :( :( :(  Potential disaster
-  #
-  # The per ticket fee is hardcoded to 200 per ticket here.
-  # The service_fee is recorded on the order *not* the item, so 
-  # when refunding individual items we have to carve out 200 of whatever service_fee
-  # is on the order.  When we move to allowing producers to "eat the fee", we'll have to address
-  # refunds AND move the fee to the item, not the order
-  #
   def fee_in_cents
     items_subject_to_fee.size * (ARTFULLY_CONFIG[:fee_in_cents] || 0)
   end
