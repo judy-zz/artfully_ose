@@ -1,3 +1,9 @@
 = Artfully Open Source Edition
 
 This project rocks and uses MIT-LICENSE.
+
+== Installation Instructions.
+
+1. Copy artfully_ose to the lib folder.
+2. Copy the config file: `cp lib/artfully_ose/config/artfully.yml.sample config/artfully.yml`
+3. Modify the config file to suit your needs. Instructions are located within the file itself.
