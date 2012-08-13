@@ -3,6 +3,8 @@ class Import < ActiveRecord::Base
   # Import status transitions:
   #   pending -> approved -> imported
 
+  attr_accessible :s3_bucket, :s3_key, :s3_etag, :status, :user_id
+
   belongs_to :user
   has_many :import_errors, :dependent => :delete_all
   has_many :import_rows, :dependent => :delete_all
@@ -137,8 +139,8 @@ class Import < ActiveRecord::Base
   end
 
   def s3_service
-    access_key_id     = Artfully::Application.config.s3.access_key_id
-    secret_access_key = Artfully::Application.config.s3.secret_access_key
+    access_key_id     = Rails.application.config.s3.access_key_id
+    secret_access_key = Rails.application.config.s3.secret_access_key
 
     S3::Service.new(:access_key_id => access_key_id, :secret_access_key => secret_access_key)
   end

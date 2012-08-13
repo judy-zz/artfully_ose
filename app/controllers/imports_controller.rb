@@ -22,7 +22,7 @@ class ImportsController < ArtfullyOseController
 
   def new
     if params[:bucket].present? && params[:key].present?
-      @import = organization.imports.create! \
+      @import = organization.imports.create \
         :s3_bucket => params[:bucket],
         :s3_key    => params[:key],
         :s3_etag   => params[:etag],
