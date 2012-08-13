@@ -2,6 +2,6 @@
 
 ---
 development:
-  ticket_fee: 0
+  ticket_fee: 200
 test:
-  ticket_fee: 0
+  ticket_fee: 200
