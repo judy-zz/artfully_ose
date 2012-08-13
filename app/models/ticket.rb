@@ -189,7 +189,10 @@ class Ticket < ActiveRecord::Base
 
   def return!
     self.buyer = nil
-    update_attributes(:sold_price => nil, :sold_at => nil, :buyer_id => nil)
+    self.sold_price = nil
+    self.sold_at = nil
+    self.buyer_id = nil
+    save
     do_return!
   end
 
