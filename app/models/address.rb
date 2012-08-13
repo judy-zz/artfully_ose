@@ -51,17 +51,19 @@ class Address < ActiveRecord::Base
     old_addr = to_s()
 
     unless is_same_as(address)
-      if update_attributes(address.attributes)
-        update_attributes(address.attributes)
+      ["address1", "address2", "city", "state", "zip", "country"].each do |field|
+        self.send("#{field}=", address.send(field))
+      end
+      
+      if save 
         extra = updated_by.nil? ? "" : " from #{updated_by}"
-        person.notes.create({
-          :person_id    => person.id,
+        note = person.notes.create({
           :occurred_at  => DateTime.now.in_time_zone(time_zone),
-          :user         => user,
           :text         => "address updated#{extra}, old address was: (#{old_addr})" })
+        note.user = user
       else
         return false
-      end
+      end      
     end
 
     true

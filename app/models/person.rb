@@ -1,7 +1,7 @@
 class Person < ActiveRecord::Base
   include Valuation::LifetimeValue
 
-  attr_accessible :type, :email, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url
+  attr_accessible :type, :email, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
   
   acts_as_taggable
 
