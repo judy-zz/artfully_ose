@@ -59,7 +59,7 @@ class Cart < ActiveRecord::Base
   end
 
   def fee_in_cents
-    items_subject_to_fee.size * (ARTFULLY_CONFIG[:fee_in_cents] || 0)
+    items_subject_to_fee.size * (ARTFULLY_CONFIG[:ticket_fee] || 0)
   end
 
   def clear_donations
