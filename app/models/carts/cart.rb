@@ -68,7 +68,7 @@ class Cart < ActiveRecord::Base
   # refunds AND move the fee to the item, not the order
   #
   def fee_in_cents
-    items_subject_to_fee.size * 200
+    items_subject_to_fee.size * (ARTFULLY_CONFIG[:fee_in_cents] || 0)
   end
 
   def clear_donations
