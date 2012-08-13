@@ -1,7 +1,7 @@
 !!!
 %html{:xmlns => "http://www.w3.org/1999/xhtml", "xml:lang" => "en", :lang => "en"}
   %head
-    %title= "#{yield :title} : Artful.ly"
+    %title= "#{yield :title} : #{t 'artfully.page_title'}"
     = favicon_link_tag
     = stylesheet_link_tag "bootstrap", :media => :all
     = stylesheet_link_tag "application"

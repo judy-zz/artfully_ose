@@ -231,4 +231,7 @@ module ArtfullyOseHelper
   
   def ticket_seller_name(ticket)
   end
+  
+  def credit_card_message
+  end
 end
