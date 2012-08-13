@@ -67,6 +67,10 @@ module Ext
         base.extend ClassMethods
       end
       
+      def fa_id
+        nil
+      end
+      
       module ClassMethods
         def sale_search(search)        
           standard = ::Order.includes(:items => { :show => :event })

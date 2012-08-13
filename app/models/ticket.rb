@@ -2,7 +2,7 @@ class Ticket < ActiveRecord::Base
 
   include ActiveRecord::Transitions
   
-  attr_accessible :section_id, :price, :venue
+  attr_accessible :section_id, :section, :price, :venue
 
   belongs_to :buyer, :class_name => "Person"
   belongs_to :show
@@ -229,10 +229,10 @@ class Ticket < ActiveRecord::Base
       t = Ticket.new({
         :venue => show.event.venue.name,
         :price => section.price,
-        :show => show,
-        :organization => show.organization,
         :section => section,
       })
+      t.show = show
+      t.organization = show.organization
       t.state = 'on_sale' if on_sale
       new_tickets << t
     end

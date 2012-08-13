@@ -228,4 +228,7 @@ module ArtfullyOseHelper
     end
     link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
   end
+  
+  def ticket_seller_name(ticket)
+  end
 end

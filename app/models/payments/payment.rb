@@ -68,9 +68,9 @@ class Payment
   # The Payment subclasses need to be loaded so that their payment_method stuff can run and be injected
   # before the interpreter gets around to loading them
   #
-  # Also, this unfortuantely means that subclasses of this method must be in this directory
-  #
   if Rails.env.development?
-    Dir["#{Rails.root}/app/models/payments/*.rb"].each { |model| require_dependency model }
+    Rails.configuration.payment_model_paths.each do |model|
+      require_dependency model
+    end
   end
 end

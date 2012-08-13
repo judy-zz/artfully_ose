@@ -18,6 +18,12 @@ module ArtfullyOse
       app.config.s3.secret_access_key    = ENV['S3_SECRET_ACCESS_KEY']
     end
     
+    initializer "artfully_ose.payment_model_paths" do |app|     
+      puts "ArtfullyOse: Initializing payment model paths"
+      app.config.payment_model_paths       = []
+      app.config.payment_model_paths      += Dir["#{config.root}/app/models/payments/*.rb"]      
+    end
+    
     initializer "artfully_ose.google_analytics_config" do |app|      
       puts "ArtfullyOse: Initializing Google Analytics config"
       GoogleAnalytcsConfig = Struct.new(:account, :domain)

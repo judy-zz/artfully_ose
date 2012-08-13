@@ -38,10 +38,10 @@ function resetCommit() {
 
 function resetPayment() {
 	$("#payment_method_cash").click()
-	$("#credit_card_card_number").val()
-	$("#credit_card_cardholder_name").val()
-	$("#credit_card_expiration_date_2i_").val($('option:first', $("#credit_card_expiration_date_2i_")).val())
-	$("#credit_card_expiration_date_1i_").val($('option:first', $("#credit_card_expiration_date_1i_")).val())
+	$("#credit_card_number").val()
+	$("#credit_card_name").val()
+	$("#credit_card_month").val($('option:first', $("#credit_card_month")).val())
+	$("#credit_card_year").val($('option:first', $("#credit_card_year")).val())
 }
 
 function resetQuantites() {
@@ -121,7 +121,7 @@ $("document").ready(function(){
 
   //copy the hack CC number (swiped data) into the actual CC number field
   $("input[name=hack-cc-number]").change(function(){
-    $("#credit_card_card_number").val($("input[name=hack-cc-number]").val())
+    $("#credit_card_number").val($("input[name=hack-cc-number]").val())
     form = $('.ticket-quantity-select').closest("form")
     form.find('input[name="commit"]').val('submit')
     $("input[name=hack-cc-number]").val('')
@@ -222,8 +222,8 @@ $("document").ready(function(){
   $(".payment-method").change(function(){
     if($(this).attr('value') != 'credit_card_manual'){
       $("#payment-info").addClass("hidden");
-      $("#credit_card_card_number").val("")
-      $("#credit_card_cardholder_name").val("")
+      $("#credit_card_number").val("")
+      $("#credit_card_name").val("")
     } else {
       $("#payment-info").removeClass("hidden");
     }
