@@ -1,10 +1,6 @@
 <p>Hello <%= @resource.email %>!</p>
 
-<% if @resource.invited_by.present? %>
-  <p><%= @resource.invited_by.email %> has invited you to join <%= link_to("Artful.ly", root_url) %>. You can accept it through the link below.
-<% else %>
-  <p>You have been invited to join <%= link_to("Artful.ly", root_url) %>. You can accept it through the link below.
-<% end %>
+<p><%= @resource.invited_by.email %> has invited you to join <%= link_to(@resource.invited_by.memberships.first.organization.name, root_url) %>. You can accept it through the link below.</p>
 
 <p><%= link_to 'Accept invitation', accept_invitation_url(@resource, :invitation_token => @resource.invitation_token) %></p>
 

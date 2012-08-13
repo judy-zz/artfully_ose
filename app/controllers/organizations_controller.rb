@@ -22,11 +22,20 @@ class OrganizationsController < ArtfullyOseController
       flash[:error] = "You can only join one organization at this time."
       redirect_to organizations_url
     end
+    
+    if Organization.all.length > 0
+      flash[:error] = "There is already an organization created for this installation."
+    end
 
     @organization = Organization.new
   end
 
   def create
+    if Organization.all.length > 0
+      flash[:error] = "There is already an organization created for this installation."
+      redirect_to new_organization_path and return
+    end
+    
     @organization = Organization.new(params[:organization])
 
     if @organization.save
