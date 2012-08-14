@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency "transitions", "0.0.11"
   s.add_dependency "devise", "=2.0.4"
   s.add_dependency "devise_invitable", "=1.0.2"
-  s.add_dependency "devise_suspendable", "=1.0.2"
+  s.add_dependency "devise_suspendable", "=0.6.1"
   
   s.add_dependency "activemerchant"
   s.add_dependency "braintree", "~> 2.13.0"
