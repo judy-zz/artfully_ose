@@ -117,6 +117,7 @@ describe Cart do
     subject { FactoryGirl.build(:cart_with_items) }
 
     it "should mark each item as sold" do
+      RestfulMetrics::Client.should_receive(:add_compound_metric)
       subject.tickets.each { |ticket| ticket.should_receive(:sell_to) }
       subject.finish(FactoryGirl.build(:person), Time.now)
     end
@@ -177,7 +178,9 @@ describe Cart do
 
     before(:each) do
       organizations.each do |org|
-        org.kits << RegularDonationKit.new(:state => :activated)
+        rdk = RegularDonationKit.new
+        rdk[:state] = :activated
+        org.kits << rdk
       end
     end
 
@@ -201,8 +204,8 @@ describe Cart do
   end
 
   describe ".can_hold?" do
-    let(:ticket) { Factory :ticket }
-    let(:cart) { Factory :cart }
+    let(:ticket) { FactoryGirl.build :ticket }
+    let(:cart) { FactoryGirl.build :cart }
 
     it "should be able to hold another ticket" do
       cart.should be_can_hold ticket
