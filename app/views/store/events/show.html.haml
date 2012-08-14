@@ -180,7 +180,7 @@
       .tab-pane#result
       .tab-pane#thanks
         %h2 Thank you for your order!
-        %p=credit_card_message
+        %p= t 'artfully.checkout_message'
         %p You'll receive an email confirmation of your order shortly.
         - unless @event.contact_email.blank? && @event.contact_phone.blank?
           %p If you have any questions or need information about the event, contact us at 
