@@ -79,7 +79,9 @@ class Item < ActiveRecord::Base
   end
 
   def dup!
-    self.class.new(attributes.reject { |key, value| %w( id state ).include? key } )
+    new_item = self.dup
+    new_item.state = nil
+    new_item
   end
 
   def refundable?
@@ -101,7 +103,8 @@ class Item < ActiveRecord::Base
   # Should all be pulled out into state machine
   #
   def refund!
-    update_attribute(:state, "refunded")
+    self.state = "refunded"
+    self.save
   end
 
   def to_refund
