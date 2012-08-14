@@ -4,6 +4,7 @@ require "transitions"
 require "active_record/transitions"
 require "devise"
 require "devise_invitable"
+require "devise_suspendable"
 
 require "active_merchant"
 require "braintree"

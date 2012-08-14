@@ -97,5 +97,17 @@ module Ext
         end
       end     
     end
+    
+    module Event
+      def shows_with_sales(seller)
+        standard =
+          ::Order.
+            includes(:items => { :show => :event }).
+            where("orders.organization_id = ? AND events.id = ?", seller.id, self.id).
+            map { |o| o.items.map(&:show) }
+
+        standard.flatten.compact.uniq.sort
+      end
+    end
   end
 end
