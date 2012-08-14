@@ -9,10 +9,10 @@ describe Item do
     subject.should_not be_valid
   end
   
-  it "should report total_proce as the price plus the nongift_amount" do
-    item = FactoryGirl.build(:fa_item)
-    item.price.should eq 5000
-    item.nongift_amount.should eq 400
+  it "should report total_price as the price plus the nongift_amount" do
+    item = Item.new
+    item.price = 5000
+    item.nongift_amount = 400
     item.total_price.should eq 5400
   end
   
@@ -29,7 +29,7 @@ describe Item do
   end
   
   describe ".for" do
-    let(:product) { FactoryGirl.build(:ticket) }
+    let(:product) { FactoryGirl.create(:ticket) }
     subject { Item.for(product, lambda { |item| item.realized_price * 0.035 }) }
   
     it { should be_an Item }
@@ -134,9 +134,10 @@ describe Item do
   
   describe "#dup!" do
     it "creates a duplicate item without the id and state" do
-      old_attr = subject.attributes.dup
-      Item.should_receive(:new).with(old_attr.reject { |key, value| %w( id state ).include? key })
-      subject.dup!
+      dupe = subject.dup!
+      dupe.id.should be_nil
+      dupe.state.should be_nil
+      dupe.price.should eq subject.price
     end
   end
   

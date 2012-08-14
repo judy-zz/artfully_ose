@@ -2,9 +2,9 @@ module ActiveMerchantTestHelper
   
   def gateway
     @gateway ||= ActiveMerchant::Billing::BraintreeGateway.new(
-        :merchant_id => Artfully::Application.config.braintree.merchant_id,
-        :public_key  => Artfully::Application.config.braintree.public_key,
-        :private_key => Artfully::Application.config.braintree.private_key
+        :merchant_id => Rails.application.config.braintree.merchant_id,
+        :public_key  => Rails.application.config.braintree.public_key,
+        :private_key => Rails.application.config.braintree.private_key
       )
     ActiveMerchant::Billing::BraintreeGateway.stub(:new).and_return(@gateway)
     @gateway
