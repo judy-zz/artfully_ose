@@ -29,7 +29,7 @@
       %h3 Create List Segment
     .modal-body
       = form.hidden_field :search_id, :value => @search.id
-      = form.text_field :name, :placeholder => "Name your list segment..."
+      = form.text_field :name, :placeholder => "Name your list segment...", :required => "required"
     .modal-footer
       %a.btn{"data-dismiss" => "modal", :href => "#"} Close
       = form.submit "Save", :class => "btn btn-primary"

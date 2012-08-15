@@ -19,7 +19,8 @@ class SegmentsController < ApplicationController
     if @segment.save
       redirect_to @segment
     else
-      render :new
+      flash[:error] = "List segment could not be created. Please remember to type a name!"
+      redirect_to Search.find(params[:segment][:search_id])
     end
   end
 end
