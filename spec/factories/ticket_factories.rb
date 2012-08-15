@@ -23,7 +23,7 @@ FactoryGirl.define do
   factory :sold_ticket, :parent => :ticket do
     state :sold
     after(:create) do |ticket|
-      ticket.sell_to :person
+      ticket.sell_to FactoryGirl.create(:person)
     end
   end
 end

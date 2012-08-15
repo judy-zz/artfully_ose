@@ -16,6 +16,7 @@ Spork.prefork do
   require 'rspec/rails'
   require 'cancan/matchers'
   require 'sunspot/rails/spec_helper'
+  require 'support/active_merchant_test_helper'
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.

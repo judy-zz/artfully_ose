@@ -2,7 +2,6 @@ FactoryGirl.define do
   factory :item do
     product { FactoryGirl.create(:sold_ticket) }
     association :order
-    reseller_net 100
   end
 
   factory :free_item, :parent => :item do
