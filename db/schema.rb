@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120807174950) do
+ActiveRecord::Schema.define(:version => 20120815190835) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -339,14 +339,6 @@ ActiveRecord::Schema.define(:version => 20120807174950) do
     t.datetime "updated_at"
   end
 
-  create_table "purchasable_tickets", :force => true do |t|
-    t.integer  "cart_id"
-    t.string   "ticket_id"
-    t.string   "lock_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "reseller_attachments", :force => true do |t|
     t.string   "image_file_name"
     t.string   "image_content_type"
@@ -415,9 +407,11 @@ ActiveRecord::Schema.define(:version => 20120807174950) do
   end
 
   create_table "segments", :force => true do |t|
-    t.string  "name",            :null => false
-    t.integer "organization_id", :null => false
-    t.integer "search_id",       :null => false
+    t.string   "name",            :null => false
+    t.integer  "organization_id", :null => false
+    t.integer  "search_id",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "segments", ["organization_id"], :name => "index_segments_on_organization_id"

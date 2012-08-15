@@ -4,6 +4,8 @@ class Segment < ActiveRecord::Base
   belongs_to :organization
   belongs_to :search
 
+  default_scope { order("created_at DESC") }
+
   validates_presence_of :organization_id
   validates_presence_of :search_id
   validates :name, :presence => true, :length => { :maximum => 128 }
