@@ -1,7 +1,7 @@
 class SegmentsController < ApplicationController
   def index
     authorize! :view, Segment
-    @segments = current_organization.segments
+    @segments = current_organization.segments.paginate(:page => params[:page], :per_page => 10)
   end
 
   def show
