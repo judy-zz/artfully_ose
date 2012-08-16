@@ -1,6 +1,8 @@
 - in_section :people
+- content_for :title do
+  Editing #{@person}
 - content_for :header do
-  %h1="Editing #{@person.first_name} #{@person.last_name}"
+  %h1="Editing #{@person}"
 
 .row
   .span6.offset3

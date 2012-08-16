@@ -251,6 +251,20 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def to_s
+    if first_name.present? && last_name.present?
+      "#{first_name} #{last_name}"
+    elsif first_name.present?
+      first_name.to_s
+    elsif last_name.present?
+      last_name.to_s
+    elsif email.present?
+      email.to_s
+    else
+      "Anonymous"
+    end
+  end
+
   private
     def person_info
       !(first_name.blank? and last_name.blank? and email.blank?)
