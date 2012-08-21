@@ -19,10 +19,6 @@
     .form-actions.row-fluid
       .pull-left
         %a.btn{"data-toggle" => "modal", :href => "#segment-modal"} Create List Segment
-      .pull-left
-        = form_tag(people_path(:format => :csv), :method => :get) do
-          = hidden_field_tag :search, params[:search]
-          = submit_tag "Export CSV", :class => "btn"
 
 #segment-modal.modal.fade
   = form_for(@segment) do |form|
