@@ -19,7 +19,10 @@
       
     .span6 
       %h2 Available Now
-      %p Version 1.0 includes tools for ticketing, fundraising, and constituent management.  As we create new features for the hosted software, we’ll share them in the open source edition updates too. (See what features are coming on our development roadmap.) In the meantime, we hope you’ll share any new features you build with us and other users.
+      %p
+        Version 1.0 includes tools for ticketing, fundraising, and constituent management.  As we create new features for the hosted software, we’ll share them in the open source edition updates too. (See what features are coming on our 
+        =link_to "development roadmap.","https://artfully.zendesk.com/entries/21562008-feature-development-roadmap"
+        In the meantime, we hope you’ll share any new features you build with us and other users.".html_safe
       
 .landing-section
   .row
@@ -33,4 +36,7 @@
     .span10.offset1
       %p="Artful.ly Open Source Edition (and her predecessor, ATHENA) have been generously supported by the #{link_to "Andrew W. Mellon Foundation", "http://www.mellon.org/"}, the #{link_to "Doris Duke Charitable Foundation", "http://www.ddcf.org/"} and the #{link_to "Kresge Foundation", "http://www.kresge.org/"}. (Thank you!)".html_safe
 
-      %p="Artful.ly OSE is licensed under the #{link_to("GPLv3 ", "http://www.gnu.org/licenses/gpl-3.0.html")}".html_safe
+      %p 
+        Artful.ly OSE is licensed under the
+        = link_to "GPLv3", "http://www.gnu.org/licenses/gpl-3.0.html"
+        license.
