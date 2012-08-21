@@ -46,6 +46,12 @@ Given /^I search for people tagged with "([^"]*)"$/ do |tag|
   click_button("Search")
 end
 
+Given /^I do an advanced search for people tagged with "([^"]*)"$/ do |tag|
+  visit new_search_path
+  fill_in("search_tagging", :with => tag)
+  click_button("Search")
+end
+
 Then /^I should see (\d+) people$/ do |count|
   page.should have_xpath("//table[@class='table people-list']/tbody/tr", :count => count.to_i)
 end

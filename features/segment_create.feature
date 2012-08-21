@@ -6,8 +6,10 @@ Feature: Order creation
     Given I am logged in
     And I am part of an organization
     And there are 5 people tagged with "donor"
-    And I search for people tagged with "donor"
-    # When I press "Create List Segment"
-    # And I fill in "segment_name" with "New Segment"
-    # And I save the list segment
-    # Then I should see 5 people
+    And I do an advanced search for people tagged with "donor"
+    And show me the page
+    When I follow "Create List Segment"
+    And I fill in "segment_name" with "New Segment"
+    And I press "Save"
+    Then I should see "List Segment: New Segment"
+    And I should see 5 people
