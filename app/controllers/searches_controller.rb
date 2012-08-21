@@ -1,11 +1,13 @@
 class SearchesController < ApplicationController
 
   def new
+    authorize! :view, Search
     @search = Search.new(params[:search])
     prepare_search_and_people
   end
 
   def create
+    authorize! :create, Search
     @search = Search.new(params[:search])
     @search.organization_id = current_user.current_organization.id
     @search.save!
