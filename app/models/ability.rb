@@ -92,6 +92,10 @@ class Ability
     can :manage, ResellerEvent do |reseller_event|
       reseller_event.organization == user.current_organization
     end
+
+    can :manage, Search do |search|
+      search.organization == user.current_organization
+    end
   end
 
   def paid_ticketing_abilities_for(user)
