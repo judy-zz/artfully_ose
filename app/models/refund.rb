@@ -10,7 +10,7 @@ class Refund
   end
 
   def submit(options = {})
-    return_items = options[:and_return] || false
+    return_items_to_inventory = options[:and_return] || false
 
     gateway = ActiveMerchant::Billing::BraintreeGateway.new(
       :merchant_id => Rails.application.config.braintree.merchant_id,
@@ -28,7 +28,7 @@ class Refund
     end
     
     if @success
-      items.each(&:return!) if return_items
+      items.each { |i| i.return!(return_items_to_inventory) }
       items.each(&:refund!)
       create_refund_order(transaction_id)
     end

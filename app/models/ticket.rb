@@ -38,7 +38,8 @@ class Ticket < ActiveRecord::Base
     event(:exchange, :success => :metric_exchanged)  { transitions :from => [ :on_sale, :off_sale ],   :to => :sold    }
     event(:sell, :success => :metric_sold)      { transitions :from => :on_sale,                  :to => :sold      }
     event(:comp)      { transitions :from => [ :on_sale, :off_sale ],   :to => :comped    }
-    event(:do_return) { transitions :from => [ :comped, :sold ],        :to => :on_sale   }
+    event(:return_to_inventory)   { transitions :from => [ :comped, :sold ],        :to => :on_sale   }
+    event(:return_off_sale)       { transitions :from => [ :comped, :sold ],        :to => :off_sale  }
   end
 
   def datetime
@@ -187,13 +188,13 @@ class Ticket < ActiveRecord::Base
     super if destroyable?
   end
 
-  def return!
+  def return!(and_return_to_inventory = true)
     self.buyer = nil
     self.sold_price = nil
     self.sold_at = nil
     self.buyer_id = nil
     save
-    do_return!
+    and_return_to_inventory ? return_to_inventory! : return_off_sale!
   end
 
   def self.put_on_sale(tickets)

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    artfully_ose (1.0.0.rc3)
+    artfully_ose (1.0.0.rc4)
       activemerchant
       activerecord-import (= 0.2.9)
       acts-as-taggable-on (~> 2.1.0)

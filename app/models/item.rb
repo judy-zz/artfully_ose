@@ -130,9 +130,9 @@ class Item < ActiveRecord::Base
     self.state = "comped"
   end
 
-  def return!
+  def return!(return_items_to_inventory = true)
     update_attribute(:state, "returned")
-    product.return! if product.returnable?
+    product.return!(return_items_to_inventory) if product.returnable?
   end
 
   def modified?

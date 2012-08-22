@@ -54,6 +54,8 @@ module Dummy
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+    
+    RestfulMetrics::Client.disabled = true if ENV["RESTFUL_METRICS_APP"].blank?
   end
 end
 

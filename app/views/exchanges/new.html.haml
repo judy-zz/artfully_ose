@@ -27,7 +27,7 @@
       %ul.nav.nav-pills.nav-stacked#section-drilldown
         - @show.chart.sections.each do |section|
           %li{:class => @section && section.id == @section.id ? :active : :unselected }
-            = link_to (truncate(section.name, :length => 20, :separator => ' ', :omission => '...') + ' ' + number_to_currency(section.price / 100)), params.merge({:section_id => section.id}), :title => 'section-name'
+            = link_to (truncate(section.name, :length => 20, :separator => ' ', :omission => '...') + ' ' + number_as_cents(section.price)), params.merge({:section_id => section.id}), :title => 'section-name'
 
 .row          
   .span6

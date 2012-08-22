@@ -227,10 +227,16 @@ describe Item do
   
   describe "#return!" do
     context "with tickets" do
-      it "returns the product to inventory if it is returnable" do
+      it "returns the product to inventory if it is returnable and we say so" do
         subject.product.stub(:returnable?).and_return(true)
-        subject.product.should_receive(:return!)
+        subject.product.should_receive(:return!).with(true)
         subject.return!
+      end
+      
+      it "returns the product to off_sale if we want" do
+        subject.product.stub(:returnable?).and_return(true)
+        subject.product.should_receive(:return!).with(false)
+        subject.return!(false)
       end
   
       it "does not return the product if it is not returnble" do

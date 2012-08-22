@@ -355,6 +355,11 @@ describe Ticket do
        subject.return!
        subject.should be_on_sale
      end
+     
+     it "or off sale" do
+       subject.return!(false)
+       subject.should be_off_sale
+     end
    end
    
    describe "#put_on_sale" do

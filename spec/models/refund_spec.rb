@@ -51,14 +51,28 @@ describe Refund do
   
   describe "when refunding free items" do    
     it "should not contact braintree if only free items are being refunded" do
-      subject.items.each { |i| i.stub(:return!) }
-      subject.items.each { |i| i.stub(:refund!) }
       free_refund = Refund.new(order, free_items)
+      free_refund.items.each { |i| i.should_receive(:return!).with(false).and_return(true) }
+      free_refund.items.each { |i| i.stub(:refund!) }
       free_refund.refund_amount.should eq 0
       gateway.should_not_receive(:refund)
       free_refund.submit
       free_refund.should be_successful
     end
+  end
+  
+  describe "refunding and not returning the tickets to inventory" do
+    before(:each) do
+      gateway.should_receive(:refund).with(15600, order.transaction_id).and_return(successful_response)
+      
+      subject.items.each { |i| i.stub(:refund!) }
+    end
+    
+    it "should set the tickets to off sale" do
+      subject.items.each { |i| i.should_receive(:return!).with(false) }
+      subject.submit({:and_return => false})
+    end
+    
   end
   
   describe "refunding an item from an order with just free items" do
