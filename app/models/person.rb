@@ -260,8 +260,10 @@ class Person < ActiveRecord::Base
       last_name.to_s
     elsif email.present?
       email.to_s
+    elsif id.present?
+      "No Name ##{id}"
     else
-      "Anonymous"
+      "No Name"
     end
   end
 
