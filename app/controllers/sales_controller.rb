@@ -50,7 +50,7 @@ class SalesController < ApplicationController
     @sale.tickets.each_with_index do |ticket, i|
       if ticket.sold? || ticket.comped?
         door_list_rows[i] = {}
-        door_list_rows[i]['buyer'] = (@sale.buyer.first_name || "") + " " + (@sale.buyer.last_name || "")
+        door_list_rows[i]['buyer'] = @sale.buyer.to_s
         door_list_rows[i]['email'] = @sale.buyer.email
         door_list_rows[i]['section'] = ticket.section.name
         door_list_rows[i]['price'] = ticket.sold_price

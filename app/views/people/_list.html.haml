@@ -5,7 +5,7 @@
     - people.each do |person|
       %tr
         %td.name
-          = link_to person, person_url(person)
+          = link_to_person person
           %br
           = person.email
         %td.tags

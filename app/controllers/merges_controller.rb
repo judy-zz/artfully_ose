@@ -17,7 +17,7 @@ class MergesController < ApplicationController
     @winner = Person.find(params[:winner])
     @loser = Person.find(params[:loser])
     @result = Person.merge(@winner, @loser)
-    flash[:notice] = "#{@loser.first_name} #{@loser.last_name} has been merged into this record"
+    flash[:notice] = "#{@loser} has been merged into this record"
     redirect_to person_path(:id => @winner.id)
   end
 

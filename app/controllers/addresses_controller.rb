@@ -4,7 +4,7 @@ class AddressesController < ApplicationController
   def create
     address = @person.build_address(params[:address])
     if address.save
-      flash[:notice] = "Successfully added an address for #{@person.first_name} #{@person.last_name}."
+      flash[:notice] = "Successfully added an address for #{@person}."
     else
       flash[:error] = "There was a problem creating this address."
     end
@@ -13,7 +13,7 @@ class AddressesController < ApplicationController
 
   def update
     if @person.update_address(params[:address], current_user.current_organization.time_zone, current_user)
-      flash[:notice] = "Successfully updated the address for #{@person.first_name} #{@person.last_name}."
+      flash[:notice] = "Successfully updated the address for #{@person}."
     else
       flash[:error] = "There was a problem updating this address."
     end

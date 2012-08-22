@@ -38,7 +38,7 @@ $("document").ready(function(){
     $(this).removeClass('loading')
     $(this).find("input:submit").removeAttr('disabled');
     person = cleanJsonPerson(person)
-		updateSelectedPerson(person.id, person.first_name + " " + person.last_name, person.email, person.company_name)
+		updateSelectedPerson(person.id, person.to_s, person.email, person.company_name)
 		clearNewPersonForm()
     $("#new-person-popup").modal('hide')
   });
@@ -62,7 +62,7 @@ $("document").ready(function(){
 		  
 				$.each(people, function (i, person) {
 				  person = cleanJsonPerson(person)
-					responsePeople[i] =  "<div id='search-result-name'>"+ person.first_name +" "+ person.last_name +"</div>"
+					responsePeople[i] =  "<div id='search-result-name'>"+ person.to_s +"</div>"
 					responsePeople[i] += "<div id='search-result-email' class='search-result-details'>"+ person.email +"</div>"
 					responsePeople[i] += "<div class='clear'></div>"
 					responsePeople[i] += "<div id='search-result-company-name' class='search-result-details'>"+ person.company_name +"</div>"	
