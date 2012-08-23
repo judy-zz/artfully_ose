@@ -69,6 +69,7 @@ class Search < ActiveRecord::Base
     column_names = Person.column_names.collect {|cn| "people.#{cn}" }
 
     people = Person.where(:organization_id => organization_id)
+    people = people.where("dummy IS NOT TRUE")
     people = people.order('lower(last_name) ASC')
     people = people.tagged_with(tagging) unless tagging.blank?
     people = people.joins(:address) unless zip.blank? && state.blank?
