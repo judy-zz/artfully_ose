@@ -124,7 +124,7 @@ Artfully::Application.routes.draw do
     resources :phones, :only => [:create, :destroy]
     resource  :address, :only => [:create, :update, :destroy]    
   end
-  resources :segments, :only => [:index, :show, :create]
+  resources :segments, :only => [:index, :show, :create, :destroy]
 
   resources :events do
     get :widget,  :on => :member

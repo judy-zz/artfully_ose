@@ -16,6 +16,7 @@ class SearchesController < ApplicationController
     @search = Search.find(params[:id])
     authorize! :view, @search
     @segment = Segment.new
+    session[:return_to] ||= request.referer # Record the current page, in case creating a list segment fails.
     prepare_search_and_people
   end
 
