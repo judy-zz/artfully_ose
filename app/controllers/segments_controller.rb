@@ -7,10 +7,6 @@ class SegmentsController < ApplicationController
   def show
     @segment = Segment.find(params[:id])
     authorize! :view, @segment
-    respond_to do |format|
-      format.html
-      format.csv { render :csv => @segment.people, :filename => "#{@segment.name}-#{DateTime.now.strftime("%m-%d-%y")}" }
-    end
   end
 
   def create
@@ -20,7 +16,13 @@ class SegmentsController < ApplicationController
       redirect_to @segment
     else
       flash[:error] = "List segment could not be created. Please remember to type a name!"
-      redirect_to Search.find(params[:segment][:search_id])
+      redirect_to session[:return_to]
     end
+  end
+
+  def destroy
+    authorize! :destroy, Segment
+    current_organization.segments.find(params[:id]).destroy
+    redirect_to segments_path
   end
 end

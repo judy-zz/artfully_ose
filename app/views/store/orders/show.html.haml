@@ -9,7 +9,7 @@
       
   #clear-cart.centered
     -unless current_cart.empty?
-      = link_to "Clear My Cart", store_order_path(current_cart), :method => :delete, :confirm => 'Are you sure you want to empty your cart?'
+      = link_to "Clear My Cart", store_order_path(current_cart), :method => :delete, :data => { :confirm => 'Are you sure you want to empty your cart?' }
 
 %table.table
   - current_cart.tickets.each do |ticket|

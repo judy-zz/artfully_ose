@@ -35,6 +35,7 @@ Given /^there are (\d+) people tagged with "([^"]*)"$/ do |quantity, tag|
   @people = quantity.to_i.times.collect do
     person = Factory(:person, :organization => @current_user.current_organization)
     person.tag_list = Array.wrap(tag)
+    person.save
     person
   end
 end

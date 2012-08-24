@@ -14,5 +14,6 @@
           %li
             %h4= link_to segment.name, segment
             .details-long= segment.description.html_safe
+            = link_to "Delete", segment, :method => :delete, :class=>'btn btn-danger btn-mini', :data => {:confirm => "Are you sure you want to delete list segment #{segment.name}?"}
     - if @segments.present?
       = will_paginate @segments, :inner_window => 2, :outer_window => 0
