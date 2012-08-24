@@ -6,7 +6,7 @@
 
   .from-here
     =link_to "Download as CSV", door_list_event_show_path(@event, @show, format: "csv"), :class => "btn"
-    =link_to_function("Toggle Printable View", "javascript:togglePrintPreview()", :class => 'btn')
+    =link_to "Toggle Printable View", "#", :onclick => "togglePrintPreview()", :class => 'btn'
     =icon_link_to("Return to show", event_show_path(@show.event, @show), 'icon-share-alt', 'btn', '')
 
 .row

@@ -216,7 +216,7 @@ module ApplicationHelper
   end
 
   def link_to_remove_fields(name, f)
-    f.hidden_field(:_destroy) + link_to_function(name, "remove_fields(this)")
+    f.hidden_field(:_destroy) + link_to(name, "#", :onclick => "remove_fields(this)")
   end
   
   def link_to_add_fields(name, f, association, view_path = '')
@@ -226,7 +226,7 @@ module ApplicationHelper
       template_path = view_path + association.to_s.singularize + "_fields"
       render(template_path, :f => builder)
     end
-    link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
+    link_to name, "#", :onclick => "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")"
   end
 
   # This will be in Rails 4. Delete it when we upgrade!
