@@ -22,7 +22,7 @@
               %td
                 = link_to "Sign in", sessions_admin_user_path(user), :method => 'post', :class => "btn btn-small"
                 - unless user == @organization.owner
-                  = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :confirm => "Are you sure you want to remove #{user.email}?", :method => :delete
+                  = link_to "Remove", admin_organization_membership_path(@organization, user.memberships.first), :class => 'btn btn-small btn-danger', :method => :delete, :data => {:confirm => "Are you sure you want to remove #{user.email}?"}
     
     %section#kits
       %h3 Kits
