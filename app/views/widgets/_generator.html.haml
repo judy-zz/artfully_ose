@@ -1,5 +1,8 @@
 .row
   .span6
+    %h3 Heads up:
+    %p
+      %strong This tool will generate the custom CSS and JavaScipt code you need to install a ticketing and/or donation widget on your website. To install any Artful.ly widget, you must have a firm understanding of your site's markup language. If you don't know HTML from a hat tree, we suggest you call your friendly website developer or use the automatically generated Artful.ly Storefronts to start selling tickets now.
     =form_tag widgets_path, {:action=>'create', :remote=>'true', :id => 'widget-form', 'data-type' => 'html'} do
       .control-group
         %h4 I want to...
