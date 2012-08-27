@@ -5,7 +5,7 @@ function bulletedListItem(person){
   var $li = $("li.template").clone().removeClass("template hidden"),
       $label = $(document.createElement("label")).attr({
         "for": "person_id"
-      }).html(person.to_s),
+      }).html(person.first_name + " " + person.last_name),
       $radio = $(document.createElement("input")).attr({
         "name":"person_id",
         "type":"radio",

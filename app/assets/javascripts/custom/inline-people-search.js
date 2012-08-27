@@ -38,7 +38,7 @@ $("document").ready(function(){
     $(this).removeClass('loading')
     $(this).find("input:submit").removeAttr('disabled');
     person = cleanJsonPerson(person)
-		updateSelectedPerson(person.id, person.to_s, person.email, person.company_name)
+		updateSelectedPerson(person.id, person.first_name + " " + person.last_name, person.email, person.company_name)
 		clearNewPersonForm()
     $("#new-person-popup").modal('hide')
   });
