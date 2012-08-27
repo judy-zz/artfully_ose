@@ -7,7 +7,7 @@
 .row
   .span8.offset2
     - if @segments.empty?
-      %p.detailed-list= "You have no list segments yet! #{link_to "Create one", people_path} by searching for people.".html_safe
+      %p.detailed-list= "You have no list segments yet! #{link_to "Create one", new_search_path} by searching for people.".html_safe
     - else
       %ul.detailed-list
         - @segments.each do |segment|
