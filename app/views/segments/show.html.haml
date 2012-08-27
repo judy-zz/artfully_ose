@@ -14,6 +14,7 @@
     %p
       To view all the data on patrons in this segment, including mailing address and phone numbers, export this segment to
       = link_to('CSV', segment_path(@segment, :format => :csv))
+    %p= link_to "Delete", @segment, :method => :delete, :class=>'btn btn-danger', :data => {:confirm => "Are you sure you want to delete list segment #{@segment.name}?"}
 
   .span8
     %table.table.people-list
