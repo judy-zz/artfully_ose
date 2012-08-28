@@ -213,6 +213,7 @@ Artfully::Application.routes.draw do
   match '/features' => 'pages#features'
   match '/updates' => 'pages#updates'
   match '/opensource' => 'pages#opensource'
+  match '/contact' => 'pages#contact'
   match '/pages/tou' => 'pages#tou', :as => 'tou'
   match '/pages/user_agreement' => 'pages#user_agreement', :as => 'user_agreement'
   match '/pages/privacy' => 'pages#privacy', :as => 'privacy'
