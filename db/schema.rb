@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120815190835) do
+ActiveRecord::Schema.define(:version => 20120828160906) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -314,7 +314,7 @@ ActiveRecord::Schema.define(:version => 20120815190835) do
     t.string   "last_name"
     t.string   "company_name"
     t.string   "website"
-    t.boolean  "dummy"
+    t.boolean  "dummy",              :default => false, :null => false
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "old_mongo_id"
