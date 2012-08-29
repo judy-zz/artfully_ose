@@ -35,6 +35,10 @@ module NavigationHelpers
     when /admin organization page for "(.+)"/
       o = Organization.find_by_name($1)
       admin_organization_path(o)
+    
+    when /segment page for "(.+)"/
+      segment = Segment.find_by_name($1)
+      segment_path(segment)
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

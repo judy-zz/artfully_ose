@@ -7,6 +7,7 @@ Feature: Segment deletion
     Given I am logged in
     And I am part of an organization
     And there is a list segment called "Segment 1"
+    And I am on the segment page for "Segment 1"
+    And I decide I don't want it any more so I click Delete
     And I go to the segments page
-    When I follow "Delete"
     Then I should not see "Segment 1"

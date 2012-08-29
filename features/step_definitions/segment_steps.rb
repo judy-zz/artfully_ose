@@ -12,3 +12,7 @@ Given /^there is a list segment called "([^"]*)"$/ do |arg1|
   segment.organization = @current_user.current_organization
   segment.save!
 end
+
+Given /^I decide I don't want it any more so I click Delete$/ do
+  click_link("Delete")
+end
