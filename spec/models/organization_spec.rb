@@ -178,24 +178,24 @@ describe Organization do
     def create_event_with_a_sale(producer, reseller = nil)
       FakeWeb.register_uri :post, "http://localhost:8982/solr/update?wt=ruby", :body => ""
 
-      person = FactoryGirl.build(:person)
+      person = FactoryGirl.create(:person)
 
       order =
         if reseller
-          FactoryGirl.build(:reseller_order, :organization => reseller, :person => person)
+          FactoryGirl.create(:reseller_order, :organization => reseller, :person => person)
         else
-          FactoryGirl.build(:order, :organization => producer, :person => person)
+          FactoryGirl.create(:order, :organization => producer, :person => person)
         end
 
-      event = FactoryGirl.build(:event, :organization => producer)
-      show = FactoryGirl.build(:show, :event => event, :organization => producer)
-      ticket = FactoryGirl.build(:ticket, :show => show, :organization => producer, :state => :sold)
+      event = FactoryGirl.create(:event, :organization => producer)
+      show = FactoryGirl.create(:show, :event => event, :organization => producer)
+      ticket = FactoryGirl.create(:ticket, :show => show, :organization => producer, :state => :sold)
 
       item =
         if reseller
-          FactoryGirl.build(:item, :product => ticket, :order => nil, :reseller_order => order, :show => show)
+          FactoryGirl.create(:item, :product => ticket, :order => nil, :reseller_order => order, :show => show)
         else
-          FactoryGirl.build(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
+          FactoryGirl.create(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
         end
 
       order.items << item
