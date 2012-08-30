@@ -149,12 +149,13 @@ class Person < ActiveRecord::Base
     
     mergables.each do |mergable|
       loser.send(mergable).each do |m|
-        m.update_attribute(:person, winner)
+        m.person = winner
+        m.save!
       end
     end
     
     loser.tickets.each do |ticket|
-      ticket.update_attribute(:buyer, winner)
+      ticket.update_column(:buyer_id, winner.id)
     end
     
     loser.tags.each do |t|
