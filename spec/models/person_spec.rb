@@ -53,8 +53,8 @@ describe Person do
     end
     
     it "should calculate the lifetime value" do
-      person = FactoryGirl.build(:person)
-      order = FactoryGirl.build(:order, :person => person)
+      person = FactoryGirl.create(:person)
+      order = FactoryGirl.create(:order, :person => person)
       items = 3.times.collect { FactoryGirl.create(:item, :order => order) }
       
       person.lifetime_value.should eq 0
@@ -285,7 +285,7 @@ describe Person do
   end
   
   describe "uniqueness" do
-    subject { FactoryGirl.build(:person) }
+    subject { FactoryGirl.create(:person) }
     it "should not be valid if another person record exists with that email for the organization" do
       FactoryGirl.build(:person, :email => subject.email, :organization => subject.organization)
       subject.should_not be_valid
