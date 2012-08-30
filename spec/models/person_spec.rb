@@ -294,10 +294,6 @@ describe Person do
   
   describe "#dummy_for" do
     let(:organization) { FactoryGirl.build(:organization) }
-    it "fetches the dummy record for the organization" do
-      person = Person.dummy_for(organization)
-      Person.dummy_for(organization).should eq person
-    end
   
     it "creates the dummy record if one does not yet exist" do
       person = Person.dummy_for(organization)
