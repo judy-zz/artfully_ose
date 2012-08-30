@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Organization do
+  disconnect_sunspot
   subject { FactoryGirl.build(:organization) }
 
   it { should respond_to :name }
@@ -137,85 +138,51 @@ describe Organization do
   describe "#update_kits" do
     let(:kit) { mock(:sponsored_kit, :activated? => true, :cancelled? => true) }
 
-    it "cancels the kit if the FSP is no longer active" do
+    before(:each) do
       subject.stub(:fsp).and_return(mock(:fsp, :active? => false, :inactive? => true))
       subject.stub(:sponsored_kit).and_return(kit)
-      subject.send(:update_kits)
+    end
 
+    it "cancels the kit if the FSP is no longer active" do
       kit.should_receive(:cancel_with_authority!)
+      subject.send(:update_kits)
     end
 
     it "activates the kit if the FSP is active" do
-      subject.stub(:fsp).and_return(mock(:fsp, :active? => true, :inactive? => false))
-      subject.stub(:sponsored_kit).and_return(kit)
-
       kit.should_receive(:activate_without_prejudice!)
       subject.send(:update_kits)
     end
   end
 
   describe "#events_with_sales" do
-    let(:org2) { FactoryGirl.build(:organization_with_reselling) }
-    subject { FactoryGirl.build(:organization_with_reselling) }
+    subject { FactoryGirl.create(:organization) }
 
     before do
-      # An event produced and sold by this organization.
       create_event_with_a_sale subject
-
-      # An event produced by this organization and sold by a reseller.
-      create_event_with_a_sale subject, org2
-
-      # An event produced by another organization and sold by this organization.
-      create_event_with_a_sale org2, subject
-
-      # An event produced and sold by another organization.
-      create_event_with_a_sale org2
     end
 
     it "should have its own events with sales and events it has resold" do
-      subject.should have(3).events_with_sales
+      subject.should have(1).events_with_sales
     end
 
-    def create_event_with_a_sale(producer, reseller = nil)
-      FakeWeb.register_uri :post, "http://localhost:8982/solr/update?wt=ruby", :body => ""
-
+    def create_event_with_a_sale(producer)
       person = FactoryGirl.create(:person)
 
-      order =
-        if reseller
-          FactoryGirl.create(:reseller_order, :organization => reseller, :person => person)
-        else
-          FactoryGirl.create(:order, :organization => producer, :person => person)
-        end
+      order = FactoryGirl.create(:order, :organization => producer, :person => person)
 
       event = FactoryGirl.create(:event, :organization => producer)
       show = FactoryGirl.create(:show, :event => event, :organization => producer)
       ticket = FactoryGirl.create(:ticket, :show => show, :organization => producer, :state => :sold)
 
-      item =
-        if reseller
-          FactoryGirl.create(:item, :product => ticket, :order => nil, :reseller_order => order, :show => show)
-        else
-          FactoryGirl.create(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
-        end
+      item = FactoryGirl.create(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
 
       order.items << item
       order.save!
 
       order.reload
       producer.reload
-      reseller.reload if reseller
-
-      producer.should_not == reseller
       order.should have(1).items
       event.should have(1).shows
-
-      if reseller
-        order.organization.should_not == item.show.organization
-        order.items.first.show.should == show
-        order.should have(1).external_order
-        order.external_orders.first.organization.should == producer
-      end
     end
   end
 end
