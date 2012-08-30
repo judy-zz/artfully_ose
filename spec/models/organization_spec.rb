@@ -140,9 +140,9 @@ describe Organization do
     it "cancels the kit if the FSP is no longer active" do
       subject.stub(:fsp).and_return(mock(:fsp, :active? => false, :inactive? => true))
       subject.stub(:sponsored_kit).and_return(kit)
+      subject.send(:update_kits)
 
       kit.should_receive(:cancel_with_authority!)
-      subject.send(:update_kits)
     end
 
     it "activates the kit if the FSP is active" do
