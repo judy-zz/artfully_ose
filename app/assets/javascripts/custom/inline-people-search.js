@@ -62,7 +62,7 @@ $("document").ready(function(){
 		  
 				$.each(people, function (i, person) {
 				  person = cleanJsonPerson(person)
-					responsePeople[i] =  "<div id='search-result-name'>"+ person.to_s +"</div>"
+					responsePeople[i] =  "<div id='search-result-name'>"+ person.first_name +" "+ person.last_name +"</div>"
 					responsePeople[i] += "<div id='search-result-email' class='search-result-details'>"+ person.email +"</div>"
 					responsePeople[i] += "<div class='clear'></div>"
 					responsePeople[i] += "<div id='search-result-company-name' class='search-result-details'>"+ person.company_name +"</div>"	
