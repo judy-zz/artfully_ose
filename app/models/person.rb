@@ -22,7 +22,7 @@ class Person < ActiveRecord::Base
   end
 
   def destroy
-    update_attribute(:deleted_at, Time.now)
+    update_column(:deleted_at, Time.now)
   end
   
   def dupe_code
@@ -193,10 +193,6 @@ class Person < ActiveRecord::Base
       :dummy           => true,
       :organization_id => organization.id
     })
-  end
-
-  def to_customer
-    AthenaCustomer.new(:person_id => id, :email => email, :first_name => first_name, :last_name => last_name)
   end
 
   def starred_actions
