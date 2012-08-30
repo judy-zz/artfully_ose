@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'active_merchant_test_helper'
+require 'support/active_merchant_test_helper'
 
 describe Cart do
   disconnect_sunspot
