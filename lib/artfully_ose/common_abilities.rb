@@ -24,6 +24,10 @@ module ArtfullyOse
       can :view, Statement do |statement|
         user.is_in_organization?
       end
+
+      can :manage, Search do |search|
+        search.organization == user.current_organization
+      end
     end
 
     def ticketing_abilities_for(user)
