@@ -5,8 +5,7 @@
       .day= show.datetime_local_to_event.strftime("%e")
     .time
       %h4.day_and_month
-        = show.datetime_local_to_event.strftime("%A, %B")
-        = show.datetime_local_to_event.strftime("%e").to_i.ordinalize
+        = "#{show.datetime_local_to_event.strftime("%A, %B")} #{show.datetime_local_to_event.strftime("%e").to_i.ordinalize}"
 
       = show.datetime_local_to_event.strftime("%l:%M %p")
 

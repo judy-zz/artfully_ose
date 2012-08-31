@@ -1,5 +1,6 @@
 class Event < ActiveRecord::Base
   include Ext::Integrations::Event
+  include EventPresenter
   
   attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes,
                   :show_special_instructions, :special_instructions_caption
@@ -31,7 +32,7 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name, :organization_id
 
-  default_scope where(:deleted_at => nil)
+  default_scope where(:deleted_at => nil).order("created_at DESC")
   scope :published, includes(:shows).where(:shows => { :state => "published" })
 
   delegate :time_zone, :to => :venue
@@ -53,14 +54,11 @@ class Event < ActiveRecord::Base
   
   def create_default_chart
     chart = self.charts.build({ :name => self.name, 
-                        :is_template => false })
+                                :is_template => false })
     chart.organization = self.organization
     chart.save
   end
-  
-  #
-  # Hack McHackerson. When we go back to multiple charts per event, this is where we start
-  #
+
   def default_chart
     charts.first
   end

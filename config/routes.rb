@@ -66,7 +66,8 @@ Rails.application.routes.draw do
     resources :phones, :only => [:create, :destroy]
     resource  :address, :only => [:create, :update, :destroy]
   end
-  resources :segments
+  resources :searches, only: [:new, :create, :show]
+  resources :segments, :only => [:index, :show, :create, :destroy]
 
   resources :events do
     get :widget,  :on => :member

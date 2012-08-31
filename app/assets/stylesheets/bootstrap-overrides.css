@@ -267,3 +267,26 @@ section {
 .btn-primary.active {
   background-color: #004099 \9;
 }
+
+.form-vertical .input-append,
+.form-vertical .input-prepend,
+.form-vertical .input-prepend input {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.control {
+  margin-bottom: 5px;
+}
+
+.input-prepend .add-on,
+.input-append .add-on,
+.input-prepend .btn,
+.input-append .btn {
+  margin-left: -1px;
+}
+
+.input-prepend .add-on,
+.input-prepend .btn {
+  margin-right: -5px;
+}
