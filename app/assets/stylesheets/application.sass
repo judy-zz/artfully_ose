@@ -216,7 +216,7 @@ ul.report
     text-align: right
     margin: 0px
 
-tr.returned
+tr.returned, tr.refunded
   td.item-description, td.price
     text-decoration: line-through
     
@@ -261,3 +261,40 @@ span.help
   
 input.datepicker, input.datetimepicker
   cursor: pointer
+
+.form-vertical > input,
+.form-vertical > select,
+.form-vertical > .control,
+.form-vertical > .input-prepend
+  margin-bottom: 1.5em
+
+.form-vertical > .control > input
+  margin-bottom: 0
+
+.advanced-search input[type="date"]
+  width: 125px
+
+.advanced-search .range-separator
+  width: 20px
+  display: inline-block
+  text-align: center
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button
+  -webkit-appearance: none
+  margin: 0
+
+.details-long
+  margin-bottom: 1em
+
+.details-long ul
+  list-style: disc
+  margin-left: 17px
+  margin-bottom: 1em
+
+a.red
+  color: red
+
+a.red:hover
+  color: red
+  text-decoration: underline

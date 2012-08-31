@@ -293,6 +293,10 @@ function activateControls() {
   });
 
   $(".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
+	if (!Modernizr.inputtypes.date) {	
+		$('input[type="date"]' ).datepicker({dateFormat: 'yy-mm-dd'});	
+	}
+	
   $('.datetimepicker').datetimepicker({dateFormat: 'yy-mm-dd', timeFormat:'hh:mm tt', ampm: true });
 }
 

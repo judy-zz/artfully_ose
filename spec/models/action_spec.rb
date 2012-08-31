@@ -8,7 +8,7 @@ describe Action do
   let(:user) { FactoryGirl.build(:user) }
   let(:person) { FactoryGirl.build(:person) }
 
-  before(:all) do
+  before(:each) do
     user.organizations << organization
   end
 

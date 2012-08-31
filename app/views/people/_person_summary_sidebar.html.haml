@@ -29,7 +29,7 @@
       %li.row-fluid
         .span3= phone.kind
         .span7= phone.number
-        .span2= link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :class=>'btn btn-danger btn-mini', :confirm => "Are you sure you want to delete #{phone.number}?"
+        .span2= link_to "Delete", person_phone_path(@person.id, phone.id), :method => :delete, :class=>'btn btn-danger btn-mini', :data => {:confirm => "Are you sure you want to delete #{phone.number}?"}
 
   = form_for([person, Phone.new]) do |form|
     .row-fluid

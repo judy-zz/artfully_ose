@@ -11,13 +11,14 @@ describe Contribution do
       :occurred_at     => "2011-08-17 02:28 pm",
       :details         => "Some details.",
       :organization_id => organization.id,
-      :person_id       => person.id
+      :person_id       => person.id,
+      :creator_id      => 10
     }
   end
 
   subject { Contribution.new(attributes)}
 
-  [:person_id, :subtype, :amount, :details, :organization_id].each do |attribute|
+  [:person_id, :subtype, :amount, :details, :organization_id, :creator_id].each do |attribute|
     it "loads the #{attribute} when created" do
       subject.send(attribute).should eq attributes[attribute]
     end
@@ -85,6 +86,7 @@ describe Contribution do
       action.occurred_at.should eq subject.occurred_at
       action.details.should eq subject.details
       action.person_id.should eq subject.person_id
+      action.creator_id.should eq subject.creator_id
     end
   end
 
@@ -97,10 +99,13 @@ describe Contribution do
       subject.stub(:build_order).and_return(order)
       subject.stub(:build_item).and_return(item)
       subject.stub(:build_action).and_return(action)
+      action.stub(:occurred_at).and_return(5.days.ago)
     end
 
-    it "saves the models it built" do
+    it "saves the models it built and sets order.created_at to action.occurred_at" do
       order.should_receive(:save!).once
+      datetime = subject.occurred_at.in_time_zone(organization.time_zone)
+      order.should_receive(:update_attribute).with(:created_at, datetime).and_return(order)
       item.should_receive(:save!).once
       action.should_receive(:save!).once
 
