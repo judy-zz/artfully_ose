@@ -1,6 +1,6 @@
 class Ticket < ActiveRecord::Base
-
   include ActiveRecord::Transitions
+  include Ext::Resellable::Ticket
   
   attr_accessible :section_id, :section, :price, :venue
 
