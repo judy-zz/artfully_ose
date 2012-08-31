@@ -234,4 +234,8 @@ module ArtfullyOseHelper
   
   def credit_card_message
   end
+  
+  def date_field_tag(name, value = nil, options = {})
+    text_field_tag(name, value, options.stringify_keys.update("type" => "date"))
+  end
 end
