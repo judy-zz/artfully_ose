@@ -12,15 +12,15 @@ describe Address do
 
   describe "find_or_create" do
     it "should create a new address is none is found for a given person" do
-      person = FactoryGirl.build(:person)
+      person = FactoryGirl.create(:person)
       address = Address.find_or_create(person.id)
       address.should_not be_nil
       address.person.should eq person
     end
     
     it "should return the existing address if it exists" do
-      person = FactoryGirl.build(:person)
-      address = FactoryGirl.build(:address, :person_id => person.id)     
+      person = FactoryGirl.create(:person)
+      address = FactoryGirl.create(:address, :person_id => person.id)     
       Address.should_not_receive(:create)
       existing_address = Address.find_or_create(person.id)
       existing_address.should eq address

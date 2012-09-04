@@ -74,7 +74,7 @@ class Search < ActiveRecord::Base
     people = people.tagged_with(tagging) unless tagging.blank?
     people = people.joins(:address) unless zip.blank? && state.blank?
     people = people.joins(:tickets => {:show => :event}).where("events.id" => event_id) unless event_id.blank?
-    people = people.where("addresses.zip" => zip) unless zip.blank?
+    people = people.where("addresses.zip" => zip.to_s) unless zip.blank?
     people = people.where("addresses.state" => state) unless state.blank?
     people = people.where("people.lifetime_value >= ?", min_lifetime_value * 100.0) unless min_lifetime_value.blank?
     people = people.where("people.lifetime_value <= ?", max_lifetime_value * 100.0) unless max_lifetime_value.blank?

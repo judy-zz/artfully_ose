@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20120831200120) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -27,7 +27,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "subject_id"
     t.string   "subject_type"
     t.integer  "creator_id"
-    t.string   "old_mongo_id"
   end
 
   create_table "addresses", :force => true do |t|
@@ -40,25 +39,9 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "person_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_mongo_id"
   end
 
   add_index "addresses", ["person_id"], :name => "index_addresses_on_person_id"
-
-  create_table "bank_accounts", :force => true do |t|
-    t.string   "routing_number"
-    t.string   "number"
-    t.string   "account_type"
-    t.string   "name"
-    t.string   "address"
-    t.string   "city"
-    t.string   "state"
-    t.string   "zip"
-    t.string   "phone"
-    t.integer  "organization_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "carts", :force => true do |t|
     t.string   "state"
@@ -73,7 +56,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.boolean "is_template"
     t.integer "event_id"
     t.integer "organization_id"
-    t.string  "old_mongo_id"
   end
 
   create_table "delayed_jobs", :force => true do |t|
@@ -107,7 +89,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "organization_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_mongo_id"
     t.datetime "deleted_at"
     t.string   "contact_phone"
     t.string   "contact_email"
@@ -164,7 +145,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "show_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_mongo_id"
   end
 
   add_index "items", ["created_at"], :name => "index_items_on_created_at"
@@ -195,20 +175,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "organization_id"
   end
 
-  create_table "order_view", :id => false, :force => true do |t|
-    t.integer  "id",                :default => 0, :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "transaction_id"
-    t.integer  "price"
-    t.integer  "service_fee"
-    t.integer  "organization_id"
-    t.integer  "person_id"
-    t.string   "organization_name"
-    t.string   "person_first_name"
-    t.string   "person_last_name"
-  end
-
   create_table "orders", :force => true do |t|
     t.string   "transaction_id"
     t.integer  "price"
@@ -219,7 +185,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.datetime "updated_at"
     t.integer  "service_fee"
     t.string   "details"
-    t.string   "old_mongo_id"
     t.string   "type"
     t.string   "payment_method"
     t.text     "special_instructions"
@@ -250,7 +215,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.boolean  "dummy"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "old_mongo_id"
     t.string   "person_type"
     t.string   "twitter_handle"
     t.string   "facebook_url"
@@ -271,20 +235,42 @@ ActiveRecord::Schema.define(:version => 0) do
     t.datetime "updated_at"
   end
 
+  create_table "searches", :force => true do |t|
+    t.integer  "organization_id",      :null => false
+    t.string   "zip"
+    t.string   "state"
+    t.integer  "event_id"
+    t.integer  "min_lifetime_value"
+    t.integer  "min_donations_amount"
+    t.integer  "max_lifetime_value"
+    t.integer  "max_donations_amount"
+    t.datetime "min_donations_date"
+    t.datetime "max_donations_date"
+    t.string   "tagging"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"
+
   create_table "sections", :force => true do |t|
     t.text    "name"
     t.integer "capacity"
     t.integer "price"
     t.integer "chart_id"
-    t.string  "old_mongo_id"
     t.text    "description"
   end
 
   create_table "segments", :force => true do |t|
-    t.string  "name"
-    t.string  "terms"
-    t.integer "organization_id"
+    t.string   "name",            :null => false
+    t.integer  "organization_id", :null => false
+    t.integer  "search_id",       :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
+
+  add_index "segments", ["organization_id"], :name => "index_segments_on_organization_id"
+  add_index "segments", ["search_id"], :name => "index_segments_on_search_id"
 
   create_table "shows", :force => true do |t|
     t.string   "state"
@@ -292,7 +278,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.integer  "event_id"
     t.integer  "chart_id"
     t.integer  "organization_id"
-    t.string   "old_mongo_id"
   end
 
   add_index "shows", ["event_id"], :name => "index_shows_on_event_id"
@@ -315,17 +300,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.string "name"
   end
 
-  create_table "ticket_offers", :force => true do |t|
-    t.integer  "organization_id"
-    t.integer  "show_id"
-    t.integer  "section_id"
-    t.string   "status",           :default => "creating", :null => false
-    t.integer  "count",            :default => 0,          :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text     "rejection_reason"
-  end
-
   create_table "tickets", :force => true do |t|
     t.string   "venue"
     t.string   "state"
@@ -338,7 +312,6 @@ ActiveRecord::Schema.define(:version => 0) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "cart_id"
-    t.string   "old_mongo_id"
     t.integer  "section_id"
   end
 

@@ -4,7 +4,7 @@ class Show < ActiveRecord::Base
   include ActiveRecord::Transitions
   include Ext::Resellable::Show
 
-  attr_accessible :datetime
+  attr_accessible :datetime, :event_id, :chart_id, :organization_id, :old_mongo_id
   
   belongs_to :organization
   belongs_to :event
@@ -133,7 +133,8 @@ class Show < ActiveRecord::Base
   end
 
   def bulk_off_sale(ids)
-    Ticket.take_off_sale(tickets.where(:id => ids))
+    targets = (ids == :all) ? tickets : tickets.where(:id => ids)
+    Ticket.take_off_sale(targets)
   end
 
   def bulk_delete(ids)

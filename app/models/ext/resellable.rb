@@ -7,5 +7,9 @@ module Ext
     module Organization
     
     end
+    
+    module Ticket
+
+    end
   end
 end

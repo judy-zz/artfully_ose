@@ -14,7 +14,7 @@ class SetUpArtfully < ActiveRecord::Migration
       t.integer  "subject_id"
       t.string   "subject_type"
       t.integer  "creator_id"
-          end
+    end
 
     create_table "addresses" do |t|
       t.string   "address1"
@@ -26,7 +26,7 @@ class SetUpArtfully < ActiveRecord::Migration
       t.integer  "person_id"
       t.datetime "created_at"
       t.datetime "updated_at"
-          end
+    end
 
     add_index "addresses", ["person_id"], :name => "index_addresses_on_person_id"
 
@@ -43,7 +43,6 @@ class SetUpArtfully < ActiveRecord::Migration
       t.boolean "is_template"
       t.integer "event_id"
       t.integer "organization_id"
-      
     end
 
     create_table "delayed_jobs" do |t|
@@ -77,7 +76,7 @@ class SetUpArtfully < ActiveRecord::Migration
       t.integer  "organization_id"
       t.datetime "created_at"
       t.datetime "updated_at"
-            t.datetime "deleted_at"
+      t.datetime "deleted_at"
       t.string   "contact_phone"
       t.string   "contact_email"
       t.text     "description"
@@ -133,7 +132,7 @@ class SetUpArtfully < ActiveRecord::Migration
       t.integer  "show_id"
       t.datetime "created_at"
       t.datetime "updated_at"
-          end
+    end
 
     add_index "items", ["created_at"], :name => "index_items_on_created_at"
     add_index "items", ["order_id"], :name => "index_items_on_order_id"
@@ -173,7 +172,7 @@ class SetUpArtfully < ActiveRecord::Migration
       t.datetime "updated_at"
       t.integer  "service_fee"
       t.string   "details"
-            t.string   "type"
+      t.string   "type"
       t.string   "payment_method"
       t.text     "special_instructions"
     end
@@ -203,7 +202,7 @@ class SetUpArtfully < ActiveRecord::Migration
       t.boolean  "dummy"
       t.datetime "created_at"
       t.datetime "updated_at"
-            t.string   "person_type"
+      t.string   "person_type"
       t.string   "twitter_handle"
       t.string   "facebook_url"
       t.string   "linked_in_url"
@@ -228,7 +227,6 @@ class SetUpArtfully < ActiveRecord::Migration
       t.integer "capacity"
       t.integer "price"
       t.integer "chart_id"
-      
       t.text    "description"
     end
 
@@ -237,14 +235,14 @@ class SetUpArtfully < ActiveRecord::Migration
       t.string  "terms"
       t.integer "organization_id"
     end
-
+    
     create_table "shows" do |t|
       t.string   "state"
       t.datetime "datetime"
       t.integer  "event_id"
       t.integer  "chart_id"
       t.integer  "organization_id"
-          end
+    end
 
     add_index "shows", ["event_id"], :name => "index_shows_on_event_id"
     add_index "shows", ["organization_id"], :name => "index_shows_on_organization_id"
@@ -278,7 +276,7 @@ class SetUpArtfully < ActiveRecord::Migration
       t.datetime "created_at"
       t.datetime "updated_at"
       t.integer  "cart_id"
-            t.integer  "section_id"
+      t.integer  "section_id"
     end
 
     add_index "tickets", ["cart_id"], :name => "index_tickets_on_cart_id"

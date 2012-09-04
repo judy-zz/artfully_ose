@@ -90,7 +90,7 @@ class Organization < ActiveRecord::Base
   private
 
     def check_for_duplicates(kit)
-      raise Kit::DuplicateError if kits.where(:type => kit.type).any?
+      raise Kit::DuplicateError if kits.find{|k| k.type == kit.type}
     end
 
     def donation_type

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Person do
   disconnect_sunspot
-  subject { FactoryGirl.build(:person) }
+  subject { FactoryGirl.create(:person) }
 
   it "should accept a note" do
     subject.notes.length.should eq 0
@@ -47,60 +47,15 @@ describe Person do
     end
   end
   
-  describe "#find_by_customer" do
-    let(:organization) { FactoryGirl.build(:organization) }
-    it "should find by person_id if one is present" do
-      customer = AthenaCustomer.new({
-        :person_id => subject.id,
-        :email => "person@example.com",
-        :organization_id => organization.id
-      })
-      Person.should_receive(:find).with(customer.person_id)
-      p = Person.find_or_create(customer, organization)
-    end
-    
-    it "should find by email and org if no person_id is present" do
-      customer = AthenaCustomer.new({
-        :email => "person@example.com",
-        :organization_id => organization.id
-      })
-      params = {
-        :email => "person@example.com",
-        :organization_id => organization.id
-      }
-      Person.should_not_receive(:find).with(customer.person_id)
-      Person.should_receive(:find).with(:first, :conditions => params)
-      p = Person.find_or_create(customer, organization)
-    end
-    
-    it "should return a new person if no person_id or email is provided" do
-      customer = AthenaCustomer.new({
-        :organization_id  => organization.id,
-        :first_name       => "Russian"
-      })
-      params = {
-        :organization_id => organization.id,
-        :first_name       => "Russian"
-      }
-      Person.should_not_receive(:find).with(customer.person_id)
-      Person.should_not_receive(:find).with(:first, :conditions => params)
-      p = Person.find_or_create(customer, organization)
-      p.first_name.should         eq  customer.first_name
-      p.organization.id.should    eq  organization.id
-      p.last_name.should          be_nil
-      p.email.should              be_nil
-    end
-  end
-  
   describe "calculating lifetime value" do
     it "should report a lifetime value of zero for a new record" do
       FactoryGirl.build(:person).lifetime_value.should eq 0
     end
     
     it "should calculate the lifetime value" do
-      person = FactoryGirl.build(:person)
-      order = FactoryGirl.build(:order, :person => person)
-      items = 3.times.collect { FactoryGirl.build(:item, :order => order) }
+      person = FactoryGirl.create(:person)
+      order = FactoryGirl.create(:order, :person => person)
+      items = 3.times.collect { FactoryGirl.create(:item, :order => order) }
       
       person.lifetime_value.should eq 0
       person.calculate_lifetime_value.should eq 15000
@@ -111,8 +66,8 @@ describe Person do
   describe "merging" do
     describe "different orgs" do   
       before(:each) do
-        @winner = FactoryGirl.build(:person, :organization => FactoryGirl.build(:organization))
-        @loser = FactoryGirl.build(:person, :organization => FactoryGirl.build(:organization))
+        @winner = FactoryGirl.create(:person, :organization => FactoryGirl.create(:organization))
+        @loser = FactoryGirl.create(:person, :organization => FactoryGirl.create(:organization))
       end
        
       it "should throw an exception if the two person records are in different orgs" do
@@ -122,26 +77,26 @@ describe Person do
     
     describe "a happier path" do
       before(:each) do
-        @organization = FactoryGirl.build(:organization)
-        @winner = FactoryGirl.build(:person, :organization => @organization)
-        @winner.actions << FactoryGirl.build(:get_action, :person => @winner)
-        @winner.orders  << FactoryGirl.build(:order, :person => @winner)
-        @winner.tickets << FactoryGirl.build(:ticket, :buyer => @winner)
-        @winner.notes.build(:text => 'winner')
-        @winner.phones.build({:kind => 'Work', :number=>'1234567890'})
-        @winning_address = FactoryGirl.build(:address, :person => @winner)
+        @organization = FactoryGirl.create(:organization)
+        @winner = FactoryGirl.create(:person, :organization => @organization)
+        @winner.actions << FactoryGirl.create(:get_action, :person => @winner)
+        @winner.orders  << FactoryGirl.create(:order, :person => @winner)
+        @winner.tickets << FactoryGirl.create(:ticket, :buyer => @winner)
+        @winner.notes.create(:text => 'winner')
+        @winner.phones.create({:kind => 'Work', :number=>'1234567890'})
+        @winning_address = FactoryGirl.create(:address, :person => @winner)
         @winner.address = @winning_address
         @winner.tag_list = 'east, west'
         @winner.lifetime_value = 2000
         @winner.save
         
-        @loser = FactoryGirl.build(:person, :organization => @organization)
-        @loser.actions << FactoryGirl.build(:get_action, :person => @loser)
-        @loser.orders  << FactoryGirl.build(:order, :person => @loser)
-        @loser.tickets << FactoryGirl.build(:ticket, :buyer => @loser)
-        @loser.notes.build(:text => 'loser')
-        @loser.phones.build({:kind => 'Cell', :number=>'3333333333'})
-        @losing_address = FactoryGirl.build(:address, :person => @loser)
+        @loser = FactoryGirl.create(:person, :organization => @organization)
+        @loser.actions << FactoryGirl.create(:get_action, :person => @loser)
+        @loser.orders  << FactoryGirl.create(:order, :person => @loser)
+        @loser.tickets << FactoryGirl.create(:ticket, :buyer => @loser)
+        @loser.notes.create(:text => 'loser')
+        @loser.phones.create({:kind => 'Cell', :number=>'3333333333'})
+        @losing_address = FactoryGirl.create(:address, :person => @loser)
         @loser.address = @losing_address
         @loser.tag_list = 'west, north, south'
         @loser.lifetime_value = 1000
@@ -332,17 +287,13 @@ describe Person do
   describe "uniqueness" do
     subject { FactoryGirl.build(:person) }
     it "should not be valid if another person record exists with that email for the organization" do
-      FactoryGirl.build(:person, :email => subject.email, :organization => subject.organization)
+      FactoryGirl.create(:person, :email => subject.email, :organization => subject.organization)
       subject.should_not be_valid
     end
   end
   
   describe "#dummy_for" do
     let(:organization) { FactoryGirl.build(:organization) }
-    it "fetches the dummy record for the organization" do
-      person = Person.dummy_for(organization)
-      Person.dummy_for(organization).should eq person
-    end
   
     it "creates the dummy record if one does not yet exist" do
       person = Person.dummy_for(organization)

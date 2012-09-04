@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe Contribution do
   disconnect_sunspot
-  let(:organization){ FactoryGirl.build(:organization_with_timezone) }
-  let(:person) { FactoryGirl.build(:person) }
+  let(:organization){ FactoryGirl.create(:organization_with_timezone) }
+  let(:person) { FactoryGirl.create(:person) }
   let(:attributes) do
     {
       :subtype         => "Donation (Cash)",

@@ -5,6 +5,8 @@ class Item < ActiveRecord::Base
   belongs_to :settlement
   belongs_to :reseller_order, :class_name => "Reseller::Order"
   belongs_to :product, :polymorphic => true
+
+  attr_accessible :order_id, :product_type, :state, :price, :realized_price, :net
   
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge

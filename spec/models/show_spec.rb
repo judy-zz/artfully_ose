@@ -118,7 +118,7 @@ describe Show do
   end
   
   describe "bulk edit tickets" do
-    subject { FactoryGirl.build(:show_with_tickets) }
+    subject { FactoryGirl.create(:show_with_tickets) }
   
     describe "#bulk_on_sale" do
       it "puts all tickets on sale when :all is specified" do
@@ -169,7 +169,7 @@ describe Show do
     end
     
     it "is prevented if any tickets have been sold" do
-      s = FactoryGirl.build(:show_with_tickets)
+      s = FactoryGirl.create(:show_with_tickets)
       s.bulk_on_sale(:all)
       s.tickets.first.sell_to(FactoryGirl.build(:person))
       s.bulk_off_sale(:all)
@@ -178,16 +178,16 @@ describe Show do
     end
     
     it "is verboten it any tickets have been comped" do      
-      s = FactoryGirl.build(:show_with_tickets)
+      s = FactoryGirl.create(:show_with_tickets)
       s.tickets.first.comp_to(FactoryGirl.build(:person))
       s.should_not be_destroyable
       s.destroy.should be_false
     end
     
     it "is disallowed if any tickets have ever been involved in any tranaction" do
-      s = FactoryGirl.build(:show_with_tickets)
+      s = FactoryGirl.create(:show_with_tickets)
       ticket = s.tickets.first
-      ticket.stub(:items).and_return(Array.wrap(FactoryGirl.build(:refunded_item, :product => ticket)))
+      ticket.stub(:items).and_return(Array.wrap(FactoryGirl.create(:refunded_item, :product => ticket)))
       s.should_not be_destroyable
       s.destroy.should be_false
     end
