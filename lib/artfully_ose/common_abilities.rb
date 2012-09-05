@@ -9,10 +9,6 @@ module ArtfullyOse
     def default_abilities_for(user)
       cannot [ :edit, :destroy ], Show, :live? => true
 
-      cannot :destroy, Event do |event|
-        event.shows.any?{ |show| cannot? :destroy, show }
-      end
-
       can :manage, Organization do |organization|
         user.current_organization.can?( :manage, organization ) && (user == organization.owner)
       end
@@ -37,7 +33,7 @@ module ArtfullyOse
 
       #This is the ability that the controller uses to authorize creating/editing an event
       can :manage, Event do |event|
-        event.free? && (user.current_organization.can? :manage, event)
+        user.current_organization.can? :manage, event
       end
 
       can :new, Event do |event|
@@ -62,10 +58,7 @@ module ArtfullyOse
     end
 
     def paid_ticketing_abilities_for(user)
-      #This is the ability that the controller uses to authorize creating/editing an event
-      can :manage, Event do |event|
-        user.current_organization.can? :manage, event
-      end
+      #Nothing here for now
     end
 
     def order_ablilities_for(user)
