@@ -28,9 +28,6 @@ class EventsController < ArtfullyOseController
     authorize! :view, @event
     @shows = @event.shows.paginate(:page => params[:page], :per_page => 25)
 
-    @charts = current_organization.charts.template
-    @chart = Chart.new
-
     respond_to do |format|
       format.json do
         render :json => @event.as_full_calendar_json
@@ -83,6 +80,7 @@ class EventsController < ArtfullyOseController
   def destroy
     authorize! :destroy, @event
     @event.destroy
+    flash[:notice] = "Your event has been deleted"
     redirect_to events_url
   end
 

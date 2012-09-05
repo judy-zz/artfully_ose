@@ -40,3 +40,30 @@
             %strong=@event.venue.name
             %div=@event.venue.street_as_string
             %div=@event.venue.city_state_zip_as_string
+    - if @event.destroyable?
+      .row-fluid
+        .span6
+          #delete
+            %h3 Delete
+            %p You can delete this event at any time until you've sold or comped any tickets for it.  Deleting an event will erase all data.  
+            %p
+              %strong
+                Deleted events cannot be recovered.  Please be sure that you want this event deleted before clicking this button:
+            =link_to "Delete This Event", "#deleteEvent", :class => 'btn btn-danger', 'data-toggle' => 'modal'   
+          
+          
+- if @event.destroyable?
+  .modal{:id => "deleteEvent"}
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      .row-fluid
+        .span10
+          %h3="Delete: #{@event.name}"
+    .modal-body
+      %p
+        %strong 
+          Are you sure?
+      %p="Deleting an event <b>CANNOT</b> be reversed.  If you are sure that you want to delete the event named <b>#{@event.name}</b> then confirm by clicking the red button.".html_safe
+      %p
+        &nbsp;
+      =link_to "Yes, Delete This Event", event_path(@event), :method => :delete, :class => 'btn btn-danger'    
