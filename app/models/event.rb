@@ -47,6 +47,14 @@ class Event < ActiveRecord::Base
   def destroy
     update_attribute(:deleted_at, Time.now)
   end
+  
+  def destroyable?
+    items.blank?
+  end
+  
+  def items
+    Item.where(:show_id => self.shows)
+  end
 
   def filter_charts(charts)
     charts.reject { |chart| already_has_chart(chart) }
