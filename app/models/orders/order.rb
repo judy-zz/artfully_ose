@@ -182,7 +182,7 @@ class Order < ActiveRecord::Base
         action                  = GetAction.new
         action.person           = person
         action.subject          = self
-        action.organization_id  = organization.id
+        action.organization     = organization
         action.details          = ticket_details
         action.occurred_at      = created_at
         action.subtype          = "Purchase"
