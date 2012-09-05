@@ -23,7 +23,7 @@ class ArtfullyOseController < ActionController::Base
     end
 
     def specify_layout
-      (public_controller? or public_action?) ? 'devise' : 'application'
+      (public_controller? or public_action?) ? 'devise_layout' : 'application'
     end
 
     def authenticate_inviter!
