@@ -22,11 +22,36 @@ describe Event do
   # end
   
   it "should create a chart when the event is created" do
+    subject.save
     subject.charts.length.should eq 1
     chart = subject.charts.first
     chart.name.should eq subject.name
     chart.organization.should eq subject.organization
     chart.is_template.should be_false
+  end
+  
+  describe "destruction" do
+    it "should paranoid delete" do
+      subject.save
+      subject.destroy
+      Event.unscoped.find(subject.id).should_not be_nil
+    end
+    
+    it "should not return deleted events when searching" do
+      subject.save
+      subject.destroy
+      Event.where(:organization_id => subject.organization.id).should be_empty
+    end
+    
+    it "deletable should be false if there have been any sales" do
+      deletable_event = Event.new
+      deletable_event.should_receive(:items).and_return([])
+      deletable_event.should be_destroyable
+      
+      not_deletable_event = Event.new
+      not_deletable_event.should_receive(:items).and_return(Item.new)
+      not_deletable_event.should_not be_destroyable
+    end
   end
   
   describe "#upcoming_shows" do
