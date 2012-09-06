@@ -1,0 +1,6 @@
+%h1.page-title= t(".heading", :default => "Newsletter Sign up")
+
+= t(".subheading", :default => "")
+
+// %iframe{:src => "http://eepurl.com/iyegw", :style => 'border:none; width:650px; height: 1650px; border-radius: 5px;'}
+%iframe{:src => "#{newsletter_form_url}", :style => 'border:none; width:650px; height: 1650px; border-radius: 5px;'}
