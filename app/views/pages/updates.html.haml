@@ -16,6 +16,43 @@
     .sub-text
       = t(".subheading", :default => "")
 
+    .twitter{:style => 'margin-left: 26px;'}
+      :plain
+        <div style="margin-left: 9px;">
+          <a href="https://twitter.com/artfullyhq" class="twitter-follow-button" data-show-count="false">Follow @artfullyhq</a><script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
+        </div>
+
+        <div class="twitter-widget">
+          <script charset="utf-8" src="http://widgets.twimg.com/j/2/widget.js"></script>
+          <script>
+          new TWTR.Widget({
+            version: 2,
+            type: 'profile',
+            rpp: 5,
+            interval: 30000,
+            width: 260,
+            height: 200,
+            theme: {
+              shell: {
+                background: 'transparent',
+                color: '#333'
+              },
+              tweets: {
+                background: 'transparent',
+                color: '#333',
+                links: '#007ca6'
+              }
+            },
+            features: {
+              scrollbar: false,
+              loop: false,
+              live: false,
+              behavior: 'all'
+            }
+          }).render().setUser('artfullyhq').start();
+          </script>
+        </div>
+
 .row
   %p=link_to t(".link-to-blog", :default => "All Artful.ly posts on the Fractured Atlas Blog »"), 'http://www.fracturedatlas.org/site/blog/tag/artfully/'
 
