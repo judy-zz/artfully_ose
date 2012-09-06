@@ -262,3 +262,13 @@ table.pricing ul {
 .post h4 a:hover {
   color: #0069D6;
 }
+
+/*twitter-widget*/
+div.twtr-hd, div.twtr-tweet-wrap {
+  padding: 0;
+}
+.twtr-tweet {
+  margin-left: 25px; 
+  margin-bottom: 6px; 
+  padding-bottom: 6px;
+}
