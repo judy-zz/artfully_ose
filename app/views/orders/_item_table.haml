@@ -1,5 +1,9 @@
-#items.grouped-form-target
+#items
   = form_tag do
+    .row-fluid
+      .span4.grouped-form-target{:style => 'width:210px'}
+      .span8{:style => 'margin-top:5px'}
+        %span.help.tight{'data-placement' => 'bottom', 'data-title' => 'Refund/Exchange/Return', 'data-content' => "<p><b>Refund</b> Refunds full price of the ticket to the patron.</p><br/><p><b>Exchange</b> Swaps this ticket for another ticket, no money is charged or refunded.</p><br/><p><b>Return</b> Returns a ticket to inventory.  Use this to return comp'd tickets.".html_safe} ?
     %table.zebra.table
       %thead
         %tr

@@ -84,7 +84,7 @@ $(document).ready(function(){
         button.appendTo(controls);
       });
 
-      controls.prependTo($(".grouped-form-target form"));
+      controls.prependTo($(".grouped-form-target"));
     }
   };
 
