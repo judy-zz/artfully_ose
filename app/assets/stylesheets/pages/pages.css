@@ -272,3 +272,6 @@ div.twtr-hd, div.twtr-tweet-wrap {
   margin-bottom: 6px; 
   padding-bottom: 6px;
 }
+.twitter-follow-button {
+  margin-left: 18px;
+}
