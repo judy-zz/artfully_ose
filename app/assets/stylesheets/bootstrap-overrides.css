@@ -62,12 +62,12 @@
   font-weight: normal;
 }
 
-.feedback-footer .navbar-inner .container {
+.feedback-footer .navbar-inner .container, .navbar.marketing .navbar-inner .container {
   background-image: url('/assets/falogo_footer.png');
   background-repeat: no-repeat;
   background-position: 0px center;
-  padding-top: 15px;
-  padding-bottom: 15px;
+  padding-top: 9px;
+  padding-bottom: 11px;
   padding-left: 95px;
   width: 1030px;
 }
