@@ -1,20 +1,16 @@
-/*!
- * Bootstrap v2.0.2
- *
- * Copyright 2012 Twitter, Inc
- * Licensed under the Apache License v2.0
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Designed and built with all the love in the world @twitter by @mdo and @fat.
- * 
- *= require_self
- */
+body {
+  padding-top: 70px;
+}
+
 .navbar .btn.primary {
   margin-top: 3px;
   padding-top: 5px;
   padding-bottom: 5px;
-  color: #fff;
+}
 
+.navbar .btn.primary, .btn.btn-orange {
+  text-shadow: 0;
+  color: #fff;
   background-color: #a85300;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#f8930a), to(#a85300));
   background-image: -moz-linear-gradient(top, #f8930a, #a85300);
@@ -31,7 +27,11 @@
 .navbar .btn.primary:active,
 .navbar .btn.primary.active,
 .navbar .btn.primary.disabled,
-.navbar .btn.primary[disabled] {
+.navbar .btn.primary[disabled],
+
+.btn.btn-orange:hover,
+.btn.btn-orange:active,
+.btn.btn-orange.active{
   background-color: #a85300;
 }
 
@@ -72,11 +72,16 @@ blockquote small {
 div.icon {
   float: left;
   margin-right: 10px;
+  clear: both;
 }
 
 .sub-text {
   float: left;
   width: 250px;
+}
+
+.screenshot {
+  margin-bottom: 18px;
 }
 
 img.icon {
@@ -168,6 +173,9 @@ ul.features li.soon {
   margin-top: 50px;
   border-bottom: 5px solid #eee;
 }
+.landing-section:last-of-type {
+  border: none;
+}
 
 .center {
   text-align: center;
@@ -235,6 +243,11 @@ table.pricing td {
   width: 50%;
   border-top: 1px solid #ddd;
   padding: 10px 0;
+}
+
+table.pricing ul {
+  list-style-type: disc;
+  margin-bottom: 0;
 }
 
 .post {

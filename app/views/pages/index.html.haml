@@ -11,7 +11,8 @@
       = t(".how.three", :default => "")
 
     .span6.center
-      = image_tag('pages/screenshot-display.png')
+      .screenshot= image_tag('pages/screenshot-display.png')
+      %p= link_to t('.register_button', :default => 'Register for your FREE account'), sign_up_path, :class => 'btn btn-orange btn-large'
 
   .row
     .span4
