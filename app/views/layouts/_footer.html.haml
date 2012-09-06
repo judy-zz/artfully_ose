@@ -1,4 +1,6 @@
 %footer.footer
+  - if params[:controller] == 'pages'
+    = link_to 'Powered by Fractured Atlas', 'http://wwww.fracturedatlas.org', :class => 'powered-by'
   %ul.nav
     %li= link_to 'Updates', updates_path
     %li= link_to 'Privacy Policy', privacy_path

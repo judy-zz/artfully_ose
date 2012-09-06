@@ -117,6 +117,10 @@ section {
   border-top: 1px solid #E5E5E5;
 }
 
+.footer .powered-by {
+  float: right;
+}
+
 .footer ul li {
   float: left;
   margin-right: 10px;
