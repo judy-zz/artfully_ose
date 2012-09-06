@@ -19,7 +19,7 @@
     .twitter
       :javascript
         $(document).ready(function(){
-          $.getScript('http://widgets.twimg.com/j/2/widget.js', function () {
+          $.getScript('https://widgets.twimg.com/j/2/widget.js', function () {
             new TWTR.Widget({
             version: 2,
             type: 'profile',
@@ -52,7 +52,7 @@
         &nbsp;
       %p.twitter-follow-button
         %a.twitter-follow-button{:href => "https://twitter.com/artfullyhq", 'data-show-count' => 'false'}Follow @artfullyhq
-        = javascript_include_tag 'http://platform.twitter.com/widgets.js'
+        = javascript_include_tag 'https://platform.twitter.com/widgets.js'
 
 .row
   %p=link_to t(".link-to-blog", :default => "All Artful.ly posts on the Fractured Atlas Blog »"), 'http://www.fracturedatlas.org/site/blog/tag/artfully/'
