@@ -35,7 +35,7 @@ class DoorList
       end
 
       def <=>(obj)
-        (self.ticket.buyer.last_name || "") <=> (obj.ticket.buyer.last_name || "")
+        (self.ticket.buyer.last_name.try(:downcase) || "") <=> (obj.ticket.buyer.last_name.try(:downcase) || "")
       end
     end
 end
