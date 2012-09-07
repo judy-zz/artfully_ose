@@ -33,14 +33,14 @@ describe Sale do
   describe "#sell" do
     let(:order) { mock(:order, :items => []) }
     
-    let (:compee) { FactoryGirl.build(:person) }
+    let(:compee) { FactoryGirl.build(:person) }
   
     let(:payment) { mock(:cash_payment, 
                          :customer => FactoryGirl.build(:customer, :with_id), 
                          :amount= => nil, 
                          :requires_settlement? => false) }
   
-    let(:comp_payment) { CompPayment.new(FactoryGirl.build(:user), FactoryGirl.build(:person)) }
+    let(:comp_payment) { CompPayment.new({:benefactor => FactoryGirl.create(:user), :customer => FactoryGirl.create(:person)}) }
                          
     let(:checkout) { mock(:checkout, :order => order)}
     
@@ -70,8 +70,8 @@ describe Sale do
        
     it "should comp tickets" do
       BoxOffice::Checkout.should_not_receive(:new)
-      c = Comp.new(subject.tickets.first.show, subject.tickets, comp_payment.person, comp_payment.benefactor)
-      Comp.should_receive(:new).with(subject.tickets.first.show, subject.tickets, comp_payment.person, comp_payment.benefactor).and_return(c)
+      c = Comp.new(subject.tickets.first.show, subject.tickets, comp_payment.customer, comp_payment.benefactor)
+      Comp.should_receive(:new).with(subject.tickets.first.show, subject.tickets, comp_payment.customer, comp_payment.benefactor).and_return(c)
       c.should_receive(:submit)
       subject.sell(comp_payment)
     end
