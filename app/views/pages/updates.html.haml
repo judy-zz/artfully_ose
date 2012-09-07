@@ -1,7 +1,7 @@
 %h1.page-title= t(".heading", :default => "Updates")
 
 .row
-  .span8
+  .span7
     -@posts.each do |post|
       .post
         %h4=link_to post[:title], post[:link], :target => '_blank'
@@ -10,49 +10,15 @@
         %p
           = link_to 'Read More »', post[:link], :target => '_blank'
 
-  .span4
+  .span4.offset1
     .icon
       = image_tag('pages/envelope.png', :class => 'icon')
     .sub-text
       = t(".subheading", :default => "")
 
     .twitter
-      :javascript
-        $(document).ready(function(){
-          $.getScript('https://widgets.twimg.com/j/2/widget.js', function () {
-            new TWTR.Widget({
-            version: 2,
-            type: 'profile',
-            rpp: 5,
-            interval: 30000,
-            id: 'twitter-widget',
-            width: 280,
-            height: 200,
-            theme: {
-              shell: {
-                background: 'transparent',
-                color: '#333'
-              },
-              tweets: {
-                background: 'transparent',
-                color: '#333',
-                links: '#007ca6'
-              }
-            },
-            features: {
-              scrollbar: false,
-              loop: false,
-              live: false,
-              behavior: 'all'
-            }
-          }).render().setUser('artfullyhq').start();
-          });
-        })
-      #twitter-widget.twitter-widget
-        &nbsp;
-      %p.twitter-follow-button
-        %a.twitter-follow-button{:href => "https://twitter.com/artfullyhq", 'data-show-count' => 'false'}Follow @artfullyhq
-        = javascript_include_tag 'https://platform.twitter.com/widgets.js'
+      <a class="twitter-timeline" data-dnt=true href="https://twitter.com/artfullyhq" data-widget-id="244142550657671170">Tweets by @artfullyhq</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 .row
   %p=link_to t(".link-to-blog", :default => "All Artful.ly posts on the Fractured Atlas Blog »"), 'http://www.fracturedatlas.org/site/blog/tag/artfully/'
