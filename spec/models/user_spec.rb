@@ -41,7 +41,7 @@ describe User do
     it { should respond_to(:customer) }
 
     it "should fetch the remote customer record" do
-      @customer = FactoryGirl.build(:customer_with_id)
+      @customer = FactoryGirl.build(:customer, :with_id)
       subject.customer_id = @customer.id
       FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :body => @customer.encode)
       subject.customer.should eq(@customer)

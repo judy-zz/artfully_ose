@@ -36,7 +36,7 @@ describe Sale do
     let (:compee) { FactoryGirl.build(:person) }
   
     let(:payment) { mock(:cash_payment, 
-                         :customer => FactoryGirl.build(:customer_with_id), 
+                         :customer => FactoryGirl.build(:customer, :with_id), 
                          :amount= => nil, 
                          :requires_settlement? => false) }
   
