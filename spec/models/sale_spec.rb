@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Sale do
   disconnect_sunspot
   let(:show){FactoryGirl.build(:show)}
-  let(:chart){FactoryGirl.build(:chart_with_sections)}
+  let(:chart){FactoryGirl.create(:chart_with_sections)}
   let(:quantities) { {chart.sections.first.id.to_s => "2"} }
 
   subject { Sale.new(show, chart.sections, quantities) }
