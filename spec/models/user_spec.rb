@@ -36,34 +36,6 @@ describe User do
     end
   end
 
-  describe ".customer" do
-    it { should respond_to(:customer_id) }
-    it { should respond_to(:customer) }
-
-    it "should fetch the remote customer record" do
-      @customer = FactoryGirl.build(:customer, :with_id)
-      subject.customer_id = @customer.id
-      FakeWeb.register_uri(:get, "http://localhost/payments/customers/#{@customer.id}.json", :body => @customer.encode)
-      subject.customer.should eq(@customer)
-    end
-
-    it "should not make a request if the customer_id is not set" do
-      subject.customer_id = nil
-      subject.customer.should be_nil
-    end
-
-    it "should update the customer id when assigning a new customer record" do
-      subject.customer = FactoryGirl.build(:customer, :id => 2)
-      subject.customer_id.should eq(2)
-    end
-
-    it "should set the customer id to nil if the remote resource no longer has it" do
-      subject.customer_id = 1
-      FakeWeb.register_uri(:get, "http://localhost/payments/customers/1.json", :status => 404)
-      subject.customer.should be_nil
-    end
-  end
-
   RSpec::Matchers.define :include_this_email do |expected|
     match do |actual|
       actual[:email_address].should eq expected
