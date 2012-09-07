@@ -9,7 +9,7 @@ class Order < ActiveRecord::Base
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge
 
-  attr_accessible :person_id, :organization_id, :details
+  attr_accessible :person_id, :organization_id, :person, :organization, :details
 
   belongs_to :person
   belongs_to :organization
