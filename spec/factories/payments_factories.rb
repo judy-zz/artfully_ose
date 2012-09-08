@@ -19,7 +19,7 @@ FactoryGirl.define do
     amount 100
   end
 
-  factory :payment do
+  factory :payment, :class => CreditCardPayment do
     amount 100
     customer
   end

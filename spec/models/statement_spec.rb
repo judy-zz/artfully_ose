@@ -26,7 +26,7 @@ describe Statement do
     let(:statement)       { Statement.for_show(free_show, organization) }
     
     before(:each) do
-      Person.stub(:find_by_email_and_organization).and_return(FactoryGirl.build(:person))
+      Person.stub(:find_by_email_and_organization).and_return(FactoryGirl.create(:person))
       checkout.finish
     end
     
