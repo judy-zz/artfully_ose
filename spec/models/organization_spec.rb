@@ -135,25 +135,6 @@ describe Organization do
     end
   end
 
-  describe "#update_kits" do
-    let(:kit) { mock(:sponsored_kit, :activated? => true, :cancelled? => true) }
-
-    before(:each) do
-      subject.stub(:fsp).and_return(mock(:fsp, :active? => false, :inactive? => true))
-      subject.stub(:sponsored_kit).and_return(kit)
-    end
-
-    it "cancels the kit if the FSP is no longer active" do
-      kit.should_receive(:cancel_with_authority!)
-      subject.send(:update_kits)
-    end
-
-    it "activates the kit if the FSP is active" do
-      kit.should_receive(:activate_without_prejudice!)
-      subject.send(:update_kits)
-    end
-  end
-
   describe "#events_with_sales" do
     subject { FactoryGirl.create(:organization) }
 
