@@ -29,7 +29,7 @@ describe Ticket do
   
     it "defaults to searching for tickets marked as on sale" do
       ticket = Ticket.find(:first, :conditions => conditions)
-      ticket.update_attribute(:state, :off_sale)
+      ticket.update_column(:state, :off_sale)
       Ticket.available().should_not include(ticket)
     end
   end
@@ -128,18 +128,18 @@ describe Ticket do
   
   describe "#expired?" do
     it "is considered to be expired if the show time is in the past" do
-      subject.show = FactoryGirl.create(:expired_show)
+      subject.show = FactoryGirl.build(:expired_show)
       subject.should be_expired
     end
   
     it "is not considered to be expired if the show time is in the future" do
-      subject.show = FactoryGirl.create(:show)
+      subject.show = FactoryGirl.build(:show)
       subject.should_not be_expired
     end
   end
   
   describe "#on_sale?" do
-    subject { FactoryGirl.create(:ticket, :state => "on_sale") }
+    subject { FactoryGirl.build(:ticket, :state => "on_sale") }
     it { should be_on_sale }
     it { should_not be_off_sale }
   end

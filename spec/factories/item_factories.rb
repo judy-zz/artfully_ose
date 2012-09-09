@@ -9,6 +9,14 @@ FactoryGirl.define do
     association :order
   end
 
+
+  factory :settled_item, :class => Item do
+    product { FactoryGirl.create(:ticket, :state => :sold) }
+    after(:build) do |i|
+      i.state="settled"
+    end
+  end
+
   factory :comped_item, :class => Item do
     product { FactoryGirl.create(:ticket, :state => :comped) }
     after(:build) do |i|
