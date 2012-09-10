@@ -23,7 +23,7 @@ class PagesController < ActionController::Base
     end
   end
 
-  def sign_up_form
-    render :sign_up_form, :layout => false
+  def newsletter_form
+    render :newsletter_form, :layout => false
   end
 end
