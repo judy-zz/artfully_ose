@@ -20,6 +20,7 @@ class Item < ActiveRecord::Base
   scope :not_imported, joins(:order).merge(Order.not_imported)
 
   comma :donation do
+    order("Email") { |order| order.person.email if order.person }
     order("First Name") { |order| order.person.first_name if order.person }
     order("Last Name") { |order| order.person.last_name if order.person }
     order("Company Name") { |order| order.person.company_name if order.person }
@@ -30,6 +31,7 @@ class Item < ActiveRecord::Base
 
   comma :ticket_sale do
     order("Date of Purchase") { |order| order.created_at }
+    order("Email") { |order| order.person.email if order.person }
     order("First Name") { |order| order.person.first_name if order.person }
     order("Last Name") { |order| order.person.last_name if order.person }
     show("Performance Title") { |show| show.event.name if show }

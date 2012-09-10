@@ -6,7 +6,7 @@
       %li.span6.row-fluid.event-list-item{:style => "margin-left: 0px; margin-right:10px'"}
         .span12
           .row-fluid
-            .span4
+            .span4.event-icon-container
               = render :partial => 'shared/event_image_icon', :locals => { :event => event }
             .span8
               %h4= link_to event.name, event_path(event), :title => 'event-name'
