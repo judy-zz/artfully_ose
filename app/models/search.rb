@@ -67,10 +67,11 @@ class Search < ActiveRecord::Base
 
   def find_people
     column_names = Person.column_names.collect {|cn| "people.#{cn}" }
+    column_names << "lower(people.last_name) AS ordered_last_names"
 
     people = Person.where(:organization_id => organization_id)
     people = people.where(:dummy => false)
-    people = people.order('lower(last_name) ASC')
+    people = people.order('ordered_last_names ASC')
     people = people.tagged_with(tagging) unless tagging.blank?
     people = people.joins(:address) unless zip.blank? && state.blank?
     people = people.joins(:tickets => {:show => :event}).where("events.id" => event_id) unless event_id.blank?
@@ -79,18 +80,17 @@ class Search < ActiveRecord::Base
     people = people.where("people.lifetime_value >= ?", min_lifetime_value * 100.0) unless min_lifetime_value.blank?
     people = people.where("people.lifetime_value <= ?", max_lifetime_value * 100.0) unless max_lifetime_value.blank?
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
-      column_names << "SUM(items.price + items.nongift_amount) AS total_donations"
       people = people.joins(:orders => :items)
       people = people.where("orders.created_at >= ?", min_donations_date) unless min_donations_date.blank?
       people = people.where("orders.created_at <= ?", max_donations_date + 1.day) unless max_donations_date.blank?
       people = people.where("items.product_type = 'Donation'")
       people = people.group("people.id")
       if min_donations_amount.blank?
-        people = people.having("total_donations >= 1")
+        people = people.having("SUM(items.price + items.nongift_amount) >= 1")
       else
-        people = people.having("total_donations >= ?", min_donations_amount * 100.0)
+        people = people.having("SUM(items.price + items.nongift_amount) >= ?", min_donations_amount * 100.0)
       end
-      people = people.having("total_donations <= ?", max_donations_amount * 100.0) unless max_donations_amount.blank?
+      people = people.having("SUM(items.price + items.nongift_amount) <= ?", max_donations_amount * 100.0) unless max_donations_amount.blank?
     end
     people.select(column_names).uniq
   end

@@ -5,7 +5,7 @@ describe Action do
   
   subject { FactoryGirl.build(:get_action) }
   let(:organization) { FactoryGirl.build(:organization)}
-  let(:user) { FactoryGirl.build(:user) }
+  let(:user) { FactoryGirl.create(:user) }
   let(:person) { FactoryGirl.build(:person) }
 
   before(:each) do
