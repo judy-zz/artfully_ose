@@ -42,21 +42,6 @@ class Person < ActiveRecord::Base
     end
     hash
   end
-
-  #
-  # One off method.  Remove this when Libra's records are cleared up
-  #
-  def self.delete_dupes_in(organization)
-    Person.find_dupes_in(organization).each do |k,v|
-      if v.length > 100
-        puts "Deleting [#{v.length}] of: #{v.first.id} #{v.first.first_name} #{v.first.last_name}"
-        v.reject! {|p| p.has_something?}
-        Person.delete v
-      end
-    end
-    
-    nil
-  end
   
   #
   # An array of has_many associations that should be merged when a person record is merged with another
@@ -209,8 +194,12 @@ class Person < ActiveRecord::Base
   # .first_name, .last_name, and .email
   #
   def self.find_or_create(customer, organization)
+    
+    #TODO: Yuk
     if (customer.respond_to? :person_id) && (!customer.person_id.nil?)
       return Person.find(customer.person_id)
+    elsif (customer.is_a? Person) && (!customer.id.nil?)
+      return Person.find(customer.id)
     end
     
     person = Person.find_by_email_and_organization(customer.email, organization)
@@ -220,7 +209,7 @@ class Person < ActiveRecord::Base
         :first_name      => customer.first_name,
         :last_name       => customer.last_name,
         :email           => customer.email,
-        :organization_id => organization.id # This doesn't account for multiple organizations per cart
+        :organization_id => organization.id
       }
       person = Person.create(params)
     end
