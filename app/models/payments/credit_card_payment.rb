@@ -15,7 +15,7 @@ class CreditCardPayment < ::Payment
   end
   
   #
-  # We may be able to get some milage out of a reop called active_attr: https://github.com/cgriego/active_attr
+  # We may be able to get some milage out of a repo called active_attr: https://github.com/cgriego/active_attr
   #
   def build(params)
     [:amount, :user_agreement, :transaction_id].each do |field| 
