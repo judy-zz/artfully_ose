@@ -229,7 +229,7 @@ class Ticket < ActiveRecord::Base
   #Reminder that this returns a ActiveRecord::Import::Result, not an array of tickets
   def self.create_many(show, section, quantity, on_sale = false)
     new_tickets = []
-    (0..quantity-1).each do
+    quantity.times do
       t = Ticket.new({
         :venue => show.event.venue.name,
         :price => section.price,

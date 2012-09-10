@@ -363,7 +363,7 @@ describe Ticket do
    end
    
    describe "#put_on_sale" do
-     let(:tickets) { 5.times.collect { FactoryGirl.create(:ticket, :state => :off_sale) } }
+     let(:tickets) { 5.times.collect { FactoryGirl.build(:ticket, :state => :off_sale) } }
    
      it "sends a request to patch the state of all tickets" do
        Ticket.put_on_sale(tickets)
@@ -384,7 +384,7 @@ describe Ticket do
    end
    
   describe "#take_off_sale" do
-    let(:tickets) { 5.times.collect { FactoryGirl.create(:ticket, :state => :on_sale) } }
+    let(:tickets) { 5.times.collect { FactoryGirl.build(:ticket, :state => :on_sale) } }
   
     it "takes tickets off sale" do
       Ticket.take_off_sale(tickets)
@@ -422,8 +422,7 @@ describe Ticket do
     it "should create a bunch of tickets" do
       section.price = rand(40000)
       quantity = 13
-      tickets = Ticket.create_many(show, section, quantity)
-      tickets.num_inserts.should eq quantity
+      lambda {Ticket.create_many(show, section, quantity)}.should change(Ticket, :count).by(13)
       check_tix(quantity, :venue => show.event.venue.name, 
                            :show_id => show.id, 
                            :organization_id => show.organization.id, 
@@ -435,8 +434,7 @@ describe Ticket do
     it "should put them on sale if I say so" do
       section.price = rand(40000)
       quantity = 13
-      tickets = Ticket.create_many(show, section, quantity, true)
-      tickets.num_inserts.should eq quantity
+      lambda {Ticket.create_many(show, section, quantity, true)}.should change(Ticket, :count).by(13)
       check_tix(quantity, :venue => show.event.venue.name, 
                            :show_id => show.id, 
                            :organization_id => show.organization.id, 
