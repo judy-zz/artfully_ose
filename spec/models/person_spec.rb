@@ -251,6 +251,38 @@ describe Person do
     end
   end
   
+  describe "#find_or_create" do
+    before(:each) do
+      @organization = FactoryGirl.create(:organization)
+    end
+    
+    it "should find the person specified by customer.person_id" do      
+      @person = FactoryGirl.create(:person, :organization => @organization)
+      customer = OpenStruct.new
+      customer.person_id = @person.id
+      person = Person.find_or_create(customer, @organization)
+      person.should eq @person
+    end
+    
+    it "should find the person if a person is passed in with an id" do
+      @person = FactoryGirl.create(:person, :organization => @organization)
+      checkout_person = Person.new
+      checkout_person.id = @person.id
+      person = Person.find_or_create(checkout_person, @organization)
+      person.should eq @person
+    end
+    
+    it "should create a new person if no id is passed" do
+      @person = FactoryGirl.build(:person, :organization => @organization)
+      person = Person.find_or_create(@person, @organization)
+      person.id.should_not be_blank
+      person.email.should         eq @person.email
+      person.first_name.should    eq @person.first_name
+      person.last_name.should     eq @person.last_name
+      person.organization.should  eq @person.organization
+    end
+  end
+  
   describe "#find_by_email_and_organization" do
     let(:organization) { FactoryGirl.build(:organization) }
   
