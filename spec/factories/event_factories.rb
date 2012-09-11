@@ -7,15 +7,11 @@ FactoryGirl.define do
   end
 
   factory :paid_event, :parent => :event do
-    after(:create) do |event|
-      event.is_free = false
-    end
+    is_free false
   end
 
   factory :free_event, :parent => :event do
-    after(:create) do |event|
-      event.is_free = true
-    end
+    is_free true
   end
 
   factory :venue do
