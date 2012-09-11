@@ -46,7 +46,7 @@ class Checkout
       create_order(order_timestamp)
       cart.finish(@person, order_timestamp)
     end
-      
+    
     cart.approved?
   end
 
