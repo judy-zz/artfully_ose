@@ -10,7 +10,7 @@ zebra = function(table) {
     $("tr", table).removeClass("even");
     $("tr:even", table).addClass("even");
     $("tr:odd", table).addClass("odd");
-}
+};
 
 bindControlsToListElements = function () {
   $(".detailed-list li").hover(
@@ -18,7 +18,7 @@ bindControlsToListElements = function () {
       $(this).find(".controls").stop(false,true).fadeIn('fast');},
     function(){
       $(this).find(".controls").stop(false,true).fadeOut('fast');});
-}
+};
 
 function createErrorFlashMessage(msg) {
 	$('#heading').after($(document.createElement('div'))
@@ -30,17 +30,17 @@ function createErrorFlashMessage(msg) {
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();
-	})	
+	});
 }
 
 function setErrorMessage(msg) {
 	if($('.flash').length > 0) {
 		$('.flash').fadeOut(400, function() {
-			$(this).remove()
-			createErrorFlashMessage(msg)
-		})
+			$(this).remove();
+			createErrorFlashMessage(msg);
+		});
 	} else {
-		createErrorFlashMessage(msg)
+		createErrorFlashMessage(msg);
 	}
 }
 
@@ -54,33 +54,33 @@ function createFlashMessage(msg) {
 
 	$(".close").click(function(){
 		$(this).closest('.flash').remove();
-	})	
+	});
 }
 
 function setFlashMessage(msg) {
 	if($('.flash').length > 0) {
 		$('.flash').fadeOut(400, function() {
-			$(this).remove()
-			createFlashMessage(msg)
-		})
+			$(this).remove();
+			createFlashMessage(msg);
+		});
 	} else {
-		createFlashMessage(msg)
+		createFlashMessage(msg);
 	}
 }
 
 $(document).ready(function() {
     
 	/*********** NEW BOOTSTRAP JS ***********/
-	$(".alert").alert()
+	$(".alert").alert();
 	
 	$('.section-price-disabled').popover({trigger:'manual'})
-	                            .click(function(){ $(this).popover('toggle') });
+                              .click(function(){ $(this).popover('toggle'); });
 	$('.section-price-disabled').popover('show');
-	$('.help').popover()
+	$('.help').popover();
 	
-	$('.dropdown-toggle').dropdown()
+	$('.dropdown-toggle').dropdown();
 	
-	$('#nag').modal('show')
+	$('#nag').modal('show');
 	
 	/*********** NEW ARTFULLY JS ************/
 	
@@ -98,13 +98,13 @@ $(document).ready(function() {
 
   $(".close").click(function(){
     $(this).closest('.flash').remove();
-  })
+  });
 
   $(".new-window").parents("form").attr("target", "_blank");
 
   $("#main-menu").hover(
-    function(){$("#main-menu li ul").stop().animate({height: '160px'}, 'fast')},
-    function(){$("#main-menu li ul").stop().animate({height: '0px'}, 'fast')}
+    function(){$("#main-menu li ul").stop().animate({height: '160px'}, 'fast');},
+    function(){$("#main-menu li ul").stop().animate({height: '0px'}, 'fast');}
   );
 
   $(".stats-controls").click(function(){
@@ -126,7 +126,7 @@ $(document).ready(function() {
   });
 
   $(".checkall").click(function(){
-    var isChecked = $(this).is(":checked")
+    var isChecked = $(this).is(":checked");
     $(this).closest('form').find("input[type='checkbox']:enabled").each(function(index, element){
       element.checked = isChecked;
       $(element).change();
@@ -137,9 +137,9 @@ $(document).ready(function() {
     zebra($(this));
   });
 
-  $(".search-help-popup").dialog({autoOpen: false, draggable:false, modal:true, width:700, title:"Search help"})
+  $(".search-help-popup").dialog({autoOpen: false, draggable:false, modal:true, width:700, title:"Search help"});
   $("#search-help-link").click(function(){
-    $(".search-help-popup").dialog("open")
+    $(".search-help-popup").dialog("open");
     return false;
   });
 
@@ -193,17 +193,17 @@ $(document).ready(function() {
   $(".new-tag-form").bind("ajax:beforeSend", function(evt, data, status, xhr){
 		var tagText = $('#new-tag-field').attr('value');
 		if(!validTagText(tagText)) {
-			$('.tag-error').text("Only letters, number, or dashes allowed in tags")
+			$('.tag-error').text("Only letters, number, or dashes allowed in tags");
 			return false;
 		} else {
-			$('.tag-error').text("")
+			$('.tag-error').text("");
 		}
 
-	  newTagLi = $(document.createElement('li'));
+    newTagLi = $(document.createElement('li'));
 		newTagLi.addClass('tag').addClass('deletable').addClass('rounder').html(tagText).appendTo($('.tags'));
 		$('.tags').append("\n");
 		createControlsForTag(newTagLi);
-	  $('#new-tag-field').attr('value', '');
+    $('#new-tag-field').attr('value', '');
 
 		bindControlsToListElements();
 		bindXButton();
@@ -236,7 +236,7 @@ $(document).ready(function() {
       name: "person[" + name + "]",
       callback: function(value, settings){
         $(this).html(value[name]);
-        $(this).trigger('done')
+        $(this).trigger('done');
       },
       ajaxoptions: {
         dataType: "json"
@@ -251,7 +251,7 @@ bindXButton = function() {
   $(".delete").bind("ajax:beforeSend", function(evt, data, status, xhr){
     $(this).closest('.tag').remove();
   });
-}
+};
 
 /*
  * Validates alphanumeric and -
@@ -259,22 +259,22 @@ bindXButton = function() {
 validTagText = function(tagText) {
 	var alphaNumDashRegEx = /^[0-9a-zA-Z-]+$/;
 	return alphaNumDashRegEx.test(tagText);
-}
+};
 
 createControlsForTag = function(tagEl) {
 	var tagText = tagEl.html().trim();
 	var subjectName = tagEl.parent("ul").attr('id').split("-")[0];
 	var subjectId = tagEl.parent("ul").attr('id').split("-")[1];
 
-	var deleteLink = '<a href="/'+subjectName+'/'+ subjectId +'/tag/'+ tagText +'" data-method="delete" data-remote="true" rel="nofollow">X</a>'
-	var controlsUl =  $(document.createElement('ul')).addClass('controls')
-	var deleteLi = $(document.createElement('li')).addClass('delete').append(deleteLink)
+	var deleteLink = '<a href="/'+subjectName+'/'+ subjectId +'/tag/'+ tagText +'" data-method="delete" data-remote="true" rel="nofollow">X</a>';
+	var controlsUl =  $(document.createElement('ul')).addClass('controls');
+	var deleteLi = $(document.createElement('li')).addClass('delete').append(deleteLink);
 
 	controlsUl.append(deleteLi);
 
   tagEl.append(controlsUl);
 	tagEl.append("\n");
-}
+};
 
 function activateControls() {
   $(".currency").each(function(index, element){
@@ -293,8 +293,8 @@ function activateControls() {
   });
 
   $(".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
-	if (!Modernizr.inputtypes.date) {	
-		$('input[type="date"]' ).datepicker({dateFormat: 'yy-mm-dd'});	
+	if (!Modernizr.inputtypes.date) {
+		$('input[type="date"]' ).datepicker({dateFormat: 'yy-mm-dd'});
 	}
 	
   $('.datetimepicker').datetimepicker({dateFormat: 'yy-mm-dd', timeFormat:'hh:mm tt', ampm: true });
