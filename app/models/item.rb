@@ -1,5 +1,7 @@
 class Item < ActiveRecord::Base
 
+  include Ext::Integrations::Item
+  
   belongs_to :order
   belongs_to :show
   belongs_to :settlement
