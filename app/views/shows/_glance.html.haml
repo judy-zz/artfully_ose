@@ -1,4 +1,7 @@
-%h3 At a Glance
+- if controller.controller_name == "shows" && controller.action_name == "show"
+  %h3 Show Details
+- else
+  %h3 At a Glance
 - if report.nil?
   %p Report not yet available.
 - else
