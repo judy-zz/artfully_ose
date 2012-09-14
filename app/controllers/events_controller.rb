@@ -70,8 +70,17 @@ class EventsController < ArtfullyOseController
 
     @event.update_attributes(params[:event])
     if @event.save
-      flash[:notice] = "Your event has been updated."
-      redirect_to event_url(@event)
+      if user_requesting_next_step?
+        flash[:notice] = "Thank you! Please continue filling out venue details."
+        if user_just_uploaded_an_image?
+          redirect_to messages_event_path(@event)
+        else
+          redirect_to edit_event_venue_path(@event)
+        end
+      else
+        flash[:notice] = "Your event has been updated."
+        redirect_to event_url(@event)
+      end
     else
       render :edit
     end
