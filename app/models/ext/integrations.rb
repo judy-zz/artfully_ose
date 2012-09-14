@@ -109,5 +109,8 @@ module Ext
         standard.flatten.compact.uniq.sort
       end
     end
+    
+    module Item
+    end
   end
 end

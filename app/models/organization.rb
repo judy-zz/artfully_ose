@@ -3,7 +3,7 @@ class Organization < ActiveRecord::Base
   include Ext::Resellable::Organization
   include Ext::Integrations::Organization
   
-  attr_accessible :name, :time_zone
+  attr_accessible :name, :time_zone, :ein, :legal_organization_name
   
   has_many :events
   has_many :charts
