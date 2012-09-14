@@ -18,6 +18,7 @@ require "haml"
 
 require "will_paginate"
 require "will_paginate/array"
+require "bootstrap-will_paginate"
 
 require "aws-sdk"
 require "paperclip"
