@@ -1,8 +1,8 @@
 - if Rails.env.development? && !ArtfullyOse::Engine.config.google_analytics.account.blank?
   :javascript
     var _gaq = _gaq || [];
-    _gaq.push(['_setAccount', '#{h ArtfullyOse::Engine.config.google_analytics.account}']);
-    _gaq.push(['_setDomainName', '#{h ArtfullyOse::Engine.config.google_analytics.domain}']);
+    _gaq.push(['_setAccount', '#{h Rails.application.config.google_analytics.account}']);
+    _gaq.push(['_setDomainName', '#{h Rails.application.config.google_analytics.domain}']);
     _gaq.push(['_setAllowHash', false]);
     _gaq.push(['_setAllowLinker', true]);
     _gaq.push(['_trackPageview']);
