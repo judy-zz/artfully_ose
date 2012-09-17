@@ -71,7 +71,6 @@ class EventsController < ArtfullyOseController
     @event.update_attributes(params[:event])
     if @event.save
       if user_requesting_next_step?
-        flash[:notice] = "Thank you! Please continue filling out venue details."
         if user_just_uploaded_an_image?
           redirect_to messages_event_path(@event)
         else
