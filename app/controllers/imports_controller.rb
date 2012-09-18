@@ -1,6 +1,7 @@
 class ImportsController < ArtfullyOseController
 
   before_filter { authorize! :create, Import }
+  before_filter :set_import_type
 
   def index
     @imports = organization.imports.all
@@ -61,8 +62,12 @@ class ImportsController < ArtfullyOseController
 
   protected
 
-  def organization
-    current_user.current_organization
-  end
+    def organization
+      current_user.current_organization
+    end
+    
+    def set_import_type
+      @import_type = params[:import_type]
+    end
 
 end

@@ -1,0 +1,61 @@
+- in_section :imports
+- content_for :header do
+  %h1 Import People
+
+.row
+  .span4
+    .well
+      %h3 Upload File
+      %p
+        = render :partial => "shared/error_messages", :locals => { :target => @import }
+        = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
+            :content_type => "text/csv",
+            :redirect => new_import_url,
+            :acl => "public-read",
+            :max_filesize => 50.megabytes,
+            :submit_button => '<div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
+
+  .span8
+    %h3 What Can I Upload?
+    %p
+      Please supply a CSV (comma separated values) of people that you'd like to import.
+    %p You #{link_to 'download an empty CSV file', template_imports_path} with these headers already filled in.
+    %p
+      The first row of the file should be a row of headers specifying what each
+      column represents. The list of valid column names is below. You may include
+      any or all of these fields.
+    %h3 Required Fields
+    %table.table
+      %tr 
+        %td event_name
+        %td The name of the event
+    
+    One of the three of the following is required:
+    %table.table
+      %tr 
+        %td first_name 
+        %td The first name of the patron
+      %tr 
+        %td last_name
+        %td The last name of the patron
+      %tr 
+        %td email
+        %td The email address of the person  
+      
+    %h3 Optional Fields
+    %table.table
+      %tr 
+        %td external_customer_id
+        %td A unique identifier for this customer.
+      %tr 
+        %td show_date
+        %td The date time of the show.  We should be flexible here and accommodate many different formats with/without time too
+      %tr 
+        %td venue_name
+        %td We're not creating a new venue object in artfully, but we can persist this somewhere.  In the order, perhaps?
+      %tr 
+        %td dollar_amount
+        %td The dollar amount of the total purchase.  In dollars
+      %tr 
+        %td method_of_payment
+        %td Cash, Credit Card, Check, Comp, Other.  We should be opinionated about what goes in here

@@ -1,22 +1,15 @@
 class Import < ActiveRecord::Base
+  
+  include Importing::Status
+  include Importing::Processing
 
-  # Import status transitions:
-  #   pending -> approved -> imported
-
-  attr_accessible :s3_bucket, :s3_key, :s3_etag, :status, :user_id
-
-  belongs_to :user
   has_many :import_errors, :dependent => :delete_all
   has_many :import_rows, :dependent => :delete_all
   has_many :people, :dependent => :destroy
 
-  validates_presence_of :user
-  validates_associated :user
-  validates_presence_of :s3_bucket
-  validates_presence_of :s3_key
-  validates_presence_of :s3_etag
-
   serialize :import_headers
+  
+  set_watch_for :created_at, :local_to => :organization
 
   def headers
     self.import_headers
@@ -32,36 +25,6 @@ class Import < ActiveRecord::Base
     elsif status == "approved"
       self.import
     end
-  end
-
-  def caching!
-    self.update_attributes(:status => "caching")
-    Delayed::Job.enqueue self
-  end
-
-  def pending!
-    self.update_attributes(:status => "pending")
-  end
-
-  def approve!
-    self.update_attributes!(:status => "approved")
-    Delayed::Job.enqueue self
-  end
-
-  def importing!
-    self.update_attributes!(:status => "importing")
-  end
-
-  def imported!
-    self.update_attributes!(:status => "imported")
-  end
-
-  def failed!
-    self.update_attributes!(:status => "failed")
-  end
-
-  def failed?
-    self.status == "failed"
   end
 
   def import
@@ -115,34 +78,6 @@ class Import < ActiveRecord::Base
   rescue Exception => e
     self.import_errors.create!(:error_message => e.message)
     self.failed!
-  end
-
-  def csv_data
-    return @csv_data if @csv_data
-    
-    @csv_data =
-      if File.file?(self.s3_key)
-        File.read(self.s3_key)
-      else
-        s3_bucket = s3_service.buckets.find(self.s3_bucket) if self.s3_bucket.present?
-        s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
-        s3_object.content(true) if s3_object
-      end
-
-    # Make sure the csv file is valid utf-8.
-    if @csv_data
-      @csv_data.encode! "UTF-8", :invalid => :replace, :undef => :replace, :replace => ""
-      @csv_data = @csv_data.chars.map { |c| c if c.valid_encoding? }.compact.join
-    end
-
-    @csv_data
-  end
-
-  def s3_service
-    access_key_id     = Rails.application.config.s3.access_key_id
-    secret_access_key = Rails.application.config.s3.secret_access_key
-
-    S3::Service.new(:access_key_id => access_key_id, :secret_access_key => secret_access_key)
   end
 
   def attach_person(import_person)
