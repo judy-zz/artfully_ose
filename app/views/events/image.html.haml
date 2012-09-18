@@ -30,6 +30,7 @@
 
           .form-actions
             = form.submit "Upload", :class => 'btn'
+            = form.submit "Upload &amp; Next".html_safe, :class => 'btn btn-primary'
 
     .image-display
       =image_tag(@event.image.url) if @event.image?        

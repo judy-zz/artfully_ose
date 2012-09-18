@@ -10,7 +10,7 @@
       .span6    
         = render :partial => "glance", :locals => { :report => @event.glance }       
       .span6
-        %h3 Next Showing
+        %h3 Next Show
         = render :partial => "day_date_show", :locals => { :show => @event.next_public_show, :message => "There are no upcoming shows" }
     .row-fluid
       .span6
