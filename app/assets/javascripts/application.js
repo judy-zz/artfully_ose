@@ -86,10 +86,6 @@ $(document).ready(function() {
 	
 	/*********** EXISTING ARTFUL.LY JS ******/
 
-  // Preload jQuery UI assets
-  var preloader_ui = new Image();
-  preloader_ui.src = "/assets/ui-smoothness/ui-icons_222222_256x240.png";
-
   $("form .description").siblings("input").focusin(function(){
     $("form .description").addClass("active");
   }).focusout(function(){
