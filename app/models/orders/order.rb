@@ -78,7 +78,7 @@ class Order < ActiveRecord::Base
   end
 
   def payment
-    AthenaPayment.new(:transaction_id => transaction_id)
+    CreditCardPayment.new(:transaction_id => transaction_id)
   end
 
   def record_exchange!
