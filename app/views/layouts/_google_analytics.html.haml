@@ -1,4 +1,4 @@
-- if Rails.env.development? && !ArtfullyOse::Engine.config.google_analytics.account.blank?
+- if Rails.env.production? && !Rails.application.config.google_analytics.account.blank?
   :javascript
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', '#{h Rails.application.config.google_analytics.account}']);
