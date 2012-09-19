@@ -73,6 +73,8 @@ class EventsController < ArtfullyOseController
       if user_requesting_next_step?
         if user_just_uploaded_an_image?
           redirect_to messages_event_path(@event)
+        elsif user_set_special_instructions?
+          redirect_to event_shows_path(@event)
         else
           redirect_to edit_event_venue_path(@event)
         end
@@ -142,6 +144,10 @@ class EventsController < ArtfullyOseController
   private
     def find_event
       @event = Event.find(params[:id])
+    end
+
+    def user_set_special_instructions?
+      !params[:event][:special_instructions_caption].nil?
     end
 
     def find_charts
