@@ -16,46 +16,41 @@
             :submit_button => '<div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
 
   .span8
-    %h3 What Can I Upload?
     %p
       Please supply a CSV (comma separated values) of people that you'd like to import.
     %p You #{link_to 'download an empty CSV file', template_imports_path} with these headers already filled in.
-    %p
-      The first row of the file should be a row of headers specifying what each
-      column represents. The list of valid column names is below. You may include
-      any or all of these fields.
     %h3 Required Fields
-    %table.table
+    %table.table.table-bordered.table-striped.docs
       %tr 
-        %td event_name
+        %td.field event_name
         %td The name of the event
     
-    One of the three of the following is required:
-    %table.table
+    %h3 Include One Of The Following
+    %table.table.table-bordered.table-striped.docs
       %tr 
-        %td first_name 
+        %td.field first_name 
         %td The first name of the patron
       %tr 
-        %td last_name
+        %td.field last_name
         %td The last name of the patron
       %tr 
-        %td email
+        %td.field email
         %td The email address of the person  
       
     %h3 Optional Fields
-    %table.table
+    %table.table.table-bordered.table-striped.docs
       %tr 
-        %td external_customer_id
+        %td.field external_customer_id
         %td A unique identifier for this customer.
       %tr 
-        %td show_date
+        %td.field show_date
         %td The date time of the show.  We should be flexible here and accommodate many different formats with/without time too
       %tr 
-        %td venue_name
+        %td.field venue_name
         %td We're not creating a new venue object in artfully, but we can persist this somewhere.  In the order, perhaps?
       %tr 
-        %td dollar_amount
+        %td.field dollar_amount
         %td The dollar amount of the total purchase.  In dollars
       %tr 
-        %td method_of_payment
+        %td.field method_of_payment
         %td Cash, Credit Card, Check, Comp, Other.  We should be opinionated about what goes in here
