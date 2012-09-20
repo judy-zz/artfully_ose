@@ -1,8 +1,13 @@
 class ImportPerson
+  
+  attr_accessor :row
 
   # Define the list of fields known about a person and the various column names
   # that might be used for that field.
   FIELDS = {
+    :event_name       => [ "Event", "Event Name" ],
+    :venue_name       => [ "Venue", "Venue Name" ],
+    :show_date        => [ "Show", "Show Date" ],
     :email            => [ "Email", "Email address" ],
     :first            => [ "First name", "First" ],
     :last             => [ "Last name", "Last" ],

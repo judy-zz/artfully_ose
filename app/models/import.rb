@@ -34,13 +34,11 @@ class Import < ActiveRecord::Base
     self.import_errors.delete_all
 
     rows.each do |row|
-      ip = ImportPerson.new(headers, row)
-      person = attach_person(ip)
-      if !person.save
-        self.import_errors.create! :row_data => row, :error_message => person.errors.full_messages.join(", ")
-        self.reload
-        self.failed!
-      end
+      parsed_row = ImportPerson.new(headers, row)
+      person = create_person(headers, parsed_row)
+      event  = create_event(headers, parsed_row, person)
+      show   = create_show(headers, parsed_row, event)
+      order  = create_order(headers, parsed_row, person, event, show)
     end
 
     if failed?
@@ -48,6 +46,48 @@ class Import < ActiveRecord::Base
     else
       self.imported!
     end
+  end
+
+  def create_event(headers, parsed_row, person)
+    unless parsed_row.event_name.blank?
+      event = Event.where(:name => parsed_row.event_name).where(:organization_id => self.organization).first
+      return event if event
+        
+      event = Event.new
+      event.name = parsed_row.event_name
+      event.organization = self.organization
+      event.venue = Venue.new
+      event.venue.name = parsed_row.venue_name
+      event.venue.organization = self.organization
+      event.save!
+      event
+    end
+  end
+  
+  def create_show(headers, parsed_row, event)
+    unless parsed_row.event_name.blank?
+      show = Show.where(:datetime => parsed_row.show_date).where(:event_id => event.id).where(:organization_id => self.organization).first
+      return show if show
+      
+      show = Show.new
+      show.datetime = parsed_row.show_date
+      show.event = event
+      show.organization = self.organization
+      show.save(:validate => false)
+    end
+  end
+  
+  def create_order(headers, parsed_row, person, event, show)
+  end
+  
+  def create_person(headers, parsed_row)
+    person = attach_person(parsed_row)
+    if !person.save
+      self.import_errors.create! :row_data => parsed_row.row, :error_message => person.errors.full_messages.join(", ")
+      self.reload
+      self.failed!
+    end  
+    person  
   end
 
   def cache_data

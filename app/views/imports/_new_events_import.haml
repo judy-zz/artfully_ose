@@ -22,35 +22,35 @@
     %h3 Required Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field event_name
+        %td.field Event Name
         %td The name of the event
+      %tr 
+        %td.field Venue Name
+        %td We're not creating a new venue object in artfully, but we can persist this somewhere.  In the order, perhaps?
+      %tr 
+        %td.field Show Date
+        %td The date time of the show.  We should be flexible here and accommodate many different formats with/without time too
     
     %h3 Include One Of The Following
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field first_name 
+        %td.field First 
         %td The first name of the patron
       %tr 
-        %td.field last_name
+        %td.field Last
         %td The last name of the patron
       %tr 
-        %td.field email
+        %td.field Email
         %td The email address of the person  
       
     %h3 Optional Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field external_customer_id
+        %td.field External Customer Id
         %td A unique identifier for this customer.
       %tr 
-        %td.field show_date
-        %td The date time of the show.  We should be flexible here and accommodate many different formats with/without time too
-      %tr 
-        %td.field venue_name
-        %td We're not creating a new venue object in artfully, but we can persist this somewhere.  In the order, perhaps?
-      %tr 
-        %td.field dollar_amount
+        %td.field Dollar Amount
         %td The dollar amount of the total purchase.  In dollars
       %tr 
-        %td.field method_of_payment
+        %td.field Method Of Payment
         %td Cash, Credit Card, Check, Comp, Other.  We should be opinionated about what goes in here
