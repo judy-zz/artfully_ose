@@ -203,7 +203,6 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (>= 0.0.2)
       mime-types
-    pg (0.14.0)
     polyglot (0.3.3)
     pr_geohash (1.0.0)
     proxies (0.2.1)
@@ -332,7 +331,6 @@ DEPENDENCIES
   guard-rspec
   launchy
   nokogiri
-  pg
   rspec-rails (~> 2.10.0)
   shoulda
   spork-rails

@@ -25,16 +25,17 @@
           =form.text_area :description, :class => 'input-xlarge', :rows => '6'
           
       .control-group
-        =form.label :name, "Contact email", :class => 'control-label'
+        =form.label :name, "Contact email<br />for patrons".html_safe, :class => 'control-label'
         .controls
           =form.text_field :contact_email, :class => 'input-xlarge', :placeholder=>"Email"
           
       .control-group
-        =form.label :name, "Contact phone", :class => 'control-label'
+        =form.label :name, "Contact phone<br />for patrons".html_safe, :class => 'control-label'
         .controls
           =form.text_field :contact_phone, :class => 'input-xlarge', :placeholder=>"Phone"
           
       .form-actions
         = form.submit "Save", :class => 'btn'
+        = form.submit "Save &amp; Next".html_safe, :class => 'btn btn-primary'
     
 

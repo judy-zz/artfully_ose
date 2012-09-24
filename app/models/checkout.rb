@@ -39,14 +39,12 @@ class Checkout
       cart.pay_with(@payment)
     end
     
-    ::Rails.logger.debug("Payment made, cart is approved: [#{cart.approved?}]")
-    
     if cart.approved?
       order_timestamp = Time.now
       create_order(order_timestamp)
       cart.finish(@person, order_timestamp)
     end
-      
+    
     cart.approved?
   end
 

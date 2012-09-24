@@ -34,12 +34,11 @@ describe Checkout do
       end
     end
 
-    # # TODO: Fix this spec!
-    # it "should be valid without a payment if the cart total is 0 (Free)" do
-    #   subject = Checkout.new(FactoryGirl.build(:cart_with_free_items), payment)
-    #   subject.payment.credit_card = nil
-    #   subject.should be_valid
-    # end
+    it "should be valid without a payment if the cart total is 0 (Free)" do
+      subject = Checkout.new(FactoryGirl.create(:cart_with_free_items), payment)
+      subject.payment.credit_card = nil
+      subject.should be_valid
+    end
   
     it "should not be valid without an cart" do
       subject.cart = nil
@@ -58,18 +57,18 @@ describe Checkout do
     end
   end
 
-  # # TODO: Fix this spec!  
-  # describe "cash payments" do
-  #   let(:payment)         { CashPayment.new(FactoryGirl.create(:person)) }
-  #   let(:cart_with_item)  { FactoryGirl.build(:cart_with_items) }
-  #   subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
+  describe "cash payments" do
+    let(:payment)         { CashPayment.new(FactoryGirl.create(:person)) }
+    let(:cart_with_item)  { FactoryGirl.build(:cart_with_items) }
+    subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
   
-  #   it "should always approve orders with cash payments" do
-  #     subject.stub(:create_order).and_return(BoxOffice::Order.new)
-  #     Person.stub(:find_or_create).and_return(FactoryGirl.build(:person))
-  #     subject.finish.should be_true
-  #   end
-  # end
+    it "should always approve orders with cash payments" do
+      subject.stub(:create_order).and_return(BoxOffice::Order.new)
+      Person.stub(:find_or_create).and_return(FactoryGirl.build(:person))
+      subject.cart.stub(:organizations).and_return(Array.wrap(FactoryGirl.build(:person).organization))
+      subject.finish.should be_true
+    end
+  end
   
   describe "#finish" do
     before(:each) do

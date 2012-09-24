@@ -20,6 +20,10 @@ class SearchesController < ApplicationController
     @segment = Segment.new
     session[:return_to] ||= request.referer # Record the current page, in case creating a list segment fails.
     prepare_search_and_people
+    respond_to do |format|
+     format.html
+     format.csv { render :csv => @search.people, :filename => "#{@search.id}-#{DateTime.now.strftime("%m-%d-%y")}" }
+   end
   end
 
   private
