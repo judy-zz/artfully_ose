@@ -34,11 +34,12 @@ class Import < ActiveRecord::Base
     self.import_errors.delete_all
 
     rows.each do |row|
-      parsed_row = ImportPerson.new(headers, row)
-      person = create_person(headers, parsed_row)
-      event  = create_event(headers, parsed_row, person)
-      show   = create_show(headers, parsed_row, event)
-      order  = create_order(headers, parsed_row, person, event, show)
+      parsed_row  = ImportPerson.new(headers, row)
+      person      = create_person(headers, parsed_row)
+      event       = create_event(headers, parsed_row, person)
+      show        = create_show(headers, parsed_row, event)
+      ticket      = create_ticket(headers, parsed_row, person, event, show)
+      order       = create_order(headers, parsed_row, person, event, show, ticket)
     end
 
     if failed?
@@ -66,18 +67,36 @@ class Import < ActiveRecord::Base
   
   def create_show(headers, parsed_row, event)
     unless parsed_row.event_name.blank?
-      show = Show.where(:datetime => parsed_row.show_date).where(:event_id => event.id).where(:organization_id => self.organization).first
+      @imported_shows = @imported_shows || {}
+      show = @imported_shows[parsed_row.show_date]
       return show if show
       
       show = Show.new
-      show.datetime = parsed_row.show_date
+      show.datetime = DateTime.parse(parsed_row.show_date)
       show.event = event
       show.organization = self.organization
+      
+      #Hacky, but we have to end-around state machine here because we don't have a chart
+      show.state = "published"
       show.save(:validate => false)
+      
+      @imported_shows[parsed_row.show_date] = show
+      show
     end
   end
   
-  def create_order(headers, parsed_row, person, event, show)
+  def create_ticket(headers, parsed_row, person, event, show)
+    Ticket.build_one(show, nil, 0 ,1, true).tap { |t| t.save }
+  end
+  
+  #TODO: Aggregate the order if the person appears multiple times
+  #Also include order date  
+  def create_order(headers, parsed_row, person, event, show, ticket)
+    order = ImportedOrder.new
+    order.organization = self.organization
+    order.person = person
+    order.details = "Imported by #{user.email} on #{self.created_at_local_to_organization}"
+    order << ticket
   end
   
   def create_person(headers, parsed_row)

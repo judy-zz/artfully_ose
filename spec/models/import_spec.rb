@@ -53,7 +53,7 @@ describe Import do
   end
 
   context "importing event history" do
-    context "imports with two events, event-import.csv" do
+    context "event-import-no-dollar-amounts.csv" do
       before :each do
         Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
   
@@ -66,8 +66,18 @@ describe Import do
       it "should have 6 import rows" do
         @import.import_rows.count.should == 6
       end
+      
+      it "should have created all the right people" do
+        Person.all.length.should eq 6
+        Person.where(:first_name => "Monique").where(:last_name => "Meloche").first.should_not be_nil
+        Person.where(:first_name => "Dirk").where(:last_name => "Denison").where(:email => "dda@example.com").first.should_not be_nil
+        Person.where(:first_name => "James").where(:last_name => "Cahn").where(:email => "jcahn@example.edu").first.should_not be_nil
+        Person.where(:first_name => "Susan").where(:last_name => "Goldschmidt").where(:email => "sueg333@example.com").first.should_not be_nil
+        Person.where(:first_name => "Plank").where(:last_name => "Goldschmidtt").where(:email => "plank@example.com").first.should_not be_nil
+        Person.where(:last_name => "Goldschmidtt").where(:email => "tim@example.com").first.should_not be_nil
+      end
     
-      it "should create one event, venue for each venue in the import file" do
+      it "should create one event, venue for each event. venue in the import file" do
         ["Test Import", "Test Event"].each do |event_name|
           Event.where(:name => event_name).length.should eq 1
           @event = Event.where(:name => event_name).first
@@ -80,8 +90,46 @@ describe Import do
       end  
       
       it "should create shows for each date and attach to the correct event" do
-        @event = Event.where(:name => "Test Import").first
-        @event.shows.length.should eq 1
+        ["Test Import", "Test Event"].each do |event_name|
+          @event = Event.where(:name => event_name).first
+          @event.shows.length.should eq 1
+          show = @event.shows.first
+          show.event.should eq @event
+          show.should be_published
+        end
+      end
+        
+      it "should create tickets for each person that went to the show" do
+        @show = Event.where(:name => "Test Import").first.shows.first
+        @show.tickets.length.should eq 4
+        @show.tickets.each do |ticket|
+          ticket.show.should eq @show
+          
+          #TODO set buyer id
+        end
+      end
+      
+      it "should put a price on the ticket equal to whatever we said int he import file but I forgot the column header and don't have Internet"
+    
+      it "should create an order for everything, too" do
+        Event.where(:name => "Test Import").first.shows.all do |show|
+          items = show.items
+          items.length.should eq 4
+          item.each do |item|
+            order = item.order
+            (order.is_a? ImportedOrder).should be_true
+            
+            order.organization.should eq @import.organization
+            order.transaction_id.should be_nil
+            order.details.should_not be_nil
+            
+            #TODO: payment_method if applicable
+            
+            #should be attached to the correct person
+            
+            
+          end
+        end
       end
     end
     
