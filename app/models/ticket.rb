@@ -230,19 +230,23 @@ class Ticket < ActiveRecord::Base
   def self.create_many(show, section, quantity, on_sale = false)
     new_tickets = []
     quantity.times do
-      t = Ticket.new({
-        :venue => show.event.venue.name,
-        :price => section.price,
-        :section => section,
-      })
-      t.show = show
-      t.organization = show.organization
-      t.state = 'on_sale' if on_sale
-      new_tickets << t
+      new_tickets << build_one(show, section, section.price, quantity, on_sale)
     end
     
     result = Ticket.import(new_tickets)
     result
+  end
+  
+  def self.build_one(show, section, price, quantity, on_sale = false)
+    t = Ticket.new({
+      :venue => show.event.venue.name,
+      :price => price,
+      :section => section,
+    })
+    t.show = show
+    t.organization = show.organization
+    t.state = 'on_sale' if on_sale
+    t
   end
 
   private
