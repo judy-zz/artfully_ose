@@ -67,12 +67,13 @@ $(document).ready(function(){
   // show shopping cart when clicked
   $('#shopping-cart-controls').click(function() {
     $('#shopping-cart #steps').slideToggle();
-  })
+  });
 
   // add * to required field labels
   $('label.required').append('&nbsp;<strong>*</strong>&nbsp;');
 
   // switch shopping cart tabs
+  $('body').off('click.tab.data-api');
   $('[data-toggle="tab"]').click(function(e) {
     e.preventDefault();
     currentSectionId = $('li.active a').attr('href');
@@ -83,7 +84,7 @@ $(document).ready(function(){
       // validate section before switching tabs
       if (validateSection(currentSectionId)) {
         switchTabs($(this).attr('href'));
-      };
+      }
       // else, dont switch
       // errors will be shown 
     }
@@ -96,7 +97,7 @@ $(document).ready(function(){
     updateTotal();
     $('.formatCurrency').formatCurrency();
     updateOrderOnServer();
-  })
+  });
 
   // change drop down on tickets in cart
   $(document).delegate('#cart select.ticket-count', 'change', function(e) {
