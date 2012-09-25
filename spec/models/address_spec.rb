@@ -27,6 +27,33 @@ describe Address do
     end
   end
 
+  describe "from_payment" do
+    before(:each) do
+      @address = FactoryGirl.build(:address)
+      @payment = ::CreditCardPayment.new
+      @payment.amount = 1000
+      @payment.credit_card = ActiveMerchant::Billing::CreditCard.new(
+                                :first_name => 'Steve',
+                                :last_name  => 'Smith',
+                                :month      => '9',
+                                :year       => '2010',
+                                :type       => 'visa',
+                                :number     => '4242424242424242',
+                                :verification_value => "333"
+                              )
+                              
+      @customer = Person.new
+      @customer.address = @address
+      
+      @payment.customer = @customer
+    end
+    
+    it "should extract the address from the payment" do
+      extracted_address = Address.from_payment @payment
+      extracted_address.should eq @address
+    end
+  end
+
   context "is_same_as()" do
     RSpec::Matchers.define :be_the_same_as do |addr|
       match do |subj|

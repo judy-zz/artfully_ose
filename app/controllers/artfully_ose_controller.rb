@@ -32,6 +32,16 @@ class ArtfullyOseController < ActionController::Base
     end
 
   private
+
+    def user_requesting_next_step?
+      params[:commit].try(:downcase) =~ /next/
+    end
+
+    def user_just_uploaded_an_image?
+      (params[:event].present? && params[:event][:image].present?) ||
+        params[:commit].try(:downcase) =~ /upload/
+    end
+
     def public_controller?
       %w( devise/sessions devise/registrations devise/passwords devise/unlocks ).include?(params[:controller])
     end

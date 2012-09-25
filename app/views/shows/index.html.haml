@@ -9,9 +9,9 @@
   .span9
     = render "shared/error_messages", :target => @event
     .row-fluid
-      .span2
-        %h3 Shows
-      .span10
+      .span3
+        %h3 Shows List
+      .span9
         =icon_link_to("Add", new_event_show_path(@event, @show), 'icon-plus-sign', 'btn', '')
     %table.table
       %thead

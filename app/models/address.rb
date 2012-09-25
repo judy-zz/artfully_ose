@@ -22,20 +22,7 @@ class Address < ActiveRecord::Base
   end
 
   def self.from_payment(payment)
-    if payment.respond_to? "billing_address"
-      billing_address = payment.billing_address
-
-      new({
-        :address1 => billing_address.street_address1,
-        :address2 => billing_address.street_address2,
-        :city     => billing_address.city,
-        :state    => billing_address.state,
-        :zip      => billing_address.postal_code,
-        :country  => billing_address.country
-      })
-    else
-      nil
-    end
+    payment.try(:customer).try(:address)
   end
   
   def self.unhash(address)
