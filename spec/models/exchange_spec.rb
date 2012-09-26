@@ -50,19 +50,14 @@ describe Exchange do
   end
 
   describe ".submit" do
-    describe "return_items" do
-      it "should return the items in the exchange" do
-        subject.items.each { |item| item.should_receive(:return!).and_return(true) }
-        subject.submit
-      end
-      
+    describe "return_items" do      
       it "should mark the exchanged items net as zero" do
-        subject.items.each { |item| item.should_receive(:return!).and_return(true) }
         subject.submit
         subject.items.each do |item| 
           item.price.should eq 0
           item.realized_price.should eq 0
           item.net.should eq 0
+          item.state.should eq "exchanged"
         end
       end
     end

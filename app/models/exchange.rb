@@ -52,11 +52,12 @@ class Exchange
 
   def create_order(time=Time.now)
     ::Rails.logger.debug("CREATING EXCHANGE ORDER")
-    exchange_order = ApplicationOrder.new.tap do |exchange_order|
+    exchange_order = ExchangeOrder.new.tap do |exchange_order|
       exchange_order.person = order.person
       exchange_order.parent = order
       exchange_order.created_at = time
       exchange_order.for_organization order.organization
+      exchange_order.details = "Order is the result of an exchange on #{I18n.l time, :format => :slashed_date}"
       exchange_order << tickets
     end
     ::Rails.logger.debug("RECORDING EXCHANGE")

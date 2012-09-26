@@ -142,7 +142,8 @@ class Item < ActiveRecord::Base
   end
 
   def exchange!(return_items_to_inventory = true)
-    return!(return_items_to_inventory)
+    product.return!(return_items_to_inventory) if product.returnable?
+    self.state = "exchanged"
     self.price = 0
     self.realized_price = 0
     self.net = 0 
