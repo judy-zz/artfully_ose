@@ -3,7 +3,7 @@ class Organization < ActiveRecord::Base
   include Ext::Resellable::Organization
   include Ext::Integrations::Organization
   
-  attr_accessible :name, :time_zone, :ein, :legal_organization_name
+  attr_accessible :name, :time_zone, :ein, :legal_organization_name, :email
   
   has_many :events
   has_many :charts
@@ -23,7 +23,7 @@ class Organization < ActiveRecord::Base
 
   has_many :imports
 
-  validates_presence_of :name
+  validates_presence_of :name, :email
   validates :ein, :presence => true, :if => :updating_tax_info
   validates :legal_organization_name, :presence => true, :if => :updating_tax_info
 
