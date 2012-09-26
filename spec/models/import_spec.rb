@@ -53,11 +53,11 @@ describe Import do
   end
 
   context "importing event history" do
-    context "event-import-no-dollar-amounts.csv" do
+    context "event-import-full-test.csv" do
       before :each do
         Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
   
-        @csv_filename = Rails.root.join("spec", "support", "event-import-no-dollar-amounts.csv")
+        @csv_filename = Rails.root.join("spec", "support", "event-import-full-test.csv")
         @import = FactoryGirl.create(:import, s3_key: @csv_filename)
         @import.cache_data
         @import.import
@@ -67,14 +67,40 @@ describe Import do
         @import.import_rows.count.should == 6
       end
       
-      it "should have created all the right people" do
-        Person.all.length.should eq 6
-        Person.where(:first_name => "Monique").where(:last_name => "Meloche").first.should_not be_nil
-        Person.where(:first_name => "Dirk").where(:last_name => "Denison").where(:email => "dda@example.com").first.should_not be_nil
-        Person.where(:first_name => "James").where(:last_name => "Cahn").where(:email => "jcahn@example.edu").first.should_not be_nil
-        Person.where(:first_name => "Susan").where(:last_name => "Goldschmidt").where(:email => "sueg333@example.com").first.should_not be_nil
-        Person.where(:first_name => "Plank").where(:last_name => "Goldschmidtt").where(:email => "plank@example.com").first.should_not be_nil
-        Person.where(:last_name => "Goldschmidtt").where(:email => "tim@example.com").first.should_not be_nil
+      context "creating people" do
+        it "should create six people" do
+          Person.all.length.should eq 6
+          Person.where(:first_name => "Monique").where(:last_name => "Meloche").first.should_not be_nil
+          Person.where(:first_name => "Dirk").where(:last_name => "Denison").where(:email => "dda@example.com").first.should_not be_nil
+          Person.where(:first_name => "James").where(:last_name => "Cahn").where(:email => "jcahn@example.edu").first.should_not be_nil
+          Person.where(:first_name => "Susan").where(:last_name => "Goldschmidt").where(:email => "sueg333@example.com").first.should_not be_nil
+          Person.where(:first_name => "Plank").where(:last_name => "Goldschmidtt").where(:email => "plank@example.com").first.should_not be_nil
+          Person.where(:last_name => "Goldschmidtt").where(:email => "tim@example.com").first.should_not be_nil
+        end
+        
+        it "should attach the import to the people" do
+          @import.people.length.should eq 6
+          Person.where(:import_id => @import.id).length.should eq 6
+        end
+      end
+      
+      context "creating actions" do   
+        it "should create go and get actions for each person on the order" do
+          @import.people.each do |person|
+            person.actions.length.should eq 2
+            go_action = GoAction.where(:person_id => person.id).first        
+            go_action.should_not be nil
+            go_action.sentence.should_not be_nil
+            go_action.subject.should eq person.orders.first.items.first.show   
+        
+            get_action = GetAction.where(:person_id => person.id).first
+            get_action.should_not be nil
+            get_action.sentence.should_not be_nil
+            go_action.subject.should eq person.orders.first.items.first.show
+          end
+        end
+        
+        #TODO: Actions tagged with import_id?
       end
     
       it "should create one event, venue for each event. venue in the import file" do
@@ -109,27 +135,36 @@ describe Import do
         end
       end
       
-      it "should put a price on the ticket equal to whatever we said int he import file but I forgot the column header and don't have Internet"
+      it "should put a price on the ticket equal to whatever we said in the import file but I forgot the column header and don't have Internet"
     
-      it "should create an order for everything, too" do
-        Event.where(:name => "Test Import").first.shows.all do |show|
-          items = show.items
-          items.length.should eq 4
-          item.each do |item|
-            order = item.order
-            (order.is_a? ImportedOrder).should be_true
-            
+      context "creating orders" do
+        before(:each) do
+          @orders = []
+          ["Test Import", "Test Event"].each do |event_name|
+            Event.where(:name => event_name).first.shows.each do |show|
+              items = show.items
+              items.each do |item|
+                @orders << item.order
+              end
+            end
+          end
+          
+          @orders.length.should eq 6
+        end
+      
+        it "should create an order for everything, too" do
+          @orders.each do |order|
             order.organization.should eq @import.organization
             order.transaction_id.should be_nil
             order.details.should_not be_nil
-            
+          
             #TODO: payment_method if applicable
-            
+          
             #should be attached to the correct person
-            
-            
           end
         end
+        
+        it "should be attached to the import"
       end
     end
     
