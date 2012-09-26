@@ -81,9 +81,9 @@ class Order < ActiveRecord::Base
     CreditCardPayment.new(:transaction_id => transaction_id)
   end
 
-  def record_exchange!
-    items.each do |item|
-      item.to_exchange!
+  def record_exchange!(exchanged_items)
+    items.each_with_index do |item, index|
+      item.to_exchange! exchanged_items[index]
     end
   end
 

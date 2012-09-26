@@ -34,12 +34,14 @@ class Exchange
   end
 
   def submit
-    return_items
-    sell_new_items
+    ActiveRecord::Base.transaction do
+      sell_new_items
+      return_old_items
+    end
   end
 
-  def return_items
-    items.map(&:return!)
+  def return_old_items
+    items.map(&:exchange!)
   end
 
   def sell_new_items
@@ -58,7 +60,7 @@ class Exchange
       exchange_order << tickets
     end
     ::Rails.logger.debug("RECORDING EXCHANGE")
-    exchange_order.record_exchange!
+    exchange_order.record_exchange! items
     ::Rails.logger.debug("SAVING ORDER")
     exchange_order.save!
     

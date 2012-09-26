@@ -122,10 +122,10 @@ class Item < ActiveRecord::Base
     end
   end
 
-  def to_exchange!
-    self.price = 0
-    self.realized_price = 0
-    self.net = 0
+  def to_exchange!(item_that_this_is_being_exchanged_for)
+    self.price = item_that_this_is_being_exchanged_for.price
+    self.realized_price = item_that_this_is_being_exchanged_for.realized_price
+    self.net = item_that_this_is_being_exchanged_for.net
     self.state = "exchangee"
   end
 
@@ -139,6 +139,14 @@ class Item < ActiveRecord::Base
   def return!(return_items_to_inventory = true)
     update_attribute(:state, "returned")
     product.return!(return_items_to_inventory) if product.returnable?
+  end
+
+  def exchange!(return_items_to_inventory = true)
+    return!(return_items_to_inventory)
+    self.price = 0
+    self.realized_price = 0
+    self.net = 0 
+    save   
   end
 
   def modified?
