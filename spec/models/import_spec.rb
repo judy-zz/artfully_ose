@@ -135,7 +135,9 @@ describe Import do
         end
       end
       
-      it "should put a price on the ticket equal to whatever we said in the import file but I forgot the column header and don't have Internet"
+      it "should put a price on the ticket" do
+        
+      end
     
       context "creating orders" do
         before(:each) do
