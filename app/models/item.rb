@@ -126,7 +126,7 @@ class Item < ActiveRecord::Base
     self.price = item_that_this_is_being_exchanged_for.price
     self.realized_price = item_that_this_is_being_exchanged_for.realized_price
     self.net = item_that_this_is_being_exchanged_for.net
-    self.state = "exchangee"
+    self.state = "purchased"
   end
 
   def to_comp!

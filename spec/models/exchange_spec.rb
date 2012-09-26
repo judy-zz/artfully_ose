@@ -99,6 +99,7 @@ describe Exchange do
           item.price.should           eq fake_item.price
           item.realized_price.should  eq fake_item.realized_price
           item.net.should             eq fake_item.net
+          item.state.should           eq "purchased"
         end
       end
     end
