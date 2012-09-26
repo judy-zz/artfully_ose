@@ -27,7 +27,7 @@ class SponsoredDonationKit < Kit
   end
   
   def pitch
-    "Contact support@artful.ly to learn about Fiscal Sponsorship through Fractured Atlas for your organization"
+    "Contact #{ARTFULLY_CONFIG[:contact_email]} to learn about Fiscal Sponsorship through Fractured Atlas for your organization"
   end
 
   def connected?

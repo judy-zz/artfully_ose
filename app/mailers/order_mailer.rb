@@ -1,5 +1,5 @@
 class OrderMailer < ActionMailer::Base
-  default :from => "support@artful.ly"
+  default :from => ARTFULLY_CONFIG[:contact_email]
   layout "mail"
 
   def confirmation_for(order)
