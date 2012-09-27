@@ -27,8 +27,8 @@ class ImportsController < ArtfullyOseController
         :s3_bucket => params[:bucket],
         :s3_key    => params[:key],
         :s3_etag   => params[:etag],
-        :status    => "caching",
-        :user_id   => current_user.id
+        :status    => "caching"
+      @import.user_id = current_user.id
       @import.caching!
       redirect_to @import
     else
