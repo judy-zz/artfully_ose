@@ -112,9 +112,6 @@ class SalesController < ArtfullyOseController
         params[:credit_card][:year] = swiped_data.track1.expiration_year
       end
       
-        puts "                          ***"
-        puts params[:credit_card][:number]
-        puts "                          ***"
       params[:benefactor] = current_user
       
       payment = Payment.create(params[:payment_method], params)

@@ -11,6 +11,9 @@ class Exchange
   validate :tickets_are_available
   validate :tickets_belong_to_organization
 
+  #The original order
+  #The items to exchange
+  #The tickets that they are being exchanged for
   def initialize(order, items, tickets = [])
     self.order =        order
     self.items =        items

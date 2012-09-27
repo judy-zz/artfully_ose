@@ -58,6 +58,7 @@ describe Exchange do
           item.realized_price.should eq 0
           item.net.should eq 0
           item.state.should eq "exchanged"
+          item.product.state.should eq "on_sale"
         end
       end
     end
@@ -94,7 +95,30 @@ describe Exchange do
           item.price.should           eq fake_item.price
           item.realized_price.should  eq fake_item.realized_price
           item.net.should             eq fake_item.net
-          item.state.should           eq "purchased"
+          item.state.should           eq fake_item.state
+        end
+      end
+    end
+
+    describe "exchanging cash sales" do
+      it "should sell each new ticket to the person associated with the order" do
+        subject.tickets.each { |ticket| ticket.should_receive(:exchange_to) }
+        subject.submit
+      end
+      
+      it "should mark the exchangees items price/realized/net/state as equal to the previous items" do
+        subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+        subject.submit
+        exchange_order = subject.order.children.first
+        
+        fake_item = Item.new
+        fake_item.product= tickets.first
+        
+        exchange_order.items.each do |item|
+          item.price.should           eq fake_item.price
+          item.realized_price.should  eq fake_item.realized_price
+          item.net.should             eq fake_item.net
+          item.state.should           eq subject.order.first.state
         end
       end
     end
