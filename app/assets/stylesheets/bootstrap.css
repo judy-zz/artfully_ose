@@ -1392,6 +1392,9 @@ table .span24 {
   margin-left: 0;
 }
 /* ICONS taken out here. */
+.dropdown {
+  position: relative;
+}
 .dropdown-toggle {
   *margin-bottom: -3px;
 }
