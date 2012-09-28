@@ -58,6 +58,7 @@ class Exchange
     exchange_order = ExchangeOrder.new.tap do |exchange_order|
       exchange_order.person = order.person
       exchange_order.parent = order
+      exchange_order.payment_method = "Exchange"
       exchange_order.created_at = time
       exchange_order.for_organization order.organization
       exchange_order.details = "Order is the result of an exchange on #{I18n.l time, :format => :slashed_date}"
