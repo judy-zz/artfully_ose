@@ -108,17 +108,18 @@ describe Exchange do
       
       it "should mark the exchangees items price/realized/net/state as equal to the previous items" do
         subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+        original_state = items.first.state
         subject.submit
         exchange_order = subject.order.children.first
         
         fake_item = Item.new
         fake_item.product= tickets.first
-        
+                
         exchange_order.items.each do |item|
           item.price.should           eq fake_item.price
           item.realized_price.should  eq fake_item.realized_price
           item.net.should             eq fake_item.net
-          item.state.should           eq subject.order.first.state
+          item.state.should           eq original_state
         end
       end
     end
