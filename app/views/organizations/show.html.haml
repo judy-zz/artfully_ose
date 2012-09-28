@@ -5,7 +5,7 @@
 %ul.kv
   %li.row-fluid
     .key.span2 Email
-    .value.span6{'data-content' => "Your patrons will be able to respond to this email address when receiving ticket/donation receipts. You can change this at any time."}= @organization.email
+    .value.span6= @organization.email
   %li.row-fluid
     .key.span2 Time Zone
     .value.span6= @organization.time_zone
