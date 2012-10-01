@@ -13,6 +13,7 @@ class Order < ActiveRecord::Base
 
   belongs_to :person
   belongs_to :organization
+  belongs_to :import
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
   has_many :items

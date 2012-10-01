@@ -104,23 +104,22 @@ describe Import do
       end
     
       it "should create one event, venue for each event. venue in the import file" do
-        ["Test Import", "Test Event"].each do |event_name|
-          Event.where(:name => event_name).length.should eq 1
-          @event = Event.where(:name => event_name).first
-          @event.should_not be_nil
-          @event.venue.should_not be_nil
-          @event.venue.name.should eq "Test Venue"
-          @event.organization.should eq @import.organization
-          @event.venue.organization.should eq @import.organization
+        imported_events.each do |event|
+          Event.where(:name => event.name).length.should eq 1
+          event.should_not be_nil
+          event.venue.should_not be_nil
+          event.venue.name.should eq "Test Venue"
+          event.organization.should eq @import.organization
+          event.venue.organization.should eq @import.organization
+          event.import.should eq @import
         end
       end  
       
       it "should create shows for each date and attach to the correct event" do
-        ["Test Import", "Test Event"].each do |event_name|
-          @event = Event.where(:name => event_name).first
-          @event.shows.length.should eq 1
-          show = @event.shows.first
-          show.event.should eq @event
+        imported_events.each do |event|
+          event.shows.length.should eq 1
+          show = event.shows.first
+          show.event.should eq event
           show.should be_published
         end
       end
@@ -131,23 +130,19 @@ describe Import do
         @show.tickets.each do |ticket|
           ticket.show.should eq @show
           
-          #TODO set buyer id
+          #Weaksauce.  Should be testing for individal buyers
+          Person.find(ticket.buyer.id).should_not be_nil
         end
       end
       
-      it "should put a price on the ticket" do
-        
-      end
+      it "should put a price on the ticket"
     
       context "creating orders" do
         before(:each) do
           @orders = []
-          ["Test Import", "Test Event"].each do |event_name|
-            Event.where(:name => event_name).first.shows.each do |show|
-              items = show.items
-              items.each do |item|
-                @orders << item.order
-              end
+          imported_events.each do |event|
+            event.shows.each do |show|
+              show.items.each { |item| @orders << item.order }
             end
           end
           
@@ -155,25 +150,79 @@ describe Import do
         end
       
         it "should create an order for everything, too" do
-          @orders.each do |order|
+          @orders.sort_by {|o| o.id}.each_with_index do |order, index|
             order.organization.should eq @import.organization
             order.transaction_id.should be_nil
             order.details.should_not be_nil
-          
-            #TODO: payment_method if applicable
-          
-            #should be attached to the correct person
+            order.import.should eq @import            
+            order.payment_method.should   eq target_orders[index].payment_method
+            order.person.should           eq target_orders[index].person
           end
         end
         
-        it "should be attached to the import"
+        it "should create settled items" do
+          @orders.each do |order|
+            order.items.each {|item| item.should be_settled}
+          end
+        end
       end
     end
     
     context "#create_show" do
-      it "should create shows for each date"
+      it "should create shows for each date" do
+        imported_shows.length.should eq 2
+      end
+      
+      #these can go into a smaller test
       it "should report an error if show dates are not included"
       it "should report an error if a show date is malformed or unparsable"
     end   
+  end
+  
+  def imported_shows
+    puts "WANK"
+    Show.all.each do |s| 
+      puts "#{s.id} #{s.event_id}"
+    end
+    
+    Show.where(:event_id => imported_events).all
+  end
+  
+  def target_orders
+    @target_orders ||= build_target_orders
+  end
+  
+  def build_target_orders
+    temp_orders = []
+    
+    temp_orders[0]                  = Order.new
+    temp_orders[0].person           = Person.where(:first_name => "Monique").where(:last_name => "Meloche").first
+    temp_orders[0].payment_method   = "Cash"
+    
+    temp_orders[1]                  = Order.new
+    temp_orders[1].person           = Person.where(:first_name => "Dirk").where(:last_name => "Denison").where(:email => "dda@example.com").first
+    temp_orders[1].payment_method   = "Cash"
+    
+    temp_orders[2]                  = Order.new
+    temp_orders[2].person           = Person.where(:first_name => "James").where(:last_name => "Cahn").where(:email => "jcahn@example.edu").first
+    temp_orders[2].payment_method   = "Credit Card"
+    
+    temp_orders[3]                  = Order.new
+    temp_orders[3].person           = Person.where(:first_name => "Susan").where(:last_name => "Goldschmidt").where(:email => "sueg333@example.com").first
+    temp_orders[3].payment_method   = "Credit Card"
+    
+    temp_orders[4]                  = Order.new
+    temp_orders[4].person           = Person.where(:first_name => "Plank").where(:last_name => "Goldschmidtt").where(:email => "plank@example.com").first
+    temp_orders[4].payment_method   = "Credit Card"
+    
+    temp_orders[5]                  = Order.new
+    temp_orders[5].person           = Person.where(:last_name => "Goldschmidtt").where(:email => "tim@example.com").first
+    temp_orders[5].payment_method   = "I.O.U."
+    
+    temp_orders
+  end
+  
+  def imported_events
+    @imported_events ||= Event.where(:name => ["Test Import", "Test Event"]).all
   end
 end

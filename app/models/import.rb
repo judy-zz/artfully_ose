@@ -63,6 +63,7 @@ class Import < ActiveRecord::Base
     event.venue = Venue.new
     event.venue.name = parsed_row.venue_name
     event.venue.organization = self.organization
+    event.import = self
     event.save!
     event
   end
@@ -81,6 +82,8 @@ class Import < ActiveRecord::Base
     show.state = "published"
     show.save(:validate => false)
     
+    puts show.errors
+    
     @imported_shows[parsed_row.show_date] = show
     show
   end
@@ -96,7 +99,10 @@ class Import < ActiveRecord::Base
   end
   
   def create_ticket(headers, parsed_row, person, event, show)
-    Ticket.build_one(show, nil, 0 ,1, true).tap { |t| t.save }
+    Ticket.build_one(show, nil, 0 ,1, true).tap do |t| 
+      t.buyer = person
+      t.save
+    end
   end
   
   #TODO: Aggregate the order if the person appears multiple times
@@ -104,9 +110,13 @@ class Import < ActiveRecord::Base
   def create_order(headers, parsed_row, person, event, show, ticket)
     order = ImportedOrder.new
     order.organization = self.organization
+    order.payment_method = parsed_row.payment_method
     order.person = person
     order.details = "Imported by #{user.email} on #{self.created_at_local_to_organization}"
-    order << ticket
+    order.import = self
+    item = Item.for(ticket)
+    item.state = "settled"
+    order.items << item
     order.save
     order
   end

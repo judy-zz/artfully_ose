@@ -8,6 +8,7 @@ class ImportPerson
     :event_name       => [ "Event", "Event Name" ],
     :venue_name       => [ "Venue", "Venue Name" ],
     :show_date        => [ "Show", "Show Date" ],
+    :payment_method   => [ "Method of Payment", "Payment Method" ],
     :amount           => [ "Amount", "Dollar Amount" ],
     :email            => [ "Email", "Email address" ],
     :first            => [ "First name", "First" ],
