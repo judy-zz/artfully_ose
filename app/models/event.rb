@@ -7,6 +7,7 @@ class Event < ActiveRecord::Base
   
   belongs_to :organization
   belongs_to :venue
+  belongs_to :import
   accepts_nested_attributes_for :venue
   has_many :charts
   has_many :shows, :order => :datetime

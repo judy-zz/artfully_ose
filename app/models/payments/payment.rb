@@ -54,6 +54,10 @@ class Payment
   def requires_authorization?
     false
   end
+
+  def requires_settlement?
+    false
+  end
   
   def reduce_amount_by(amount_in_cents)
     self.amount= self.amount - amount_in_cents

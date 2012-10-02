@@ -84,8 +84,4 @@ class Sale
       end
       success
     end
-
-    def settle(checkout, success)
-      Item.settle(checkout.order.items, Settlement.new)
-    end
 end

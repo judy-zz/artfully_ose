@@ -13,6 +13,7 @@ class Order < ActiveRecord::Base
 
   belongs_to :person
   belongs_to :organization
+  belongs_to :import
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
   has_many :items
@@ -78,12 +79,12 @@ class Order < ActiveRecord::Base
   end
 
   def payment
-    AthenaPayment.new(:transaction_id => transaction_id)
+    CreditCardPayment.new(:transaction_id => transaction_id)
   end
 
-  def record_exchange!
-    items.each do |item|
-      item.to_exchange!
+  def record_exchange!(exchanged_items)
+    items.each_with_index do |item, index|
+      item.to_exchange! exchanged_items[index]
     end
   end
 
