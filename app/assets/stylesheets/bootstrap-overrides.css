@@ -2,13 +2,6 @@
 /*
  * Wonk for asset pipeline
  */
-[class^="icon-"],
-[class*=" icon-"] {
-  background-image: url("/assets/glyphicons-halflings.png");
-}
-.icon-white {
-  background-image: url("/assets/glyphicons-halflings-white.png");
-}
 
 .navbar-inner, .navbar .fill {
   background-color: #175c71;
@@ -244,7 +237,7 @@ section {
   border-radius: 0 0 4px 4px;
 }
 .icon-gray {
-  background-image: url("/assets/glyphicons-halflings-gray.png");
+  color: gray;
 }
 
 .btn-primary {
