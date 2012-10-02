@@ -34,7 +34,7 @@ class Import < ActiveRecord::Base
     self.import_errors.delete_all
 
     rows.each do |row|
-      parsed_row  = ImportPerson.new(headers, row)
+      parsed_row  = ParsedRow.parse(headers, row)
       person      = create_person(headers, parsed_row)
       
       unless parsed_row.event_name.blank?
@@ -161,8 +161,8 @@ class Import < ActiveRecord::Base
     self.failed!
   end
 
-  def attach_person(import_person)
-    ip = import_person
+  def attach_person(parsed_row)
+    ip = parsed_row
 
     person = self.people.build \
       :email           => ip.email,

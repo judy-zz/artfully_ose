@@ -1,4 +1,4 @@
-class ImportPerson
+class ParsedRow
   
   attr_accessor :row
 
@@ -8,9 +8,9 @@ class ImportPerson
     :event_name       => [ "Event", "Event Name" ],
     :venue_name       => [ "Venue", "Venue Name" ],
     :show_date        => [ "Show", "Show Date" ],
-    :payment_method   => [ "Method of Payment", "Payment Method" ],
     :amount           => [ "Amount", "Dollar Amount" ],
     :email            => [ "Email", "Email address" ],
+    :payment_method   => [ "Method of Payment", "Payment Method" ],
     :first            => [ "First name", "First" ],
     :last             => [ "Last name", "Last" ],
     :company          => [ "Company name", "Company" ],
@@ -42,6 +42,10 @@ class ImportPerson
     :person_type => [ "Individual", "Corporation", "Foundation", "Government", "Other" ]
   }
 
+  def self.parse(headers, row)
+    ParsedRow.new(headers, row)
+  end
+  
   def initialize(headers, row)
     @headers = headers
     @row = row
