@@ -120,7 +120,7 @@ describe Import do
           event.shows.length.should eq 1
           show = event.shows.first
           show.event.should eq event
-          show.should be_published
+          show.should be_unpublished
         end
       end
         
@@ -129,6 +129,7 @@ describe Import do
         @show.tickets.length.should eq 4
         @show.tickets.each do |ticket|
           ticket.show.should eq @show
+          ticket.section.should_not be_nil
           
           #Weaksauce.  Should be testing for individal buyers
           Person.find(ticket.buyer.id).should_not be_nil
@@ -166,11 +167,26 @@ describe Import do
           end
         end
       end
-    end
-    
-    context "#create_show" do
+      
       it "should create shows for each date" do
         imported_shows.length.should eq 2
+        imported_shows[0].datetime.should eq DateTime.parse('3/4/2010')
+        imported_shows[0].organization.should eq @import.organization
+        imported_shows[0].state.should eq "unpublished"
+        chart = imported_shows[0].chart
+        chart.should_not be_nil
+        chart.sections.length.should eq 1
+        chart.sections[0].price.should eq 3000
+        chart.sections[0].capacity.should eq 4
+        
+        imported_shows[1].datetime.should eq DateTime.parse('12/12/2011')
+        imported_shows[1].organization.should eq @import.organization
+        imported_shows[1].state.should eq "unpublished"
+        chart = imported_shows[1].chart
+        chart.should_not be_nil
+        chart.sections.length.should eq 1
+        chart.sections[0].price.should eq 0
+        chart.sections[0].capacity.should eq 2
       end
       
       #these can go into a smaller test
@@ -180,12 +196,7 @@ describe Import do
   end
   
   def imported_shows
-    puts "WANK"
-    Show.all.each do |s| 
-      puts "#{s.id} #{s.event_id}"
-    end
-    
-    Show.where(:event_id => imported_events).all
+    @imported_shows ||= Show.where(:event_id => imported_events).all
   end
   
   def target_orders

@@ -40,7 +40,8 @@ class Import < ActiveRecord::Base
       unless parsed_row.event_name.blank?
         event       = create_event(headers, parsed_row, person)
         show        = create_show(headers, parsed_row, event)
-        ticket      = create_ticket(headers, parsed_row, person, event, show)
+        chart       = create_chart(headers, parsed_row, event, show)
+        ticket      = create_ticket(headers, parsed_row, person, event, show, chart)
         order       = create_order(headers, parsed_row, person, event, show, ticket)
         actions     = create_actions(headers, parsed_row, person, event, show, order)
       end
@@ -51,6 +52,18 @@ class Import < ActiveRecord::Base
     else
       self.imported!
     end
+  end
+  
+  def create_chart(headers, parsed_row, event, show)
+    chart = show.chart || Chart.new(:name => event.name)
+    amount = parsed_row.amount || 0
+    section = chart.sections.where(:price => amount).first || chart.sections.build(:name => event.name,:price => amount, :capacity => 1)
+    section.capacity = section.capacity + 1 unless section.new_record?
+    section.save
+    chart.save
+    show.chart = chart
+    show.save(:validate => false)
+    chart
   end
 
   def create_event(headers, parsed_row, person)
@@ -79,10 +92,8 @@ class Import < ActiveRecord::Base
     show.organization = self.organization
     
     #Hacky, but we have to end-around state machine here because we don't have a chart
-    show.state = "published"
+    show.state = "unpublished"
     show.save(:validate => false)
-    
-    puts show.errors
     
     @imported_shows[parsed_row.show_date] = show
     show
@@ -98,8 +109,9 @@ class Import < ActiveRecord::Base
     return go_action, get_action
   end
   
-  def create_ticket(headers, parsed_row, person, event, show)
-    Ticket.build_one(show, nil, 0 ,1, true).tap do |t| 
+  def create_ticket(headers, parsed_row, person, event, show, chart)
+    amount = parsed_row.amount || 0
+    Ticket.build_one(show, chart.sections.where(:price => amount).first, 0 ,1, true).tap do |t| 
       t.buyer = person
       t.save
     end
