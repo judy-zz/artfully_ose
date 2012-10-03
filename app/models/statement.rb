@@ -8,7 +8,7 @@ class Statement
                 :net_revenue,
                 :due,
                 :settled,
-                :payment_method_hash
+                :payment_method_rows
   
   def self.for_show(show, organization)
     if show.nil? || organization.nil?
@@ -29,10 +29,49 @@ class Statement
       # It's important not to use show.settlebles here because *this is the check that show.settlables works*. 
       # If show.settleables is broken, this will show that
       #
-      statement.due               = show.items.inject(0)  { |due, item| due += item.net if item.order.credit? }
-      statement.settled           = show.settlements.inject(0) { |settled, settlement| settled += settlement.net }
       
-      statement.payment_method_hash         = show.items.group_by { |item| item.order.payment_method }
+      statement.due = 0
+      show.items.each do |item| 
+        statement.due += item.net if item.order.credit? 
+      end
+      statement.settled           = show.settlements.successful.inject(0) { |settled, settlement| settled += settlement.net }
+      payment_method_hash         = show.items.group_by { |item| item.order.payment_method }
+      
+      statement.payment_method_rows         = {}
+      
+      # Initialize with the three common payment types
+      statement.payment_method_rows[::CreditCardPayment.payment_method] = PaymentTypeRow.new
+      statement.payment_method_rows[::CashPayment.payment_method] = PaymentTypeRow.new
+      statement.payment_method_rows[::CompPayment.payment_method] = PaymentTypeRow.new
+      
+      
+      payment_method_hash.each do |payment_method, items|
+        row = statement.payment_method_rows[payment_method] || PaymentTypeRow.new
+        items.each {|item| row << item}
+        statement.payment_method_rows[payment_method] = row
+      end
+    end
+  end
+  
+  class PaymentTypeRow
+    attr_accessor :payment_method,
+                  :tickets_sold, 
+                  :gross,
+                  :processing,
+                  :net
+    
+    def initialize
+      self.tickets_sold = 0
+      self.gross = 0
+      self.processing = 0
+      self.net = 0
+    end
+    
+    def<<(item)
+      self.tickets_sold = self.tickets_sold + 1
+      self.gross        = self.gross + item.price
+      self.processing   = self.processing + (item.realized_price - item.net)
+      self.net          = self.net + item.net
     end
   end
 end

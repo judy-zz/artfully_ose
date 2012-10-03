@@ -23,3 +23,6 @@
         %td Original Potential
         %td
         %td= number_as_cents(report.potential_original)
+  
+  .pull-right
+    =icon_link_to("View Complete Statement", statement_path(show.id), 'icon-th-list', '', '')

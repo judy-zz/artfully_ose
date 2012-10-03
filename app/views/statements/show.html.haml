@@ -19,22 +19,22 @@
           .row-fluid
             .span3
               .center.headline-stat
-                304
+                =@statement.tickets_sold
               .center.headline-caption
                 %h6 TICKETS SOLD
             .span3
               .center.headline-stat
-                $21,300.00
+                =number_as_cents @statement.gross_revenue
               .center.headline-caption
                 %h6 GROSS
             .span3
               .center.headline-stat
-                $3,034.11
+                =number_as_cents @statement.due
               .center.headline-caption
                 %h6 DUE
             .span3
               .center.headline-stat
-                $3,034.11
+                =number_as_cents @statement.settled
               .center.headline-caption
                 %h6 SETTLED
         #statement_table
@@ -42,37 +42,20 @@
             %thead
               %tr
                 %th Payment Method
-                %th{:style=>'width:100px'} Tickets Sold
+                %th.right{:style=>'width:100px'} Tickets Sold
                 - if @show.ticket_offers.count > 0
-                  %th{:style=>'width:100px'} Reseller Sales
-                %th{:style=>'width:100px'} Gross
-                %th{:style=>'width:100px'} Processing
-                %th{:style=>'width:100px'} Net
+                  %th.right{:style=>'width:100px'} Reseller Sales
+                %th.right{:style=>'width:100px'} Gross
+                %th.right{:style=>'width:100px'} Processing
+                %th.right{:style=>'width:100px'} Net
             %tbody
-              %tr
-                %td Credit Card
-                %td=1002
-                - if @show.ticket_offers.count > 0
-                  %td= @show.reseller_sold_count
-                %td
-                  %strong=number_as_cents 2030000
-                %td=number_as_cents 49999
-                %td=number_as_cents 303411
-              %tr
-                %td Cash
-                %td=1002
-                - if @show.ticket_offers.count > 0
-                  %td= @show.reseller_sold_count
-                %td
-                  %strong=number_as_cents @statement.gross_revenue
-                %td=number_as_cents @statement.processing
-                %td=number_as_cents @statement.net_revenue
-              %tr
-                %td Comp
-                %td=2
-                - if @show.ticket_offers.count > 0
-                  %td= @show.reseller_sold_count
-                %td
-                  %strong=number_as_cents 0
-                %td=number_as_cents 0
-                %td=number_as_cents 0
+              - @statement.payment_method_rows.each do |payment_method, row|
+                %tr
+                  %td=payment_method
+                  %td.right=row.tickets_sold
+                  - if @show.ticket_offers.count > 0
+                    %td.right= @show.reseller_sold_count
+                  %td.right
+                    %strong=number_as_cents=number_as_cents row.gross
+                  %td.right=number_as_cents=number_as_cents row.processing
+                  %td.right=number_as_cents=number_as_cents row.net
