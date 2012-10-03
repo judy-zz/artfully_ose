@@ -294,10 +294,21 @@ function activateControls() {
 
   $(".datepicker" ).datepicker({dateFormat: 'yy-mm-dd'});
 	if (!Modernizr.inputtypes.date) {
-		$('input[type="date"]' ).datepicker({dateFormat: 'yy-mm-dd'});
+		$('input[type="date"]').datepicker({
+      dateFormat: 'yy-mm-dd'
+    });
 	}
-	
+
   $('.datetimepicker').datetimepicker({dateFormat: 'yy-mm-dd', timeFormat:'hh:mm tt', ampm: true });
+  if (!Modernizr.inputtypes.datetime) {
+    $('input[type="datetime"],input[type="datetime-local"]').datetimepicker({
+      dateFormat: 'yy-mm-dd',
+      timeFormat:'hh:mm tt',
+      ampm: true
+    });
+  }
+	
+  
 }
 
 function togglePrintPreview(){

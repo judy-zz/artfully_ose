@@ -2,6 +2,10 @@
 @import "./sass/mixins"
 @import "./sass/tags"
 @import "./sass/box-office"
+@import "./font-awesome"
+
+#preload_assets
+  display: none
 
 .left
   float: left
@@ -216,7 +220,7 @@ ul.report
     text-align: right
     margin: 0px
 
-tr.returned, tr.refunded
+tr.returned, tr.refunded, tr.exchanged
   td.item-description, td.price
     text-decoration: line-through
     
@@ -319,3 +323,27 @@ a.red:hover
 .headline-stat
   font-size: 2em
   font-weight: bold
+  
+// Datepicker Icons
+.ui-datepicker
+  z-index: 1050 !important
+
+.ui-datepicker .ui-icon, .ui-datepicker .ui-icon
+  background: none !important
+  text-indent: 0 !important
+  padding: 0 0 0 0.2em !important
+
+.ui-datepicker span.ui-icon:before, .ui-datepicker span.ui-icon:before
+  font-family: FontAwesome
+  font-weight: normal
+  font-style: normal
+  display: inline-block
+  text-decoration: inherit
+  font-size: 1.1em
+  line-height: 1
+
+.ui-datepicker .ui-icon-circle-triangle-w:before
+  content: "\f053"
+
+.ui-datepicker .ui-icon-circle-triangle-e:before
+  content: "\f054"
