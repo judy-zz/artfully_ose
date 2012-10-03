@@ -29,6 +29,8 @@ class Statement
       # It's important not to use show.settlebles here because *this is the check that show.settlables works*. 
       # If show.settleables is broken, this will show that
       #
+      # Also settleables goes down when settlements are issued.  This doesn't
+      #
       
       statement.due = 0
       show.items.each do |item| 
