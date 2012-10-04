@@ -36,7 +36,7 @@ describe Statement do
       @statement.processing.should be_within(0.00001).of(0)
       @statement.net_revenue.should eq 0
       
-      @statement.due.should eq 0
+      @statement.cc_net.should eq 0
       @statement.settled.should eq 0
       
       @statement.payment_method_rows.length.should eq 3      
@@ -62,25 +62,25 @@ describe Statement do
       @statement.processing.should be_within(0.00001).of(3000 * 0.035)
       @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
       
-      @statement.due.should eq 2895
+      @statement.cc_net.should eq 2895
       @statement.settled.should eq 0
       
       @statement.payment_method_rows.length.should eq 3
       
       @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].order_ids.length.should eq 3
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 3
       @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 3000
       @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(3000 * 0.035)
       @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 2895
       
       @statement.payment_method_rows[::CompPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CompPayment.payment_method].order_ids.length.should eq 1
+      @statement.payment_method_rows[::CompPayment.payment_method].tickets.should eq 3
       @statement.payment_method_rows[::CompPayment.payment_method].gross.should eq 0
       @statement.payment_method_rows[::CompPayment.payment_method].processing.should be_within(0.00001).of(0)
       @statement.payment_method_rows[::CompPayment.payment_method].net.should eq 0
       
       @statement.payment_method_rows[::CashPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CashPayment.payment_method].order_ids.length.should eq 0
+      @statement.payment_method_rows[::CashPayment.payment_method].tickets.should eq 0
       @statement.payment_method_rows[::CashPayment.payment_method].gross.should eq 0
       @statement.payment_method_rows[::CashPayment.payment_method].processing.should be_within(0.00001).of(0)
       @statement.payment_method_rows[::CashPayment.payment_method].net.should eq 0
@@ -104,12 +104,12 @@ describe Statement do
       @statement.processing.should be_within(0.00001).of(4000 * 0.035)
       @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
       
-      @statement.due.should eq 3860
+      @statement.cc_net.should eq 3860
       
       @statement.payment_method_rows.length.should eq 3
       
       @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].order_ids.length.should eq 4
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 4
       @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 4000
       @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(4000 * 0.035)
       @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 3860
@@ -134,12 +134,12 @@ describe Statement do
       @statement.processing.should be_within(0.00001).of(2000 * 0.035)
       @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
       
-      @statement.due.should eq 1930
+      @statement.cc_net.should eq 1930
       
       @statement.payment_method_rows.length.should eq 3
       
       @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].order_ids.length.should eq 4
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 2
       @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 2000
       @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(2000 * 0.035)
       @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 1930

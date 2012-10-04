@@ -174,6 +174,11 @@ class Item < ActiveRecord::Base
     state.eql? "refund"
   end
   
+  def exchanged?
+    state.eql? "exchanged"
+  end
+  
+  #TODO: This isn't used anymore.  It needs to go
   def exchangee?
     state.eql? "exchangee"
   end

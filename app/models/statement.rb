@@ -6,7 +6,7 @@ class Statement
                 :gross_revenue, 
                 :processing, 
                 :net_revenue,
-                :due,
+                :cc_net,
                 :settled,
                 :payment_method_rows
   
@@ -32,9 +32,9 @@ class Statement
       # Also settleables goes down when settlements are issued.  This doesn't
       #
       
-      statement.due = 0
+      statement.cc_net = 0
       show.items.each do |item| 
-        statement.due += item.net if item.order.credit? 
+        statement.cc_net += item.net if item.order.credit? 
       end
       statement.settled           = show.settlements.successful.inject(0) { |settled, settlement| settled += settlement.net }
       payment_method_hash         = show.items.group_by { |item| item.order.payment_method }
@@ -57,21 +57,26 @@ class Statement
   
   class PaymentTypeRow
     attr_accessor :payment_method,
-                  :order_ids, 
+                  :tickets, 
                   :gross,
                   :processing,
                   :net
     
     def initialize(payment_method)
       self.payment_method = payment_method
-      self.order_ids = SortedSet.new
+      self.tickets = 0
       self.gross = 0
       self.processing = 0
       self.net = 0
     end
     
     def<<(item)
-      self.order_ids   << item.order.id   
+      if item.refund? || item.exchanged? || item.return?
+        self.tickets = self.tickets - 1
+      else
+        self.tickets = self.tickets + 1   
+      end
+      
       self.gross        = self.gross + item.price
       self.processing   = self.processing + (item.realized_price - item.net)
       self.net          = self.net + item.net
