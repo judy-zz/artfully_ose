@@ -20,7 +20,6 @@ class StatementsController < ArtfullyOseController
     @event = @show.event
     @played = @event.played_shows(:all)
     @statement = Statement.for_show(@show, current_user.current_organization)
-    @settlements = Array.wrap(Settlement.find(5))
   end
 
 end

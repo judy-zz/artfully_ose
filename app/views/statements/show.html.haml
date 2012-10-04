@@ -14,44 +14,7 @@
         %p
           Please select a show
       -else
-        %h3=l @statement.datetime, :format => :short
-        #statement-summary.bottom-room.well
-          .row-fluid
-            .span3
-              .center.headline-stat
-                =@statement.tickets_sold
-              .center.headline-caption
-                %h6 TICKETS SOLD
-            .span3
-              .center.headline-stat
-                =number_as_cents @statement.gross_revenue
-              .center.headline-caption
-                %h6 GROSS
-            .span3
-              .center.headline-stat
-                =number_as_cents @statement.due
-              .center.headline-caption
-                %h6 DUE
-            .span3
-              .center.headline-stat
-                =number_as_cents @statement.settled
-              .center.headline-caption
-                %h6 SETTLED
+        %h3="#{@event.name} #{l @statement.datetime, :format => :short}"
+        = render :partial => 'top_stats', :locals => { :statement => @statement }
         #statement_table
-          %table.standalone.table
-            %thead
-              %tr
-                %th Payment Method
-                %th.right{:style=>'width:100px'} Sales
-                %th.right{:style=>'width:100px'} Gross
-                %th.right{:style=>'width:100px'} Processing
-                %th.right{:style=>'width:100px'} Net
-            %tbody
-              - @statement.payment_method_rows.each do |payment_method, row|
-                %tr
-                  %td=payment_method
-                  %td.right=row.tickets_sold
-                  %td.right
-                    %strong=number_as_cents=number_as_cents row.gross
-                  %td.right=number_as_cents=number_as_cents row.processing
-                  %td.right=number_as_cents=number_as_cents row.net
+          = render :partial => 'payment_method_table', :locals => { :statement => @statement }
