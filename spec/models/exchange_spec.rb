@@ -50,23 +50,20 @@ describe Exchange do
   end
 
   describe ".submit" do
-    describe "return_items" do
-      before(:each) do
-        subject.stub(:create_athena_order)
-      end
-
-      it "should return the items in the exchange" do
-        subject.items.each { |item| item.should_receive(:return!).and_return(true) }
+    describe "return_items" do      
+      it "should mark the exchanged items net as zero" do
         subject.submit
+        subject.items.each do |item| 
+          item.price.should eq 0
+          item.realized_price.should eq 0
+          item.net.should eq 0
+          item.state.should eq "exchanged"
+          item.product.state.should eq "on_sale"
+        end
       end
     end
 
     describe "sell_new_items" do
-      before(:each) do
-        subject.stub(:return_items).and_return(true)
-        subject.stub(:create_athena_order)
-      end
-
       it "should sell each new ticket to the person associated with the order" do
         subject.tickets.each { |ticket| ticket.should_receive(:exchange_to) }
         subject.submit
@@ -84,6 +81,46 @@ describe Exchange do
         subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
         subject.should_receive(:create_order)
         subject.submit
+      end
+      
+      it "should mark the exchangees items price/realized/net as equal to the previous items" do
+        subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+        subject.submit
+        exchange_order = subject.order.children.first
+        
+        fake_item = Item.new
+        fake_item.product= tickets.first
+        
+        exchange_order.items.each do |item|
+          item.price.should           eq fake_item.price
+          item.realized_price.should  eq fake_item.realized_price
+          item.net.should             eq fake_item.net
+          item.state.should           eq fake_item.state
+        end
+      end
+    end
+
+    describe "exchanging cash sales" do
+      it "should sell each new ticket to the person associated with the order" do
+        subject.tickets.each { |ticket| ticket.should_receive(:exchange_to) }
+        subject.submit
+      end
+      
+      it "should mark the exchangees items price/realized/net/state as equal to the previous items" do
+        subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+        original_state = items.first.state
+        subject.submit
+        exchange_order = subject.order.children.first
+        
+        fake_item = Item.new
+        fake_item.product= tickets.first
+                
+        exchange_order.items.each do |item|
+          item.price.should           eq fake_item.price
+          item.realized_price.should  eq fake_item.realized_price
+          item.net.should             eq fake_item.net
+          item.state.should           eq original_state
+        end
       end
     end
   end

@@ -15,7 +15,7 @@
           .control-group
             = show_form.label "Date and time", :class => 'control-label'
             .controls
-              = show_form.text_field :datetime, :value => l(@show.datetime_local_to_event, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+              = datetime_field_tag "show[datetime]", l(@show.datetime_local_to_event, :format => :datetime_for_input)
         
 
           = show_form.fields_for :chart, @show.chart do |f|
