@@ -57,27 +57,21 @@ class Statement
   
   class PaymentTypeRow
     attr_accessor :payment_method,
-                  :tickets_sold, 
+                  :order_ids, 
                   :gross,
                   :processing,
                   :net
     
     def initialize(payment_method)
       self.payment_method = payment_method
-      self.tickets_sold = 0
+      self.order_ids = SortedSet.new
       self.gross = 0
       self.processing = 0
       self.net = 0
     end
     
     def<<(item)
-      
-      if item.refund?
-        self.tickets_sold = self.tickets_sold - 1
-      else
-        self.tickets_sold = self.tickets_sold + 1
-      end
-         
+      self.order_ids   << item.order.id   
       self.gross        = self.gross + item.price
       self.processing   = self.processing + (item.realized_price - item.net)
       self.net          = self.net + item.net
