@@ -20,7 +20,7 @@ private
 
   def from(order)
     if ARTFULLY_CONFIG[:contact_email].present?
-      return ARTFULLY_CONFIG[:contact_email]
+      ARTFULLY_CONFIG[:contact_email]
     elsif order.contact_email.present?
       order.contact_email
     else
