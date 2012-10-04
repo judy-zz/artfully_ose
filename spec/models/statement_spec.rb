@@ -46,7 +46,10 @@ describe Statement do
   describe "three credit card sales and three comps" do    
     before(:each) do
       setup_show
-
+      Settlement.new.tap do |settlement|
+        settlement.net = 1000
+        settlement.show = paid_show
+      end.save
       @statement = Statement.for_show(paid_show, organization)
     end
       
@@ -110,7 +113,34 @@ describe Statement do
     end  
   end
   
-  describe "with settlements" do
+  describe "with a refund" do      
+    before(:each) do
+      setup_show
+      setup_refund
+      @statement = Statement.for_show(paid_show.reload, organization)
+    end
+      
+    it "should calculate everything correctly" do
+      @statement.datetime.should eq paid_show.datetime
+      
+      @statement.tickets_sold.should eq 2
+      @statement.potential_revenue.should eq 10000
+      @statement.tickets_comped.should eq 3
+      @statement.gross_revenue.should eq 2000
+      @statement.processing.should be_within(0.00001).of(2000 * 0.035)
+      @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
+      
+      @statement.due.should eq 1930
+      
+      @statement.payment_method_rows.length.should eq 3
+      
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets_sold.should eq 2
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 2000
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(2000 * 0.035)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 1930
+      
+    end  
   end
   
   def setup_show
@@ -135,5 +165,20 @@ describe Statement do
       
     exchange = Exchange.new(order, Array.wrap(order.items.first), Array.wrap(paid_show.tickets[6]))
     exchange.submit
+  end
+  
+  def setup_refund
+    gateway = ActiveMerchant::Billing::BraintreeGateway.new(
+        :merchant_id => Rails.application.config.braintree.merchant_id,
+        :public_key  => Rails.application.config.braintree.public_key,
+        :private_key => Rails.application.config.braintree.private_key
+      )    
+  
+    successful_response = ActiveMerchant::Billing::Response.new(true, 'nice job!', {}, {:authorization => '3e4r5q'} )
+    gateway.stub(:refund).and_return(successful_response)
+    ActiveMerchant::Billing::BraintreeGateway.stub(:new).and_return(gateway)
+    
+    refund = Refund.new(@orders.first, @orders.first.items)
+    refund.submit({:and_return => true})
   end
 end

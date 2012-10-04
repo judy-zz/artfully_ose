@@ -42,13 +42,13 @@ class Statement
       statement.payment_method_rows         = {}
       
       # Initialize with the three common payment types
-      statement.payment_method_rows[::CreditCardPayment.payment_method] = PaymentTypeRow.new
-      statement.payment_method_rows[::CashPayment.payment_method] = PaymentTypeRow.new
-      statement.payment_method_rows[::CompPayment.payment_method] = PaymentTypeRow.new
+      statement.payment_method_rows[::CreditCardPayment.payment_method] = PaymentTypeRow.new(::CreditCardPayment.payment_method)
+      statement.payment_method_rows[::CashPayment.payment_method] = PaymentTypeRow.new(::CashPayment.payment_method)
+      statement.payment_method_rows[::CompPayment.payment_method] = PaymentTypeRow.new(::CompPayment.payment_method)
       
       
       payment_method_hash.each do |payment_method, items|
-        row = statement.payment_method_rows[payment_method] || PaymentTypeRow.new
+        row = statement.payment_method_rows[payment_method] || PaymentTypeRow.new(payment_method)
         items.each {|item| row << item}
         statement.payment_method_rows[payment_method] = row
       end
@@ -62,7 +62,8 @@ class Statement
                   :processing,
                   :net
     
-    def initialize
+    def initialize(payment_method)
+      self.payment_method = payment_method
       self.tickets_sold = 0
       self.gross = 0
       self.processing = 0
@@ -70,7 +71,13 @@ class Statement
     end
     
     def<<(item)
-      self.tickets_sold = self.tickets_sold + 1
+      
+      if item.refund?
+        self.tickets_sold = self.tickets_sold - 1
+      else
+        self.tickets_sold = self.tickets_sold + 1
+      end
+         
       self.gross        = self.gross + item.price
       self.processing   = self.processing + (item.realized_price - item.net)
       self.net          = self.net + item.net
