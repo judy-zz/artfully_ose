@@ -10,8 +10,8 @@ class Statement
                 :settled,
                 :payment_method_rows
   
-  def self.for_show(show, organization)
-    if show.nil? || organization.nil?
+  def self.for_show(show)
+    if show.nil?
       return new
     end
     
