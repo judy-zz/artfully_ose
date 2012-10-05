@@ -71,8 +71,10 @@ class Statement
     end
     
     def<<(item)
-      if item.refund? || item.exchanged? || item.return?
+      if item.refund?
         self.tickets = self.tickets - 1
+      elsif item.exchanged? || item.return?
+        #Noop
       else
         self.tickets = self.tickets + 1   
       end
