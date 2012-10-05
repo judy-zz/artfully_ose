@@ -13,7 +13,7 @@ describe Statement do
   
   describe "nil show" do
     it "should return an empty @statement if the show is nil" do
-      st = Statement.for_show(nil, organization)
+      st = Statement.for_show(nil)
       st.should_not be_nil
       st.tickets_sold.should be_nil
     end
@@ -24,7 +24,7 @@ describe Statement do
   
   describe "no tickets sold" do      
     before(:each) do
-      @statement = Statement.for_show(paid_show, organization)
+      @statement = Statement.for_show(paid_show)
     end
       
     it "should calculate everything correctly" do
@@ -50,7 +50,7 @@ describe Statement do
         settlement.net = 1000
         settlement.show = paid_show
       end.save
-      @statement = Statement.for_show(paid_show, organization)
+      @statement = Statement.for_show(paid_show)
     end
       
     it "should calculate everything correctly" do
@@ -92,7 +92,7 @@ describe Statement do
     before(:each) do
       setup_show
       setup_exchange
-      @statement = Statement.for_show(paid_show, organization)
+      @statement = Statement.for_show(paid_show)
     end
       
     it "should calculate everything correctly" do
@@ -121,7 +121,7 @@ describe Statement do
     before(:each) do
       setup_show
       setup_refund
-      @statement = Statement.for_show(paid_show.reload, organization)
+      @statement = Statement.for_show(paid_show.reload)
     end
       
     it "should calculate everything correctly" do
