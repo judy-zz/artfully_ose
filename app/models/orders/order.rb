@@ -187,6 +187,7 @@ class Order < ActiveRecord::Base
         action.details          = ticket_details
         action.occurred_at      = created_at
         action.subtype          = "Purchase"
+        action.import           = self.import if self.import
 
         action.save!
         action

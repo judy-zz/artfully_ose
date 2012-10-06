@@ -6,6 +6,9 @@ class Import < ActiveRecord::Base
   has_many :import_errors, :dependent => :delete_all
   has_many :import_rows, :dependent => :delete_all
   has_many :people, :dependent => :destroy
+  has_many :actions, :dependent => :destroy
+  has_many :events, :dependent => :destroy
+  has_many :orders, :dependent => :destroy
 
   serialize :import_headers
   
@@ -101,6 +104,7 @@ class Import < ActiveRecord::Base
   
   def create_actions(headers, parsed_row, person, event, show, order)
     go_action = GoAction.for(show, person)
+    go_action.import = self
     go_action.save
      
     #get action is created by the order

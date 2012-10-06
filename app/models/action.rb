@@ -3,6 +3,7 @@ class Action < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :organization
   belongs_to :subject, :polymorphic => true
+  belongs_to :import
 
   validates_presence_of :occurred_at
   validates_presence_of :person_id

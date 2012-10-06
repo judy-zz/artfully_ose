@@ -83,26 +83,7 @@ describe Import do
           Person.where(:import_id => @import.id).length.should eq 6
         end
       end
-      
-      context "creating actions" do   
-        it "should create go and get actions for each person on the order" do
-          @import.people.each do |person|
-            person.actions.length.should eq 2
-            go_action = GoAction.where(:person_id => person.id).first        
-            go_action.should_not be nil
-            go_action.sentence.should_not be_nil
-            go_action.subject.should eq person.orders.first.items.first.show   
-        
-            get_action = GetAction.where(:person_id => person.id).first
-            get_action.should_not be nil
-            get_action.sentence.should_not be_nil
-            go_action.subject.should eq person.orders.first.items.first.show
-          end
-        end
-        
-        #TODO: Actions tagged with import_id?
-      end
-    
+
       it "should create one event, venue for each event. venue in the import file" do
         imported_events.each do |event|
           Event.where(:name => event.name).length.should eq 1
@@ -164,6 +145,25 @@ describe Import do
         it "should create settled items" do
           @orders.each do |order|
             order.items.each {|item| item.should be_settled}
+          end
+        end
+    
+        it "should create go and get actions for each person on the order" do
+          @import.people.each do |person|
+            person.actions.length.should eq 2
+            go_action = GoAction.where(:person_id => person.id).first        
+            go_action.should_not be nil
+            go_action.sentence.should_not be_nil
+            go_action.subject.should eq person.orders.first.items.first.show  
+            go_action.import.should eq @import 
+          end
+          
+          @orders.each do |order|
+            get_action = GetAction.where(:subject_id => order.id).first
+            get_action.should_not be nil
+            get_action.sentence.should_not be_nil
+            get_action.subject.should eq order
+            get_action.import.should eq @import 
           end
         end
       end
