@@ -2,6 +2,10 @@
 @import "./sass/mixins"
 @import "./sass/tags"
 @import "./sass/box-office"
+@import "./font-awesome"
+
+#preload_assets
+  display: none
 
 .left
   float: left
@@ -315,3 +319,44 @@ table.docs
   td.field
     width: 200px
     font-weight: bold
+
+.bottom-room
+  margin-bottom: 15px
+
+.center
+  text-align: center
+.right
+  text-align: right !important
+  
+.headline-caption
+  font-size: 12px
+  color: #999
+  text-transform: uppercase
+
+.headline-stat
+  font-size: 2em
+  font-weight: bold
+  
+// Datepicker Icons
+.ui-datepicker
+  z-index: 1050 !important
+
+.ui-datepicker .ui-icon, .ui-datepicker .ui-icon
+  background: none !important
+  text-indent: 0 !important
+  padding: 0 0 0 0.2em !important
+
+.ui-datepicker span.ui-icon:before, .ui-datepicker span.ui-icon:before
+  font-family: FontAwesome
+  font-weight: normal
+  font-style: normal
+  display: inline-block
+  text-decoration: inherit
+  font-size: 1.1em
+  line-height: 1
+
+.ui-datepicker .ui-icon-circle-triangle-w:before
+  content: "\f053"
+
+.ui-datepicker .ui-icon-circle-triangle-e:before
+  content: "\f054"

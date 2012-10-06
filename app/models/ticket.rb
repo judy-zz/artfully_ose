@@ -72,8 +72,7 @@ class Ticket < ActiveRecord::Base
   def sold_item
     items.select(&:purchased?).first ||
     items.select(&:settled?).first ||
-    items.select(&:comped?).first ||
-    items.select(&:exchangee?).first
+    items.select(&:comped?).first
   end
   
   def special_instructions

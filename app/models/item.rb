@@ -153,6 +153,10 @@ class Item < ActiveRecord::Base
   def modified?
     not %w( purchased comped ).include?(state)
   end
+  
+  def return?
+    state.eql? "returned"
+  end
 
   def settled?
     state.eql? "settled"
@@ -166,6 +170,15 @@ class Item < ActiveRecord::Base
     state.eql? "comped"
   end
   
+  def refund?
+    state.eql? "refund"
+  end
+  
+  def exchanged?
+    state.eql? "exchanged"
+  end
+  
+  #TODO: This isn't used anymore.  It needs to go
   def exchangee?
     state.eql? "exchangee"
   end

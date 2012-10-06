@@ -164,7 +164,7 @@ class Order < ActiveRecord::Base
   end
 
   def credit?
-    payment_method.eql? 'Credit card'
+    payment_method.eql? CreditCardPayment.payment_method
   end
   
   def time_zone
