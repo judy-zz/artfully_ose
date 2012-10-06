@@ -138,12 +138,18 @@ class Import < ActiveRecord::Base
   end
   
   def create_person(headers, parsed_row)
-    person = attach_person(parsed_row)
-    if !person.save
-      self.import_errors.create! :row_data => parsed_row.row, :error_message => person.errors.full_messages.join(", ")
-      self.reload
-      self.failed!
-    end  
+    if parsed_row.importing_event?
+      person = Person.first_or_create(parsed_row.email, user.current_organization, parsed_row.person_attributes) do |p|
+        p.import = self
+      end
+    else    
+      person = attach_person(parsed_row)
+      if !person.save
+        self.import_errors.create! :row_data => parsed_row.row, :error_message => person.errors.full_messages.join(", ")
+        self.reload
+        self.failed!
+      end 
+    end
     person  
   end
 
@@ -179,19 +185,9 @@ class Import < ActiveRecord::Base
 
   def attach_person(parsed_row)
     ip = parsed_row
-
-    person = self.people.build \
-      :email           => ip.email,
-      :first_name      => ip.first,
-      :last_name       => ip.last,
-      :company_name    => ip.company,
-      :website         => ip.website,
-      :twitter_handle  => ip.twitter_username,
-      :facebook_url    => ip.facebook_page,
-      :linked_in_url   => ip.linkedin_page,
-      :organization_id => user.current_organization.id,
-      :person_type     => ip.person_type
-
+    
+    person = self.people.build(parsed_row.person_attributes)
+    person.organization = user.current_organization
     person.address = Address.new \
       :address1  => ip.address1,
       :address2  => ip.address2,

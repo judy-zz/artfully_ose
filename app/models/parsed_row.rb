@@ -89,5 +89,17 @@ class ParsedRow
   def importing_event?
     !self.event_name.blank?
   end
+  
+  def person_attributes
+      {:email           => self.email,
+      :first_name      => self.first,
+      :last_name       => self.last,
+      :company_name    => self.company,
+      :website         => self.website,
+      :twitter_handle  => self.twitter_username,
+      :facebook_url    => self.facebook_page,
+      :linked_in_url   => self.linkedin_page,
+      :person_type     => self.person_type}
+  end
 
 end

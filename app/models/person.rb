@@ -6,6 +6,7 @@ class Person < ActiveRecord::Base
   acts_as_taggable
 
   belongs_to  :organization
+  belongs_to  :import
   has_many    :actions
   has_many    :phones
   has_many    :notes

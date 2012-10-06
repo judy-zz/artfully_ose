@@ -77,7 +77,7 @@ describe Import do
         end
         
         it "should attach the import to the people" do
-          @import.people.length.should eq 6
+          @import.reload.people.length.should eq 6
           Person.where(:import_id => @import.id).length.should eq 6
         end
       end
