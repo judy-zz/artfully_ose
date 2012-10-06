@@ -85,5 +85,9 @@ class ParsedRow
       value
     end
   end
+  
+  def importing_event?
+    !self.event_name.blank?
+  end
 
 end

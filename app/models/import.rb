@@ -40,7 +40,7 @@ class Import < ActiveRecord::Base
       parsed_row  = ParsedRow.parse(headers, row)
       person      = create_person(headers, parsed_row)
       
-      unless parsed_row.event_name.blank?
+      if parsed_row.importing_event?
         event       = create_event(headers, parsed_row, person)
         show        = create_show(headers, parsed_row, event)
         chart       = create_chart(headers, parsed_row, event, show)

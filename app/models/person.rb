@@ -188,6 +188,14 @@ class Person < ActiveRecord::Base
   def unstarred_actions
     Action.where({ :person_id => id }).order('occurred_at desc').select{|a| a.unstarred?}
   end
+  
+  #
+  # We're overriding this in order to excapsulate what is needed to
+  # find a unique person
+  #
+  def self.first_or_create(email, organization, attributes=nil, options ={}, &block)
+    Person.where(:email => email).where(:organization_id => organization.id).first_or_create(attributes, options, &block)
+  end
 
   #
   # You can pass any object as first param as long as it responds to

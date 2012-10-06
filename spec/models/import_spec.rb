@@ -9,8 +9,6 @@ describe Import do
       @import = FactoryGirl.create(:import)
       @import.stub(:headers) { @headers }
       @import.stub(:rows) { @rows }
-      FakeWeb.register_uri(:get, "http://localhost/athena/people.json?_limit=500&_start=0&importId=#{@import.id}", :body => "[]")
-      FakeWeb.register_uri(:get, %r{http://localhost/athena/people.json\?email=.*&organizationId=.*}, :body => nil)
     end
   
     it "should import a total of three records" do
@@ -193,6 +191,16 @@ describe Import do
       it "should report an error if show dates are not included"
       it "should report an error if a show date is malformed or unparsable"
     end   
+  end
+  
+  describe "#create_person" do
+    before do
+      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+    end
+    
+    describe "allow_duplicate" do
+
+    end
   end
   
   def imported_shows
