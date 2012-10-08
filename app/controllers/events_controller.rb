@@ -101,6 +101,7 @@ class EventsController < ArtfullyOseController
     find_event
 
     @discount = TempDiscount.new
+    @discount.promotion_type = 'two-for-one'
 
     @event.charts.collect(&:sections).flatten.each do |section|
       @discount.discount_sections.new(
