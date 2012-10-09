@@ -1,10 +1,8 @@
 .row
-
   .span3
-    %h3 Validate Contacts
-
     %p This import was created at: <br> #{l import.created_at}
-    %p #{pluralize @import.rows.count, "contact"} found in this import file
+    %p To discard this import and start over, click "Delete"
+    %p To pause this import and come back later, click "Back"
 
     .btn-group
       = link_to "Approve", approve_import_path(import), :data => {:confirm => "Are you sure you want to approve this import?"}, :class => "btn"
@@ -12,24 +10,19 @@
       = link_to "Back", imports_path, :class => "btn"
 
   .span9
-    %h3 Viewing contacts #{@offset + 1} through #{[ import.rows.count, @offset + @length ].min}
-
-    .page-controller= import_page_controller import, @offset, @length
-
-    %table.example-contact.table
-
-      %thead
-
-        %th &nbsp;
-        - @length.times do |i|
-          - if import.rows[@offset + i]
-            %th= @offset + i + 1
-
-      - import.headers.each_with_index do |field, index|
-
+    .well
+      .row-fluid
+        .span9
+          %h3 This import is pending your approval
+          Click "Approve" to import this data into Artful.ly
+        .span3
+          = link_to "Approve", approve_import_path(import), :data => {:confirm => "Are you sure you want to approve this import?"}, :class => "btn btn-success btn-large"
+    
+    %table.table.table-bordered.table-striped
+      %tr
+        %th Event
+        %th Show
+        %th Person
+      - @import.rows.each do |row|
         %tr
-
-          %td.field= field.capitalize
-
-          - import.rows[@offset, @length].each do |row|
-            %td.value= row[index]
+          %td=row

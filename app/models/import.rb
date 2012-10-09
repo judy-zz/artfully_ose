@@ -91,8 +91,8 @@ class Import < ActiveRecord::Base
   end
   
   def create_show(parsed_row, event)
-    show_key = parsed_row.show_date + event.name
-    @imported_shows = @imported_shows || {}
+    show_key = [parsed_row.show_date, event.name].join("-")
+    @imported_shows ||= {}
     show = @imported_shows[show_key]
     return show if show
     
@@ -131,7 +131,9 @@ class Import < ActiveRecord::Base
   #TODO: Aggregate the order if the person appears multiple times
   #Also include order date  
   def create_order(parsed_row, person, event, show, ticket)
-    order = ImportedOrder.new
+    order_key = [show.id.to_s,person.id.to_s,parsed_row.payment_method].join('-')
+    @imported_orders ||= {}
+    order = @imported_orders[order_key] || ImportedOrder.new
     order.organization = self.organization
     order.payment_method = parsed_row.payment_method
     order.person = person
@@ -141,6 +143,7 @@ class Import < ActiveRecord::Base
     item.state = "settled"
     order.items << item
     order.save
+    @imported_orders[order_key] = order
     order
   end
   

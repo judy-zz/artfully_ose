@@ -311,8 +311,47 @@ describe Import do
   end
   
   describe "#create_order" do
-    it "should create an order"
-    it "should combine orders if an order has the same person and show date as a previous order"
+    before do
+      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+    end
+    
+    before(:each) do
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date", "Amount", "Payment Method"]
+      @rows = [%w(John Doe john@does.com Event1 2019/03/04 30 Check)]      
+      @parsed_row = ParsedRow.parse(@headers, @rows.first)
+      @event = FactoryGirl.create(:event, :name => @parsed_row.event_name)
+      @show = FactoryGirl.create(:show, :event => @event, :datetime => DateTime.parse(@parsed_row.show_date))
+      @ticket = FactoryGirl.create(:ticket, :show => @show)
+      @import = FactoryGirl.create(:import)      
+      @person = @import.create_person(@parsed_row)
+    end
+    
+    it "should work without a payment method" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name", "Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",     "2019/03/04","30",     "what"]      
+      @parsed_row = ParsedRow.parse(@headers, @rows.first)
+      @import = FactoryGirl.create(:import)
+      order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
+      order.payment_method.should eq nil
+    end
+    
+    it "should create an order" do
+      order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
+      order.organization.should eq @import.organization
+      order.items.length.should eq 1
+      order.items.first.product.should eq @ticket
+      order.items.first.show.should eq @show
+      order.person.should eq @person
+      order.payment_method.should eq @parsed_row.payment_method
+    end
+    
+    it "should combine orders if an order has the same person and show date as a previous order" do
+      existing_order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
+      order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
+      order.should eq existing_order
+    end
+    
+    it "should include the order date"
   end
   
   def imported_shows

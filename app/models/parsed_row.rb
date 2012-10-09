@@ -10,7 +10,7 @@ class ParsedRow
     :show_date        => [ "Show", "Show Date" ],
     :amount           => [ "Amount", "Dollar Amount" ],
     :email            => [ "Email", "Email address" ],
-    :payment_method   => [ "Method of Payment", "Payment Method" ],
+    :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
     :first            => [ "First name", "First" ],
     :last             => [ "Last name", "Last" ],
     :company          => [ "Company name", "Company" ],
