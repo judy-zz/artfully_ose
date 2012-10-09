@@ -186,21 +186,133 @@ describe Import do
         chart.sections[0].price.should eq 0
         chart.sections[0].capacity.should eq 2
       end
-      
-      #these can go into a smaller test
-      it "should report an error if show dates are not included"
-      it "should report an error if a show date is malformed or unparsable"
     end   
   end
   
   describe "#create_person" do
     before do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+      @headers = ["First Name", "Last Name", "Email"]
+      @rows = [%w(John Doe john@does.com)]
+      @import = FactoryGirl.create(:import)
+      @import.stub(:headers) { @headers }
+      @import.stub(:rows) { @rows }
+      @existing_person = FactoryGirl.create(:person, :email => "first@example.com")
     end
     
-    describe "allow_duplicate" do
-
+    it "should create the person if the person does not exist" do
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      created_person = @import.create_person(parsed_row)
+      created_person.should_not be_new_record
+      Person.where(:email => "john@does.com").length.should eq 1
+      Person.where(:email => "first@example.com").length.should eq 1
     end
+    
+    it "should throw an error when a person with an email already exists" do
+      @existing_person = FactoryGirl.create(:person, :email => "john@does.com", :organization => @import.organization)
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      failed_person = @import.create_person(parsed_row)
+      failed_person.errors.size.should eq 1
+      failed_person.should be_new_record
+    end
+    
+    describe "when importing an event" do
+      it "should update a person if person already exists" do
+        @existing_person = FactoryGirl.create(:person, :email => "john@does.com", :organization => @import.organization)
+        parsed_row = ParsedRow.parse(@headers, @rows.first)
+        parsed_row.stub(:importing_event?).and_return(true)
+        jon = @import.create_person(parsed_row)
+        jon.should_not be_new_record
+        Person.where(:email => "john@does.com").length.should eq 1
+      end
+      
+      it "should create a new person if necessary" do
+        parsed_row = ParsedRow.parse(@headers, @rows.first)
+        parsed_row.stub(:importing_event?).and_return(true)
+        created_person = @import.create_person(parsed_row)
+        created_person.should_not be_new_record
+        Person.where(:email => "john@does.com").length.should eq 1
+        Person.where(:email => "first@example.com").length.should eq 1
+      end
+    end
+    
+    describe "with an external customer id" do
+      it "should TODO"
+    end
+  end
+  
+  describe "#valid_for_event?" do
+    before do
+      @import = Import.new
+    end
+    
+    it "should be valid with a show time" do
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
+      @rows = [%w(John Doe john@does.com Event1 2012/03/04)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      Import.new.valid_for_event?(parsed_row).should be_true
+    end
+    
+    it "should be valid with a show time" do
+      @headers = ["First Name", "Last Name", "Email", "Event Name"]
+      @rows = [%w(John Doe john@does.com Event1)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      Import.new.valid_for_event?(parsed_row).should be_false
+    end
+    
+    it "should be valid without an event" do
+      @headers = ["First Name", "Last Name", "Email"]
+      @rows = [%w(John Doe john@does.com)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      Import.new.valid_for_event?(parsed_row).should be_true
+    end
+  end
+  
+  describe "#create_show" do
+    before(:each) do
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
+      @rows = [%w(John Doe john@does.com Event1 2012/03/04)]      
+      @parsed_row = ParsedRow.parse(@headers, @rows.first)
+      @event = FactoryGirl.create(:event)
+      @import = FactoryGirl.create(:import)
+    end
+    
+    it "should create a show in the unpublished state" do
+      show = @import.create_show(@parsed_row, @event)
+      show.event.should eq @event
+      show.organization.should eq @import.organization
+      show.datetime.should eq DateTime.parse("2012/03/04")
+      show.should be_unpublished
+    end
+    
+    it "should not create a show if we've already imported a show with that datetime" do      
+      existing_show = @import.create_show(@parsed_row, @event)
+      show = @import.create_show(@parsed_row, @event)
+      show.event.should eq @event
+      show.organization.should eq @import.organization
+      show.datetime.should eq DateTime.parse("2012/03/04")
+      show.should be_unpublished
+      show.should eq existing_show
+    end
+    
+    it "should create a show if a show already exists for that time for another event" do
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
+      @rows = [%w(John Doe john@does.com Event2 2012/03/04)]      
+      @parsed_row = ParsedRow.parse(@headers, @rows.first)
+      another_show = @import.create_show(@parsed_row, FactoryGirl.create(:event, :name => "Event2"))
+      
+      show = @import.create_show(@parsed_row, @event)     
+      show.event.should eq @event
+      show.organization.should eq @import.organization
+      show.datetime.should eq DateTime.parse("2012/03/04")
+      show.should be_unpublished
+      show.should_not eq another_show
+    end
+  end
+  
+  describe "#create_order" do
+    it "should create an order"
+    it "should combine orders if an order has the same person and show date as a previous order"
   end
   
   def imported_shows

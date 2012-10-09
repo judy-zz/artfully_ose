@@ -38,26 +38,32 @@ class Import < ActiveRecord::Base
 
     rows.each do |row|
       parsed_row  = ParsedRow.parse(headers, row)
-      person      = create_person(headers, parsed_row)
+      person      = create_person(parsed_row)
       
       if parsed_row.importing_event?
-        event       = create_event(headers, parsed_row, person)
-        show        = create_show(headers, parsed_row, event)
-        chart       = create_chart(headers, parsed_row, event, show)
-        ticket      = create_ticket(headers, parsed_row, person, event, show, chart)
-        order       = create_order(headers, parsed_row, person, event, show, ticket)
-        actions     = create_actions(headers, parsed_row, person, event, show, order)
+        break if !valid_for_event? parsed_row
+        event       = create_event(parsed_row, person)
+        show        = create_show(parsed_row, event)
+        chart       = create_chart(parsed_row, event, show)
+        ticket      = create_ticket(parsed_row, person, event, show, chart)
+        order       = create_order(parsed_row, person, event, show, ticket)
+        actions     = create_actions(parsed_row, person, event, show, order)
       end
     end
 
     if failed?
       self.people.destroy_all
+      #TODO: need to clean up everything.  Maybe should vlaidate first, then import?
     else
       self.imported!
     end
   end
   
-  def create_chart(headers, parsed_row, event, show)
+  def valid_for_event?(parsed_row)
+    !parsed_row.event_name || (parsed_row.event_name && parsed_row.show_date)
+  end
+  
+  def create_chart(parsed_row, event, show)
     chart = show.chart || Chart.new(:name => event.name)
     amount = parsed_row.amount || 0
     section = chart.sections.where(:price => amount).first || chart.sections.build(:name => event.name,:price => amount, :capacity => 1)
@@ -69,7 +75,7 @@ class Import < ActiveRecord::Base
     chart
   end
 
-  def create_event(headers, parsed_row, person)
+  def create_event(parsed_row, person)
     event = Event.where(:name => parsed_row.event_name).where(:organization_id => self.organization).first
     return event if event
       
@@ -84,9 +90,10 @@ class Import < ActiveRecord::Base
     event
   end
   
-  def create_show(headers, parsed_row, event)
+  def create_show(parsed_row, event)
+    show_key = parsed_row.show_date + event.name
     @imported_shows = @imported_shows || {}
-    show = @imported_shows[parsed_row.show_date]
+    show = @imported_shows[show_key]
     return show if show
     
     show = Show.new
@@ -98,11 +105,11 @@ class Import < ActiveRecord::Base
     show.state = "unpublished"
     show.save(:validate => false)
     
-    @imported_shows[parsed_row.show_date] = show
+    @imported_shows[show_key] = show
     show
   end
   
-  def create_actions(headers, parsed_row, person, event, show, order)
+  def create_actions(parsed_row, person, event, show, order)
     go_action = GoAction.for(show, person)
     go_action.import = self
     go_action.save
@@ -113,7 +120,7 @@ class Import < ActiveRecord::Base
     return go_action, get_action
   end
   
-  def create_ticket(headers, parsed_row, person, event, show, chart)
+  def create_ticket(parsed_row, person, event, show, chart)
     amount = parsed_row.amount || 0
     Ticket.build_one(show, chart.sections.where(:price => amount).first, 0 ,1, true).tap do |t| 
       t.buyer = person
@@ -123,7 +130,7 @@ class Import < ActiveRecord::Base
   
   #TODO: Aggregate the order if the person appears multiple times
   #Also include order date  
-  def create_order(headers, parsed_row, person, event, show, ticket)
+  def create_order(parsed_row, person, event, show, ticket)
     order = ImportedOrder.new
     order.organization = self.organization
     order.payment_method = parsed_row.payment_method
@@ -137,9 +144,9 @@ class Import < ActiveRecord::Base
     order
   end
   
-  def create_person(headers, parsed_row)
+  def create_person(parsed_row)
     if parsed_row.importing_event?
-      person = Person.first_or_create(parsed_row.email, user.current_organization, parsed_row.person_attributes) do |p|
+      person = Person.first_or_create(parsed_row.email, self.organization, parsed_row.person_attributes) do |p|
         p.import = self
       end
     else    
@@ -187,7 +194,7 @@ class Import < ActiveRecord::Base
     ip = parsed_row
     
     person = self.people.build(parsed_row.person_attributes)
-    person.organization = user.current_organization
+    person.organization = self.organization
     person.address = Address.new \
       :address1  => ip.address1,
       :address2  => ip.address2,
