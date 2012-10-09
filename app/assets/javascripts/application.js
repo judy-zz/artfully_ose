@@ -75,6 +75,9 @@ $(document).ready(function() {
 	
 	$('.section-price-disabled').popover({trigger:'manual'})
                               .click(function(){ $(this).popover('toggle'); });
+  if($.browser.mozilla) {
+    $('.section-price-disabled *').css("pointer-events", "none");
+  }
 
 	$('.help').popover();
 	
