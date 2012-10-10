@@ -11,6 +11,7 @@ class ParsedRow
     :email            => [ "Email", "Email address" ],
     :amount           => [ "Amount", "Dollar Amount" ],
     :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
+    :order_date       => [ "Order Date" ],
     :first            => [ "First name", "First" ],
     :last             => [ "Last name", "Last" ],
     :company          => [ "Company name", "Company" ],
@@ -94,7 +95,7 @@ class ParsedRow
     ((@amount.to_f || 0) * 100).to_i
   end
   
-  def unparsd_amount
+  def unparsed_amount
     @amount
   end
   

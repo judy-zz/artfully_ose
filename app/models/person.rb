@@ -195,7 +195,14 @@ class Person < ActiveRecord::Base
   # find a unique person
   #
   def self.first_or_create(email, organization, attributes=nil, options ={}, &block)
-    Person.where(:email => email).where(:organization_id => organization.id).first_or_create(attributes, options, &block)
+    
+    if email.blank?
+      person = Person.new(attributes)
+    else
+      person = Person.where(:email => email).where(:organization_id => organization.id).first_or_create(attributes, options, &block)
+    end
+    
+    person
   end
 
   #

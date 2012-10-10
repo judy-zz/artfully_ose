@@ -111,8 +111,6 @@ describe Import do
           ticket.section.should_not be_nil
           ticket.should be_sold
           
-          #TODO: Sale date should be order date if exists
-          
           #Weaksauce.  Should be testing for individal buyers
           Person.find(ticket.buyer.id).should_not be_nil
         end
@@ -220,8 +218,8 @@ describe Import do
   describe "#create_person" do
     before do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
-      @headers = ["First Name", "Last Name", "Email"]
-      @rows = [%w(John Doe john@does.com)]
+      @headers = ["First Name", "Last Name", "Email", "Company"]
+      @rows = [%w(John Doe john@does.com Bernaduccis)]
       @import = FactoryGirl.create(:import)
       @import.stub(:headers) { @headers }
       @import.stub(:rows) { @rows }
@@ -232,9 +230,15 @@ describe Import do
       parsed_row = ParsedRow.parse(@headers, @rows.first)
       created_person = @import.create_person(parsed_row)
       created_person.should_not be_new_record
+      created_person.first_name.should eq "John"
+      created_person.last_name.should eq "Doe"
+      created_person.email.should eq "john@does.com"
+      created_person.company_name.should eq "Bernaduccis"
       Person.where(:email => "john@does.com").length.should eq 1
       Person.where(:email => "first@example.com").length.should eq 1
     end
+    
+    it "sets the address on the person"
     
     it "should throw an error when a person with an email already exists" do
       @existing_person = FactoryGirl.create(:person, :email => "john@does.com", :organization => @import.organization)
@@ -262,11 +266,21 @@ describe Import do
         Person.where(:email => "john@does.com").length.should eq 1
         Person.where(:email => "first@example.com").length.should eq 1
       end
+      
+      it "should save a new person even if there's no email" do
+        @no_email = FactoryGirl.create(:person, :first_name => "No", :last_name => "Email", :organization => @import.organization)
+        @no_email.email = nil
+        @no_email.save
+        @headers = ["First Name", "Email", "Last Name", "Event Name", "Company"]
+        @rows = ["John",nil,"Doe", "Duplicate People", "Bernaduccis"]
+        parsed_row = ParsedRow.parse(@headers, @rows)
+        person = @import.create_person(parsed_row)
+        person.company_name.should eq "Bernaduccis"
+        person.id.should_not eq @no_email.id        
+      end
     end
     
-    describe "with an external customer id" do
-      it "should TODO"
-    end
+    describe "with an external customer id"
   end
   
   describe "#valid_for_event?" do
@@ -364,6 +378,8 @@ describe Import do
       order.items.first.realized_price.should eq 14499
       order.items.first.net.should eq 14499
       order.items.first.should be_settled
+      order.created_at.should be_today
+      order.import.should eq @import
       order.person.should eq @person
       order.payment_method.should eq @parsed_row.payment_method
     end
@@ -384,8 +400,21 @@ describe Import do
     end
     
     describe "with a date" do
-      it "should include the order date"
-      it "should set the get action occurred_at to whatever the date of the order is"
+      before(:each) do
+        @headers << "Order Date"
+        @rows << "01/01/1999"     
+        @parsed_row = ParsedRow.parse(@headers, @rows)
+        
+        @order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
+      end
+      
+      it "should include the order date" do
+        @order.created_at.should eq DateTime.parse("01/01/1999")
+      end
+      
+      it "should set the get action occurred_at to whatever the date of the order is" do
+        @order.actions.first.occurred_at.should eq DateTime.parse("01/01/1999")
+      end
     end
   end
   

@@ -143,6 +143,8 @@ class Import < ActiveRecord::Base
     item.state = "settled"
     order.items << item
     order.save
+    order.update_attribute(:created_at, parsed_row.order_date) unless parsed_row.order_date.blank?
+    order.actions.where(:type => "GetAction").first.update_attribute(:occurred_at, parsed_row.order_date) unless parsed_row.order_date.blank?
     @imported_orders[order_key] = order
     order
   end
