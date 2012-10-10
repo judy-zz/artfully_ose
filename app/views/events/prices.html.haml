@@ -43,8 +43,14 @@
     .modal-header
       .close{'data-dismiss'=>'modal'} x
       %h3 Paid Ticketing Kit
-    .modal-body
-      = render :partial => "ticketing_kits/instructions"
-    .modal-footer
-      = button_tag "Cancel", :class => "btn", 'data-dismiss' => 'modal'
-      = button_to "Submit Activation Request", kits_path(:type => "ticketing_kit"), :class => 'btn btn-success'
+    - if current_user.current_organization.available_kits.find(:type => "TicketingKit").first.try(:state) == "pending"
+      .modal-body
+        = render :partial => "ticketing_kits/pending"
+      .modal-footer
+        = button_tag "Close", :class => "btn-success", 'data-dismiss' => 'modal'
+    - else
+      .modal-body
+        = render :partial => "ticketing_kits/instructions"
+      .modal-footer
+        = button_tag "Cancel", :class => "btn", 'data-dismiss' => 'modal'
+        = button_to "Submit Activation Request", kits_path(:type => "ticketing_kit", :format => "js"), :remote => true, :class => 'btn btn-success'
