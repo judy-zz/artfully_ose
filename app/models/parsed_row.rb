@@ -66,7 +66,11 @@ class ParsedRow
       value = check_enumeration(field, value)
 
       self.instance_variable_set("@#{field}", value)
-      self.class.class_eval { attr_reader field }
+      
+      #skip amount because we have to parse it
+      unless field.eql? :amount
+        self.class.class_eval { attr_reader field }
+      end
     end
   end
 
@@ -84,6 +88,14 @@ class ParsedRow
     else
       value
     end
+  end
+  
+  def amount
+    ((@amount.to_f || 0) * 100).to_i
+  end
+  
+  def unparsd_amount
+    @amount
   end
   
   def importing_event?

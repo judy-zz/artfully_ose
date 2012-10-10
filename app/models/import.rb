@@ -122,7 +122,8 @@ class Import < ActiveRecord::Base
   
   def create_ticket(parsed_row, person, event, show, chart)
     amount = parsed_row.amount || 0
-    ticket = Ticket.build_one(show, chart.sections.where(:price => amount).first, 0 ,1, true)
+    section = chart.sections.where(:price => amount).first
+    ticket = Ticket.build_one(show, section, section.price,1, true)
     ticket.sell_to person
     ticket.save
     ticket

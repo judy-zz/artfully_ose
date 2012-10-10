@@ -117,8 +117,6 @@ describe Import do
           Person.find(ticket.buyer.id).should_not be_nil
         end
       end
-      
-      it "should put a price on the ticket"
     
       context "creating orders" do
         before(:each) do
@@ -193,6 +191,30 @@ describe Import do
         chart.sections[0].capacity.should eq 2
       end
     end   
+  end
+  
+  describe "#create_ticket" do
+    before(:each) do
+      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date", "Amount", "Payment Method"]
+      @rows = ["John", "Doe", "john@does.com", "Event1", "2019/03/04", "30.99", "Check"]      
+      @parsed_row = ParsedRow.parse(@headers, @rows)
+      @import = FactoryGirl.create(:import)
+      @person = FactoryGirl.create(:person, :email => "first@example.com")
+      @event = FactoryGirl.create(:event)
+      @show = FactoryGirl.create(:show, :event => @event)
+      @section = FactoryGirl.create(:section, :price => @parsed_row.amount)
+      @chart = FactoryGirl.create(:chart)
+      @chart.sections << @section
+    end
+    
+    it "should create the ticket" do
+      ticket = @import.create_ticket(@parsed_row, @person, @event, @show, @chart)
+      ticket.section.should eq @section
+      ticket.price.should eq 3099
+      ticket.buyer.should eq @person
+      ticket.show.should eq @show
+    end
   end
   
   describe "#create_person" do
@@ -279,8 +301,8 @@ describe Import do
       @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
       @rows = [%w(John Doe john@does.com Event1 2012/03/04)]      
       @parsed_row = ParsedRow.parse(@headers, @rows.first)
-      @event = FactoryGirl.create(:event)
       @import = FactoryGirl.create(:import)
+      @event = FactoryGirl.create(:event, :name => @parsed_row.event_name)
     end
     
     it "should create a show in the unpublished state" do
