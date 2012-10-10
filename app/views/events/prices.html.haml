@@ -38,3 +38,13 @@
         change the prices on shows you have already created.  To edit pricing for existing shows, select a single show and edit pricing information for that specific show. 
     .modal-footer
       %button.btn.btn-success{'data-dismiss'=>'modal'} OK
+- unless can? :create, :paid_events
+  #request-paid-ticket-kit.modal
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      %h3 Paid Ticketing Kit
+    .modal-body
+      = render :partial => "ticketing_kits/instructions"
+    .modal-footer
+      = button_tag "Cancel", :class => "btn", 'data-dismiss' => 'modal'
+      = button_to "Submit Activation Request", kits_path(:type => "ticketing_kit"), :class => 'btn btn-success'
