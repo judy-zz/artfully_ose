@@ -7,10 +7,12 @@ class GoAction < Action
     "attended"
   end
   
-  def self.for(show, person)
-    GoAction.new(:person => person, :occurred_at => show.datetime).tap do |go_action|
+  def self.for(show, person, occurred_at=nil)
+    GoAction.new(:person => person).tap do |go_action|
       go_action.subject = show
       go_action.details = "attended #{show.event}"
+      go_action.organization = show.organization
+      go_action.occurred_at = ( occurred_at.nil? ? show.datetime : occurred_at )
     end
   end
   

@@ -68,6 +68,7 @@ class Action < ActiveRecord::Base
       "Press" ]
   end
   
+  #This returnes an ARel, so you can chain
   def self.recent(organization, limit = 5)
     Action.includes(:person).where(:organization_id => organization).order('created_at DESC').limit(limit)
   end

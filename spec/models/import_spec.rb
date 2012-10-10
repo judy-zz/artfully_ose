@@ -109,6 +109,9 @@ describe Import do
         @show.tickets.each do |ticket|
           ticket.show.should eq @show
           ticket.section.should_not be_nil
+          ticket.should be_sold
+          
+          #TODO: Sale date should be order date if exists
           
           #Weaksauce.  Should be testing for individal buyers
           Person.find(ticket.buyer.id).should_not be_nil
@@ -147,18 +150,21 @@ describe Import do
         end
     
         it "should create go and get actions for each person on the order" do
-          @import.people.each do |person|
+          @import.reload.people.each do |person|
             person.actions.length.should eq 2
             go_action = GoAction.where(:person_id => person.id).first        
             go_action.should_not be nil
+            go_action.organization.should eq @import.organization
             go_action.sentence.should_not be_nil
             go_action.subject.should eq person.orders.first.items.first.show  
+            go_action.occurred_at.should eq go_action.subject.datetime
             go_action.import.should eq @import 
           end
           
           @orders.each do |order|
             get_action = GetAction.where(:subject_id => order.id).first
             get_action.should_not be nil
+            get_action.organization.should eq @import.organization
             get_action.sentence.should_not be_nil
             get_action.subject.should eq order
             get_action.import.should eq @import 
@@ -316,14 +322,28 @@ describe Import do
     end
     
     before(:each) do
-      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date", "Amount", "Payment Method"]
-      @rows = [%w(John Doe john@does.com Event1 2019/03/04 30 Check)]      
-      @parsed_row = ParsedRow.parse(@headers, @rows.first)
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date", "Amount", "Payment Method", "Amount"]
+      @rows = ["John", "Doe", "john@does.com", "Event1", "2019/03/04", "30", "Check", "144.99"]      
+      @parsed_row = ParsedRow.parse(@headers, @rows)
       @event = FactoryGirl.create(:event, :name => @parsed_row.event_name)
       @show = FactoryGirl.create(:show, :event => @event, :datetime => DateTime.parse(@parsed_row.show_date))
-      @ticket = FactoryGirl.create(:ticket, :show => @show)
+      @ticket = FactoryGirl.create(:ticket, :show => @show, :price => 14499)
       @import = FactoryGirl.create(:import)      
       @person = @import.create_person(@parsed_row)
+    end
+    
+    it "should create an order" do
+      order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
+      order.organization.should eq @import.organization
+      order.items.length.should eq 1
+      order.items.first.product.should eq @ticket
+      order.items.first.show.should eq @show
+      order.items.first.price.should eq 14499
+      order.items.first.realized_price.should eq 14499
+      order.items.first.net.should eq 14499
+      order.items.first.should be_settled
+      order.person.should eq @person
+      order.payment_method.should eq @parsed_row.payment_method
     end
     
     it "should work without a payment method" do
@@ -335,23 +355,16 @@ describe Import do
       order.payment_method.should eq nil
     end
     
-    it "should create an order" do
-      order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
-      order.organization.should eq @import.organization
-      order.items.length.should eq 1
-      order.items.first.product.should eq @ticket
-      order.items.first.show.should eq @show
-      order.person.should eq @person
-      order.payment_method.should eq @parsed_row.payment_method
-    end
-    
     it "should combine orders if an order has the same person and show date as a previous order" do
       existing_order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
       order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
       order.should eq existing_order
     end
     
-    it "should include the order date"
+    describe "with a date" do
+      it "should include the order date"
+      it "should set the get action occurred_at to whatever the date of the order is"
+    end
   end
   
   def imported_shows

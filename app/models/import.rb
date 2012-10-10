@@ -122,14 +122,13 @@ class Import < ActiveRecord::Base
   
   def create_ticket(parsed_row, person, event, show, chart)
     amount = parsed_row.amount || 0
-    Ticket.build_one(show, chart.sections.where(:price => amount).first, 0 ,1, true).tap do |t| 
-      t.buyer = person
-      t.save
-    end
+    ticket = Ticket.build_one(show, chart.sections.where(:price => amount).first, 0 ,1, true)
+    ticket.sell_to person
+    ticket.save
+    ticket
   end
   
-  #TODO: Aggregate the order if the person appears multiple times
-  #Also include order date  
+  #TODO: include order date  
   def create_order(parsed_row, person, event, show, ticket)
     order_key = [show.id.to_s,person.id.to_s,parsed_row.payment_method].join('-')
     @imported_orders ||= {}
