@@ -1,5 +1,5 @@
 class CreditCardPayment < ::Payment
-  payment_method [:credit_card, :credit_card_swipe, :credit_card_manual]
+  payment_method [:credit_card, :credit_card_swipe, :credit_card_manual, :cc, :credit]
   
   #ActiveMerchant::Billing::CreditCard
   attr_accessor :credit_card 

@@ -150,7 +150,7 @@ class Import < ActiveRecord::Base
   end
   
   def create_person(parsed_row)
-    if parsed_row.importing_event?
+    if parsed_row.importing_event? && !parsed_row.email.blank?
       person = Person.first_or_create(parsed_row.email, self.organization, parsed_row.person_attributes) do |p|
         p.import = self
       end

@@ -194,15 +194,10 @@ class Person < ActiveRecord::Base
   # We're overriding this in order to excapsulate what is needed to
   # find a unique person
   #
+  # DO NOT CALL THIS METHOD WITH A BLANK EMAIL
+  #
   def self.first_or_create(email, organization, attributes=nil, options ={}, &block)
-    
-    if email.blank?
-      person = Person.new(attributes)
-    else
-      person = Person.where(:email => email).where(:organization_id => organization.id).first_or_create(attributes, options, &block)
-    end
-    
-    person
+    Person.where(:email => email).where(:organization_id => organization.id).first_or_create(attributes, options, &block)
   end
 
   #

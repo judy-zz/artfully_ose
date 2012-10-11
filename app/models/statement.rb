@@ -42,15 +42,15 @@ class Statement
       statement.payment_method_rows         = {}
       
       # Initialize with the three common payment types
-      statement.payment_method_rows[::CreditCardPayment.payment_method] = PaymentTypeRow.new(::CreditCardPayment.payment_method)
-      statement.payment_method_rows[::CashPayment.payment_method] = PaymentTypeRow.new(::CashPayment.payment_method)
-      statement.payment_method_rows[::CompPayment.payment_method] = PaymentTypeRow.new(::CompPayment.payment_method)
+      statement.payment_method_rows[::CreditCardPayment.payment_method.downcase] = PaymentTypeRow.new(::CreditCardPayment.payment_method)
+      statement.payment_method_rows[::CashPayment.payment_method.downcase] = PaymentTypeRow.new(::CashPayment.payment_method)
+      statement.payment_method_rows[::CompPayment.payment_method.downcase] = PaymentTypeRow.new(::CompPayment.payment_method)
       
       
       payment_method_hash.each do |payment_method, items|
-        row = statement.payment_method_rows[payment_method] || PaymentTypeRow.new(payment_method)
+        row = statement.payment_method_rows[payment_method.downcase] || PaymentTypeRow.new(payment_method)
         items.each {|item| row << item}
-        statement.payment_method_rows[payment_method] = row
+        statement.payment_method_rows[payment_method.downcase] = row
       end
     end
   end
