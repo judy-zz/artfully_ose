@@ -1,6 +1,6 @@
 - in_section :imports
 - content_for :header do
-  %h1 Import Events
+  %h1 Import People
 
 .row
   .span4
@@ -18,7 +18,7 @@
   .span8
     %p
       Please supply a CSV (comma separated values) of people that you'd like to import.
-    %p You #{link_to 'download an empty CSV file', template_imports_path} with these headers already filled in.
+    %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "people")} with these headers already filled in.
     
     %h3 Include One Of The Following
     %table.table.table-bordered.table-striped.docs

@@ -2,18 +2,13 @@ class ParsedRow
   
   attr_accessor :row
 
-  # Define the list of fields known about a person and the various column names
-  # that might be used for that field.
-  FIELDS = {
-    :event_name       => [ "Event", "Event Name" ],
-    :venue_name       => [ "Venue", "Venue Name" ],
-    :show_date        => [ "Show", "Show Date" ],
-    :email            => [ "Email", "Email address" ],
-    :amount           => [ "Amount", "Dollar Amount" ],
-    :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
-    :order_date       => [ "Order Date" ],
+  SHARED_FIELDS = {
     :first            => [ "First name", "First" ],
     :last             => [ "Last name", "Last" ],
+    :email            => [ "Email", "Email address" ]
+  }
+
+  PEOPLE_FIELDS = SHARED_FIELDS.merge( {
     :company          => [ "Company name", "Company" ],
     :address1         => [ "Address 1", "Address1" ],
     :address2         => [ "Address 2", "Address2" ],
@@ -32,8 +27,19 @@ class ParsedRow
     :facebook_page    => [ "Facebook url", "Facebook", "Facebook address", "Facebook page" ],
     :linkedin_page    => [ "Linked in url", "LinkedIn url", "LinkedIn", "LinkedIn address", "LinkedIn page" ],
     :tags             => [ "Tags" ],
-    :person_type      => [ "Person Type" ]
-  }
+    :person_type      => [ "Person Type" ]    
+  })
+  
+  EVENT_FIELDS = SHARED_FIELDS.merge( {
+    :event_name       => [ "Event", "Event Name" ],
+    :venue_name       => [ "Venue", "Venue Name" ],
+    :show_date        => [ "Show", "Show Date" ],
+    :amount           => [ "Amount", "Dollar Amount" ],
+    :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
+    :order_date       => [ "Order Date" ]
+  })
+  
+  FIELDS = PEOPLE_FIELDS.merge(EVENT_FIELDS)
 
   # Enumerated columns default to the last value if the data value is not valid.
   #

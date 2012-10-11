@@ -1,6 +1,6 @@
 - in_section :imports
 - content_for :header do
-  %h1 Import People
+  %h1 Import Events
 
 .row
   .span4
@@ -18,7 +18,7 @@
   .span8
     %p
       Please supply a CSV (comma separated values) of people that you'd like to import.
-    %p You #{link_to 'download an empty CSV file', template_imports_path} with these headers already filled in.
+    %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "events")} with these headers already filled in.
     %h3 Required Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
@@ -49,8 +49,11 @@
         %td.field External Customer Id
         %td A unique identifier for this customer.
       %tr 
-        %td.field Dollar Amount
-        %td The dollar amount of the total purchase.  In dollars
+        %td.field Amount
+        %td The dollar amount of the total purchase.  In dollars.  Don't include a "$" or other currency symbols.
       %tr 
-        %td.field Method Of Payment
-        %td Cash, Credit Card, Check, Comp, Other.  We should be opinionated about what goes in here
+        %td.field Payment Method
+        %td Cash, Credit Card, Check, Comp, Other.
+      %tr 
+        %td.field Order Date
+        %td The date of the order.  Will be set to today if this is not included.

@@ -54,8 +54,9 @@ class ImportsController < ArtfullyOseController
     redirect_to imports_path
   end
 
-  def template
-    columns = ParsedRow::FIELDS.map { |field, names| names.first }
+  def template   
+    fields = (params[:type].eql?("people") ? ParsedRow::PEOPLE_FIELDS : ParsedRow::EVENT_FIELDS )
+    columns = fields.map { |field, names| names.first }
     csv_string = CSV.generate { |csv| csv << columns }
     send_data csv_string, :filename => "Artfully-Import-Template.csv", :type => "text/csv", :disposition => "attachment"
   end
