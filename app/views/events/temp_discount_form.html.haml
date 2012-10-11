@@ -30,6 +30,11 @@
       %fieldset
         %legend
         .control-group
+          = f.label :show_ids, "Discount is valid for these shows", :class => 'control-label'
+          .controls
+            = f.select :show_ids, options_for_select(@event.shows.map {|s| [s.datetime.strftime("%D %l:%M%P"), s.id] }), {:include_blank => "All Shows"}, {'data-placeholder' => "All Shows", :class => 'input chosen', :multiple => true}
+
+        .control-group
           = f.label :promotion_type, :class => 'control-label'
           .controls
             %label.radio
@@ -39,12 +44,6 @@
               = f.radio_button :promotion_type, 'custom', :class => 'promotion-type-radio'
               Custom discount
 
-
-        .control-group
-          = f.label :show_ids, "Discount is valid for these shows", :class => 'control-label'
-          .controls
-            = f.select :show_ids, options_for_select(@event.shows.map {|s| [s.datetime.strftime("%D %l:%M%P"), s.id] }), {:include_blank => "All Shows"}, {'data-placeholder' => "All Shows", :class => 'input chosen', :multiple => true}
-
         %legend
         = f.fields_for :discount_sections do |builder|
           = render 'discount_section_fields', :f => builder
@@ -52,7 +51,7 @@
         .control-group
           .controls
             %i.icon-plus-sign.icon-gray
-            = link_to_add_fields 'Add another ticket', f, :discount_sections, "", "toggleAppropriateFieldsAccordingToPromotionType();"
+            = link_to_add_fields 'Add another Ticket Type', f, :discount_sections, "", "toggleAppropriateFieldsAccordingToPromotionType();"
 
 
         %legend
