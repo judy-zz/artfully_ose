@@ -1,0 +1,2 @@
+class EventsImport < Import
+end

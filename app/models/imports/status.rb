@@ -1,4 +1,4 @@
-module Importing
+module Imports
   module Status
     # Import status transitions:
     #   pending -> approved -> imported

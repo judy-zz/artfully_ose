@@ -1,4 +1,4 @@
-module Importing
+module Imports
   module Processing
     def self.included(base)
       base.class_eval do  

@@ -1,7 +1,7 @@
 class Import < ActiveRecord::Base
   
-  include Importing::Status
-  include Importing::Processing
+  include Imports::Status
+  include Imports::Processing
 
   has_many :import_errors, :dependent => :delete_all
   has_many :import_rows, :dependent => :delete_all
@@ -13,6 +13,10 @@ class Import < ActiveRecord::Base
   serialize :import_headers
   
   set_watch_for :created_at, :local_to => :organization
+
+  def self.build(type)
+    (type.eql? "events") ? EventsImport.new : PeopleImport.new
+  end
 
   def headers
     self.import_headers

@@ -32,12 +32,12 @@ class ImportsController < ArtfullyOseController
       @import.caching!
       redirect_to @import
     else
-      @import = Import.new
+      @import = Import.build(params[:type])
     end
   end
 
   def create
-    @import = Import.new(params[:import])
+    @import = Import.build(params[:type])
     @import.user = current_user
     @import.organization = organization
 
