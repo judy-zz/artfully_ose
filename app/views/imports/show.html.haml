@@ -1,6 +1,6 @@
 - in_section :imports
 
 - content_for :header do
-  %h1= t(".heading", :default => "Contact Import")
+  %h1= t(".heading", :default => "Import")
 
-= render @import.status, :import => @import
+= render :partial => "#{@type}/#{@import.status}", :import => @import

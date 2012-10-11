@@ -68,7 +68,7 @@ class ImportsController < ArtfullyOseController
     end
     
     def set_import_type
-      @import_type = params[:import_type]
+      @type = params[:type]
     end
 
 end
