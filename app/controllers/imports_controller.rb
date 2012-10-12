@@ -68,7 +68,9 @@ class ImportsController < ArtfullyOseController
     end
     
     def set_import_type
-      @type = params[:type]
+      #Cache import type to work around the direct to s3 upload
+      session[:type] = params[:type] unless params[:type].blank?
+      @type = (params[:type] || session[:type])
     end
 
 end
