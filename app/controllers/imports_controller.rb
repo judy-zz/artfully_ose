@@ -17,27 +17,27 @@ class ImportsController < ArtfullyOseController
 
   def show
     @import = organization.imports.find(params[:id])
-    @offset = params[:offset] ? params[:offset].to_i : 0
-    @length = params[:length] ? params[:length].to_i : 5
+    @parsed_rows = @import.parsed_rows.paginate(:page => params[:page], :per_page => 50)
   end
 
   def new
-    if params[:bucket].present? && params[:key].present?
-      @import = organization.imports.create \
-        :s3_bucket => params[:bucket],
-        :s3_key    => params[:key],
-        :s3_etag   => params[:etag],
-        :status    => "caching"
-      @import.user_id = current_user.id
+    if params[:bucket].present? && params[:key].present?      
+      @import = Import.build(@type)
+      @import.organization  = organization
+      @import.s3_bucket     = params[:bucket]
+      @import.s3_key        = params[:key]
+      @import.s3_etag       = params[:etag]
+      @import.status        = "caching"
+      @import.user_id       = current_user.id
       @import.caching!
-      redirect_to @import
+      redirect_to import_path(@import)
     else
-      @import = Import.build(params[:type])
+      @import = Import.build(@type)
     end
   end
 
   def create
-    @import = Import.build(params[:type])
+    @import = Import.build(@type)
     @import.user = current_user
     @import.organization = organization
 

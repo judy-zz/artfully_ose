@@ -13,7 +13,7 @@
             :redirect => new_import_url,
             :acl => "public-read",
             :max_filesize => 50.megabytes,
-            :submit_button => '<div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
+            :submit_button => '<input type="hidden" value="people"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
 
   .span8
     %p

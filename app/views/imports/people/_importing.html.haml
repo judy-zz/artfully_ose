@@ -1,0 +1,13 @@
+.row
+
+  .span4
+    %h3 Importing Contacts
+
+    %p This import was created at #{@import.created_at}
+    %p #{pluralize @import.rows.count, "contact"} found in this import file
+
+    %p= link_to "Back to imports/exports", imports_path, :class => "btn"
+
+  .span8
+
+    %h3 This file is currently being imported into Artful.ly.

@@ -168,6 +168,16 @@ class Import < ActiveRecord::Base
     end
     person  
   end
+  
+  def parsed_rows
+    return @parsed_rows if @parsed_rows
+    @parsed_rows = []
+    
+    rows.each do |row|
+      @parsed_rows << ParsedRow.parse(headers, row)
+    end
+    @parsed_rows
+  end
 
   def cache_data
     @csv_data = nil

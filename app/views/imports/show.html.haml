@@ -3,4 +3,4 @@
 - content_for :header do
   %h1= t(".heading", :default => "Import")
 
-= render :partial => "imports/#{@import.kind}/#{@import.status}", :import => @import
+= render :partial => "imports/#{@import.kind}/#{@import.status}", :locals => {:import => @import}
