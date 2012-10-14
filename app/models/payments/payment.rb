@@ -63,6 +63,10 @@ class Payment
     false
   end
   
+  def payment_phone
+    nil
+  end
+  
   def reduce_amount_by(amount_in_cents)
     self.amount= self.amount - amount_in_cents
   end

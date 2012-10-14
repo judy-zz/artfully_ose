@@ -63,7 +63,7 @@ describe Checkout do
     subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
   
     it "should always approve orders with cash payments" do
-      subject.stub(:create_order).and_return(BoxOffice::Order.new)
+      subject.stub(:create_order).and_return(Array.wrap(BoxOffice::Order.new))
       Person.stub(:find_or_create).and_return(FactoryGirl.build(:person))
       subject.cart.stub(:organizations).and_return(Array.wrap(FactoryGirl.build(:person).organization))
       subject.finish.should be_true

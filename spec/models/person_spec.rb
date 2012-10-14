@@ -24,11 +24,16 @@ describe Person do
       subject.phones.last.kind.should eq "Other"
     end
     
-    it "shouldn't add a nnumber if it already exists" do
+    it "shouldn't add a number if it already exists" do
       subject.add_phone_if_missing("444-444-4444")
       subject.phones.length.should eq 2
       subject.phones.first.number.should eq "333-333-3333"
       subject.phones.last.number.should eq "444-444-4444"
+    end
+    
+    it "shouldn't bother if the number is blnk or nil" do
+      subject.add_phone_if_missing("")
+      subject.phones.length.should eq 2
     end
   end
   
