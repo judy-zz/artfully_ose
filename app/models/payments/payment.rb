@@ -63,7 +63,7 @@ class Payment
     false
   end
   
-  def payment_phone
+  def payment_phone_number
     nil
   end
   
