@@ -35,14 +35,4 @@
           %td=row.website
           %td
             =icon_link_to("", "#row#{index}", ' icon-zoom-in', '', '', {'data-toggle' => 'modal'})
-            .modal{:id => "row#{index}"}
-              .modal-header
-                .close{'data-dismiss'=>'modal'} x
-                &nbsp;
-
-              .modal-body
-                %table.table
-                  - ParsedRow::PEOPLE_FIELDS.keys.each do |field|
-                    %tr
-                      %td=field.capitalize
-                      %td=row.send(field)
+            =render :partial => "imports/shared/inspect_modal", :locals => {:row => row, :index => index}
