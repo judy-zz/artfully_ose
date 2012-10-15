@@ -17,9 +17,10 @@
         - if can? :create, :paid_events
           =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price', :value => number_as_cents(f.object.price, :format => "%n")
         - else
-          %span.section-price-disabled{'data-title' => 'Paid Ticketing', 'data-content' => "#{link_to "Enable paid ticketing", organization_path(current_user.current_organization)} to set prices on your events.".html_safe}
-            =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price-disabled disabled', :value => number_as_cents(f.object.price, :format => "%n"), :disabled => 'disabled'
-            %p Paid Ticketing not enabled!
+          %span.section-price-disabled{'data-toggle' => "modal", 'data-target' => "#request-paid-ticket-kit"}
+            =f.text_field :price, :placeholder => '0.00', :class => 'input-small disabled section-price-disabled', :value => number_as_cents(f.object.price, :format => "%n"), :disabled => 'disabled'
+            %p
+              %a{:href=>"#"} Paid Ticketing Kit not enabled.
 
   .control-group
     =f.label :capacity, "Capacity", :class => 'control-label'
