@@ -15,7 +15,7 @@ class CreditCardPayment < ::Payment
   end
   
   def payment_phone_number
-    self.customer.phones.first.number
+    self.customer.phones.first.try(:number)
   end
   
   #
