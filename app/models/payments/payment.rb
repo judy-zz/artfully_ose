@@ -30,6 +30,10 @@ class Payment
       def payment_method
         "#{names[0].to_s.gsub('_',' ').capitalize}"
       end
+      
+      def self.payment_method
+        "#{names[0].to_s.gsub('_',' ').capitalize}"
+      end
     EOS
   end
 
@@ -52,6 +56,10 @@ class Payment
   end
   
   def requires_authorization?
+    false
+  end
+
+  def requires_settlement?
     false
   end
   

@@ -122,11 +122,11 @@ class Item < ActiveRecord::Base
     end
   end
 
-  def to_exchange!
-    self.price = 0
-    self.realized_price = 0
-    self.net = 0
-    self.state = "exchangee"
+  def to_exchange!(item_that_this_is_being_exchanged_for)
+    self.price = item_that_this_is_being_exchanged_for.price
+    self.realized_price = item_that_this_is_being_exchanged_for.realized_price
+    self.net = item_that_this_is_being_exchanged_for.net
+    self.state = "purchased"
   end
 
   def to_comp!
@@ -141,8 +141,21 @@ class Item < ActiveRecord::Base
     product.return!(return_items_to_inventory) if product.returnable?
   end
 
+  def exchange!(return_items_to_inventory = true)
+    product.return!(return_items_to_inventory) if product.returnable?
+    self.state = "exchanged"
+    self.price = 0
+    self.realized_price = 0
+    self.net = 0 
+    save   
+  end
+
   def modified?
     not %w( purchased comped ).include?(state)
+  end
+  
+  def return?
+    state.eql? "returned"
   end
 
   def settled?
@@ -157,6 +170,15 @@ class Item < ActiveRecord::Base
     state.eql? "comped"
   end
   
+  def refund?
+    state.eql? "refund"
+  end
+  
+  def exchanged?
+    state.eql? "exchanged"
+  end
+  
+  #TODO: This isn't used anymore.  It needs to go
   def exchangee?
     state.eql? "exchangee"
   end

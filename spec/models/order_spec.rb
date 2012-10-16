@@ -4,30 +4,29 @@ describe Order do
   disconnect_sunspot
   subject { FactoryGirl.build(:order) }
 
-  # Fix these specs!
-  # describe "payment" do
-  #   it "returns a new Payment based on the transaction ID" do
-  #     subject.payment.should be_an AthenaPayment
-  #     subject.payment.transaction_id.should eq subject.transaction_id
-  #   end
-  # end
+  describe "payment" do
+    it "returns a new Payment based on the transaction ID" do
+      subject.payment.should be_a CreditCardPayment
+      subject.payment.transaction_id.should eq subject.transaction_id
+    end
+  end
   
-  # describe "total" do
-  #   it "should report the prices and non-gift amounts to all items" do
-  #     order = FactoryGirl.build(:order)
-  #     order << FactoryGirl.build(:sponsored_donation)
-  #     order.items.first.nongift_amount = 400
-  #     order.total.should eq 1400
-  #   end
-  # end
+  describe "total" do
+    it "should report the prices and non-gift amounts to all items" do
+      order = FactoryGirl.build(:order)
+      order << FactoryGirl.build(:donation)
+      order.items.first.nongift_amount = 400
+      order.total.should eq 1400
+    end
+  end
 
   describe "#ticket_summary" do
-    let(:organization)  { FactoryGirl.build(:organization) }
-    let(:show0)         { FactoryGirl.build(:show, :organization => organization) }
-    let(:show1)         { FactoryGirl.build(:show, :organization => organization) }
-    let(:tickets0) { 3.times.collect { FactoryGirl.build(:ticket, :show => show0) } }
-    let(:tickets1) { 2.times.collect { FactoryGirl.build(:ticket, :show => show1) } }
-    let(:donations) { 2.times.collect { FactoryGirl.build(:donation, :organization => organization) } }
+    let(:organization)  { FactoryGirl.create(:organization) }
+    let(:show0)         { FactoryGirl.create(:show, :organization => organization) }
+    let(:show1)         { FactoryGirl.create(:show, :organization => organization) }
+    let(:tickets0) { 3.times.collect { FactoryGirl.create(:ticket, :show => show0) } }
+    let(:tickets1) { 2.times.collect { FactoryGirl.create(:ticket, :show => show1) } }
+    let(:donations) { 2.times.collect { FactoryGirl.create(:donation, :organization => organization) } }
 
     subject do
       Order.new.tap do |order|
@@ -42,15 +41,14 @@ describe Order do
       subject.organization.should eq organization
     end 
 
-    # # TODO: Fix this spec!
-    # it "assembles a ticket summary" do
-    #   subject.ticket_summary.should_not be_nil
-    #   subject.ticket_summary.rows.length.should eq 2
-    #   subject.ticket_summary.rows[0].show.should eq show0
-    #   subject.ticket_summary.rows[0].tickets.length.should eq tickets0.length   
-    #   subject.ticket_summary.rows[1].show.should eq show1
-    #   subject.ticket_summary.rows[1].tickets.length.should eq tickets1.length      
-    # end
+    it "assembles a ticket summary" do
+      subject.ticket_summary.should_not be_nil
+      subject.ticket_summary.rows.length.should eq 2
+      subject.ticket_summary.rows[0].show.should eq show0
+      subject.ticket_summary.rows[0].tickets.length.should eq tickets0.length   
+      subject.ticket_summary.rows[1].show.should eq show1
+      subject.ticket_summary.rows[1].tickets.length.should eq tickets1.length      
+    end
   end
 
   describe "#save" do

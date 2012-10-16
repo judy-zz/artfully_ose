@@ -1,147 +1,188 @@
 require 'spec_helper'
 
 describe Statement do
-  disconnect_sunspot  
-  let(:organization)    { FactoryGirl.create(:organization) }
+  disconnect_sunspot 
+  
+  let(:organization)    { FactoryGirl.create(:organization) } 
   let(:event)           { FactoryGirl.create(:event) }
   let(:paid_chart)      { FactoryGirl.create(:assigned_chart, :event => event) }
   let(:free_chart)      { FactoryGirl.create(:chart_with_free_sections, :event => event) }
-  let(:paid_show)       { FactoryGirl.create(:show_with_tickets, :organization => FactoryGirl.build(:organization), :chart => paid_chart, :event => event) }
-  let(:free_show)       { FactoryGirl.create(:show_with_tickets, :organization => FactoryGirl.build(:organization), :chart => free_chart, :event => event) }
-  let(:payment)         { FactoryGirl.build(:payment) }
-  let(:cart)            { FactoryGirl.create(:cart_with_only_tickets, :tickets => show.tickets[6..8]) }
+  let(:exchangee_show)  { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => paid_chart, :event => event) }
+  let(:paid_show)       { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => paid_chart, :event => event) }
+  let(:free_show)       { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => free_chart, :event => event) }
   
   describe "nil show" do
-    it "should return an empty statement if the show is nil" do
-      st = Statement.for_show(nil, organization)
+    it "should return an empty @statement if the show is nil" do
+      st = Statement.for_show(nil)
       st.should_not be_nil
       st.tickets_sold.should be_nil
     end
   end
   
-  describe "free show" do
-    let(:tickets)         { free_show.tickets[6..8] }
-    let(:cart)            { FactoryGirl.create(:cart_with_only_tickets, :tickets => tickets) }
-    let(:checkout)        { Checkout.new(cart, payment) }  
-    let(:statement)       { Statement.for_show(free_show, organization) }
-    
+  describe "free show" do     
+  end
+  
+  describe "no tickets sold" do      
     before(:each) do
-      Person.stub(:find_by_email_and_organization).and_return(FactoryGirl.create(:person))
-      checkout.finish
+      @statement = Statement.for_show(paid_show)
     end
-    
-    it "should report the date of the show" do
-      statement.datetime.should eq free_show.datetime_local_to_event
-    end
+      
+    it "should calculate everything correctly" do
+      @statement.datetime.should eq paid_show.datetime
+      @statement.tickets_sold.should eq 0
+      @statement.potential_revenue.should eq 10000
+      @statement.tickets_comped.should eq 0
+      @statement.gross_revenue.should eq 0
+      @statement.processing.should be_within(0.00001).of(0)
+      @statement.net_revenue.should eq 0
+      
+      @statement.cc_net.should eq 0
+      @statement.settled.should eq 0
+      
+      @statement.payment_method_rows.length.should eq 3      
+    end    
+  end
   
-    it "should report how many tickets were sold" do
-      statement.tickets_sold.should eq 3
+  describe "three credit card sales and three comps" do    
+    before(:each) do
+      setup_show
+      Settlement.new.tap do |settlement|
+        settlement.net = 1000
+        settlement.show = paid_show
+      end.save
+      @statement = Statement.for_show(paid_show)
     end
-  
-    it "should report the potential revenue of the show" do
-      statement.potential_revenue.should eq 0
+      
+    it "should calculate everything correctly" do
+      @statement.datetime.should eq paid_show.datetime
+      @statement.tickets_sold.should eq 3
+      @statement.potential_revenue.should eq 10000
+      @statement.tickets_comped.should eq 3
+      @statement.gross_revenue.should eq 3000
+      @statement.processing.should be_within(0.00001).of(3000 * 0.035)
+      @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
+      
+      @statement.cc_net.should eq 2895
+      @statement.settled.should eq 0
+      
+      @statement.payment_method_rows.length.should eq 3
+      
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 3
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 3000
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(3000 * 0.035)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 2895
+      
+      @statement.payment_method_rows[::CompPayment.payment_method].should_not be_nil
+      @statement.payment_method_rows[::CompPayment.payment_method].tickets.should eq 3
+      @statement.payment_method_rows[::CompPayment.payment_method].gross.should eq 0
+      @statement.payment_method_rows[::CompPayment.payment_method].processing.should be_within(0.00001).of(0)
+      @statement.payment_method_rows[::CompPayment.payment_method].net.should eq 0
+      
+      @statement.payment_method_rows[::CashPayment.payment_method].should_not be_nil
+      @statement.payment_method_rows[::CashPayment.payment_method].tickets.should eq 0
+      @statement.payment_method_rows[::CashPayment.payment_method].gross.should eq 0
+      @statement.payment_method_rows[::CashPayment.payment_method].processing.should be_within(0.00001).of(0)
+      @statement.payment_method_rows[::CashPayment.payment_method].net.should eq 0
+      
     end
+  end
   
-    it "should report how many comps were given to the show" do
-      statement.tickets_comped.should eq 0
+  describe "with an exchange" do      
+    before(:each) do
+      setup_show
+      setup_exchange
+      @statement = Statement.for_show(paid_show)
     end
-  
-    it "should report the gross as num items sold times the gross price of the items" do
-      statement.gross_revenue.should eq 0
-    end  
-    
-    it "should report processing as 3.5% of the gross" do
-      statement.processing.should eq (0 * 0.035)
-    end
-  
-    it "should report the net as gross - processing" do
-      statement.net_revenue.should eq (statement.gross_revenue - statement.processing)
+      
+    it "should calculate everything correctly" do
+      @statement.datetime.should eq paid_show.datetime
+      @statement.tickets_sold.should eq 4
+      @statement.potential_revenue.should eq 10000
+      @statement.tickets_comped.should eq 3
+      @statement.gross_revenue.should eq 4000
+      @statement.processing.should be_within(0.00001).of(4000 * 0.035)
+      @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
+      
+      @statement.cc_net.should eq 3860
+      
+      @statement.payment_method_rows.length.should eq 3
+      
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 4
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 4000
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(4000 * 0.035)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 3860
+      
     end  
   end
   
-  describe "no tickets sold" do
-    let(:tickets)         { paid_show.tickets[6..8] }
-    let(:cart)            { FactoryGirl.create(:cart_with_only_tickets, :tickets => tickets) }
-    let(:checkout)        { Checkout.new(cart, payment) }  
-    let(:statement)       { Statement.for_show(paid_show, organization) }
-    
-    it "should report the date of the show" do
-      statement.datetime.should eq paid_show.datetime
+  describe "with a refund" do      
+    before(:each) do
+      setup_show
+      setup_refund
+      @statement = Statement.for_show(paid_show.reload)
     end
-  
-    it "should report how many tickets were sold" do
-      statement.tickets_sold.should eq 0
-    end
-  
-    it "should report the potential revenue of the show" do
-      statement.potential_revenue.should eq 10000
-    end
-  
-    it "should report how many comps were given to the show" do
-      statement.tickets_comped.should eq 0
-    end
-  
-    it "should report the gross as num items sold times the gross price of the items" do
-      statement.gross_revenue.should eq 0
-    end  
-    
-    it "should report processing as 3.5% of the gross" do
-      statement.processing.should eq 0
-    end
-  
-    it "should report the net as gross - processing" do
-      statement.net_revenue.should eq (statement.gross_revenue - statement.processing)
+      
+    it "should calculate everything correctly" do
+      @statement.datetime.should eq paid_show.datetime
+      
+      @statement.tickets_sold.should eq 2
+      @statement.potential_revenue.should eq 10000
+      @statement.tickets_comped.should eq 3
+      @statement.gross_revenue.should eq 2000
+      @statement.processing.should be_within(0.00001).of(2000 * 0.035)
+      @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
+      
+      @statement.cc_net.should eq 1930
+      
+      @statement.payment_method_rows.length.should eq 3
+      
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 2
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 2000
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(2000 * 0.035)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 1930
+      
     end  
   end
   
-  describe "happy path" do
+  def setup_show
+    @orders = []
+    0.upto(2) do |i|
+      (paid_show.tickets[i]).sell_to(FactoryGirl.create(:person))
+      order = FactoryGirl.create(:credit_card_order, :organization => organization)
+      order << paid_show.tickets[i]
+      order.save
+      @orders << order
+    end
     
-    # # TODO: Fix this spec!
-    # This whole test is still setup for Athena Payments (see FakeWeb stuff)
-    # Needs to be stubbed for active merchant
-    # 
-    # let(:tickets)         { paid_show.tickets[6..8] }
-    # let(:cart)            { FactoryGirl.create(:cart_with_only_tickets, :tickets => tickets) }
-    # let(:checkout)        { Checkout.new(cart, payment) }  
-    # let(:statement)       { Statement.for_show(paid_show, organization) }
-    #   
-    # before(:each) do
-    #   Person.stub(:find_by_email_and_organization).and_return(FactoryGirl.create(:person))
-    #   FakeWeb.register_uri(:post, "http://localhost/payments/transactions/authorize", :body => "{\"success\":true,\"transaction_id\":\"j59qrb\"}")
-    #   FakeWeb.register_uri(:post, "http://localhost/payments/transactions/settle", :body => "{\"success\":true }")
-    #   
-    #   checkout.finish
-    #   paid_show.tickets[0..2].each do |t|
-    #     t.comp!
-    #   end
-    # end
-    #   
-    # it "should report the date of the show" do
-    #   statement.datetime.should eq paid_show.datetime
-    # end
-    #   
-    # it "should report how many tickets were sold" do
-    #   statement.tickets_sold.should eq 3
-    # end
-    #   
-    # it "should report the potential revenue of the show" do
-    #   statement.potential_revenue.should eq 10000
-    # end
-    #   
-    # it "should report how many comps were given to the show" do
-    #   statement.tickets_comped.should eq 3
-    # end
-    #     
-    # it "should report the gross as num items sold times the gross price of the items" do
-    #   statement.gross_revenue.should eq 3000
-    # end  
-    # 
-    # it "should report processing as 3.5% of the gross" do
-    #   statement.processing.should be_within(0.00001).of(3000 * 0.035)
-    # end
-    #   
-    # it "should report the net as gross - processing" do
-    #   statement.net_revenue.should eq (statement.gross_revenue - statement.processing)
-    # end
+    Comp.new(paid_show, paid_show.tickets[3..5], FactoryGirl.create(:person), FactoryGirl.create(:user_in_organization)).submit
+  end
+  
+  def setup_exchange
+    (exchangee_show.tickets[0]).sell_to(FactoryGirl.create(:person))
+    order = FactoryGirl.create(:credit_card_order, :organization => organization)
+    order << exchangee_show.tickets[0]
+    order.save
+    order.reload
+      
+    exchange = Exchange.new(order, Array.wrap(order.items.first), Array.wrap(paid_show.tickets[6]))
+    exchange.submit
+  end
+  
+  def setup_refund
+    gateway = ActiveMerchant::Billing::BraintreeGateway.new(
+        :merchant_id => Rails.application.config.braintree.merchant_id,
+        :public_key  => Rails.application.config.braintree.public_key,
+        :private_key => Rails.application.config.braintree.private_key
+      )    
+  
+    successful_response = ActiveMerchant::Billing::Response.new(true, 'nice job!', {}, {:authorization => '3e4r5q'} )
+    gateway.stub(:refund).and_return(successful_response)
+    ActiveMerchant::Billing::BraintreeGateway.stub(:new).and_return(gateway)
+    
+    refund = Refund.new(@orders.first, @orders.first.items)
+    refund.submit({:and_return => true})
   end
 end

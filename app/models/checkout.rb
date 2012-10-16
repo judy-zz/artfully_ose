@@ -1,6 +1,7 @@
 class Checkout
   include ActiveSupport::Callbacks
   define_callbacks :payment
+  define_callbacks :order
   
   include Ext::Callbacks::Checkout
   
@@ -41,7 +42,11 @@ class Checkout
     
     if cart.approved?
       order_timestamp = Time.now
-      create_order(order_timestamp)
+      
+      run_callbacks :order do
+        @created_orders = create_order(order_timestamp)
+      end
+      
       cart.finish(@person, order_timestamp)
     end
     

@@ -52,6 +52,10 @@ class CreditCardPayment < ::Payment
   def requires_authorization?
     amount > 0
   end
+
+  def requires_settlement?
+    true
+  end
   
   #purchase submits for auth and passes a flag to merchant to settle immediately
   def purchase(options={})

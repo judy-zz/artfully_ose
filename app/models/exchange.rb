@@ -11,6 +11,9 @@ class Exchange
   validate :tickets_are_available
   validate :tickets_belong_to_organization
 
+  #The original order
+  #The items to exchange
+  #The tickets that they are being exchanged for
   def initialize(order, items, tickets = [])
     self.order =        order
     self.items =        items
@@ -34,12 +37,14 @@ class Exchange
   end
 
   def submit
-    return_items
-    sell_new_items
+    ActiveRecord::Base.transaction do
+      sell_new_items
+      return_old_items
+    end
   end
 
-  def return_items
-    items.map(&:return!)
+  def return_old_items
+    items.map(&:exchange!)
   end
 
   def sell_new_items
@@ -49,19 +54,16 @@ class Exchange
   end
 
   def create_order(time=Time.now)
-    ::Rails.logger.debug("CREATING EXCHANGE ORDER")
-    exchange_order = ApplicationOrder.new.tap do |exchange_order|
+    exchange_order = ExchangeOrder.new.tap do |exchange_order|
       exchange_order.person = order.person
       exchange_order.parent = order
+      exchange_order.payment_method = order.payment_method
       exchange_order.created_at = time
       exchange_order.for_organization order.organization
+      exchange_order.details = "Order is the result of an exchange on #{I18n.l time, :format => :slashed_date}"
       exchange_order << tickets
     end
-    ::Rails.logger.debug("RECORDING EXCHANGE")
-    exchange_order.record_exchange!
-    ::Rails.logger.debug("SAVING ORDER")
+    exchange_order.record_exchange! items
     exchange_order.save!
-    
-    ::Rails.logger.debug("ORDER SAV'D: " + exchange_order.to_s)
   end
 end

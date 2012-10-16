@@ -1,39 +1,20 @@
 - in_section :reports
 - content_for :header do
-  %h1= t(".heading", :default => "Statement Reports")
+  %h1= t(".heading", :default => "Statements")
 
 .row
   .span3
     %h3 Shows
     = render :partial => "played_shows", :locals => { :event => @event, :played => @played }
   .span9
-    -if @statement.nil?
-      %p
-        Please select a show
-    -else
-      %h3="Statement Report: #{@event.name}"
-      #statement_table
-        %table.standalone.table
-          %thead
-            %tr
-              %th{:style=>'width:200px'} Shows
-              %th{:style=>'width:100px'} Tickets Sold
-              - if @show.ticket_offers.count > 0
-                %th{:style=>'width:100px'} Reseller Sales
-              %th{:style=>'width:50px'} Comps
-              %th{:style=>'width:100px'} Potential
-              %th{:style=>'width:100px'} Gross
-              %th{:style=>'width:100px'} Processing
-              %th{:style=>'width:100px'} Net
-          %tbody
-            %tr
-              %td=l @statement.datetime, :format => :short
-              %td=@statement.tickets_sold
-              - if @show.ticket_offers.count > 0
-                %td= @show.reseller_sold_count
-              %td=@statement.tickets_comped
-              %td=number_as_cents @statement.potential_revenue
-              %td
-                %strong=number_as_cents @statement.gross_revenue
-              %td=number_as_cents @statement.processing
-              %td=number_as_cents @statement.net_revenue
+  
+    .bottom-room
+
+      -if @statement.nil?
+        %p
+          Please select a show
+      -else
+        %h3="#{@event.name} #{l @statement.datetime, :format => :short}"
+        = render :partial => 'top_stats', :locals => { :statement => @statement }
+        #statement_table
+          = render :partial => 'payment_method_table', :locals => { :statement => @statement }
