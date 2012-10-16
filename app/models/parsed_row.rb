@@ -46,10 +46,12 @@ class ParsedRow
     :payment_method   => [ "Payment Method", "Method Of Payment", "Method of Payment" ],
     :donation_date    => [ "Date", "Order Date" ],
     :donation_type    => [ "Donation Type", "Type" ],
-    :amount           => [ "Donation Amount", "Amount", "Dollar Amount" ],
+    :amount           => [ "Deductible Amount", "Amount" ],
     
     #Internally it is called nongift_amount but the rest of the world says non-deductible
     :nongift_amount  => [ "Non-Deductible Amount", "Non Deductible Amount" ]
+    
+    #TODO: Total contribution sanity check
   })
   
   FIELDS = PEOPLE_FIELDS.merge(EVENT_FIELDS).merge(DONATION_FIELDS)

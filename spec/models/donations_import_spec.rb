@@ -33,7 +33,7 @@ describe DonationsImport do
     end
     
     it "should create the donation and underlying action" do
-      @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Donation Amount"]
+      @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Deductible Amount"]
       @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Other","In-Kind","50.00"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
       @import = FactoryGirl.create(:donations_import)          
@@ -62,7 +62,7 @@ describe DonationsImport do
     end
     
     it "should accept nongift amounts" do
-      @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Donation Amount", "Non-Deductible Amount"]
+      @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Deductible Amount", "Non-Deductible Amount"]
       @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Other","In-Kind","50.00", "1.23"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
       @import = FactoryGirl.create(:donations_import)          
