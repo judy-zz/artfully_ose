@@ -2,15 +2,15 @@ class Contribution
   extend ActiveModel::Naming
   include ActiveModel::Conversion
 
-  attr_reader :contributor, :person_id, :subtype, :amount, :occurred_at, :details, :organization_id, :creator_id
+  attr_reader :contributor, :person_id, :subtype, :amount, :occurred_at, :details, :organization_id, :creator_id, :order, :action
 
   def initialize(params = {})
     load(params)
     @contributor = find_contributor
   end
 
-  def save
-    @order  = build_order
+  def save(order_klass = ApplicationOrder, &block)
+    @order  = build_order(order_klass)
     Order.transaction do
       @order.save!
       @order.update_attribute(:created_at, @occurred_at)
@@ -21,6 +21,8 @@ class Contribution
       @action = build_action
       @action.save!
     end
+    yield(self) if block_given?
+    @order
   end
 
   def has_contributor?
@@ -61,14 +63,14 @@ class Contribution
     return action
   end
 
-  def build_order
+  def build_order(order_klass = ApplicationOrder)
     attributes = {
       :person_id       => @person_id,
       :organization_id => @organization_id,
       :details         => @details
     }
 
-    order = ApplicationOrder.new(attributes).tap do |order|
+    order = order_klass.new(attributes).tap do |order|
       order.skip_actions = true
     end
   end
