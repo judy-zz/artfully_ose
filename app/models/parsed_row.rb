@@ -36,10 +36,17 @@ class ParsedRow
     :show_date        => [ "Show", "Show Date" ],
     :amount           => [ "Amount", "Dollar Amount" ],
     :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
-    :order_date       => [ "Order Date" ]
+    :order_date       => [ "Order Date", "Date" ]
   })
   
-  FIELDS = PEOPLE_FIELDS.merge(EVENT_FIELDS)
+  DONATION_FIELDS = SHARED_FIELDS.merge( {
+    :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
+    :donation_date    => [ "Order Date", "Date" ],
+    :donation_type    => [ "Donation Type", "Type" ],
+    :amount           => [ "Amount", "Dollar Amount", "Donation Amount" ]
+  })
+  
+  FIELDS = PEOPLE_FIELDS.merge(EVENT_FIELDS).merge(DONATION_FIELDS)
 
   # Enumerated columns default to the last value if the data value is not valid.
   #

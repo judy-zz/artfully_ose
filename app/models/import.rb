@@ -15,7 +15,16 @@ class Import < ActiveRecord::Base
   set_watch_for :created_at, :local_to => :organization
 
   def self.build(type)
-    (type.eql? "events") ? EventsImport.new : PeopleImport.new
+    case type
+    when "events"
+      EventsImport.new
+    when "people"
+      PeopleImport.new
+    when "donations"
+      DonationsImport.new
+    else
+      nil
+    end
   end
 
   def headers

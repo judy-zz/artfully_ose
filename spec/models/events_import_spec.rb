@@ -3,7 +3,8 @@ require 'spec_helper'
 describe EventsImport do
   context "importing event history" do
     context "event-import-full-test.csv" do
-      before :each do
+      before do
+        
         Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
   
         @csv_filename = Rails.root.join("spec", "support", "event-import-full-test.csv")

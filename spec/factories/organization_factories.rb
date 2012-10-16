@@ -4,7 +4,9 @@ factory :organization do
 end
 
 factory :organization_with_timezone, :parent => :organization do
-  time_zone 'Eastern Time (US & Canada)'
+  after(:build) do |organization|
+    organization.time_zone = 'Eastern Time (US & Canada)'
+  end
 end
 
 factory :organization_with_bank_account, :parent => :organization do
