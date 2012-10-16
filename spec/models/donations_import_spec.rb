@@ -61,6 +61,28 @@ describe DonationsImport do
       action.creator.should_not be_nil
     end
     
+    it "should accept nongift amounts" do
+      @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Donation Amount", "Non-Deductible Amount"]
+      @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Other","In-Kind","50.00", "1.23"]      
+      @parsed_row = ParsedRow.parse(@headers, @rows)
+      @import = FactoryGirl.create(:donations_import)          
+      @import.organization.time_zone = 'Eastern Time (US & Canada)'
+      @import.organization.save   
+      @person = @import.create_person(@parsed_row)
+      
+      contribution = @import.create_contribution(@parsed_row, @person)
+      order  = contribution.order
+      order.person.should eq @person
+      order.organization.should eq @import.organization
+      order.items.length.should eq 1
+      order.items.first.price.should eq 5000
+      order.items.first.realized_price.should eq 5000
+      order.items.first.net.should eq 5000
+      order.items.first.nongift_amount.should eq 123
+      order.items.first.total_price.should eq 5123
+      order.items.first.should be_settled
+    end
+    
     it "should set occurred_at to today if date doesn't exist" do
       @headers = ["Email","First","Last","Payment Method","Donation Type","Donation Amount"]
       @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","50.00"]      
@@ -84,17 +106,6 @@ describe DonationsImport do
       @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
       DonationsImport.new.row_valid?(@parsed_row).should be_false
-      
-      # @import = FactoryGirl.create(:donations_import)          
-      # @import.organization.time_zone = 'Eastern Time (US & Canada)'
-      # @import.organization.save   
-      # @person = @import.create_person(@parsed_row)
-      # 
-      # contribution = @import.create_contribution(@parsed_row, @person)
-      # order  = contribution.order
-      # order.created_at.should be_today
-      # action = contribution.action
-      # action.occurred_at.should be_today
     end
   end
 end

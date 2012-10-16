@@ -5,7 +5,7 @@
 
   .modal-body
     %table.table
-      - ParsedRow::EVENT_FIELDS.keys.each do |field|
+      - keys.each do |field|
         %tr
           %td=field.to_s.humanize
           %td=row.send(field)

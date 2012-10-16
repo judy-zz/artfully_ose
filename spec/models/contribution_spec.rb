@@ -54,26 +54,56 @@ describe Contribution do
   end
 
   describe "build_item" do
-    let(:order) { FactoryGirl.build(:order) }
-    let(:item) { subject.send(:build_item, order, 100 )}
+    describe "without nongift" do
+      let(:order) { FactoryGirl.build(:order) }
+      let(:item)  { subject.send(:build_item, order, 100 )}
 
-    it "sets the order id for the item to the given order" do
-      item.order_id.should eq order.id
+      it "sets the order id for the item to the given order" do
+        item.order_id.should eq order.id
+      end
+
+      it "sets the product type to Donation" do
+        item.product_type.should eq "Donation"
+      end
+
+      it "sets the state to settled" do
+        item.state.should eq "settled"
+        item.should be_settled
+      end
+
+      it "should set price, realized_price, and net to the given price" do
+        item.price.should eq 100
+        item.realized_price.should eq 100
+        item.net.should eq 100
+        item.total_price.should eq 100
+        item.nongift_amount.should eq 0
+      end
     end
+    
+    describe "with nongift" do
+      let(:order) { FactoryGirl.build(:order) }
+      let(:item)  { subject.send(:build_item, order, 100, 34 )}
 
-    it "sets the product type to Donation" do
-      item.product_type.should eq "Donation"
+      it "should set price, realized_price, and net to the given price" do
+        item.price.should eq 100
+        item.realized_price.should eq 100
+        item.net.should eq 100
+        item.total_price.should eq 134
+        item.nongift_amount.should eq 34
+      end
     end
+    
+    describe "with nil nongift" do
+      let(:order) { FactoryGirl.build(:order) }
+      let(:item)  { subject.send(:build_item, order, 100, nil )}
 
-    it "sets the state to settled" do
-      item.state.should eq "settled"
-      item.should be_settled
-    end
-
-    it "should set price, realized_price, and net to the given price" do
-      item.price.should eq 100
-      item.realized_price.should eq 100
-      item.net.should eq 100
+      it "should set price, realized_price, and net to the given price" do
+        item.price.should eq 100
+        item.realized_price.should eq 100
+        item.net.should eq 100
+        item.total_price.should eq 100
+        item.nongift_amount.should eq 0
+      end
     end
   end
 

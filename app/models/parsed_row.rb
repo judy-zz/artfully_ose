@@ -2,6 +2,9 @@ class ParsedRow
   
   attr_accessor :row
 
+  #Fields which require special parsing such as dollar amounts
+  EXCEPTIONS = [:amount, :nongift_amount]
+
   SHARED_FIELDS = {
     :first            => [ "First name", "First" ],
     :last             => [ "Last name", "Last" ],
@@ -35,15 +38,18 @@ class ParsedRow
     :venue_name       => [ "Venue", "Venue Name" ],
     :show_date        => [ "Show", "Show Date" ],
     :amount           => [ "Amount", "Dollar Amount" ],
-    :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
+    :payment_method   => [ "Payment Method", "Method Of Payment", "Method of Payment" ],
     :order_date       => [ "Order Date", "Date" ]
   })
   
   DONATION_FIELDS = SHARED_FIELDS.merge( {
-    :payment_method   => [ "Method Of Payment", "Method of Payment", "Payment Method" ],
-    :donation_date    => [ "Order Date", "Date" ],
+    :payment_method   => [ "Payment Method", "Method Of Payment", "Method of Payment" ],
+    :donation_date    => [ "Date", "Order Date" ],
     :donation_type    => [ "Donation Type", "Type" ],
-    :amount           => [ "Amount", "Dollar Amount", "Donation Amount" ]
+    :amount           => [ "Donation Amount", "Amount", "Dollar Amount" ],
+    
+    #Internally it is called nongift_amount but the rest of the world says non-deductible
+    :nongift_amount  => [ "Non-Deductible Amount", "Non Deductible Amount" ]
   })
   
   FIELDS = PEOPLE_FIELDS.merge(EVENT_FIELDS).merge(DONATION_FIELDS)
@@ -82,7 +88,7 @@ class ParsedRow
       self.instance_variable_set("@#{field}", value)
       
       #skip amount because we have to parse it
-      unless field.eql? :amount
+      unless EXCEPTIONS.include? field
         self.class.class_eval { attr_reader field }
       end
     end
@@ -102,6 +108,14 @@ class ParsedRow
     else
       value
     end
+  end
+  
+  def nongift_amount
+    ((@nongift_amount.to_f || 0) * 100).to_i
+  end
+  
+  def unparsed_nongift_amount
+    @nongift_amount
   end
   
   def amount

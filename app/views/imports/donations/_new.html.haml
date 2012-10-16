@@ -1,0 +1,54 @@
+- in_section :imports
+- content_for :header do
+  %h1 Import Donations
+
+.row
+  .span4
+    .well
+      %h3 Upload File
+      %p
+        = render :partial => "shared/error_messages", :locals => { :target => @import }
+        = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
+            :content_type => "text/csv",
+            :redirect => new_import_url,
+            :acl => "public-read",
+            :max_filesize => 50.megabytes,
+            :submit_button => '<input type="hidden" name="type" value="events"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
+
+  .span8
+    %p
+      Please supply a CSV (comma separated values) of people that you'd like to import.
+    %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "donations")} with these headers already filled in.
+    
+    %h3 Required Fields
+    %table.table.table-bordered.table-striped.docs
+      %tr 
+        %td.field Date
+        %td The date of the donation
+      %tr 
+        %td.field Donation Type
+        %td Cash, Check, In-Kind
+      %tr 
+        %td.field Donation Amount
+        %td The amount of the donation
+    
+    %h3 Include One Of The Following
+    %table.table.table-bordered.table-striped.docs
+      %tr 
+        %td.field First 
+        %td The first name of the donor
+      %tr 
+        %td.field Last
+        %td The last name of the donor
+      %tr 
+        %td.field Email
+        %td The email address of the donor  
+      
+    %h3 Optional Fields
+    %table.table.table-bordered.table-striped.docs
+      %tr 
+        %td.field External Customer Id
+        %td A unique identifier for this customer.
+      %tr 
+        %td.field Payment Method
+        %td Cash, Credit Card, Check

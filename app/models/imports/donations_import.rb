@@ -17,6 +17,7 @@ class DonationsImport < Import
     params = {}
     params[:subtype] = parsed_row.donation_type
     params[:amount] = parsed_row.amount
+    params[:nongift_amount] = parsed_row.nongift_amount
     
     params[:organization_id] = self.organization.id
     params[:occurred_at] = parsed_row.donation_date || DateTime.now.to_s
