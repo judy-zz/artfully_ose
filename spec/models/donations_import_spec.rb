@@ -30,6 +30,9 @@ describe DonationsImport do
   describe "#create_donation" do
     before(:each) do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+    end
+    
+    it "should create the donation and underlying action" do
       @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Donation Amount"]
       @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Other","In-Kind","50.00"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
@@ -37,9 +40,7 @@ describe DonationsImport do
       @import.organization.time_zone = 'Eastern Time (US & Canada)'
       @import.organization.save   
       @person = @import.create_person(@parsed_row)
-    end
-    
-    it "should create the donation and underlying action" do
+      
       contribution = @import.create_contribution(@parsed_row, @person)
       order  = contribution.order
       order.person.should eq @person
@@ -60,6 +61,40 @@ describe DonationsImport do
       action.creator.should_not be_nil
     end
     
-    it "should set occurred_at to today if date doesn't exist"
+    it "should set occurred_at to today if date doesn't exist" do
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Donation Amount"]
+      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","50.00"]      
+      @parsed_row = ParsedRow.parse(@headers, @rows)
+      @import = FactoryGirl.create(:donations_import)          
+      @import.organization.time_zone = 'Eastern Time (US & Canada)'
+      @import.organization.save   
+      @person = @import.create_person(@parsed_row)
+      
+      contribution = @import.create_contribution(@parsed_row, @person)
+      order  = contribution.order
+      order.created_at.should be_today
+      action = contribution.action
+      action.occurred_at.should be_today
+    end
+  end
+  
+  describe "#row_valid" do
+    it "should be invalid without an amount" do
+      @headers = ["Email","First","Last","Payment Method","Donation Type"]
+      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind"]      
+      @parsed_row = ParsedRow.parse(@headers, @rows)
+      DonationsImport.new.row_valid?(@parsed_row).should be_false
+      
+      # @import = FactoryGirl.create(:donations_import)          
+      # @import.organization.time_zone = 'Eastern Time (US & Canada)'
+      # @import.organization.save   
+      # @person = @import.create_person(@parsed_row)
+      # 
+      # contribution = @import.create_contribution(@parsed_row, @person)
+      # order  = contribution.order
+      # order.created_at.should be_today
+      # action = contribution.action
+      # action.occurred_at.should be_today
+    end
   end
 end

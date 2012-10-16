@@ -10,7 +10,7 @@ class DonationsImport < Import
   end
   
   def row_valid?(parsed_row)
-    true
+    !parsed_row.unparsed_amount.blank?
   end
    
   def create_contribution(parsed_row, person)
@@ -19,7 +19,7 @@ class DonationsImport < Import
     params[:amount] = parsed_row.amount
     
     params[:organization_id] = self.organization.id
-    params[:occurred_at] = parsed_row.donation_date
+    params[:occurred_at] = parsed_row.donation_date || DateTime.now.to_s
     params[:details] = "Imported by #{user.email} on #{self.created_at_local_to_organization}"
     params[:person_id] = person.id
     params[:creator_id] = user.id
