@@ -29,7 +29,7 @@ class DonationsImport < Import
       contribution.order.import_id  = self.id
       contribution.order.save
       contribution.action.import_id = self.id 
-      contribution.action.creator = self.import.user
+      contribution.action.creator = self.user
       contribution.action.save
     end
     contribution

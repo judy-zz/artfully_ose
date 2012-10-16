@@ -59,5 +59,7 @@ describe DonationsImport do
       action.details.should_not be_nil
       action.creator.should_not be_nil
     end
+    
+    it "should set occurred_at to today if date doesn't exist"
   end
 end
