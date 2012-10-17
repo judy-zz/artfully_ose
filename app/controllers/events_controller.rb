@@ -11,6 +11,10 @@ class EventsController < ArtfullyOseController
     @event.is_free = !(current_user.current_organization.can? :access, :paid_ticketing)
     @event.venue.organization_id = current_user.current_organization.id
     @event.venue.time_zone = current_user.current_organization.time_zone
+    if @event.contact_email.blank?
+      @event.contact_email = current_user.email
+      flash[:notice] = "Event's contact email address for patrons was set to <b>your</b> email address. Please set your organization's email address <a href=\"#{edit_organization_path(current_organization)}\">here.</a>".html_safe
+    end
 
     if @event.save
       redirect_to edit_event_url(@event)
