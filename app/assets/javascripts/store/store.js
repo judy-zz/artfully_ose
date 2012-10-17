@@ -77,16 +77,12 @@ $(document).ready(function(){
   $('[data-toggle="tab"]').click(function(e) {
     e.preventDefault();
     currentSectionId = $('li.active a').attr('href');
-
-    // dont switch if continue is disabled
-    if (!($(currentSectionId+' form-actions a').hasClass('disabled'))) {
-
-      // validate section before switching tabs
-      if (validateSection(currentSectionId)) {
-        switchTabs($(this).attr('href'));
-      }
-      // else, dont switch
-      // errors will be shown
+    if (
+      !(nextButtonIsDisabled(currentSectionId)) &&
+      !(parentIsDisabled(this)) &&
+      validateSection(currentSectionId)
+    ) {
+      switchTabs($(this).attr('href'));
     }
   });
 
@@ -107,6 +103,14 @@ $(document).ready(function(){
     updateOrderOnServer();
   });
 });
+
+var nextButtonIsDisabled = function(sectionId){
+  return $(sectionId+' form-actions a').hasClass('disabled');
+};
+
+var parentIsDisabled = function(element){
+  return $(element).parent().hasClass('disabled');
+};
 
 function updateOrderOnServer() {
   $('#cart .form-actions a').addClass('disabled');
@@ -274,7 +278,9 @@ function checkout() {
 
 function switchTabs(newSectionId) {
   $('#nav li').removeClass('active');
-  $('li a[href="' + newSectionId + '"]').parent('li').addClass('active');
+  var listElement = $('li a[href="' + newSectionId + '"]').parent('li');
+  listElement.addClass('active');
+  listElement.removeClass('disabled');
   $('.tab-pane').hide();
   $(newSectionId+'.tab-pane').show();
 }
