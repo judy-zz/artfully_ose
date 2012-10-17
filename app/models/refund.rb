@@ -65,6 +65,7 @@ class Refund
       @refund_order = RefundOrder.new
       @refund_order.person = order.person
       @refund_order.transaction_id = transaction_id
+      @refund_order.payment_method = order.payment_method
       @refund_order.parent = order
       @refund_order.for_organization order.organization
       @refund_order.items = items.collect(&:to_refund)

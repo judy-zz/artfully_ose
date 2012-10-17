@@ -232,7 +232,9 @@ class Person < ActiveRecord::Base
     true
   end
 
-  # The name of this method makes no sense
+  #
+  # Will add a phone number ot this record if the number doesn't already exist
+  #
   def add_phone_if_missing(new_phone)
     if (!new_phone.blank? and phones.where("number = ?", new_phone).empty?)
       phones.create(:number => new_phone, :kind => "Other")

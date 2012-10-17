@@ -35,6 +35,7 @@ class Checkout
   def finish
     @person = Person.find_or_create(@customer, cart.organizations.first)
     @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
+    @person.delay.add_phone_if_missing(payment.payment_phone_number)
 
     run_callbacks :payment do
       cart.pay_with(@payment)
@@ -62,6 +63,7 @@ class Checkout
         OrderMailer.confirmation_for(order).deliver unless @person.dummy? || @person.email.blank?
         created_orders << @order
       end
+      
       created_orders
     end
 

@@ -26,10 +26,8 @@
             %th= @offset + i + 1
 
       - import.headers.each_with_index do |field, index|
-
-        %tr
-
-          %td.field= field.capitalize
-
-          - import.rows[@offset, @length].each do |row|
-            %td.value= row[index]
+        -unless field.nil?      
+          %tr
+            %td.field= field.capitalize
+            - import.rows[@offset, @length].each do |row|
+              %td.value= row[index]

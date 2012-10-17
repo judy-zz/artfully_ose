@@ -63,7 +63,7 @@ describe Checkout do
     subject               { BoxOffice::Checkout.new(cart_with_item, payment) }
   
     it "should always approve orders with cash payments" do
-      subject.stub(:create_order).and_return(BoxOffice::Order.new)
+      subject.stub(:create_order).and_return(Array.wrap(BoxOffice::Order.new))
       Person.stub(:find_or_create).and_return(FactoryGirl.build(:person))
       subject.cart.stub(:organizations).and_return(Array.wrap(FactoryGirl.build(:person).organization))
       subject.finish.should be_true
@@ -135,7 +135,7 @@ describe Checkout do
     describe "people creation" do
   
       let(:email){ payment.customer.email }
-      let(:organization){ FactoryGirl.build(:organization) }
+      let(:organization){ FactoryGirl.create(:organization) }
       let(:attributes){
         { :email           => email,
           :organization_id => organization.id,
@@ -144,21 +144,18 @@ describe Checkout do
         }
       }
       
-      let(:person) { FactoryGirl.build(:person, attributes) }
+      let(:person) { FactoryGirl.create(:person, attributes) }
   
-      
-      #TODO: For some reason, turning off delayed jobs in this method causes 
-      #statement_spec to fail.  No idea.
-      it "should add the phone number to the person" do
-        # Delayed::Worker.delay_jobs = false
-        # 
-        # subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
-        # subject.cart.stub(:organizations).and_return(Array.wrap(organization))
-        # Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(person)
-        # Person.should_not_receive(:create)
-        # person.should_receive(:add_phone_if_missing).with(payment.customer.phone)
-        # subject.finish
-        #         
+      it "should add the phone number to the person" do      
+        Delayed::Worker.delay_jobs = false
+        subject.cart.stub(:organizations_from_tickets).and_return(Array.wrap(organization))
+        subject.cart.stub(:organizations).and_return(Array.wrap(organization))
+        Person.should_receive(:find_by_email_and_organization).with(email, organization).and_return(person)
+        Person.should_not_receive(:create)
+        payment.should_receive(:payment_phone_number).and_return("310-310-3101")
+        person.should_receive(:add_phone_if_missing).with("310-310-3101")
+        subject.finish
+        Delayed::Worker.delay_jobs = true
       end
       
       it "should create a person record when finishing with a new customer" do

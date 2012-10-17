@@ -30,6 +30,10 @@ class Payment
       def payment_method
         "#{names[0].to_s.gsub('_',' ').capitalize}"
       end
+      
+      def self.payment_method
+        "#{names[0].to_s.gsub('_',' ').capitalize}"
+      end
     EOS
   end
 
@@ -57,6 +61,10 @@ class Payment
 
   def requires_settlement?
     false
+  end
+  
+  def payment_phone_number
+    nil
   end
   
   def reduce_amount_by(amount_in_cents)

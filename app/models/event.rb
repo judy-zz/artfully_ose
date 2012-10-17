@@ -17,7 +17,7 @@ class Event < ActiveRecord::Base
   after_create :create_default_chart
 
   has_attached_file :image,
-    :storage => :s3,  
+    :storage => :s3,
     :path => ":attachment/:id/:style.:extension",
     :bucket => Rails.configuration.s3.bucket,
     :s3_protocol => 'https',
