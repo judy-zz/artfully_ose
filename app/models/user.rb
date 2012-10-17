@@ -34,7 +34,10 @@ class User < ActiveRecord::Base
   def self.like(query = "")
     return if query.blank?
     q = "%#{query}%"
-    self.joins("LEFT OUTER JOIN memberships ON memberships.user_id = users.id").joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id").where("email like ? or organizations.name like ?", q, q)
+    self.joins("LEFT OUTER JOIN memberships ON memberships.user_id = users.id")
+        .joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id")
+        .includes(:organizations)
+        .where("users.email like ? or organizations.name like ?", q, q)
   end
 
   def active_for_authentication?
