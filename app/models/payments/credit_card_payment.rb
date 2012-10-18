@@ -14,6 +14,10 @@ class CreditCardPayment < ::Payment
     lambda { |item| item.realized_price * 0.035 }
   end
   
+  def payment_phone_number
+    self.customer.phones.first.try(:number)
+  end
+  
   #
   # We may be able to get some milage out of a repo called active_attr: https://github.com/cgriego/active_attr
   #
@@ -32,6 +36,7 @@ class CreditCardPayment < ::Payment
       self.customer.first_name  = params[:customer][:first_name]
       self.customer.last_name   = params[:customer][:last_name]
       self.customer.email       = params[:customer][:email]
+      
       self.customer.phones      << Phone.new(:number => params[:customer][:phone]) unless params[:customer][:phone].blank?
       
       self.customer.address = Address.new(:address1 => params[:customer][:address][:address1],
