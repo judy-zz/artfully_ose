@@ -1202,6 +1202,9 @@ table {
   vertical-align: top;
   border-top: 1px solid #dddddd;
 }
+.table td.right, .table th.right {
+  text-align: right;
+}
 .table th {
   font-weight: bold;
 }
