@@ -11,7 +11,7 @@
       = render :partial => 'exchanges/grouped_form', :locals => { :order => @order }
       = render :partial => 'returns/grouped_form', :locals => { :order => @order }
 
-      = render :partial=>'item_table', :locals => { :order => @order }
+      = render :partial => 'item_table', :locals => { :order => @order }
 
 - unless @order.children.empty?
   - @order.children.each do |child|

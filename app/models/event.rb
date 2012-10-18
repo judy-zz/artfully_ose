@@ -13,7 +13,6 @@ class Event < ActiveRecord::Base
   has_many :tickets, :through => :shows
   validate :validate_contact_phone
   
-  before_validation :set_default_contact_email
   after_create :create_default_chart
 
   has_attached_file :image,
@@ -59,10 +58,6 @@ class Event < ActiveRecord::Base
 
   def filter_charts(charts)
     charts.reject { |chart| already_has_chart(chart) }
-  end
-
-  def set_default_contact_email
-    self.contact_email ||= self.organization.email
   end
   
   def create_default_chart
