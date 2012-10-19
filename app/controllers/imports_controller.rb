@@ -4,7 +4,7 @@ class ImportsController < ArtfullyOseController
   before_filter :set_import_type
 
   def index
-    @imports = organization.imports.all
+    @imports = organization.imports.order('created_at desc').all
   end
 
   def approve

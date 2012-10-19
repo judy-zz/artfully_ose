@@ -14,13 +14,14 @@ class DonationsImport < Import
   end
    
   def create_contribution(parsed_row, person)
+    occurred_at = parsed_row.donation_date.blank? ? DateTime.now : DateTime.strptime(parsed_row.donation_date, DATE_INPUT_FORMAT)
     params = {}
     params[:subtype] = parsed_row.donation_type
     params[:amount] = parsed_row.amount
     params[:nongift_amount] = parsed_row.nongift_amount
     
     params[:organization_id] = self.organization.id
-    params[:occurred_at] = parsed_row.donation_date || DateTime.now.to_s
+    params[:occurred_at] = occurred_at.to_s
     params[:details] = "Imported by #{user.email} on #{self.created_at_local_to_organization}"
     params[:person_id] = person.id
     params[:creator_id] = user.id

@@ -14,6 +14,8 @@ class Import < ActiveRecord::Base
   
   set_watch_for :created_at, :local_to => :organization
 
+  DATE_INPUT_FORMAT = "%m/%d/%Y"
+  
   def self.build(type)
     case type
     when "events"

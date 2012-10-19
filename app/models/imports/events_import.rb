@@ -52,7 +52,7 @@ class EventsImport < Import
     return show if show
     
     show = Show.new
-    show.datetime = DateTime.parse(parsed_row.show_date)
+    show.datetime = DateTime.parse(parsed_row.show_date, DATE_INPUT_FORMAT)
     show.event = event
     show.organization = self.organization
     
