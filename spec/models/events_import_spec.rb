@@ -122,7 +122,7 @@ describe EventsImport do
       
       it "should create shows for each date" do
         imported_shows.length.should eq 2
-        imported_shows[0].datetime.should eq DateTime.parse('3/4/2010')
+        imported_shows[0].datetime.should eq DateTime.strptime('3/4/2010', Import::DATE_INPUT_FORMAT)
         imported_shows[0].organization.should eq @import.organization
         imported_shows[0].state.should eq "unpublished"
         chart = imported_shows[0].chart
@@ -232,30 +232,37 @@ describe EventsImport do
     
     it "should be valid with a show time" do
       @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
-      @rows = [%w(John Doe john@does.com Event1 2012/03/04)]      
+      @rows = [%w(John Doe john@does.com Event1 03/04/2012)]      
       parsed_row = ParsedRow.parse(@headers, @rows.first)
       EventsImport.new.row_valid?(parsed_row).should be_true
     end
     
-    it "should be valid with a show time" do
+    it "should be invalid without a show time" do
       @headers = ["First Name", "Last Name", "Email", "Event Name"]
       @rows = [%w(John Doe john@does.com Event1)]      
       parsed_row = ParsedRow.parse(@headers, @rows.first)
-      EventsImport.new.row_valid?(parsed_row).should be_false
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
     end
     
-    it "should be valid without an event" do
-      @headers = ["First Name", "Last Name", "Email"]
-      @rows = [%w(John Doe john@does.com)]      
+    it "should be invalid without an event" do
+      @headers = ["First Name", "Last Name", "Email", "Show Date"]
+      @rows = [%w(John Doe john@does.com Event1 3/3/2001)]      
       parsed_row = ParsedRow.parse(@headers, @rows.first)
-      EventsImport.new.row_valid?(parsed_row).should be_true
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with an invalid show date" do
+      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name"]
+      @rows = [%w(John Doe john@does.com Event1 13/13/2001 AnEvent)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
     end
   end
   
   describe "#create_show" do
     before(:each) do
       @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
-      @rows = [%w(John Doe john@does.com Event1 2012/03/04)]      
+      @rows = [%w(John Doe john@does.com Event1 03/04/2012)]      
       @parsed_row = ParsedRow.parse(@headers, @rows.first)
       @import = FactoryGirl.create(:events_import)
       @event = FactoryGirl.create(:event, :name => @parsed_row.event_name)
@@ -265,7 +272,7 @@ describe EventsImport do
       show = @import.create_show(@parsed_row, @event)
       show.event.should eq @event
       show.organization.should eq @import.organization
-      show.datetime.should eq DateTime.parse("2012/03/04")
+      show.datetime.should eq DateTime.strptime("03/04/2012", Import::DATE_INPUT_FORMAT)
       show.should be_unpublished
     end
     
@@ -274,21 +281,21 @@ describe EventsImport do
       show = @import.create_show(@parsed_row, @event)
       show.event.should eq @event
       show.organization.should eq @import.organization
-      show.datetime.should eq DateTime.parse("2012/03/04")
+      show.datetime.should eq DateTime.strptime("03/04/2012", Import::DATE_INPUT_FORMAT)
       show.should be_unpublished
       show.should eq existing_show
     end
     
     it "should create a show if a show already exists for that time for another event" do
       @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
-      @rows = [%w(John Doe john@does.com Event2 2012/03/04)]      
+      @rows = [%w(John Doe john@does.com Event2 03/14/2012)]      
       @parsed_row = ParsedRow.parse(@headers, @rows.first)
       another_show = @import.create_show(@parsed_row, FactoryGirl.create(:event, :name => "Event2"))
       
       show = @import.create_show(@parsed_row, @event)     
       show.event.should eq @event
       show.organization.should eq @import.organization
-      show.datetime.should eq DateTime.parse("2012/03/04")
+      show.datetime.should eq DateTime.strptime("03/14/2012", Import::DATE_INPUT_FORMAT)
       show.should be_unpublished
       show.should_not eq another_show
     end

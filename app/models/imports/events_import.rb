@@ -4,7 +4,7 @@ class EventsImport < Import
   end
   
   def process(parsed_row)
-    return if !row_valid?(parsed_row)
+    row_valid?(parsed_row)
     person      = create_person(parsed_row)
     event       = create_event(parsed_row, person)
     show        = create_show(parsed_row, event)
@@ -15,7 +15,14 @@ class EventsImport < Import
   end
   
   def row_valid?(parsed_row)
-    !parsed_row.event_name || (parsed_row.event_name && parsed_row.show_date)
+    raise Import::RowError, 'No Event Name included in this row' unless parsed_row.event_name 
+    raise Import::RowError, 'No Show Date included in this row' unless parsed_row.show_date
+    begin
+      DateTime.strptime(parsed_row.show_date, DATE_INPUT_FORMAT)
+    rescue
+      raise Import::RowError, 'Invalid show date' 
+    end
+    true
   end
   
   def create_chart(parsed_row, event, show)
@@ -52,7 +59,7 @@ class EventsImport < Import
     return show if show
     
     show = Show.new
-    show.datetime = DateTime.parse(parsed_row.show_date, DATE_INPUT_FORMAT)
+    show.datetime = DateTime.strptime(parsed_row.show_date, DATE_INPUT_FORMAT)
     show.event = event
     show.organization = self.organization
     

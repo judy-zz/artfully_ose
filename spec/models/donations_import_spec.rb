@@ -84,7 +84,7 @@ describe DonationsImport do
     end
     
     it "should set occurred_at to today if date doesn't exist" do
-      @headers = ["Email","First","Last","Payment Method","Donation Type","Donation Amount"]
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount"]
       @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","50.00"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
       @import = FactoryGirl.create(:donations_import)          
@@ -100,16 +100,12 @@ describe DonationsImport do
     end
   end
   
-  describe "#process" do
-    it "should raise an error if there is no deductible amount"
-  end
-  
   describe "#row_valid" do
-    it "should be invalid without an amount" do
-      @headers = ["Email","First","Last","Payment Method","Donation Type"]
-      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind"]      
-      @parsed_row = ParsedRow.parse(@headers, @rows)
-      DonationsImport.new.row_valid?(@parsed_row).should be_false
+    it "should raise an error if there is no deductible amount" do
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount"]
+      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind",""]    
+      @import = FactoryGirl.create(:donations_import) 
+      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
     end
   end
 end

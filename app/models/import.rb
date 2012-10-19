@@ -58,6 +58,7 @@ class Import < ActiveRecord::Base
       self.imported!
     rescue
       fail!
+    end
   end
   
   def fail!
@@ -65,9 +66,8 @@ class Import < ActiveRecord::Base
     self.people.destroy_all
   end
   
-  #Subclasses must implement this
+  #Subclasses must implement process
   def process(parsed_row)
-    
   end
   
   def create_person(parsed_row)
@@ -150,6 +150,9 @@ class Import < ActiveRecord::Base
     end
 
     person
+  end
+
+  class RowError < ArgumentError
   end
 
 end
