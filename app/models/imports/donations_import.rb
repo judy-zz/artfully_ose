@@ -4,7 +4,7 @@ class DonationsImport < Import
   end
   
   def process(parsed_row)
-    return if !row_valid?(parsed_row)
+    raise 'No Deductible Amount included in this row' if !row_valid?(parsed_row)
     person        = create_person(parsed_row)
     contribution  = create_contribution(parsed_row, person)
   end

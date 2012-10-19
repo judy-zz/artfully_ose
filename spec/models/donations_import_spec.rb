@@ -100,6 +100,10 @@ describe DonationsImport do
     end
   end
   
+  describe "#process" do
+    it "should raise an error if there is no deductible amount"
+  end
+  
   describe "#row_valid" do
     it "should be invalid without an amount" do
       @headers = ["Email","First","Last","Payment Method","Donation Type"]

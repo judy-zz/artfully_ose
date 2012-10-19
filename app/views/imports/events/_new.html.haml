@@ -26,10 +26,10 @@
         %td The name of the event
       %tr 
         %td.field Venue Name
-        %td We're not creating a new venue object in artfully, but we can persist this somewhere.  In the order, perhaps?
+        %td The name of the venue where the event was held
       %tr 
         %td.field Show Date
-        %td The date time of the show.  We should be flexible here and accommodate many different formats with/without time too
+        %td The date of the show in this format MM/DD/YYYY. A show on April 18, 2012 would be represented as 04/18/2012
     
     %h3 Include One Of The Following
     %table.table.table-bordered.table-striped.docs
@@ -50,10 +50,10 @@
         %td A unique identifier for this customer.
       %tr 
         %td.field Amount
-        %td The dollar amount of the total purchase.  In dollars.  Don't include a "$" or other currency symbols.
+        %td The dollar amount of the total purchase. Don't include a "$" or other currency symbols.
       %tr 
         %td.field Payment Method
         %td Cash, Credit Card, Check, Comp, Other.
       %tr 
         %td.field Order Date
-        %td The date of the order.  Will be set to today if this is not included.
+        %td The date of the order.  If this is omitted the order will be recorded with today's date

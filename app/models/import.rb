@@ -51,16 +51,18 @@ class Import < ActiveRecord::Base
     self.people.destroy_all
     self.import_errors.delete_all
 
-    rows.each do |row|
-      process(ParsedRow.parse(headers, row))
-    end
-
-    if failed?
-      self.people.destroy_all
-      #TODO: need to clean up everything.  Maybe should vlaidate first, then import?
-    else
+    begin
+      rows.each do |row|
+        process(ParsedRow.parse(headers, row))
+      end
       self.imported!
-    end
+    rescue
+      fail!
+  end
+  
+  def fail!
+    #TODO: Need to clena up other stuff too
+    self.people.destroy_all
   end
   
   #Subclasses must implement this

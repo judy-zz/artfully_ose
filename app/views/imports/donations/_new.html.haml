@@ -16,8 +16,6 @@
             :submit_button => '<input type="hidden" name="type" value="events"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
 
   .span8
-    %p
-      Please supply a CSV (comma separated values) of people that you'd like to import.
     %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "donations")} with these headers already filled in.
     
     %h3 Required Fields
@@ -30,7 +28,7 @@
         %td Cash, Check, In-Kind
       %tr 
         %td.field Deductible Amount
-        %td The tax-deductible amount of the donation
+        %td The tax-deductible amount of the donation (usually the total amount received, unless the donor <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>received something in return</a>).  Don't include a '$' or other currency symbols.
     
     %h3 Include One Of The Following
     %table.table.table-bordered.table-striped.docs
@@ -54,4 +52,4 @@
         %td Cash, Credit Card, Check
       %tr 
         %td.field Non Deductible Amount
-        %td The non tax-deductible amount (fair-market value) of the donation
+        %td Any non-deductible portion of the donation (i.e. the fair market value of <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>something the donor received in return</a>). Don't include a '$' or other currency symbols.
