@@ -68,12 +68,12 @@
     #steps
       %ul#nav
         %li.active= link_to 'Cart', '#cart', 'data-toggle' => 'tab'
-        %li= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
-        %li= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
-        %li= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
+        %li.disabled= link_to 'Contact Info', '#contact-info', 'data-toggle' => 'tab'
+        %li.disabled= link_to 'Payment Details', '#payment-details', 'data-toggle' => 'tab'
+        %li.disabled= link_to 'Billing Address', '#billing-address', 'data-toggle' => 'tab'
         - if @event.show_special_instructions
-          %li= link_to 'Special Instructions', '#special-instructions', 'data-toggle' => 'tab'
-        %li= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
+          %li.disabled= link_to 'Special Instructions', '#special-instructions', 'data-toggle' => 'tab'
+        %li.disabled= link_to 'Purchase', '#purchase', 'data-toggle' => 'tab'
       .tab-pane#cart{:style => 'display:block;'}
         %table
 

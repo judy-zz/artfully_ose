@@ -11,7 +11,6 @@ class Store::CheckoutsController < Store::StoreController
     current_cart.special_instructions = params[:special_instructions] 
     
     @checkout = Checkout.new(current_cart, @payment)
-
     if @checkout.valid? && @checkout.finish
       render :json => @checkout.to_json
     else
@@ -26,5 +25,8 @@ class Store::CheckoutsController < Store::StoreController
       
       render :json => message, :status => :unprocessable_entity
     end
+  rescue ActiveRecord::RecordInvalid
+    message = "Please make sure all fields are filled out completely and appropriately."
+    render :json => message, :status => :unprocessable_entity
   end
 end

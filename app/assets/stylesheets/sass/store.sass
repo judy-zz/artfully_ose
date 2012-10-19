@@ -206,6 +206,9 @@ table.calendar
           background-color: $compliment_highlight
           color: #fff
           font-weight: normal
+        &.disabled a
+          color: #BBB
+          cursor: default
         a
           @include rounded-corners(15px, 15px, 15px, 15px)
           font-size: 12px
@@ -217,7 +220,7 @@ table.calendar
           margin-right: 2px
           line-height: 14px
           display: block
-          color: #999
+          color: #333
           &:hover
             text-decoration: none
   lable.error

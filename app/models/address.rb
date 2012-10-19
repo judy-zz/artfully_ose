@@ -44,9 +44,12 @@ class Address < ActiveRecord::Base
       
       if save 
         extra = updated_by.nil? ? "" : " from #{updated_by}"
+        text = "address updated#{extra}"
+        text = text + ", old address was: (#{old_addr})" unless old_addr.blank?
         note = person.notes.create({
           :occurred_at  => DateTime.now.in_time_zone(time_zone),
-          :text         => "address updated#{extra}, old address was: (#{old_addr})" })
+          :text         => text 
+        })
         note.user = user
       else
         return false
