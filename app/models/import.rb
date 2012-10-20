@@ -64,6 +64,7 @@ class Import < ActiveRecord::Base
   def fail!
     #TODO: Need to clena up other stuff too
     self.people.destroy_all
+    failed!
   end
   
   #Subclasses must implement process
