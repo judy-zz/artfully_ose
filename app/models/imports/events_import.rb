@@ -28,11 +28,9 @@ class EventsImport < Import
   
   def create_chart(parsed_row, event, show)
     Rails.logger.debug("EVENT_IMPORT: Creating chart")
-    chart = show.chart || Chart.new(:name => event.name)    
+    chart = show.chart || show.create_chart(:name => event.name)    
     Rails.logger.debug("EVENT_IMPORT: Using chart:")
     Rails.logger.debug("EVENT_IMPORT: #{chart.inspect}")
-
-    
     amount = parsed_row.amount || 0
     Rails.logger.debug("EVENT_IMPORT: Amount is [#{amount}]")
     
@@ -52,9 +50,6 @@ class EventsImport < Import
     Rails.logger.debug("EVENT_IMPORT: #{section.inspect}")
     Rails.logger.debug("EVENT_IMPORT: Saving chart")
     chart.save
-    Rails.logger.debug("EVENT_IMPORT: #{chart.inspect}")
-    Rails.logger.debug("EVENT_IMPORT: Setting show chart")
-    show.chart = chart
     Rails.logger.debug("EVENT_IMPORT: #{show.inspect}")
     saved = show.save(:validate => false)
     Rails.logger.debug("EVENT_IMPORT: Show saved[#{saved}]")
