@@ -52,7 +52,8 @@ class Import < ActiveRecord::Base
     self.import_errors.delete_all
 
     begin
-      rows.each do |row|
+      rows.each_with_index do |row, index|
+        Rails.logger.debug("----- Processing row #{index} ------")
         process(ParsedRow.parse(headers, row))
       end
       self.imported!
@@ -154,6 +155,9 @@ class Import < ActiveRecord::Base
   end
 
   class RowError < ArgumentError
+  end
+  
+  class RuntimeError < ArgumentError
   end
 
 end

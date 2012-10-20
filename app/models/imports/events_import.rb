@@ -15,6 +15,7 @@ class EventsImport < Import
   end
   
   def row_valid?(parsed_row)
+    Rails.logger.debug("EVENT_IMPORT: Validating Row")
     raise Import::RowError, 'No Event Name included in this row' unless parsed_row.event_name 
     raise Import::RowError, 'No Show Date included in this row' unless parsed_row.show_date
     begin
@@ -26,18 +27,42 @@ class EventsImport < Import
   end
   
   def create_chart(parsed_row, event, show)
-    chart = show.chart || Chart.new(:name => event.name)
+    Rails.logger.debug("EVENT_IMPORT: Creating chart")
+    chart = show.chart || Chart.new(:name => event.name)    
+    Rails.logger.debug("EVENT_IMPORT: Using chart:")
+    Rails.logger.debug("EVENT_IMPORT: #{chart.inspect}")
+
+    
     amount = parsed_row.amount || 0
-    section = chart.sections.where(:price => amount).first || chart.sections.build(:name => event.name,:price => amount, :capacity => 1)
+    Rails.logger.debug("EVENT_IMPORT: Amount is [#{amount}]")
+    
+    #### !!!!!!
+    # chart.sections DOES NOT work here because the chart may not have any sections yet
+    # this results in a section.where(:price=>amount).where(:chart_id => nil)
+    #
+    # So if there exists an orphaned section in the DB with that price, it'll return the orphan
+    #### !!!!!!
+    section = chart.sections.where(:price => amount).first || chart.sections.build(:name => event.name,:price => amount, :capacity => 1)    
+    Rails.logger.debug("EVENT_IMPORT: Using section:")
+    Rails.logger.debug("EVENT_IMPORT: #{section.inspect}")
+    Rails.logger.debug("EVENT_IMPORT: Bumping section capacity")
     section.capacity = section.capacity + 1 unless section.new_record?
+    Rails.logger.debug("EVENT_IMPORT: Saving section")
     section.save
+    Rails.logger.debug("EVENT_IMPORT: #{section.inspect}")
+    Rails.logger.debug("EVENT_IMPORT: Saving chart")
     chart.save
+    Rails.logger.debug("EVENT_IMPORT: #{chart.inspect}")
+    Rails.logger.debug("EVENT_IMPORT: Setting show chart")
     show.chart = chart
-    show.save(:validate => false)
+    Rails.logger.debug("EVENT_IMPORT: #{show.inspect}")
+    saved = show.save(:validate => false)
+    Rails.logger.debug("EVENT_IMPORT: Show saved[#{saved}]")
     chart
   end
 
   def create_event(parsed_row, person)
+    Rails.logger.debug("EVENT_IMPORT: Creating event")
     event = Event.where(:name => parsed_row.event_name).where(:organization_id => self.organization).first
     return event if event
       
@@ -49,10 +74,15 @@ class EventsImport < Import
     event.venue.organization = self.organization
     event.import = self
     event.save!
+    Rails.logger.debug("EVENT_IMPORT: Created event #{event.inspect}")
+    unless event.charts.empty?
+      Rails.logger.debug("EVENT_IMPORT: Default event chart created #{event.charts.first.inspect}") 
+    end
     event
   end
   
   def create_show(parsed_row, event)
+    Rails.logger.debug("EVENT_IMPORT: Creating show")
     show_key = [parsed_row.show_date, event.name].join("-")
     @imported_shows ||= {}
     show = @imported_shows[show_key]
@@ -72,6 +102,7 @@ class EventsImport < Import
   end
   
   def create_actions(parsed_row, person, event, show, order)
+    Rails.logger.debug("EVENT_IMPORT: Creating actions")
     go_action = GoAction.for(show, person)
     go_action.import = self
     go_action.save
@@ -83,15 +114,25 @@ class EventsImport < Import
   end
   
   def create_ticket(parsed_row, person, event, show, chart)
+    Rails.logger.debug("EVENT_IMPORT: Creating ticket")
     amount = parsed_row.amount || 0
+    Rails.logger.debug("EVENT_IMPORT: Amount is [#{amount}]")
     section = chart.sections.where(:price => amount).first
+    Rails.logger.debug("EVENT_IMPORT: Section is [#{section.inspect}]")
+    
+    raise Import::RuntimeError, 'No section found for ticket' unless section
+    
     ticket = Ticket.build_one(show, section, section.price,1, true)
+    Rails.logger.debug("EVENT_IMPORT: Ticket built [#{ticket.inspect}]")
     ticket.sell_to person
+    Rails.logger.debug("EVENT_IMPORT: Ticket sold to [#{person.inspect}]")
     ticket.save
+    Rails.logger.debug("EVENT_IMPORT: Ticket saved [#{ticket.inspect}]")
     ticket
   end
    
   def create_order(parsed_row, person, event, show, ticket)
+    Rails.logger.debug("EVENT_IMPORT: Creating order")
     order_key = [show.id.to_s,person.id.to_s,parsed_row.payment_method].join('-')
     @imported_orders ||= {}
     order = @imported_orders[order_key] || ImportedOrder.new
