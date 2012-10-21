@@ -33,13 +33,6 @@ class EventsImport < Import
     Rails.logger.debug("EVENT_IMPORT: #{chart.inspect}")
     amount = parsed_row.amount || 0
     Rails.logger.debug("EVENT_IMPORT: Amount is [#{amount}]")
-    
-    #### !!!!!!
-    # chart.sections DOES NOT work here because the chart may not have any sections yet
-    # this results in a section.where(:price=>amount).where(:chart_id => nil)
-    #
-    # So if there exists an orphaned section in the DB with that price, it'll return the orphan
-    #### !!!!!!
     section = chart.sections.where(:price => amount).first || chart.sections.build(:name => event.name,:price => amount, :capacity => 1)    
     Rails.logger.debug("EVENT_IMPORT: Using section:")
     Rails.logger.debug("EVENT_IMPORT: #{section.inspect}")
@@ -104,6 +97,7 @@ class EventsImport < Import
      
     #get action is created by the order
     get_action = GetAction.where(:subject_id => order.id).first
+    get_action.update_attribute(:occurred_at, DateTime.strptime(parsed_row.order_date, Import::DATE_INPUT_FORMAT)) unless parsed_row.order_date.blank?
     
     return go_action, get_action
   end
@@ -140,7 +134,7 @@ class EventsImport < Import
     item.state = "settled"
     order.items << item
     order.save
-    order.update_attribute(:created_at, parsed_row.order_date) unless parsed_row.order_date.blank?
+    order.update_attribute(:created_at, DateTime.strptime(parsed_row.order_date, Import::DATE_INPUT_FORMAT)) unless parsed_row.order_date.blank?
     order.actions.where(:type => "GetAction").first.update_attribute(:occurred_at, parsed_row.order_date) unless parsed_row.order_date.blank?
     @imported_orders[order_key] = order
     order

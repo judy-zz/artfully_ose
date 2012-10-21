@@ -351,18 +351,19 @@ describe EventsImport do
     describe "with a date" do
       before(:each) do
         @headers << "Order Date"
-        @rows << "01/01/1999"     
+        @rows << "01/31/1999"     
         @parsed_row = ParsedRow.parse(@headers, @rows)
         
         @order = @import.create_order(@parsed_row, @person, @event, @show, @ticket)
       end
       
       it "should include the order date" do
-        @order.created_at.should eq DateTime.parse("01/01/1999")
+        @order.created_at.should eq DateTime.strptime("01/31/1999", Import::DATE_INPUT_FORMAT)
       end
       
       it "should set the get action occurred_at to whatever the date of the order is" do
-        @order.actions.first.occurred_at.should eq DateTime.parse("01/01/1999")
+        go_action, get_action = @import.create_actions(@parsed_row, @person, @event, @show, @order)
+        get_action.occurred_at.should eq DateTime.strptime("01/31/1999", Import::DATE_INPUT_FORMAT)
       end
     end
   end
