@@ -34,4 +34,3 @@
             %td
               =icon_link_to("", "#row#{index}", ' icon-zoom-in', '', '', {'data-toggle' => 'modal'})
               =render :partial => "imports/shared/inspect_modal", :locals => {:row => row, :index => index, :keys => ParsedRow::EVENT_FIELDS.keys }
-    = will_paginate @parsed_rows
