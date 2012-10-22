@@ -7,11 +7,11 @@ class EventsController < ArtfullyOseController
   def create
     @event = Event.new(params[:event])
     @templates = current_organization.charts.template
-    @event.organization_id = current_user.current_organization.id
-    @event.is_free = !(current_user.current_organization.can? :access, :paid_ticketing)
-    @event.venue.organization_id = current_user.current_organization.id
-    @event.venue.time_zone = current_user.current_organization.time_zone
-    @event.contact_email = current_user.current_organization.try(:email) || current_user.email
+    @event.organization_id = current_organization.id
+    @event.is_free = !(current_organization.can? :access, :paid_ticketing)
+    @event.venue.organization_id = current_organization.id
+    @event.venue.time_zone = current_organization.time_zone
+    @event.contact_email = current_organization.try(:email) || current_user.email
 
     if @event.save
       redirect_to edit_event_url(@event)
@@ -108,7 +108,7 @@ class EventsController < ArtfullyOseController
   end
 
   def resell
-    @organization = current_user.current_organization
+    @organization = current_organization
 
     @ticket_offer = TicketOffer.new(params[:ticket_offer])
     @ticket_offer.reseller_profile = ResellerProfile.find_by_id(params[:reseller_profile_id])
