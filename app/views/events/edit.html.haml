@@ -27,7 +27,7 @@
       .control-group
         =form.label :contact_email, "Contact email<br />for patrons".html_safe, :class => 'control-label'
         .controls
-          =form.text_field :contact_email, :class => 'input-xlarge', :placeholder=>"Email"
+          =form.email_field :contact_email, :class => 'input-xlarge email-popup', :placeholder=>"Email", "data-content" => "Your patrons will be able to respond to this email address when receiving ticket/donation receipts. You can change this at any time."
           
       .control-group
         =form.label :contact_phone, "Contact phone<br />for patrons".html_safe, :class => 'control-label'
