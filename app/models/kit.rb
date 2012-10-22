@@ -4,7 +4,7 @@ class Kit < ActiveRecord::Base
   belongs_to :organization
   validates_presence_of :organization
 
-  class_attribute :requires_approval, :ability_proc
+  class_attribute :requires_approval, :ability_proc, :restricted_to_admins
 
   def self.visible
     where(Kit.arel_table[:state].eq("activated").or(Kit.arel_table[:state].eq('pending')))
@@ -12,6 +12,7 @@ class Kit < ActiveRecord::Base
 
   def self.acts_as_kit(options, &block)
     self.requires_approval = options.delete(:with_approval) || false
+    self.restricted_to_admins = options.delete(:admin_only) || false
 
     state_machine do
       state :fresh
@@ -26,6 +27,8 @@ class Kit < ActiveRecord::Base
       event(:activate_without_pending) { transitions :from => [:fresh, :pending, :cancelled], :to => :activated }
     end
 
+    
+
     if self.requires_approval
       state_machine do
         event(:submit_for_approval) { transitions :from => :fresh, :to => :pending }
@@ -35,7 +38,7 @@ class Kit < ActiveRecord::Base
     class_eval(&block)
     self
   end
-
+  
   def self.activate(options)
     activation_requirements[:unless] << options.delete(:unless) if options.has_key?(:unless)
     activation_requirements[:if] << options.delete(:if) if options.has_key?(:if)

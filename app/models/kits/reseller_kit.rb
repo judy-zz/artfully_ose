@@ -1,6 +1,6 @@
 class ResellerKit < Kit
 
-  acts_as_kit :with_approval => true do
+  acts_as_kit :with_approval => true, :admin_only => true do
     activate :unless => :no_owner?
     approve :unless => :no_bank_account?
 
@@ -14,7 +14,7 @@ class ResellerKit < Kit
   end
 
   def pitch
-    "Resell tickets"
+    "Resell tickets from other producers on your own website."
   end
 
   def no_owner?
