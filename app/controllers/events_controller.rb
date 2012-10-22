@@ -69,8 +69,7 @@ class EventsController < ArtfullyOseController
   def update    
     authorize! :edit, @event
 
-    @event.update_attributes(params[:event])
-    if @event.save
+    if @event.update_attributes(params[:event])
       if user_requesting_next_step?
         if user_just_uploaded_an_image?
           redirect_to messages_event_path(@event)
