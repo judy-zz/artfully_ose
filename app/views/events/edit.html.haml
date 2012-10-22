@@ -5,7 +5,7 @@
 .row
   .span3
     - in_sub_section :details
-    =render :partial=>'menu'
+    = render :partial=>'menu'
   .span9
     = render "shared/error_messages", :target => @event
     = form_for( @event, :html => { :class => 'form-horizontal' } ) do |form|
@@ -15,22 +15,22 @@
           =form.text_field :name, :class => 'input-xlarge', :placeholder=>"Event name"
           
       .control-group
-        =form.label :name, "Producer", :class => 'control-label'
+        =form.label :producer, "Producer", :class => 'control-label'
         .controls
           =form.text_field :producer, :class => 'input-xlarge'
           
       .control-group
-        =form.label :name, "Description", :class => 'control-label'
+        =form.label :description, "Description", :class => 'control-label'
         .controls
           =form.text_area :description, :class => 'input-xlarge', :rows => '6'
           
       .control-group
-        =form.label :name, "Contact email<br />for patrons".html_safe, :class => 'control-label'
+        =form.label :contact_email, "Contact email<br />for patrons".html_safe, :class => 'control-label'
         .controls
           =form.text_field :contact_email, :class => 'input-xlarge', :placeholder=>"Email"
           
       .control-group
-        =form.label :name, "Contact phone<br />for patrons".html_safe, :class => 'control-label'
+        =form.label :contact_phone, "Contact phone<br />for patrons".html_safe, :class => 'control-label'
         .controls
           =form.text_field :contact_phone, :class => 'input-xlarge', :placeholder=>"Phone"
           
