@@ -99,9 +99,8 @@ class Cart < ActiveRecord::Base
     end
   end
 
-  def finish(person, order_timestamp)
+  def finish
     metric_sale_total
-    tickets.each { |ticket| ticket.sell_to(person, order_timestamp) }
   end
 
   def generate_donations

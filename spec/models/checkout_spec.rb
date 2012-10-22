@@ -73,6 +73,7 @@ describe Checkout do
   describe "#finish" do
     before(:each) do
       subject.cart.stub(:pay_with)
+      subject.cart.stub(:approved?).and_return(true)
     end
 
     # # TODO: Fix these specs!
