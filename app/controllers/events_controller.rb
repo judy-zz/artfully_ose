@@ -102,6 +102,24 @@ class EventsController < ArtfullyOseController
   
   def prices
   end
+
+  def temp_discounts_index
+    find_event
+  end
+
+  def temp_discount_form
+    find_event
+
+    @discount = TempDiscount.new
+    @discount.promotion_type = 'two-for-one'
+
+    @event.charts.collect(&:sections).flatten.each do |section|
+      @discount.discount_sections.new(
+        :section => section,
+        :price => section.price
+      )
+    end
+  end
   
   def messages
   end
