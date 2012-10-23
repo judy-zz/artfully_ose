@@ -51,6 +51,10 @@ class Order < ActiveRecord::Base
   end
   
   def location
+    self.class.location
+  end
+  
+  def self.location
     ""
   end
 

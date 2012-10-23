@@ -8,7 +8,8 @@ class Statement
                 :net_revenue,
                 :cc_net,
                 :settled,
-                :payment_method_rows
+                :payment_method_rows,
+                :order_location_rows
   
   def self.for_show(show)
     if show.nil?
@@ -46,29 +47,34 @@ class Statement
       statement.payment_method_rows[::CashPayment.payment_method] = PaymentTypeRow.new(::CashPayment.payment_method)
       statement.payment_method_rows[::CompPayment.payment_method] = PaymentTypeRow.new(::CompPayment.payment_method)
       
-      
       payment_method_hash.each do |payment_method, items|
         row = statement.payment_method_rows[payment_method] || PaymentTypeRow.new(payment_method)
         items.each {|item| row << item}
         statement.payment_method_rows[payment_method] = row
       end
+      
+      order_location_hash         = show.items.group_by do |item| 
+        order = item.order
+        order.parent.nil? ? order.location : order.parent.location 
+      end
+      
+      statement.order_location_rows = {}
+      statement.order_location_rows[::WebOrder.location]        = OrderLocationRow.new(::WebOrder.location)
+      statement.order_location_rows[BoxOffice::Order.location]  = OrderLocationRow.new(BoxOffice::Order.location)
+      
+      order_location_hash.each do |order_location, items|
+        row = statement.order_location_rows[order_location] || OrderLocationRow.new(order_location)
+        items.each {|item| row << item}
+        statement.order_location_rows[order_location] = row
+      end
     end
   end
   
-  class PaymentTypeRow
-    attr_accessor :payment_method,
-                  :tickets, 
+  module Row
+    attr_accessor :tickets, 
                   :gross,
                   :processing,
                   :net
-    
-    def initialize(payment_method)
-      self.payment_method = payment_method
-      self.tickets = 0
-      self.gross = 0
-      self.processing = 0
-      self.net = 0
-    end
     
     def<<(item)
       if item.refund?
@@ -82,6 +88,32 @@ class Statement
       self.gross        = self.gross + item.price
       self.processing   = self.processing + (item.realized_price - item.net)
       self.net          = self.net + item.net
+    end
+  end
+  
+  class OrderLocationRow
+    include Row
+    attr_accessor   :order_location
+    
+    def initialize(order_location)
+      self.order_location = order_location
+      self.tickets = 0
+      self.gross = 0
+      self.processing = 0
+      self.net = 0
+    end
+  end
+  
+  class PaymentTypeRow
+    include Row
+    attr_accessor   :payment_method
+    
+    def initialize(payment_method)
+      self.payment_method = payment_method
+      self.tickets = 0
+      self.gross = 0
+      self.processing = 0
+      self.net = 0
     end
   end
 end

@@ -1,5 +1,5 @@
 class CompOrder < Order  
-  def location
+  def self.location
     "Artful.ly"
   end
   
