@@ -277,6 +277,17 @@ describe Person do
       person.should eq @person
     end
     
+    #This happens in reseller
+    it "should not find the person if an id is passed but with the wrong org" do
+      @person = FactoryGirl.create(:person, :organization => @organization)
+      checkout_person = Person.new
+      checkout_person.id = @person.id
+      checkout_person.email = @person.email
+      person = Person.find_or_create(checkout_person, FactoryGirl.create(:organization))
+      person.email.should eq checkout_person.email
+      person.should_not eq @person      
+    end
+    
     it "should create a new person if no id is passed" do
       @person = FactoryGirl.build(:person, :organization => @organization)
       person = Person.find_or_create(@person, @organization)

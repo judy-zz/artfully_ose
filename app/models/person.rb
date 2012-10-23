@@ -199,7 +199,8 @@ class Person < ActiveRecord::Base
     if (customer.respond_to? :person_id) && (!customer.person_id.nil?)
       return Person.find(customer.person_id)
     elsif (customer.is_a? Person) && (!customer.id.nil?)
-      return Person.find(customer.id)
+      person = Person.where(:id => customer.id).where(:organization_id => organization.id).first
+      return person if person
     end
     
     person = Person.find_by_email_and_organization(customer.email, organization)
