@@ -32,7 +32,7 @@ class Event < ActiveRecord::Base
 
   validates_presence_of :name, :organization_id
 
-  default_scope where(:deleted_at => nil).order("created_at DESC")
+  default_scope where(:deleted_at => nil).order("events.created_at DESC")
   scope :published, includes(:shows).where(:shows => { :state => "published" })
 
   delegate :time_zone, :to => :venue
