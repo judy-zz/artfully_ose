@@ -36,5 +36,9 @@ module ArtfullyOse
       puts "ArtfullyOse: Setting up additional autoload paths"
       app.config.autoload_paths += Dir["#{config.root}/app/models/**/"]
     end
+    
+    config.generators do |g|
+      g.test_framework :rspec, :view_specs => false
+    end
   end
 end
