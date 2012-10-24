@@ -78,6 +78,7 @@ $(document).ready(function() {
   }
 
 	$('.help').popover();
+	$('.edit-message').popover({title: "Editing", content: "We can only edit manually entered donations.", placement: "bottom"});
 	
 	$('.dropdown-toggle').dropdown();
 	

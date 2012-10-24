@@ -141,6 +141,10 @@ class Order < ActiveRecord::Base
   def is_fafs?
     !fa_id.nil?
   end
+  
+  def editable?
+    (type.eql? "ApplicationOrder") && !is_fafs? && !artfully?
+  end
 
   def donation_details
     if is_fafs?

@@ -1,3 +1,10 @@
+.btn-group.bottom-room
+  =icon_link_to("Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
+  -if order.editable?
+    =icon_link_to("Edit", edit_contribution_path(order), 'icon-edit', "btn", '', {'data-toggle' => 'modal'})
+  -else
+    =icon_link_to("Edit", "#", 'icon-edit', "btn disabled edit-message", '')
+
 %ul.kv
   - unless order.parent.nil?
     %li
@@ -33,11 +40,7 @@
     %h6.key-full Special Instructions
   %li
     .value #{order.special_instructions}
-  %li
-    - if order.parent.nil? && !person.dummy?
-      %h6.key-full Actions
-      =icon_link_to("Resend Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
-    
+
 #receipt.modal
   -if order.is_fafs?
     .modal-body

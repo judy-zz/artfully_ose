@@ -27,9 +27,6 @@ class ActionsController < ArtfullyOseController
     @action.set_params(params[:artfully_action], @person)
     @action.set_creator(current_user)
 
-    logger.debug(@action.valid?)
-    logger.debug(@action.errors)
-
     if @action.save
       flash[:notice] = "Action logged successfully!"
       redirect_to person_url(@person)
