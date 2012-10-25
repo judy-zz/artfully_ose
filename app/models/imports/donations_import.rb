@@ -9,7 +9,19 @@ class DonationsImport < Import
     contribution  = create_contribution(parsed_row, person)
   end
   
+  def items
+    items = []
+    ImportedOrder.where(:import_id => self.id).all.collect { |o| items = items + o.items.all }
+    items
+  end
+  
+  def actions
+    Action.where(:import_id => self.id).all
+  end
+  
   def rollback 
+    items.each { |i| i.destroy }
+    actions.each { |action| action.destroy }
     self.orders.destroy_all
     self.people.destroy_all
   end

@@ -12,9 +12,14 @@
       = form.select :subtype, options_for_select(Action::GIVE_TYPES)
     
   .control-group
-    = form.label :amount, "Dollar Value", :class => 'control-label'
+    = form.label :amount, "Deductible Amount", :class => 'control-label'
     .controls      
       = form.text_field :amount, :class => :currency
+    
+  .control-group
+    = form.label :nongift_amount, "Non-Deductible Amount", :class => 'control-label'
+    .controls      
+      = form.text_field :nongift_amount, :class => :currency
     
   .control-group
     = form.label :occurred_at, "Date and Time", :class => 'control-label'
@@ -24,7 +29,7 @@
   .control-group
     = form.label :details, "Notes", :class => 'control-label'
     .controls 
-      = form.text_field :details    
+      = form.text_area :details, :size => "20x5" 
   
   .form-actions
     = submit_tag "Save", :class => "btn"

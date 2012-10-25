@@ -20,12 +20,12 @@ describe EventsImport do
       context "creating people" do
         it "should create six people" do
           Person.all.length.should eq 6
-          Person.where(:first_name => "Monique").where(:last_name => "Meloche").first.should_not be_nil
-          Person.where(:first_name => "Dirk").where(:last_name => "Denison").where(:email => "dda@example.com").first.should_not be_nil
-          Person.where(:first_name => "James").where(:last_name => "Cahn").where(:email => "jcahn@example.edu").first.should_not be_nil
-          Person.where(:first_name => "Susan").where(:last_name => "Goldschmidt").where(:email => "sueg333@example.com").first.should_not be_nil
-          Person.where(:first_name => "Plank").where(:last_name => "Goldschmidtt").where(:email => "plank@example.com").first.should_not be_nil
-          Person.where(:last_name => "Goldschmidtt").where(:email => "tim@example.com").first.should_not be_nil
+          Person.where(:first_name => "Monique").where(:last_name => "Meloche").where(:import_id => @import.id).first.should_not be_nil
+          Person.where(:first_name => "Dirk").where(:last_name => "Denison").where(:email => "dda@example.com").where(:import_id => @import.id).first.should_not be_nil
+          Person.where(:first_name => "James").where(:last_name => "Cahn").where(:email => "jcahn@example.edu").where(:import_id => @import.id).first.should_not be_nil
+          Person.where(:first_name => "Susan").where(:last_name => "Goldschmidt").where(:email => "sueg333@example.com").where(:import_id => @import.id).first.should_not be_nil
+          Person.where(:first_name => "Plank").where(:last_name => "Goldschmidtt").where(:email => "plank@example.com").where(:import_id => @import.id).first.should_not be_nil
+          Person.where(:last_name => "Goldschmidtt").where(:email => "tim@example.com").where(:import_id => @import.id).first.should_not be_nil
         end
         
         it "should attach the import to the people" do
@@ -140,7 +140,14 @@ describe EventsImport do
         chart.sections[0].price.should eq 0
         chart.sections[0].capacity.should eq 2
       end
-    end   
+  
+      describe "#rollback" do
+        it "should clean up the people, orders, items" do
+          @import.rollback
+          Person.where(:import_id => @import.id).all.should be_empty
+        end
+      end 
+    end  
   end
   
   describe "#create_ticket" do

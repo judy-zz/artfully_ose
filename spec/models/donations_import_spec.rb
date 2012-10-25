@@ -37,10 +37,16 @@ describe DonationsImport do
       @import.cache_data
       @import.import
       
+      items = []
+      ImportedOrder.where(:import_id => @import.id).all.collect { |o| items = items + o.items.all }
+      
       @import.rollback
       Person.where(:import_id => @import.id).all.should be_empty
       ImportedOrder.where(:import_id => @import.id).all.should be_empty
-      puts @import.orders.inspect
+      items.each do |i|
+        Item.where(:id => i.id).all.should be_empty
+      end
+      Action.where(:import_id => @import.id).all.should be_empty
     end
   end
   

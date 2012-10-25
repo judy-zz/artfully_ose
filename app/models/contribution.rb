@@ -76,6 +76,7 @@ class Contribution
     action = self.action
     
     item.price            = new_contribution.amount
+    item.nongift_amount   = new_contribution.nongift_amount
     item.realized_price   = new_contribution.amount
     item.net              = new_contribution.amount
   
@@ -83,7 +84,7 @@ class Contribution
     action.subtype        = new_contribution.subtype
     
     order.created_at      = new_contribution.occurred_at
-    order.details         = new_controbution.details
+    order.details         = new_contribution.details
     
     ActiveRecord::Base.transaction do
       item.save

@@ -21,6 +21,7 @@ class ContributionsController < ArtfullyOseController
     @order = Order.find(params[:id])
     authorize! :edit, @order
     @contribution = Contribution.for(@order)
+    render :layout => false
   end
   
   def update
