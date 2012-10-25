@@ -15,7 +15,21 @@ class EventsImport < Import
   end
   
   def rollback 
-    self.people.destroy_all
+    Person.where(:import_id => self.id).all.each {|p| p.destroy}
+    Event.where(:import_id => self.id).all.each {|e| e.destroy}
+    items.each { |i| i.destroy }
+    actions.each { |action| action.destroy }
+    self.orders.destroy_all
+  end
+  
+  def items
+    items = []
+    ImportedOrder.where(:import_id => self.id).all.collect { |o| items = items + o.items.all }
+    items
+  end
+  
+  def actions
+    Action.where(:import_id => self.id).all
   end
   
   def row_valid?(parsed_row)

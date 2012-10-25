@@ -145,6 +145,7 @@ describe EventsImport do
         it "should clean up the people, orders, items" do
           @import.rollback
           Person.where(:import_id => @import.id).all.should be_empty
+          Event.where(:import_id => @import.id).all.should be_empty
         end
       end 
     end  
