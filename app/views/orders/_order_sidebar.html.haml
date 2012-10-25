@@ -1,9 +1,9 @@
 .btn-group.bottom-room
   =icon_link_to("Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
   -if order.editable?
-    =link_to "Edit", edit_contribution_path(order, :format => :html), :class => "btn", :id => 'edit-order-link', "data-remote" => "true"
+    =icon_link_to "Edit", edit_contribution_path(order, :format => :html), 'icon-edit', 'btn', 'edit-order-link', {"data-remote" => "true"}
   -else
-    =link_to "Edit", edit_contribution_path(order, :format => :html), :class => "btn disabled edit-message"
+    =link_to "Edit", edit_contribution_path(order, :format => :html), 'btn disabled edit-message'
 
 %ul.kv
   - unless order.parent.nil?

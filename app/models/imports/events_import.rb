@@ -1,4 +1,6 @@
 class EventsImport < Import
+  include Imports::Rollback
+  
   def kind
     "events"
   end
@@ -14,22 +16,14 @@ class EventsImport < Import
     actions     = create_actions(parsed_row, person, event, show, order)
   end
   
-  def rollback 
-    Person.where(:import_id => self.id).all.each {|p| p.destroy}
+  def rollback_events
     Event.where(:import_id => self.id).all.each {|e| e.destroy}
-    items.each { |i| i.destroy }
-    actions.each { |action| action.destroy }
-    self.orders.destroy_all
   end
   
-  def items
-    items = []
-    ImportedOrder.where(:import_id => self.id).all.collect { |o| items = items + o.items.all }
-    items
-  end
-  
-  def actions
-    Action.where(:import_id => self.id).all
+  def rollback 
+    rollback_orders
+    rollback_events
+    rollback_people
   end
   
   def row_valid?(parsed_row)
@@ -99,7 +93,7 @@ class EventsImport < Import
     show.event = event
     show.organization = self.organization
     
-    #Hacky, but we have to end-around state machine here because we don't have a chart
+    #Hacky, but we have to end-around state machine here because we don't have a chart yet
     show.state = "unpublished"
     show.save(:validate => false)
     

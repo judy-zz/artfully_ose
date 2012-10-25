@@ -66,6 +66,21 @@ class Order < ActiveRecord::Base
     items.select(&:ticket?)
   end
 
+  #We can only destroy orders that were manually entered
+  # delegate :destroy!, :to => :destroy
+  # def destroy
+  #   return false unless destoryable?
+  #   don't forget to add default scope!
+  # end
+  
+  def destroyable?
+    (type.eql? "ApplicationOrder") && !is_fafs? && !artfully?
+  end
+  
+  def editable?
+    (type.eql? "ApplicationOrder") && !is_fafs? && !artfully?
+  end
+
   def donations
     items.select(&:donation?)
   end
@@ -140,10 +155,6 @@ class Order < ActiveRecord::Base
 
   def is_fafs?
     !fa_id.nil?
-  end
-  
-  def editable?
-    (type.eql? "ApplicationOrder") && !is_fafs? && !artfully?
   end
 
   def donation_details

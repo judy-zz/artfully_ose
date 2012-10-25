@@ -26,14 +26,15 @@
           = link_to "Import Donations", new_import_path(:type => :donations), :class => "btn"
     
     .bottom-room    
-      %h3 Import History
-      %table.table.table-condensed
-        - @imports.each do |import|
-          %tr
-            %td= link_to File.basename(import.s3_key), import_path(import)
-            %td= import.user.email
-            %td= l import.created_at_local_to_organization, :format => :short
-            %td= import.status.capitalize
+      -unless @imports.empty?
+        %h3 Import History
+        %table.table.table-condensed
+          - @imports.each do |import|
+            %tr
+              %td= link_to File.basename(import.s3_key), import_path(import)
+              %td= import.user.email
+              %td= l import.created_at_local_to_organization, :format => :short
+              %td= import.status.capitalize
   .span1
     &nbsp;
   

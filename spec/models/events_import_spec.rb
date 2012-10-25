@@ -144,6 +144,7 @@ describe EventsImport do
       describe "#rollback" do
         it "should clean up the people, orders, items" do
           @import.rollback
+          Order.where(:import_id => @import.id).all.should be_empty
           Person.where(:import_id => @import.id).all.should be_empty
           Event.where(:import_id => @import.id).all.should be_empty
         end
@@ -193,6 +194,7 @@ describe EventsImport do
         parsed_row.stub(:importing_event?).and_return(true)
         jon = @import.create_person(parsed_row)
         jon.should_not be_new_record
+        jon.import.should be nil
         Person.where(:email => "john@does.com").length.should eq 1
       end
       
