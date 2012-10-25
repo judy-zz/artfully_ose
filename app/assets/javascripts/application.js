@@ -158,6 +158,12 @@ $(document).ready(function() {
     return false;
   });
 
+  $(".edit-order-link").bind("ajax:complete", function(et, e){
+    $("#edit-order-popup").html(e.responseText);
+    $("#edit-order-popup").modal( "show" );
+    return false;
+  });
+
   $(".new-note-link,.edit-note-link").bind("ajax:complete", function(et, e){
     $("#new-note-popup").html(e.responseText);
     $("#new-note-popup").modal( "show" );

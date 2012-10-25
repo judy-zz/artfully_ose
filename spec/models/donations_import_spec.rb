@@ -27,6 +27,23 @@ describe DonationsImport do
     end   
   end
   
+  describe "#rollback" do
+    it "should clean up the people, orders, items" do
+      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+      @csv_filename = Rails.root.join("spec", "support", "donations-import-full-test.csv")
+      @import = FactoryGirl.create(:donations_import, :organization => FactoryGirl.create(:organization_with_timezone), :s3_key => @csv_filename)
+      @import.organization.time_zone = 'Eastern Time (US & Canada)'
+      @import.organization.save
+      @import.cache_data
+      @import.import
+      
+      @import.rollback
+      Person.where(:import_id => @import.id).all.should be_empty
+      ImportedOrder.where(:import_id => @import.id).all.should be_empty
+      puts @import.orders.inspect
+    end
+  end
+  
   describe "#create_donation" do
     before(:each) do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)

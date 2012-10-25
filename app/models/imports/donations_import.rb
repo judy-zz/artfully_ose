@@ -9,6 +9,11 @@ class DonationsImport < Import
     contribution  = create_contribution(parsed_row, person)
   end
   
+  def rollback 
+    self.orders.destroy_all
+    self.people.destroy_all
+  end
+  
   def row_valid?(parsed_row)
     raise Import::RowError, 'No Deductible Amount included in this row' if parsed_row.unparsed_amount.blank?
     true

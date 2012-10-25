@@ -63,13 +63,15 @@ class Import < ActiveRecord::Base
   end
   
   def fail!
-    #TODO: Need to clena up other stuff too
-    self.people.destroy_all
     failed!
+    rollback
   end
   
-  #Subclasses must implement process
+  #Subclasses must implement process and rollback
   def process(parsed_row)
+  end
+  
+  def rollback
   end
   
   def create_person(parsed_row)

@@ -14,6 +14,10 @@ class EventsImport < Import
     actions     = create_actions(parsed_row, person, event, show, order)
   end
   
+  def rollback 
+    self.people.destroy_all
+  end
+  
   def row_valid?(parsed_row)
     Rails.logger.debug("EVENT_IMPORT: Validating Row")
     raise Import::RowError, 'No Event Name included in this row' unless parsed_row.event_name 
