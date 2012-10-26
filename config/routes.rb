@@ -75,12 +75,15 @@ Rails.application.routes.draw do
   resources :segments, :only => [:index, :show, :create, :destroy]
 
   resources :events do
-    get :widget,  :on => :member
-    get :storefront_link,  :on => :member
-    get :resell, :on => :member
-    get :prices,  :on => :member
-    get :image,   :on => :member
-    get :messages,   :on => :member
+    member do
+      get :widget
+      get :storefront_link
+      get :resell
+      get :prices
+      get :image
+      get :messages
+    end
+    resources :discounts, :only => [:index]
     resources :shows do
       resource :sales, :only => [:new, :create, :show, :update]
       member do
