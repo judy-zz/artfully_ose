@@ -3,8 +3,9 @@
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TextHelper
-  include ArtfullyOseHelper
   include Ext::Integrations::Order
+  include OhNoes::Destroy
+  include ArtfullyOseHelper
   
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge
@@ -16,8 +17,8 @@ class Order < ActiveRecord::Base
   belongs_to :import
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
-  has_many :items
-  has_many :actions, :foreign_key => "subject_id"
+  has_many :items, :dependent => :destroy
+  has_many :actions, :foreign_key => "subject_id", :dependent => :destroy
 
   attr_accessor :skip_actions
 
@@ -65,20 +66,13 @@ class Order < ActiveRecord::Base
   def tickets
     items.select(&:ticket?)
   end
-
-  #We can only destroy orders that were manually entered
-  # delegate :destroy!, :to => :destroy
-  # def destroy
-  #   return false unless destoryable?
-  #   don't forget to add default scope!
-  # end
   
   def destroyable?
-    (type.eql? "ApplicationOrder") && !is_fafs? && !artfully?
+    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully?
   end
   
   def editable?
-    (type.eql? "ApplicationOrder") && !is_fafs? && !artfully?
+    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully?
   end
 
   def donations
