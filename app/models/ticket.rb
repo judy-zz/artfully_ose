@@ -2,7 +2,7 @@ class Ticket < ActiveRecord::Base
   include ActiveRecord::Transitions
   include Ext::Resellable::Ticket
   
-  attr_accessible :section_id, :section, :price, :venue
+  attr_accessible :section_id, :section, :price, :venue, :initial_price
 
   belongs_to :buyer, :class_name => "Person"
   belongs_to :show
@@ -14,6 +14,12 @@ class Ticket < ActiveRecord::Base
   has_many :items, :foreign_key => "product_id"
 
   delegate :event, :to => :show
+
+  before_validation :set_initial_price
+
+  def set_initial_price
+    self.initial_price ||= self.price
+  end
 
   def self.sold_after(datetime)
     sold.where("sold_at > ?", datetime)
@@ -232,6 +238,7 @@ class Ticket < ActiveRecord::Base
       t = Ticket.new({
         :venue => show.event.venue.name,
         :price => section.price,
+        :initial_price => section.price,
         :section => section,
       })
       t.show = show

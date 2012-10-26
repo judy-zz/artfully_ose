@@ -1,17 +1,19 @@
 FactoryGirl.define do
   factory :ticket do
     venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
+    initial_price 5000
     price 5000
-    association :show
-    association :organization
-    association :section
+    show
+    organization
+    section
   end
 
   factory :free_ticket, :parent => :ticket do
     venue { Faker::Lorem.words(2).join(" ") + " Theatre"}
+    initial_price 0
     price 0
-    association :show
-    association :organization
+    show
+    organization
   end
 
   factory :comped_ticket, :parent => :ticket do

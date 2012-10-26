@@ -403,6 +403,15 @@ describe Ticket do
       end
     end
   end
+
+  describe "initial_price" do
+    subject { FactoryGirl.build(:ticket, :initial_price => nil)}
+    it "should automatically be set when created" do
+      subject.initial_price.should == nil
+      subject.save!
+      subject.initial_price.should == subject.price
+    end
+  end
   
   describe "create_many" do
     let(:organization) { FactoryGirl.create(:organization) }

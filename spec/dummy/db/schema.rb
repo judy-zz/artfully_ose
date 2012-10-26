@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121024162102) do
+ActiveRecord::Schema.define(:version => 20121026210333) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -326,6 +326,7 @@ ActiveRecord::Schema.define(:version => 20121024162102) do
     t.datetime "updated_at"
     t.integer  "cart_id"
     t.integer  "section_id"
+    t.integer  "initial_price"
   end
 
   add_index "tickets", ["cart_id"], :name => "index_tickets_on_cart_id"
