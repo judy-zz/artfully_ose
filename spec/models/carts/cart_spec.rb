@@ -24,9 +24,17 @@ describe Cart do
     end
   end
 
+  describe "#subtotal" do
+    let(:items) { 10.times.collect{ mock(:item, :initial_price => 10) }}
+    it "should sum up the price of the tickets" do
+      subject.stub(:items) { items }
+      subject.subtotal.should eq 100
+    end
+  end
+
   describe "#total" do
     let(:items) { 10.times.collect{ mock(:item, :price => 10) }}
-    it "should sum up the price of the tickets via total" do
+    it "should sum up the price of the tickets" do
       subject.stub(:items) { items }
       subject.total.should eq 100
     end
@@ -58,6 +66,12 @@ describe Cart do
       subject.fee_in_cents.should eq 0
       subject << tickets
       subject.fee_in_cents.should eq 400
+    end
+
+    it "should not include the fee in the subtotal" do
+      subject << tickets
+      subject.fee_in_cents.should eq 400
+      subject.subtotal.should eq 10000
     end
 
     it "should include the fee in the total" do

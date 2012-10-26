@@ -76,6 +76,10 @@ class Cart < ActiveRecord::Base
     self.tickets << tkts
   end
 
+  def subtotal
+    items.sum(&:initial_price)
+  end
+
   def total
     items.sum(&:price) + fee_in_cents
   end
