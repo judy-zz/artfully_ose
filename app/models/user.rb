@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
   has_many :shows
   has_many :orders
   has_many :imports
+  has_many :discounts
 
   has_many :memberships
   has_many :organizations, :through => :memberships

@@ -11,6 +11,7 @@ class Event < ActiveRecord::Base
   has_many :charts
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
+  has_many :discounts
   validate :validate_contact_phone
   
   after_create :create_default_chart
