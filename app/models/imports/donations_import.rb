@@ -1,5 +1,6 @@
 class DonationsImport < Import
   include Imports::Rollback
+  include ArtfullyOseHelper
   
   def kind
     "donations"
@@ -19,6 +20,22 @@ class DonationsImport < Import
   def row_valid?(parsed_row)
     raise Import::RowError, 'No Deductible Amount included in this row' if parsed_row.unparsed_amount.blank?
     true
+  end
+  
+  def create_person(parsed_row)
+    if !parsed_row.email.blank?
+      person = Person.first_or_create(parsed_row.email, self.organization, parsed_row.person_attributes) do |p|
+        p.import = self
+      end
+    else    
+      person = attach_person(parsed_row)
+      if !person.save
+        self.import_errors.create! :row_data => parsed_row.row, :error_message => person.errors.full_messages.join(", ")
+        self.reload
+        fail!
+      end 
+    end
+    person  
   end
    
   def create_contribution(parsed_row, person)
@@ -40,6 +57,7 @@ class DonationsImport < Import
       contribution.order.save
       contribution.action.import_id = self.id 
       contribution.action.creator = self.user
+      contribution.action.details = "Donated #{number_as_cents contribution.order.total}"
       contribution.action.save
     end
     contribution

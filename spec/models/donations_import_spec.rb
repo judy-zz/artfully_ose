@@ -121,6 +121,63 @@ describe DonationsImport do
       action = contribution.action
       action.occurred_at.should be_today
     end
+  end  
+  
+  describe "#create_person" do
+    before do
+      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount"]
+      @rows = ["john@does.com","Cal","Ripken","Other","In-Kind","50.00"] 
+      @import = FactoryGirl.create(:donations_import)
+      @import.stub(:headers) { @headers }
+      @import.stub(:rows) { @rows }
+      @existing_person = FactoryGirl.create(:person, :email => "first@example.com")
+    end
+    
+    it "should update a person if person already exists" do
+      @existing_person = FactoryGirl.create(:person, :email => "john@does.com", :organization => @import.organization)
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      parsed_row.stub(:importing_event?).and_return(true)
+      jon = @import.create_person(parsed_row)
+      jon.should_not be_new_record
+      jon.import.should be nil
+      Person.where(:email => "john@does.com").length.should eq 1
+    end
+    
+    it "should create a new person if necessary" do
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      parsed_row.stub(:importing_event?).and_return(true)
+      created_person = @import.create_person(parsed_row)
+      created_person.should_not be_new_record
+      Person.where(:email => "john@does.com").length.should eq 1
+      Person.where(:email => "first@example.com").length.should eq 1
+    end
+    
+    it "should save a new person even if there's no email" do
+      @headers = ["First Name", "Email", "Last Name", "Event Name", "Company"]
+      @rows = ["John",nil,"Doe", "Duplicate People", "Bernaduccis"]
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      person = @import.create_person(parsed_row)
+      person.should_not be_nil
+      person.first_name.should eq "John"
+      person.last_name.should eq "Doe"
+      person.email.should be_nil
+      person.company_name.should eq "Bernaduccis"       
+    end
+      
+    it "should not use existing people with no email" do
+      @no_email = FactoryGirl.create(:person, :first_name => "No", :last_name => "Email", :organization => @import.organization)
+      @no_email.email = nil
+      @no_email.save
+      @headers = ["First Name", "Email", "Last Name", "Event Name", "Company"]
+      @rows = ["John",nil,"Doe", "Duplicate People", "Bernaduccis"]
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      person = @import.create_person(parsed_row)
+      person.company_name.should eq "Bernaduccis"
+      person.id.should_not eq @no_email.id        
+    end
+    
+    describe "with an external customer id"
   end
   
   describe "#row_valid" do

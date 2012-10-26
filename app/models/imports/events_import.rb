@@ -38,6 +38,22 @@ class EventsImport < Import
     true
   end
   
+  def create_person(parsed_row)
+    if !parsed_row.email.blank?
+      person = Person.first_or_create(parsed_row.email, self.organization, parsed_row.person_attributes) do |p|
+        p.import = self
+      end
+    else    
+      person = attach_person(parsed_row)
+      if !person.save
+        self.import_errors.create! :row_data => parsed_row.row, :error_message => person.errors.full_messages.join(", ")
+        self.reload
+        self.failed!
+      end 
+    end
+    person  
+  end
+  
   def create_chart(parsed_row, event, show)
     Rails.logger.debug("EVENT_IMPORT: Creating chart")
     chart = show.chart || show.create_chart(:name => event.name)    

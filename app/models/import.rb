@@ -74,22 +74,6 @@ class Import < ActiveRecord::Base
   def rollback
   end
   
-  def create_person(parsed_row)
-    if parsed_row.importing_event? && !parsed_row.email.blank?
-      person = Person.first_or_create(parsed_row.email, self.organization, parsed_row.person_attributes) do |p|
-        p.import = self
-      end
-    else    
-      person = attach_person(parsed_row)
-      if !person.save
-        self.import_errors.create! :row_data => parsed_row.row, :error_message => person.errors.full_messages.join(", ")
-        self.reload
-        self.failed!
-      end 
-    end
-    person  
-  end
-  
   def parsed_rows
     return @parsed_rows if @parsed_rows
     @parsed_rows = []

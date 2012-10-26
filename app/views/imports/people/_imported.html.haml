@@ -11,3 +11,11 @@
   .span8
 
     %h3 This file has been imported into Artful.ly.
+    
+    -unless @import.import_errors.empty?
+      %p We did find errors with the following rows:
+      %table.table
+        -@import.import_errors.each do |error|
+          %tr
+            %td
+              =error.error_message

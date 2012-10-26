@@ -11,6 +11,13 @@ module OhNoes
     def destroy
       return false unless destroyable?
       run_callbacks :destroy do
+        # puts "DESTROY"
+        # puts "DESTROY"
+        # puts "DESTROY"
+        # puts self.class.name
+        # puts "DESTROY"
+        # puts "DESTROY"
+        # puts "DESTROY"
         update_attribute(:deleted_at, Time.now)
       end
     end

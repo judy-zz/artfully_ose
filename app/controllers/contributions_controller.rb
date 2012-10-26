@@ -32,6 +32,13 @@ class ContributionsController < ArtfullyOseController
     @contribution.update(new_contribution)
     redirect_to order_path(@order)
   end
+  
+  def destroy
+    @order = Order.find(params[:id])
+    authorize! :edit, @order
+    @order.destroy
+    redirect_to contributions_path
+  end
 
   def create
     @contribution = create_contribution
