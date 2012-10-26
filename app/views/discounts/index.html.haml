@@ -12,7 +12,7 @@
       .span3
         %h3 Discounts
       .span9
-        =icon_link_to("Add", temp_discount_path(@event), 'icon-plus-sign', 'btn', '')
+        =icon_link_to("Add", new_event_discount_path(@event), 'icon-plus-sign', 'btn', '')
     %table.table
       %thead
         %th Code
@@ -23,7 +23,7 @@
         - @discounts.each do |discount|
           %tr
             %td= link_to discount.code, temp_discount_path(@event)
-            %td- "X" if discount.active?
+            %td= discount.active? ? "Active" : "Inactive"
             %td= discount.promotion_type
             %td not yet implemented
                   

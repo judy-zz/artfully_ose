@@ -83,7 +83,7 @@ Rails.application.routes.draw do
       get :image
       get :messages
     end
-    resources :discounts, :only => [:index]
+    resources :discounts
     resources :shows do
       resource :sales, :only => [:new, :create, :show, :update]
       member do

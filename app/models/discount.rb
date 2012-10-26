@@ -9,4 +9,10 @@ class Discount < ActiveRecord::Base
   validates :code, :length => { :minimum => 5, :maximum => 20 }
   
   serialize :properties
+
+  before_validation :set_organization
+
+  def set_organization
+    self.organization ||= self.event.organization
+  end
 end
