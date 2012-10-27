@@ -11,6 +11,11 @@ class PeopleImport < Import
     person      = create_person(parsed_row)
   end
   
+  def row_valid?(parsed_row)
+    person = attach_person(parsed_row)
+    return person.valid?
+  end
+  
   #
   # This used to rollback.  No reason to now
   #

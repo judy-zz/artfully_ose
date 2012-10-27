@@ -101,6 +101,8 @@ class Import < ActiveRecord::Base
         self.save!
       else
         self.import_rows.create!(:content => row.to_a)
+        parsed_row = ParsedRow.parse(self.import_headers, row.to_a)
+        self.invalidate! unless row_valid?(parsed_row)
       end
     end
 

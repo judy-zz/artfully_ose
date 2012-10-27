@@ -24,6 +24,10 @@ module Imports
       Delayed::Job.enqueue self
     end
 
+    def invalidate!
+      self.update_attributes!(:status => "invalid")
+    end
+
     def importing!
       self.update_attributes!(:status => "importing")
     end

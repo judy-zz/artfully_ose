@@ -49,6 +49,25 @@ describe PeopleImport do
     end
   end
   
+  describe "#row_valid?" do
+    before :each do      
+      Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
+      @import = FactoryGirl.create(:people_import, :organization => FactoryGirl.create(:organization_with_timezone))
+      @headers = ["First Name", "Last Name", "Email", "Company"]
+      @row = ["John", "Doe", "john@does.com", "Bernaduccis"]
+      @parsed_row = ParsedRow.parse(@headers, @row)
+    end
+    
+    it "should not validate a row if a customer already exists with this email in this org" do
+      FactoryGirl.create(:person, :email => "john@does.com", :organization => @import.organization)
+      (@import.row_valid? @parsed_row).should be_false
+    end
+    
+    it "should validate if the person is valid" do
+      (@import.row_valid? @parsed_row).should be_true
+    end
+  end
+  
   describe "#create_person" do
     before do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
