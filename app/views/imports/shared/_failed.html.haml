@@ -1,0 +1,8 @@
+%h3 There was an error during import
+
+%ul
+  - import.import_errors.each do |error|
+    %li
+      %h4= error.error_message
+      - if error.row_data
+        %p= error.row_data.inspect

@@ -1,20 +1,5 @@
 .row
-
   .span4
-    %h3 Import Failed
-
-    %p This import was created at: <br> #{l import.created_at}
-
-    %p= link_to "Delete this import", import_path(import), :data => {:confirm => "Are you sure you want to delete this import?"}, :method => :delete, :class => "btn"
-    %p= link_to "Back to imports/exports", imports_path, :class => "btn"
-
+    =render :partial => 'imports/shared/sidebar', :locals => {:import => import}
   .span8
-
-    %h3 There was an error during import
-
-    %ul
-      - @import.import_errors.each do |error|
-        %li
-          %h4= error.error_message
-          - if error.row_data
-            %p= error.row_data.inspect
+    =render :partial => 'imports/shared/failed', :locals => {:import => import}
