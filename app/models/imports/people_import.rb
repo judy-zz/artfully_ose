@@ -13,7 +13,16 @@ class PeopleImport < Import
   
   def row_valid?(parsed_row)
     person = attach_person(parsed_row)
-    return person.valid?
+    return (person.valid? ? true : error(parsed_row, person))
+  end
+  
+  def error(parsed_row, person)
+    message = ""
+    message = parsed_row.email + ": " unless parsed_row.email.blank?
+    message = message + person.errors.full_messages.join(", ")
+    
+    self.import_errors.create! :row_data => parsed_row.row, :error_message => message    
+    false
   end
   
   #
@@ -25,11 +34,7 @@ class PeopleImport < Import
     Rails.logger.debug("PEOPLE_IMPORT: Attached #{person.inspect}")
     if !person.save
       Rails.logger.debug("PEOPLE_IMPORT: Save failed")
-      message = ""
-      message = parsed_row.email + ": " unless parsed_row.email.blank?
-      message = message + person.errors.full_messages.join(", ")
-      
-      self.import_errors.create! :row_data => parsed_row.row, :error_message => message
+      error(parsed_row, person)
       Rails.logger.debug("PEOPLE_IMPORT: ERROR'D #{person.errors.full_messages.join(", ")}")
       raise Import::RowError, message
     end 

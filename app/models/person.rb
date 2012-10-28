@@ -18,6 +18,12 @@ class Person < ActiveRecord::Base
 
   attr_accessible :first_name, :last_name, :email, :dummy, :organization_id
 
+  validates_presence_of :organization_id
+  validates_presence_of :person_info
+
+  validates :email, :uniqueness => { :scope => [:organization_id, :deleted_at] }, :allow_blank => true
+  after_commit { Sunspot.commit }
+
   def destroy!
     destroy
   end
@@ -61,12 +67,6 @@ class Person < ActiveRecord::Base
   def has_nothing?
     actions.empty? && phones.empty? && notes.empty? && orders.empty? && tickets.empty? && address.nil? && import_id.nil?
   end
-
-  validates_presence_of :organization_id
-  validates_presence_of :person_info
-
-  validates :email, :uniqueness => { :scope => [:organization_id, :deleted_at] }, :allow_blank => true
-  after_commit { Sunspot.commit }
 
   searchable do
     text :first_name, :last_name, :email
@@ -268,8 +268,8 @@ class Person < ActiveRecord::Base
     end
   end
 
-  private
-    def person_info
-      !(first_name.blank? and last_name.blank? and email.blank?)
-    end
+  #Bad name.  This will respond with true if there is something in first_name, last_name, or email.  False otherwise.
+  def person_info
+    !(first_name.blank? and last_name.blank? and email.blank?)
+  end
 end

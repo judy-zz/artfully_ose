@@ -102,7 +102,11 @@ class Import < ActiveRecord::Base
       else
         self.import_rows.create!(:content => row.to_a)
         parsed_row = ParsedRow.parse(self.import_headers, row.to_a)
-        self.invalidate! unless row_valid?(parsed_row)
+        
+        unless row_valid?(parsed_row)
+          self.invalidate! 
+          return
+        end
       end
     end
 
@@ -114,6 +118,9 @@ class Import < ActiveRecord::Base
   rescue Exception => e
     self.import_errors.create!(:error_message => e.message)
     self.failed!
+  rescue Import::RowError
+    self.import_errors.create!(:error_message => error_message)
+    self.invalidate!
   end
 
   def attach_person(parsed_row)

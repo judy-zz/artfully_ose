@@ -19,6 +19,7 @@ class DonationsImport < Import
   
   def row_valid?(parsed_row)
     raise Import::RowError, 'No Deductible Amount included in this row' if parsed_row.unparsed_amount.blank?
+    raise Import::RowError, 'Please include a first name, last name, or email' if attach_person(parsed_row).person_info
     true
   end
   

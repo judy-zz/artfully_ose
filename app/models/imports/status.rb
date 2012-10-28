@@ -11,33 +11,34 @@ module Imports
     
     
     def caching!
-      self.update_attributes(:status => "caching")
+      save if new_record?
+      self.update_column(:status, "caching")
       Delayed::Job.enqueue self
     end
 
     def pending!
-      self.update_attributes(:status => "pending")
+      self.update_column(:status, "pending")
     end
 
     def approve!
-      self.update_attributes!(:status => "approved")
+      self.update_column(:status,"approved")
       Delayed::Job.enqueue self
     end
 
     def invalidate!
-      self.update_attributes!(:status => "invalid")
+      self.update_column(:status, "invalid")
     end
 
     def importing!
-      self.update_attributes!(:status => "importing")
+      self.update_column(:status, "importing")
     end
 
     def imported!
-      self.update_attributes!(:status => "imported")
+      self.update_column(:status, "imported")
     end
 
     def failed!
-      self.update_attributes!(:status => "failed")
+      self.update_column(:status, "failed")
     end
 
     def failed?
