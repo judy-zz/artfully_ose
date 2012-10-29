@@ -12,6 +12,7 @@ class Donation < ActiveRecord::Base
   def price
     amount
   end
+  alias_method :cart_price, :price
 
   def self.fee
     0 # $0 fee

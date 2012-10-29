@@ -404,12 +404,12 @@ describe Ticket do
     end
   end
 
-  describe "initial_price" do
-    subject { FactoryGirl.build(:ticket, :initial_price => nil)}
+  describe "cart_price" do
+    subject { FactoryGirl.build(:ticket, :cart_price => nil)}
     it "should automatically be set when created" do
-      subject.initial_price.should == nil
+      subject.cart_price.should == nil
       subject.save!
-      subject.initial_price.should == subject.price
+      subject.cart_price.should == subject.price
     end
   end
   
