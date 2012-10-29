@@ -34,8 +34,10 @@ class Checkout
 
   def finish
     @person = Person.find_or_create(@customer, cart.organizations.first)
+    
+    #These should be delayed jobs, but DJ is failing on the add_phone ittermittently.
     @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
-    @person.delay.add_phone_if_missing(payment.payment_phone_number)
+    @person.add_phone_if_missing(payment.payment_phone_number)
 
     run_callbacks :payment do
       cart.pay_with(@payment)
