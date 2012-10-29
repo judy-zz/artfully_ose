@@ -10,9 +10,9 @@ class Discount < ActiveRecord::Base
   
   serialize :properties
 
-  before_validation :set_organization
+  before_validation :set_organization_from_event
 
-  def set_organization
+  def set_organization_from_event
     self.organization ||= self.event.organization
   end
 end
