@@ -22,7 +22,7 @@
     %table.table.table-bordered.table-striped.docs
       %tr 
         %td.field Date
-        %td The date of the donation
+        %td The date of the donation in the format: "YYYY/MM/DD HH:MMpm"  For an example donation on April 18, 2013, set the date to "2013/04/18"  You may omit the time portion of the string.
       %tr 
         %td.field Donation Type
         %td Cash, Check, In-Kind
@@ -44,9 +44,6 @@
       
     %h3 Optional Fields
     %table.table.table-bordered.table-striped.docs
-      %tr 
-        %td.field External Customer Id
-        %td A unique identifier for this customer.
       %tr 
         %td.field Payment Method
         %td Cash, Credit Card, Check

@@ -1,21 +1,9 @@
 .row
-
   .span4
-    %h3 Imported Contacts
-
     %p This import was created at: <br> #{l import.created_at}
-    %p #{pluralize @import.rows.count, "contact"} found in this import file
-
     %p= link_to "Back to imports/exports", imports_path, :class => "btn"
 
   .span8
-
-    %h3 This file has been imported into Artful.ly.
-    
-    -unless @import.import_errors.empty?
-      %p We did find errors with the following rows:
-      %table.table
-        -@import.import_errors.each do |error|
-          %tr
-            %td
-              =error.error_message
+    .well
+      %h3 This file has been imported into Artful.ly.
+      %p #{pluralize @import.rows.count, "people"} were imported.  

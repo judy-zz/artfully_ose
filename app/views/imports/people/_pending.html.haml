@@ -26,7 +26,7 @@
         %th Company
         %th Website
         %th 
-      - @import.parsed_rows.each_with_index do |row, index|
+      - @parsed_rows.each_with_index do |row, index|
         %tr
           %td=row.email
           %td=row.first

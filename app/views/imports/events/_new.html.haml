@@ -29,7 +29,7 @@
         %td The name of the venue where the event was held
       %tr 
         %td.field Show Date
-        %td The date of the show in this format MM/DD/YYYY. A show on April 18, 2012 would be represented as 04/18/2012
+        %td The date of the show in this format "MM/DD/YYYY HH:MMpm". A show on April 18, 2012 at 5:30pm would be represented as "2012/04/18 5:30pm"  If you do not include a time, we'll set it to 8pm.
     
     %h3 Include One Of The Following
     %table.table.table-bordered.table-striped.docs
@@ -46,9 +46,6 @@
     %h3 Optional Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field External Customer Id
-        %td A unique identifier for this customer.
-      %tr 
         %td.field Amount
         %td The dollar amount of the total purchase. Don't include a "$" or other currency symbols.
       %tr 
@@ -56,4 +53,4 @@
         %td Cash, Credit Card, Check, Comp, Other.
       %tr 
         %td.field Order Date
-        %td The date of the order.  If this is omitted the order will be recorded with today's date
+        %td The date of the order in the format "MM/DD/YYYY HH:MMpm".  If this is omitted the order will be recorded with today's date.

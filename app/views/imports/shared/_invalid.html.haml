@@ -2,10 +2,10 @@
 
 %ul
   %p
-    We had to stop the import because we found the following errors.  No records have been imported.  Please correct the errors and 
+    No records were imported because we found the following errors.  Please correct them and 
     =link_to "try your import", imports_path
     again.
-    
+
   - import.import_errors.each do |error|
     %li
       %h4= error.error_message
