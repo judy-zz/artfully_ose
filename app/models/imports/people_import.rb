@@ -22,7 +22,7 @@ class PeopleImport < Import
     message = message + person.errors.full_messages.join(", ")
     
     self.import_errors.create! :row_data => parsed_row.row, :error_message => message    
-    false
+    raise Import::RowError, message
   end
   
   #
@@ -34,9 +34,8 @@ class PeopleImport < Import
     Rails.logger.debug("PEOPLE_IMPORT: Attached #{person.inspect}")
     if !person.save
       Rails.logger.debug("PEOPLE_IMPORT: Save failed")
-      error(parsed_row, person)
       Rails.logger.debug("PEOPLE_IMPORT: ERROR'D #{person.errors.full_messages.join(", ")}")
-      raise Import::RowError, message
+      error(parsed_row, person)
     end 
     person  
   end

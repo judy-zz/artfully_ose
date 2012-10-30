@@ -18,8 +18,8 @@ class DonationsImport < Import
   end
   
   def row_valid?(parsed_row)
-    raise Import::RowError, 'No Deductible Amount included in this row' if parsed_row.unparsed_amount.blank?
-    raise Import::RowError, 'Please include a first name, last name, or email' if attach_person(parsed_row).person_info
+    raise Import::RowError, "No Deductible Amount included in this row: #{parsed_row.row}" if parsed_row.unparsed_amount.blank?
+    raise Import::RowError, "Please include a first name, last name, or email: #{parsed_row.row}" unless attach_person(parsed_row).person_info
     true
   end
   
@@ -40,7 +40,7 @@ class DonationsImport < Import
   end
    
   def create_contribution(parsed_row, person)
-    occurred_at = parsed_row.donation_date.blank? ? DateTime.now : DateTime.strptime(parsed_row.donation_date, DATE_INPUT_FORMAT)
+    occurred_at = parsed_row.donation_date.blank? ? DateTime.now : DateTime.parse(parsed_row.donation_date)
     params = {}
     params[:subtype] = parsed_row.donation_type
     params[:amount] = parsed_row.amount

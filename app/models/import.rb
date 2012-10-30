@@ -15,6 +15,7 @@ class Import < ActiveRecord::Base
   set_watch_for :created_at, :local_to => :organization
 
   DATE_INPUT_FORMAT = "%m/%d/%Y"
+  DATE_INPUT_FORMAT_WITH_TIME = "%m/%d/%Y %l:%M%P"
   
   def self.build(type)
     case type
@@ -85,8 +86,6 @@ class Import < ActiveRecord::Base
   end
 
   def cache_data
-    @csv_data = nil
-
     raise "Cannot load CSV data" unless csv_data.present?
 
     self.import_headers = nil

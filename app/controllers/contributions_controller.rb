@@ -30,6 +30,7 @@ class ContributionsController < ArtfullyOseController
     @contribution = Contribution.for(@order)
     new_contribution = Contribution.new(params[:contribution])
     @contribution.update(new_contribution)
+    flash[:notice] = "Your order has been edited"
     redirect_to order_path(@order)
   end
   
@@ -37,6 +38,7 @@ class ContributionsController < ArtfullyOseController
     @order = Order.find(params[:id])
     authorize! :edit, @order
     @order.destroy
+    flash[:notice] = "Your order has been deleted"
     redirect_to contributions_path
   end
 

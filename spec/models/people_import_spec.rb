@@ -43,9 +43,10 @@ describe PeopleImport do
       @import.status.should == "failed"
     end
   
-    it "should have 2 duplicate email errors" do
-      @import.import_errors.count.should == 2
-      @import.import_errors.map(&:error_message).uniq.should == [ "Email has already been taken" ]
+    it "should have a duplicate email error" do
+      #There are two errors in the file, but we are tossing exceptions and blow up after the first one
+      @import.import_errors.count.should == 1
+      @import.import_errors.first.error_message.should_not be_nil
     end
   end
   
@@ -60,7 +61,7 @@ describe PeopleImport do
     
     it "should not validate a row if a customer already exists with this email in this org" do
       FactoryGirl.create(:person, :email => "john@does.com", :organization => @import.organization)
-      (@import.row_valid? @parsed_row).should be_false
+      lambda { @import.row_valid? @parsed_row }.should raise_error Import::RowError
     end
     
     it "should validate if the person is valid" do
@@ -96,9 +97,7 @@ describe PeopleImport do
     it "should throw an error when a person with an email already exists" do
       @existing_person = FactoryGirl.create(:person, :email => "john@does.com", :organization => @import.organization)
       parsed_row = ParsedRow.parse(@headers, @rows.first)
-      failed_person = @import.create_person(parsed_row)
-      failed_person.errors.size.should eq 1
-      failed_person.should be_new_record
+      lambda { @import.create_person(parsed_row) }.should raise_error Import::RowError
     end
   end
 end

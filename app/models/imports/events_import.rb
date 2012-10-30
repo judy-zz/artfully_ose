@@ -30,11 +30,15 @@ class EventsImport < Import
     Rails.logger.debug("EVENT_IMPORT: Validating Row")
     raise Import::RowError, 'No Event Name included in this row' unless parsed_row.event_name 
     raise Import::RowError, 'No Show Date included in this row' unless parsed_row.show_date
+    raise Import::RowError, "Please include a first name, last name, or email: #{parsed_row.row}" unless attach_person(parsed_row).person_info
     begin
-      DateTime.strptime(parsed_row.show_date, DATE_INPUT_FORMAT)
+      DateTime.parse(parsed_row.show_date)
     rescue
-      raise Import::RowError, 'Invalid show date' 
+      raise Import::RowError, "Invalid show date: #{parsed_row.show_date}"
     end
+    
+    #TODO: Validate Order Date if exists
+    
     true
   end
   
@@ -56,7 +60,7 @@ class EventsImport < Import
   
   def create_chart(parsed_row, event, show)
     Rails.logger.debug("EVENT_IMPORT: Creating chart")
-    chart = show.chart || show.create_chart(:name => event.name)    
+    chart = show.chart || show.create_chart({ :name => event.name, :skip_create_first_section => true })   
     Rails.logger.debug("EVENT_IMPORT: Using chart:")
     Rails.logger.debug("EVENT_IMPORT: #{chart.inspect}")
     amount = parsed_row.amount || 0
@@ -105,13 +109,14 @@ class EventsImport < Import
     return show if show
     
     show = Show.new
-    show.datetime = DateTime.strptime(parsed_row.show_date, DATE_INPUT_FORMAT)
+    show.datetime = DateTime.parse(parsed_row.show_date)
     show.event = event
     show.organization = self.organization
     
     #Hacky, but we have to end-around state machine here because we don't have a chart yet
     show.state = "unpublished"
     show.save(:validate => false)
+    Rails.logger.debug("EVENT_IMPORT: Show saved #{show.inspect}")
     
     @imported_shows[show_key] = show
     show
@@ -125,7 +130,7 @@ class EventsImport < Import
      
     #get action is created by the order
     get_action = GetAction.where(:subject_id => order.id).first
-    get_action.update_attribute(:occurred_at, DateTime.strptime(parsed_row.order_date, Import::DATE_INPUT_FORMAT)) unless parsed_row.order_date.blank?
+    get_action.update_attribute(:occurred_at, DateTime.parse(parsed_row.order_date)) unless parsed_row.order_date.blank?
     
     return go_action, get_action
   end
@@ -162,7 +167,7 @@ class EventsImport < Import
     item.state = "settled"
     order.items << item
     order.save
-    order.update_attribute(:created_at, DateTime.strptime(parsed_row.order_date, Import::DATE_INPUT_FORMAT)) unless parsed_row.order_date.blank?
+    order.update_attribute(:created_at, DateTime.parse(parsed_row.order_date)) unless parsed_row.order_date.blank?
     order.actions.where(:type => "GetAction").first.update_attribute(:occurred_at, parsed_row.order_date) unless parsed_row.order_date.blank?
     @imported_orders[order_key] = order
     order
