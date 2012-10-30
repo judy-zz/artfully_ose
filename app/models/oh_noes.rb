@@ -7,17 +7,14 @@ module OhNoes
       end
     end
   
+    #
+    # options:
+    # :with_prejudice => true, will not check destroyable?
+    #
     delegate :destroy!, :to => :destroy
-    def destroy
-      return false unless destroyable?
+    def destroy(options = {})
+      return false unless destroyable? && !options[:with_prejudice]
       run_callbacks :destroy do
-        # puts "DESTROY"
-        # puts "DESTROY"
-        # puts "DESTROY"
-        # puts self.class.name
-        # puts "DESTROY"
-        # puts "DESTROY"
-        # puts "DESTROY"
         update_attribute(:deleted_at, Time.now)
       end
     end
