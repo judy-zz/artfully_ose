@@ -62,21 +62,13 @@ class Order < ActiveRecord::Base
   def nongift_amount
     all_items.inject(0) {|sum, item| sum + item.nongift_amount.to_i }
   end
-
-  def tickets
-    items.select(&:ticket?)
-  end
   
   def destroyable?
-    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully?
+    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully? && has_single_donation?
   end
   
   def editable?
-    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully?
-  end
-
-  def donations
-    items.select(&:donation?)
+    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully? && has_single_donation? 
   end
 
   def for_organization(org)
@@ -105,8 +97,22 @@ class Order < ActiveRecord::Base
     all_items.select(&:ticket?)
   end
 
+  #TODO: Undupe these methods
+  def tickets
+    items.select(&:ticket?)
+  end
+
   def all_donations
     all_items.select(&:donation?)
+  end
+
+  def donations
+    items.select(&:donation?)
+  end
+  #End dupes
+  
+  def has_single_donation?
+    (donations.size == 1) && tickets.empty?
   end
 
   def settleable_donations

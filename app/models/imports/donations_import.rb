@@ -48,7 +48,7 @@ class DonationsImport < Import
     
     params[:organization_id] = self.organization.id
     params[:occurred_at] = occurred_at.to_s
-    params[:details] = "Imported by #{user.email} on #{self.created_at_local_to_organization}"
+    params[:details] = "Imported by #{user.email} on  #{I18n.l self.created_at_local_to_organization, :format => :date}"
     params[:person_id] = person.id
     params[:creator_id] = user.id
     

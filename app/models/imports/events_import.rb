@@ -179,7 +179,7 @@ class EventsImport < Import
     order.organization = self.organization
     order.payment_method = parsed_row.payment_method
     order.person = person
-    order.details = "Imported by #{user.email} on #{self.created_at_local_to_organization}"
+    order.details = "Imported by #{user.email} on #{I18n.l self.created_at_local_to_organization, :format => :date}"
     order.import = self
     item = Item.for(ticket)
     item.state = "settled"
