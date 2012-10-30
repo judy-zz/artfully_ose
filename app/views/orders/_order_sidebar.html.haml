@@ -1,12 +1,12 @@
 .btn-group.bottom-room
   =icon_link_to("Receipt", "#receipt", 'icon-envelope', 'btn', '', {'data-toggle' => 'modal'})
   -if order.editable?
-    =icon_link_to "Edit", edit_contribution_path(order, :format => :html), 'icon-edit', 'btn', 'edit-order-link', {"data-remote" => "true"}
+    =link_to "Edit", edit_contribution_path(order, :format => :html), :class => 'btn', :id => 'edit-order-link', "data-remote" => "true"
   -else
     =link_to "Edit", "#", :class => 'btn disabled edit-message'
     
   -if order.destroyable?
-    =icon_link_to "Delete", contribution_path(order), 'icon-remove-sign', 'btn', 'destroy-order-link', {'data-method' => :delete}
+    =link_to "Delete", contribution_path(order), :class => 'btn', :id => 'destroy-order-link', 'data-method' => :delete
   -else
     =link_to "Delete", "#", :class => 'btn disabled delete-message'
 
