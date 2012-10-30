@@ -101,25 +101,43 @@ class EventsImport < Import
     event
   end
   
-  def create_show(parsed_row, event)
-    Rails.logger.debug("EVENT_IMPORT: Creating show")
-    show_key = [parsed_row.show_date, event.name].join("-")
+  def show_key(show_date, event_name)
+    [show_date, event_name].join("-")
+  end
+  
+  def existing_show(show_date, event_name)
+    Rails.logger.debug("EVENT_IMPORT: Checking existing show")
     @imported_shows ||= {}
-    show = @imported_shows[show_key]
-    return show if show
+    show = @imported_shows[show_key(show_date, event_name)]    
+  end
+  
+  def eight_pm?(show_date)
+    begin
+      Time.parse(show_date.match(/[0-9]+\:[0-9][0-9][a|p]m?/).to_s)
+    rescue ArgumentError
+      show_date = show_date + " 8:00pm"
+    end
     
+    show_date
+  end
+  
+  def new_show(parsed_row, event)
+    Rails.logger.debug("EVENT_IMPORT: Creating new show")
     show = Show.new
-    show.datetime = DateTime.parse(parsed_row.show_date)
+    show.datetime = DateTime.parse(eight_pm?(parsed_row.show_date))
     show.event = event
     show.organization = self.organization
-    
-    #Hacky, but we have to end-around state machine here because we don't have a chart yet
-    show.state = "unpublished"
+    show.state = "unpublished"                      #Hacky end-around state machine here because we don't have a chart yet
     show.save(:validate => false)
     Rails.logger.debug("EVENT_IMPORT: Show saved #{show.inspect}")
     
-    @imported_shows[show_key] = show
-    show
+    @imported_shows[show_key(parsed_row.show_date, event.name)] = show
+    show    
+  end
+  
+  def create_show(parsed_row, event)
+    Rails.logger.debug("EVENT_IMPORT: Creating show")
+    return existing_show(parsed_row.show_date, event) || new_show(parsed_row, event)
   end
   
   def create_actions(parsed_row, person, event, show, order)
