@@ -26,7 +26,7 @@
             %br
             =event_rows.first.venue_name
             %br
-            =l DateTime.parse(event_rows.first.show_date), :format => :short
+            =l DateTime.parse(@import.eight_pm?(event_rows.first.show_date)), :format => :short
         -event_rows.each_with_index do |row, index|
           %tr
             %td="#{row.first} #{row.last}"
