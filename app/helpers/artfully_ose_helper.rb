@@ -42,6 +42,12 @@ module ArtfullyOseHelper
     s.html_safe
   end
   
+  def action_and_subtype(action)
+    s = "#{action.action_type.capitalize}"
+    s = s + " - #{action.subtype}" unless action.subtype.nil?
+    s
+  end
+  
   #
   # just name the image, this method will prepend the path and append the .png
   # icon_tag('111-logo')
