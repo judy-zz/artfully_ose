@@ -10,6 +10,21 @@ describe Discount do
     subject.errors.should be_blank
   end
 
+  specify "should not allow more than one of the same code in the same event" do
+    @discount1 = FactoryGirl.build(:discount, code: "ALPHA", event: event)
+    @discount2 = FactoryGirl.build(:discount, code: "ALPHA", event: event)
+    @discount1.save.should be_true
+    @discount2.save.should be_false
+  end
+
+  specify "should allow more than one of the same code in different events" do
+    @event2 = FactoryGirl.build(:event)
+    @discount1 = FactoryGirl.build(:discount, code: "ALPHA", event: event)
+    @discount2 = FactoryGirl.build(:discount, code: "ALPHA", event: @event2)
+    @discount1.save.should be_true
+    @discount2.save.should be_true
+  end
+  
   describe "#set_organization_from_event" do
     it "should set the organization from the event's organization" do
       subject.organization = nil

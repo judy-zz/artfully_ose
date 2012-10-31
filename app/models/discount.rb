@@ -6,7 +6,7 @@ class Discount < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
 
   validates_presence_of :active, :code, :promotion_type, :event, :organization, :creator
-  validates :code, :length => { :minimum => 5, :maximum => 20 }
+  validates :code, :length => { :minimum => 5, :maximum => 20 }, :uniqueness => {:scope => :event_id}
   
   serialize :properties
 
