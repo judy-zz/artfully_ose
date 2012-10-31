@@ -3,7 +3,10 @@
 ---
 development:
   ticket_fee: 0
+  contact_email: support@replaceme.com
 test:
   ticket_fee: 0
+  contact_email: support@replaceme.com
 production:
   ticket_fee: 0
+  contact_email: support@replaceme.com

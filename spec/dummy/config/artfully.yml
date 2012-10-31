@@ -3,5 +3,7 @@
 ---
 development:
   ticket_fee: 200
+  contact_email: envvar@yahoo.com
 test:
   ticket_fee: 200
+  contact_email: envvar@yahoo.com

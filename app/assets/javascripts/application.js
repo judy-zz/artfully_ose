@@ -73,6 +73,9 @@ $(document).ready(function() {
 	/*********** NEW BOOTSTRAP JS ***********/
 	$(".alert").alert();
 
+  $('.email-popup').popover({trigger:'manual'})
+                   .click(function(){ $(this).popover('toggle'); });
+
   if($.browser.mozilla) {
     $('.section-price-disabled *').css("pointer-events", "none");
   }
