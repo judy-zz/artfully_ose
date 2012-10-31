@@ -18,6 +18,8 @@ class ImportsController < ArtfullyOseController
   def show
     @import = organization.imports.find(params[:id])
     @parsed_rows = @import.parsed_rows.paginate(:page => params[:page], :per_page => 50)
+    
+    @people = Person.where(:import_id => @import.id).paginate(:page => params[:page], :per_page => 50) unless @import.id.nil?
   end
 
   def new

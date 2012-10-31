@@ -165,6 +165,16 @@ describe DonationsImport do
       person.company_name.should eq "Bernaduccis"       
     end
       
+    it "should attach the additional people information" do
+      @headers = ["First Name", "Email", "Last Name", "Event Name", "Company", "Tags"]
+      @rows = ["John",nil,"Doe", "Duplicate People", "Bernaduccis", "Attendee"]
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      person = @import.create_person(parsed_row)
+      person = Person.find(person.id)
+      person.company_name.should eq "Bernaduccis"
+      person.tag_list.length.should be 1     
+    end
+      
     it "should not use existing people with no email" do
       @no_email = FactoryGirl.create(:person, :first_name => "No", :last_name => "Email", :organization => @import.organization)
       @no_email.email = nil
