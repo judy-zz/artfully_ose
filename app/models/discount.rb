@@ -22,7 +22,7 @@ class Discount < ActiveRecord::Base
       cart.tickets.each do |ticket|
         ticket.update_attributes(:cart_price => ticket.price - (ticket.price * 0.1))
       end
-    when "TenDollarsOffOrder"
+    when "TenDollarsOffTickets"
       cart.tickets.each do |ticket|
         ticket.update_attributes(:cart_price => ticket.price - 1000)
       end
