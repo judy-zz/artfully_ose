@@ -92,6 +92,7 @@ class EventsImport < Import
     event.venue = Venue.new
     event.venue.name = parsed_row.venue_name
     event.venue.organization = self.organization
+    event.contact_email = self.organization.email || self.user.email
     event.import = self
     event.save!
     Rails.logger.debug("EVENT_IMPORT: Created event #{event.inspect}")
