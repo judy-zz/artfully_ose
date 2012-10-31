@@ -17,6 +17,7 @@ class Discount < ActiveRecord::Base
   end
 
   def apply_discount_to_cart(cart)
+    raise "Discount is not active!" unless self.active?
     case self.promotion_type
     when "TenPercentOffTickets"
       cart.tickets.each do |ticket|
