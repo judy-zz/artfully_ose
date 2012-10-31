@@ -17,4 +17,30 @@ describe Discount do
       subject.organization.should == event.organization
     end
   end
+
+  describe "#apply_discount_to_cart" do
+    before(:each) do
+      @cart = FactoryGirl.create(:cart_with_items)
+    end
+    context "with ten percent off" do
+      before(:each) do
+        subject.promotion_type = "TenPercentOffTickets"
+      end
+      it "should take ten percent off the cost of each of the tickets" do
+        @cart.total.should == 16600
+        subject.apply_discount_to_cart(@cart)
+        @cart.total.should == 15100 # 14500 + 600 in ticket fees that still apply
+      end
+    end
+    context "with ten dollars off the order" do
+      before(:each) do
+        subject.promotion_type = "TenDollarsOffOrder"
+      end
+      it "should take ten dollars off the entire order" do
+        @cart.total.should == 16600
+        subject.apply_discount_to_cart(@cart)
+        @cart.total.should == 15600
+      end
+    end
+  end
 end

@@ -25,7 +25,7 @@ describe Cart do
   end
 
   describe "#subtotal" do
-    let(:items) { 10.times.collect{ mock(:item, :initial_price => 10) }}
+    let(:items) { 10.times.collect{ mock(:item, :price => 10, :cart_price => 20) }}
     it "should sum up the price of the tickets" do
       subject.stub(:items) { items }
       subject.subtotal.should eq 100
@@ -33,7 +33,7 @@ describe Cart do
   end
 
   describe "#total" do
-    let(:items) { 10.times.collect{ mock(:item, :price => 10) }}
+    let(:items) { 10.times.collect{ mock(:item, :cart_price => 10, :price => 20) }}
     it "should sum up the price of the tickets" do
       subject.stub(:items) { items }
       subject.total.should eq 100

@@ -77,11 +77,11 @@ class Cart < ActiveRecord::Base
   end
 
   def subtotal
-    items.sum(&:initial_price)
+    items.sum(&:price)
   end
 
   def total
-    items.sum(&:price) + fee_in_cents
+    items.sum(&:cart_price) + fee_in_cents
   end
 
   def unfinished?

@@ -15,4 +15,20 @@ class Discount < ActiveRecord::Base
   def set_organization_from_event
     self.organization ||= self.event.organization
   end
+
+  def apply_discount_to_cart(cart)
+    case self.promotion_type
+    when "TenPercentOffTickets"
+      cart.tickets.each do |ticket|
+        ticket.update_attributes(:cart_price => ticket.price - (ticket.price * 0.1))
+      end
+    when "TenDollarsOffOrder"
+      cart.tickets.each do |ticket|
+        ticket.update_attributes(:cart_price => ticket.price - 1000)
+      end
+    else
+      raise "Discount Type has not been defined!"
+    end
+    return cart
+  end
 end
