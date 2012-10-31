@@ -27,11 +27,11 @@ class SponsoredDonationKit < Kit
   end
   
   def pitch
-    "Contact #{ARTFULLY_CONFIG[:contact_email]} to learn about Fiscal Sponsorship through Fractured Atlas for your organization"
+    "Contact support@fracturedatlas.org to learn about Fiscal Sponsorship through Fractured Atlas."
   end
 
   def connected?
-    errors.add(:requirements, "You need to connect to your Fractured Atlas Membership to active this kit") unless organization.connected?
+    errors.add(:requirements, "You need to connect to your Fractured Atlas Membership to active this kit.") unless organization.connected?
     organization.connected?
   end
 

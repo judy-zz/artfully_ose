@@ -4,13 +4,13 @@ $(document).ready(function(){
   $('.truncated a.toggle, .not-truncated a.toggle').click(function(e) {
     e.preventDefault();
     $(this).parents('.toggle-truncated').find('.truncated, .not-truncated').toggle();
-  })
+  });
 
   // toggle a showing's sections
   $('.title').click(function() {
     $(this).siblings('.sections').slideToggle();
     $(this).toggleClass('active');
-  })
+  });
 
   // display the first showing's sections
   $('.title').first().siblings('.sections').slideToggle();
@@ -37,10 +37,10 @@ $(document).ready(function(){
       sectionId:   $(this).find('#section_id').val(),
       showId:      $(this).find('#show_id').val(),
       sectionName: $(this).find('#section_name').val(),
-      ticketCount: parseInt($(this).find('#ticket_count').val()),
+      ticketCount: parseInt($(this).find('#ticket_count').val(), 10),
       ticketPrice: parseFloat($(this).find('#ticket_price').val()),
       showingName: $(this).find('#showing_name').val()
-    }
+    };
 
     addItemToCart('ticket', params);
   });
@@ -51,7 +51,7 @@ $(document).ready(function(){
     donationAmount = $(this).find('#donation_amount').asNumber();
     if (donationAmount > 0) {
       $('#shopping-cart #steps').slideDown(); // not sure why this isn't slideUp
-      addItemToCart('donation', { donationAmount: donationAmount}); 
+      addItemToCart('donation', { donationAmount: donationAmount});
     }
   });
 
@@ -67,25 +67,22 @@ $(document).ready(function(){
   // show shopping cart when clicked
   $('#shopping-cart-controls').click(function() {
     $('#shopping-cart #steps').slideToggle();
-  })
+  });
 
   // add * to required field labels
   $('label.required').append('&nbsp;<strong>*</strong>&nbsp;');
 
   // switch shopping cart tabs
+  $('body').off('click.tab.data-api');
   $('[data-toggle="tab"]').click(function(e) {
     e.preventDefault();
     currentSectionId = $('li.active a').attr('href');
-
-    // dont switch if continue is disabled
-    if (!($(currentSectionId+' form-actions a').hasClass('disabled'))) {
-
-      // validate section before switching tabs
-      if (validateSection(currentSectionId)) {
-        switchTabs($(this).attr('href'));
-      };
-      // else, dont switch
-      // errors will be shown 
+    if (
+      !(nextButtonIsDisabled(currentSectionId)) &&
+      !(parentIsDisabled(this)) &&
+      validateSection(currentSectionId)
+    ) {
+      switchTabs($(this).attr('href'));
     }
   });
 
@@ -96,7 +93,7 @@ $(document).ready(function(){
     updateTotal();
     $('.formatCurrency').formatCurrency();
     updateOrderOnServer();
-  })
+  });
 
   // change drop down on tickets in cart
   $(document).delegate('#cart select.ticket-count', 'change', function(e) {
@@ -106,6 +103,14 @@ $(document).ready(function(){
     updateOrderOnServer();
   });
 });
+
+var nextButtonIsDisabled = function(sectionId){
+  return $(sectionId+' form-actions a').hasClass('disabled');
+};
+
+var parentIsDisabled = function(element){
+  return $(element).parent().hasClass('disabled');
+};
 
 function updateOrderOnServer() {
   $('#cart .form-actions a').addClass('disabled');
@@ -125,14 +130,12 @@ function updateOrderOnServer() {
     params.sections = sections;
   }
 
-  // console.log(params);
-
   donationAmount = parseFloat($('tr.donation td.price').attr('data-price')) * 100;
   if (donationAmount > 0) {
     params.donation = {
       organization_id: organizationId,
       amount: donationAmount
-    }
+    };
   }
 
   $.ajax({
@@ -147,22 +150,22 @@ function updateOrderOnServer() {
           // change ticket dropdown value
           ticket.find('.quantity select').val(section.limit);
           var message = "";
-          if (section.limit == 0) {
-            message += "No tickets available for this show's section."
+          if (section.limit === 0) {
+            message += "No tickets available for this show's section.";
           } else if (section.limit == 1) {
-            message += "Only 1 ticket available for this show's section."
+            message += "Only 1 ticket available for this show's section.";
           } else {
-            message += "Only " + section.limit + " tickets available for this show's section."
+            message += "Only " + section.limit + " tickets available for this show's section.";
           }
           // add error message
           ticket.find('.quantity select').after("<span class='over-limit'><br />" + message + "</span>");
         });
         updateQuantityInCart();
         updateTotal();
-				updateRequiredFields();
-				hidePaymentDetails();
+        updateRequiredFields();
+        hidePaymentDetails();
         $('.formatCurrency').formatCurrency();
-      };
+      }
 
       // add service charge line item
       $('tr#service-charge td.price h5').html(data.service_charge / 100.0);
@@ -178,12 +181,12 @@ function updateOrderOnServer() {
       $('.form-actions #cart-total').show();
 
       $('.formatCurrency').formatCurrency();
-			
-			if(data.tickets.length > 0 || data.donations.length > 0) {
-      	$('#cart .form-actions a').removeClass('disabled');		
-			} else {
-      	$('#cart .form-actions a').addClass('disabled');	
-			}
+      
+      if(data.tickets.length > 0 || data.donations.length > 0) {
+        $('#cart .form-actions a').removeClass('disabled');
+      } else {
+        $('#cart .form-actions a').addClass('disabled');
+      }
 
     },
     error: function(data) {
@@ -194,52 +197,52 @@ function updateOrderOnServer() {
 }
 
 function hidePaymentDetails() {
-	var total = getTotal();
-	if(total > 0) {
-		$('#payment-details-fields').removeClass('hidden')
-		$('#payment-details-message').addClass('hidden')
-	} else {
-		$('#payment-details-fields').addClass('hidden')
-		$('#payment-details-message').removeClass('hidden')
-	}
+  var total = getTotal();
+  if(total > 0) {
+    $('#payment-details-fields').removeClass('hidden');
+    $('#payment-details-message').addClass('hidden');
+  } else {
+    $('#payment-details-fields').addClass('hidden');
+    $('#payment-details-message').removeClass('hidden');
+  }
 }
 
 function updateRequiredFields() {
-	var total = getTotal();
-	$('input.nonzero-total').each(function() {
+  var total = getTotal();
+  $('input.nonzero-total').each(function() {
     if(cartTotal > 0) {
-			$(this).addClass('required')
-			$(this).removeAttr("disabled");
-		} else {
-			$(this).removeClass('required')
-			$(this).attr("disabled", "disabled");
-		}
+      $(this).addClass('required');
+      $(this).removeAttr("disabled");
+    } else {
+      $(this).removeClass('required');
+      $(this).attr("disabled", "disabled");
+    }
   });
 }
 
 function getTotal() {
-	cartTotal = $('.form-actions #cart-total').html()
-	if (cartTotal === undefined || cartTotal == "") {
-		return 0;
-	} else if (cartTotal.indexOf('$') > -1){
-		return cartTotal.split('$')[1];
-	} else {
-		return cartTotal;
-	}
+  cartTotal = $('.form-actions #cart-total').html();
+  if (cartTotal === undefined || cartTotal === "") {
+    return 0;
+  } else if (cartTotal.indexOf('$') > -1){
+    return cartTotal.split('$')[1];
+  } else {
+    return cartTotal;
+  }
 }
 
 function updateQuantityInCart() {
   $('#cart select.ticket-count').each(function() {
-    ticketCount = parseInt($(this).val());
+    ticketCount = parseInt($(this).val(), 10);
     sectionId = $(this).parents('tr').attr('data-section-id');
     showId = $(this).parents('tr').attr('data-show-id');
-    unitPrice = $(this).parent('td').attr('data-unit-price')
+    unitPrice = $(this).parent('td').attr('data-unit-price');
 
     $(this).parent('td').attr('data-quantity', ticketCount);
     subTotal = parseFloat(unitPrice) * ticketCount;
     $(this).parents('tr').find('td.price').attr('data-price', subTotal);
     $(this).parents('tr').find('td.price h5').text(subTotal);
-  })
+  });
 }
 
 function checkout() {
@@ -275,7 +278,9 @@ function checkout() {
 
 function switchTabs(newSectionId) {
   $('#nav li').removeClass('active');
-  $('li a[href="' + newSectionId + '"]').parent('li').addClass('active');
+  var listElement = $('li a[href="' + newSectionId + '"]').parent('li');
+  listElement.addClass('active');
+  listElement.removeClass('disabled');
   $('.tab-pane').hide();
   $(newSectionId+'.tab-pane').show();
 }
@@ -296,7 +301,7 @@ function validateSection(sectionId) {
         $(element).parents('.control-group').removeClass('error');
       }
     }).element("#" + $(this).attr('id'));
-    if (!(v)) {everythingValid = false};
+    if (!(v)) {everythingValid = false;}
   });
   return everythingValid;
 }
@@ -304,8 +309,9 @@ function validateSection(sectionId) {
 function addItemToCart(type, params) {
   if (type === 'ticket') {
     // if exisiting line item for this secion and show, dont add it again
-    if (!($("[data-section-id='" + params.sectionId + "'][data-show-id='" + params.showId + "']").size() > 0)) {
-      createTicketLineItem(params); 
+    var existing_line_items = $("[data-section-id='" + params.sectionId + "'][data-show-id='" + params.showId + "']").size() > 0;
+    if (!existing_line_items) {
+      createTicketLineItem(params);
     }
     
   } else if (type === 'donation') {
@@ -334,13 +340,13 @@ function createTicketLineItem(params) {
       "<td class='price' data-price='" + (params.ticketPrice * params.ticketCount) + "'>" +
         "<h5 class='formatCurrency'>" +
           (params.ticketPrice * params.ticketCount) +
-        "</h5>" + 
+        "</h5>" +
       "</td>" +
     "</tr>"
   );
 
   $("[data-section-id='" + params.sectionId + "'][data-show-id='" + params.showId + "'] .ticket-count").val(params.ticketCount);
-};
+}
 
 function createOrUpdateDonationLineItem(params) {
   $('#cart table tr.donation').remove();
