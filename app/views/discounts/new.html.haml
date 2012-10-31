@@ -31,8 +31,11 @@
           = f.label :promotion_type, :class => 'control-label'
           .controls
             %label.radio
-              = f.radio_button :promotion_type, 'TenPercentOffTotal', :class => 'promotion-type-radio'
-              10% Off Total
+              = f.radio_button :promotion_type, 'TenPercentOffTickets', :class => 'promotion-type-radio'
+              10% Off Each Ticket
+            %label.radio
+              = f.radio_button :promotion_type, 'TenDollarsOffTickets', :class => 'promotion-type-radio'
+              $10 Off Each Ticket
           
       .form-actions
         = f.submit "Save", :class => 'btn'
