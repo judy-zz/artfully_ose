@@ -33,8 +33,8 @@ class Statement
       #
       
       statement.cc_net = 0
-      show.items.each do |item| 
-        statement.cc_net += item.net if item.order.credit? 
+      show.items.each do |item|
+        statement.cc_net += item.net if (item.order.credit? && !show.imported?)
       end
       statement.settled           = show.settlements.successful.inject(0) { |settled, settlement| settled += settlement.net }
       payment_method_hash         = show.items.group_by { |item| item.order.payment_method }

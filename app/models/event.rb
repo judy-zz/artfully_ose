@@ -53,6 +53,10 @@ class Event < ActiveRecord::Base
     items.blank?
   end
   
+  def imported?
+    !self.import_id.nil?
+  end
+  
   def items
     Item.where(:show_id => self.shows)
   end

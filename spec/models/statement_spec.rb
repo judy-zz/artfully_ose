@@ -88,6 +88,20 @@ describe Statement do
     end
   end
   
+  describe "with an imported show" do      
+    before(:each) do
+      setup_show
+      setup_exchange
+    end
+      
+    it "should not show a cc_net for imported events" do
+      paid_show.event.should_receive(:imported?).at_least(1).times.and_return(true)
+      paid_show.should_receive(:unscoped_event).at_least(1).times.and_return(paid_show.event)
+      @statement = Statement.for_show(paid_show)
+      @statement.cc_net.should eq 0
+    end  
+  end
+  
   describe "with an exchange" do      
     before(:each) do
       setup_show
