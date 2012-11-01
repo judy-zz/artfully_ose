@@ -29,6 +29,7 @@ class Store::OrdersController < Store::StoreController
       order_params = order_params.merge(:tickets => ticket_ids) if ticket_ids.any?
     end
     order_params = order_params.merge(:donation => params[:donation]) if params[:donation]
+
     handle_order(order_params)
     if params[:discount].present?
       handle_discount(params)
@@ -58,7 +59,7 @@ class Store::OrdersController < Store::StoreController
 
     def handle_discount(params)
       @cart = current_cart
-      pre_discount_amount = current_cart.total
+      pre_discount_amount = @cart.total
       discount = Discount.find_by_code_and_event_id(params[:discount].upcase, event.id)
       current_cart = discount.apply_discount_to_cart(@cart)
       @discount_amount = pre_discount_amount - current_cart.total
