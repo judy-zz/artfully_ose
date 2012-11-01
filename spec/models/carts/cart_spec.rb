@@ -188,15 +188,15 @@ describe Cart do
   end
 
   describe "#clear_discounts" do
-    let(:tickets) { 2.times.collect { FactoryGirl.build(:ticket, :price => 10, :cart_price => 5) } }
+    let(:discount_amount) { 10 }
+    let(:price) { 20 }
+    let(:ticket) { FactoryGirl.build(:ticket, :price => price, :cart_price => price - discount_amount) }
     before(:each) do
-      subject.tickets << tickets
+      subject.tickets << ticket
     end
 
     it "should set tickets back to their original prices" do
-      subject.total.should == 410
-      subject.clear_discounts
-      subject.total.should == 420
+      expect {subject.clear_discounts}.to change(subject, :total).by(discount_amount)
     end
   end
 
