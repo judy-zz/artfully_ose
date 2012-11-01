@@ -19,9 +19,7 @@ class PeopleImport < Import
   def error(parsed_row, person)
     message = ""
     message = parsed_row.email + ": " unless parsed_row.email.blank?
-    message = message + person.errors.full_messages.join(", ")
-    
-    self.import_errors.create! :row_data => parsed_row.row, :error_message => message    
+    message = message + person.errors.full_messages.join(", ")    
     raise Import::RowError, message
   end
   

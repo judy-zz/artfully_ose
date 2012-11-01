@@ -52,18 +52,23 @@ class Import < ActiveRecord::Base
     self.people.destroy_all
     self.import_errors.delete_all
 
-    begin
-      rows.each_with_index do |row, index|
-        Rails.logger.debug("----- Processing row #{index} ------")
+    rows.each_with_index do |row, index|
+      begin
+        Rails.logger.info("----- Processing row #{index} ------")
         process(ParsedRow.parse(headers, row))
+      rescue => error
+        fail!(error, row, index)
+        return
       end
-      self.imported!
-    rescue
-      fail!
     end
+    self.imported!
   end
   
-  def fail!
+  #
+  # This composes errors thrown *during* the import.  For validation errors, see invalidate!
+  #
+  def fail!(error = nil, row = nil, row_num = 0)
+    self.import_errors.create! :row_data => row, :error_message => "Row #{row_num}: #{error.message}"
     failed!
     rollback
   end
@@ -110,15 +115,17 @@ class Import < ActiveRecord::Base
     end
 
     self.pending!
+    
+  #TODO: Needs to be re-worked to include the row humber in the error
   rescue CSV::MalformedCSVError => e
     error_message = "There was an error while parsing the CSV document: #{e.message}"
     self.import_errors.create!(:error_message => error_message)
-    self.failed!
+    self.invalidate!
   rescue Exception => e
     self.import_errors.create!(:error_message => e.message)
-    self.failed!
-  rescue Import::RowError
-    self.import_errors.create!(:error_message => error_message)
+    self.invalidate!
+  rescue Import::RowError => e
+    self.import_errors.create!(:error_message => e.message)
     self.invalidate!
   end
 
