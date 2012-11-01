@@ -187,6 +187,19 @@ describe Cart do
     end
   end
 
+  describe "#clear_discounts" do
+    let(:tickets) { 2.times.collect { FactoryGirl.build(:ticket, :price => 10, :cart_price => 5) } }
+    before(:each) do
+      subject.tickets << tickets
+    end
+
+    it "should set tickets back to their original prices" do
+      subject.total.should == 410
+      subject.clear_discounts
+      subject.total.should == 420
+    end
+  end
+
   # # TODO: Fix these specs!
   # describe ".generate_donations" do
   #   let(:tickets) { 2.times.collect { FactoryGirl.build(:ticket) } }

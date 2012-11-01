@@ -25,6 +25,7 @@ class Cart < ActiveRecord::Base
   end
 
   def clear!
+    clear_discounts
     clear_tickets
     clear_donations
   end
@@ -36,6 +37,10 @@ class Cart < ActiveRecord::Base
   def clear_tickets
     release_tickets
     self.tickets = []
+  end
+
+  def clear_discounts
+    tickets.each { |ticket| ticket.update_column(:cart_price, ticket.price) }
   end
 
   def release_tickets
