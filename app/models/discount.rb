@@ -17,7 +17,8 @@ class Discount < ActiveRecord::Base
   end
 
   def apply_discount_to_cart(cart)
-    raise "Discount is not active!" unless self.active?
+    ensure_discount_is_allowed(cart)
+
     case self.promotion_type
     when "TenPercentOffTickets"
       cart.tickets.each do |ticket|
@@ -31,5 +32,12 @@ class Discount < ActiveRecord::Base
       raise "Discount Type has not been defined!"
     end
     return cart
+  end
+
+private
+
+  def ensure_discount_is_allowed(cart)
+    raise "Discount is not active!" unless self.active?
+    raise "Discount won't work for this show!" unless cart.tickets.first.try(:event) == self.event
   end
 end
