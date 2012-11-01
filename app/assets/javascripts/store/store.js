@@ -175,6 +175,15 @@ function updateOrderOnServer() {
       } else {
         $('tr#service-charge').hide();
       }
+
+      // add discount line item
+      $('tr#discount td.details span').html(data.discount_name);
+      $('tr#discount td.amount h5').html(data.discount_amount / 100.0);
+      if (data.discount_name) {
+        $('tr#discount').show();
+      } else {
+        $('tr#discount').hide();
+      }
       
       // todo validate amount
       $('.form-actions #cart-total').html(data.total / 100.0);

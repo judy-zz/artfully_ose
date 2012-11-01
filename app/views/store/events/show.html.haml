@@ -85,6 +85,15 @@
             %td.price
               %h5.formatCurrency
 
+          %tr#discount{:style => 'display:none'}
+            %td
+            %td.details
+              Discount code
+              %span BLANK
+            %td.quantity
+            %td.amount
+              %h5.formatCurrency
+
         .form-actions
           = link_to 'Checkout Now', '#contact-info', 'data-toggle' => 'tab', :class => 'btn btn-primary btn-large pull-right disabled'
           %h4#cart-total.formatCurrency

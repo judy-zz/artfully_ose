@@ -14,6 +14,10 @@ class Store::StoreController < ActionController::Base
     @current_cart
   end
 
+  def current_cart=(cart)
+    @current_cart = cart
+  end
+
   private
     def create_current_cart(reseller_id)
       if reseller_id.blank?
