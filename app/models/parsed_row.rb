@@ -132,6 +132,10 @@ class ParsedRow
     !self.event_name.blank?
   end
   
+  def preview(field_name)
+    field_name.to_s.ends_with?("amount") ? self.send("unparsed_#{field_name}") : self.send(field_name)
+  end
+  
   def person_attributes
       {:email           => self.email,
       :first_name      => self.first,

@@ -4,8 +4,8 @@
     &nbsp;
 
   .modal-body
-    %table.table
+    %table.table.table-condensed
       - keys.each do |field|
         %tr
           %td=field.to_s.humanize
-          %td=row.send(field)
+          %td=row.preview(field)
