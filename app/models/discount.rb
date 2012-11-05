@@ -26,7 +26,11 @@ class Discount < ActiveRecord::Base
       end
     when "TenDollarsOffTickets"
       cart.tickets.each do |ticket|
-        ticket.update_attributes(:cart_price => ticket.price - 1000)
+        if ticket.price > 1000
+          ticket.update_attributes(:cart_price => ticket.price - 1000)
+        else
+          ticket.update_attributes(:cart_price => 0)
+        end
       end
     else
       raise "Discount Type has not been defined!"
