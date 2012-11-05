@@ -1,5 +1,6 @@
 .row
   .span3
+    %p="#{pluralize(@import.import_rows.length, 'person')} in this import file."
     %p This import was created at: <br> #{l import.created_at}
     %p To discard this import and start over, click "Delete"
     %p To pause this import and come back later, click "Back"
