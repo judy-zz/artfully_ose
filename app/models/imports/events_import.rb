@@ -96,6 +96,7 @@ class EventsImport < Import
     event.venue = Venue.new
     event.venue.name = parsed_row.venue_name
     event.venue.organization = self.organization
+    event.venue.time_zone = self.organization.time_zone
     event.contact_email = self.organization.email || self.user.email
     event.import = self
     event.save!

@@ -152,11 +152,29 @@ describe EventsImport do
     end  
   end
   
+  describe "#create_event" do
+    before :each do
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Venue Name", "Show Date", "Amount", "Payment Method"]
+      @rows = ["John", "Doe", "john@does.com", "Event1", "A Venue", "2019/03/04", "30.99", "Check"]      
+      @parsed_row = ParsedRow.parse(@headers, @rows)     
+      @import = FactoryGirl.create(:events_import) 
+    end
+    
+    it "should use an existing event if one exists with the same name"
+    
+    it "should set all the venue details on the event" do
+      event = @import.create_event(@parsed_row, nil)
+      event.venue.should_not be_nil
+      event.venue.time_zone.should_not be_nil
+      event.venue.time_zone.should eq @import.organization.time_zone
+    end
+  end
+  
   describe "#create_ticket" do
     before(:each) do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
-      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date", "Amount", "Payment Method"]
-      @rows = ["John", "Doe", "john@does.com", "Event1", "2019/03/04", "30.99", "Check"]      
+      @headers = ["First Name", "Last Name", "Email", "Event Name", "Venue Name", "Show Date", "Amount", "Payment Method"]
+      @rows = ["John", "Doe", "john@does.com", "Event1", "A Venue", "2019/03/04", "30.99", "Check"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
       @import = FactoryGirl.create(:events_import)
       @person = FactoryGirl.create(:person, :email => "first@example.com")
