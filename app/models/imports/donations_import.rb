@@ -34,7 +34,7 @@ class DonationsImport < Import
   end
   
   def create_person(parsed_row)
-    Rails.logger.info("DONATION_IMPORT: Creating person")
+    Rails.logger.info("Import #{id} DONATION_IMPORT: Creating person")
     if !parsed_row.email.blank?
       person = Person.first_or_create(parsed_row.email, self.organization, parsed_row.person_attributes) do |p|
         p.import = self
@@ -42,7 +42,7 @@ class DonationsImport < Import
     else    
       person = attach_person(parsed_row)
       if !person.save
-        Rails.logger.info("DONATION_IMPORT: Person save failed")
+        Rails.logger.info("Import #{id} DONATION_IMPORT: Person save failed")
         self.import_errors.create! :row_data => parsed_row.row, :error_message => person.errors.full_messages.join(", ")
         self.reload
         fail!
@@ -52,7 +52,7 @@ class DonationsImport < Import
   end
    
   def create_contribution(parsed_row, person)
-    Rails.logger.info("DONATION_IMPORT: Creating contribution")
+    Rails.logger.info("Import #{id} DONATION_IMPORT: Creating contribution")
     occurred_at = parsed_row.donation_date.blank? ? DateTime.now : DateTime.parse(parsed_row.donation_date)
     params = {}
     params[:subtype] = parsed_row.donation_type

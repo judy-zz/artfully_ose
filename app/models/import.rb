@@ -54,7 +54,7 @@ class Import < ActiveRecord::Base
 
     rows.each_with_index do |row, index|
       begin
-        Rails.logger.info("----- Processing row #{index} ------")
+        Rails.logger.info("----- Import #{id} Processing row #{index} ------")
         process(ParsedRow.parse(headers, row))
       rescue => error
         fail!(error, row, index)
