@@ -77,5 +77,5 @@
       Click "Resend Receipt" to email a duplicate receipt to  
       %strong="#{person.email}"
     .modal-footer
-      =link_to "Delete", contribution_path(order), :class => 'btn', :id => 'destroy-order-link', 'data-method' => :delete
+      =link_to "Resend Receipt", resend_order_path(order), :class => "btn btn-success"
       =link_to "Cancel", "#", :class => "btn btn-danger", 'data-dismiss'=>'modal'   
