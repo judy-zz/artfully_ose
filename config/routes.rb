@@ -1,9 +1,4 @@
 Rails.application.routes.draw do
-  # these only exist for mocking up the discount form
-  # remove after Discount model is created
-  match '/events/:id/temp_discount_form' => 'events#temp_discount_form', :as => 'temp_discount'
-  match 'temp_discounts' => 'events#temp_discount_form'
-  match '/events/:id/temp_discounts' => 'events#temp_discounts_index', :as => 'temp_discounts_index'
 
   namespace :api do
     resources :events, :only => :show
