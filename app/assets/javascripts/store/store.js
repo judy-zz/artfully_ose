@@ -60,6 +60,12 @@ $(document).ready(function(){
     updateOrderOnServer();
   });
 
+  $('#discount-display button').click(function(e) {
+    e.preventDefault();
+    $('tr#discount-display').hide();
+    $('tr#discount-input').show();
+  });
+
   // click "complete purchase" to submit payment
   $('form#shopping-cart-form').submit(function(e) {
     e.preventDefault();
@@ -185,10 +191,10 @@ function updateOrderOnServer() {
 
       // add discount line item
       if (data.discount_name) {
+        $('tr#discount-input').hide();
         $('tr#discount-display td.details span').html(data.discount_name);
         $('tr#discount-display td.amount h5').html(data.discount_amount / 100.0);
         $('tr#discount-display').show();
-        $('tr#discount-input').hide();
       } else {
         $('tr#discount-display').hide();
         $('tr#discount-input').show();
