@@ -16,6 +16,8 @@
             :submit_button => '<input type="hidden" name="type" value="events"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
 
   .span8
+    %p
+      Please supply a CSV (comma separated values) file of people that you'd like to import.
     %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "donations")} with these headers already filled in.
     
     %h3 Required Fields
@@ -29,7 +31,7 @@
           %b YYYY/MM/DD HH:MMpm 
           %br
           %br
-          For a donation on April 18, 2013, set the date to "2013/04/18"  You may omit the time portion of the string.
+          For a donation on April 18, 2013, set the date to "2013/04/18".  You may omit the time.
       %tr 
         %td.field Donation Type
         %td Cash, Check, In-Kind
@@ -37,17 +39,17 @@
         %td.field Deductible Amount
         %td The tax-deductible amount of the donation (usually the total amount received, unless the donor <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>received something in return</a>).  Don't include a '$' or other currency symbols.
     
-    %h3 Include One Of The Following
+    %h3 Each row must include one of the following
     %table.table.table-bordered.table-striped.docs
       %tr 
         %td.field First 
-        %td The first name of the donor
+        %td The first name of the person
       %tr 
         %td.field Last
-        %td The last name of the donor
+        %td The last name of the person
       %tr 
         %td.field Email
-        %td The email address of the donor  
+        %td The email address of the person  
       
     %h3 Optional Fields
     %table.table.table-bordered.table-striped.docs
@@ -55,5 +57,5 @@
         %td.field Payment Method
         %td Cash, Credit Card, Check
       %tr 
-        %td.field Non Deductible Amount
+        %td.field Non-Deductible Amount
         %td Any non-deductible portion of the donation (i.e. the fair market value of <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>something the donor received in return</a>). Don't include a '$' or other currency symbols.

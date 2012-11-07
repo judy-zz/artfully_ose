@@ -17,17 +17,17 @@
 
   .span8
     %p
-      Please supply a CSV (comma separated values) of people that you'd like to import.
+      Please supply a CSV (comma separated values) file of people that you'd like to import.
     %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "people")} with these headers already filled in.
     
-    %h3 Include One Of The Following
+    %h3 Each row must include one of the following
     %table.table.table-bordered.table-striped.docs
       %tr 
         %td.field First 
-        %td The first name of the patron
+        %td The first name of the person
       %tr 
         %td.field Last
-        %td The last name of the patron
+        %td The last name of the person
       %tr 
         %td.field Email
         %td The email address of the person  
@@ -36,58 +36,58 @@
     %table.table.table-bordered.table-striped.docs
       %tr
         %td.field Company
-        %td The contact's company name
+        %td The person's company name
       %tr
         %td.field Address1
-        %td First line of the contact's address
+        %td First line of the person's address
       %tr
         %td.field Address2
-        %td Second line of the contact's address
+        %td Second line of the person's address
       %tr
         %td.field City
-        %td The contact's city
+        %td The person's city
       %tr
         %td.field State
-        %td The contact's state
+        %td The person's state
       %tr
         %td.field Zip
-        %td The contact's zip code
+        %td The person's zip code
       %tr
         %td.field Country
-        %td The contact's country
+        %td The person's country
       %tr
         %td.field Phone 1 type
         %td Work, Home, Cell or Fax
       %tr
         %td.field Phone 1
-        %td The contact's first phone number
+        %td The person's first phone number
       %tr
         %td.field Phone 2 type
         %td Work, Home, Cell or Fax
       %tr
         %td.field Phone 2
-        %td The contact's second phone number
+        %td The person's second phone number
       %tr
         %td.field Phone 3 type
         %td Work, Home, Cell or Fax
       %tr
         %td.field Phone 3
-        %td The contact's third phone number
+        %td The person's third phone number
       %tr
         %td.field Website
-        %td The contact's website
+        %td The person's website
       %tr
         %td.field Twitter
-        %td The contact's handle on Twitter
+        %td The person's handle on Twitter
       %tr
         %td.field Facebook
-        %td The contact's web address on Facebook
+        %td The person's web address on Facebook
       %tr
-        %td.field LinkedIn
-        %td The contact's web address on LinkedIn
+        %td.field LinkedIn 
+        %td The person's web address on LinkedIn
       %tr
         %td.field Tags
-        %td Tags you'd like to associate with this contact, separated by vertical bars (e.g., "vip|board")
+        %td Tags you'd like to associate with this person, separated by vertical bars (e.g., "vip|board").
       %tr
         %td.field Type
         %td Individual, Corporation, Foundation, Government or Other

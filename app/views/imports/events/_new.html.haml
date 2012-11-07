@@ -17,7 +17,7 @@
 
   .span8
     %p
-      Please supply a CSV (comma separated values) of people that you'd like to import.
+      Please supply a CSV (comma separated values) file of event data that you'd like to import.
     %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "events")} with these headers already filled in.
     %h3 Required Fields
     %table.table.table-bordered.table-striped.docs
@@ -39,16 +39,16 @@
           %b YYYY/MM/DD HH:MMpm 
           %br
           %br
-          A show on April 18, 2012 at 5:30pm would be represented as "2012/04/18 5:30pm"  If you do not include a time, we'll set it to 8pm.
+          A show on April 18, 2012 at 5:30pm would be represented as "2012/04/18 5:30pm".  If you do not include a time, we'll set it to 8pm.
     
-    %h3 Include One Of The Following
+    %h3 Each row must include one of the following
     %table.table.table-bordered.table-striped.docs
       %tr 
         %td.field First 
-        %td The first name of the patron
+        %td The first name of the person
       %tr 
         %td.field Last
-        %td The last name of the patron
+        %td The last name of the person
       %tr 
         %td.field Email
         %td The email address of the person  
@@ -63,4 +63,11 @@
         %td Cash, Credit Card, Check, Comp, Other.
       %tr 
         %td.field Order Date
-        %td The date of the order in the format "MM/DD/YYYY HH:MMpm".  If this is omitted the order will be recorded with today's date.
+        %td
+          The date of the order in the format
+          %br
+          %br
+          %b YYYY/MM/DD HH:MMpm 
+          %br
+          %br
+          For an order on April 18, 2013, set the date to "2013/04/18".  You may omit the time.  If you omit the date entirely, the order will be recorded with today's date.
