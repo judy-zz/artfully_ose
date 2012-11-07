@@ -1,5 +1,5 @@
 - if current_user.current_organization.has_active_fiscally_sponsored_project?
-  %p=Use this form for recording contributions received outside of Fractured Atlas.  Donations to Fractured Atlas Fiscally Sponsored Projects should be made through Fractured Atlas.  Please <a href='mailto:support@artful.ly'>contact support</a> with any questions."
+  %p Use this form for recording contributions received outside of Fractured Atlas.  Donations to Fractured Atlas Fiscally Sponsored Projects should be made through Fractured Atlas.  Please <a href='mailto:support@artful.ly'>contact support</a> with any questions.
 
 = form_for(contribution, :html=>{ :class=>'form-horizontal' }) do |form|
   = form.hidden_field :person_id
