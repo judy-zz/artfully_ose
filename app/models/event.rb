@@ -1,6 +1,7 @@
 class Event < ActiveRecord::Base
   include Ext::Integrations::Event
   include EventPresenter
+  require 'email_validator'
   
   attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes,
                   :show_special_instructions, :special_instructions_caption
@@ -13,11 +14,12 @@ class Event < ActiveRecord::Base
   has_many :tickets, :through => :shows
   has_many :discounts
   validate :validate_contact_phone
-  
-  after_create :create_default_chart
+  validates :contact_email, :presence => true, :email => true
+  validate :name, :presence => true
+  validate :organization_id, :presence => true
 
   has_attached_file :image,
-    :storage => :s3,  
+    :storage => :s3,
     :path => ":attachment/:id/:style.:extension",
     :bucket => Rails.configuration.s3.bucket,
     :s3_protocol => 'https',
@@ -31,7 +33,7 @@ class Event < ActiveRecord::Base
   validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new {|model| model.image }
   validates_attachment_content_type :image, :content_type => ["image/jpeg", "image/gif", "image/png"]
 
-  validates_presence_of :name, :organization_id
+  after_create :create_default_chart
 
   default_scope where(:deleted_at => nil).order("created_at DESC")
   scope :published, includes(:shows).where(:shows => { :state => "published" })

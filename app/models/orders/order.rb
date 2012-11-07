@@ -170,6 +170,10 @@ class Order < ActiveRecord::Base
     "Eastern Time (US & Canada)"
   end
 
+  def contact_email
+    items.try(:first).try(:show).try(:event).try(:contact_email)
+  end
+
   private
 
     #this used to do more.  Now it only does this

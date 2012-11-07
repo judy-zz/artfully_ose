@@ -3,7 +3,7 @@
 Devise.setup do |config|
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in DeviseMailer.
-  config.mailer_sender = "support@artful.ly"
+  config.mailer_sender = ARTFULLY_CONFIG[:contact_email]
   config.case_insensitive_keys = [ :email ]
   config.use_salt_as_remember_token = true
   config.reset_password_within = 24.hours
