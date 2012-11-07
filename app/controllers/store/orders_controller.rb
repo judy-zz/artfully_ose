@@ -5,10 +5,6 @@ class Store::OrdersController < Store::StoreController
     
     order_params = {}
 
-    # REMOVE ME
-    params[:discount] = "COWBELL"
-    # REMOVE ME
-
     if params[:sections]
       ticket_ids = []
       over_section_limit = []
