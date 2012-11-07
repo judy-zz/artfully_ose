@@ -1,0 +1,25 @@
+%fieldset
+  %legend Discount
+
+  .control-group
+    = f.label :code, "Discount Code", :class => 'control-label'
+    .controls
+      = f.text_field :code, :class => 'input', :placeholder => "COWBELL"
+      %p.help-block 4-12 characters, not case sensative
+
+  .control-group
+    .controls
+      %label.checkbox
+        = f.check_box :active
+        Discount is active and can be used now
+
+%fieldset
+  .control-group
+    = f.label :promotion_type, :class => 'control-label'
+    .controls
+      %label.radio
+        = f.radio_button :promotion_type, 'TenPercentOffTickets', :class => 'promotion-type-radio'
+        10% Off Each Ticket
+      %label.radio
+        = f.radio_button :promotion_type, 'TenDollarsOffTickets', :class => 'promotion-type-radio'
+        $10 Off Each Ticket

@@ -9,6 +9,10 @@ class DiscountsController < ApplicationController
     @discount = @event.discounts.build
   end
 
+  def edit
+    @discount = Discount.find(params[:id])
+  end
+
   def create
     @discount = @event.discounts.build(params[:discount])
     @discount.creator = current_user
@@ -18,6 +22,17 @@ class DiscountsController < ApplicationController
       redirect_to event_discounts_path(@event)
     else
       render :new
+    end
+  end
+
+  def update
+    @discount = Discount.find(params[:id])
+
+    if @discount.update_attributes(params[:discount])
+      flash[:success] = "Discount #{@discount.code} updated successfully."
+      redirect_to event_discounts_path(@event)
+    else
+      render :edit
     end
   end
 

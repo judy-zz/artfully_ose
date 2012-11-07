@@ -78,7 +78,7 @@ Rails.application.routes.draw do
       get :image
       get :messages
     end
-    resources :discounts
+    resources :discounts, :except => :destroy
     resources :shows do
       resource :sales, :only => [:new, :create, :show, :update]
       member do
