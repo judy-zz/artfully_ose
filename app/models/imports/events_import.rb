@@ -36,18 +36,18 @@ class EventsImport < Import
   end
   
   def row_valid?(parsed_row)
-    Rails.logger.info("Import #{id} Import #{id} EVENT_IMPORT: Validating Row")
+    Rails.logger.info("Import #{id} EVENT_IMPORT: Validating Row")
     raise Import::RowError, 'No Event Name included in this row' unless parsed_row.event_name 
     raise Import::RowError, 'No Show Date included in this row' unless parsed_row.show_date
-    raise Import::RowError, "Please include a first name, last name, or email: #{parsed_row.row}" unless attach_person(parsed_row).person_info
     valid_date? parsed_row.show_date    
-    #TODO: Validate Order Date if exists
-    
+    #valid_date? parsed_row.order_date unless parsed_row.order_date.blank?
     true
   end
   
   def create_person(parsed_row)
-    if !parsed_row.email.blank?
+    if !attach_person(parsed_row).person_info
+      person = self.organization.dummy
+    elsif !parsed_row.email.blank?
       person = Person.first_or_create(parsed_row.email, self.organization, parsed_row.person_attributes) do |p|
         p.import = self
       end
