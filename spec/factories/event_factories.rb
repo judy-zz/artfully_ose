@@ -4,6 +4,7 @@ FactoryGirl.define do
     producer "Some Producer"
     association :organization
     association :venue
+    contact_email { Faker::Internet.email }
   end
 
   factory :paid_event, :parent => :event do
