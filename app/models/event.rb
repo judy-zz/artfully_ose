@@ -14,7 +14,7 @@ class Event < ActiveRecord::Base
   has_many :tickets, :through => :shows
   validate :validate_contact_phone
   validates :contact_email, :presence => true, :email => true
-  validate :name, :presence => true
+  validates :name, :presence => true
   validate :organization_id, :presence => true
 
   has_attached_file :image,
