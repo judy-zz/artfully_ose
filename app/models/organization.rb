@@ -53,7 +53,8 @@ class Organization < ActiveRecord::Base
     @updating_tax_info = true
     update_attributes({
       :ein => params[:ein],
-      :legal_organization_name => params[:legal_organization_name]
+      :legal_organization_name => params[:legal_organization_name],
+      :email => params[:email]
     })
   end
 
