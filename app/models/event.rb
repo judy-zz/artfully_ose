@@ -15,7 +15,7 @@ class Event < ActiveRecord::Base
   validate :validate_contact_phone
   validates :contact_email, :presence => true, :email => true
   validates :name, :presence => true
-  validate :organization_id, :presence => true
+  validates :organization_id, :presence => true
 
   has_attached_file :image,
     :storage => :s3,
