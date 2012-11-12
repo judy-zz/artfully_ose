@@ -44,6 +44,7 @@ describe Discount do
   describe "#apply_discount_to_cart" do
     before(:each) do
       @cart = FactoryGirl.create(:cart_with_items)
+      subject.event = @cart.tickets.first.event
     end
     context "with ten percent off" do
       before(:each) do
