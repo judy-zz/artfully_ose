@@ -24,6 +24,14 @@ describe Discount do
     @discount1.save.should be_true
     @discount2.save.should be_true
   end
+
+  specify "should not allow a code less than 4 characters" do
+    FactoryGirl.build(:discount, code: "ABC").save.should be_false
+  end
+
+  specify "should not allow a code more than 15 characters" do
+    FactoryGirl.build(:discount, code: "BETTERCALLKENNYLOGGINSBECAUSEYOUREINTHEDANGERZONE").save.should be_false
+  end
   
   describe "#set_organization_from_event" do
     it "should set the organization from the event's organization" do
