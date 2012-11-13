@@ -9,7 +9,9 @@ module Ext
     end
     
     module Ticket
-
+      def reseller
+        nil
+      end
     end
   end
 end

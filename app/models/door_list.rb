@@ -7,7 +7,7 @@ class DoorList
   end
 
   def tickets
-    @tickets ||= Ticket.where(:show_id => show.id).includes(:buyer, :cart).select(&:committed?)
+    @tickets ||= Ticket.where(:show_id => show.id).includes(:buyer, :cart, :section, :items => :order).select(&:committed?)
   end
 
   def items

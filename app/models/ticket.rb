@@ -214,16 +214,6 @@ class Ticket < ActiveRecord::Base
     not committed?
   end
 
-  def reseller
-    order =
-      Reseller::Order.
-        includes(:organization, :items).
-        where("items.product_type" => "Ticket", "items.product_id" => id).
-        first
-
-    order.organization if order
-  end
-
   #Bulk creation of tickets should use this method to ensure all tickets are created the same
   #Reminder that this returns a ActiveRecord::Import::Result, not an array of tickets
   def self.create_many(show, section, quantity, on_sale = false)
