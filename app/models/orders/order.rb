@@ -221,7 +221,7 @@ class Order < ActiveRecord::Base
         action.organization_id    = organization.id
         action.details            = donation_details
         action.occurred_at        = created_at
-        action.subtype            = "Donation"
+        action.subtype            = "Monetary"
         action.save!
         action
       end
