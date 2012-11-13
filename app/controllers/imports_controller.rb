@@ -12,7 +12,7 @@ class ImportsController < ArtfullyOseController
     @import.approve!
 
     flash[:notice] = "Your file has been entered in the import queue. This process may take some time."
-    redirect_to root_path
+    redirect_to imports_path
   end
 
   def show
