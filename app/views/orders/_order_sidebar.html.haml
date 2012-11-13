@@ -51,7 +51,7 @@
 -if order.destroyable?  
   #confirm-delete.modal
     .modal-body
-      Are you sure you want to delete this order?  The order and associated actions will be deleted.  This cannot be undone. 
+      Are you sure you want to delete this order?  The order and associated actions will be deleted.  This cannot be undone.  The person record will not be deleted.
     .modal-footer
       =link_to "Delete", contribution_path(order), :class => 'btn btn-danger', :id => 'destroy-order-link', 'data-method' => :delete
       =link_to "Cancel", "#", :class => "btn", 'data-dismiss'=>'modal'  

@@ -6,7 +6,8 @@ describe Contribution do
   let(:person) { FactoryGirl.create(:person) }
   let(:attributes) do
     {
-      :subtype         => "Donation (Cash)",
+      :subtype         => "Monetary",
+      :payment_method  => "Cash",
       :amount          => 2500,
       :occurred_at     => "2011-08-17 02:28 pm",
       :details         => "Some details.",
@@ -16,9 +17,9 @@ describe Contribution do
     }
   end
 
-  subject { Contribution.new(attributes)}
+  subject { Contribution.new(attributes) }
 
-  [:person_id, :subtype, :amount, :details, :organization_id, :creator_id].each do |attribute|
+  [:person_id, :subtype, :payment_method, :amount, :details, :organization_id, :creator_id].each do |attribute|
     it "loads the #{attribute} when created" do
       subject.send(attribute).should eq attributes[attribute]
     end
@@ -50,6 +51,10 @@ describe Contribution do
 
     it "should specify that the order skip creation of actions" do
       order.skip_actions.should be_true
+    end
+    
+    it "should set the payment method on the order" do
+      order.payment_method.should eq subject.payment_method
     end
   end
 
@@ -107,24 +112,54 @@ describe Contribution do
     end
   end
 
-  # # TODO: Fix this spec!
-  # describe "#build_action" do
-  #   let(:action) { subject.send(:build_action)}
+  describe "#build_action" do
+    let(:action) { subject.send(:build_action)}
 
-  #   it "maps attributes onto the Action" do
-  #     action.subtype.should eq subject.subtype
-  #     action.organization_id.should eq subject.organization_id
-  #     action.occurred_at.should eq subject.occurred_at
-  #     action.details.should eq subject.details
-  #     action.person_id.should eq subject.person_id
-  #     action.creator_id.should eq subject.creator_id
-  #   end
-  # end
+    it "maps attributes onto the Action" do
+      action.subtype.should eq subject.subtype
+      action.organization_id.should eq subject.organization_id
+      action.occurred_at.should eq subject.occurred_at
+      action.details.should eq subject.details
+      action.person_id.should eq subject.person_id
+      action.creator_id.should eq subject.creator_id
+    end
+  end
+  
+  describe "update" do
+    let(:order)   { Order.new }
+    let(:item)    { Item.new }
+    let(:action)  { GiveAction.new }
+
+    before(:each) do
+      order.items = [item]
+      subject.stub(:order).and_return(order)
+      subject.stub(:action).and_return(action)
+    end
+
+    it "updates the action and order" do
+      item.should_receive(:price=)           
+      item.should_receive(:nongift_amount=)   
+      item.should_receive(:realized_price=)   
+      item.should_receive(:net=)              
+      item.should_receive(:save).and_return(true)
+      
+      order.should_receive(:payment_method=)
+      order.should_receive(:details=)
+      order.should_receive(:created_at=)
+      order.should_receive(:save).and_return(true)
+  
+      action.should_receive(:details=) 
+      action.should_receive(:subtype=)     
+      action.should_receive(:save).and_return(true)
+      
+      subject.update(subject)
+    end    
+  end
 
   describe "#save" do
-    let(:order) { mock(:order, :save! => true) }
-    let(:item) { mock(:item, :save! => true) }
-    let(:action) { mock(:action, :save! => true) }
+    let(:order)   { mock(:order, :save! => true) }
+    let(:item)    { mock(:item, :save! => true) }
+    let(:action)  { mock(:action, :save! => true) }
 
     before(:each) do
       subject.stub(:build_order).and_return(order)

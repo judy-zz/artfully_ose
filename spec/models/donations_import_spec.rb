@@ -16,13 +16,13 @@ describe DonationsImport do
   
       #This test can be broken up if we ever get before:all working or something similar  
       it "should do the import" do  
-        @import.import_rows.count.should == 3
         Person.where(:import_id => @import.id).length.should eq 3
         Person.where(:first_name => "Cal").where(:last_name => "Ripken").where(:email => "calripken@example.com").first.should_not be_nil
         Person.where(:first_name => "Adam").where(:last_name => "Jones").where(:email => "adamjones10@example.com").first.should_not be_nil
         Person.where(:first_name => "Mark").where(:last_name => "Cuban").where(:email => nil).first.should_not be_nil
         ImportedOrder.where(:import_id => @import.id).length.should eq 3
         GiveAction.where(:import_id => @import.id).length.should eq 3
+        @import.import_rows.count.should == 3
       end
     end   
   end
@@ -57,7 +57,7 @@ describe DonationsImport do
     
     it "should create the donation and underlying action" do
       @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Deductible Amount"]
-      @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Other","In-Kind","50.00"]      
+      @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Check","In-Kind","50.00"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
       @import = FactoryGirl.create(:donations_import)          
       @import.organization.time_zone = 'Eastern Time (US & Canada)'
@@ -68,6 +68,7 @@ describe DonationsImport do
       order  = contribution.order
       order.person.should eq @person
       order.organization.should eq @import.organization
+      order.payment_method.should eq "Check"
       order.items.length.should eq 1
       order.items.first.price.should eq 5000
       order.items.first.realized_price.should eq 5000

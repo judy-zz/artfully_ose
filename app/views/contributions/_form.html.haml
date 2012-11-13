@@ -8,7 +8,12 @@
   .control-group
     = form.label :subtype, "Type", :class => 'control-label'
     .controls
-      = form.select :subtype, options_for_select(Action::GIVE_TYPES)
+      = form.select :subtype, options_for_select(Action::GIVE_TYPES, contribution.subtype)
+      
+  .control-group
+    = form.label :payment_method, "Payment method", :class => 'control-label'
+    .controls
+      = form.select :payment_method, options_for_select([ "Cash", "Check", "Credit card", "Other" ], contribution.payment_method)
     
   .control-group
     = form.label :amount, "Deductible Amount", :class => 'control-label'

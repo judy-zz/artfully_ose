@@ -15,7 +15,7 @@ class Action < ActiveRecord::Base
   #
   # Action types: give, go, do, get, join, hear
   #
-  GIVE_TYPES = [ "Donation (Cash)", "Donation (Check)", "Donation (In-Kind)" ].freeze
+  GIVE_TYPES = [ "Monetary", "In-Kind" ].freeze
 
   def self.create_of_type(type)
     case type

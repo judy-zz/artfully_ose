@@ -4,7 +4,8 @@ class Contribution
 
   attr_accessor :contributor, 
                 :person_id, 
-                :subtype,  
+                :subtype,         #Monetary, In-kind  
+                :payment_method,  #Cash, Check, Credit card, Other
                 :occurred_at, 
                 :details, 
                 :organization_id, 
@@ -41,6 +42,7 @@ class Contribution
       contribution.occurred_at      = order.created_at
       contribution.amount           = order.items.first.price
       contribution.nongift_amount   = order.items.first.nongift_amount
+      contribution.payment_method   = order.payment_method
       
       contribution.subtype          = action.subtype
       contribution.details          = action.details
@@ -84,6 +86,7 @@ class Contribution
     action.subtype        = new_contribution.subtype
     
     order.created_at      = new_contribution.occurred_at
+    order.payment_method  = new_contribution.payment_method
     order.details         = new_contribution.details
     
     ActiveRecord::Base.transaction do
@@ -99,6 +102,7 @@ class Contribution
 
   def load(params)
     @subtype         = params[:subtype]
+    @payment_method  = params[:payment_method]
     @amount          = params[:amount]
     @nongift_amount  = params[:nongift_amount]
     @organization_id = params[:organization_id]
@@ -121,6 +125,7 @@ class Contribution
     person = Person.find(@person_id)
     action = Action.create_of_type("give")
     action.set_params(params, person)
+    action.creator_id = @creator_id
     action.subject = @order
     action.organization_id = @organization_id
     return action
@@ -134,6 +139,7 @@ class Contribution
     }
 
     order = order_klass.new(attributes).tap do |order|
+      order.payment_method = @payment_method
       order.skip_actions = true
     end
   end

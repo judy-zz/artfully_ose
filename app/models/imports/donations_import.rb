@@ -29,6 +29,8 @@ class DonationsImport < Import
   def row_valid?(parsed_row)
     raise Import::RowError, "No Deductible Amount included in this row: #{parsed_row.row}" if parsed_row.unparsed_amount.blank?
     raise Import::RowError, "Please include a first name, last name, or email: #{parsed_row.row}" unless attach_person(parsed_row).person_info
+    raise Import::RowError, "Donation type must be 'Monetary' or 'In-Kind': #{parsed_row.row}" unless Action::GIVE_TYPES.include? (parsed_row.donation_type)
+    
     valid_date? parsed_row.donation_date
     true
   end
@@ -58,6 +60,7 @@ class DonationsImport < Import
     params[:subtype] = parsed_row.donation_type
     params[:amount] = parsed_row.amount
     params[:nongift_amount] = parsed_row.nongift_amount
+    params[:payment_method] = parsed_row.payment_method
     
     params[:organization_id] = self.organization.id
     params[:occurred_at] = occurred_at.to_s
