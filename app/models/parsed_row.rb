@@ -38,12 +38,12 @@ class ParsedRow
     :venue_name       => [ "Venue", "Venue Name" ],
     :show_date        => [ "Show", "Show Date" ],
     :amount           => [ "Amount", "Dollar Amount" ],
-    :payment_method   => [ "Payment Method", "Method Of Payment", "Method of Payment" ],
+    :payment_method   => [ "Payment Method" ],
     :order_date       => [ "Order Date", "Date" ]
   })
   
   DONATION_FIELDS = SHARED_FIELDS.merge( {
-    :payment_method   => [ "Payment Method", "Method Of Payment", "Method of Payment" ],
+    :payment_method   => [ "Payment Method" ],
     :donation_date    => [ "Date", "Order Date" ],
     :donation_type    => [ "Donation Type", "Type" ],
     :amount           => [ "Deductible Amount", "Amount" ],

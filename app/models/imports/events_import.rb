@@ -37,8 +37,9 @@ class EventsImport < Import
   
   def row_valid?(parsed_row)
     Rails.logger.info("Import #{id} EVENT_IMPORT: Validating Row")
-    raise Import::RowError, 'No Event Name included in this row' unless parsed_row.event_name 
-    raise Import::RowError, 'No Show Date included in this row' unless parsed_row.show_date
+    raise Import::RowError, "No Event Name included in this row: #{parsed_row.row}" unless parsed_row.event_name 
+    raise Import::RowError, "No Show Date included in this row: #{parsed_row.row}" unless parsed_row.show_date
+    raise Import::RowError, "Please include a payment method in this row: #{parsed_row.row}" if parsed_row.payment_method.blank?
     valid_date? parsed_row.show_date    
     #valid_date? parsed_row.order_date unless parsed_row.order_date.blank?
     true

@@ -48,9 +48,10 @@ class Statement
       
       
       payment_method_hash.each do |payment_method, items|
-        row = statement.payment_method_rows[payment_method.downcase] || PaymentTypeRow.new(payment_method)
+        payment_method = (payment_method.try(:downcase) || "")
+        row = statement.payment_method_rows[payment_method] || PaymentTypeRow.new(payment_method)
         items.each {|item| row << item}
-        statement.payment_method_rows[payment_method.downcase] = row
+        statement.payment_method_rows[payment_method] = row
       end
     end
   end
