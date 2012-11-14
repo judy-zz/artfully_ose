@@ -266,8 +266,8 @@ describe EventsImport do
     end
     
     it "should be valid with a show time" do
-      @headers = ["First Name", "Last Name", "Email", "Event Name", "Show Date"]
-      @rows = [%w(John Doe john@does.com Event1 2012/03/04)]      
+      @headers = ["First Name", "Last Name", "Email", "Payment Method", "Event Name", "Show Date"]
+      @rows = [%w(John Doe john@does.com Event1 FishCard 2012/03/04)]      
       parsed_row = ParsedRow.parse(@headers, @rows.first)
       EventsImport.new.row_valid?(parsed_row).should be_true
     end

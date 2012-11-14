@@ -102,6 +102,7 @@ class Import < ActiveRecord::Base
     CSV.parse(csv_data, :headers => false) do |row|
       if self.import_headers.nil?
         self.import_headers = row.to_a
+        #TODO: Validate headers right here
         self.save!
       else
         self.import_rows.create!(:content => row.to_a)
