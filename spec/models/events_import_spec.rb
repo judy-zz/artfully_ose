@@ -292,6 +292,34 @@ describe EventsImport do
       parsed_row = ParsedRow.parse(@headers, @rows.first)
       lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
     end
+    
+    it "should be valid with an valid amount" do
+      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
+      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent 50)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with an invalid amount" do
+      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
+      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent $50.00)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with too many cents" do
+      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
+      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent 50.020)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with too many cents" do
+      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
+      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent 5A.00)]      
+      parsed_row = ParsedRow.parse(@headers, @rows.first)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
   end
   
   describe "#create_show" do

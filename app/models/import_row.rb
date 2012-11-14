@@ -4,7 +4,7 @@ class ImportRow < ActiveRecord::Base
 
   validates_presence_of :import
   validates_associated :import
-  validates_presence_of :content, :message => "is missing.  You have blank lines in your import file.  Please remove any blank lines (double-check the bottom of the file) and try again."
+  validates_presence_of :content, :message => "is missing.  You have blank lines in your import file.  Please remove any blank lines (double-check the top and bottom of the file) and try again."
 
   serialize :content
 

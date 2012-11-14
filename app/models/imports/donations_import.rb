@@ -1,5 +1,6 @@
 class DonationsImport < Import
   include Imports::Rollback
+  include Imports::Validations
   include ArtfullyOseHelper
   
   def kind
@@ -17,22 +18,15 @@ class DonationsImport < Import
     rollback_people
   end
   
-  def valid_date?(date_str)
-    begin
-      DateTime.parse(date_str)
-    rescue
-      raise Import::RowError, "Invalid date: #{date_str}"
-    end    
-    true
-  end  
-  
   def row_valid?(parsed_row)
     raise Import::RowError, "No Deductible Amount included in this row: #{parsed_row.row}" if parsed_row.unparsed_amount.blank?
     raise Import::RowError, "Please include a first name, last name, or email: #{parsed_row.row}" unless attach_person(parsed_row).person_info
     raise Import::RowError, "Please include a payment method in this row: #{parsed_row.row}" if parsed_row.payment_method.blank?
     raise Import::RowError, "Donation type must be 'Monetary' or 'In-Kind': #{parsed_row.row}" unless Action::GIVE_TYPES.include? (parsed_row.donation_type)
     
-    valid_date? parsed_row.donation_date
+    valid_date?   parsed_row.donation_date
+    valid_amount? parsed_row.unparsed_amount
+    valid_amount? parsed_row.unparsed_nongift_amount   unless parsed_row.unparsed_nongift_amount.blank?
     true
   end
   

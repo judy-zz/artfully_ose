@@ -1,5 +1,6 @@
 class EventsImport < Import
   include Imports::Rollback
+  include Imports::Validations
   
   def kind
     "events"
@@ -26,22 +27,14 @@ class EventsImport < Import
     rollback_people
   end
   
-  def valid_date?(date_str)
-    begin
-      DateTime.parse(date_str)
-    rescue
-      raise Import::RowError, "Invalid date: #{date_str}"
-    end    
-    true
-  end
-  
   def row_valid?(parsed_row)
     Rails.logger.info("Import #{id} EVENT_IMPORT: Validating Row")
     raise Import::RowError, "No Event Name included in this row: #{parsed_row.row}" unless parsed_row.event_name 
     raise Import::RowError, "No Show Date included in this row: #{parsed_row.row}" unless parsed_row.show_date
     raise Import::RowError, "Please include a payment method in this row: #{parsed_row.row}" if parsed_row.payment_method.blank?
-    valid_date? parsed_row.show_date    
-    #valid_date? parsed_row.order_date unless parsed_row.order_date.blank?
+    valid_date?   parsed_row.show_date    
+    valid_amount? parsed_row.unparsed_amount      unless parsed_row.unparsed_amount.blank?
+    valid_date?   parsed_row.order_date           unless parsed_row.order_date.blank?
     true
   end
   

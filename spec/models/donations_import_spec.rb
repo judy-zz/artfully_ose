@@ -198,5 +198,26 @@ describe DonationsImport do
       @import = FactoryGirl.create(:donations_import) 
       lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
     end
+    
+    it "should raise an error if there is a currency symbol" do
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount"]
+      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","$56"]    
+      @import = FactoryGirl.create(:donations_import) 
+      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+    
+    it "should raise an error if there is a currency symbol" do
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount","Non Deductible Amount"]
+      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","56","$4"]    
+      @import = FactoryGirl.create(:donations_import) 
+      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+    
+    it "should raise an error if the donation type is invalid" do
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount","Non Deductible Amount"]
+      @rows = ["calripken@example.com","Cal","Ripken","Other","Bird","56","4"]    
+      @import = FactoryGirl.create(:donations_import) 
+      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
   end
 end
