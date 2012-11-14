@@ -265,60 +265,67 @@ describe EventsImport do
       @import = EventsImport.new
     end
     
+    it "should be invalid without a show time" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name","Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "5.00",   "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid without an event" do
+      @headers = ["First Name", "Last Name", "Email",        "Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com","2011/13/13","5.00",   "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with an invalid show date" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name","Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "2011/13/13","5.00",   "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with a show date in mm/dd/yyyy" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name","Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "1/10/2011", "5.00",   "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with an invalid amount" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name","Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "2001/1/13", "$5.00",  "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)     
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with too many cents" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name","Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "2001/1/13", "5.030",  "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)     
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with a bad dollar amount" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name","Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "2001/1/13",  "5A.00",  "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be valid with an valid amount" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name", "Show Date", "Amount",  "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",     "2001/1/13", "50",      "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      EventsImport.new.row_valid?(parsed_row).should be_true
+    end
+    
     it "should be valid with a show time" do
       @headers = ["First Name", "Last Name", "Email", "Payment Method", "Event Name", "Show Date"]
       @rows = [%w(John Doe john@does.com Event1 FishCard 2012/03/04)]      
       parsed_row = ParsedRow.parse(@headers, @rows.first)
       EventsImport.new.row_valid?(parsed_row).should be_true
-    end
-    
-    it "should be invalid without a show time" do
-      @headers = ["First Name", "Last Name", "Email", "Event Name"]
-      @rows = [%w(John Doe john@does.com Event1)]      
-      parsed_row = ParsedRow.parse(@headers, @rows.first)
-      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
-    end
-    
-    it "should be invalid without an event" do
-      @headers = ["First Name", "Last Name", "Email", "Show Date"]
-      @rows = [%w(John Doe john@does.com Event1 2001/3/3)]      
-      parsed_row = ParsedRow.parse(@headers, @rows.first)
-      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
-    end
-    
-    it "should be invalid with an invalid show date" do
-      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name"]
-      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent)]      
-      parsed_row = ParsedRow.parse(@headers, @rows.first)
-      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
-    end
-    
-    it "should be valid with an valid amount" do
-      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
-      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent 50)]      
-      parsed_row = ParsedRow.parse(@headers, @rows.first)
-      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
-    end
-    
-    it "should be invalid with an invalid amount" do
-      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
-      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent $50.00)]      
-      parsed_row = ParsedRow.parse(@headers, @rows.first)
-      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
-    end
-    
-    it "should be invalid with too many cents" do
-      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
-      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent 50.020)]      
-      parsed_row = ParsedRow.parse(@headers, @rows.first)
-      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
-    end
-    
-    it "should be invalid with too many cents" do
-      @headers = ["First Name", "Last Name", "Email", "Show Date", "Event Name", "Amount"]
-      @rows = [%w(John Doe john@does.com Event1 2001/13/13 AnEvent 5A.00)]      
-      parsed_row = ParsedRow.parse(@headers, @rows.first)
-      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
     end
   end
   

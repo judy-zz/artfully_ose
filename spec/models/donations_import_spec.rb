@@ -192,32 +192,56 @@ describe DonationsImport do
   end
   
   describe "#row_valid" do
+    before(:each) do    
+      @import = FactoryGirl.create(:donations_import) 
+    end
+    
     it "should raise an error if there is no deductible amount" do
-      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount"]
-      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind",""]    
-      @import = FactoryGirl.create(:donations_import) 
-      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+      @headers = ["Email",  "First","Last",   "Payment Method","Donation Type","Deductible Amount", "Date"]
+      @rows =    ["c@c.com","Cal",  "Ripken", "Other",         "In-Kind",      ""                 , "2011/02/20"]  
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
     end
     
     it "should raise an error if there is a currency symbol" do
-      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount"]
-      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","$56"]    
-      @import = FactoryGirl.create(:donations_import) 
-      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Deductible Amount",   "Date"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "$56"              ,   "2011/02/20"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
     end
     
-    it "should raise an error if there is a currency symbol" do
-      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount","Non Deductible Amount"]
-      @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","56","$4"]    
-      @import = FactoryGirl.create(:donations_import) 
-      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    it "should raise an error if there is a currency symbol in the non deductible amount" do
+      @headers = ["Email",  "First","Last",   "Payment Method", "Donation Type","Deductible Amount","Non Deductible Amount", "Date"]
+      @rows =    ["c@c.com","Cal",  "Ripken", "Other",          "In-Kind",      "56",               "$4"                ,    "2011/02/20"]    
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
     end
     
     it "should raise an error if the donation type is invalid" do
-      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount","Non Deductible Amount"]
-      @rows = ["calripken@example.com","Cal","Ripken","Other","Bird","56","4"]    
-      @import = FactoryGirl.create(:donations_import) 
-      lambda { @import.process(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+      @headers = ["Email",    "First","Last",   "Payment Method", "Donation Type","Deductible Amount","Non Deductible Amount", "Date"]
+      @rows =    ["c@c.com",  "Cal",  "Ripken", "Other",          "Bird",         "56",               "4"                ,     "2011/02/20"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+    
+    it "should raise an error if the date is in the wrong format" do
+      @headers = ["Email",    "First","Last",   "Payment Method", "Donation Type","Deductible Amount","Non Deductible Amount", "Date"]
+      @rows =    ["c@c.com",  "Cal",  "Ripken", "Other",          "In-Kind",      "56",               "4"                ,     "02/20/2011"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+    
+    it "should raise an error if the date is missing" do
+      @headers = ["Email",    "First","Last",   "Payment Method", "Donation Type","Deductible Amount","Non Deductible Amount", "Date"]
+      @rows =    ["c@c.com",  "Cal",  "Ripken", "Other",          "In-Kind",      "56",               "4"                ,     ""]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+    
+    it "should raise an error if the date is invalid" do
+      @headers = ["Email",    "First","Last",   "Payment Method", "Donation Type","Deductible Amount","Non Deductible Amount", "Date"]
+      @rows =    ["c@c.com",  "Cal",  "Ripken", "Other",          "In-Kind",      "56",               "4"                ,     "2011/01/38"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+    
+    it "should validate" do
+      @headers = ["Email",    "First","Last",   "Payment Method", "Donation Type","Deductible Amount","Non Deductible Amount", "Date"]
+      @rows =    ["c@c.com",  "Cal",  "Ripken", "Other",          "In-Kind",      "56",               "4"                ,     "2011/01/3"]
+      @import.row_valid?(ParsedRow.new(@headers, @rows)).should be_true
     end
   end
 end

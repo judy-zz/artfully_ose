@@ -1,10 +1,21 @@
 module Imports
   module Validations  
     def valid_date?(date_str)
+      puts "Validating #{date_str}"
+      
+      if date_str.blank?
+        raise Import::RowError, "Please include a date"
+      end
+      
+      #Check for YYYY/
+      if date_str.match(/^[0-9][0-9][0-9][0-9]\//).nil?
+        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR, MONTH, DAY (YYYY/MM/DD)."
+      end
+      
       begin
         DateTime.parse(date_str)
       rescue
-        raise Import::RowError, "Invalid date: #{date_str}"
+        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR, MONTH, DAY (YYYY/MM/DD)."
       end    
       true
     end  

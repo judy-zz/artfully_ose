@@ -11,7 +11,7 @@ class ImportsController < ArtfullyOseController
     @import = organization.imports.find(params[:id])
     @import.approve!
 
-    flash[:notice] = "Your file has been entered in the import queue. This process may take some time."
+    flash[:notice] = "Your file has been entered in the import queue. This process may take some time.  Reload this page to see progress or check back in a few minutes."
     redirect_to imports_path
   end
 
