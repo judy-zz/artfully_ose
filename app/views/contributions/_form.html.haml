@@ -28,7 +28,7 @@
   .control-group
     = form.label :occurred_at, "Date and Time", :class => 'control-label'
     .controls  
-      = form.text_field :occurred_at, :value => l(contribution.occurred_at, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
+      = form.text_field :occurred_at, :value => l(contribution.occurred_at_local_to_organization, :format => :datetime_for_input), :readonly => true, :class => :datetimepicker
       
   .control-group
     = form.label :details, "Notes", :class => 'control-label'

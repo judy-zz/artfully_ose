@@ -20,6 +20,8 @@ class Contribution
   attr_accessor :amount, 
                 :nongift_amount
 
+  set_watch_for :occurred_at, :local_to => :organization
+
   def initialize(params = {})
     load(params)
     @contributor = find_contributor
@@ -32,6 +34,10 @@ class Contribution
   
   def persisted?
     !self.order.nil? && self.order.persisted?
+  end
+  
+  def organization
+    @organization ||= Organization.find(self.organization_id)
   end
   
   def self.for(order)  
