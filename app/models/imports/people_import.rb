@@ -23,9 +23,6 @@ class PeopleImport < Import
     raise Import::RowError, message
   end
   
-  #
-  # This used to rollback.  No reason to now
-  #
   def create_person(parsed_row)
     Rails.logger.debug("PEOPLE_IMPORT: Importing person")
     person = attach_person(parsed_row)

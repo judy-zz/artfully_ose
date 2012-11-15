@@ -12,6 +12,7 @@ class ParsedRow
   }
 
   PEOPLE_FIELDS = SHARED_FIELDS.merge( {
+    :salutation       => [ "Salutation" ],     
     :company          => [ "Company name", "Company" ],
     :address1         => [ "Address 1", "Address1" ],
     :address2         => [ "Address 2", "Address2" ],
@@ -30,7 +31,7 @@ class ParsedRow
     :facebook_page    => [ "Facebook url", "Facebook", "Facebook address", "Facebook page" ],
     :linkedin_page    => [ "Linked in url", "LinkedIn url", "LinkedIn", "LinkedIn address", "LinkedIn page" ],
     :tags             => [ "Tags" ],
-    :person_type      => [ "Person Type" ]    
+    :person_type      => [ "Person Type" ]   
   })
   
   EVENT_FIELDS = SHARED_FIELDS.merge( {
@@ -137,15 +138,18 @@ class ParsedRow
   end
   
   def person_attributes
-      {:email           => self.email,
-      :first_name      => self.first,
-      :last_name       => self.last,
-      :company_name    => self.company,
-      :website         => self.website,
-      :twitter_handle  => self.twitter_username,
-      :facebook_url    => self.facebook_page,
-      :linked_in_url   => self.linkedin_page,
-      :person_type     => self.person_type}
+      {
+        :email           => self.email,
+        :salutation      => self.salutation,
+        :first_name      => self.first,
+        :last_name       => self.last,
+        :company_name    => self.company,
+        :website         => self.website,
+        :twitter_handle  => self.twitter_username,
+        :facebook_url    => self.facebook_page,
+        :linked_in_url   => self.linkedin_page,
+        :person_type     => self.person_type
+      }
   end
 
 end
