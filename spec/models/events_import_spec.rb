@@ -122,7 +122,7 @@ describe EventsImport do
       
       it "should create shows for each date" do
         imported_shows.length.should eq 2
-        imported_shows[0].datetime.should eq DateTime.parse('2010/3/4 8:00pm')
+        imported_shows[0].datetime.should eq @import.time_zone_parser.parse('2010/3/4 8:00pm')
         imported_shows[0].organization.should eq @import.organization
         imported_shows[0].state.should eq "unpublished"
         chart = imported_shows[0].chart
@@ -131,7 +131,7 @@ describe EventsImport do
         chart.sections[0].price.should eq 3000
         chart.sections[0].capacity.should eq 4
         
-        imported_shows[1].datetime.should eq DateTime.parse('2011/12/12 8:00pm')
+        imported_shows[1].datetime.should eq @import.time_zone_parser.parse('2011/12/12 8:00pm')
         imported_shows[1].organization.should eq @import.organization
         imported_shows[1].state.should eq "unpublished"
         chart = imported_shows[1].chart
@@ -342,7 +342,7 @@ describe EventsImport do
       show = @import.create_show(@parsed_row, @event)
       show.event.should eq @event
       show.organization.should eq @import.organization
-      show.datetime.should eq DateTime.parse("2012/03/04 8:00pm")
+      show.datetime.should eq @import.time_zone_parser.parse("2012/03/04 8:00pm")
       show.should be_unpublished
     end
     
@@ -351,7 +351,7 @@ describe EventsImport do
       show = @import.create_show(@parsed_row, @event)
       show.event.should eq @event
       show.organization.should eq @import.organization
-      show.datetime.should eq DateTime.parse("2012/03/04 8:00pm")
+      show.datetime.should eq @import.time_zone_parser.parse("2012/03/04 8:00pm")
       show.should be_unpublished
       show.should eq existing_show
     end
@@ -365,7 +365,7 @@ describe EventsImport do
       show = @import.create_show(@parsed_row, @event)     
       show.event.should eq @event
       show.organization.should eq @import.organization
-      show.datetime.should eq DateTime.parse("2012/03/04 8:00pm")
+      show.datetime.should eq @import.time_zone_parser.parse("2012/03/04 8:00pm")
       show.should be_unpublished
       show.should_not eq another_show
     end
@@ -373,14 +373,14 @@ describe EventsImport do
     it "should set the time to 8:00pm in the org's time zone if the time was not included" do
       @rows = ["John", "Doe","john@does.com", "Event2", "2012/03/04"]
       show = @import.create_show(ParsedRow.parse(@headers, @rows), @event)    
-      show.datetime.should eq DateTime.parse("2012/03/04 8:00pm")
+      show.datetime.should eq @import.time_zone_parser.parse("2012/03/04 8:00pm")
       show.should be_unpublished
     end
     
     it "should set the time to whatever they specified" do
       @rows = ["John", "Doe","john@does.com", "Event2", "2012/03/04 3:39pm"]
       show = @import.create_show(ParsedRow.parse(@headers, @rows), @event)    
-      show.datetime.should eq DateTime.parse("2012/03/04 3:39pm")
+      show.datetime.should eq @import.time_zone_parser.parse("2012/03/04 3:39pm")
       show.should be_unpublished
     end
   end
@@ -442,12 +442,12 @@ describe EventsImport do
       end
       
       it "should include the order date" do
-        @order.created_at.should eq DateTime.parse("1999/01/31")
+        @order.created_at.should eq @import.time_zone_parser.parse("1999/01/31")
       end
       
       it "should set the get action occurred_at to whatever the date of the order is" do
         go_action, get_action = @import.create_actions(@parsed_row, @person, @event, @show, @order)
-        get_action.occurred_at.should eq DateTime.parse("1999/01/31")
+        get_action.occurred_at.should eq @import.time_zone_parser.parse("1999/01/31")
       end
       
       it "should set the go action occurred_at to whatever the date of the show is" do
