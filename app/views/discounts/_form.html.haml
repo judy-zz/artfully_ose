@@ -5,7 +5,7 @@
     = f.label :code, "Discount Code", :class => 'control-label'
     .controls
       = f.text_field :code, :class => 'input'
-      %p.help-block 4-12 characters, not case sensative
+      %p.help-block 4-12 characters, not case sensitive
 
   .control-group
     .controls
@@ -18,8 +18,17 @@
     = f.label :promotion_type, :class => 'control-label'
     .controls
       %label.radio
-        = f.radio_button :promotion_type, 'TenPercentOffTickets', :class => 'promotion-type-radio'
-        10% Off Each Ticket
+        = f.radio_button :promotion_type, 'DollarsOffTickets', :class => 'promotion-type-radio'
+        Monetary Amount Off Each Ticket
       %label.radio
-        = f.radio_button :promotion_type, 'TenDollarsOffTickets', :class => 'promotion-type-radio'
-        $10 Off Each Ticket
+        = f.radio_button :promotion_type, 'BuyOneGetOneFree', :class => 'promotion-type-radio'
+        Buy One Get One Free
+
+%fieldset
+  = f.fields_for :properties, discount.properties do |p|
+    .control-group.promotion-type-properties#DollarsOffTickets{:style => "display: none;"}
+      = p.label :amount, "Amount off each ticket", :class => 'control-label'
+      .controls
+        = p.text_field :amount, :value => discount.properties[:amount], :class => 'currency'
+    .control-group.promotion-type-properties#BuyOneGetOneFree{:style => "display: none;"}
+      &nbsp;

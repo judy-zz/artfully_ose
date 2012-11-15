@@ -247,6 +247,13 @@ $(document).ready(function() {
       }
     });
   });
+
+  $('.promotion-type-radio').click(function() {
+    var promotion_type = $('.promotion-type-radio:checked').attr('value');
+    $('.promotion-type-properties').hide();
+    $('.control-group#' + promotion_type).show();
+  });
+
 });
 
 

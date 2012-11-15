@@ -1,5 +1,5 @@
 class Discount < ActiveRecord::Base
-  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator
+  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties
 
   belongs_to :event
   belongs_to :organization
@@ -8,18 +8,30 @@ class Discount < ActiveRecord::Base
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
   validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
   
-  serialize :properties
+  serialize :properties, HashWithIndifferentAccess
 
   before_validation :set_organization_from_event
+  before_validation :ensure_properties_are_set
 
   def set_organization_from_event
-    self.organization ||= self.event.organization
+    self.organization ||= self.event.try(:organization)
   end
 
   def apply_discount_to_cart(cart)
     ensure_discount_is_allowed(cart)
-    discount = discount_class.new(self.properties)
-    return discount.apply_discount_to_cart(cart)
+    return type.apply_discount_to_cart(cart)
+  end
+
+  def ensure_properties_are_set
+    type.validate(self)
+  end
+
+  def type
+    discount_class.new(self.properties)
+  end
+
+  def to_s
+    type.to_s
   end
 
 private
