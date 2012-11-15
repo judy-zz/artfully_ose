@@ -22,13 +22,15 @@ class Item < ActiveRecord::Base
   scope :not_imported, joins(:order).merge(Order.not_imported)
 
   comma :donation do
-    order("Email") { |order| order.person.email if order.person }
-    order("First Name") { |order| order.person.first_name if order.person }
-    order("Last Name") { |order| order.person.last_name if order.person }
-    order("Company Name") { |order| order.person.company_name if order.person }
-    order("Donation Date") { |order| order.created_at }
-    total_price("Amount") { |cents| number_to_currency(cents.to_f/100) if cents }
-    nongift_amount("Non-deductible") { |cents| number_to_currency(cents.to_f/100) if cents }
+    order("Email")                          { |order| order.person.email if order.person }
+    order("First Name")                     { |order| order.person.first_name if order.person }
+    order("Last Name")                      { |order| order.person.last_name if order.person }
+    order("Company Name")                   { |order| order.person.company_name if order.person }
+    order("Date")                           { |order| order.created_at }
+    order("Payment Method")                 { |order| order.payment_method }
+    order("Donation Type")                  { |order| order.actions.where(:type => "GiveAction").first.try(:subtype) }
+    price("Deductible Amount")              { |cents| (cents / 100.00) if cents }
+    nongift_amount("Non-Deductible Amount") { |cents| (cents / 100.00) if cents }
   end
 
   comma :ticket_sale do
