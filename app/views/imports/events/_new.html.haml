@@ -5,10 +5,14 @@
 .row
   .span12
     .bottom-room
-      %h2 1. Download Template
+      %h2
+        %span.badge.badge-big.badge-info 1
+        Download Template
       You can #{link_to 'download an empty CSV file', template_imports_path(:type => "events")} with these headers already filled in.
       
-    %h2 2. Format Import Files
+    %h2
+      %span.badge.badge-big.badge-info 2
+      Format Import File
     %h3 Required Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
@@ -83,7 +87,9 @@
           For an order on April 18, 2013, set the date to "2013/04/18".  You may omit the time.  If you omit the date entirely, the order will be recorded with today's date.
           
     .well
-      %h2 3. Upload Your File
+      %h2
+        %span.badge.badge-big.badge-info 3
+        Upload Your File
       %p
         = render :partial => "shared/error_messages", :locals => { :target => @import }
         = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
