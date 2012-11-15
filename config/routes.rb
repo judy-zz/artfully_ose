@@ -73,6 +73,7 @@ Rails.application.routes.draw do
     get :widget,  :on => :member
     get :storefront_link,  :on => :member
     get :resell, :on => :member
+    get :wp_plugin, :on => :member
     get :prices,  :on => :member
     get :image,   :on => :member
     get :messages,   :on => :member
