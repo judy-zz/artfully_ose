@@ -6,9 +6,9 @@ module Imports
         raise Import::RowError, "Please include a date"
       end
       
-      #Check for YYYY/
-      if date_str.match(/^[0-9][0-9][0-9][0-9]\//).nil?
-        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR, MONTH, DAY (YYYY/MM/DD)."
+      #Check for MM/ or M/
+      if date_str.match(/^[0-9][0-9]\//) || date_str.match(/^[0-9]\//)
+        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR, MONTH, DAY (YYYY/MM/DD) or DAY, MONTH, YEAR (DD-MMM-YY)."
       end
       
       begin
