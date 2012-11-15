@@ -3,22 +3,12 @@
   %h1 Import Events
 
 .row
-  .span4
-    .well
-      %h3 Upload File
-      %p
-        = render :partial => "shared/error_messages", :locals => { :target => @import }
-        = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
-            :content_type => "text/csv",
-            :redirect => new_import_url,
-            :acl => "public-read",
-            :max_filesize => 50.megabytes,
-            :submit_button => '<input type="hidden" name="type" value="events"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
-
-  .span8
-    %p
-      Please supply a CSV (comma separated values) file of event data that you'd like to import.
-    %p You can #{link_to 'download an empty CSV file', template_imports_path(:type => "events")} with these headers already filled in.
+  .span12
+    .bottom-room
+      %h2 1. Download Template
+      You can #{link_to 'download an empty CSV file', template_imports_path(:type => "events")} with these headers already filled in.
+      
+    %h2 2. Format Import Files
     %h3 Required Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
@@ -32,17 +22,28 @@
         %td The name of the venue where the event was held
       %tr 
         %td.field Payment Method
-        %td Cash, Credit card, Check, Comp, Other, Unknown.
+        %td
+          %span.label.label-success
+            Important!  
+          &nbsp Valid options are:
+          %br
+          %br
+          %b Cash, Credit card, Check, Comp, Other, Unknown.
       %tr 
         %td.field Show Date
         %td
-          The date of the show in the format
+          %span.label.label-success
+            Important!
+          &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b YYYY/MM/DD HH:MMpm 
+          %b DD-MMM-YYYY HH:MMpm (Example: 18-Apr-2012 10:59pm) 
           %br
           %br
-          A show on April 18, 2012 at 5:30pm would be represented as "2012/04/18 5:30pm".  If you do not include a time, we'll set it to 8pm.
+          %b YYYY/MM/DD HH:MMpm (Example: 2012/04/18 5:30pm)
+          %br
+          %br
+          If you do not include a time, we'll set it to 8pm.
     
     %h3 Please include one of the following
     %p If all of these fields are omitted, the sale will be credited to an anonymous record.
@@ -61,14 +62,33 @@
     %table.table.table-bordered.table-striped.docs
       %tr 
         %td.field Amount
-        %td The dollar amount of the total purchase. Don't include a "$" or other currency symbols.
+        %td
+          %span.label.label-success
+            Important!
+          &nbsp Include only dollars and cents.  Don't include a "$" or other currency symbols.
       %tr 
         %td.field Order Date
         %td
-          The date of the order in the format
+          %span.label.label-success
+            Important!
+          &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b YYYY/MM/DD HH:MMpm 
+          %b DD-MMM-YYYY HH:MMpm (Example: 18-Apr-2012 10:59pm) 
+          %br
+          %br
+          %b YYYY/MM/DD HH:MMpm (Example: 2012/04/18 5:30pm)
           %br
           %br
           For an order on April 18, 2013, set the date to "2013/04/18".  You may omit the time.  If you omit the date entirely, the order will be recorded with today's date.
+          
+    .well
+      %h2 3. Upload Your File
+      %p
+        = render :partial => "shared/error_messages", :locals => { :target => @import }
+        = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
+            :content_type => "text/csv",
+            :redirect => new_import_url,
+            :acl => "public-read",
+            :max_filesize => 50.megabytes,
+            :submit_button => '<input type="hidden" name="type" value="events"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'

@@ -286,9 +286,16 @@ describe EventsImport do
       lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
     end
     
-    it "should be invalid with a show date in mm/dd/yyyy" do
+    it "should be invalid with a show date in m/dd/yyyy" do
       @headers = ["First Name", "Last Name", "Email",         "Event Name","Show Date", "Amount", "Payment Method"]
       @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "1/10/2011", "5.00",   "Cash"]      
+      parsed_row = ParsedRow.parse(@headers, @rows)
+      lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
+    end
+    
+    it "should be invalid with a show date in mm/dd/yyyy" do
+      @headers = ["First Name", "Last Name", "Email",         "Event Name","Show Date", "Amount", "Payment Method"]
+      @rows =    ["John",       "Doe",       "john@does.com", "Event1",    "11/10/2011", "5.00",   "Cash"]      
       parsed_row = ParsedRow.parse(@headers, @rows)
       lambda { EventsImport.new.row_valid?(parsed_row) }.should raise_error Import::RowError
     end
