@@ -14,6 +14,11 @@ module Imports
       end
     end
 
+    def time_zone_parser
+      @parser ||= ActiveSupport::TimeZone.create(self.organization.time_zone)
+      @parser
+    end
+
     def csv_data
       return @csv_data if @csv_data
     

@@ -124,7 +124,7 @@ class EventsImport < Import
   def new_show(parsed_row, event)
     Rails.logger.info("Import #{id} EVENT_IMPORT: Creating new show")
     show = Show.new
-    show.datetime = DateTime.parse(eight_pm?(parsed_row.show_date))
+    show.datetime = time_zone_parser.parse(eight_pm?(parsed_row.show_date))
     show.event = event
     show.organization = self.organization
     show.state = "unpublished"                      #Hacky end-around state machine here because we don't have a chart yet
@@ -148,7 +148,7 @@ class EventsImport < Import
      
     #get action is created by the order
     get_action = GetAction.where(:subject_id => order.id).first
-    get_action.update_attribute(:occurred_at, DateTime.parse(parsed_row.order_date)) unless parsed_row.order_date.blank?
+    get_action.update_attribute(:occurred_at, time_zone_parser.parse(parsed_row.order_date)) unless parsed_row.order_date.blank?
     
     return go_action, get_action
   end
@@ -185,7 +185,7 @@ class EventsImport < Import
     item.state = "settled"
     order.items << item
     order.save
-    order.update_attribute(:created_at, DateTime.parse(parsed_row.order_date)) unless parsed_row.order_date.blank?
+    order.update_attribute(:created_at, time_zone_parser.parse(parsed_row.order_date)) unless parsed_row.order_date.blank?
     order.actions.where(:type => "GetAction").first.update_attribute(:occurred_at, parsed_row.order_date) unless parsed_row.order_date.blank?
     @imported_orders[order_key] = order
     order

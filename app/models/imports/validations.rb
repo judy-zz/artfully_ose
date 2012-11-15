@@ -1,7 +1,6 @@
 module Imports
   module Validations  
     def valid_date?(date_str)
-      puts "Validating #{date_str}"
       
       if date_str.blank?
         raise Import::RowError, "Please include a date"

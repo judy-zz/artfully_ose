@@ -49,7 +49,7 @@ class DonationsImport < Import
    
   def create_contribution(parsed_row, person)
     Rails.logger.info("Import #{id} DONATION_IMPORT: Creating contribution")
-    occurred_at = parsed_row.donation_date.blank? ? DateTime.now : DateTime.parse(parsed_row.donation_date)
+    occurred_at = parsed_row.donation_date.blank? ? time_zone_parser.now : time_zone_parser.parse(parsed_row.donation_date)
     params = {}
     params[:subtype] = parsed_row.donation_type
     params[:amount] = parsed_row.amount
