@@ -3,31 +3,39 @@
   %h1 Import Donations
 
 .row
-  .span12
-    .bottom-room
-      %h2 1. Download Template
-      You can #{link_to 'download an empty CSV file', template_imports_path(:type => "people")} with these headers already filled in.
+  .span3
+    %h2
+      %span.badge.badge-big.badge-info 1
+      Template
+    #{link_to 'download an empty CSV file', template_imports_path(:type => "people")} with these headers already filled in.
   
-    %h2 2. Format Import File    
+  .span6
+    %h2
+      %span.badge.badge-big.badge-info 2
+      Format  
     %h3 Required Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field Date
+        %td.field-slim Date
         %td
           %span.label.label-success
             Important!
           &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b DD-MMM-YYYY HH:MMpm (Example: 18-Apr-2012 10:59pm) 
+          %b DD-MMM-YYYY HH:MMpm 
+          %br
+          (Example: 18-Apr-2012 10:59pm) 
           %br
           %br
-          %b YYYY/MM/DD HH:MMpm (Example: 2012/04/18 5:30pm)
+          %b YYYY/MM/DD HH:MMpm 
+          %br
+          (Example: 2012/04/18 5:30pm)
           %br
           %br
           If you do not include a time, we'll set it to 8pm.
       %tr 
-        %td.field Donation Type
+        %td.field-slim Donation Type
         %td
           %span.label.label-success
             Important!  
@@ -36,7 +44,7 @@
           %br 
           %b Monetary, In-Kind
       %tr 
-        %td.field Payment Method
+        %td.field-slim Payment Method
         %td
           %span.label.label-success
             Important!  
@@ -45,7 +53,7 @@
           %br
           %b Cash, Credit card, Check, Comp, Other, Unknown.
       %tr 
-        %td.field Deductible Amount
+        %td.field-slim Deductible Amount
         %td
           %span.label.label-success
             Important!
@@ -54,30 +62,32 @@
     %h3 Please include one of the following
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field First 
+        %td.field-slim First 
         %td The first name of the person
       %tr 
-        %td.field Last
+        %td.field-slim Last
         %td The last name of the person
       %tr 
-        %td.field Email
+        %td.field-slim Email
         %td The email address of the person  
       
     %h3 Optional Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field Non-Deductible Amount
+        %td.field-slim Non-Deductible Amount
         %td
           %span.label.label-success
             Important!
           &nbsp Don't include a '$' or other currency symbols. This is the non-deductible portion of the donation (i.e. the fair market value of <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>something the donor received in return</a>). 
-    .well
-      %h3 Upload File
-      %p
-        = render :partial => "shared/error_messages", :locals => { :target => @import }
-        = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
-            :content_type => "text/csv",
-            :redirect => new_import_url,
-            :acl => "public-read",
-            :max_filesize => 50.megabytes,
-            :submit_button => '<input type="hidden" name="type" value="donations"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
+  .span3
+    %h2
+      %span.badge.badge-big.badge-info 3
+      Upload
+    %p
+      = render :partial => "shared/error_messages", :locals => { :target => @import }
+      = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
+          :content_type => "text/csv",
+          :redirect => new_import_url,
+          :acl => "public-read",
+          :max_filesize => 50.megabytes,
+          :submit_button => '<input type="hidden" name="type" value="donations"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'

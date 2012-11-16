@@ -3,29 +3,29 @@
   %h1 Import Events
 
 .row
-  .span12
-    .bottom-room
-      %h2
-        %span.badge.badge-big.badge-info 1
-        Download Template
-      You can #{link_to 'download an empty CSV file', template_imports_path(:type => "events")} with these headers already filled in.
+  .span3
+    %h2
+      %span.badge.badge-big.badge-info 1
+      Template
+    #{link_to 'download an empty CSV file', template_imports_path(:type => "events")} with these headers already filled in.
       
+  .span6
     %h2
       %span.badge.badge-big.badge-info 2
-      Format Import File
+      Format 
     %h3 Required Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field Event Name
+        %td.field-slim Event Name
         %td 
           The name of the event.  If you already have an event with the same name,
           %i show and order data will be added to that event.
           Otherwise, a new event will be created.
       %tr 
-        %td.field Venue Name
+        %td.field-slim Venue Name
         %td The name of the venue where the event was held
       %tr 
-        %td.field Payment Method
+        %td.field-slim Payment Method
         %td
           %span.label.label-success
             Important!  
@@ -34,17 +34,21 @@
           %br
           %b Cash, Credit card, Check, Comp, Other, Unknown.
       %tr 
-        %td.field Show Date
+        %td.field-slim Show Date
         %td
           %span.label.label-success
             Important!
           &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b DD-MMM-YYYY HH:MMpm (Example: 18-Apr-2012 10:59pm) 
+          %b DD-MMM-YYYY HH:MMpm 
+          %br
+          (Example: 18-Apr-2012 10:59pm) 
           %br
           %br
-          %b YYYY/MM/DD HH:MMpm (Example: 2012/04/18 5:30pm)
+          %b YYYY/MM/DD HH:MMpm 
+          %br
+          (Example: 2012/04/18 5:30pm)
           %br
           %br
           If you do not include a time, we'll set it to 8pm.
@@ -53,48 +57,52 @@
     %p If all of these fields are omitted, the sale will be credited to an anonymous record.
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field First 
+        %td.field-slim First 
         %td The first name of the person
       %tr 
-        %td.field Last
+        %td.field-slim Last
         %td The last name of the person
       %tr 
-        %td.field Email
+        %td.field-slim Email
         %td The email address of the person  
       
     %h3 Optional Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
-        %td.field Amount
+        %td.field-slim Amount
         %td
           %span.label.label-success
             Important!
           &nbsp Include only dollars and cents.  Don't include a "$" or other currency symbols.
       %tr 
-        %td.field Order Date
+        %td.field-slim Order Date
         %td
           %span.label.label-success
             Important!
           &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b DD-MMM-YYYY HH:MMpm (Example: 18-Apr-2012 10:59pm) 
+          %b DD-MMM-YYYY HH:MMpm 
+          %br
+          (Example: 18-Apr-2012 10:59pm) 
           %br
           %br
-          %b YYYY/MM/DD HH:MMpm (Example: 2012/04/18 5:30pm)
+          %b YYYY/MM/DD HH:MMpm 
+          %br
+          (Example: 2012/04/18 5:30pm)
           %br
           %br
           For an order on April 18, 2013, set the date to "2013/04/18".  You may omit the time.  If you omit the date entirely, the order will be recorded with today's date.
           
-    .well
-      %h2
-        %span.badge.badge-big.badge-info 3
-        Upload Your File
-      %p
-        = render :partial => "shared/error_messages", :locals => { :target => @import }
-        = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
-            :content_type => "text/csv",
-            :redirect => new_import_url,
-            :acl => "public-read",
-            :max_filesize => 50.megabytes,
-            :submit_button => '<input type="hidden" name="type" value="events"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
+  .span3
+    %h2
+      %span.badge.badge-big.badge-info 3
+      Upload
+    %p
+      = render :partial => "shared/error_messages", :locals => { :target => @import }
+      = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
+          :content_type => "text/csv",
+          :redirect => new_import_url,
+          :acl => "public-read",
+          :max_filesize => 50.megabytes,
+          :submit_button => '<input type="hidden" name="type" value="events"/><div class="cancel-submit"><input id="import_submit" class="btn" name="commit" type="submit" value="Import"></div>'
