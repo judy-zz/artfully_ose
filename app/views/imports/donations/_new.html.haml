@@ -23,9 +23,9 @@
           &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b DD-MMM-YYYY HH:MMpm 
+          %b DD-MMM-YY HH:MMpm 
           %br
-          (Example: 18-Apr-2012 10:59pm) 
+          (Example: 18-Apr-12 10:59pm) 
           %br
           %br
           %b YYYY/MM/DD HH:MMpm 
@@ -33,7 +33,7 @@
           (Example: 2012/04/18 5:30pm)
           %br
           %br
-          If you do not include a time, we'll set it to 8pm.
+          Time of day is not required.
       %tr 
         %td.field-slim Donation Type
         %td
@@ -51,7 +51,7 @@
           &nbsp Valid options are:
           %br
           %br
-          %b Cash, Credit card, Check, Comp, Other, Unknown.
+          %b Cash, Credit card, Check, Other, Unknown.
       %tr 
         %td.field-slim Deductible Amount
         %td
@@ -83,6 +83,15 @@
     %h2
       %span.badge.badge-big.badge-info 3
       Upload
+    %p
+      Please only upload
+      %b Comma Separated Values (CSV)
+      files.  We cannot process 
+      %b XLS
+      or
+      %b XLSX
+      files.
+    
     %p
       = render :partial => "shared/error_messages", :locals => { :target => @import }
       = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",

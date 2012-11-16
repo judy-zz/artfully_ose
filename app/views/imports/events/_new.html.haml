@@ -41,7 +41,7 @@
           &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b DD-MMM-YYYY HH:MMpm 
+          %b DD-MMM-YY HH:MMpm 
           %br
           (Example: 18-Apr-2012 10:59pm) 
           %br
@@ -82,7 +82,7 @@
           &nbsp Show date must be in one of the following formats
           %br
           %br
-          %b DD-MMM-YYYY HH:MMpm 
+          %b DD-MMM-YY HH:MMpm 
           %br
           (Example: 18-Apr-2012 10:59pm) 
           %br
@@ -98,6 +98,14 @@
     %h2
       %span.badge.badge-big.badge-info 3
       Upload
+    %p
+      Please only upload
+      %b Comma Separated Values (CSV)
+      files.  We cannot process 
+      %b XLS
+      or
+      %b XLSX
+      files.
     %p
       = render :partial => "shared/error_messages", :locals => { :target => @import }
       = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",

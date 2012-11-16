@@ -13,6 +13,10 @@ class PeopleImport < Import
   
   def row_valid?(parsed_row)
     person = attach_person(parsed_row)
+    
+    #We're doing this here because the error message for person_info is very bad
+    raise Import::RowError, "Please include a first name, last name, or email in this row: #{parsed_row.row}" unless attach_person(parsed_row).person_info
+    
     return (person.valid? ? true : error(parsed_row, person))
   end
   

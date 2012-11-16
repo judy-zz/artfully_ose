@@ -96,6 +96,14 @@
       %span.badge.badge-big.badge-info 3
       Upload
     %p
+      Please only upload
+      %b Comma Separated Values (CSV)
+      files.  We cannot process 
+      %b XLS
+      or
+      %b XLSX
+      files.
+    %p
       = render :partial => "shared/error_messages", :locals => { :target => @import }
       = raw s3_http_upload_tag :key => "imports/#{UUID.new.generate}",
           :content_type => "text/csv",
