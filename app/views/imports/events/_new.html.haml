@@ -39,18 +39,7 @@
           %span.label.label-success
             Important!
           &nbsp Show date must be in one of the following formats
-          %br
-          %br
-          %b DD-MMM-YY HH:MMpm 
-          %br
-          (Example: 18-Apr-2012 10:59pm) 
-          %br
-          %br
-          %b YYYY/MM/DD HH:MMpm 
-          %br
-          (Example: 2012/04/18 5:30pm)
-          %br
-          %br
+          =render :partial => "imports/shared/date_format"
           If you do not include a time, we'll set it to 8pm.
     
     %h3 Please include one of the following
@@ -80,19 +69,8 @@
           %span.label.label-success
             Important!
           &nbsp Show date must be in one of the following formats
-          %br
-          %br
-          %b DD-MMM-YY HH:MMpm 
-          %br
-          (Example: 18-Apr-2012 10:59pm) 
-          %br
-          %br
-          %b YYYY/MM/DD HH:MMpm 
-          %br
-          (Example: 2012/04/18 5:30pm)
-          %br
-          %br
-          For an order on April 18, 2013, set the date to "2013/04/18".  You may omit the time.  If you omit the date entirely, the order will be recorded with today's date.
+          =render :partial => "imports/shared/date_format"
+          You may omit the time.  If you omit the date entirely, the order will be recorded with today's date.
           
   .span3
     %h2

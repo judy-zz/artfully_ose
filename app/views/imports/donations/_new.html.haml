@@ -21,18 +21,7 @@
           %span.label.label-success
             Important!
           &nbsp Show date must be in one of the following formats
-          %br
-          %br
-          %b DD-MMM-YY HH:MMpm 
-          %br
-          (Example: 18-Apr-12 10:59pm) 
-          %br
-          %br
-          %b YYYY/MM/DD HH:MMpm 
-          %br
-          (Example: 2012/04/18 5:30pm)
-          %br
-          %br
+          =render :partial => "imports/shared/date_format"
           Time of day is not required.
       %tr 
         %td.field-slim Donation Type

@@ -8,13 +8,13 @@ module Imports
       
       #Check for MM/ or M/
       if date_str.match(/^[0-9][0-9]\//) || date_str.match(/^[0-9]\//)
-        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR, MONTH, DAY (YYYY/MM/DD) or DAY, MONTH, YEAR (DD-MMM-YY)."
+        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR/MONTH/DAY (2012/04/18) or DAY-MONTH-YEAR (18-Apr-12)."
       end
       
       begin
         DateTime.parse(date_str)
       rescue
-        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR, MONTH, DAY (YYYY/MM/DD)."
+        raise Import::RowError, "Invalid date: #{date_str}  Make sure the date is in the format YEAR/MONTH/DAY (2012/04/18) or DAY-MONTH-YEAR (18-Apr-12)."
       end    
       true
     end  

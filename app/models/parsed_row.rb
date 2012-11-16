@@ -37,7 +37,7 @@ class ParsedRow
   EVENT_FIELDS = SHARED_FIELDS.merge( {
     :event_name       => [ "Event", "Event Name" ],
     :venue_name       => [ "Venue", "Venue Name" ],
-    :show_date        => [ "Show", "Show Date" ],
+    :show_date        => [ "Show Date", "Show" ],
     :amount           => [ "Amount", "Dollar Amount" ],
     :payment_method   => [ "Payment Method" ],
     :order_date       => [ "Order Date", "Date" ]
