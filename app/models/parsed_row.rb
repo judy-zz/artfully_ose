@@ -3,7 +3,7 @@ class ParsedRow
   attr_accessor :row
 
   #Fields which require special parsing such as dollar amounts
-  EXCEPTIONS = [:amount, :nongift_amount]
+  EXCEPTIONS = [:amount, :nongift_amount, :deductible_amount]
 
   SHARED_FIELDS = {
     :first            => [ "First name", "First" ],
@@ -47,7 +47,8 @@ class ParsedRow
     :payment_method   => [ "Payment Method" ],
     :donation_date    => [ "Date", "Order Date" ],
     :donation_type    => [ "Donation Type", "Type" ],
-    :amount           => [ "Deductible Amount", "Amount" ],
+    :amount           => [ "Amount" ],
+    :deductible_amount=> [ "Deductible Amount" ],
     
     #Internally it is called nongift_amount but the rest of the world says non-deductible
     :nongift_amount  => [ "Non-Deductible Amount", "Non Deductible Amount" ]
@@ -127,6 +128,14 @@ class ParsedRow
   
   def unparsed_amount
     @amount
+  end
+  
+  def deductible_amount
+    ((@deductible_amount.to_f || 0) * 100).to_i
+  end
+  
+  def unparsed_deductible_amount
+    @deductible_amount
   end
   
   def importing_event?

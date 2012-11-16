@@ -53,17 +53,16 @@ describe DonationsImport do
   describe "#create_donation" do
     before(:each) do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
-    end
-    
-    it "should create the donation and underlying action" do
-      @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Deductible Amount"]
-      @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Check","In-Kind","50.00"]      
-      @parsed_row = ParsedRow.parse(@headers, @rows)
       @import = FactoryGirl.create(:donations_import)          
       @import.organization.time_zone = 'Eastern Time (US & Canada)'
       @import.organization.save   
-      @person = @import.create_person(@parsed_row)
+    end
+    
+    it "should create the donation and underlying action" do     
+      @parsed_row = ParsedRow.parse(["Email",        "First", "Last",   "Date",     "Payment Method", "Donation Type","Amount"],
+                                    ["c@example.com","Cal",   "Ripken", "2010/3/4", "Check",          "In-Kind",      "50.00"])
       
+      @person = @import.create_person(@parsed_row)
       contribution = @import.create_contribution(@parsed_row, @person)
       order  = contribution.order
       order.person.should eq @person
@@ -73,7 +72,9 @@ describe DonationsImport do
       order.items.first.price.should eq 5000
       order.items.first.realized_price.should eq 5000
       order.items.first.net.should eq 5000
+      order.items.first.nongift_amount.should eq 0
       order.items.first.should be_settled
+      order.created_at.should eq (@import.time_zone_parser.parse('2010/03/04'))
       
       action = contribution.action
       (action.is_a? GiveAction).should be_true
@@ -86,37 +87,55 @@ describe DonationsImport do
     end
     
     it "should accept nongift amounts" do
-      @headers = ["Email","First","Last","Date","Payment Method","Donation Type","Deductible Amount", "Non-Deductible Amount"]
-      @rows = ["calripken@example.com","Cal","Ripken","3/4/2010","Other","In-Kind","50.00", "1.23"]      
-      @parsed_row = ParsedRow.parse(@headers, @rows)
-      @import = FactoryGirl.create(:donations_import)          
-      @import.organization.time_zone = 'Eastern Time (US & Canada)'
-      @import.organization.save   
-      @person = @import.create_person(@parsed_row)
+      @parsed_row = ParsedRow.parse(["Email",        "First", "Last",   "Date",     "Payment Method", "Donation Type","Amount", "Non-Deductible Amount"],
+                                    ["c@example.com","Cal",   "Ripken", "2010/3/4", "Check",          "In-Kind",      "50.00",  "1.23"])
       
+      @person = @import.create_person(@parsed_row)
       contribution = @import.create_contribution(@parsed_row, @person)
       order  = contribution.order
       order.person.should eq @person
       order.organization.should eq @import.organization
       order.items.length.should eq 1
-      order.items.first.price.should eq 5000
-      order.items.first.realized_price.should eq 5000
-      order.items.first.net.should eq 5000
+      order.items.first.price.should eq 4877
+      order.items.first.realized_price.should eq 4877
+      order.items.first.net.should eq 4877
       order.items.first.nongift_amount.should eq 123
-      order.items.first.total_price.should eq 5123
+      order.items.first.total_price.should eq 5000
       order.items.first.should be_settled
     end
     
+    it "should accept deductible amounts" do
+      @parsed_row = ParsedRow.parse(["Email",        "First", "Last",   "Date",     "Payment Method", "Donation Type","Amount", "Deductible Amount"],
+                                    ["c@example.com","Cal",   "Ripken", "2010/3/4", "Check",          "In-Kind",      "50.00",  "1"])
+      
+      @person = @import.create_person(@parsed_row)
+      contribution = @import.create_contribution(@parsed_row, @person)
+      order  = contribution.order
+      order.person.should eq @person
+      order.organization.should eq @import.organization
+      order.items.length.should eq 1
+      order.items.first.price.should eq 100
+      order.items.first.realized_price.should eq 100
+      order.items.first.net.should eq 100
+      order.items.first.nongift_amount.should eq 4900
+      order.items.first.total_price.should eq 5000
+      order.items.first.should be_settled
+    end
+    
+    it "should raise an error if deductible plus non-deductible does not equal amount" do
+      @parsed_row = ParsedRow.parse(["Email",        "First", "Last",   "Date",     "Payment Method", "Donation Type","Amount", "Deductible Amount", "Non-Deductible Amount"],
+                                    ["c@example.com","Cal",   "Ripken", "2010/3/4", "Check",          "In-Kind",      "50.00",  "1",                 "1"])
+      
+      @person = @import.create_person(@parsed_row)
+      lambda { @import.create_contribution(@parsed_row, @person) }.should raise_error Import::RowError
+    end
+    
     it "should set occurred_at to today if date doesn't exist" do
-      @headers = ["Email","First","Last","Payment Method","Donation Type","Deductible Amount"]
+      @headers = ["Email","First","Last","Payment Method","Donation Type","Amount"]
       @rows = ["calripken@example.com","Cal","Ripken","Other","In-Kind","50.00"]      
       @parsed_row = ParsedRow.parse(@headers, @rows)
-      @import = FactoryGirl.create(:donations_import)          
-      @import.organization.time_zone = 'Eastern Time (US & Canada)'
-      @import.organization.save   
-      @person = @import.create_person(@parsed_row)
       
-      contribution = @import.create_contribution(@parsed_row, @person)
+      contribution = @import.create_contribution(@parsed_row, @import.create_person(@parsed_row))
       order  = contribution.order
       order.created_at.should be_today
       action = contribution.action
@@ -187,8 +206,6 @@ describe DonationsImport do
       person.company_name.should eq "Bernaduccis"
       person.id.should_not eq @no_email.id        
     end
-    
-    describe "with an external customer id"
   end
   
   describe "#row_valid" do
@@ -196,12 +213,42 @@ describe DonationsImport do
       @import = FactoryGirl.create(:donations_import) 
     end
     
-    it "should raise an error if there is no deductible amount" do
-      @headers = ["Email",  "First","Last",   "Payment Method","Donation Type","Deductible Amount", "Date"]
-      @rows =    ["c@c.com","Cal",  "Ripken", "Other",         "In-Kind",      ""                 , "2011/02/20"]  
+    it "should raise an error if there is no amount" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+      
+    it "should raise an error if deductible plus non-deductible does not sum to amount" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date",      "Amount", "Deductible Amount","Non Deductible Amount"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20","100",    "50",               "0"  ]
       lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
     end
     
+    it "should be valid with an amount but no deductible amount" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date",      "Amount"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20","30"]
+      @import.row_valid?(ParsedRow.new(@headers, @rows)).should be_true
+    end
+    
+    it "should be valid with an amount but no non-deductible amount" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date",      "Amount", "Deductible Amount"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20","100",    "50"]
+      @import.row_valid?(ParsedRow.new(@headers, @rows)).should be_true
+    end
+    
+    it "should be valid with an amount but no deductible amount II" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date",      "Amount", "Non-Deductible Amount"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20","100",    "50"]
+      @import.row_valid?(ParsedRow.new(@headers, @rows)).should be_true
+    end
+
+    it "should raise an error if there is a currency symbol in the amount" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Amount",   "Date"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "$56"              ,   "2011/02/20"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+
     it "should raise an error if there is a currency symbol" do
       @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Deductible Amount",   "Date"]
       @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "$56"              ,   "2011/02/20"]
@@ -239,8 +286,8 @@ describe DonationsImport do
     end
     
     it "should validate" do
-      @headers = ["Email",    "First","Last",   "Payment Method", "Donation Type","Deductible Amount","Non Deductible Amount", "Date"]
-      @rows =    ["c@c.com",  "Cal",  "Ripken", "Other",          "In-Kind",      "56",               "4"                ,     "2011/01/3"]
+      @headers = ["Email",    "First","Last",   "Payment Method", "Donation Type","Amount","Deductible Amount","Non Deductible Amount", "Date"]
+      @rows =    ["c@c.com",  "Cal",  "Ripken", "Other",          "In-Kind"      ,"60"    ,"56",               "4"                ,     "2011/01/3"]
       @import.row_valid?(ParsedRow.new(@headers, @rows)).should be_true
     end
   end

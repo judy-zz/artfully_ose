@@ -14,6 +14,9 @@ module Imports
       end
     end
 
+    #
+    # TODO: This should absolutely be moved into organization.rb
+    #
     def time_zone_parser
       @parser ||= ActiveSupport::TimeZone.create(self.organization.time_zone)
       @parser

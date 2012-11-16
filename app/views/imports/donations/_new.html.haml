@@ -42,11 +42,11 @@
           %br
           %b Cash, Credit card, Check, Other, Unknown.
       %tr 
-        %td.field-slim Deductible Amount
+        %td.field-slim Amount
         %td
           %span.label.label-success
             Important!
-          &nbsp Don't include a '$' or other currency symbols.  The tax-deductible amount of the donation (usually the total amount received, unless the donor <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>received something in return</a>).
+          &nbsp The total amount of the donation.  Don't include a '$' or other currency symbols.  The tax-deductible amount of the donation (usually the total amount received, unless the donor <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>received something in return</a>).
     
     %h3 Please include one of the following
     %table.table.table-bordered.table-striped.docs
@@ -63,11 +63,18 @@
     %h3 Optional Fields
     %table.table.table-bordered.table-striped.docs
       %tr 
+        %td.field-slim Deductible Amount
+        %td
+          %span.label.label-success
+            Important!
+          &nbsp The tax-deductible amount of the donation (usually the total amount received, unless the donor <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>received something in return</a>).  If this is not included, the deductible amount will be equal to the value in Amount minus any value in Non-Deductible.  Don't include a '$' or other currency symbols.  
+      %tr 
         %td.field-slim Non-Deductible Amount
         %td
           %span.label.label-success
             Important!
-          &nbsp Don't include a '$' or other currency symbols. This is the non-deductible portion of the donation (i.e. the fair market value of <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>something the donor received in return</a>). 
+          &nbsp This is the non-deductible portion of the donation (i.e. the fair market value of <a href='http://www.irs.gov/publications/p526/ar02.html#en_US_2011_publink1000229650' target=_blank>something the donor received in return</a>).  If this is not included, the non-deductible amount will be equal to the value in Amount minus any value in Deductible.  Don't include a '$' or other currency symbols.   
+  
   .span3
     %h2
       %span.badge.badge-big.badge-info 3

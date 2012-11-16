@@ -18,14 +18,26 @@ class DonationsImport < Import
     rollback_people
   end
   
+  def validate_amounts(parsed_row)
+    if !parsed_row.unparsed_deductible_amount.blank? &&
+       !parsed_row.unparsed_nongift_amount.blank? &&
+       (parsed_row.deductible_amount + parsed_row.nongift_amount != parsed_row.amount)
+      raise Import::RowError, "Deductible amount (#{parsed_row.unparsed_deductible_amount}) + Non-Deductible Amount (#{parsed_row.unparsed_nongift_amount}) does not equal Amount of (#{parsed_row.unparsed_amount}) in this row: #{parsed_row.row}"
+    end  
+  end
+  
   def row_valid?(parsed_row)
-    raise Import::RowError, "No Deductible Amount included in this row: #{parsed_row.row}" if parsed_row.unparsed_amount.blank?
+    raise Import::RowError, "No Amount included in this row: #{parsed_row.row}" if parsed_row.unparsed_amount.blank?
     raise Import::RowError, "Please include a first name, last name, or email in this row: #{parsed_row.row}" unless attach_person(parsed_row).person_info
     raise Import::RowError, "Please include a payment method in this row: #{parsed_row.row}" if parsed_row.payment_method.blank?
     raise Import::RowError, "Donation type must be 'Monetary' or 'In-Kind': #{parsed_row.row}" unless Action::GIVE_TYPES.include? (parsed_row.donation_type)
     valid_date?   parsed_row.donation_date
-    valid_amount? parsed_row.unparsed_amount
-    valid_amount? parsed_row.unparsed_nongift_amount   unless parsed_row.unparsed_nongift_amount.blank?
+    
+    [:unparsed_amount, :unparsed_nongift_amount, :unparsed_deductible_amount].each do |amt|
+      valid_amount? parsed_row.send(amt)   unless parsed_row.send(amt).blank?
+    end
+    
+    validate_amounts(parsed_row)
     true
   end
   
@@ -49,11 +61,16 @@ class DonationsImport < Import
    
   def create_contribution(parsed_row, person)
     Rails.logger.info("Import #{id} DONATION_IMPORT: Creating contribution")
+    validate_amounts(parsed_row)
+    amount              = parsed_row.amount
+    deductible_amount   = parsed_row.unparsed_deductible_amount.blank?  ? amount - parsed_row.nongift_amount     : parsed_row.deductible_amount
+    nongift_amount      = parsed_row.unparsed_nongift_amount.blank?     ? amount - deductible_amount             : parsed_row.nongift_amount
+    
     occurred_at = parsed_row.donation_date.blank? ? time_zone_parser.now : time_zone_parser.parse(parsed_row.donation_date)
     params = {}
     params[:subtype] = parsed_row.donation_type
-    params[:amount] = parsed_row.amount
-    params[:nongift_amount] = parsed_row.nongift_amount
+    params[:amount] = deductible_amount
+    params[:nongift_amount] = nongift_amount
     params[:payment_method] = parsed_row.payment_method
     
     params[:organization_id] = self.organization.id

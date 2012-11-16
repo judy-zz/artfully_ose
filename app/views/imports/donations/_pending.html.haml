@@ -24,8 +24,7 @@
         %th First
         %th Last
         %th Date
-        %th Deductible
-        %th Non-Deductible
+        %th Amount
         %th Type
         %th 
       - @parsed_rows.each_with_index do |row, index|
@@ -35,7 +34,6 @@
           %td=row.last
           %td=row.donation_date
           %td=number_as_cents row.amount
-          %td=number_as_cents row.nongift_amount
           %td=row.donation_type
           %td
             =icon_link_to("", "#row#{index}", ' icon-zoom-in', '', '', {'data-toggle' => 'modal'})
