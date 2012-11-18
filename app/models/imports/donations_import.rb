@@ -19,10 +19,18 @@ class DonationsImport < Import
   end
   
   def validate_amounts(parsed_row)
+    if !parsed_row.unparsed_nongift_amount.blank? && parsed_row.nongift_amount > parsed_row.amount
+      raise Import::RowError, "Non-deductible amount (#{parsed_row.unparsed_nongift_amount}) cannot be more than the total doantion amount (#{parsed_row.unparsed_amount})': #{parsed_row.row}"
+    end
+
+    if !parsed_row.unparsed_deductible_amount.blank? && parsed_row.deductible_amount > parsed_row.amount
+      raise Import::RowError, "Deductible amount (#{parsed_row.unparsed_deductible_amount}) cannot be more than the total doantion amount (#{parsed_row.unparsed_amount})': #{parsed_row.row}"
+    end    
+    
     if !parsed_row.unparsed_deductible_amount.blank? &&
        !parsed_row.unparsed_nongift_amount.blank? &&
        (parsed_row.deductible_amount + parsed_row.nongift_amount != parsed_row.amount)
-      raise Import::RowError, "Deductible amount (#{parsed_row.unparsed_deductible_amount}) + Non-Deductible Amount (#{parsed_row.unparsed_nongift_amount}) does not equal Amount of (#{parsed_row.unparsed_amount}) in this row: #{parsed_row.row}"
+      raise Import::RowError, "Deductible amount (#{parsed_row.unparsed_deductible_amount}) + Non-Deductible Amount (#{parsed_row.unparsed_nongift_amount}) does not equal Amount of  in this row: #{parsed_row.row}"
     end  
   end
   

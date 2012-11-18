@@ -218,6 +218,18 @@ describe DonationsImport do
       @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20"]
       lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
     end
+    
+    it "should raise an error if nongift > amount" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date",      "Amount", "Non-Deductible Amount"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20","30",     "40"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
+    
+    it "should raise an error if deductible > amount" do
+      @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date",      "Amount", "Deductible Amount"]
+      @rows =     ["c@c.com", "Cal",  "Ripken", "Other",         "In-Kind",      "2011/02/20","30",     "40"]
+      lambda { @import.row_valid?(ParsedRow.new(@headers, @rows)) }.should raise_error Import::RowError
+    end
       
     it "should raise an error if deductible plus non-deductible does not sum to amount" do
       @headers =  ["Email",   "First","Last",   "Payment Method","Donation Type","Date",      "Amount", "Deductible Amount","Non Deductible Amount"]
