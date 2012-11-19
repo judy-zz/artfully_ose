@@ -31,4 +31,19 @@
       .controls
         = p.text_field :amount, :value => discount.properties[:amount], :class => 'currency'
     .control-group.promotion-type-properties#BuyOneGetOneFree{:style => "display: none;"}
-      &nbsp;
+      
+- content_for :custom_js do
+  :javascript
+    var show_appropriate_properties = function() {
+      touchCurrency();
+      var promotion_type = $('.promotion-type-radio:checked').attr('value');
+      $('.promotion-type-properties').hide();
+      $('.control-group#' + promotion_type).show();
+    };
+
+    $(document).ready(function() {
+      $('.promotion-type-radio').click(function() {show_appropriate_properties();});
+      show_appropriate_properties();
+    });
+
+  
