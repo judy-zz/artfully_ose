@@ -1,15 +1,16 @@
 class Chart < ActiveRecord::Base
   include Ticket::Foundry
   foundry :using => :sections, :with => lambda { { :venue => event.venue.name } }
-
-  attr_accessible :name, :is_template, :event_id, :organization_id, :old_mongo_id, :sections_attributes, :organization, :event
+  attr_accessor :skip_create_first_section
+  attr_accessible :name, :is_template, :event_id, :organization_id, :old_mongo_id, :sections_attributes, :organization, :event, :skip_create_first_section
 
   belongs_to :event
   belongs_to :organization
   has_one :show
   has_many :sections, :order => 'price DESC'
   accepts_nested_attributes_for :sections, :reject_if => lambda { |a| a[:capacity].blank? }, :allow_destroy => true
-  after_create :create_first_section
+  
+  after_create :create_first_section, :unless => lambda { @skip_create_first_section == true }
 
   validates :name, :presence => true, :length => { :maximum => 255 }
 

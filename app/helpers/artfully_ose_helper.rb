@@ -36,10 +36,16 @@ module ArtfullyOseHelper
   def icon_link_to(text, href, icon, class_names, id, html_attributes={})
     s = "<a href='#{href}' class='#{class_names}' id='#{id}' "
     html_attributes.each do |k,v|
-      s = s + " #{k}=#{v} "
+      s = s + " #{k}=#{v} "  
     end
     s = s + "><i class='#{icon}'></i> #{text}</a>"
     s.html_safe
+  end
+  
+  def action_and_subtype(action)
+    s = "#{action.action_type.capitalize}"
+    s = s + " - #{action.subtype}" unless action.subtype.nil?
+    s
   end
   
   #

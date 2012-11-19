@@ -1,11 +1,12 @@
 class Person < ActiveRecord::Base
   include Valuation::LifetimeValue
 
-  attr_accessible :type, :email, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
+  attr_accessible :type, :email, :salutation, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
   
   acts_as_taggable
 
   belongs_to  :organization
+  belongs_to  :import
   has_many    :actions
   has_many    :phones
   has_many    :notes
@@ -16,6 +17,12 @@ class Person < ActiveRecord::Base
   default_scope where(:deleted_at => nil)
 
   attr_accessible :first_name, :last_name, :email, :dummy, :organization_id
+
+  validates_presence_of :organization_id
+  validates_presence_of :person_info
+
+  validates :email, :uniqueness => { :scope => [:organization_id, :deleted_at] }, :allow_blank => true
+  after_commit { Sunspot.delay.commit }
 
   def destroy!
     destroy
@@ -61,12 +68,6 @@ class Person < ActiveRecord::Base
     actions.empty? && phones.empty? && notes.empty? && orders.empty? && tickets.empty? && address.nil? && import_id.nil?
   end
 
-  validates_presence_of :organization_id
-  validates_presence_of :person_info
-
-  validates :email, :uniqueness => { :scope => [:organization_id, :deleted_at] }, :allow_blank => true
-  after_commit { Sunspot.commit }
-
   searchable do
     text :first_name, :last_name, :email
     text :address do
@@ -96,6 +97,7 @@ class Person < ActiveRecord::Base
 
   comma do
     email
+    salutation
     first_name
     last_name
     company_name
@@ -188,6 +190,16 @@ class Person < ActiveRecord::Base
   def unstarred_actions
     Action.where({ :person_id => id }).order('occurred_at desc').select{|a| a.unstarred?}
   end
+  
+  #
+  # We're overriding this in order to excapsulate what is needed to
+  # find a unique person
+  #
+  # DO NOT CALL THIS METHOD WITH A BLANK EMAIL
+  #
+  def self.first_or_create(email, organization, attributes=nil, options ={}, &block)
+    Person.where(:email => email).where(:organization_id => organization.id).first_or_create(attributes, options, &block)
+  end
 
   #
   # You can pass any object as first param as long as it responds to
@@ -257,8 +269,8 @@ class Person < ActiveRecord::Base
     end
   end
 
-  private
-    def person_info
-      !(first_name.blank? and last_name.blank? and email.blank?)
-    end
+  #Bad name.  This will respond with true if there is something in first_name, last_name, or email.  False otherwise.
+  def person_info
+    !(first_name.blank? and last_name.blank? and email.blank?)
+  end
 end

@@ -74,6 +74,7 @@ Rails.application.routes.draw do
       get :widget
       get :storefront_link
       get :resell
+      get :wp_plugin
       get :prices
       get :image
       get :messages

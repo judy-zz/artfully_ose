@@ -16,6 +16,31 @@ class ContributionsController < ArtfullyOseController
       render :find_person
     end
   end
+  
+  def edit
+    @order = Order.find(params[:id])
+    authorize! :edit, @order
+    @contribution = Contribution.for(@order)
+    render :layout => false
+  end
+  
+  def update
+    @order = Order.find(params[:order_id])
+    authorize! :edit, @order
+    @contribution = Contribution.for(@order)
+    new_contribution = Contribution.new(params[:contribution])
+    @contribution.update(new_contribution)
+    flash[:notice] = "Your order has been edited"
+    redirect_to order_path(@order)
+  end
+  
+  def destroy
+    @order = Order.find(params[:id])
+    authorize! :edit, @order
+    @order.destroy
+    flash[:notice] = "Your order has been deleted"
+    redirect_to contributions_path
+  end
 
   def create
     @contribution = create_contribution
@@ -35,6 +60,8 @@ class ContributionsController < ArtfullyOseController
 
   def create_contribution
     params[:contribution] ||= {}
-    Contribution.new(params[:contribution].merge(:organization_id => current_user.current_organization.id))
+    contribution = Contribution.new(params[:contribution].merge(:organization_id => current_user.current_organization.id))
+    contribution.occurred_at ||= DateTime.now
+    contribution
   end
 end

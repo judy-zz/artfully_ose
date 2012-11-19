@@ -93,18 +93,6 @@ describe Ticket do
       ticket.sold_item.state.should eq "comped"
     end
     
-    it "should return the exchangee item if there is no comp" do
-      ticket = FactoryGirl.create(:ticket)
-      items = [
-        FactoryGirl.create(:exchangee_item, :product=>ticket),      
-        FactoryGirl.create(:exchanged_item, :product=>ticket),
-        FactoryGirl.create(:refunded_item, :product=>ticket)
-        ]
-      
-      ticket.sold_item.should eq items[0]
-      ticket.sold_item.state.should eq "exchangee"
-    end
-    
     it "should return the special instructions from the sold item" do
       special_instructions = "I'm not saying I invented the turtleneck."
       ticket = FactoryGirl.create(:ticket)

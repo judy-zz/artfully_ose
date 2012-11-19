@@ -59,7 +59,6 @@ class OrganizationsController < ArtfullyOseController
       flash[:notice] = "Successfully updated #{@organization.name}."
       redirect_to @organization
     else
-      flash[:error]= "Failed to update #{@organization.name}."
       render :show
     end
   end

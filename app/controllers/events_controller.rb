@@ -1,7 +1,7 @@
 class EventsController < ArtfullyOseController
   respond_to :html, :json
 
-  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages, :resell ]
+  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages, :resell, :wp_plugin ]
   before_filter :upcoming_shows, :only => :show
 
   def create
@@ -98,6 +98,9 @@ class EventsController < ArtfullyOseController
   end
 
   def storefront_link
+  end
+
+  def wp_plugin
   end
   
   def prices

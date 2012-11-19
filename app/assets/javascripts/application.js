@@ -81,6 +81,7 @@ $(document).ready(function() {
   }
 
 	$('.help').popover();
+	$('.edit-message, .delete-message').popover({title: "Editing / Deleting", content: "We can only edit or delete manually entered donations.", placement: "bottom"});
 	
 	$('.dropdown-toggle').dropdown();
 	
@@ -157,6 +158,14 @@ $(document).ready(function() {
     $("#hear-action-modal").html(e.responseText);
     $("#hear-action-modal").modal( "show" );
     activateControls();
+    return false;
+  });
+
+  $("#edit-order-link").bind("ajax:complete", function(et, e){
+    $("#edit-order-popup").html(e.responseText);
+    $("#edit-order-popup").modal( "show" );
+    activateControls();
+		touchCurrency();
     return false;
   });
 
@@ -286,6 +295,13 @@ createControlsForTag = function(tagEl) {
   tagEl.append(controlsUl);
 	tagEl.append("\n");
 };
+
+function touchCurrency() {
+  $(".currency").each(function(index, element){
+		$(this).focus()
+		$(this).mask()
+	});
+}
 
 function activateControls() {
   $(".currency").each(function(index, element){

@@ -20,7 +20,7 @@ FactoryGirl.define do
     address1        { Faker::Address.street_address }
     address2        { Faker::Address.secondary_address }
     city            { Faker::Address.city }
-    state           { Faker::Address.us_state }
+    state           { Faker::Address.state }
     zip             { Faker::Address.zip_code }
     country         "United States"
     time_zone       "Mountain Time (US & Canada)"
