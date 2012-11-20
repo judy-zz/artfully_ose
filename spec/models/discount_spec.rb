@@ -66,5 +66,15 @@ describe Discount do
         @cart.total.should == 13600
       end
     end
+    context "with BOGOF" do
+      before(:each) do
+        subject.promotion_type = "BuyOneGetOneFree"
+      end
+      it "should take the cost of one ticket out of the total" do
+        @cart.total.should == 16600
+        subject.apply_discount_to_cart(@cart)
+        @cart.total.should == 11400
+      end
+    end
   end
 end

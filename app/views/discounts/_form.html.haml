@@ -31,6 +31,7 @@
       .controls
         = p.text_field :amount, :value => discount.properties[:amount], :class => 'currency'
     .control-group.promotion-type-properties#BuyOneGetOneFree{:style => "display: none;"}
+      %p This will only grant 1 free ticket with the purchase of 1 ticket, regardless if more tickets are sold or not.
       
 - content_for :custom_js do
   :javascript
