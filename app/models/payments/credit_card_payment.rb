@@ -69,6 +69,7 @@ class CreditCardPayment < ::Payment
     ::Rails.logger.debug("Received response: #{response.message}")
     ::Rails.logger.debug(response.inspect)
     self.transaction_id = response.authorization
+    self.errors.add(:base, response.message) unless response.message.blank?
     response
   end
   
