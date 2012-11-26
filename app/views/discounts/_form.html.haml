@@ -29,7 +29,10 @@
     .control-group.promotion-type-properties#DollarsOffTickets{:style => "display: none;"}
       = p.label :amount, "Amount off each ticket", :class => 'control-label'
       .controls
-        = p.text_field :amount, :value => discount.properties[:amount], :class => 'currency'
+        .input-prepend
+          %span.add-on $
+          = p.text_field :amount, :placeholder => '0.00', :class => 'input-small section-price', :value => number_as_cents(discount.properties[:amount], :format => "%n")
+        
     .control-group.promotion-type-properties#BuyOneGetOneFree{:style => "display: none;"}
       %p This will only grant 1 free ticket with the purchase of 1 ticket, regardless if more tickets are sold or not.
       

@@ -4,14 +4,22 @@ class PercentageOffTicketsDiscountType < DiscountType
   def apply_discount_to_cart(cart)
     ensure_percentage_exists
     cart.tickets.each do |ticket|
-      ticket.update_attributes(:cart_price => ticket.price - (ticket.price * @properties[:amount]))
+      ticket.update_attributes(:cart_price => ticket.price - (ticket.price * @properties[:percentage]))
     end
     return cart
+  end
+
+  def validate(discount)
+    discount.errors[:base] = "Amount must be filled in." unless @properties[:percentage].present?
+  end
+
+  def to_s
+    "#{@properties[:percentage] * 100.00}% off each ticket"
   end
 
 private
 
   def ensure_percentage_exists
-    raise "Amount missing!" if @properties[:percentage].blank?
+    raise "Percentage missing!" if @properties[:percentage].blank?
   end
 end

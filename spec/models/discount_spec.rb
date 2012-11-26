@@ -49,6 +49,7 @@ describe Discount do
     context "with ten percent off" do
       before(:each) do
         subject.promotion_type = "PercentageOffTickets"
+        subject.properties[:percentage] = 0.1
       end
       it "should take ten percent off the cost of each ticket" do
         @cart.total.should == 16600
@@ -59,6 +60,7 @@ describe Discount do
     context "with ten dollars off the order" do
       before(:each) do
         subject.promotion_type = "DollarsOffTickets"
+        subject.properties[:amount] = 1000
       end
       it "should take ten dollars off the cost of each ticket" do
         @cart.total.should == 16600

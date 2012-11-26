@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121029185106) do
+ActiveRecord::Schema.define(:version => 20121115020441) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20121029185106) do
     t.integer  "subject_id"
     t.string   "subject_type"
     t.integer  "creator_id"
+    t.datetime "deleted_at"
   end
 
   create_table "addresses", :force => true do |t|
@@ -157,6 +158,7 @@ ActiveRecord::Schema.define(:version => 20121029185106) do
     t.integer  "show_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "deleted_at"
   end
 
   add_index "items", ["created_at"], :name => "index_items_on_created_at"
@@ -200,6 +202,7 @@ ActiveRecord::Schema.define(:version => 20121029185106) do
     t.string   "type"
     t.string   "payment_method"
     t.text     "special_instructions"
+    t.datetime "deleted_at"
   end
 
   add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
@@ -235,6 +238,7 @@ ActiveRecord::Schema.define(:version => 20121029185106) do
     t.integer  "import_id"
     t.datetime "deleted_at"
     t.integer  "lifetime_value",  :default => 0
+    t.string   "salutation"
   end
 
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"
