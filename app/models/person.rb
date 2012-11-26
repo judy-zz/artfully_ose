@@ -157,7 +157,7 @@ class Person < ActiveRecord::Base
   end
   
   def self.find_by_email_and_organization(email, organization)
-    return nil if email.nil? 
+    return nil if email.blank? 
     find(:first, :conditions => { :email => email, :organization_id => organization.id })
   end
 

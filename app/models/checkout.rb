@@ -11,6 +11,19 @@ class Checkout
   def self.for(cart, payment)
     cart.checkout_class.new(cart, payment)
   end
+  
+  def message
+    message = @payment.errors.full_messages.to_sentence.downcase
+    message = message.gsub('customer', 'contact info')
+    message = message.gsub('credit card is', 'payment details are')
+    message = message[0].upcase + message[1..message.length] unless message.blank? #capitalize first word
+    
+    if message.blank?
+      message = "We had a problem validating your payment.  Wait a few moments and try again or contact us to complete your purchase"
+    end
+    
+    message
+  end
 
   def initialize(cart, payment)
     @cart = cart
