@@ -2,12 +2,13 @@
 
 %p="Thank you for your order, #{@person.first_name} #{@person.last_name}!"
 
-%p="This is not a ticket. Please use your order number to check in at the event."
+- unless @order.tickets.empty?
+  %p="This is not a ticket. Please use your order number to check in at the event."
 
 %p
   = "Order number: #{@order.id}"
   %br
-  = "Purchase Date: #{l(@order.created_at)}"
+  = "Purchase Date: #{l(@order.created_at_local_to_organization)}"
   %br
   = "Order total: $#{format("%.2f", (@order.total/100.0))}"
   %br
