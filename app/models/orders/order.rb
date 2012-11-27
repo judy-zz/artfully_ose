@@ -140,7 +140,7 @@ class Order < ActiveRecord::Base
   end
 
   def sum_donations
-    all_donations.collect{|item| item.price.to_i}.sum
+    all_donations.collect{|item| item.total_price.to_i}.sum
   end
 
   def ticket_details
