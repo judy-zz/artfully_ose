@@ -159,9 +159,10 @@ class Order < ActiveRecord::Base
 
   def donation_details
     if is_fafs?
-      o = Organization.find(organization_id)
-      fiscally_sponsored_project_details = o.fiscally_sponsored_project.nil? ? "" : " for the benefit of #{o.fiscally_sponsored_project.name}"
-      "#{number_as_cents sum_donations} donation#{fiscally_sponsored_project_details}"
+      # o = Organization.find(organization_id)
+      # fiscally_sponsored_project_details = o.fiscally_sponsored_project.nil? ? "" : " for the benefit of #{o.fiscally_sponsored_project.name}"
+      # "#{number_as_cents sum_donations} donation#{fiscally_sponsored_project_details}"
+      "#{number_as_cents sum_donations} donation made through Fractured Atlas"
     else
       "#{number_as_cents sum_donations} donation"
     end
