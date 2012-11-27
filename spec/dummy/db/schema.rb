@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(:version => 20121115020441) do
     t.integer  "image_file_size"
     t.string   "special_instructions_caption", :default => "Special Instructions"
     t.boolean  "show_special_instructions",    :default => false
+    t.integer  "import_id"
   end
 
   create_table "import_errors", :force => true do |t|
@@ -203,6 +204,7 @@ ActiveRecord::Schema.define(:version => 20121115020441) do
     t.string   "payment_method"
     t.text     "special_instructions"
     t.datetime "deleted_at"
+    t.integer  "import_id"
   end
 
   add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
