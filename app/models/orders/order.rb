@@ -160,7 +160,8 @@ class Order < ActiveRecord::Base
   def donation_details
     if is_fafs?
       o = Organization.find(organization_id)
-      "#{number_as_cents sum_donations} donation via Fractured Atlas for the benefit of #{o.fiscally_sponsored_project.name}"
+      fiscally_sponsored_project_details = o.fiscally_sponsored_project.nil? ? "" : " for the benefit of #{o.fiscally_sponsored_project.name}"
+      "#{number_as_cents sum_donations} donation#{fiscally_sponsored_project_details}"
     else
       "#{number_as_cents sum_donations} donation"
     end
@@ -190,6 +191,20 @@ class Order < ActiveRecord::Base
     items.try(:first).try(:show).try(:event).try(:contact_email)
   end
 
+  def create_donation_actions
+    items.select(&:donation?).collect do |item|
+      action                    = GiveAction.new
+      action.person             = person
+      action.subject            = self
+      action.organization_id    = organization.id
+      action.details            = donation_details
+      action.occurred_at        = created_at
+      action.subtype            = "Monetary"
+      action.save!
+      action
+    end
+  end
+
   private
 
     #this used to do more.  Now it only does this
@@ -208,20 +223,6 @@ class Order < ActiveRecord::Base
         action.subtype          = "Purchase"
         action.import           = self.import if self.import
 
-        action.save!
-        action
-      end
-    end
-
-    def create_donation_actions
-      items.select(&:donation?).collect do |item|
-        action                    = GiveAction.new
-        action.person             = person
-        action.subject            = self
-        action.organization_id    = organization.id
-        action.details            = donation_details
-        action.occurred_at        = created_at
-        action.subtype            = "Monetary"
         action.save!
         action
       end
