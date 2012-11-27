@@ -60,7 +60,7 @@ class Cart < ActiveRecord::Base
   end
 
   def items_subject_to_fee
-    self.tickets.reject{|t| t.cart_price == 0}
+    self.tickets.reject{|t| t.price == 0}
   end
 
   def fee_in_cents
