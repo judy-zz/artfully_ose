@@ -234,7 +234,7 @@ $("document").ready(function(){
       $('.price').removeClass('comped-price');
     }
     
-     var payment_method_text = $(this).attr("value");
+     var payment_method_text = $(this).attr("humanized_value");
      $('#payment-method-popup').html(payment_method_text);
   });
 });
