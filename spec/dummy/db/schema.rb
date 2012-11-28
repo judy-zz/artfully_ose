@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(:version => 20121115020441) do
     t.string   "subject_type"
     t.integer  "creator_id"
     t.datetime "deleted_at"
+    t.integer  "import_id"
   end
 
   create_table "addresses", :force => true do |t|
@@ -138,6 +139,7 @@ ActiveRecord::Schema.define(:version => 20121115020441) do
     t.string   "status",          :default => "pending"
     t.text     "import_headers"
     t.integer  "organization_id"
+    t.string   "type"
   end
 
   create_table "items", :force => true do |t|

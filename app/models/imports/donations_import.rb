@@ -64,6 +64,7 @@ class DonationsImport < Import
         fail!
       end 
     end
+    puts person.inspect
     person  
   end
    
