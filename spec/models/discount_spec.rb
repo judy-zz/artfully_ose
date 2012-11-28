@@ -70,12 +70,14 @@ describe Discount do
     end
     context "with BOGOF" do
       before(:each) do
+        # Add two more tickets
+        @cart.tickets << 2.times.collect { FactoryGirl.create(:ticket) }
         subject.promotion_type = "BuyOneGetOneFree"
       end
-      it "should take the cost of one ticket out of the total" do
-        @cart.total.should == 16600
+      it "should take the cost of every other ticket out of the total" do
+        @cart.total.should == 27000
         subject.apply_discount_to_cart(@cart)
-        @cart.total.should == 11400
+        @cart.total.should == 17000
       end
     end
   end
