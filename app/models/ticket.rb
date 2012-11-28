@@ -21,6 +21,10 @@ class Ticket < ActiveRecord::Base
     self.cart_price ||= self.price
   end
 
+  def cart_price
+    self[:cart_price] || self.price
+  end
+
   def self.sold_after(datetime)
     sold.where("sold_at > ?", datetime)
   end
