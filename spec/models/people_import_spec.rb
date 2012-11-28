@@ -24,8 +24,7 @@ describe PeopleImport do
   context "an example import from a customer" do
     before :each do
       Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
-  
-      @csv_filename = Rails.root.join("spec", "support", "patron-import.csv")
+      @csv_filename = "#{File.dirname(__FILE__)}/../support/patron-import.csv"
       @import = FactoryGirl.create(:people_import, s3_key: @csv_filename)
       @import.cache_data
       @import.import
