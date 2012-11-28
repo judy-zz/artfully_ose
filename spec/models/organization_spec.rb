@@ -155,7 +155,7 @@ describe Organization do
       show = FactoryGirl.create(:show, :event => event, :organization => producer)
       ticket = FactoryGirl.create(:ticket, :show => show, :organization => producer, :state => :sold)
 
-      item = FactoryGirl.create(:item, :product => ticket, :order => order, :reseller_order => nil, :show => show)
+      item = FactoryGirl.create(:item, :product => ticket, :order => order, :show => show)
 
       order.items << item
       order.save!
