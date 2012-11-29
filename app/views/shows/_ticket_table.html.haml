@@ -1,13 +1,6 @@
 %table.table#ticket-type-table
   -@show.chart.sections.each do |section|
     %tr
-      %td
-        %strong=section.name
-      %td="#{number_as_cents section.price}"
-      %td="#{section.summary.total} tickets"
-      %td="#{section.summary.available} on sale"
-      %td="#{section.summary.sold} sold"
-      %td="#{section.summary.comped} comped"
       %td{:style => 'width: 30px'}
         %ul.nav.in-table
           %li.dropdown{:id => "#menu#{section.id}"}
@@ -19,6 +12,22 @@
                 =link_to "Take off sale", "#takeOffSale#{section.id}", 'data-toggle' => 'modal'
               %li
                 =link_to "Add tickets", "#addTickets#{section.id}", 'data-toggle' => 'modal'
+              %li
+                =link_to "Publish", "#unpublish#{section.id}", 'data-toggle' => 'modal'
+      %td
+        -if [true, false].sample
+          %span.label.label-success
+            Published
+        - else
+          %span.label.label-info
+            Unpublished          
+      %td
+        %strong=truncate(section.name, :length => 20, :separator => ' ', :omission => '...')
+      %td="#{number_as_cents section.price}"
+      %td="#{section.summary.total} tickets"
+      %td="#{section.summary.available} on sale"
+      %td="#{section.summary.sold} sold"
+      %td="#{section.summary.comped} comp"
           
 -@show.chart.sections.each do |section|
   .modal{:id => "addTickets#{section.id}", :style => "width: 650px"}
@@ -39,7 +48,7 @@
         = submit_tag "Go", :class => "btn"
       .row-fluid
         .span6
-          %h6="About #{section.name}"
+          %h6="About #{truncate(section.name, :length => 20, :separator => ' ', :omission => '...')}"
           = render :partial => 'shared/section_summary', :locals => { :section => section }
         .span6
           %h6 About this show
@@ -61,7 +70,7 @@
           Take off sale
       .row-fluid
         .span6
-          %h6="About #{section.name}"
+          %h6="About #{truncate(section.name, :length => 20, :separator => ' ', :omission => '...')}"
           = render :partial => 'shared/section_summary', :locals => { :section => section }
         .span6
           %h6 About this show
@@ -83,8 +92,56 @@
           Put on sale
       .row-fluid
         .span6
-          %h6="About #{section.name}"
+          %h6="About #{truncate(section.name, :length => 20, :separator => ' ', :omission => '...')}"
           = render :partial => 'shared/section_summary', :locals => { :section => section }
         .span6
           %h6 About this show
           = render :partial => 'shared/show_summary', :locals => { :show => show }
+
+-@show.chart.sections.each do |section|
+  .modal{:id => "publish#{section.id}"}
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      .row-fluid
+        .span10
+          %h3 Publish Ticket Type
+    .modal-body
+      .row-fluid
+        .span6
+          %h6="About #{truncate(section.name, :length => 20, :separator => ' ', :omission => '...')}"
+          = render :partial => 'shared/section_summary', :locals => { :section => section }
+        .span6
+          .row-fluid
+            .span12.center
+              .bottom-room
+                =link_to "Publish", "#", :class => 'btn btn-success btn3'
+          %p
+            %b Published
+            ticket types are available for purchase on the storefront, widget, and box office
+          %p
+            %b Unpublished
+            ticket types are not shown on your storefront or the widget.  They are still available through the box office.
+            
+-@show.chart.sections.each do |section|
+  .modal{:id => "unpublish#{section.id}"}
+    .modal-header
+      .close{'data-dismiss'=>'modal'} x
+      .row-fluid
+        .span10
+          %h3 Unpublish Ticket Type
+    .modal-body
+      .row-fluid
+        .span6
+          %h6="About #{truncate(section.name, :length => 20, :separator => ' ', :omission => '...')}"
+          = render :partial => 'shared/section_summary', :locals => { :section => section }
+        .span6
+          .row-fluid
+            .span12.center
+              .bottom-room
+                =link_to "Unpublish", "#", :class => 'btn btn-info btn3'
+          %p
+            %b Published
+            ticket types are available for purchase on the storefront, widget, and box office
+          %p
+            %b Unpublished
+            ticket types are not shown on your storefront or the widget.  They are still available through the box office.
