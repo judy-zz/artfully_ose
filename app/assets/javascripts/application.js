@@ -148,7 +148,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $("#add-new-ticket-type-link").bind("ajax:complete", function(et, e){
+  $(".add-new-ticket-type-link").bind("ajax:complete", function(et, e){
     $("#newTicketType").html(e.responseText);
     $("#newTicketType").modal( "show" );
     return false;

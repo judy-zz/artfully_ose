@@ -8,31 +8,34 @@
     =f.label :description, "Description", :class => 'control-label'
     .controls
       =f.text_area :description, :size => '10x5'
+  -no_editing = false if no_editing.nil?
+  - unless no_editing
+    .control-group
+      =f.label :price, "Price", :class => 'control-label'
+      .controls
+        .input-prepend
+          %span.add-on $
+          - if can? :create, :paid_events
+            =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price', :value => number_as_cents(f.object.price, :format => "%n")
+          - else
+            %span.section-price-disabled{'data-toggle' => "modal", 'data-target' => "#request-paid-ticket-kit"}
+              =f.text_field :price, :placeholder => '0.00', :class => 'input-small disabled section-price-disabled', :value => number_as_cents(f.object.price, :format => "%n"), :disabled => 'disabled'
+              %p
+                %a{:href=>"#"} Paid Ticketing Kit not enabled.
 
-  .control-group
-    =f.label :price, "Price", :class => 'control-label'
-    .controls
-      .input-prepend
-        %span.add-on $
-        - if can? :create, :paid_events
-          =f.text_field :price, :placeholder => '0.00', :class => 'input-small section-price', :value => number_as_cents(f.object.price, :format => "%n")
-        - else
-          %span.section-price-disabled{'data-toggle' => "modal", 'data-target' => "#request-paid-ticket-kit"}
-            =f.text_field :price, :placeholder => '0.00', :class => 'input-small disabled section-price-disabled', :value => number_as_cents(f.object.price, :format => "%n"), :disabled => 'disabled'
-            %p
-              %a{:href=>"#"} Paid Ticketing Kit not enabled.
 
-  .control-group
-    =f.label :capacity, "Capacity", :class => 'control-label'
-    .controls
-      =f.text_field :capacity, :class => 'span1'
+    .control-group
+      =f.label :capacity, "Capacity", :class => 'control-label'
+      .controls
+        =f.text_field :capacity, :class => 'span1', :disabled => no_editing
   
   .control-group
     =f.label :availablity, "Availablity", :class => 'control-label'
     .controls
       = select_tag "availablility", options_for_select(["Published", "Unpublished"])
       %span.help{'data-title' => 'Publishing', 'data-content' => "<p><b>Published</b> ticket types are available for purchase on the storefront, widget, and box office.</p> <p><b>Unpublished</b> ticket types are not shown on your storefront or the widget.  They are still available through the box office.</p>".html_safe} ?
-  
+  .control-group
+    .controls
       - show_remove_links = true if show_remove_links.nil?
       - if show_remove_links
         %span.remove-fields-link
