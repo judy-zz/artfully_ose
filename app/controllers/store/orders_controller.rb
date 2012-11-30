@@ -57,8 +57,13 @@ class Store::OrdersController < Store::StoreController
       @cart = current_cart
       pre_discount_amount = @cart.total
       discount = Discount.find_by_code_and_event_id(params[:discount].upcase, event.id)
-      current_cart = discount.apply_discount_to_cart(@cart)
-      @discount_amount = pre_discount_amount - current_cart.total
+      if discount.present?
+        current_cart = discount.apply_discount_to_cart(@cart)
+        @discount_amount = pre_discount_amount - current_cart.total
+      else
+        params[:discount] = nil
+        @discount_amount = 0
+      end
     end
 
     def handle_tickets(ids)
