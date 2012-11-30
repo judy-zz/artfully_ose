@@ -85,7 +85,12 @@
             %td.price
               %h5.formatCurrency
 
-          %tr#discount-input
+          %tr#discount-link
+            %td
+            %td= link_to "Apply Discount Code", "#"
+            %td
+
+          %tr#discount-input{:style => 'display:none'}
             %td
             %td= text_field_tag 'discount', params[:discount], :placeholder => "Enter discount here, eg. COWBELL"
             %td= button_tag "Apply", :class => 'btn btn-primary', :disable_with => "Applying..."

@@ -51,8 +51,15 @@ $(document).ready(function(){
     donationAmount = $(this).find('#donation_amount').asNumber();
     if (donationAmount > 0) {
       $('#shopping-cart #steps').slideDown(); // not sure why this isn't slideUp
-      addItemToCart('donation', { donationAmount: donationAmount});
+      addItemToCart('donation', {donationAmount: donationAmount});
     }
+  });
+
+  $('#discount-link a').click(function(e) {
+    e.preventDefault();
+    $('tr#discount-link').hide();
+    $('tr#discount-display').hide();
+    $('tr#discount-input').show();
   });
 
   $('#discount-input button').click(function(e) {
@@ -62,6 +69,7 @@ $(document).ready(function(){
 
   $('#discount-display button').click(function(e) {
     e.preventDefault();
+    $('tr#discount-link').hide();
     $('tr#discount-display').hide();
     $('tr#discount-input').show();
   });
@@ -191,13 +199,15 @@ function updateOrderOnServer() {
 
       // add discount line item
       if (data.discount_name) {
+        $('tr#discount-link').hide();
         $('tr#discount-input').hide();
         $('tr#discount-display td.details span').html(data.discount_name);
         $('tr#discount-display td.amount h5').html(data.discount_amount / 100.0);
         $('tr#discount-display').show();
       } else {
         $('tr#discount-display').hide();
-        $('tr#discount-input').show();
+        $('tr#discount-link').show();
+        $('tr#discount-input').hide();
       }
       
       // todo validate amount
