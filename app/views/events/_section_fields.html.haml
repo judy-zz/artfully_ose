@@ -31,9 +31,12 @@
   
   .control-group
     =f.label :availablity, "Availablity", :class => 'control-label'
-    .controls
-      = select_tag "availablility", options_for_select(["Published", "Unpublished"])
-      %span.help{'data-title' => 'Publishing', 'data-content' => "<p><b>Published</b> ticket types are available for purchase on the storefront, widget, and box office.</p> <p><b>Unpublished</b> ticket types are not shown on your storefront or the widget.  They are still available through the box office.</p>".html_safe} ?
+    
+    - Section.new.channels.each do |channel, icon|
+      .controls
+        =f.check_box channel
+        =channel.to_s.humanize
+  
   .control-group
     .controls
       - show_remove_links = true if show_remove_links.nil?

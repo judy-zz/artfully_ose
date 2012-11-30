@@ -8,7 +8,7 @@ class SalesController < ArtfullyOseController
 
   def new
     @person = Person.new
-    @sale = Sale.new(@show, @show.chart.sections)
+    @sale = Sale.new(@show, @show.chart.sections.box_office)
     @tickets_remaining = tickets_remaining
     setup_defaults
   end

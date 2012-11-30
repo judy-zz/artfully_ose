@@ -14,22 +14,11 @@
                 =link_to "Take off sale", "#takeOffSale#{section.id}", 'data-toggle' => 'modal'
               %li
                 =link_to "Add tickets", "#addTickets#{section.id}", 'data-toggle' => 'modal'
-              %li
-                =link_to "Publish", "#unpublish#{section.id}", 'data-toggle' => 'modal'
       %td
-        -if [true, false].sample
-          %a{:href => "#", :class => "artfully-tooltip", :rel => "tooltip", "data-original-title" => "This ticket type is shown in your storefront and widget", "data-trigger" => "hover"}
-            %span.badge.badge-success="S"
-        - else
-          %a{:href => "#", :class => "artfully-tooltip", :rel => "tooltip", "data-original-title" => "This ticket type is not shown in your storefront and widget", "data-trigger" => "hover"}
-            %span.badge="S"
-            
-        -if [true, true, false].sample
-          %a{:href => "#", :class => "artfully-tooltip", :rel => "tooltip", "data-original-title" => "This ticket type is shown in your box office", "data-trigger" => "hover"}
-            %span.badge.badge-success="B"
-        - else
-          %a{:href => "#", :class => "artfully-tooltip", :rel => "tooltip", "data-original-title" => "This ticket type is not shown in your box office", "data-trigger" => "hover"}
-            %span.badge="B"   
+        - section.channels.each do |channel, icon|
+          %a{:href => "#", :class => "artfully-tooltip", :rel => "tooltip", "data-original-title" => "This ticket type is #{"not" unless section.send(channel)} shown in the #{channel.to_s.humanize}", "data-trigger" => "hover"}
+            %span.badge{:class => "#{'badge-success' if section.send(channel)}"}=icon         
+       
       %td
         %strong=truncate(section.name, :length => 20, :separator => ' ', :omission => '...')
       %td="#{number_as_cents section.price}"
@@ -37,10 +26,6 @@
       %td="#{section.summary.available} on sale"
       %td="#{section.summary.sold} sold"
       %td="#{section.summary.comped} comp"
-      
-- content_for :custom_js do
-  :javascript
-    $('.artfully-tooltip').tooltip()
           
 -@show.chart.sections.each do |section|
   .modal{:id => "addTickets#{section.id}", :style => "width: 650px"}

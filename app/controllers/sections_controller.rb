@@ -25,14 +25,8 @@ class SectionsController < ArtfullyOseController
   end
 
   def update
-    params[:section][:price] = Section.price_to_cents(params[:section][:price])
     @section = Section.find(params[:id])
     @section.update_attributes(params[:section])
-    # if @section.save
-    #   Ticket.create_many(@chart.show, @section, @section.capacity, true)
-    # else
-    #   flash[:error] = "We couldn't save your ticket type because " + @section.errors.full_messages.to_sentence
-    # end
     redirect_to event_show_path(@chart.show.event, @chart.show)
   end
   

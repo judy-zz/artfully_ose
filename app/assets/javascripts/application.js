@@ -86,6 +86,7 @@ $(document).ready(function() {
 	$('.dropdown-toggle').dropdown();
 	
 	$('#nag').modal('show');
+  $('.artfully-tooltip').tooltip()
 	
 	/*********** NEW ARTFULLY JS ************/
 	
