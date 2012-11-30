@@ -29,9 +29,7 @@
     .control-group.promotion-type-properties#DollarsOffTickets{:style => "display: none;"}
       = p.label :amount, "Amount off each ticket", :class => 'control-label'
       .controls
-        .input-prepend
-          %span.add-on $
-          = p.text_field :amount, :placeholder => '0.00', :class => 'input-small section-price', :value => number_as_cents(discount.properties[:amount], :format => "%n")
+        = p.text_field :amount, :placeholder => '0.00', :class => 'input-small section-price currency', :value => number_as_cents(discount.properties[:amount], :format => "%n")
         
     .control-group.promotion-type-properties#BuyOneGetOneFree
       
