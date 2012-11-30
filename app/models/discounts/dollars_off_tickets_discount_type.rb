@@ -16,6 +16,8 @@ class DollarsOffTicketsDiscountType < DiscountType
 
   def validate(discount)
     discount.errors[:base] = "Amount must be filled in." unless @properties[:amount].present?
+    @properties[:amount] = @properties[:amount].to_i
+    discount.errors[:base] = "Amount must be greater than zero." if @properties[:amount] == 0
   end
 
   def to_s
