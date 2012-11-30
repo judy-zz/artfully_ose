@@ -1,8 +1,11 @@
 - in_section :dashboard
 - content_for :header do
-  %h1= @organization.name
+  %h1 Account Administration
 
 %ul.kv
+  %li.row-fluid
+    .key.span2 Organization Name
+    .value.span6= @organization.name
   %li.row-fluid
     .key.span2 Email
     .value.span6= @organization.email
