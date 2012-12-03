@@ -395,7 +395,6 @@ describe Ticket do
   describe "cart_price" do
     subject { FactoryGirl.build(:ticket, :cart_price => nil)}
     it "should automatically be set when created" do
-      subject.cart_price.should == nil
       subject.save!
       subject.cart_price.should == subject.price
     end
