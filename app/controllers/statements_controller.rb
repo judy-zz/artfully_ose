@@ -5,7 +5,7 @@ class StatementsController < ArtfullyOseController
     if params[:event_id].present?
       @event = Event.find(params[:event_id])
       authorize! :view, @event
-      @played = @event.played_shows(:all)
+      @shows = @event.shows
       @statement = nil
       render :show and return
     else
@@ -18,7 +18,7 @@ class StatementsController < ArtfullyOseController
     @show = Show.find(params[:id])
     authorize! :view, @show
     @event = @show.event
-    @played = @event.played_shows(:all)
+    @shows = @event.shows
     @statement = Statement.for_show(@show)
   end
 

@@ -10,7 +10,9 @@
       = show.datetime_local_to_event.strftime("%l:%M %p")
 
   .sections{:style => 'display:none;'}
-    - show.chart.sections.each do |section|
+    - if show.chart.sections.storefront.empty?
+      No tickets are available for this show
+    - show.chart.sections.storefront.each do |section|
       .section
         %h4
           = section.name

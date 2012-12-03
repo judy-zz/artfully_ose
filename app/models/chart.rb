@@ -13,12 +13,17 @@ class Chart < ActiveRecord::Base
   after_create :create_first_section, :unless => lambda { @skip_create_first_section == true }
 
   validates :name, :presence => true, :length => { :maximum => 255 }
+  scope :template, where(:is_template => true)
 
   def as_json(options = {})
-    super({:methods => ['sections']}.merge(options))
+    h = super(options)
+    h[:sections]   = sections.storefront
+    h
   end
-
-  scope :template, where(:is_template => true)
+  
+  def widget_sections
+    self.sections.storefront.all
+  end
 
   # copy! is when they're editing charts and want to create a copy of
   # this chart to modify further (weekday and weekend charts)
