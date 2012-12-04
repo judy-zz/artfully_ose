@@ -28,14 +28,25 @@ class Store::OrdersController < Store::StoreController
 
     handle_order(order_params)
     if params[:discount].present?
-      handle_discount(params)
+      begin
+        handle_discount(params)
+      rescue RuntimeError => e
+        discount_error = e.message
+        params[:discount] = nil
+        @discount_amount = 0
+      rescue NoMethodError => e
+        discount_error = "Discount could not be found!"
+        params[:discount] = nil
+        @discount_amount = 0
+      end
     end
 
     response = current_cart.as_json
     response = response.merge(:total => current_cart.total)
     response = response.merge(:service_charge => current_cart.fee_in_cents)
     response = response.merge(:over_section_limit => over_section_limit)
-    if params[:discount].present?
+    response = response.merge(:discount_error => discount_error)
+    if params[:discount].present? && discount_error.blank?
       response = response.merge(:discount_name => params[:discount])
       response = response.merge(:discount_amount => @discount_amount)
     end
@@ -57,13 +68,8 @@ class Store::OrdersController < Store::StoreController
       @cart = current_cart
       pre_discount_amount = @cart.total
       discount = Discount.find_by_code_and_event_id(params[:discount].upcase, event.id)
-      if discount.present?
-        current_cart = discount.apply_discount_to_cart(@cart)
-        @discount_amount = pre_discount_amount - current_cart.total
-      else
-        params[:discount] = nil
-        @discount_amount = 0
-      end
+      current_cart = discount.apply_discount_to_cart(@cart)
+      @discount_amount = pre_discount_amount - current_cart.total
     end
 
     def handle_tickets(ids)

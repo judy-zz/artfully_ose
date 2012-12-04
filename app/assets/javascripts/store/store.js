@@ -164,6 +164,7 @@ function updateOrderOnServer() {
     type: "POST",
     data: params,
     success: function(data) {
+      $('#discount-error').html(null);
       // we dont have enough tickets available
       if (data.over_section_limit) {
         jQuery.each(data.over_section_limit, function(index, section) {
@@ -186,6 +187,10 @@ function updateOrderOnServer() {
         updateRequiredFields();
         hidePaymentDetails();
         $('.formatCurrency').formatCurrency();
+      }
+
+      if (data.discount_error) {
+        $('#discount-error').html(data.discount_error);
       }
 
       // add service charge line item
