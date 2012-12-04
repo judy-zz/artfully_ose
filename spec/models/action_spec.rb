@@ -30,5 +30,10 @@ describe Action do
       expect {subject.set_creator(user)}.to change(subject, :organization)
     end
   end
+  
+  describe "#recent" do
+    it "should get the most recent actions"
+    it "should not return imported actions"
+  end
 
 end

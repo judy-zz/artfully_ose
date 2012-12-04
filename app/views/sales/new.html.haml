@@ -55,17 +55,17 @@
       %h6 Payment
       #payment-controls.controls
         %label.radio
-          = radio_button_tag(:payment_method, :cash, true, :class => 'payment-method', :disabled => 'true')
+          = radio_button_tag(:payment_method, :cash, true, :class => 'payment-method', :disabled => 'true', :humanized_value => 'Cash')
           Cash
         %label.radio
-          = radio_button_tag(:payment_method, :comp, false, :class => 'payment-method', :disabled => 'true')
+          = radio_button_tag(:payment_method, :comp, false, :class => 'payment-method', :disabled => 'true', :humanized_value => 'Comp')
           Comp
         -unless @event.is_free
           %label.radio
-            = radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true')
+            = radio_button_tag(:payment_method, :credit_card_swipe, false, :class => 'payment-method', :disabled => 'true', :humanized_value => 'Credit card')
             Credit (Swipe)
           %label.radio
-            = radio_button_tag(:payment_method, :credit_card_manual, false, :class => 'payment-method', :disabled => 'true')
+            = radio_button_tag(:payment_method, :credit_card_manual, false, :class => 'payment-method', :disabled => 'true', :humanized_value => 'Credit card')
             Credit (Manual)
       #payment-info.hidden
         .control-group

@@ -73,15 +73,20 @@ $(document).ready(function() {
 	/*********** NEW BOOTSTRAP JS ***********/
 	$(".alert").alert();
 
+  $('.email-popup').popover({trigger:'manual'})
+                   .click(function(){ $(this).popover('toggle'); });
+
   if($.browser.mozilla) {
     $('.section-price-disabled *').css("pointer-events", "none");
   }
 
 	$('.help').popover();
+	$('.edit-message, .delete-message').popover({title: "Editing / Deleting", content: "We can only edit or delete manually entered donations.", placement: "bottom"});
 	
 	$('.dropdown-toggle').dropdown();
 	
 	$('#nag').modal('show');
+  $('.artfully-tooltip').tooltip()
 	
 	/*********** NEW ARTFULLY JS ************/
 	
@@ -144,7 +149,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $("#add-new-ticket-type-link").bind("ajax:complete", function(et, e){
+  $(".add-new-ticket-type-link").bind("ajax:complete", function(et, e){
     $("#newTicketType").html(e.responseText);
     $("#newTicketType").modal( "show" );
     return false;
@@ -154,6 +159,14 @@ $(document).ready(function() {
     $("#hear-action-modal").html(e.responseText);
     $("#hear-action-modal").modal( "show" );
     activateControls();
+    return false;
+  });
+
+  $("#edit-order-link").bind("ajax:complete", function(et, e){
+    $("#edit-order-popup").html(e.responseText);
+    $("#edit-order-popup").modal( "show" );
+    activateControls();
+		touchCurrency();
     return false;
   });
 
@@ -276,6 +289,13 @@ createControlsForTag = function(tagEl) {
   tagEl.append(controlsUl);
 	tagEl.append("\n");
 };
+
+function touchCurrency() {
+  $(".currency").each(function(index, element){
+		$(this).focus()
+		$(this).mask()
+	});
+}
 
 function activateControls() {
   $(".currency").each(function(index, element){

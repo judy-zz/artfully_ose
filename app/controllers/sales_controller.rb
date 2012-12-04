@@ -8,7 +8,7 @@ class SalesController < ArtfullyOseController
 
   def new
     @person = Person.new
-    @sale = Sale.new(@show, @show.chart.sections)
+    @sale = Sale.new(@show, @show.chart.sections.box_office)
     @tickets_remaining = tickets_remaining
     setup_defaults
   end
@@ -23,7 +23,7 @@ class SalesController < ArtfullyOseController
   # In the meantime, BoxOffice::Cart has been jenked to just not lock tickets.
   #
   def create
-    @sale = Sale.new(@show, @show.chart.sections, params[:quantities])
+    @sale = Sale.new(@show, @show.chart.sections.box_office, params[:quantities])
     if checking_out?
       if @sale.sell(payment)
         @sale.message = "Sold #{self.class.helpers.pluralize(@sale.tickets.length, 'ticket')}.  Order total was #{self.class.helpers.number_as_cents @sale.cart.total}"

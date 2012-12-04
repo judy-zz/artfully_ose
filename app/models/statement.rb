@@ -34,8 +34,8 @@ class Statement
       #
       
       statement.cc_net = 0
-      show.items.each do |item| 
-        statement.cc_net += item.net if item.order.credit? 
+      show.items.each do |item|
+        statement.cc_net += item.net if (item.order.credit? && !show.imported?)
       end
       statement.settled           = show.settlements.successful.inject(0) { |settled, settlement| settled += settlement.net }
       payment_method_hash         = show.items.group_by { |item| item.order.payment_method }
@@ -43,11 +43,12 @@ class Statement
       statement.payment_method_rows         = {}
       
       # Initialize with the three common payment types
-      statement.payment_method_rows[::CreditCardPayment.payment_method] = PaymentTypeRow.new(::CreditCardPayment.payment_method)
-      statement.payment_method_rows[::CashPayment.payment_method] = PaymentTypeRow.new(::CashPayment.payment_method)
-      statement.payment_method_rows[::CompPayment.payment_method] = PaymentTypeRow.new(::CompPayment.payment_method)
+      statement.payment_method_rows[::CreditCardPayment.payment_method.downcase] = PaymentTypeRow.new(::CreditCardPayment.payment_method)
+      statement.payment_method_rows[::CashPayment.payment_method.downcase] = PaymentTypeRow.new(::CashPayment.payment_method)
+      statement.payment_method_rows[::CompPayment.payment_method.downcase] = PaymentTypeRow.new(::CompPayment.payment_method)
       
       payment_method_hash.each do |payment_method, items|
+        payment_method = (payment_method.try(:downcase) || "")
         row = statement.payment_method_rows[payment_method] || PaymentTypeRow.new(payment_method)
         items.each {|item| row << item}
         statement.payment_method_rows[payment_method] = row

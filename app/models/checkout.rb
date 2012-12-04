@@ -11,6 +11,19 @@ class Checkout
   def self.for(cart, payment)
     cart.checkout_class.new(cart, payment)
   end
+  
+  def message
+    message = @payment.errors.full_messages.to_sentence.downcase
+    message = message.gsub('customer', 'contact info')
+    message = message.gsub('credit card is', 'payment details are')
+    message = message[0].upcase + message[1..message.length] unless message.blank? #capitalize first word
+    
+    if message.blank?
+      message = "We had a problem validating your payment.  Wait a few moments and try again or contact us to complete your purchase"
+    end
+    
+    message
+  end
 
   def initialize(cart, payment)
     @cart = cart
@@ -56,7 +69,7 @@ class Checkout
       cart.organizations.each do |organization|
         @person = Person.find_or_create(@customer, organization)
         @person.update_address(Address.from_payment(payment), organization.time_zone, nil, "checkout")
-        @person.delay.add_phone_if_missing(@customer.phone)
+        @person.add_phone_if_missing(@customer.phone)
         
         @order = new_order(organization, order_timestamp, @person)
         @order.save!

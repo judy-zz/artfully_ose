@@ -10,6 +10,7 @@
     %p You can change these details at any time from the My Organization screen.
   .span8
     %h3 Create your own
+    = render "shared/error_messages", :target => @organization
     = form_for @organization do |form|
       %ul= render :partial => 'organizations/form', :locals => { :form => form }
       = form.submit "Create", :class => "btn"

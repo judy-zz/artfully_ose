@@ -3,8 +3,9 @@
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include ActionView::Helpers::TextHelper
-  include ArtfullyOseHelper
   include Ext::Integrations::Order
+  include OhNoes::Destroy
+  include ArtfullyOseHelper
   
   #This is a lambda used to by the items to calculate their net
   attr_accessor :per_item_processing_charge
@@ -13,10 +14,11 @@ class Order < ActiveRecord::Base
 
   belongs_to :person
   belongs_to :organization
+  belongs_to :import
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
-  has_many :items
-  has_many :actions, :foreign_key => "subject_id"
+  has_many :items, :dependent => :destroy
+  has_many :actions, :foreign_key => "subject_id", :dependent => :destroy
 
   attr_accessor :skip_actions
 
@@ -65,13 +67,13 @@ class Order < ActiveRecord::Base
   def nongift_amount
     all_items.inject(0) {|sum, item| sum + item.nongift_amount.to_i }
   end
-
-  def tickets
-    items.select(&:ticket?)
+  
+  def destroyable?
+    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully? && has_single_donation?
   end
-
-  def donations
-    items.select(&:donation?)
+  
+  def editable?
+    ( (type.eql? "ApplicationOrder") || (type.eql? "ImportedOrder") ) && !is_fafs? && !artfully? && has_single_donation? 
   end
 
   def for_organization(org)
@@ -100,8 +102,22 @@ class Order < ActiveRecord::Base
     all_items.select(&:ticket?)
   end
 
+  #TODO: Undupe these methods
+  def tickets
+    items.select(&:ticket?)
+  end
+
   def all_donations
     all_items.select(&:donation?)
+  end
+
+  def donations
+    items.select(&:donation?)
+  end
+  #End dupes
+  
+  def has_single_donation?
+    (donations.size == 1) && tickets.empty?
   end
 
   def settleable_donations
@@ -129,7 +145,7 @@ class Order < ActiveRecord::Base
   end
 
   def sum_donations
-    all_donations.collect{|item| item.price.to_i}.sum
+    all_donations.collect{|item| item.total_price.to_i}.sum
   end
 
   def ticket_details
@@ -148,8 +164,10 @@ class Order < ActiveRecord::Base
 
   def donation_details
     if is_fafs?
-      o = Organization.find(organization_id)
-      "#{number_as_cents sum_donations} donation via Fractured Atlas for the benefit of #{o.fiscally_sponsored_project.name}"
+      # o = Organization.find(organization_id)
+      # fiscally_sponsored_project_details = o.fiscally_sponsored_project.nil? ? "" : " for the benefit of #{o.fiscally_sponsored_project.name}"
+      # "#{number_as_cents sum_donations} donation#{fiscally_sponsored_project_details}"
+      "#{number_as_cents sum_donations} donation made through Fractured Atlas"
     else
       "#{number_as_cents sum_donations} donation"
     end
@@ -181,6 +199,24 @@ class Order < ActiveRecord::Base
     "Eastern Time (US & Canada)"
   end
 
+  def contact_email
+    items.try(:first).try(:show).try(:event).try(:contact_email)
+  end
+
+  def create_donation_actions
+    items.select(&:donation?).collect do |item|
+      action                    = GiveAction.new
+      action.person             = person
+      action.subject            = self
+      action.organization_id    = organization.id
+      action.details            = donation_details
+      action.occurred_at        = created_at
+      action.subtype            = "Monetary"
+      action.save!
+      action
+    end
+  end
+
   private
 
     #this used to do more.  Now it only does this
@@ -197,21 +233,8 @@ class Order < ActiveRecord::Base
         action.details          = ticket_details
         action.occurred_at      = created_at
         action.subtype          = "Purchase"
+        action.import           = self.import if self.import
 
-        action.save!
-        action
-      end
-    end
-
-    def create_donation_actions
-      items.select(&:donation?).collect do |item|
-        action                    = GiveAction.new
-        action.person             = person
-        action.subject            = self
-        action.organization_id    = organization.id
-        action.details            = donation_details
-        action.occurred_at        = created_at
-        action.subtype            = "Donation"
         action.save!
         action
       end

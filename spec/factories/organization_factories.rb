@@ -1,10 +1,14 @@
 FactoryGirl.define do
 factory :organization do
   name { Faker::Company.name }
+  email { Faker::Internet.email }
+  time_zone { "Eastern Time (US & Canada)" }
 end
 
 factory :organization_with_timezone, :parent => :organization do
-  time_zone 'Eastern Time (US & Canada)'
+  after(:build) do |organization|
+    organization.time_zone = 'Eastern Time (US & Canada)'
+  end
 end
 
 factory :organization_with_bank_account, :parent => :organization do

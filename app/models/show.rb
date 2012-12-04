@@ -69,6 +69,10 @@ class Show < ActiveRecord::Base
     ::Event.unscoped.find(event_id)
   end
   
+  def imported?
+    unscoped_event.imported?
+  end
+  
   def event_deleted?
     !unscoped_event.deleted_at.nil?
   end

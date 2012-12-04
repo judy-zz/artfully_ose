@@ -1,8 +1,11 @@
 class Action < ActiveRecord::Base
+  include OhNoes::Destroy
+  
   belongs_to :person
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   belongs_to :organization
   belongs_to :subject, :polymorphic => true
+  belongs_to :import
 
   validates_presence_of :occurred_at
   validates_presence_of :person_id
@@ -12,7 +15,7 @@ class Action < ActiveRecord::Base
   #
   # Action types: give, go, do, get, join, hear
   #
-  GIVE_TYPES = [ "Donation (Cash)", "Donation (Check)", "Donation (In-Kind)" ].freeze
+  GIVE_TYPES = [ "Monetary", "In-Kind" ].freeze
 
   def self.create_of_type(type)
     case type
@@ -67,6 +70,7 @@ class Action < ActiveRecord::Base
       "Press" ]
   end
   
+  #This returnes an ARel, so you can chain
   def self.recent(organization, limit = 5)
     Action.includes(:person).where(:organization_id => organization).order('created_at DESC').limit(limit)
   end

@@ -67,23 +67,23 @@ describe Statement do
       
       @statement.payment_method_rows.length.should eq 3
       
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 3
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 3000
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(3000 * 0.035)
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 2895
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].should_not be_nil
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].tickets.should eq 3
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].gross.should eq 3000
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].processing.should be_within(0.00001).of(3000 * 0.035)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].net.should eq 2895
       
-      @statement.payment_method_rows[::CompPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CompPayment.payment_method].tickets.should eq 3
-      @statement.payment_method_rows[::CompPayment.payment_method].gross.should eq 0
-      @statement.payment_method_rows[::CompPayment.payment_method].processing.should be_within(0.00001).of(0)
-      @statement.payment_method_rows[::CompPayment.payment_method].net.should eq 0
+      @statement.payment_method_rows[::CompPayment.payment_method.downcase].should_not be_nil
+      @statement.payment_method_rows[::CompPayment.payment_method.downcase].tickets.should eq 3
+      @statement.payment_method_rows[::CompPayment.payment_method.downcase].gross.should eq 0
+      @statement.payment_method_rows[::CompPayment.payment_method.downcase].processing.should be_within(0.00001).of(0)
+      @statement.payment_method_rows[::CompPayment.payment_method.downcase].net.should eq 0
       
-      @statement.payment_method_rows[::CashPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CashPayment.payment_method].tickets.should eq 0
-      @statement.payment_method_rows[::CashPayment.payment_method].gross.should eq 0
-      @statement.payment_method_rows[::CashPayment.payment_method].processing.should be_within(0.00001).of(0)
-      @statement.payment_method_rows[::CashPayment.payment_method].net.should eq 0
+      @statement.payment_method_rows[::CashPayment.payment_method.downcase].should_not be_nil
+      @statement.payment_method_rows[::CashPayment.payment_method.downcase].tickets.should eq 0
+      @statement.payment_method_rows[::CashPayment.payment_method.downcase].gross.should eq 0
+      @statement.payment_method_rows[::CashPayment.payment_method.downcase].processing.should be_within(0.00001).of(0)
+      @statement.payment_method_rows[::CashPayment.payment_method.downcase].net.should eq 0
       
       @statement.order_location_rows[::WebOrder.location].should_not be_nil   
       @statement.order_location_rows[::WebOrder.location].tickets.should eq 3 
@@ -95,6 +95,20 @@ describe Statement do
       @statement.order_location_rows[CompOrder.location].tickets.should eq 3
       
     end
+  end
+  
+  describe "with an imported show" do      
+    before(:each) do
+      setup_show
+      setup_exchange
+    end
+      
+    it "should not show a cc_net for imported events" do
+      paid_show.event.should_receive(:imported?).at_least(1).times.and_return(true)
+      paid_show.should_receive(:unscoped_event).at_least(1).times.and_return(paid_show.event)
+      @statement = Statement.for_show(paid_show)
+      @statement.cc_net.should eq 0
+    end  
   end
   
   describe "with an exchange" do      
@@ -117,11 +131,11 @@ describe Statement do
       
       @statement.payment_method_rows.length.should eq 3
       
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 4
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 4000
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(4000 * 0.035)
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 3860
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].should_not be_nil
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].tickets.should eq 4
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].gross.should eq 4000
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].processing.should be_within(0.00001).of(4000 * 0.035)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].net.should eq 3860
       
     end  
   end
@@ -147,11 +161,11 @@ describe Statement do
       
       @statement.payment_method_rows.length.should eq 3
       
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].should_not be_nil
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].tickets.should eq 2
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].gross.should eq 2000
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].processing.should be_within(0.00001).of(2000 * 0.035)
-      @statement.payment_method_rows[::CreditCardPayment.payment_method].net.should eq 1930
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].should_not be_nil
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].tickets.should eq 2
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].gross.should eq 2000
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].processing.should be_within(0.00001).of(2000 * 0.035)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].net.should eq 1930
       
     end  
   end

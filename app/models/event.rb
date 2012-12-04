@@ -1,22 +1,25 @@
 class Event < ActiveRecord::Base
   include Ext::Integrations::Event
   include EventPresenter
+  require 'email_validator'
   
   attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes,
                   :show_special_instructions, :special_instructions_caption
   
   belongs_to :organization
   belongs_to :venue
+  belongs_to :import
   accepts_nested_attributes_for :venue
   has_many :charts
   has_many :shows, :order => :datetime
   has_many :tickets, :through => :shows
   validate :validate_contact_phone
-  
-  after_create :create_default_chart
+  validates :contact_email, :presence => true, :email => true
+  validates :name, :presence => true
+  validates :organization_id, :presence => true
 
   has_attached_file :image,
-    :storage => :s3,  
+    :storage => :s3,
     :path => ":attachment/:id/:style.:extension",
     :bucket => Rails.configuration.s3.bucket,
     :s3_protocol => 'https',
@@ -30,7 +33,7 @@ class Event < ActiveRecord::Base
   validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new {|model| model.image }
   validates_attachment_content_type :image, :content_type => ["image/jpeg", "image/gif", "image/png"]
 
-  validates_presence_of :name, :organization_id
+  after_create :create_default_chart
 
   default_scope where(:deleted_at => nil).order("events.created_at DESC")
   scope :published, includes(:shows).where(:shows => { :state => "published" })
@@ -50,6 +53,10 @@ class Event < ActiveRecord::Base
   
   def destroyable?
     items.blank?
+  end
+  
+  def imported?
+    !self.import_id.nil?
   end
   
   def items

@@ -31,7 +31,6 @@
                 %td= item.buyer.email
                 %td= item.ticket.section.name
                 %td= number_as_cents(item.ticket.sold_price)
-                %td= ticket_seller_name(item.ticket)
               %tr.no-border
                 %td
                 %td{:colspan => 6}= item.special_instructions

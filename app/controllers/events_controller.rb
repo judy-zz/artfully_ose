@@ -1,16 +1,17 @@
 class EventsController < ArtfullyOseController
   respond_to :html, :json
 
-  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages, :resell ]
+  before_filter :find_event, :only => [ :show, :edit, :update, :destroy, :widget, :image, :storefront_link, :prices, :messages, :resell, :wp_plugin ]
   before_filter :upcoming_shows, :only => :show
 
   def create
     @event = Event.new(params[:event])
     @templates = current_organization.charts.template
-    @event.organization_id = current_user.current_organization.id
-    @event.is_free = !(current_user.current_organization.can? :access, :paid_ticketing)
-    @event.venue.organization_id = current_user.current_organization.id
-    @event.venue.time_zone = current_user.current_organization.time_zone
+    @event.organization_id = current_organization.id
+    @event.is_free = !(current_organization.can? :access, :paid_ticketing)
+    @event.venue.organization_id = current_organization.id
+    @event.venue.time_zone = current_organization.time_zone
+    @event.contact_email = current_organization.try(:email) || current_user.email
 
     if @event.save
       redirect_to edit_event_url(@event)
@@ -68,8 +69,7 @@ class EventsController < ArtfullyOseController
   def update    
     authorize! :edit, @event
 
-    @event.update_attributes(params[:event])
-    if @event.save
+    if @event.update_attributes(params[:event])
       if user_requesting_next_step?
         if user_just_uploaded_an_image?
           redirect_to messages_event_path(@event)
@@ -99,6 +99,9 @@ class EventsController < ArtfullyOseController
 
   def storefront_link
   end
+
+  def wp_plugin
+  end
   
   def prices
   end
@@ -107,7 +110,7 @@ class EventsController < ArtfullyOseController
   end
 
   def resell
-    @organization = current_user.current_organization
+    @organization = current_organization
     @reseller_profiles = ResellerProfile.includes(:organization).order("organizations.name").all
   end
 

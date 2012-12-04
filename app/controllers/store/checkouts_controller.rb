@@ -13,17 +13,8 @@ class Store::CheckoutsController < Store::StoreController
     @checkout = Checkout.new(current_cart, @payment)
     if @checkout.valid? && @checkout.finish
       render :json => @checkout.to_json
-    else
-      message = @payment.errors.full_messages.to_sentence.downcase
-      message = message.gsub('customer', 'contact info')
-      message = message.gsub('credit card is', 'payment details are')
-      message = message[0].upcase + message[1..message.length] unless message.blank? #capitalize first word
-      
-      if message.blank?
-        message = "We had a problem contacting our payment processor.  Wait a few moments and try again or contact us to complete your purchase"
-      end
-      
-      render :json => message, :status => :unprocessable_entity
+    else      
+      render :json => @checkout.message, :status => :unprocessable_entity
     end
   rescue ActiveRecord::RecordInvalid
     message = "Please make sure all fields are filled out completely and appropriately."

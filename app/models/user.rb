@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+  class User < ActiveRecord::Base
 
   include Ext::DeviseConfiguration
   include Ext::Integrations::User
@@ -34,10 +34,10 @@ class User < ActiveRecord::Base
   def self.like(query = "")
     return if query.blank?
     q = "%#{query}%"
-    self.joins("LEFT OUTER JOIN memberships ON memberships.user_id = users.id")
-        .joins("LEFT OUTER JOIN organizations ON organizations.id = memberships.organization_id")
+    self.joins("LEFT OUTER JOIN memberships m ON m.user_id = users.id")
+        .joins("LEFT OUTER JOIN organizations o ON o.id = m.organization_id")
         .includes(:organizations)
-        .where("users.email like ? or organizations.name like ?", q, q)
+        .where("users.email like ? or o.name like ?", q, q)
   end
 
   def active_for_authentication?

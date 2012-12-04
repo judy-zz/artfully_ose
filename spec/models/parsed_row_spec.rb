@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe ImportPerson do
+describe ParsedRow do
 
   context "a person with their email and company specified" do
     before do
       @headers = [ "EMAIL", "Company" ]
       @row = [ "test@artful.ly", "Fractured Atlas" ]
-      @person = ImportPerson.new(@headers, @row)
+      @person = ParsedRow.new(@headers, @row)
     end
   
     it "should have the correct email" do
@@ -26,7 +26,7 @@ describe ImportPerson do
     before do
       @headers = [ "Tags" ]
       @row = [ "one|two,three four" ]
-      @person = ImportPerson.new(@headers, @row)
+      @person = ParsedRow.new(@headers, @row)
     end
   
     it "should correctly split on spaces, bars or commas" do
@@ -38,7 +38,7 @@ describe ImportPerson do
     before do
       @headers = [ "Person Type" ]
       @types = [ "individual", "corporation", "FOUNDATION", "GovernMENT", "nonsense", "other" ]
-      @people = @types.map { |type| ImportPerson.new(@headers, [type]) }
+      @people = @types.map { |type| ParsedRow.new(@headers, [type]) }
     end
   
     it "should correctly load the enumerated types" do

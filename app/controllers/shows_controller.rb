@@ -125,7 +125,7 @@ class ShowsController < ArtfullyOseController
       @show.publish!
       respond_to do |format|
         format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your show is now published.' }
-        format.json { render :json => @show.as_json.merge('glance' => @show.glance.as_json) }
+        format.json { render :json => @show.as_json }
       end
     end
   end
@@ -138,7 +138,7 @@ class ShowsController < ArtfullyOseController
       @show.unpublish!
       respond_to do |format|
         format.html { redirect_to event_show_url(@show.event, @show), :notice => 'Your show is now unpublished.' }
-        format.json { render :json => @show.as_json.merge('glance' => @show.glance.as_json) }
+        format.json { render :json => @show.as_json }
       end
     end
   end

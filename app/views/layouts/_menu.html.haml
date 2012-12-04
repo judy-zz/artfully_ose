@@ -14,7 +14,10 @@
           %ul.dropdown-menu
             %li= link_to "New Contact", new_person_path
             %li= link_to "Search", people_path
+            %li= link_to "Advanced Search", new_search_path
             %li= link_to "List Segments", segments_path
+            %li= link_to "Import", new_import_path(:type => :people)
+            %li= link_to "Export", imports_path
 
         %li{ :class => "dropdown #{active?(:reports)}" }
           = nav_dropdown "Reports"
@@ -36,5 +39,5 @@
           = nav_dropdown current_user.email
           %ul.dropdown-menu
             -if current_user.is_in_organization? 
-              %li= link_to "My Organization", organization_path(current_user.current_organization)
+              %li= link_to "Account Administration", organization_path(current_user.current_organization)
             %li= link_to "Sign Out", destroy_user_session_path

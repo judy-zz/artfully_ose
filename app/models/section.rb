@@ -16,6 +16,19 @@ class Section < ActiveRecord::Base
                         :numericality => { :less_than_or_equal_to => 2000 }
 
   validates :description, :length => { :maximum => 500 }
+  
+  # Each channel needs its own boolean column in the sections table.
+  @@channels = { :storefront => "S", :box_office => "B"}
+  @@channels.each do |channel_name, icon|
+    attr_accessible channel_name
+    self.class.send(:define_method, channel_name) do
+      where(channel_name => true)
+    end
+  end
+  
+  def channels
+    @@channels
+  end
 
   def dup!
     Section.new(self.attributes.reject { |key, value| key == 'id' })

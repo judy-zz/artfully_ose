@@ -1,22 +1,34 @@
 class Import < ActiveRecord::Base
+  
+  include Imports::Status
+  include Imports::Processing
 
-  # Import status transitions:
-  #   pending -> approved -> imported
-
-  attr_accessible :s3_bucket, :s3_key, :s3_etag, :status, :user_id
-
-  belongs_to :user
   has_many :import_errors, :dependent => :delete_all
   has_many :import_rows, :dependent => :delete_all
   has_many :people, :dependent => :destroy
-
-  validates_presence_of :user
-  validates_associated :user
-  validates_presence_of :s3_bucket
-  validates_presence_of :s3_key
-  validates_presence_of :s3_etag
+  has_many :actions, :dependent => :destroy
+  has_many :events, :dependent => :destroy
+  has_many :orders, :dependent => :destroy
 
   serialize :import_headers
+  
+  set_watch_for :created_at, :local_to => :organization
+
+  DATE_INPUT_FORMAT = "%m/%d/%Y"
+  DATE_INPUT_FORMAT_WITH_TIME = "%m/%d/%Y %l:%M%P"
+  
+  def self.build(type)
+    case type
+    when "events"
+      EventsImport.new
+    when "people"
+      PeopleImport.new
+    when "donations"
+      DonationsImport.new
+    else
+      nil
+    end
+  end
 
   def headers
     self.import_headers
@@ -34,62 +46,51 @@ class Import < ActiveRecord::Base
     end
   end
 
-  def caching!
-    self.update_attributes(:status => "caching")
-    Delayed::Job.enqueue self
-  end
-
-  def pending!
-    self.update_attributes(:status => "pending")
-  end
-
-  def approve!
-    self.update_attributes!(:status => "approved")
-    Delayed::Job.enqueue self
-  end
-
-  def importing!
-    self.update_attributes!(:status => "importing")
-  end
-
-  def imported!
-    self.update_attributes!(:status => "imported")
-  end
-
-  def failed!
-    self.update_attributes!(:status => "failed")
-  end
-
-  def failed?
-    self.status == "failed"
-  end
-
   def import
     self.importing!
 
     self.people.destroy_all
     self.import_errors.delete_all
 
-    rows.each do |row|
-      ip = ImportPerson.new(headers, row)
-      person = attach_person(ip)
-      if !person.save
-        self.import_errors.create! :row_data => row, :error_message => person.errors.full_messages.join(", ")
-        self.reload
-        self.failed!
+    rows.each_with_index do |row, index|
+      begin
+        Rails.logger.info("----- Import #{id} Processing row #{index} ------")
+        process(ParsedRow.parse(headers, row))
+      rescue => error
+        fail!(error, row, index)
+        return
       end
     end
-
-    if failed?
-      self.people.destroy_all
-    else
-      self.imported!
+    self.imported!
+  end
+  
+  #
+  # This composes errors thrown *during* the import.  For validation errors, see invalidate!
+  #
+  def fail!(error = nil, row = nil, row_num = 0)
+    self.import_errors.create! :row_data => row, :error_message => "Row #{row_num}: #{error.message}"
+    failed!
+    rollback
+  end
+  
+  #Subclasses must implement process and rollback
+  def process(parsed_row)
+  end
+  
+  def rollback
+  end
+  
+  def parsed_rows
+    return @parsed_rows if @parsed_rows
+    @parsed_rows = []
+    
+    rows.each do |row|
+      @parsed_rows << ParsedRow.parse(headers, row)
     end
+    @parsed_rows
   end
 
   def cache_data
-    @csv_data = nil
-
     raise "Cannot load CSV data" unless csv_data.present?
 
     self.import_headers = nil
@@ -101,65 +102,39 @@ class Import < ActiveRecord::Base
     CSV.parse(csv_data, :headers => false) do |row|
       if self.import_headers.nil?
         self.import_headers = row.to_a
+        #TODO: Validate headers right here
         self.save!
       else
         self.import_rows.create!(:content => row.to_a)
+        parsed_row = ParsedRow.parse(self.import_headers, row.to_a)
+        
+        unless row_valid?(parsed_row)
+          self.invalidate! 
+          return
+        end
       end
     end
 
     self.pending!
+    
+  #TODO: Needs to be re-worked to include the row humber in the error
   rescue CSV::MalformedCSVError => e
     error_message = "There was an error while parsing the CSV document: #{e.message}"
     self.import_errors.create!(:error_message => error_message)
-    self.failed!
+    self.invalidate!
   rescue Exception => e
     self.import_errors.create!(:error_message => e.message)
-    self.failed!
+    self.invalidate!
+  rescue Import::RowError => e
+    self.import_errors.create!(:error_message => e.message)
+    self.invalidate!
   end
 
-  def csv_data
-    return @csv_data if @csv_data
+  def attach_person(parsed_row)
+    ip = parsed_row
     
-    @csv_data =
-      if File.file?(self.s3_key)
-        File.read(self.s3_key)
-      else
-        s3_bucket = s3_service.buckets.find(self.s3_bucket) if self.s3_bucket.present?
-        s3_object = s3_bucket.objects.find(self.s3_key) if s3_bucket
-        s3_object.content(true) if s3_object
-      end
-
-    # Make sure the csv file is valid utf-8.
-    if @csv_data
-      @csv_data.encode! "UTF-8", :invalid => :replace, :undef => :replace, :replace => ""
-      @csv_data = @csv_data.chars.map { |c| c if c.valid_encoding? }.compact.join
-    end
-
-    @csv_data
-  end
-
-  def s3_service
-    access_key_id     = Rails.application.config.s3.access_key_id
-    secret_access_key = Rails.application.config.s3.secret_access_key
-
-    S3::Service.new(:access_key_id => access_key_id, :secret_access_key => secret_access_key)
-  end
-
-  def attach_person(import_person)
-    ip = import_person
-
-    person = self.people.build \
-      :email           => ip.email,
-      :first_name      => ip.first,
-      :last_name       => ip.last,
-      :company_name    => ip.company,
-      :website         => ip.website,
-      :twitter_handle  => ip.twitter_username,
-      :facebook_url    => ip.facebook_page,
-      :linked_in_url   => ip.linkedin_page,
-      :organization_id => user.current_organization.id,
-      :person_type     => ip.person_type
-
+    person = self.people.build(parsed_row.person_attributes)
+    person.organization = self.organization
     person.address = Address.new \
       :address1  => ip.address1,
       :address2  => ip.address2,
@@ -179,6 +154,12 @@ class Import < ActiveRecord::Base
     end
 
     person
+  end
+
+  class RowError < ArgumentError
+  end
+  
+  class RuntimeError < ArgumentError
   end
 
 end
