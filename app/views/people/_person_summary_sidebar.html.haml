@@ -53,3 +53,31 @@
       = button_to "Add", "#", :id => "create-mailing-address", :class => "btn"
 
     = render :partial => "addresses/form", :locals => { :person => @person, :address => @person.address || @person.build_address }
+
+  %section#email-subscription
+    %h6 Email Lists
+    = form_for person do |form|
+      .do-not-email
+        = form.label :do_not_email, :class => "checkbox" do
+          = form.check_box :do_not_email, :class => "checkbox"
+          %span Do Not Email
+      - if @person.organization.kits.mailchimp
+        .mailchimp-list
+          - mailchimp_kit = @person.organization.kits.mailchimp
+          = hidden_field_tag "person[subscribed_lists][]", nil, :id => "person_subscribed_lists_empty"
+          - mailchimp_kit.attached_lists.each do |list|
+            = label_tag "", :class => "checkbox" do
+              = check_box_tag "person[subscribed_lists][]", list[:list_id], person.subscribed_lists.include?(list[:list_id]), :class => "checkbox mail-chimp-list", :disabled => person.do_not_email
+              %span= list[:list_name]
+      = form.submit "Save", :class => 'btn hidden'
+
+  - if current_user.current_organization.kits.mailchimp
+    .modal#subscribe-modal(role="dialog")
+      .modal-header
+        %button(type="button" class="close" data-dismiss="modal" aria-hidden="true") ×
+        %h3 MailChimp List Subscription
+      .modal-body
+        %p #{person.first_name} #{person.last_name} will receive an email from Mailchimp confirming their addition to this list
+      .modal-footer
+        %button(class="btn" data-dismiss="modal" aria-hidden="true") Cancel
+        %button(class="btn btn-primary") OK

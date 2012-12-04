@@ -46,4 +46,15 @@ describe ParsedRow do
     end
   end
 
+  context "a person with do not email" do
+    before do
+      @headers = [ "Do not email" ]
+      @rows = [ true, false ]
+      @people = @rows.map { |do_not_email| ImportPerson.new(@headers, [do_not_email]) }
+    end
+
+    it "should correctly load do not email" do
+      @people.map(&:do_not_email).should == ["true", "false"]
+    end
+  end
 end

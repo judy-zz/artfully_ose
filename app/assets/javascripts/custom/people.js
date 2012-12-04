@@ -2,6 +2,35 @@ String.prototype.startsWith = function(str)
 {return (this.match("^"+str)==str)}
 
 $(document).ready(function() {
+  $("#email-subscription input[type=checkbox]").on("click", function(event) {
+    $("#email-subscription input[type=submit]").removeClass("hidden");
+  });
+  
+  $("#person_do_not_email").on("click", function(event) {
+    $lists = $(".mail-chimp-list");
+    if ($(this).attr("checked") != "checked") {
+      $lists.attr("disabled", false);
+    } else {
+      $lists.attr("checked", false);
+      $lists.attr("disabled", true);
+    }
+  });
+
+  $("input[type=checkbox].mail-chimp-list").on("click", function(event) {
+    $target = $(event.target);
+
+    if ($target.attr("checked") != "checked") {
+      return;
+    }
+
+    event.preventDefault();
+    $("#subscribe-modal").modal();
+    $("#subscribe-modal .btn-primary").on("click", function(e) {
+      $(event.target).attr("checked", "checked");
+      $("#subscribe-modal").modal('hide');
+    });
+  });
+  
   var is_star = function(htmlElement) {
     return (htmlElement === "\u272D");
   };

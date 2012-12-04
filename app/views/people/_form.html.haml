@@ -9,7 +9,7 @@
     %li
       = form.label :email, "Email"
       = form.text_field :email
-    - unless person.new_record?  
+    - unless person.new_record?
       %li
         = form.label :company_name, "Company"
         = form.text_field :company_name
