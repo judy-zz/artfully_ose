@@ -470,7 +470,7 @@ describe Person do
   end
 
   describe "#create_subscribed_lists_notes!" do
-    let(:user) { Factory(:user) }
+    let(:user) { FactoryGirl.create(:user) }
 
     subject { FactoryGirl.build(:person) }
 

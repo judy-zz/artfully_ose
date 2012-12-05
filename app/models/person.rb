@@ -265,34 +265,30 @@ class Person < ActiveRecord::Base
       phones.create(:number => new_phone, :kind => "Other")
     end
   end
+  
+  def new_note(text, occurred_at, user, organization_id)
+    note = notes.create({
+      :text => text,
+      :occurred_at => Time.now
+    })    
+    note.user_id = user.id
+    note.organization_id = organization_id
+    note.save
+    note
+  end
 
   def create_subscribed_lists_notes!(user)
     if previous_changes["do_not_email"]
-      notes.create({
-        :text => "#{user.email} changed do not email to #{do_not_email}",
-        :occurred_at => Time.now,
-        :user_id => user.id,
-        :organization_id => organization.id
-      })
+      new_note("#{user.email} changed do not email to #{do_not_email}",Time.now,user,organization.id)
     end
 
     if previous_changes["subscribed_lists"]
       mailchimp_kit.attached_lists.each do |list|
         old_lists = previous_changes["subscribed_lists"][0]
         if !old_lists.include?(list[:list_id]) && subscribed_lists.include?(list[:list_id])
-          notes.create({
-            :text => "#{user.email} changed subscription status of the MailChimp list #{list[:list_name]} to subscribed",
-            :occurred_at => Time.now,
-            :user_id => user.id,
-            :organization_id => organization.id
-          })
+          new_note("#{user.email} changed subscription status of the MailChimp list #{list[:list_name]} to subscribed",Time.now,user,organization.id)
         elsif old_lists.include?(list[:list_id]) && !subscribed_lists.include?(list[:list_id])
-          notes.create({
-            :text => "#{user.email} changed subscription status of the MailChimp list #{list[:list_name]} to unsubscribed",
-            :occurred_at => Time.now,
-            :user_id => user.id,
-            :organization_id => organization.id
-          })
+          new_note("#{user.email} changed subscription status of the MailChimp list #{list[:list_name]} to unsubscribed",Time.now,user,organization.id)
         end
       end
     end
