@@ -45,6 +45,10 @@ class Event < ActiveRecord::Base
   def free?
     is_free?
   end
+  
+  def artfully_ticketed
+    true
+  end
 
   alias :destroy! :destroy
   def destroy
