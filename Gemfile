@@ -21,7 +21,6 @@ group :test, :development do
   gem 'faker'
   gem 'factory_girl', '~> 4.0'
   gem 'factory_girl_rails', '~> 4.0'
-  gem 'pg'
   gem 'mysql2'
   
   gem 'autotest-rails'
@@ -36,4 +35,8 @@ group :test, :development do
   gem 'launchy'
   gem 'awesome_print', :require => 'ap'
   gem 'wirble'
+end
+
+group :pg do
+  gem 'pg'
 end
