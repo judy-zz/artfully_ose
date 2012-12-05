@@ -33,8 +33,9 @@ class DiscountType
     @@types
   end
 
-  def initialize(properties)
-    @properties = properties
+  def initialize(discount)
+    @discount = discount
+    @properties = discount.properties
   end
 
   def validate(discount)

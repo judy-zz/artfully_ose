@@ -27,7 +27,7 @@ class Discount < ActiveRecord::Base
   end
 
   def type
-    discount_class.new(self.properties)
+    discount_class.new(self)
   end
 
   def to_s
