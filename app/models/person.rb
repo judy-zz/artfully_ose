@@ -4,7 +4,7 @@ class Person < ActiveRecord::Base
 
   attr_accessor :skip_sync_to_mailchimp
   attr_accessible :type, :email, :salutation, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
-
+  attr_accessible :subscribed_lists, :do_not_email, :skip_sync_to_mailchimp
   
   acts_as_taggable
 

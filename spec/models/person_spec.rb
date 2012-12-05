@@ -180,10 +180,10 @@ describe Person do
     context "mailchimp kit enabled" do
       include_context :mailchimp
 
-      let(:organization) { Factory.create(:organization) }
-      let!(:winner) { Factory.create(:person, :organization => organization, :subscribed_lists => ["one"]) }
-      let!(:loser) { Factory.create(:person, :organization => organization, :subscribed_lists => ["two"]) }
-      let(:mailchimp_kit) { Factory.create(:mailchimp_kit, :organization => organization) }
+      let(:organization) { FactoryGirl.create(:organization) }
+      let!(:winner) { FactoryGirl.create(:person, :organization => organization, :subscribed_lists => ["one"]) }
+      let!(:loser) { FactoryGirl.create(:person, :organization => organization, :subscribed_lists => ["two"]) }
+      let(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => organization) }
 
       it "should sync the losers deletion" do
         mailchimp_kit
@@ -389,12 +389,12 @@ describe Person do
   end
 
   describe "#sync_update_to_mailchimp" do
-    subject { Factory.build(:person) }
+    subject { FactoryGirl.build(:person) }
 
     context "mailchimp kit is setup" do
       include_context :mailchimp
 
-      let!(:mailchimp_kit) { Factory.create(:mailchimp_kit, :organization => subject.organization) }
+      let!(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => subject.organization) }
 
       def expect_to_enqueue(&block)
         expect(&block).to change {
@@ -472,12 +472,12 @@ describe Person do
   describe "#create_subscribed_lists_notes!" do
     let(:user) { Factory(:user) }
 
-    subject { Factory.build(:person) }
+    subject { FactoryGirl.build(:person) }
 
     context "mailchimp kit is setup" do
       include_context :mailchimp
 
-      let!(:mailchimp_kit) { Factory.create(:mailchimp_kit, :organization => subject.organization) }
+      let!(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => subject.organization) }
       let(:list_id) { mailchimp_kit.attached_lists.first[:list_id] }
 
       before do
