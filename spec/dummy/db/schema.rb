@@ -280,6 +280,8 @@ ActiveRecord::Schema.define(:version => 20121115020441) do
     t.integer "price"
     t.integer "chart_id"
     t.text    "description"
+    t.boolean "storefront",  :default => true
+    t.boolean "box_office",  :default => true
   end
 
   create_table "segments", :force => true do |t|
