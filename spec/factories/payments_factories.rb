@@ -15,6 +15,17 @@ FactoryGirl.define do
     end
   end
 
+  factory :person_with_address, :class => Person do
+    first_name  { Faker::Name.first_name }
+    last_name   { Faker::Name.last_name }
+    email       { Faker::Internet.email }
+    address     { FactoryGirl.build(:address) }
+    
+    trait(:with_id) do
+      sequence(:id) {|n| n }
+    end
+  end
+
   factory :credit_card_payment do
     amount 100
   end

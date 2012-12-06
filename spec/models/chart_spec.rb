@@ -72,8 +72,8 @@ describe Chart do
   
   describe "#as_json" do
     it "includes the sections in the output" do
-      subject.sections << FactoryGirl.build(:section)
-      subject.as_json['sections'].should_not be_empty
+      subject.sections << FactoryGirl.create(:section, :chart => subject)
+      subject.as_json[:sections].should_not be_empty
     end
   end
   
