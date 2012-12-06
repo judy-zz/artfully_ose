@@ -248,6 +248,10 @@ class Ticket < ActiveRecord::Base
     t
   end
 
+  def reset_price!
+    update_column(:cart_price, self.price)
+  end
+
   private
 
     def self.attempt_transition(tickets, state)

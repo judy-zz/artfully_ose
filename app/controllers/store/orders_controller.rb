@@ -89,10 +89,8 @@ class Store::OrdersController < Store::StoreController
       end
       
       donation = Donation.new
-
       donation.amount = data[:amount]
       donation.organization = Organization.find(data.delete(:organization_id))
-
       current_cart.donations << donation
     end
 

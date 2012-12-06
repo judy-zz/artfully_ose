@@ -6,6 +6,8 @@ class Cart < ActiveRecord::Base
   after_destroy :release_tickets
   attr_accessor :special_instructions
 
+  belongs_to :discount
+
   state_machine do
     state :started
     state :approved
@@ -25,7 +27,7 @@ class Cart < ActiveRecord::Base
   end
 
   def clear!
-    clear_discounts
+    reset_prices_on_tickets
     clear_tickets
     clear_donations
   end
@@ -37,10 +39,6 @@ class Cart < ActiveRecord::Base
   def clear_tickets
     release_tickets
     self.tickets = []
-  end
-
-  def clear_discounts
-    tickets.each { |ticket| ticket.update_column(:cart_price, ticket.price) }
   end
 
   def release_tickets
@@ -56,6 +54,7 @@ class Cart < ActiveRecord::Base
   end
 
   def expire_ticket(ticket)
+    ticket.reset_price!
     tickets.delete(ticket)
   end
 
@@ -83,6 +82,10 @@ class Cart < ActiveRecord::Base
 
   def subtotal
     items.sum(&:price)
+  end
+
+  def total_before_discount
+    items.sum(&:price) + fee_in_cents
   end
 
   def total
@@ -141,6 +144,12 @@ class Cart < ActiveRecord::Base
 
   def reseller_is?(reseller)
     reseller == nil
+  end
+
+  def reset_prices_on_tickets
+    transaction do
+      tickets.each {|ticket| ticket.reset_price! }
+    end
   end
 
   private

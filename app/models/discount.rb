@@ -18,8 +18,12 @@ class Discount < ActiveRecord::Base
   end
 
   def apply_discount_to_cart(cart)
-    ensure_discount_is_allowed(cart)
-    return type.apply_discount_to_cart(cart)
+    transaction do
+      cart.discount = self
+      ensure_discount_is_allowed(cart)
+      clear_existing_discount(cart)
+      type.apply_discount_to_cart(cart)
+    end
   end
 
   def ensure_properties_are_set
@@ -32,6 +36,14 @@ class Discount < ActiveRecord::Base
 
   def to_s
     type.to_s
+  end
+
+  def code
+    self[:code].to_s.upcase
+  end
+
+  def clear_existing_discount(cart)
+    cart.reset_prices_on_tickets
   end
 
 private

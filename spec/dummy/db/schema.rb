@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121205184343) do
+ActiveRecord::Schema.define(:version => 20121206212835) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(:version => 20121205184343) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
+    t.integer  "discount_id"
   end
 
   create_table "charts", :force => true do |t|
@@ -162,9 +163,11 @@ ActiveRecord::Schema.define(:version => 20121205184343) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.integer  "discount_id"
   end
 
   add_index "items", ["created_at"], :name => "index_items_on_created_at"
+  add_index "items", ["discount_id"], :name => "index_items_on_discount_id"
   add_index "items", ["order_id"], :name => "index_items_on_order_id"
   add_index "items", ["show_id"], :name => "index_items_on_show_id"
 
