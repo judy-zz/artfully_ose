@@ -37,8 +37,8 @@ class Discount < ActiveRecord::Base
 private
 
   def ensure_discount_is_allowed(cart)
-    raise "Discount is not active!" unless self.active?
-    raise "Discount won't work for this show!" unless cart.tickets.first.try(:event) == self.event
+    raise "Discount is not active." unless self.active?
+    raise "Discount won't work for this show." unless cart.tickets.first.try(:event) == self.event
   end
 
   def discount_class
