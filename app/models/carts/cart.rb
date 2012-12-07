@@ -3,7 +3,7 @@ class Cart < ActiveRecord::Base
   
   has_many :donations, :dependent => :destroy
   has_many :tickets, :after_add => :set_timeout
-  after_destroy :release_tickets
+  after_destroy :clear!
   attr_accessor :special_instructions
 
   belongs_to :discount

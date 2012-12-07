@@ -250,6 +250,7 @@ class Ticket < ActiveRecord::Base
 
   def reset_price!
     update_column(:cart_price, self.price)
+    update_column(:discount_id, nil)
   end
 
   private
