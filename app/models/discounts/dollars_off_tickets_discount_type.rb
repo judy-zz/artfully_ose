@@ -5,7 +5,7 @@ class DollarsOffTicketsDiscountType < DiscountType
   def apply_discount_to_cart(cart)
     ensure_amount_exists
     cart.tickets.each do |ticket|
-      ticket.update_column(:discount_id, discount.id)
+      ticket.update_column(:discount_id, @discount.id)
       if ticket.price > @properties[:amount]
         ticket.update_column(:cart_price, ticket.price - @properties[:amount])
       else
@@ -15,10 +15,10 @@ class DollarsOffTicketsDiscountType < DiscountType
     return cart
   end
 
-  def validate(discount)
-    discount.errors[:base] = "Amount must be filled in." unless @properties[:amount].present?
+  def validate
+    @discount.errors[:base] = "Amount must be filled in." unless @properties[:amount].present?
     @properties[:amount] = @properties[:amount].to_i
-    discount.errors[:base] = "Amount must be greater than zero." if @properties[:amount] == 0
+    @discount.errors[:base] = "Amount must be greater than zero." if @properties[:amount] == 0
   end
 
   def to_s

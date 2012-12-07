@@ -3,7 +3,7 @@ class BuyOneGetOneFreeDiscountType < DiscountType
 
   def apply_discount_to_cart(cart)
     cart.tickets.each do |ticket|
-      ticket.update_column(:discount_id, discount.id) unless ticket == tickets.last && tickets.count.odd?
+      ticket.update_column(:discount_id, @discount.id) unless ticket == cart.tickets.last && cart.tickets.count.odd?
     end
     cart.tickets.values_at(* cart.tickets.each_index.select {|i| i.odd?}).each do |ticket|
       ticket.update_column(:cart_price, 0)
@@ -11,7 +11,7 @@ class BuyOneGetOneFreeDiscountType < DiscountType
     return cart
   end
 
-  def validate(discount)
+  def validate
     # Nothing to do here.
   end
 

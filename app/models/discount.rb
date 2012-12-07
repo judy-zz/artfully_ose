@@ -25,11 +25,12 @@ class Discount < ActiveRecord::Base
       ensure_discount_is_allowed(cart)
       clear_existing_discount(cart)
       type.apply_discount_to_cart(cart)
+      cart.save!
     end
   end
 
   def ensure_properties_are_set
-    type.validate(self)
+    type.validate
   end
 
   def type
