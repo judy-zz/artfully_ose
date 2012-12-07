@@ -49,6 +49,10 @@ class Discount < ActiveRecord::Base
     cart.reset_prices_on_tickets
   end
 
+  def redeemed
+    tickets.count
+  end
+
 private
 
   def ensure_discount_is_allowed(cart)

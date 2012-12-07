@@ -18,10 +18,12 @@
         %th Code
         %th Status
         %th Discount
+        %th Redeemed
       %tbody
         - @discounts.each do |discount|
           %tr
             %td= link_to discount.code, edit_event_discount_path(@event, discount)
             %td= discount.active? ? "Active" : "Inactive"
             %td= discount
+            %td= discount.redeemed
                   
