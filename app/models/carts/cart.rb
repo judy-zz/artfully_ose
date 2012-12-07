@@ -137,8 +137,7 @@ class Cart < ActiveRecord::Base
   private
 
     def pay_with_authorization(payment, options)
-      response = payment.purchase(options)
-      response.success? ? approve! : reject!
+      payment.purchase(options) ? approve! : reject!
     end
 
     def metric_sale_total

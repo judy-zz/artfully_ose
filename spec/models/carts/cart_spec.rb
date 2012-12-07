@@ -100,7 +100,7 @@ describe Cart do
 
       it "should tranisition to rejected when the Payment is rejected" do
         payment.stub(:requires_authorization?).and_return(true)
-        payment.stub(:purchase).and_return(fail_response)
+        payment.stub(:purchase).and_return(false)
         subject.pay_with(payment)
         subject.should be_rejected
       end

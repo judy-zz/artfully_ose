@@ -53,7 +53,7 @@ class Checkout
     @person.add_phone_if_missing(payment.payment_phone_number)
 
     run_callbacks :payment do
-      cart.pay_with(@payment)
+      pay
     end
     
     if cart.approved?
@@ -67,6 +67,11 @@ class Checkout
     end
     
     cart.approved?
+  end
+  
+  def pay
+    @cart.pay_with(@payment)
+    @cart.approved?
   end
 
   private
