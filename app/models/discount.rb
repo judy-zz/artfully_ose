@@ -13,6 +13,8 @@ class Discount < ActiveRecord::Base
   before_validation :set_organization_from_event
   before_validation :ensure_properties_are_set
 
+  has_many :tickets
+
   def set_organization_from_event
     self.organization ||= self.event.try(:organization)
   end

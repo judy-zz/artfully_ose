@@ -8,8 +8,8 @@ class Ticket < ActiveRecord::Base
   belongs_to :show
   belongs_to :organization
   belongs_to :section
-
   belongs_to :cart
+  belongs_to :discount
   
   has_many :items, :foreign_key => "product_id"
 
