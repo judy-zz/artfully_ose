@@ -4,7 +4,7 @@ class Kit < ActiveRecord::Base
   belongs_to :organization
   validates_presence_of :organization
 
-  class_attribute :requires_approval, :ability_proc, :restricted_to_admins
+  class_attribute :requires_approval, :ability_proc, :configurable, :restricted_to_admins
 
   def self.visible
     where(Kit.arel_table[:state].eq("activated").or(Kit.arel_table[:state].eq('pending')))
@@ -62,7 +62,7 @@ class Kit < ActiveRecord::Base
   end
 
   def self.subklasses
-    @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit, ResellerKit ].freeze
+    @subklasses ||= [ TicketingKit, RegularDonationKit, SponsoredDonationKit, ResellerKit, MailchimpKit ].freeze
   end
 
   def self.pad_with_new_kits(kits = [])
@@ -71,6 +71,10 @@ class Kit < ActiveRecord::Base
 
     padding = subklasses.reject{ |klass| klass.to_s == "SponsoredDonationKit" }.reject{ |klass| (types.include? klass.to_s) or (alternatives.include? klass) }.collect(&:new)
     kits + padding
+  end
+
+  def self.mailchimp
+    find_by_type("MailchimpKit")
   end
 
   def abilities

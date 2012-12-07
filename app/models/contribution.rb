@@ -66,6 +66,8 @@ class Contribution
       @order.update_attribute(:created_at, @occurred_at)      
       @item   = build_item(@order, @amount, @nongift_amount)
       @item.save!
+      
+      puts @item.inspect
 
       @action = build_action
       @action.save!

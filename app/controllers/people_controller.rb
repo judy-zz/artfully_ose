@@ -11,12 +11,16 @@ class PeopleController < ArtfullyOseController
     @person = Person.new
     person = params[:person]
 
-    @person.first_name      = person[:first_name] unless person[:first_name].blank?
-    @person.last_name       = person[:last_name]  unless person[:last_name].blank?
-    @person.email           = person[:email]      unless person[:email].blank?
-    @person.organization_id = current_user.current_organization.id
+    @person.first_name       = person[:first_name]       unless person[:first_name].blank?
+    @person.last_name        = person[:last_name]        unless person[:last_name].blank?
+    @person.email            = person[:email]            unless person[:email].blank?
+    @person.subscribed_lists = person[:subscribed_lists] unless person[:subscribed_lists].blank?
+    @person.do_not_email     = person[:do_not_email]     unless person[:do_not_email].blank?
+    @person.organization_id  = current_user.current_organization.id
 
     if @person.valid? && @person.save!
+      @person.create_subscribed_lists_notes!(current_user)
+
       respond_to do |format|
         format.html do
           redirect_to person_url(@person)
@@ -48,6 +52,7 @@ class PeopleController < ArtfullyOseController
     respond_to do |format|
       format.html do
         if results
+          @person.create_subscribed_lists_notes!(current_user)
           flash[:notice] = "Your changes have been saved"
           @person = Person.find(params[:id])
           redirect_to person_url(@person)

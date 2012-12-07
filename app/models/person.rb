@@ -1,7 +1,11 @@
 class Person < ActiveRecord::Base
   include Valuation::LifetimeValue
+  include Valuation::LifetimeDonations
 
-  attr_accessible :type, :email, :salutation, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
+  attr_accessor :skip_sync_to_mailchimp
+  attr_accessible :type, :email, :salutation, :dummy, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
+  attr_accessible :subscribed_lists, :do_not_email, :skip_sync_to_mailchimp
+  attr_accessible :organization_id
   
   acts_as_taggable
 
@@ -15,9 +19,9 @@ class Person < ActiveRecord::Base
   has_one     :address
   
   default_scope where(:deleted_at => nil)
-
-  attr_accessible :first_name, :last_name, :email, :dummy, :organization_id
-
+  before_save :check_do_not_email
+  after_update :sync_update_to_mailchimp, :except => :create
+  serialize :subscribed_lists, Array
   validates_presence_of :organization_id
   validates_presence_of :person_info
 
@@ -119,6 +123,7 @@ class Person < ActiveRecord::Base
     linked_in_url
     tags { |tags| tags.join("|") }
     person_type
+    do_not_email
   end
 
   def self.find_by_import(import)
@@ -150,9 +155,17 @@ class Person < ActiveRecord::Base
     end
 
     winner.lifetime_value += loser.lifetime_value
-    
+    winner.lifetime_donations += loser.lifetime_donations
+
+    winner.do_not_email = true if loser.do_not_email?
+    new_lists = loser.subscribed_lists - winner.subscribed_lists
+    winner.subscribed_lists = winner.subscribed_lists.concat(loser.subscribed_lists).uniq
     winner.save!
     loser.destroy!
+
+    mailchimp_kit = winner.organization.kits.mailchimp
+    MailchimpSyncJob.merged_person(mailchimp_kit, loser.email, winner.id, new_lists) if mailchimp_kit
+
     return winner
   end
   
@@ -253,6 +266,34 @@ class Person < ActiveRecord::Base
       phones.create(:number => new_phone, :kind => "Other")
     end
   end
+  
+  def new_note(text, occurred_at, user, organization_id)
+    note = notes.create({
+      :text => text,
+      :occurred_at => Time.now
+    })    
+    note.user_id = user.id
+    note.organization_id = organization_id
+    note.save
+    note
+  end
+
+  def create_subscribed_lists_notes!(user)
+    if previous_changes["do_not_email"]
+      new_note("#{user.email} changed do not email to #{do_not_email}",Time.now,user,organization.id)
+    end
+
+    if previous_changes["subscribed_lists"]
+      mailchimp_kit.attached_lists.each do |list|
+        old_lists = previous_changes["subscribed_lists"][0]
+        if !old_lists.include?(list[:list_id]) && subscribed_lists.include?(list[:list_id])
+          new_note("#{user.email} changed subscription status of the MailChimp list #{list[:list_name]} to subscribed",Time.now,user,organization.id)
+        elsif old_lists.include?(list[:list_id]) && !subscribed_lists.include?(list[:list_id])
+          new_note("#{user.email} changed subscription status of the MailChimp list #{list[:list_name]} to unsubscribed",Time.now,user,organization.id)
+        end
+      end
+    end
+  end
 
   def to_s
     if first_name.present? && last_name.present?
@@ -274,4 +315,24 @@ class Person < ActiveRecord::Base
   def person_info
     !(first_name.blank? and last_name.blank? and email.blank?)
   end
+
+  private
+    def sync_update_to_mailchimp
+      return if skip_sync_to_mailchimp
+      return unless mailchimp_changes? && mailchimp_kit
+      job = MailchimpSyncJob.new(mailchimp_kit, :type => :person_update_to_mailchimp, :person_id => id, :person_changes => changes)
+      Delayed::Job.enqueue(job, :queue => "mailchimp") if !mailchimp_kit.cancelled?
+    end
+
+    def mailchimp_kit
+      @mailchimp_kit ||= organization.kits.detect { |kit| kit.is_a?(MailchimpKit) }
+    end
+
+    def mailchimp_changes?
+      ["first_name", "last_name", "email", "do_not_email", "subscribed_lists"].any? { |attr| changes.keys.include?(attr) }
+    end
+
+    def check_do_not_email
+      self.subscribed_lists = [] if do_not_email
+    end
 end

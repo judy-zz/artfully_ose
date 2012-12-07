@@ -1,3 +1,7 @@
+#
+# Payment subclasses should not involve Artful.ly classes in the internals of ActiveMerchant.  
+# Errors should be commincated to callers with the errors Array
+#
 class Payment 
   include ActiveModel::Validations
   

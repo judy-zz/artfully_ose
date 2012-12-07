@@ -47,7 +47,7 @@ class Checkout
 
   def finish
     run_callbacks :payment do
-      cart.pay_with(@payment)
+      pay
     end
     
     if cart.approved?
@@ -62,6 +62,11 @@ class Checkout
     
     cart.approved?
   end
+  
+  def pay
+    @cart.pay_with(@payment)
+    @cart.approved?
+  end
 
   private
     def create_sub_orders(order_timestamp)
@@ -69,7 +74,7 @@ class Checkout
       cart.organizations.each do |organization|
         @person = Person.find_or_create(@customer, organization)
         @person.update_address(Address.from_payment(payment), organization.time_zone, nil, "checkout")
-        @person.add_phone_if_missing(@customer.phone)
+        @person.add_phone_if_missing(payment.payment_phone_number)
         
         @order = new_order(organization, order_timestamp, @person)
         @order.save!

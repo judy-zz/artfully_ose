@@ -105,6 +105,7 @@ describe Person do
         @loser.address = @losing_address
         @loser.tag_list = 'west, north, south'
         @loser.lifetime_value = 1000
+        @loser.do_not_email = true
         @loser.save
         
         @merge_result = Person.merge(@winner, @loser)
@@ -169,6 +170,55 @@ describe Person do
 
       it "should add the winner's and loser's lifetime values" do
         @merge_result.lifetime_value.should eq 3000
+      end
+
+      it "should copy do not email over if it was true" do
+        @winner.should be_do_not_email
+      end
+    end
+
+    context "mailchimp kit enabled" do
+      include_context :mailchimp
+
+      let(:organization) { FactoryGirl.create(:organization) }
+      let!(:winner) { FactoryGirl.create(:person, :organization => organization, :subscribed_lists => ["one"]) }
+      let!(:loser) { FactoryGirl.create(:person, :organization => organization, :subscribed_lists => ["two"]) }
+      let(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => organization) }
+
+      it "should sync the losers deletion" do
+        mailchimp_kit
+        expect {
+          Person.merge(winner, loser)
+        }.to change {
+          Delayed::Job.count
+        }.by(1)
+      end
+
+      it "should copy the subscribed lists over" do
+        mailchimp_kit
+
+        Person.merge(winner, loser)
+
+        winner.subscribed_lists.should == ["one", "two"]
+      end
+
+      it "should not sync if the mailchimp kit is cancelled" do
+        mailchimp_kit.state = "cancelled"
+        mailchimp_kit.save
+
+        expect {
+          Person.merge(winner, loser)
+        }.to_not change {
+          Delayed::Job.count
+        }
+      end
+
+      it "should not sync if no mailchimp kit set up" do
+        expect {
+          Person.merge(winner, loser)
+        }.to_not change {
+          Delayed::Job.count
+        }
       end
     end
   end
@@ -349,4 +399,185 @@ describe Person do
     end
   end
 
+  describe "#sync_update_to_mailchimp" do
+    subject { FactoryGirl.build(:person) }
+
+    context "mailchimp kit is setup" do
+      include_context :mailchimp
+
+      let!(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => subject.organization) }
+
+      def expect_to_enqueue(&block)
+        expect(&block).to change {
+          Delayed::Job.count
+        }.by(1)
+      end
+
+      it "should fire when a person record is saved" do
+        subject.save
+        expect_to_enqueue {
+          subject.update_attributes(:email => "new@example.com")
+        }
+      end
+
+      it "should include do_not_email when syncing" do
+        subject.save
+        expect_to_enqueue {
+          subject.update_attributes(:do_not_email => true)
+        }
+      end
+
+      it "should include subscribed_lists when syncing" do
+        subject.save
+        expect_to_enqueue {
+          subject.update_attributes(:subscribed_lists => [1])
+        }
+      end
+
+      it "should not sync when nothing is changed" do
+        subject.save
+
+        expect {
+          subject.update_attributes(:first_name => subject.first_name)
+        }.to_not change {
+          Delayed::Job.count
+        }
+      end
+
+      it "should not sync if the kit is cancelled" do
+        mailchimp_kit.activate!
+        mailchimp_kit.cancel!
+
+        subject.save
+
+        expect {
+          subject.update_attributes(:email => "new@example.com")
+        }.to_not change {
+          Delayed::Job.count
+        }
+      end
+
+      it "should not re-enqueue an update to mailchimp if mailchimp sent the update" do
+        subject.save
+        subject.skip_sync_to_mailchimp = true
+
+        expect {
+          subject.update_attributes(:first_name => subject.first_name + subject.last_name)
+        }.to_not change {
+          Delayed::Job.count
+        }
+      end
+    end
+
+    context "no mailchimp kit" do
+      it "should not enqueue a sync" do
+        expect {
+          subject.update_attributes(:email => "new@example.com")
+        }.to_not change {
+          Delayed::Job.count
+        }
+      end
+    end
+  end
+
+  describe "#create_subscribed_lists_notes!" do
+    let(:user) { FactoryGirl.create(:user) }
+
+    subject { FactoryGirl.build(:person) }
+
+    context "mailchimp kit is setup" do
+      include_context :mailchimp
+
+      let!(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => subject.organization) }
+      let(:list_id) { mailchimp_kit.attached_lists.first[:list_id] }
+
+      before do
+        subject.save
+      end
+
+      it "should create a note for changing do not email to true" do
+        subject.update_attributes(:do_not_email => true)
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(1).notes
+        note = subject.notes.first
+        note.text.should == "#{user.email} changed do not email to true"
+      end
+
+      it "should create a note for changing do not email to false" do
+        subject.update_attributes(:do_not_email => true)
+        subject.update_attributes(:do_not_email => false)
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(1).notes
+        note = subject.notes.first
+        note.text.should == "#{user.email} changed do not email to false"
+      end
+
+      it "should not create a note if do not email did not change" do
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(0).notes
+      end
+
+      it "should create a note when someone subscribes to a list" do
+        subject.update_attributes(:subscribed_lists => ["list_id"])
+        subject.update_attributes(:subscribed_lists => ["list_id", list_id])
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(1).notes
+        note = subject.notes.first
+        note.text.should == "#{user.email} changed subscription status of the MailChimp list First List to subscribed"
+      end
+
+      it "should create a note when someone unsubscribes to a list" do
+        subject.update_attributes(:subscribed_lists => ["list_id", list_id])
+        subject.update_attributes(:subscribed_lists => ["list_id"])
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(1).notes
+        note = subject.notes.first
+        note.text.should == "#{user.email} changed subscription status of the MailChimp list First List to unsubscribed"
+      end
+
+      it "should create a note when someone changes do not email and unsubscribes from a list" do
+        subject.update_attributes(:subscribed_lists => [list_id])
+        subject.update_attributes(:do_not_email => true)
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(2).notes
+        note = subject.notes.first
+        note.text.should == "#{user.email} changed do not email to true"
+        note = subject.notes.last
+        note.text.should == "#{user.email} changed subscription status of the MailChimp list First List to unsubscribed"
+      end
+    end
+
+    context "no mailchimp kit" do
+      it "should create a note for changing do not email to true" do
+        subject.update_attributes(:do_not_email => true)
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(1).notes
+        note = subject.notes.first
+        note.text.should == "#{user.email} changed do not email to true"
+      end
+
+      it "should create a note for changing do not email to false" do
+        subject.update_attributes(:do_not_email => true)
+        subject.update_attributes(:do_not_email => false)
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(1).notes
+        note = subject.notes.first
+        note.text.should == "#{user.email} changed do not email to false"
+      end
+
+      it "should not create a note if do not email did not change" do
+        subject.create_subscribed_lists_notes!(user)
+
+        subject.should have(0).notes
+      end
+    end
+  end
 end

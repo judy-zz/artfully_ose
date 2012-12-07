@@ -70,17 +70,28 @@ class CreditCardPayment < ::Payment
     ::Rails.logger.debug(response.inspect)
     self.transaction_id = response.authorization
     self.errors.add(:base, response.message) unless response.message.blank?
-    response
+    response.success?
+    
+    rescue Errno::ECONNREFUSED => e
+      ::Rails.logger.error "Connection to processor refused"
+      self.errors.add(:base, "We had a problem processing the sale, please check all your information and try again.")
+      false
+    rescue Exception => e
+      ::Rails.logger.error "Could not contact processor"
+      ::Rails.logger.error e
+      ::Rails.logger.error e.backtrace
+      self.errors.add(:base, "We had a problem processing the sale, please check all your information and try again.")
+      false
   end
   
   def authorize(options={})
     response = gateway.authorize(self.amount, credit_card, options)
     self.transaction_id = response.authorization
-    response
+    response.authorization
   end
   
-  def capture(response, options={})
-    gateway.capture(self.amount, response.authorization, options)
+  def capture(authorization, options={})
+    gateway.capture(self.amount, authorization, options)
   end
   alias :settle :capture
 end
