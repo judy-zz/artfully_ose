@@ -92,6 +92,10 @@ class Cart < ActiveRecord::Base
     items.sum(&:cart_price) + fee_in_cents
   end
 
+  def discount_amount
+    total_before_discount - total
+  end
+
   def unfinished?
     started? or rejected?
   end

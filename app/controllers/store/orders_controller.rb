@@ -48,7 +48,7 @@ class Store::OrdersController < Store::StoreController
     response = response.merge(:discount_error => discount_error)
     if params[:discount].present? && discount_error.blank?
       response = response.merge(:discount_name => params[:discount])
-      response = response.merge(:discount_amount => @discount_amount)
+      response = response.merge(:discount_amount => current_cart.discount_amount)
     end
     render :json => response.to_json
   end
@@ -66,10 +66,8 @@ class Store::OrdersController < Store::StoreController
 
     def handle_discount(params)
       @cart = current_cart
-      pre_discount_amount = @cart.total
       discount = Discount.find_by_code_and_event_id(params[:discount].upcase, event.id)
       current_cart = discount.apply_discount_to_cart(@cart)
-      @discount_amount = pre_discount_amount - current_cart.total
     end
 
     def handle_tickets(ids)
