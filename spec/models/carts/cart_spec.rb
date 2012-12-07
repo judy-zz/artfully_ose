@@ -187,7 +187,7 @@ describe Cart do
     end
   end
 
-  describe "#clear_discounts" do
+  describe "#reset_prices_on_tickets" do
     let(:discount_amount) { 10 }
     let(:price) { 20 }
     let(:ticket) { FactoryGirl.build(:ticket, :price => price, :cart_price => price - discount_amount) }
@@ -196,7 +196,7 @@ describe Cart do
     end
 
     it "should set tickets back to their original prices" do
-      expect {subject.clear_discounts}.to change(subject, :total).by(discount_amount)
+      expect {subject.reset_prices_on_tickets}.to change(subject, :total).by(discount_amount)
     end
   end
 
