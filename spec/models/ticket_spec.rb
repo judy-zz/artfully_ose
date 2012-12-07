@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ticket do
   disconnect_sunspot
-  subject { FactoryGirl.create(:ticket) }
+  subject { FactoryGirl.build(:ticket) }
 
   describe "attributes" do
     it { should respond_to :venue }
@@ -36,81 +36,77 @@ describe Ticket do
   
   describe "items and sold_item and special_instructions" do
     it "should return the list of items that it is associated with" do
-      ticket = FactoryGirl.create(:ticket)
-      
+      subject.save!
       items = [
-        FactoryGirl.create(:item, :product=>ticket),      
-        FactoryGirl.create(:exchanged_item, :product=>ticket),
-        FactoryGirl.create(:refunded_item, :product=>ticket)
+        FactoryGirl.create(:item, :product=>subject),
+        FactoryGirl.create(:exchanged_item, :product=>subject),
+        FactoryGirl.create(:refunded_item, :product=>subject)
         ]
   
-      ticket.items.should eq items
+      subject.items.should eq items
     end
     
     it "should return the item associated with its most recent sale" do
-      ticket = FactoryGirl.create(:ticket)
+      subject.save!
       items = [
-        FactoryGirl.create(:item, :product=>ticket),      
-        FactoryGirl.create(:exchanged_item, :product=>ticket),
-        FactoryGirl.create(:refunded_item, :product=>ticket)
+        FactoryGirl.create(:item, :product=>subject),      
+        FactoryGirl.create(:exchanged_item, :product=>subject),
+        FactoryGirl.create(:refunded_item, :product=>subject)
         ]
       
-      ticket.sold_item.should eq items[0]
-      ticket.sold_item.state.should eq "purchased"
+      subject.sold_item.should eq items[0]
+      subject.sold_item.state.should eq "purchased"
     end
     
     it "should return the settled item" do
-      ticket = FactoryGirl.create(:ticket)
-      
+      subject.save!
       items = [     
-        FactoryGirl.create(:exchanged_item, :product=>ticket),
-        FactoryGirl.create(:refunded_item, :product=>ticket),
-        FactoryGirl.create(:settled_item, :product=>ticket)    
+        FactoryGirl.create(:exchanged_item, :product=>subject),
+        FactoryGirl.create(:refunded_item, :product=>subject),
+        FactoryGirl.create(:settled_item, :product=>subject)
         ]
       
-      ticket.sold_item.should eq items[2]
-      ticket.sold_item.state.should eq "settled"
+      subject.sold_item.should eq items[2]
+      subject.sold_item.state.should eq "settled"
     end
     
     it "should return nil if there is no sold item" do
-      ticket = FactoryGirl.create(:ticket)
       items = [  
-        FactoryGirl.create(:exchanged_item, :product=>ticket),
-        FactoryGirl.create(:refunded_item, :product=>ticket)
+        FactoryGirl.create(:exchanged_item, :product=>subject),
+        FactoryGirl.create(:refunded_item, :product=>subject)
         ]
-      ticket.sold_item.should be_nil   
+      subject.sold_item.should be_nil   
     end
     
     it "should return the comp if there is no purchased item" do
-      ticket = FactoryGirl.create(:ticket)
+      subject.save!
       items = [
-        FactoryGirl.create(:comped_item, :product=>ticket),      
-        FactoryGirl.create(:exchanged_item, :product=>ticket),
-        FactoryGirl.create(:refunded_item, :product=>ticket)
+        FactoryGirl.create(:comped_item, :product=>subject),
+        FactoryGirl.create(:exchanged_item, :product=>subject),
+        FactoryGirl.create(:refunded_item, :product=>subject)
         ]
       
-      ticket.sold_item.should eq items[0]
-      ticket.sold_item.state.should eq "comped"
+      subject.sold_item.should eq items[0]
+      subject.sold_item.state.should eq "comped"
     end
     
     it "should return the special instructions from the sold item" do
+      subject.save!
       special_instructions = "I'm not saying I invented the turtleneck."
-      ticket = FactoryGirl.create(:ticket)
       order = FactoryGirl.create(:order, :special_instructions => special_instructions)
-      settled_item = FactoryGirl.create(:settled_item, :product=>ticket, :order => order)
+      settled_item = FactoryGirl.create(:settled_item, :product=>subject, :order => order)
       items = [
-        FactoryGirl.create(:refunded_item, :product=>ticket),
+        FactoryGirl.create(:refunded_item, :product=>subject),
         settled_item
         ]      
-      ticket.special_instructions.should eq special_instructions
+      subject.special_instructions.should eq special_instructions
     end
     
     it "should return special_instructions of nil if there is no sold_item" do
-      ticket = FactoryGirl.create(:ticket)
-      refunded_item = FactoryGirl.create(:refunded_item, :product=>ticket)
+      refunded_item = FactoryGirl.create(:refunded_item, :product=>subject)
       items = Array.wrap(refunded_item)   
       refunded_item.should_not_receive(:order)
-      ticket.special_instructions.should be_nil      
+      subject.special_instructions.should be_nil
     end
   end
   
@@ -127,7 +123,7 @@ describe Ticket do
   end
   
   describe "#on_sale?" do
-    subject { FactoryGirl.build(:ticket, :state => "on_sale") }
+    before(:all) { subject.state = "on_sale" }
     it { should be_on_sale }
     it { should_not be_off_sale }
   end
@@ -148,14 +144,14 @@ describe Ticket do
   end
   
   describe "#off_sale?" do
-    subject { FactoryGirl.create(:ticket, :state => :off_sale) }
+    before(:each) { subject.state = :off_sale }
     it { should be_off_sale }
     it { should_not be_on_sale }
   end
   
   describe "#off_sale!" do
-    subject { FactoryGirl.create(:ticket, :state => :on_sale) }
-  
+    before(:each) { subject.state = :on_sale }
+
     it { should respond_to :off_sale! }
   
     it "marks the ticket as on sale" do
@@ -227,7 +223,7 @@ describe Ticket do
    
    describe "#comp_to" do
      let (:buyer) { FactoryGirl.create(:person) }
-     subject { FactoryGirl.create(:ticket, :state => :on_sale) }
+     before(:each) { subject.state = :on_sale }
    
      it "marks the ticket as comped" do
        subject.comp_to(buyer)
