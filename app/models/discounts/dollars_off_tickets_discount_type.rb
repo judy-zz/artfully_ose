@@ -5,6 +5,7 @@ class DollarsOffTicketsDiscountType < DiscountType
   def apply_discount_to_cart(cart)
     ensure_amount_exists
     cart.tickets.each do |ticket|
+      ticket.update_column(:discount_id, discount.id)
       if ticket.price > @properties[:amount]
         ticket.update_column(:cart_price, ticket.price - @properties[:amount])
       else
