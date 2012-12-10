@@ -19,6 +19,7 @@
         %th Status
         %th Discount
         %th Redeemed
+        %th
       %tbody
         - @discounts.each do |discount|
           %tr
@@ -26,4 +27,5 @@
             %td= discount.active? ? "Active" : "Inactive"
             %td= discount
             %td= discount.redeemed
-                  
+            / %td= button_to tag("i", :class => "icon-remove").html_safe, event_discount_path(@event, discount), method: "delete", confirm: "Are you sure?", class: "btn btn-danger #{'disabled' if discount.deletable}"
+            %td= button_to "X", event_discount_path(@event, discount), method: "delete", confirm: "Are you sure?", class: "btn btn-danger"

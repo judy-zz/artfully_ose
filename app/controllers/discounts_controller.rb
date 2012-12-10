@@ -36,6 +36,18 @@ class DiscountsController < ApplicationController
     end
   end
 
+  def destroy
+    @discount = Discount.find(params[:id])
+
+    if @discount.destroy
+      flash[:success] = "Discount #{@discount.code} was deleted."
+    else
+      flash[:error] = "Discount #{@discount.code} was not deleted."
+    end
+
+    redirect_to event_discounts_path(@event)
+  end
+
 private
 
   def authorize_event
