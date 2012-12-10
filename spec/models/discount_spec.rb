@@ -33,6 +33,13 @@ describe Discount do
     FactoryGirl.build(:discount, code: "BETTERCALLKENNYLOGGINSBECAUSEYOUREINTHEDANGERZONE").save.should be_false
   end
 
+  describe "before_destroy" do
+    it "ensures discount is destroyable, before it's destroyed" do
+      subject.stub(:redeemed) { 1 }
+      lambda{subject.destroy}.should change{subject.errors.count}.from(0).to(1)
+    end
+  end
+
   describe "#destroyable?" do
     it "should return true when the ticket hasn't been used" do
       subject.destroyable?.should be_true

@@ -13,6 +13,8 @@ class Discount < ActiveRecord::Base
   before_validation :set_organization_from_event
   before_validation :ensure_properties_are_set
 
+  before_destroy :ensure_discount_is_destroyable
+
   has_many :tickets
 
   def set_organization_from_event
@@ -31,6 +33,11 @@ class Discount < ActiveRecord::Base
 
   def ensure_properties_are_set
     type.validate
+  end
+
+  def ensure_discount_is_destroyable
+    self.errors.add(:base, "Ticket must be unused if it is to be destroyed. Consider disabling it instead.")
+    false
   end
 
   def type
