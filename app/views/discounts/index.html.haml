@@ -27,5 +27,4 @@
             %td= discount.active? ? "Active" : "Inactive"
             %td= discount
             %td= discount.redeemed
-            / %td= button_to tag("i", :class => "icon-remove").html_safe, event_discount_path(@event, discount), method: "delete", confirm: "Are you sure?", class: "btn btn-danger #{'disabled' if discount.deletable}"
-            %td= button_to "X", event_discount_path(@event, discount), method: "delete", confirm: "Are you sure?", class: "btn btn-danger"
+            %td= link_to tag("i", :class => "icon-remove").html_safe, event_discount_path(@event, discount), method: :delete, confirm: "Are you sure you want to delete this discount?", class: "btn btn-danger"
