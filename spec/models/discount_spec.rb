@@ -32,6 +32,16 @@ describe Discount do
   specify "should not allow a code more than 15 characters" do
     FactoryGirl.build(:discount, code: "BETTERCALLKENNYLOGGINSBECAUSEYOUREINTHEDANGERZONE").save.should be_false
   end
+
+  describe "#destroyable?" do
+    it "should return true when the ticket hasn't been used" do
+      subject.destroyable?.should be_true
+    end
+    it "should return false when the ticket has been used" do
+      subject.stub(:redeemed) { 1 }
+      subject.destroyable?.should be_false
+    end
+  end
   
   describe "#set_organization_from_event" do
     it "should set the organization from the event's organization" do

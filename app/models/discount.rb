@@ -53,6 +53,10 @@ class Discount < ActiveRecord::Base
     tickets.count
   end
 
+  def destroyable?
+    redeemed == 0
+  end
+
 private
 
   def ensure_discount_is_allowed(cart)
