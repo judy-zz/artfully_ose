@@ -13,6 +13,14 @@ module ArtfullyOseHelper
     end
   end
   
+  def channel_checkbox(channel)
+    channel.to_s.eql?("storefront") ? "Storefront & Widgets" : channel.to_s.humanize
+  end
+  
+  def channel_text(channel)
+    channel.to_s.humanize
+  end
+  
   #
   # For use with the nav-pills to select an intem based on a current selection
   # Will protect against nil by using try on the object
