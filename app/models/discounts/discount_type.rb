@@ -38,7 +38,7 @@ class DiscountType
     @properties = discount.properties
   end
 
-  def validate(discount)
+  def validate
     true
   end
 
