@@ -21,6 +21,7 @@
               %th Last
               %th Email
               %th Section
+              %th Method
               %th Price
           %tbody
             - @door_list.items.each do |item|
@@ -30,6 +31,7 @@
                 %td= item.buyer.last_name
                 %td= item.buyer.email
                 %td= item.ticket.section.name
+                %td= item.ticket.sold_item.order.payment_method
                 %td= number_as_cents(item.ticket.sold_price)
               %tr.no-border
                 %td
