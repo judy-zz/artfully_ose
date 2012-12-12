@@ -1,5 +1,8 @@
 class Event < ActiveRecord::Base
   include Ext::Integrations::Event
+  include Ext::Resellable::Event
+  include Ext::Uuid
+  include Ticket::Reporting
   include EventPresenter
   require 'email_validator'
   
@@ -39,8 +42,6 @@ class Event < ActiveRecord::Base
   scope :published, includes(:shows).where(:shows => { :state => "published" })
 
   delegate :time_zone, :to => :venue
-
-  include Ticket::Reporting
 
   def free?
     is_free?
@@ -110,7 +111,7 @@ class Event < ActiveRecord::Base
   end
 
   def as_widget_json(options = {})
-    as_json(options.merge(:methods => ['shows', 'charts', 'venue'])).merge('performances' => upcoming_public_shows.as_json)
+    as_json(options.merge(:methods => ['shows', 'charts', 'venue', 'uuid'])).merge('performances' => upcoming_public_shows.as_json)
   end
 
   def as_full_calendar_json
