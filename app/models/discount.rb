@@ -1,5 +1,6 @@
 class Discount < ActiveRecord::Base
   attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties
+  include OhNoes::Destroy
 
   belongs_to :event
   belongs_to :organization
@@ -36,8 +37,12 @@ class Discount < ActiveRecord::Base
   end
 
   def ensure_discount_is_destroyable
-    self.errors.add(:base, "Ticket must be unused if it is to be destroyed. Consider disabling it instead.")
-    false
+    if redeemed > 0
+      self.errors.add(:base, "Ticket must be unused if it is to be destroyed. Consider disabling it instead.")
+      false
+    else
+      true
+    end
   end
 
   def type
