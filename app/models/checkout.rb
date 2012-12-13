@@ -46,14 +46,8 @@ class Checkout
   end
 
   def finish
-    @person = Person.find_or_create(@customer, cart.organizations.first)
-    
-    #These should be delayed jobs, but DJ is failing on the add_phone ittermittently.
-    @person.update_address(Address.from_payment(payment), cart.organizations.first.time_zone, nil, "checkout")
-    @person.add_phone_if_missing(payment.payment_phone_number)
-
     run_callbacks :payment do
-      cart.pay_with(@payment)
+      pay
     end
     
     if cart.approved?
@@ -63,16 +57,25 @@ class Checkout
         @created_orders = create_order(order_timestamp)
       end
       
-      cart.finish(@person, order_timestamp)
+      cart.finish
     end
     
     cart.approved?
+  end
+  
+  def pay
+    @cart.pay_with(@payment)
+    @cart.approved?
   end
 
   private
     def create_sub_orders(order_timestamp)
       created_orders = []
       cart.organizations.each do |organization|
+        @person = Person.find_or_create(@customer, organization)
+        @person.update_address(Address.from_payment(payment), organization.time_zone, nil, "checkout")
+        @person.add_phone_if_missing(payment.payment_phone_number)
+        
         @order = new_order(organization, order_timestamp, @person)
         @order.save!
         OrderMailer.confirmation_for(order).deliver unless @person.dummy? || @person.email.blank?

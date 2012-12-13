@@ -16,7 +16,7 @@
                 =link_to "Add tickets", "#addTickets#{section.id}", 'data-toggle' => 'modal'
       %td
         - section.channels.each do |channel, icon|
-          %a{:href => "#", :class => "artfully-tooltip", :rel => "tooltip", "data-original-title" => "This ticket type is #{"not" unless section.send(channel)} shown in the #{channel.to_s.humanize}", "data-trigger" => "hover"}
+          %a{:href => "#", :class => "artfully-tooltip", :rel => "tooltip", "data-original-title" => "This ticket type is #{"not" unless section.send(channel)} shown in your #{channel_text channel}", "data-trigger" => "hover"}
             %span.badge{:class => "#{'badge-success' if section.send(channel)}"}=icon         
        
       %td
@@ -95,51 +95,3 @@
         .span6
           %h6 About this show
           = render :partial => 'shared/show_summary', :locals => { :show => show }
-
--@show.chart.sections.each do |section|
-  .modal{:id => "publish#{section.id}"}
-    .modal-header
-      .close{'data-dismiss'=>'modal'} x
-      .row-fluid
-        .span10
-          %h3 Publish Ticket Type
-    .modal-body
-      .row-fluid
-        .span6
-          %h6="About #{truncate(section.name, :length => 20, :separator => ' ', :omission => '...')}"
-          = render :partial => 'shared/section_summary', :locals => { :section => section }
-        .span6
-          .row-fluid
-            .span12.center
-              .bottom-room
-                =link_to "Publish", "#", :class => 'btn btn-success btn3'
-          %p
-            %b Published
-            ticket types are available for purchase on the storefront, widget, and box office
-          %p
-            %b Unpublished
-            ticket types are not shown on your storefront or the widget.  They are still available through the box office.
-            
--@show.chart.sections.each do |section|
-  .modal{:id => "unpublish#{section.id}"}
-    .modal-header
-      .close{'data-dismiss'=>'modal'} x
-      .row-fluid
-        .span10
-          %h3 Unpublish Ticket Type
-    .modal-body
-      .row-fluid
-        .span6
-          %h6="About #{truncate(section.name, :length => 20, :separator => ' ', :omission => '...')}"
-          = render :partial => 'shared/section_summary', :locals => { :section => section }
-        .span6
-          .row-fluid
-            .span12.center
-              .bottom-room
-                =link_to "Unpublish", "#", :class => 'btn btn-info btn3'
-          %p
-            %b Published
-            ticket types are available for purchase on the storefront, widget, and box office
-          %p
-            %b Unpublished
-            ticket types are not shown on your storefront or the widget.  They are still available through the box office.

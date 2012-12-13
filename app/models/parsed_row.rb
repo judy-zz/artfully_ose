@@ -31,6 +31,7 @@ class ParsedRow
     :facebook_page    => [ "Facebook url", "Facebook", "Facebook address", "Facebook page" ],
     :linkedin_page    => [ "Linked in url", "LinkedIn url", "LinkedIn", "LinkedIn address", "LinkedIn page" ],
     :tags             => [ "Tags" ],
+    :do_not_email     => [ "Do Not Email" ],
     :person_type      => [ "Person Type" ]   
   })
   

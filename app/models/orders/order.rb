@@ -30,6 +30,7 @@ class Order < ActiveRecord::Base
 
   after_create :create_purchase_action, :unless => :skip_actions
   after_create :create_donation_actions, :unless => :skip_actions
+  after_create :sell_tickets
 
   default_scope :order => 'orders.created_at DESC'
   scope :before, lambda { |time| where("orders.created_at < ?", time) }
@@ -52,6 +53,10 @@ class Order < ActiveRecord::Base
   end
   
   def location
+    self.class.location
+  end
+  
+  def self.location
     ""
   end
 
@@ -182,6 +187,12 @@ class Order < ActiveRecord::Base
 
   def credit?
     payment_method.eql? CreditCardPayment.payment_method
+  end
+  
+  def sell_tickets
+    all_tickets.each do |item|
+      item.product.sell_to(self.person, self.created_at)
+    end
   end
   
   def time_zone

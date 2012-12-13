@@ -1,5 +1,5 @@
 class WebOrder < Order
-  def location
+  def self.location
     "Web"
   end
 end

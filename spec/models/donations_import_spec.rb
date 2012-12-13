@@ -69,7 +69,7 @@ describe DonationsImport do
       order.person.should eq @person
       order.organization.should eq @import.organization
       order.payment_method.should eq "Check"
-      order.items.length.should eq 1
+      order.reload.items.length.should eq 1
       order.items.first.price.should eq 5000
       order.items.first.realized_price.should eq 5000
       order.items.first.net.should eq 5000
@@ -96,7 +96,7 @@ describe DonationsImport do
       order  = contribution.order
       order.person.should eq @person
       order.organization.should eq @import.organization
-      order.items.length.should eq 1
+      order.reload.items.length.should eq 1
       order.items.first.price.should eq 4877
       order.items.first.realized_price.should eq 4877
       order.items.first.net.should eq 4877
@@ -114,7 +114,7 @@ describe DonationsImport do
       order  = contribution.order
       order.person.should eq @person
       order.organization.should eq @import.organization
-      order.items.length.should eq 1
+      order.reload.items.length.should eq 1
       order.items.first.price.should eq 100
       order.items.first.realized_price.should eq 100
       order.items.first.net.should eq 100

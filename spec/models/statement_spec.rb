@@ -85,6 +85,15 @@ describe Statement do
       @statement.payment_method_rows[::CashPayment.payment_method.downcase].processing.should be_within(0.00001).of(0)
       @statement.payment_method_rows[::CashPayment.payment_method.downcase].net.should eq 0
       
+      @statement.order_location_rows[::WebOrder.location].should_not be_nil   
+      @statement.order_location_rows[::WebOrder.location].tickets.should eq 3 
+      
+      @statement.order_location_rows[BoxOffice::Order.location].should_not be_nil   
+      @statement.order_location_rows[BoxOffice::Order.location].tickets.should eq 0 
+      
+      @statement.order_location_rows[CompOrder.location].should_not be_nil   
+      @statement.order_location_rows[CompOrder.location].tickets.should eq 3
+      
     end
   end
   
@@ -172,6 +181,8 @@ describe Statement do
     end
     
     Comp.new(paid_show, paid_show.tickets[3..5], FactoryGirl.create(:person), FactoryGirl.create(:user_in_organization)).submit
+    
+    paid_show.tickets.reload
   end
   
   def setup_exchange

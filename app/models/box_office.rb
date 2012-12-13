@@ -15,7 +15,7 @@ module BoxOffice
   end
   
   class Order < ::Order  
-    def location
+    def self.location
       "Box office"
     end
   end

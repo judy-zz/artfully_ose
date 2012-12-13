@@ -33,7 +33,7 @@
     .value=(order.payment_method || "")
   %li
     %h6.key Order location
-    .value=(order.location || "")
+    .value=build_order_location(order)
   - if !order.fa_id.nil?
     %li
       %h6.key FA ID

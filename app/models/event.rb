@@ -36,7 +36,7 @@ class Event < ActiveRecord::Base
 
   after_create :create_default_chart
 
-  default_scope where(:deleted_at => nil).order("created_at DESC")
+  default_scope where(:deleted_at => nil).order("events.created_at DESC")
   scope :published, includes(:shows).where(:shows => { :state => "published" })
 
   delegate :time_zone, :to => :venue
@@ -45,6 +45,10 @@ class Event < ActiveRecord::Base
 
   def free?
     is_free?
+  end
+  
+  def artfully_ticketed
+    true
   end
 
   alias :destroy! :destroy

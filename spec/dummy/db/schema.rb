@@ -246,7 +246,11 @@ ActiveRecord::Schema.define(:version => 20121211193728) do
     t.integer  "import_id"
     t.datetime "deleted_at"
     t.integer  "lifetime_value",  :default => 0
+<<<<<<< HEAD
     t.string   "salutation"
+=======
+    t.boolean  "do_not_email",    :default => false
+>>>>>>> master
   end
 
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"

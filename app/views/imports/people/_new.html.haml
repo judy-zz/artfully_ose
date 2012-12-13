@@ -7,13 +7,14 @@
     %h2
       %span.badge.badge-big.badge-info 1
       Template
-    #{link_to 'download an empty CSV file', template_imports_path(:type => "people")} with these headers already filled in.
+    #{link_to 'Download an empty CSV file', template_imports_path(:type => "people")} with these headers already filled in.
   
   .span6
     %h2
       %span.badge.badge-big.badge-info 2
       Format
     %h3 Please include one of the following
+    .bottom-room= render :partial => "imports/shared/knowledge_base"
     %table.table.table-bordered.table-striped.docs
       %tr 
         %td.field-slim First 
@@ -81,6 +82,9 @@
       %tr
         %td.field-slim LinkedIn 
         %td The person's web address on LinkedIn
+      %tr
+        %td.field-slim Do Not Email 
+        %td Indicate that this person is not to receive email communication from your organization.  This is for your organization's internal use only.  The person will still receive purchase and donation receipts from Artful.ly.
       %tr
         %td.field-slim Tags
         %td

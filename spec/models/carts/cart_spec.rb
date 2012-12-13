@@ -114,7 +114,7 @@ describe Cart do
 
       it "should tranisition to rejected when the Payment is rejected" do
         payment.stub(:requires_authorization?).and_return(true)
-        payment.stub(:purchase).and_return(fail_response)
+        payment.stub(:purchase).and_return(false)
         subject.pay_with(payment)
         subject.should be_rejected
       end
@@ -130,17 +130,10 @@ describe Cart do
   describe "#finish" do
     subject { FactoryGirl.build(:cart_with_items) }
 
-    it "should mark each item as sold" do
+    it "should send a metric" do
       RestfulMetrics::Client.should_receive(:add_compound_metric)
-      subject.tickets.each { |ticket| ticket.should_receive(:sell_to) }
-      subject.finish(FactoryGirl.build(:person), Time.now)
+      subject.finish
     end
-
-    # # TODO: Fix this spec!
-    # it "should send a metric" do
-    #   RestfulMetrics::Client.should_receive(:add_compound_metric).with(ENV["RESTFUL_METRICS_APP"], "sale_complete", ["$100 - $249.99"])
-    #   subject.finish(FactoryGirl.build(:person), Time.now)
-    # end
   end
 
   describe "organizations" do

@@ -47,7 +47,11 @@ class SalesController < ArtfullyOseController
   
   def door_list_rows
     door_list_rows = []
+    
+    puts @sale.tickets.inspect
+    
     @sale.tickets.each_with_index do |ticket, i|
+      ticket.reload
       if ticket.sold? || ticket.comped?
         door_list_rows[i] = {}
         door_list_rows[i]['buyer'] = @sale.buyer.to_s

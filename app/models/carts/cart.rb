@@ -115,9 +115,8 @@ class Cart < ActiveRecord::Base
     end
   end
 
-  def finish(person, order_timestamp)
+  def finish
     metric_sale_total
-    tickets.each { |ticket| ticket.sell_to(person, order_timestamp) }
   end
 
   def generate_donations
@@ -159,8 +158,7 @@ class Cart < ActiveRecord::Base
   private
 
     def pay_with_authorization(payment, options)
-      response = payment.purchase(options)
-      response.success? ? approve! : reject!
+      payment.purchase(options) ? approve! : reject!
     end
 
     def metric_sale_total

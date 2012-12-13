@@ -43,12 +43,7 @@ class Comp
 
   def submit
     ActiveRecord::Base.transaction do
-      comped_tickets = []
-      @tickets.each do |t|
-        t.comp_to recipient
-        comped_tickets << t
-      end
-      create_order(comped_tickets, @benefactor)
+      create_order(@tickets, recipient, @benefactor)
       self.comped_count    = tickets.size
       self.uncomped_count  = 0
     end
@@ -62,14 +57,13 @@ class Comp
       end
     end
   
-    def create_order(comped_tickets, benefactor)
+    def create_order(comped_tickets, recipient, benefactor)
       @order = CompOrder.new
       @order << comped_tickets
       @order.person = recipient
       @order.organization = benefactor.current_organization
       @order.details = "Comped by: #{benefactor.email} Reason: #{reason}"
       @order.to_comp!
-    
     
       if 0 < comped_tickets.size
         @order.save

@@ -4,6 +4,7 @@ class MembershipsController < ActionController::Base
   end
 
   def create
+    #This should pull from current_organization
     @organization = Organization.find(params[:organization_id])
     authorize! :manage, @organization
 
