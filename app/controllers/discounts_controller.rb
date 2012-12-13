@@ -6,7 +6,7 @@ class DiscountsController < ApplicationController
   end
 
   def new
-    @discount = @event.discounts.build
+    @discount = Discount.new(:event => @event)
   end
 
   def edit
