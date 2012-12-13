@@ -83,22 +83,7 @@
 
 #door-list
   %h3 Door List
-  %table.standalone.table
-    %thead
-      %tr
-        %th
-        %th Buyer
-        %th Email
-        %th Section
-        %th Price
-    %tbody
-      - @door_list.items.each do |item|
-        %tr
-          %td= "☐"
-          %td= "#{item.buyer.first_name} #{item.buyer.last_name}"
-          %td= item.buyer.email
-          %td= item.ticket.section.name
-          %td= number_as_cents(item.ticket.price)
+  = render :partial => 'shared/door_list_table', :locals => { :door_list_items => @door_list.items}
             
 = render "shared/new_person_popup"
             
