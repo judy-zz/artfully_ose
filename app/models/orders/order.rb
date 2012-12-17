@@ -39,6 +39,30 @@ class Order < ActiveRecord::Base
   scope :not_imported, where("fa_id IS NULL")
   scope :artfully, where("transaction_id IS NOT NULL")
 
+  searchable do
+    text :details, :id, :type, :location, :transaction_id, :payment_method, :special_instructions
+
+    [:first_name, :last_name, :email].each do |person_field|
+      text person_field do
+        person.send(person_field)
+      end
+    end
+
+    text :event_name do
+      items.map{ |item| item.show.event.name unless item.show.nil? }
+    end
+
+    string :details, :id, :type, :location, :transaction_id, :payment_method, :special_instructions
+    string :organization_id do
+      organization.id
+    end
+
+    string :event_name, :multiple => true do
+      items.map{ |item| item.show.event.name unless item.show.nil? }
+    end
+  end
+  include Ext::DelayedIndexing
+
   def self.in_range(start, stop, organization_id = nil)
     query = after(start).before(stop).includes(:items, :person, :organization).order("created_at DESC")
     if organization_id.present?
