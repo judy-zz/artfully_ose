@@ -45,6 +45,7 @@ class Payment
   # Call this method to create sub-classes of Payment.  params will be passed through to the child class
   #
   def self.create(type, params = {})
+    type = type.parameterize.underscore.to_sym if type.is_a? String
     c = @@payment_methods[type]
     if c 
       c.new(params)
@@ -57,6 +58,13 @@ class Payment
   # Subclasses that need to actually process something should override this method
   #
   def purchase(options = {})
+  end
+
+  #
+  # Likewise with payments that need to refund
+  #
+  def refund(refund_amount, transaction_id)
+    true
   end
   
   def requires_authorization?

@@ -12,25 +12,14 @@ class Refund
   def submit(options = {})
     return_items_to_inventory = options[:and_return] || false
 
-    gateway = ActiveMerchant::Billing::BraintreeGateway.new(
-      :merchant_id => Rails.application.config.braintree.merchant_id,
-      :public_key  => Rails.application.config.braintree.public_key,
-      :private_key => Rails.application.config.braintree.private_key
-    )
-
-    if refund_amount > 0
-      response = gateway.refund(refund_amount, order.transaction_id)
-      transaction_id = response.authorization
-      @gateway_error_message = format_message(response.message)
-      @success = response.success?
-    else
-      @success = true
-    end
+    @payment = Payment.create(@order.payment_method)
+    @success = @payment.refund(refund_amount, order.transaction_id)
+    @gateway_error_message = format_message(@payment)
     
     if @success
       items.each { |i| i.return!(return_items_to_inventory) }
       items.each(&:refund!)
-      create_refund_order(transaction_id)
+      create_refund_order(@payment.transaction_id)
     end
   end
 
@@ -39,8 +28,10 @@ class Refund
   end
 
   #This is brittle, sure, but active merchant doens't pass along any processor codes so we have to match the whole stupid string
-  def format_message(message)
-    (message.eql? BRAINTREE_UNSETTLED_MESSAGE) ? FRIENDLY_UNSETTLED_MESSAGE : message
+  def format_message(payment)
+    unless payment.errors.empty?
+      (payment.errors[:base].first.eql? BRAINTREE_UNSETTLED_MESSAGE) ? FRIENDLY_UNSETTLED_MESSAGE : payment.errors.full_messages.to_sentence
+    end
   end
 
   def refund_amount
