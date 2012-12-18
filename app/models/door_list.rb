@@ -17,7 +17,7 @@ class DoorList
   private
 
     class Item
-      attr_accessor :ticket, :buyer, :special_instructions
+      attr_accessor :ticket, :buyer, :special_instructions, :payment_method
       
       comma do
         buyer("First Name") { |buyer| buyer.first_name }
@@ -32,6 +32,7 @@ class DoorList
         self.ticket = ticket
         self.buyer = buyer
         self.special_instructions = ticket.special_instructions
+        self.payment_method = ticket.sold_item.try(:order).try(:payment_method)
       end
 
       def <=>(obj)

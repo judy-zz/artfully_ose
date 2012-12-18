@@ -197,10 +197,14 @@ $("document").ready(function(){
   					$("#door-list").find('tbody')
   					  .append($('<tr>')
   					    .append($('<td>').html("☐"))
-  					    .append($('<td>').html(this.buyer))
+  					    .append($('<td>').html(this.first_name))
+  					    .append($('<td>').html(this.last_name))
   					    .append($('<td>').html(this.email))
   					    .append($('<td>').html(this.section))
-  					    .append($('<td>').html(this.price / 100).formatCurrency())
+  					    .append($('<td>').html(this.payment_method))
+  					    .append($('<td>').html(this.price / 100).formatCurrency()))
+  					  .append($('<tr class="no-border">')
+  					    .append($('<td>').html(" "))
   					);         	
   				});
 					disableCheckout()
