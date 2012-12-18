@@ -11,6 +11,25 @@ describe Order do
     end
   end
 
+  describe "refundable_items" do
+    it "should return all items if the payment method is anything other than credit" do
+      tickets = 3.times.collect { FactoryGirl.create(:ticket) }
+      subject << tickets
+      subject.returnable_items.length.should eq 3
+    end
+
+    it "should return all unsettled items if the payment method is credit" do
+      credit_card_order = FactoryGirl.create(:credit_card_order)
+      tickets = 3.times.collect { FactoryGirl.create(:ticket) }
+      credit_card_order << tickets
+      credit_card_order.returnable_items.length.should eq 3
+
+      settlement = FactoryGirl.create(:settlement)
+      Item.settle(credit_card_order.items, settlement)
+      credit_card_order.reload.returnable_items.length.should eq 0
+    end
+  end
+
   describe "transaction_id" do
     it "should return the transaction_id" do
       subject.transaction_id = "12345"
