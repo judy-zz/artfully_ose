@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121211193728) do
+ActiveRecord::Schema.define(:version => 20121217201422) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -78,16 +78,17 @@ ActiveRecord::Schema.define(:version => 20121211193728) do
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
   create_table "discounts", :force => true do |t|
-    t.string   "code",                              :null => false
-    t.boolean  "active",          :default => true, :null => false
-    t.string   "promotion_type",                    :null => false
+    t.string   "code",                                   :null => false
+    t.boolean  "active",               :default => true, :null => false
+    t.string   "promotion_type",                         :null => false
     t.text     "properties"
-    t.integer  "event_id",                          :null => false
-    t.integer  "organization_id",                   :null => false
-    t.integer  "user_id",                           :null => false
-    t.datetime "created_at",                        :null => false
-    t.datetime "updated_at",                        :null => false
+    t.integer  "event_id",                               :null => false
+    t.integer  "organization_id",                        :null => false
+    t.integer  "user_id",                                :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.datetime "deleted_at"
+    t.integer  "minimum_ticket_count"
   end
 
   create_table "donations", :force => true do |t|
@@ -246,11 +247,8 @@ ActiveRecord::Schema.define(:version => 20121211193728) do
     t.integer  "import_id"
     t.datetime "deleted_at"
     t.integer  "lifetime_value",  :default => 0
-<<<<<<< HEAD
     t.string   "salutation"
-=======
     t.boolean  "do_not_email",    :default => false
->>>>>>> master
   end
 
   add_index "people", ["organization_id", "email"], :name => "index_people_on_organization_id_and_email"

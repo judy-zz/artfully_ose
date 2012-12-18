@@ -11,7 +11,13 @@
     .controls
       %label.checkbox
         = f.check_box :active
-        Discount is active and can be used now
+        Discount is active and can be used now.
+
+  .control-group
+    .controls
+      Discount requires a minimum purchase of
+      = f.text_field :minimum_ticket_count, :class => 'input input-mini', :placeholder => "1"
+      ticket.
 
 %fieldset
   .control-group
