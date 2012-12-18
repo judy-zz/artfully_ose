@@ -6,7 +6,7 @@ describe Refund do
   disconnect_sunspot
   let(:items) { 3.times.collect { FactoryGirl.build(:item)}}
   let(:free_items) { 3.times.collect { FactoryGirl.build(:free_item)}}
-  let(:order) { FactoryGirl.build(:order, :service_fee => 600, :items => (items + free_items)) }
+  let(:order) { FactoryGirl.build(:order, :service_fee => 600, :items => (items + free_items), :payment_method => :credit_card) }
   subject { Refund.new(order, items) }
 
   before(:each) do

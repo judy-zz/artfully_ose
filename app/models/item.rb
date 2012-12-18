@@ -93,7 +93,7 @@ class Item < ActiveRecord::Base
   end
 
   def refundable?
-    (not modified?) and product.refundable?
+    (not settled?) and product.refundable?
   end
 
   def exchangeable?

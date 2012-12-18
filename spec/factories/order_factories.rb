@@ -4,6 +4,7 @@ FactoryGirl.define do
     price 50
     association :person
     association :organization
+    payment_method ::CashPayment.payment_method
   end
   
   factory :order_with_processing_charge, :parent => :order do

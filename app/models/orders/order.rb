@@ -125,7 +125,11 @@ class Order < ActiveRecord::Base
   end
 
   def refundable_items
-    items.select(&:refundable?)
+    if credit? 
+      items.reject(&:settled?)
+    else
+      items
+    end
   end
 
   def exchangeable_items
