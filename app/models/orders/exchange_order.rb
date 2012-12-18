@@ -1,6 +1,4 @@
-class ExchangeOrder < Order  
-  include Unrefundable
-
+class ExchangeOrder < Order 
   def self.location
     "Artful.ly"
   end
