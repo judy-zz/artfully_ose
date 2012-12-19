@@ -42,7 +42,7 @@ class Cart < ActiveRecord::Base
   end
 
   def release_tickets
-    tickets.each { |ticket| ticket.update_attribute(:cart, nil) }
+    tickets.each { |ticket| ticket.remove_from_cart }
   end
 
   def set_timeout(ticket)
