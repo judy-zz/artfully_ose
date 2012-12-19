@@ -125,11 +125,8 @@ class Order < ActiveRecord::Base
   end
 
   def refundable_items
-    if credit? 
-      items.reject(&:settled?)
-    else
-      items
-    end
+    return [] unless Payment.create(payment_method).refundable?
+    credit? ? items.reject(&:settled?) : items
   end
 
   def exchangeable_items
