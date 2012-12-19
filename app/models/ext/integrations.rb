@@ -111,6 +111,9 @@ module Ext
     end
     
     module Item
+      def settlement_issued?
+        false
+      end
     end
   end
 end
