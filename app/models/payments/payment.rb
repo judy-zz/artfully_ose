@@ -63,6 +63,10 @@ class Payment
   #
   # Likewise with payments that need to refund
   #
+  def refundable?
+    true
+  end
+
   def refund(refund_amount, transaction_id)
     true
   end
