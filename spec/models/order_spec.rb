@@ -13,20 +13,18 @@ describe Order do
 
   describe "refundable_items" do
     it "should allow refunds on all items if the payment method is anything other than credit" do
-      tickets = 3.times.collect { FactoryGirl.create(:ticket) }
-      subject << tickets
-      subject.returnable_items.length.should eq 3
+      subject.items = 3.times.collect { FactoryGirl.create(:item) }
+      subject.refundable_items.length.should eq 3
     end
 
     it "should allow refunds on all unsettled items if the payment method is credit" do
       credit_card_order = FactoryGirl.create(:credit_card_order)
-      tickets = 3.times.collect { FactoryGirl.create(:ticket) }
-      credit_card_order << tickets
-      credit_card_order.returnable_items.length.should eq 3
+      credit_card_order.items = 3.times.collect { FactoryGirl.create(:item) }
+      credit_card_order.refundable_items.length.should eq 3
 
       settlement = FactoryGirl.create(:settlement)
       Item.settle(credit_card_order.items, settlement)
-      credit_card_order.reload.returnable_items.length.should eq 0
+      credit_card_order.reload.refundable_items.length.should eq 0
     end
 
     it "should allow donations to be refunded unless we have settled" do
