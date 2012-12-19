@@ -10,6 +10,35 @@ describe Order do
       subject.payment.transaction_id.should eq subject.transaction_id
     end
   end
+
+  describe "transaction_id" do
+    it "should return the transaction_id" do
+      subject.transaction_id = "12345"
+      subject.transaction_id.should eq "12345"
+    end
+
+    it "should return the transaction_id of the parent if self.transaction_id is null" do
+      parent = FactoryGirl.create(:order, :transaction_id => "abcdef")
+      subject.parent = parent
+      subject.transaction_id=nil
+      subject.transaction_id.should eq parent.transaction_id
+    end
+
+    it "should return the transaction_id of the parent if self.transaction_id is null" do
+      grandpa = FactoryGirl.create(:order, :transaction_id => "99999")
+      parent = FactoryGirl.create(:order, :transaction_id => nil, :parent => grandpa)
+      subject.parent = parent
+      subject.transaction_id=nil
+      subject.transaction_id.should eq "99999"
+    end
+
+    it "should return nil if transaction_id is null on self.parent" do
+      parent = FactoryGirl.create(:order, :transaction_id => nil)
+      subject.parent = parent
+      subject.transaction_id=nil
+      subject.transaction_id.should be_nil
+    end
+  end
   
   describe "total" do
     it "should report the prices and non-gift amounts to all items" do

@@ -26,7 +26,6 @@ class Person < ActiveRecord::Base
   validates_presence_of :person_info
 
   validates :email, :uniqueness => { :scope => [:organization_id, :deleted_at] }, :allow_blank => true
-  after_commit { Sunspot.delay.commit }
 
   def destroy!
     destroy
@@ -91,6 +90,9 @@ class Person < ActiveRecord::Base
       organization.id
     end
   end
+  handle_asynchronously :solr_index
+  handle_asynchronously :solr_index!
+  after_commit { Sunspot.delay.commit }
 
   def self.search_index(query, organization)
     self.search do

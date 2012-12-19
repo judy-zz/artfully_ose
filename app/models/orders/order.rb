@@ -188,6 +188,14 @@ class Order < ActiveRecord::Base
   def credit?
     payment_method.eql? CreditCardPayment.payment_method
   end
+
+  #
+  # If this order has no transaction_id, run up the parent chain until we hit one
+  # This is needed for exchanges that ultimately need to be refunded
+  #
+  def transaction_id
+    read_attribute(:transaction_id) || self.parent.try(:transaction_id)
+  end
   
   def sell_tickets
     all_tickets.each do |item|
