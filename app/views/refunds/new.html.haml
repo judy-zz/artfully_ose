@@ -1,6 +1,6 @@
 - in_section :people
 - content_for :header do
-  %h1 Return Tickets
+  %h1 Refund Tickets
 
 .row
   .span8.offset2
@@ -29,13 +29,11 @@
               %td=l item.product.show.datetime_local_to_event, :format => :short
               %td=number_as_cents item.product.price
               %td=number_as_cents item.price
+
       %p
+        Refund these tickets and return them to inventory
         %br
-      -if @items.all?(&:returnable?)
-        %p
-          Refund these tickets and return them to inventory
-          %br
-          = submit_tag "Issue Refund and Return", :class => "btn"
+        = submit_tag "Issue Refund and Return", :class => "btn"
       %p
         %br
       %p
