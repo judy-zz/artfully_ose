@@ -34,9 +34,15 @@ describe Discount do
   end
 
   describe "before_destroy" do
-    it "ensures discount is destroyable, before it's destroyed" do
-      subject.stub(:redeemed) { 1 }
-      lambda{subject.destroy}.should change{subject.errors.count}.from(0).to(1)
+    it "will be destroyed" do
+      subject.save!
+      Discount.all.should include(subject)
+      subject.destroy.should be_true
+      Discount.all.should_not include(subject)
+    end
+    context "when a ticket has been redeemed" do
+      before { subject.stub(:redeemed) { 1 } }
+      it("won't be destroyed") {subject.destroy.should be_false}
     end
   end
 
