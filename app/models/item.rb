@@ -93,15 +93,15 @@ class Item < ActiveRecord::Base
   end
 
   def refundable?
-    (not modified?) and product.refundable?
+    (not settlement_issued?) and product.refundable?
   end
 
   def exchangeable?
-    (not modified?) and product.exchangeable?
+    (not settlement_issued?) and product.exchangeable?
   end
 
   def returnable?
-    (not modified?) and product.returnable?
+    product.returnable?
   end
 
   #
@@ -112,6 +112,7 @@ class Item < ActiveRecord::Base
   #
   def refund!
     self.state = "refunded"
+    product.remove_from_cart if self.ticket?
     self.save
   end
 
@@ -128,7 +129,11 @@ class Item < ActiveRecord::Base
     self.price = item_that_this_is_being_exchanged_for.price
     self.realized_price = item_that_this_is_being_exchanged_for.realized_price
     self.net = item_that_this_is_being_exchanged_for.net
-    self.state = "purchased"
+    if self.ticket?
+      product.remove_from_cart
+      product.update_column(:sold_price,item_that_this_is_being_exchanged_for.product.sold_price)
+    end
+    self.state = item_that_this_is_being_exchanged_for.state
   end
 
   def to_comp!
@@ -160,6 +165,9 @@ class Item < ActiveRecord::Base
     state.eql? "returned"
   end
 
+  #
+  # state="settled" means that obligations to thie producer are all done
+  #
   def settled?
     state.eql? "settled"
   end

@@ -1,4 +1,4 @@
-#3This class is used to encapsulate a comp made through a payment interface (the box office)  
+# This class is used to encapsulate a comp made through a payment interface (the box office)  
 # Comping from producer screens doesn't use this class
 class CompPayment < Payment
   payment_method :comp
@@ -13,6 +13,15 @@ class CompPayment < Payment
   end
 
   def requires_authorization?
+    false
+  end
+
+  def refundable?
+    false
+  end
+
+  def refund
+    self.errors.add(:base, "Comp orders cannot be refunded.  Please return the tickets to inventory instead.")
     false
   end
 

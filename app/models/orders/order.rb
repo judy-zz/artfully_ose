@@ -125,11 +125,16 @@ class Order < ActiveRecord::Base
   end
 
   def refundable_items
+    return [] unless Payment.create(payment_method).refundable?
     items.select(&:refundable?)
   end
 
   def exchangeable_items
     items.select(&:exchangeable?)
+  end
+
+  def returnable_items
+    items.select { |i| i.returnable? and not i.refundable? }
   end
 
   def num_tickets
@@ -171,10 +176,6 @@ class Order < ActiveRecord::Base
     else
       "#{number_as_cents sum_donations} donation"
     end
-  end
-
-  def returnable_items
-    items.select { |i| i.returnable? and not i.refundable? }
   end
   
   def ticket_summary
