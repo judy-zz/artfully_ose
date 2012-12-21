@@ -4,7 +4,7 @@
 
 .order-search
   = form_tag orders_path, {:method => :get, :class => 'super-search form-search'} do
-    = text_field_tag :search, "", :placeholder => "Enter an order number..."
+    = text_field_tag :search, "", :placeholder => "Enter a patron name, event, or order number...", :class => "span6"
     = submit_tag "Search", :class => "btn"
 
 #orders-table
@@ -26,8 +26,6 @@
             %th Person
             %th Order Date
             %th Event
-            %th Show
-            %th Details
             %th Total
         %tbody
           -@results.each do |order|
@@ -43,15 +41,6 @@
                 %td=link_to "#{ticket.event.name}", event_path(ticket.event.id)
               -else
                 %td
-              -if order.items.size > 0 and "Ticket" == order.items.first.product_type
-                -ticket = Ticket.find(order.items.first.product_id)
-                %td=link_to "#{l ticket.show.datetime_local_to_event, :format=>:short}", event_show_path(ticket.event.id, ticket.show.id)
-              -else
-                %td
-              -details = []
-              -details << pluralize(order.num_tickets, "ticket") unless order.num_tickets <= 0
-              -details << " #{number_as_cents(order.sum_donations)} donation" unless order.sum_donations <= 0.0
-              %td= details.compact.to_sentence
               %td= number_as_cents order.total
 
       =will_paginate @results
