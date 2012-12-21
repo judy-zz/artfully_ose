@@ -5,7 +5,7 @@ describe Exchange do
   let(:order)       { FactoryGirl.build(:order) }
   let(:items)       { 3.times.collect { FactoryGirl.build(:item) } }
   let(:event)       { FactoryGirl.build(:event, :organization => order.organization) }
-  let(:tickets)     { 3.times.collect { FactoryGirl.build(:ticket, :state => :on_sale, :organization => order.organization) } }
+  let(:tickets)     { 3.times.collect { FactoryGirl.create(:ticket, :state => :on_sale, :organization => order.organization) } }
 
   subject { Exchange.new(order, items, tickets) }
 
