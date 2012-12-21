@@ -46,5 +46,9 @@ module ArtfullyOse
     config.generators do |g|
       g.test_framework :rspec, :view_specs => false
     end
+
+    config.autoload_paths += %W(
+      #{config.root}/app/models/concerns
+    )
   end
 end
