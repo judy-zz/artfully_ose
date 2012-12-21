@@ -19,7 +19,7 @@ describe EventsImport do
       
       context "creating people" do
         it "should create six people" do
-          Person.all.length.should eq 6
+          Person.where(:import_id => @import.id).count.should eq 6
           Person.where(:first_name => "Monique").where(:last_name => "Meloche").where(:import_id => @import.id).first.should_not be_nil
           Person.where(:first_name => "Dirk").where(:last_name => "Denison").where(:email => "dda@example.com").where(:import_id => @import.id).first.should_not be_nil
           Person.where(:first_name => "James").where(:last_name => "Cahn").where(:email => "jcahn@example.edu").where(:import_id => @import.id).first.should_not be_nil

@@ -36,7 +36,7 @@ describe PeopleImport do
     end
   
     it "should successfully import 0 people" do
-      Person.count.should == 0
+      Person.where(:import_id => @import.id).count.should == 0
     end
   
     it "should be failed" do
