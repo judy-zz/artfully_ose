@@ -44,7 +44,7 @@ class Order < ActiveRecord::Base
 
     [:first_name, :last_name, :email].each do |person_field|
       text person_field do
-        person.send(person_field)
+        person.send(person_field) unless person.nil?
       end
     end
 
