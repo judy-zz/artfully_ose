@@ -93,15 +93,15 @@ class Item < ActiveRecord::Base
   end
 
   def refundable?
-    (not settlement_issued?) and product.refundable?
+    (not settlement_issued?) and product and product.refundable?
   end
 
   def exchangeable?
-    (not settlement_issued?) and product.exchangeable?
+    (not settlement_issued?) and product and product.exchangeable?
   end
 
   def returnable?
-    product.returnable?
+    product and product.returnable?
   end
 
   #
