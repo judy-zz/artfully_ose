@@ -64,6 +64,16 @@ describe Discount do
     end
   end
 
+  describe "#shows" do
+    before(:each) do
+      @show = FactoryGirl.create(:show)
+      subject.shows << @show
+    end
+    it "should return a list of shows that this discount is applicable to" do
+      subject.shows.should include(@show)
+    end
+  end
+
   describe "#apply_discount_to_cart" do
     before(:each) do
       @cart = FactoryGirl.create(:cart_with_items)
