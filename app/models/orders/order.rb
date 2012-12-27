@@ -48,6 +48,14 @@ class Order < ActiveRecord::Base
       end
     end
 
+    text :organization_id do
+      organization.id
+    end
+
+    text :organization_name do
+      organization.name
+    end
+
     text :event_name do
       items.map{ |item| item.show.event.name unless item.show.nil? }
     end
@@ -55,6 +63,10 @@ class Order < ActiveRecord::Base
     string :details, :id, :type, :location, :transaction_id, :payment_method, :special_instructions
     string :organization_id do
       organization.id
+    end
+
+    string :organization_name do
+      organization.name
     end
 
     string :event_name, :multiple => true do
