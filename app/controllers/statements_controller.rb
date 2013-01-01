@@ -15,11 +15,11 @@ class StatementsController < ArtfullyOseController
   end
 
   def show
-    @show = Show.find(params[:id])
+    @show = Show.includes(:event => :venue, :items => :order).find(params[:id])
     authorize! :view, @show
     @event = @show.event
-    @shows = @event.shows
-    @statement = Statement.for_show(@show)
+    @shows = @event.shows.includes(:event => :venue)
+    @statement = Statement.for_show(@show, @show.imported?)
   end
 
 end

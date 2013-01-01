@@ -11,7 +11,7 @@ class Statement
                 :payment_method_rows,
                 :order_location_rows
   
-  def self.for_show(show)
+  def self.for_show(show, imported=false)
     if show.nil?
       return new
     end
@@ -34,8 +34,8 @@ class Statement
       #
       
       statement.cc_net = 0
-      show.items.each do |item|
-        statement.cc_net += item.net if (item.order.credit? && !show.imported?)
+      show.items.includes(:order).each do |item|
+        statement.cc_net += item.net if (item.order.credit? && !imported)
       end
       statement.settled           = show.settlements.successful.inject(0) { |settled, settlement| settled += settlement.net }
       payment_method_hash         = show.items.group_by { |item| item.order.payment_method }
