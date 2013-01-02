@@ -57,7 +57,6 @@ Rails.application.routes.draw do
     get :requirements, :on => :collection
   end
 
-  resources :reports, :only => :index
   resources :statements, :only => [ :index, :show ]
 
   resources :people, :except => :destroy do
@@ -143,6 +142,12 @@ Rails.application.routes.draw do
     end
     collection do
       get :template
+    end
+  end
+
+  resources :reports do
+    collection do
+      get :discounts
     end
   end
 

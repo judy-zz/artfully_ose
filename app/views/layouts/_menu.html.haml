@@ -23,6 +23,7 @@
           = nav_dropdown "Reports"
           %ul.dropdown-menu
             %li= link_to "Statements", statements_path
+            %li= link_to "Discounts", discounts_reports_path
             %li= link_to "Imports / Exports", imports_path
 
         %li{ :class => "dropdown #{active?(:transactions)}"}
