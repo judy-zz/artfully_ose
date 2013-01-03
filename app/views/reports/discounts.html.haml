@@ -2,6 +2,9 @@
   %h1 Discounts
 
 = form_tag sales_orders_path, :method => :get, :class => 'well form-inline' do
+  = label_tag :code, "Code", :class => "control-label"
+  = select_tag :code, options_for_select(["SAVE15", "FRIENDS", "LOVERS", "ENEMIES", "(All)"])
+
   = label_tag :start, "From", :class => "control-label"
   = text_field_tag :start,"#{l Time.now, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
 
@@ -13,4 +16,20 @@
 
 .row
   .span12
-    Giggity
+    %table.table.zebra#order-table
+      %thead
+        %tr
+          %th{:style=>'width:40px'} Order
+          %th Date
+          %th Person
+          %th Total
+          %th Fee
+      %tbody
+        - @orders.each do |order|
+          %tr
+            %td=link_to order.id, admin_order_path(order)
+            -unless order.created_at.nil?
+              %td= l order.created_at_local_to_admins, :format => :short
+            %td="#{order.person_first_name} #{order.person_last_name}"
+            %td= number_as_cents order.total
+            %td= number_as_cents order.service_fee
