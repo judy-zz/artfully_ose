@@ -58,7 +58,13 @@ Rails.application.routes.draw do
   end
 
   resources :reports, :only => :index
-  resources :statements, :only => [ :index, :show ]
+  resources :statements, :only => [ :index, :show ] do
+    resources :slices, :only => [ :index ] do
+      collection do
+        get :data
+      end
+    end
+  end
 
   resources :people, :except => :destroy do
     resources :actions
