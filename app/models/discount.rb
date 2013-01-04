@@ -6,6 +6,9 @@ class Discount < ActiveRecord::Base
   belongs_to :organization
   belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
 
+  has_and_belongs_to_many :shows
+  has_and_belongs_to_many :sections
+
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
   validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
   

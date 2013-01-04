@@ -74,6 +74,16 @@ describe Discount do
     end
   end
 
+  describe "#sections" do
+    before(:each) do
+      @section = FactoryGirl.create(:section)
+      subject.sections << @section
+    end
+    it "should return a list of sections that this discount is applicable to" do
+      subject.sections.should include(@section)
+    end
+  end
+
   describe "#apply_discount_to_cart" do
     before(:each) do
       @cart = FactoryGirl.create(:cart_with_items)
