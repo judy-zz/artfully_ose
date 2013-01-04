@@ -1,7 +1,6 @@
 class Discount < ActiveRecord::Base
   attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count
   include OhNoes::Destroy
-  include ShowsAndSections
 
   belongs_to :event
   belongs_to :organization
