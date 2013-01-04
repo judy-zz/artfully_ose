@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121221154152) do
+ActiveRecord::Schema.define(:version => 20130103153946) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -77,6 +77,16 @@ ActiveRecord::Schema.define(:version => 20121221154152) do
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
 
+  create_table "discount_sections", :force => true do |t|
+    t.integer "discount_id", :null => false
+    t.integer "section_id",  :null => false
+  end
+
+  create_table "discount_shows", :force => true do |t|
+    t.integer "discount_id", :null => false
+    t.integer "show_id",     :null => false
+  end
+
   create_table "discounts", :force => true do |t|
     t.string   "code",                                   :null => false
     t.boolean  "active",               :default => true, :null => false
@@ -89,7 +99,6 @@ ActiveRecord::Schema.define(:version => 20121221154152) do
     t.datetime "updated_at",                             :null => false
     t.datetime "deleted_at"
     t.integer  "minimum_ticket_count"
-    t.text     "shows_and_sections"
   end
 
   create_table "donations", :force => true do |t|
