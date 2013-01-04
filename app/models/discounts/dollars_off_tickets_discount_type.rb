@@ -2,9 +2,9 @@ class DollarsOffTicketsDiscountType < DiscountType
   include ActionView::Helpers::NumberHelper
   discount_type :dollars_off_tickets
 
-  def apply_discount_to_cart(cart)
+  def apply_discount_to_cart
     ensure_amount_exists
-    cart.tickets.each do |ticket|
+    tickets.each do |ticket|
       ticket.update_column(:discount_id, @discount.id)
       if ticket.price > @properties[:amount]
         ticket.update_column(:cart_price, ticket.price - @properties[:amount])
@@ -12,7 +12,6 @@ class DollarsOffTicketsDiscountType < DiscountType
         ticket.update_column(:cart_price, 0)
       end
     end
-    return cart
   end
 
   def validate

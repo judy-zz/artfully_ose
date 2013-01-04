@@ -42,6 +42,10 @@ class DiscountType
     true
   end
 
+  def tickets
+    @discount.cart.tickets
+  end
+
   def apply_discount_to_cart(*args)
     raise "This method has not been defined in child class!"
   end

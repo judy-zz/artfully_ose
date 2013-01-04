@@ -88,13 +88,14 @@ describe Discount do
     before(:each) do
       @cart = FactoryGirl.create(:cart_with_items)
       subject.event = @cart.tickets.first.event
+      subject.cart = @cart
       subject.save!
     end
     context "with ten percent off" do
       before(:each) do
         subject.promotion_type = "PercentageOffTickets"
         subject.properties[:percentage] = 0.1
-        subject.apply_discount_to_cart(@cart)
+        subject.apply_discount_to_cart
       end
       it "should take ten percent off the cost of each ticket" do
         @cart.total.should == 15100 # 14500 + 600 in ticket fees that still apply
@@ -107,7 +108,7 @@ describe Discount do
       before(:each) do
         subject.promotion_type = "DollarsOffTickets"
         subject.properties[:amount] = 1000
-        subject.apply_discount_to_cart(@cart)
+        subject.apply_discount_to_cart
       end
       it "should take ten dollars off the cost of each ticket" do
         @cart.total.should == 13600
@@ -121,7 +122,7 @@ describe Discount do
         # Add two more tickets
         @cart.tickets << 2.times.collect { FactoryGirl.create(:ticket) }
         subject.promotion_type = "BuyOneGetOneFree"
-        subject.apply_discount_to_cart(@cart)
+        subject.apply_discount_to_cart
       end
       it "should take the cost of every other ticket out of the total" do
         @cart.total.should == 17000

@@ -1,5 +1,7 @@
 class Discount < ActiveRecord::Base
   attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count
+  attr_accessor :cart
+
   include OhNoes::Destroy
 
   belongs_to :event
@@ -25,13 +27,14 @@ class Discount < ActiveRecord::Base
     self.organization ||= self.event.try(:organization)
   end
 
-  def apply_discount_to_cart(cart)
+  def apply_discount_to_cart(cart=nil)
+    @cart ||= cart unless cart.nil?
     transaction do
-      cart.discount = self
-      ensure_discount_is_allowed(cart)
-      clear_existing_discount(cart)
-      type.apply_discount_to_cart(cart)
-      cart.save!
+      @cart.discount = self
+      ensure_discount_is_allowed
+      clear_existing_discount
+      type.apply_discount_to_cart
+      @cart.save!
     end
   end
 
@@ -64,8 +67,8 @@ class Discount < ActiveRecord::Base
     self[:minimum_ticket_count] || 0
   end
 
-  def clear_existing_discount(cart)
-    cart.reset_prices_on_tickets
+  def clear_existing_discount
+    @cart.reset_prices_on_tickets
   end
 
   def redeemed
@@ -78,10 +81,10 @@ class Discount < ActiveRecord::Base
 
 private
 
-  def ensure_discount_is_allowed(cart)
+  def ensure_discount_is_allowed
     raise "Discount is not active." unless self.active?
-    raise "Discount won't work for this show." unless cart.tickets.first.try(:event) == self.event
-    raise "You need at least #{self.minimum_ticket_count} tickets for this discount." unless cart.tickets.count >= self.minimum_ticket_count
+    raise "Discount won't work for this show." unless @cart.tickets.first.try(:event) == self.event
+    raise "You need at least #{self.minimum_ticket_count} tickets for this discount." unless @cart.tickets.count >= self.minimum_ticket_count
   end
 
   def discount_class

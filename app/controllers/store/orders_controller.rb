@@ -55,7 +55,7 @@ class Store::OrdersController < Store::StoreController
 
   private
 
-    def handle_order(params)        
+    def handle_order(params)
       handle_tickets(params[:tickets]) if params.has_key? :tickets
       handle_donation(params[:donation]) if params.has_key? :donation
 
@@ -65,9 +65,9 @@ class Store::OrdersController < Store::StoreController
     end
 
     def handle_discount(params)
-      @cart = current_cart
       discount = Discount.find_by_code_and_event_id(params[:discount].upcase, event.id)
-      current_cart = discount.apply_discount_to_cart(@cart)
+      discount.apply_discount_to_cart(current_cart)
+      current_cart = discount.cart
     end
 
     def handle_tickets(ids)
