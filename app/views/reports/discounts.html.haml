@@ -14,22 +14,91 @@
   .pull-right
     = submit_tag "Search", :class => "btn"
 
+
+
+.row-fluid.botton-room
+  .span9
+    %h2 KEGSTAND, 12/01/2012 to 11/01/2013 
+  .span3
+    .pull-right
+      = link_to "Download CSV", "#", :class => "btn"
+
+#statement-summary.bottom-room.well
+  .row-fluid
+    .span3
+      .center.headline-stat
+        109
+      .center.headline-caption
+        %h6 TICKETS SOLD
+    .span3
+      .center.headline-stat
+        $3890.00
+      .center.headline-caption
+        %h6 ORIGINAL PRICE
+    .span3
+      .center.headline-stat
+        $890.00
+      .center.headline-caption
+        %h6 DISCOUNTED
+    .span3
+      .center.headline-stat
+        $3000.00
+      .center.headline-caption
+        %h6 GROSS
+
+-# --Order # (link to details)
+-# --Order Date
+-# --Email
+-# --Event
+-# --Ticket Type
+-# --Discount Code Name
+-# --$ Discount Applied
+
+
 .row
   .span12
     %table.table.zebra#order-table
       %thead
         %tr
+          %th{:style=>'width:40px'} Code
           %th{:style=>'width:40px'} Order
           %th Date
           %th Person
-          %th Total
-          %th Fee
+          %th Event
+          %th Ticket Type
+          %th Price
+          %th Discounted
       %tbody
-        - @orders.each do |order|
+        -title = Faker::Company.bs.titleize
+        -title2 = Faker::Company.bs.titleize
+        -ttype = Faker::Internet.domain_word.titleize
+        -(0..2).each do |n|
           %tr
-            %td=link_to order.id, admin_order_path(order)
-            -unless order.created_at.nil?
-              %td= l order.created_at_local_to_admins, :format => :short
-            %td="#{order.person_first_name} #{order.person_last_name}"
-            %td= number_as_cents order.total
-            %td= number_as_cents order.service_fee
+            %td KEGSTAND
+            %td=link_to Faker::Address.zip_code[0..4]
+            %td="12/25/2012"
+            %td="#{Faker::Name.first_name} #{Faker::Name.last_name}"
+            %td=link_to title
+            %td=ttype
+            %td $10.00
+            %td $5.00
+        -(0..3).each do |n|
+          %tr
+            %td KEGSTAND
+            %td=link_to "40404"
+            %td="12/25/2012"
+            %td Tara O'Con
+            %td=link_to title
+            %td=ttype
+            %td $10.00
+            %td $5.00
+        -(0..13).each do |n|
+          %tr
+            %td KEGSTAND
+            %td=link_to Faker::Address.zip_code[0..4]
+            %td="12/25/2012"
+            %td="#{Faker::Name.first_name} #{Faker::Name.last_name}"
+            %td=link_to title2
+            %td=ttype
+            %td $10.00
+            %td $5.00
