@@ -49,13 +49,13 @@
 -content_for :custom_js do
   :erb
     <script src="http://d3js.org/d3.v3.min.js"></script>
-  :javascript
+  :erb
 
-
+    <script>
     // Coffee Flavour Wheel by Jason Davies,
     // http://www.jasondavies.com/coffee-wheel/
     // License: http://www.jasondavies.com/coffee-wheel/LICENSE.txt
-    var width = 620,
+    var width = 500,
         height = width,
         radius = width / 2,
         x = d3.scale.linear().range([0, 2 * Math.PI]),
@@ -85,7 +85,7 @@
         .innerRadius(function(d) { return Math.max(0, d.y ? y(d.y) : d.y); })
         .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
-    d3.json("/statements/44/slices/data.json", function(json) {
+    d3.json("/statements/<%=@show.id%>/slices/data.json", function(json) {
       var nodes = partition.nodes({children: json});
 
       var path = vis.selectAll("path").data(nodes);
@@ -193,3 +193,4 @@
     function brightness(rgb) {
       return rgb.r * .299 + rgb.g * .587 + rgb.b * .114;
     }
+    </script>
