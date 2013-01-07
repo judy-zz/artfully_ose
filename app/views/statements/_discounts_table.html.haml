@@ -8,19 +8,16 @@
       %th.right{:style=>'width:100px'} 
       %th.right{:style=>'width:100px'} 
   %tbody
-    %tr
-      %td COWBELL
-      %td $10 OFF
-      %td.right 17
-      %td.right 
-        %strong -$170.00
-      %td.right
-      %td.right
-    %tr
-      %td HOLIDAY15
-      %td 2 for 1
-      %td.right 39
-      %td.right 
-        %strong -$100.00
-      %td.right
-      %td.right
+    - if statement.discount_rows.empty?
+      %tr
+        %td{:colspan => 6} No discounts used for this show
+
+    - statement.discount_rows.each do |discount_code, row|
+      %tr
+        %td=discount_code
+        %td $10 OFF
+        %td.right=row.tickets
+        %td.right 
+          %strong=number_as_cents row.discount
+        %td.right
+        %td.right

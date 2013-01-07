@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Statement do
   disconnect_sunspot 
   
+  let(:super_code)      { FactoryGirl.create(:discount, :code => "SUPER", :properties => HashWithIndifferentAccess.new( amount: 200 )) }
+  let(:other_code)      { FactoryGirl.create(:discount, :code => "OTHER", :properties => HashWithIndifferentAccess.new( amount: 100 )) }
   let(:organization)    { FactoryGirl.create(:organization) } 
   let(:event)           { FactoryGirl.create(:event) }
   let(:paid_chart)      { FactoryGirl.create(:assigned_chart, :event => event) }
@@ -10,7 +12,7 @@ describe Statement do
   let(:exchangee_show)  { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => paid_chart, :event => event) }
   let(:paid_show)       { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => paid_chart, :event => event) }
   let(:free_show)       { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => free_chart, :event => event) }
-  
+
   describe "nil show" do
     it "should return an empty @statement if the show is nil" do
       st = Statement.for_show(nil)
@@ -39,7 +41,9 @@ describe Statement do
       @statement.cc_net.should eq 0
       @statement.settled.should eq 0
       
-      @statement.payment_method_rows.length.should eq 3      
+      @statement.payment_method_rows.length.should eq 3 
+
+      @statement.discount_rows.length.should eq 0     
     end    
   end
   
@@ -93,7 +97,13 @@ describe Statement do
       
       @statement.order_location_rows[CompOrder.location].should_not be_nil   
       @statement.order_location_rows[CompOrder.location].tickets.should eq 3
-      
+
+      @statement.discount_rows.length.should eq 2
+      @statement.discount_rows[super_code.code].tickets.should eq 2
+      @statement.discount_rows[super_code.code].discount.should eq 400
+
+      @statement.discount_rows[other_code.code].tickets.should eq 1
+      @statement.discount_rows[other_code.code].discount.should eq 100
     end
   end
   
@@ -171,6 +181,7 @@ describe Statement do
   
   def setup_show
     @orders = []
+
     0.upto(2) do |i|
       (paid_show.tickets[i]).sell_to(FactoryGirl.create(:person))
       order = FactoryGirl.create(:credit_card_order, :organization => organization)
@@ -182,6 +193,16 @@ describe Statement do
     Comp.new(paid_show, paid_show.tickets[3..5], FactoryGirl.create(:person), FactoryGirl.create(:user_in_organization)).submit
     
     paid_show.tickets.reload
+
+    paid_show.tickets[0].discount = super_code
+    paid_show.tickets[0].sold_price = paid_show.tickets[0].price - super_code.properties[:amount]
+    paid_show.tickets[0].save
+    paid_show.tickets[1].discount = super_code
+    paid_show.tickets[1].sold_price = paid_show.tickets[1].price - super_code.properties[:amount]
+    paid_show.tickets[1].save
+    paid_show.tickets[2].discount = other_code
+    paid_show.tickets[2].sold_price = paid_show.tickets[2].price - other_code.properties[:amount]
+    paid_show.tickets[2].save
   end
   
   def setup_exchange

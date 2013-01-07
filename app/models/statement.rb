@@ -9,7 +9,8 @@ class Statement
                 :cc_net,
                 :settled,
                 :payment_method_rows,
-                :order_location_rows
+                :order_location_rows,
+                :discount_rows
   
   def self.for_show(show, imported=false)
     if show.nil?
@@ -40,6 +41,10 @@ class Statement
       statement.settled           = show.settlements.successful.inject(0) { |settled, settlement| settled += settlement.net }
       payment_method_hash         = show.items.group_by { |item| item.order.payment_method }
       
+      #
+      # PAYMENT METHOD
+      #
+
       statement.payment_method_rows         = {}
       
       # Initialize with the three common payment types
@@ -54,6 +59,9 @@ class Statement
         statement.payment_method_rows[payment_method] = row
       end
       
+      #
+      # ORDER LOCATION
+      #  
       order_location_hash         = show.items.group_by do |item| 
         order = item.order
         order.parent.nil? ? order.location : order.parent.location 
@@ -67,6 +75,20 @@ class Statement
         row = statement.order_location_rows[order_location] || OrderLocationRow.new(order_location)
         items.each {|item| row << item}
         statement.order_location_rows[order_location] = row
+      end
+
+      statement.build_discount_rows(show.items)
+    end
+  end
+
+  def build_discount_rows(items)
+    self.discount_rows         = {}
+    items.each do |item|
+      unless item.product.discount.nil?
+        row = self.discount_rows[item.product.discount.code] || DiscountRow.new(item.product.discount.code, item.product.discount.promotion_type)
+        row << item
+        row.discount += (item.product.price - item.product.sold_price)
+        self.discount_rows[item.product.discount.code] = row
       end
     end
   end
@@ -89,6 +111,21 @@ class Statement
       self.gross        = self.gross + item.price
       self.processing   = self.processing + (item.realized_price - item.net)
       self.net          = self.net + item.net
+    end
+  end
+  
+  class DiscountRow
+    include Row
+    attr_accessor   :discount_code, :type, :discount
+    
+    def initialize(discount_code, type)
+      self.discount_code = discount_code
+      self.type = type
+      self.tickets = 0
+      self.gross = 0
+      self.processing = 0
+      self.net = 0
+      self.discount = 0
     end
   end
   
