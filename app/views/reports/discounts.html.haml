@@ -1,0 +1,104 @@
+-content_for :header do
+  %h1 Discounts
+
+= form_tag sales_orders_path, :method => :get, :class => 'well form-inline' do
+  = label_tag :code, "Code", :class => "control-label"
+  = select_tag :code, options_for_select(["SAVE15", "FRIENDS", "LOVERS", "ENEMIES", "(All)"])
+
+  = label_tag :start, "From", :class => "control-label"
+  = text_field_tag :start,"#{l Time.now, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+
+  = label_tag :stop, "To", :class => "control-label"
+  = text_field_tag :stop, "#{l Time.now, :format => :date_for_input}", :readonly => true, :class => 'datepicker input-small'
+      
+  .pull-right
+    = submit_tag "Search", :class => "btn"
+
+
+
+.row-fluid.botton-room
+  .span9
+    %h2 KEGSTAND, 12/01/2012 to 11/01/2013 
+  .span3
+    .pull-right
+      = link_to "Download CSV", "#", :class => "btn"
+
+#statement-summary.bottom-room.well
+  .row-fluid
+    .span3
+      .center.headline-stat
+        109
+      .center.headline-caption
+        %h6 TICKETS SOLD
+    .span3
+      .center.headline-stat
+        $3890.00
+      .center.headline-caption
+        %h6 ORIGINAL PRICE
+    .span3
+      .center.headline-stat
+        $890.00
+      .center.headline-caption
+        %h6 DISCOUNTED
+    .span3
+      .center.headline-stat
+        $3000.00
+      .center.headline-caption
+        %h6 GROSS
+
+-# --Order # (link to details)
+-# --Order Date
+-# --Email
+-# --Event
+-# --Ticket Type
+-# --Discount Code Name
+-# --$ Discount Applied
+
+
+.row
+  .span12
+    %table.table.zebra#order-table
+      %thead
+        %tr
+          %th{:style=>'width:40px'} Code
+          %th{:style=>'width:40px'} Order
+          %th Date
+          %th Person
+          %th Event
+          %th Ticket Type
+          %th Price
+          %th Discounted
+      %tbody
+        -title = Faker::Company.bs.titleize
+        -title2 = Faker::Company.bs.titleize
+        -ttype = Faker::Internet.domain_word.titleize
+        -(0..2).each do |n|
+          %tr
+            %td KEGSTAND
+            %td=link_to Faker::Address.zip_code[0..4]
+            %td="12/25/2012"
+            %td="#{Faker::Name.first_name} #{Faker::Name.last_name}"
+            %td=link_to title
+            %td=ttype
+            %td $10.00
+            %td $5.00
+        -(0..3).each do |n|
+          %tr
+            %td KEGSTAND
+            %td=link_to "40404"
+            %td="12/25/2012"
+            %td Tara O'Con
+            %td=link_to title
+            %td=ttype
+            %td $10.00
+            %td $5.00
+        -(0..13).each do |n|
+          %tr
+            %td KEGSTAND
+            %td=link_to Faker::Address.zip_code[0..4]
+            %td="12/25/2012"
+            %td="#{Faker::Name.first_name} #{Faker::Name.last_name}"
+            %td=link_to title2
+            %td=ttype
+            %td $10.00
+            %td $5.00

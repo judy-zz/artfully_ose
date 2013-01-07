@@ -1,7 +1,7 @@
 class Item < ActiveRecord::Base
   include Ext::Integrations::Item
   include OhNoes::Destroy
-  
+
   belongs_to :order
   belongs_to :show
   belongs_to :settlement
@@ -211,8 +211,8 @@ class Item < ActiveRecord::Base
     end
 
     def set_prices_from(prod)
-      self.price          = prod.price
-      # TODO: Change this to 'sold_price', in order to grab discount
+      self.price          = prod.try(:sold_price)
+      self.price        ||= prod.price
       # TODO: Don't forget donations!
       self.realized_price = prod.price - prod.class.fee
       self.net            = (self.realized_price - (per_item_processing_charge || lambda { |item| 0 }).call(self)).floor

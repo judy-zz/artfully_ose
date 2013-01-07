@@ -152,6 +152,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :reports do
+    collection do
+      get :discounts
+    end
+  end
+
   match '/events/:event_id/charts/' => 'events#assign', :as => :assign_chart, :via => "post"
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"
   match '/people/:id/tag/' => 'people#tag', :as => :new_tag, :via => "post"
