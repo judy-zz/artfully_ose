@@ -104,9 +104,8 @@ describe Statement do
     end
       
     it "should not show a cc_net for imported events" do
-      paid_show.event.should_receive(:imported?).at_least(1).times.and_return(true)
-      paid_show.should_receive(:unscoped_event).at_least(1).times.and_return(paid_show.event)
-      @statement = Statement.for_show(paid_show)
+      paid_show.event.stub(:imported?).and_return(true)
+      @statement = Statement.for_show(paid_show, true)
       @statement.cc_net.should eq 0
     end  
   end
