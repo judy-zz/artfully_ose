@@ -29,7 +29,7 @@ describe Item do
   end
   
   describe ".for" do
-    let(:product) { FactoryGirl.create(:ticket) }
+    let(:product) { FactoryGirl.create(:ticket, :sold_price => 400) }
     subject { Item.for(product, lambda { |item| item.realized_price * 0.035 }) }
   
     it { should be_an Item }
@@ -38,8 +38,8 @@ describe Item do
       subject.product.should eq product
     end
   
-    it "sets the price to the price of the ticket" do
-      subject.price.should eq product.price
+    it "sets the price to the sold price of the ticket" do
+      subject.price.should eq product.sold_price
     end
   
     it "sets itself to purchased" do

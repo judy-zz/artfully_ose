@@ -3,6 +3,7 @@
 # This is NOT the persisted item that is attached to the order
 #
 class Donation < ActiveRecord::Base
+  include Itemable
   belongs_to :cart
   belongs_to :organization
 
