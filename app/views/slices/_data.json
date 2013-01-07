@@ -6,10 +6,10 @@
         "name": "Cash",
         "children": [
           {
-            "name": "GENERAL ADMISSION", "colour": "#FFF9E6", "value": 950, "children": []
+            "name": "GENERAL ADMISSION", "colour": "#FFF9E6", "value": 950
           },
           {
-            "name": "STUDENT", "colour": "#EB8E4B", "value": 250, "children": []
+            "name": "STUDENT", "colour": "#EB8E4B", "value": 250
           }
         ]
       },

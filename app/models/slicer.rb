@@ -23,8 +23,9 @@ class Slicer
         current_slice.color = "#33DDFF"
         current_slice.value = rand(10000)
       end
-      root_slice.children << slice(current_slice, tickets, blocks, current_depth+1)   
+      root_slice.children << slice(current_slice, tickets, blocks, current_depth+1)
     end
+    root_slice.children = nil if root_slice.children.empty?
     root_slice
   end
 end
