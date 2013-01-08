@@ -79,6 +79,10 @@ class Discount < ActiveRecord::Base
     redeemed == 0
   end
 
+  def eligible_tickets
+    type.eligible_tickets
+  end
+
 private
 
   def ensure_discount_is_allowed

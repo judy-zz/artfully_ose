@@ -46,6 +46,11 @@ class DiscountType
     @discount.cart.tickets
   end
 
+  def eligible_tickets
+    tickets
+    # tickets.reject {|t| @discount.shows.none?(t.show) && @discount.sections.none?(t.section)}
+  end
+
   def apply_discount_to_cart(*args)
     raise "This method has not been defined in child class!"
   end
