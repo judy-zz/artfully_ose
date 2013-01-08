@@ -13,6 +13,13 @@
         = f.check_box :active
         Discount is active and can be used now.
 
+%fieldset
+  %legend
+  .control-group
+    = f.label :show_ids, "Discount is valid for these shows", :class => 'control-label'
+    .controls
+      = f.select :show_ids, options_for_select(@event.shows.map {|s| [s.datetime.strftime("%D %l:%M%P"), s.id] }, @discount.shows.collect(&:id)), {:include_blank => "All Shows"}, {'data-placeholder' => "All Shows", :class => 'input chosen', :multiple => true}
+
   .control-group
     .controls
       Discount requires a minimum purchase of
@@ -40,6 +47,9 @@
     .control-group.promotion-type-properties#BuyOneGetOneFree
       
 - content_for :custom_js do
+  = stylesheet_link_tag 'jquery/chosen'
+  = javascript_include_tag 'jquery-lib/chosen.jquery'
+
   :javascript
     var show_appropriate_properties = function() {
       touchCurrency();
@@ -51,6 +61,9 @@
     $(document).ready(function() {
       $('.promotion-type-radio').click(function() {show_appropriate_properties();});
       show_appropriate_properties();
+
+      // use the fancy multi-select
+      $('.chosen').chosen();
     });
 
   

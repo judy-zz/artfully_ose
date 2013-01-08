@@ -1,5 +1,5 @@
 class Discount < ActiveRecord::Base
-  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count
+  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count, :show_ids, :section_ids
   attr_accessor :cart
 
   include OhNoes::Destroy
@@ -9,7 +9,9 @@ class Discount < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
 
   has_and_belongs_to_many :shows
+  accepts_nested_attributes_for :shows
   has_and_belongs_to_many :sections
+  accepts_nested_attributes_for :sections
 
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
   validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
