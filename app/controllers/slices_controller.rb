@@ -4,6 +4,14 @@ class SlicesController < ArtfullyOseController
   def index
   end
 
+  #
+  # TODO TODO TODO
+  # - Color finishing
+  # - Get rid of "root"
+  # - Add percentages or display value on graph?
+  # - Hook up drop downs
+  #
+
   def data
     data = []
     # @statement.payment_method_rows.values.each do |row|
@@ -34,12 +42,30 @@ class SlicesController < ArtfullyOseController
       ticket_type_map
     end
 
-    # NO LONGER ARRAY OF ARRAYS.  JUST ARRAY OF BLOCKS THAT YIELD ARRAYS [one, two, three]
-    data = Slicer.slice(nil, @show.items.all, [ticket_type_proc], 0)
-    #data = Slicer.slice(nil, nil, [["A","B"], ["1", "2", "3"], ["XX", "YY", "ZZ"]], 0)
+    order_location_proc = Proc.new do |items|
+      order_location_map = {}
+      items.each do |item|
+        puts item.inspect
+        item_array = order_location_map[item.order.location]
+        item_array ||= []
+        item_array << item
+        order_location_map[item.order.location] = item_array
+      end
+      order_location_map
+    end
+
+    proc_hash = HashWithIndifferentAccess.new({
+      :payment_method   => payment_method_proc,
+      :ticket_type      => ticket_type_proc,
+      :order_location      => order_location_proc
+    })
+    
+    # convert URL string slice[] into procs
+    slices = Array.wrap(params[:slice]).map { |s| proc_hash[s] }
+
+    data = Slicer.slice(nil, @show.items.all, slices, 0)
 
     respond_to do |format|
-      #format.json { render :partial => "data.json" }
       format.json { render :json => Array.wrap(data) }
     end
   end

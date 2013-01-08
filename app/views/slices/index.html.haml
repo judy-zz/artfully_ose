@@ -34,9 +34,9 @@
 
 .row
   .span12
-    =select_tag "foo", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type"], "Location")
-    =select_tag "foo", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type"], "Payment Method")
-    =select_tag "foo", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type"], "Ticket Type")
+    =select_tag "slice", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type"], "Location")
+    =select_tag "slice", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type"], "Payment Method")
+    =select_tag "slice", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type", "First Time / Repeat Buyers"], "Ticket Type")
     =select_tag "foo", options_for_select(["", "Location", "Discount Code", "Payment Method", "Ticket Type"])
 .row
   .span10.offset1
@@ -85,7 +85,7 @@
         .innerRadius(function(d) { return Math.max(0, d.y ? y(d.y) : d.y); })
         .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
-    d3.json("/statements/<%=@show.id%>/slices/data.json", function(json) {
+    d3.json("/statements/<%=@show.id%>/slices/data.json?slice[]=order_location&slice[]=payment_method&slice[]=ticket_type", function(json) {
       var nodes = partition.nodes({children: json});
 
       var path = vis.selectAll("path").data(nodes);
