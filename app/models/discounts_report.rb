@@ -8,9 +8,8 @@ class DiscountsReport
     self.start_date = start_date
     self.end_date = end_date
 
-    @items = Item.includes(:order => :person, :show => :event)
-                 .where(:product_id => self.discount.tickets)
-                 .where('orders.created_at' => self.start_date..self.end_date)
+    @items = Item.includes(:order => :person, :show => :event).where(:product_id => self.discount.tickets).where('orders.created_at' => self.start_date..self.end_date).group('items.order_id')
+    #@items = Item.includes(:order => :person, :show => :event).where(:product_id => discount.tickets).where('orders.created_at' => self.start_date..self.end_date)
   end
 
 
