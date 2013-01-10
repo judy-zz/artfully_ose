@@ -47,10 +47,11 @@ describe Discount do
   end
 
   describe "#destroyable?" do
-    it "should return true when the ticket hasn't been used" do
+    it "should return true when the discount hasn't been used" do
+      subject.stub(:redeemed) { 0 }
       subject.destroyable?.should be_true
     end
-    it "should return false when the ticket has been used" do
+    it "should return false when the discount has been used" do
       subject.stub(:redeemed) { 1 }
       subject.destroyable?.should be_false
     end
@@ -81,68 +82,6 @@ describe Discount do
     end
     it "should return a list of sections that this discount is applicable to" do
       subject.sections.should include(@section)
-    end
-  end
-
-  describe "#eligible_tickets" do
-    let(:cart)               {FactoryGirl.create(:cart)}
-    let(:included_show_1)    {FactoryGirl.create(:show)}
-    let(:included_show_2)    {FactoryGirl.create(:show)}
-    let(:unincluded_show)    {FactoryGirl.create(:show)}
-    let(:included_section_1) {FactoryGirl.create(:section)}
-    let(:included_section_2) {FactoryGirl.create(:section)}
-    let(:unincluded_section) {FactoryGirl.create(:section)}
-
-    let(:ticket_1_1) {FactoryGirl.create(:ticket, show: included_show_1, section: included_section_1)}
-    let(:ticket_2_1) {FactoryGirl.create(:ticket, show: included_show_2, section: included_section_1)}
-    let(:ticket_u_1) {FactoryGirl.create(:ticket, show: unincluded_show, section: included_section_1)}
-    let(:ticket_1_2) {FactoryGirl.create(:ticket, show: included_show_1, section: included_section_2)}
-    let(:ticket_2_2) {FactoryGirl.create(:ticket, show: included_show_2, section: included_section_2)}
-    let(:ticket_u_2) {FactoryGirl.create(:ticket, show: unincluded_show, section: included_section_2)}
-    let(:ticket_1_u) {FactoryGirl.create(:ticket, show: included_show_1, section: unincluded_section)}
-    let(:ticket_2_u) {FactoryGirl.create(:ticket, show: included_show_2, section: unincluded_section)}
-    let(:ticket_u_u) {FactoryGirl.create(:ticket, show: unincluded_show, section: unincluded_section)}
-
-    before(:each) do
-      cart.tickets << [ticket_1_1, ticket_2_1, ticket_u_1, ticket_1_2, ticket_2_2, ticket_u_2, ticket_1_u, ticket_2_u, ticket_u_u]
-      subject.cart = cart
-    end
-
-    [
-      {:description => "no shows or sections",
-        :shows => [],
-        :sections => [],
-        :tickets =>[ticket_1_1, ticket_2_1, ticket_u_1, ticket_1_2, ticket_2_2, ticket_u_2, ticket_1_u, ticket_2_u, ticket_u_u]},
-      {:description => "one show",
-        :shows => [included_show_1],
-        :sections => [],
-        :tickets =>[ticket_1_1, ticket_1_2, ticket_1_u]},
-      {:description => "two shows",
-        :shows => [included_show_1, included_show_2],
-        :sections => [],
-        :tickets =>[ticket_1_1, ticket_2_1, ticket_1_2, ticket_2_2, ticket_1_u, ticket_2_u]},
-      {:description => "one section",
-        :shows => [],
-        :sections => [included_section_1],
-        :tickets =>[ticket_1_1, ticket_2_1, ticket_u_1]},
-      {:description => "two sections",
-        :shows => [],
-        :sections => [included_section_1, included_section_2],
-        :tickets =>[ticket_1_1, ticket_2_1, ticket_u_1, ticket_1_2, ticket_2_2, ticket_u_2]},
-      {:description => "one show and one section",
-        :shows => [included_show_1],
-        :sections => [included_section_1],
-        :tickets =>[ticket_1_1, ticket_2_1, ticket_u_1, ticket_1_2, ticket_1_u]},
-      {:description => "multiple shows and sections",
-        :shows => [included_show_1, included_show_2],
-        :sections => [included_section_1, included_section_2],
-        :tickets =>[ticket_1_1, ticket_2_1, ticket_u_1, ticket_1_2, ticket_2_2, ticket_u_2, ticket_1_u, ticket_2_u]}
-    ].each do |scenario|
-      specify "#{scenario[:description]} should return the matching tickets" do
-        subject.shows = scenario[:shows]
-        subject.sections = scenario[:sections]
-        subject.eligible_tickets =~ scenario[:tickets]
-      end
     end
   end
 
