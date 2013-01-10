@@ -3,7 +3,7 @@ class PercentageOffTicketsDiscountType < DiscountType
 
   def apply_discount_to_cart
     ensure_percentage_exists
-    tickets.each do |ticket|
+    eligible_tickets.each do |ticket|
       ticket.update_column(:discount_id, @discount.id)
       ticket.update_attributes(:cart_price => ticket.price - (ticket.price * @properties[:percentage]))
     end

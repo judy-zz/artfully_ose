@@ -49,7 +49,8 @@ class DiscountType
   def eligible_tickets
     is_in = ->(element, list){list.blank? || !! list.find_index(element)}
     tix = tickets.find_all {|t| is_in.call(t.show.id, @discount.show_ids)}
-    return tix.find_all{|t| is_in.call(t.section.try(:id), @discount.section_ids)}
+    tix = tix.find_all{|t| is_in.call(t.section.try(:id), @discount.section_ids)}
+    return tix
   end
 
   def apply_discount_to_cart(*args)
