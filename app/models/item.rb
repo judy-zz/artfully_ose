@@ -119,10 +119,11 @@ class Item < ActiveRecord::Base
 
   def to_refund
     dup!.tap do |item|
-      item.price = item.price.to_i * -1
-      item.realized_price = item.realized_price.to_i * -1
-      item.net = item.net.to_i * -1
-      item.state = "refund"
+      item.original_price   = item.original_price.to_i * -1
+      item.price            = item.price.to_i * -1
+      item.realized_price   = item.realized_price.to_i * -1
+      item.net              = item.net.to_i * -1
+      item.state            = "refund"
     end
   end
 
