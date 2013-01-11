@@ -18,7 +18,7 @@ class Discount < ActiveRecord::Base
   before_destroy :ensure_discount_is_destroyable
 
   has_many :tickets
-  has_many :orders
+  has_many :items
 
   def set_organization_from_event
     self.organization ||= self.event.try(:organization)

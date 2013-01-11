@@ -7,6 +7,7 @@ class Item < ActiveRecord::Base
   belongs_to :settlement
   belongs_to :reseller_order, :class_name => "Reseller::Order"
   belongs_to :product, :polymorphic => true
+  belongs_to :discount
 
   attr_accessible :order_id, :product_type, :state, :price, :realized_price, :net, :nongift_amount
   
@@ -126,13 +127,16 @@ class Item < ActiveRecord::Base
   end
 
   def to_exchange!(item_that_this_is_being_exchanged_for)
-    self.price = item_that_this_is_being_exchanged_for.price
-    self.realized_price = item_that_this_is_being_exchanged_for.realized_price
-    self.net = item_that_this_is_being_exchanged_for.net
+    self.original_price   = item_that_this_is_being_exchanged_for.original_price
+    self.price            = item_that_this_is_being_exchanged_for.price
+    self.realized_price   = item_that_this_is_being_exchanged_for.realized_price
+    self.net              = item_that_this_is_being_exchanged_for.net
+    
     if self.ticket?
       product.remove_from_cart
       product.update_column(:sold_price,item_that_this_is_being_exchanged_for.product.sold_price)
     end
+    
     self.state = item_that_this_is_being_exchanged_for.state
   end
 
@@ -151,6 +155,7 @@ class Item < ActiveRecord::Base
   def exchange!(return_items_to_inventory = true)
     product.return!(return_items_to_inventory) if product.returnable?
     self.state = "exchanged"
+    self.original_price = 0
     self.price = 0
     self.realized_price = 0
     self.net = 0 
@@ -219,9 +224,8 @@ class Item < ActiveRecord::Base
     end
 
     def set_prices_from(prod)
-      self.price          = prod.try(:sold_price)
-      self.price        ||= prod.price
-      # TODO: Don't forget donations!
+      self.original_price = prod.price
+      self.price          = (prod.sold_price || 0)
       self.realized_price = prod.price - prod.class.fee
       self.net            = (self.realized_price - (per_item_processing_charge || lambda { |item| 0 }).call(self)).floor
     end
