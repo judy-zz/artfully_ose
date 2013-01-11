@@ -13,7 +13,7 @@ describe Action do
   end
 
   describe "#set_params" do
-    let(:params) { {occurred_at: DateTime.now} }
+    let(:params) { {occurred_at: 3.days.ago} }
     it "should set occurred_at" do
       expect {subject.set_params(params, person)}.to change(subject, :occurred_at)
     end
