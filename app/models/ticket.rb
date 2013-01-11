@@ -71,6 +71,10 @@ class Ticket < ActiveRecord::Base
     where(conditions).limit(limit)
   end
 
+  def remove_from_cart
+    self.update_column(:cart_id, nil)
+  end
+
   def settlement_id
     settled_item.settlement_id unless settled_item.nil?
   end
@@ -135,7 +139,7 @@ class Ticket < ActiveRecord::Base
       return false
     end
   end
-
+  
   def exchange_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
@@ -198,6 +202,7 @@ class Ticket < ActiveRecord::Base
   end
 
   def return!(and_return_to_inventory = true)
+    remove_from_cart
     self.buyer = nil
     self.sold_price = nil
     self.sold_at = nil

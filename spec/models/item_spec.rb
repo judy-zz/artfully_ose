@@ -142,65 +142,47 @@ describe Item do
   end
   
   describe "#refundable?" do
-    context "when already modified" do
-      it "is not true if it has already been refunded" do
-        subject.stub(:modified?).and_return(true)
-        subject.should_not be_refundable
-      end
+    it "is not true if we have send this guy money" do
+      subject.stub(:settlement_issued?).and_return(true)
+      subject.should_not be_refundable
     end
   
-    context "when not yet modified" do
-      it "relies on the product" do
-        subject.stub(:modified?).and_return(false)
-  
-        subject.product.stub(:refundable?).and_return(true)
-        subject.should be_refundable
-  
-        subject.product.stub(:refundable?).and_return(false)
-        subject.should_not be_refundable
-      end
+    it "relies on the product if not settlement" do
+      subject.stub(:settlement_issued?).and_return(false)
+
+      subject.product.stub(:refundable?).and_return(true)
+      subject.should be_refundable
+
+      subject.product.stub(:refundable?).and_return(false)
+      subject.should_not be_refundable
     end
   end
   
-  describe "#exchangeable?" do
-    context "when already modified" do
-      it "is not true if it has already been exchanged" do
-        subject.stub(:modified?).and_return(true)
-        subject.should_not be_exchangeable
-      end
+  describe "#refundable?" do
+    it "is not true if we have send this guy money" do
+      subject.stub(:settlement_issued?).and_return(true)
+      subject.should_not be_exchangeable
     end
   
-    context "when not yet modified" do
-      it "relies on the product" do
-        subject.stub(:modified?).and_return(false)
-  
-        subject.product.stub(:exchangeable?).and_return(true)
-        subject.should be_exchangeable
-  
-        subject.product.stub(:exchangeable?).and_return(false)
-        subject.should_not be_exchangeable
-      end
+    it "relies on the product if not settlement" do
+      subject.stub(:settlement_issued?).and_return(false)
+
+      subject.product.stub(:exchangeable?).and_return(true)
+      subject.should be_exchangeable
+
+      subject.product.stub(:exchangeable?).and_return(false)
+      subject.should_not be_exchangeable
     end
   end
   
-  describe "#returnable?" do
-    context "when already modified" do
-      it "is not true if it has already been returned" do
-        subject.stub(:modified?).and_return(true)
-        subject.should_not be_returnable
-      end
-    end
-  
-    context "when not yet modified" do
-      it "relies on the product" do
-        subject.stub(:modified?).and_return(false)
-  
-        subject.product.stub(:returnable?).and_return(true)
-        subject.should be_returnable
-  
-        subject.product.stub(:returnable?).and_return(false)
-        subject.should_not be_returnable
-      end
+  describe "#returnable?" do  
+    it "relies on the product" do
+
+      subject.product.stub(:returnable?).and_return(true)
+      subject.should be_returnable
+
+      subject.product.stub(:returnable?).and_return(false)
+      subject.should_not be_returnable
     end
   end
   

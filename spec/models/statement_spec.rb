@@ -207,7 +207,7 @@ describe Statement do
   
   def setup_exchange
     (exchangee_show.tickets[0]).sell_to(FactoryGirl.create(:person))
-    order = FactoryGirl.create(:credit_card_order, :organization => organization)
+    order = FactoryGirl.create(:credit_card_order, :organization => organization, :service_fee => 400)
     order << exchangee_show.tickets[0]
     order.save
     order.reload

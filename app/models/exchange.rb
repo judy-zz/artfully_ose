@@ -1,7 +1,8 @@
 class Exchange
+  include Adjustments
   include ActiveModel::Validations
 
-  attr_accessor :order, :items, :tickets
+  attr_accessor :order, :items, :tickets, :service_fee
 
   validates_presence_of :order
   validates_length_of :items,   :minimum => 1
@@ -15,9 +16,10 @@ class Exchange
   #The items to exchange
   #The tickets that they are being exchanged for
   def initialize(order, items, tickets = [])
-    self.order =        order
-    self.items =        items
-    self.tickets =      tickets
+    self.order        = order
+    self.items        = items
+    self.tickets      = tickets
+    self.service_fee  = number_of_non_free_items(items) * service_fee_per_item(order.items)
   end
 
   def items_are_exchangeable
@@ -40,11 +42,17 @@ class Exchange
     ActiveRecord::Base.transaction do
       sell_new_items
       return_old_items
+      adjust_original_order
     end
   end
 
   def return_old_items
     items.map(&:exchange!)
+  end
+
+  def adjust_original_order
+    order.service_fee = order.service_fee - service_fee
+    order.save
   end
 
   def sell_new_items
@@ -59,6 +67,7 @@ class Exchange
       exchange_order.parent = order
       exchange_order.payment_method = order.payment_method
       exchange_order.created_at = time
+      exchange_order.service_fee = service_fee
       exchange_order.for_organization order.organization
       exchange_order.details = "Order is the result of an exchange on #{I18n.l time, :format => :slashed_date}"
       exchange_order << tickets

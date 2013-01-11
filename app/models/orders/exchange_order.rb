@@ -1,4 +1,4 @@
-class ExchangeOrder < Order  
+class ExchangeOrder < Order 
   def self.location
     "Artful.ly"
   end
