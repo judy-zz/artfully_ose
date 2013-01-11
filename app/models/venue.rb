@@ -10,7 +10,7 @@ class Venue < ActiveRecord::Base
 
   geocoded_by :geocode_address, :latitude => :lat, :longitude => :long
 
-  before_save :geocode
+  before_save :geocode, :if => :address1_changed?
   
   def street_as_string
     str = (address1 || "") + " " + (address2 || "")
