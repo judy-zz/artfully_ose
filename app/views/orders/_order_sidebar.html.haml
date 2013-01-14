@@ -11,6 +11,9 @@
     =link_to "Delete", "#", :class => 'btn disabled delete-message'
 
 %ul.kv
+  %li
+    %h6.key Order Number
+    .value=order.id
   - unless order.parent.nil?
     %li
       %h6.key Parent order

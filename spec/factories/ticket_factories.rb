@@ -16,14 +16,14 @@ FactoryGirl.define do
 
   factory :comped_ticket, :parent => :ticket do
     after(:create) do |ticket|
-      ticket.comp_to :person
+      ticket.comp_to(FactoryGirl.create(:person))
     end
   end
 
   factory :sold_ticket, :parent => :ticket do
     state :sold
     after(:create) do |ticket|
-      ticket.sell_to FactoryGirl.create(:person)
+      ticket.sell_to(FactoryGirl.create(:person))
     end
   end
 end

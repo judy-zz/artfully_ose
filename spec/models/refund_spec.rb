@@ -6,7 +6,7 @@ describe Refund do
   disconnect_sunspot
   let(:items) { 3.times.collect { FactoryGirl.build(:item)}}
   let(:free_items) { 3.times.collect { FactoryGirl.build(:free_item)}}
-  let(:order) { FactoryGirl.build(:order, :service_fee => 600, :items => (items + free_items)) }
+  let(:order) { FactoryGirl.build(:order, :service_fee => 600, :items => (items + free_items), :payment_method => :credit_card) }
   subject { Refund.new(order, items) }
 
   before(:each) do
@@ -34,9 +34,10 @@ describe Refund do
       subject.refund_order.items.size.should eq 3
       subject.refund_order.items.each do |item|
         item.order.should eq subject.refund_order
-        item.price.should eq (items.first.price * -1)
-        item.realized_price.should eq (items.first.realized_price * -1)
-        item.net.should eq (items.first.net * -1)
+        item.original_price.should  eq (items.first.original_price * -1)
+        item.price.should           eq (items.first.price * -1)
+        item.realized_price.should  eq (items.first.realized_price * -1)
+        item.net.should             eq (items.first.net * -1)
       end
       
       subject.refund_order.transaction_id.should eq '3e4r5q'

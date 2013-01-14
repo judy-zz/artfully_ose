@@ -90,16 +90,7 @@ class Person < ActiveRecord::Base
       organization.id
     end
   end
-  handle_asynchronously :solr_index
-  handle_asynchronously :solr_index!
-  after_commit { Sunspot.delay.commit }
-
-  def self.search_index(query, organization)
-    self.search do
-      fulltext query
-      with(:organization_id).equal_to(organization.id)
-    end.results
-  end
+  include Ext::DelayedIndexing
 
   comma do
     email

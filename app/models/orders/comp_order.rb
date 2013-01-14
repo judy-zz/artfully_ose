@@ -1,4 +1,6 @@
-class CompOrder < Order  
+class CompOrder < Order
+  include Unrefundable
+    
   def self.location
     "Artful.ly"
   end
