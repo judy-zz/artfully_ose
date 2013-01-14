@@ -2,8 +2,8 @@ class Slicer
 
   #
   # Pass an array of things and an array of blocks to operate on those things
-  # The block should yeild a hasmap where keys are names and values are the array of things that apply, such as
-  # { :general_admission => things, :vip => things }
+  # The block should yeild a hasmap where keys are names, values are the array of things that apply, such as
+  # { :general_admission => some_things, :vip => some_other_things }
   #
 
   cattr_accessor :color

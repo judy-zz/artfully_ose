@@ -16,6 +16,9 @@ class SlicesController < ArtfullyOseController
   # - Get rid of "root"
   # - Add percentages or display value on graph?
   # - Dollar amounts on ticket types
+  # - Select all drop downs then de-select them
+  # - Gem
+  # - Publish to /artfully/opensource/slicer, d3 examples?  
   #
 
   def data    
