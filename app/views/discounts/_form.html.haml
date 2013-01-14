@@ -19,10 +19,10 @@
     = f.label :show_ids, "Discount is valid for these shows", :class => 'control-label'
     .controls
       = f.select :show_ids, options_for_select(@event.shows.collect {|s| [l(s.datetime_local_to_event, :format => :day_time), s.id] }, @discount.show_ids), {}, {'data-placeholder' => "All Shows", :class => 'input chosen', :multiple => true}
-  / .control-group
-  /   = f.label :section_ids, "Discount is valid for these prices", :class => 'control-label'
-  /   .controls
-  /     = f.select :section_ids, options_for_select(@event.charts.collect{|c| [c.name, c.id] }, @discount.chart_ids), {}, {'data-placeholder' => "All Prices", :class => 'input chosen', :multiple => true}
+  .control-group
+    = f.label :sections, "Discount is valid for these prices", :class => 'control-label'
+    .controls
+      = f.select :sections, options_for_select(@section_names, @discount.sections.to_a), {}, {'data-placeholder' => "All Prices", :class => 'input chosen', :multiple => true}
 
   .control-group
     .controls
