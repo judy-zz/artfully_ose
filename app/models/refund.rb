@@ -1,4 +1,5 @@
 class Refund
+  include Adjustments
   attr_accessor :order, :refund_order, :items, :gateway_error_message
 
   BRAINTREE_UNSETTLED_MESSAGE = "Cannot refund a transaction unless it is settled. (91506)"
@@ -39,17 +40,9 @@ class Refund
   end
 
   private
-    def service_fee_per_item(itmz)
-      #ternery operation solely to avoid dividing by zero
-      number_of_non_free_items(itmz) == 0 ? 0 : (order.service_fee || 0) / number_of_non_free_items(itmz)
-    end
   
     def item_total
       items.collect(&:price).sum
-    end
-  
-    def number_of_non_free_items(itmz)
-      itmz.reject{|item| item.price == 0}.size
     end
   
     def create_refund_order(transaction_id = nil)
