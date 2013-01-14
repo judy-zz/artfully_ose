@@ -1,5 +1,7 @@
 class Discount < ActiveRecord::Base
-  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count, :show_ids, :section_ids
+  require 'set'
+
+  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count, :show_ids, :sections
   attr_accessor :cart
 
   include OhNoes::Destroy
@@ -10,8 +12,7 @@ class Discount < ActiveRecord::Base
 
   has_and_belongs_to_many :shows
   accepts_nested_attributes_for :shows
-  has_and_belongs_to_many :sections
-  accepts_nested_attributes_for :sections
+  serialize :sections, Set
 
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
   validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
@@ -20,6 +21,7 @@ class Discount < ActiveRecord::Base
 
   before_validation :set_organization_from_event
   before_validation :ensure_properties_are_set
+  before_validation :cast_sections_to_clean_set
 
   before_destroy :ensure_discount_is_destroyable
 
@@ -98,5 +100,10 @@ private
     "#{self.promotion_type}DiscountType".constantize
   rescue NameError
     raise "#{self.promotion_type} Discount Type has not been defined!"
+  end
+
+  def cast_sections_to_clean_set
+    self[:sections] = Set.new(self[:sections]) unless self[:sections].kind_of?(Set)
+    self[:sections].reject!{|s| s.blank? }
   end
 end

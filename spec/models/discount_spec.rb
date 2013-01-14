@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'set'
 
 describe Discount do
   disconnect_sunspot
@@ -70,19 +71,21 @@ describe Discount do
       @show = FactoryGirl.create(:show)
       subject.shows << @show
     end
-    it "should return a list of shows that this discount is applicable to" do
-      subject.shows.should include(@show)
+    it "should return a list of shows" do
+      subject.shows.should =~ [@show]
     end
   end
 
   describe "#sections" do
     before(:each) do
       @section = FactoryGirl.create(:section)
-      subject.sections << @section
+      subject.sections << @section.name
+      subject.sections << @section.name # Duplicate, should be removed in the set.
     end
-    it "should return a list of sections that this discount is applicable to" do
-      subject.sections.should include(@section)
+    it "should return a unique list of sections" do
+      subject.sections.should == Set.new([@section.name])
     end
+
   end
 
   describe "#apply_discount_to_cart" do
