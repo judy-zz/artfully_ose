@@ -7,7 +7,7 @@ class Slicer
   #
 
   cattr_accessor :color
-  @@color = 0x1D1547
+  @@color = 0x8B0000
 
   def self.html_color(hex)
     "#%06x" % hex
@@ -18,14 +18,13 @@ class Slicer
   end
 
   def self.lighter
-    @@color = @@color + 0x111111
+    @@color = @@color + 0x001C07
   end
 
   def self.slice(root_slice, things, blocks, current_depth)
-    slices ||= []
-
+    
     if root_slice.nil?
-      root_slice = Slice.new("root")
+      root_slice = Slice.new("All Sales")
     end
     root_slice.children ||= []
 
@@ -33,7 +32,6 @@ class Slicer
       map = blocks[current_depth].call(things)
       Array.wrap(map.keys).each do |kee|
         current_slice = Slice.new(kee)
-        puts "#{"*" * current_depth}#{kee} #{blocks.length} #{current_depth}"
         if(blocks.length == current_depth+1)
           current_slice.color = html_color(@@color)
           lighter

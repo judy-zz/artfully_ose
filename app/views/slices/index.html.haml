@@ -33,13 +33,13 @@
   %h2 Slices
 
 .row
-  .span12
-    =select_tag "slice", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type"], "Location")
-    =select_tag "slice", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type"], "Payment Method")
-    =select_tag "slice", options_for_select(["Location", "Discount Code", "Payment Method", "Ticket Type", "First Time / Repeat Buyers"], "Ticket Type")
-    =select_tag "foo", options_for_select(["", "Location", "Discount Code", "Payment Method", "Ticket Type"])
-.row
-  .span10.offset1
+  .span3
+    =select_tag "slice", options_for_select(@select_options)
+    =select_tag "slice", options_for_select(@select_options)
+    =select_tag "slice", options_for_select(@select_options)
+    =link_to "Slice", "#", :class => "btn", :id => "slice-button"
+
+  .span9
     #vis
 
 
@@ -52,6 +52,19 @@
   :erb
 
     <script>
+
+      //$('#slice-button').click(function(){ console.log(requestParams()) })
+
+      function requestParams() {
+        var str = "";
+        $("select option:selected").each(function () {
+              if($(this).val() != "") {
+                str += "slice[]=" + $(this).val() + "&";
+              }
+        });
+        return str;
+      }
+
     // Coffee Flavour Wheel by Jason Davies,
     // http://www.jasondavies.com/coffee-wheel/
     // License: http://www.jasondavies.com/coffee-wheel/LICENSE.txt
@@ -70,7 +83,7 @@
     var vis = div.append("svg")
         .attr("width", width + padding * 2)
         .attr("height", height + padding * 2)
-      .append("g")
+        .append("g")
         .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
     div.append("p")
@@ -85,72 +98,82 @@
         .innerRadius(function(d) { return Math.max(0, d.y ? y(d.y) : d.y); })
         .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
-    d3.json("/statements/<%=@show.id%>/slices/data.json?slice[]=order_location&slice[]=payment_method&slice[]=ticket_type", function(json) {
-      var nodes = partition.nodes({children: json});
+    $("select").change(function(){
+      div.select("svg").remove();
+      var vis = div.append("svg")
+          .attr("width", width + padding * 2)
+          .attr("height", height + padding * 2)
+          .append("g")
+          .attr("transform", "translate(" + [radius + padding, radius + padding] + ")");
 
-      var path = vis.selectAll("path").data(nodes);
-      path.enter().append("path")
-          .attr("id", function(d, i) { return "path-" + i; })
-          .attr("d", arc)
-          .attr("fill-rule", "evenodd")
-          .style("fill", colour)
-          .on("click", click);
 
-      var text = vis.selectAll("text").data(nodes);
-      var textEnter = text.enter().append("text")
-          .style("fill-opacity", 1)
-          .style("fill", function(d) {
-            return brightness(d3.rgb(colour(d))) < 125 ? "#eee" : "#000";
-          })
-          .attr("text-anchor", function(d) {
-            return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
-          })
-          .attr("dy", ".2em")
-          .attr("transform", function(d) {
-            var multiline = (d.name || "").split(" ").length > 1,
-                angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
-                rotate = angle + (multiline ? -.5 : 0);
-            return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
-          })
-          .on("click", click);
-      textEnter.append("tspan")
-          .attr("x", 0)
-          .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });
-      textEnter.append("tspan")
-          .attr("x", 0)
-          .attr("dy", "1em")
-          .text(function(d) { return d.depth ? d.name.split(" ")[1] || "" : ""; });
+      d3.json("/statements/<%=@show.id%>/slices/data.json?" + requestParams(), function(json) {
+        var nodes = partition.nodes({children: json});
 
-      function click(d) {
-        path.transition()
-          .duration(duration)
-          .attrTween("d", arcTween(d));
+        var path = vis.selectAll("path").data(nodes);
+        path.enter().append("path")
+            .attr("id", function(d, i) { return "path-" + i; })
+            .attr("d", arc)
+            .attr("fill-rule", "evenodd")
+            .style("fill", colour)
+            .on("click", click);
 
-        // Somewhat of a hack as we rely on arcTween updating the scales.
-        text.style("visibility", function(e) {
-              return isParentOf(d, e) ? null : d3.select(this).style("visibility");
+        var text = vis.selectAll("text").data(nodes);
+        var textEnter = text.enter().append("text")
+            .style("fill-opacity", 1)
+            .style("fill", function(d) {
+              return brightness(d3.rgb(colour(d))) < 125 ? "#eee" : "#000";
             })
-          .transition()
+            .attr("text-anchor", function(d) {
+              return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
+            })
+            .attr("dy", ".2em")
+            .attr("transform", function(d) {
+              var multiline = (d.name || "").split(" ").length > 1,
+                  angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
+                  rotate = angle + (multiline ? -.5 : 0);
+              return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
+            })
+            .on("click", click);
+        textEnter.append("tspan")
+            .attr("x", 0)
+            .text(function(d) { return d.depth ? d.name.split(" ")[0] : ""; });
+        textEnter.append("tspan")
+            .attr("x", 0)
+            .attr("dy", "1em")
+            .text(function(d) { return d.depth ? d.name.split(" ")[1] || "" : ""; });
+
+        function click(d) {
+          path.transition()
             .duration(duration)
-            .attrTween("text-anchor", function(d) {
-              return function() {
-                return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
-              };
-            })
-            .attrTween("transform", function(d) {
-              var multiline = (d.name || "").split(" ").length > 1;
-              return function() {
-                var angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
-                    rotate = angle + (multiline ? -.5 : 0);
-                return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
-              };
-            })
-            .style("fill-opacity", function(e) { return isParentOf(d, e) ? 1 : 1e-6; })
-            .each("end", function(e) {
-              d3.select(this).style("visibility", isParentOf(d, e) ? null : "hidden");
-            });
-      }
-    });
+            .attrTween("d", arcTween(d));
+
+          // Somewhat of a hack as we rely on arcTween updating the scales.
+          text.style("visibility", function(e) {
+                return isParentOf(d, e) ? null : d3.select(this).style("visibility");
+              })
+            .transition()
+              .duration(duration)
+              .attrTween("text-anchor", function(d) {
+                return function() {
+                  return x(d.x + d.dx / 2) > Math.PI ? "end" : "start";
+                };
+              })
+              .attrTween("transform", function(d) {
+                var multiline = (d.name || "").split(" ").length > 1;
+                return function() {
+                  var angle = x(d.x + d.dx / 2) * 180 / Math.PI - 90,
+                      rotate = angle + (multiline ? -.5 : 0);
+                  return "rotate(" + rotate + ")translate(" + (y(d.y) + padding) + ")rotate(" + (angle > 90 ? -180 : 0) + ")";
+                };
+              })
+              .style("fill-opacity", function(e) { return isParentOf(d, e) ? 1 : 1e-6; })
+              .each("end", function(e) {
+                d3.select(this).style("visibility", isParentOf(d, e) ? null : "hidden");
+              });
+        }
+      });
+    })
 
     function isParentOf(p, c) {
       if (p === c) return true;

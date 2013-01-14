@@ -2,6 +2,12 @@ class SlicesController < ArtfullyOseController
   before_filter :load_statement
 
   def index
+    @select_options = [ 
+                        ["", ""],
+                        ["Location",       "order_location_proc"],
+                        ["Payment Method", "payment_method_proc"],
+                        ["Ticket Type",    "ticket_type_proc"]
+                      ]
   end
 
   #
@@ -9,61 +15,13 @@ class SlicesController < ArtfullyOseController
   # - Color finishing
   # - Get rid of "root"
   # - Add percentages or display value on graph?
-  # - Hook up drop downs
+  # - Dollar amounts on ticket types
   #
 
-  def data
-    data = []
-    # @statement.payment_method_rows.values.each do |row|
-    #   data << Slice.new(row.payment_method, ["#AA0000","#00AA00","#000099"].sample, row.tickets) unless row.tickets == 0
-    # end
-
-    payment_method_proc = Proc.new do |items|
-      payment_method_map = {}
-      items.each do |item|
-        puts item.inspect
-        item_array = payment_method_map[item.order.payment_method]
-        item_array ||= []
-        item_array << item
-        payment_method_map[item.order.payment_method] = item_array
-      end
-      payment_method_map
-    end
-
-    ticket_type_proc = Proc.new do |items|
-      ticket_type_map = {}
-      items.each do |item|
-        puts item.inspect
-        item_array = ticket_type_map[item.product.section.name]
-        item_array ||= []
-        item_array << item
-        ticket_type_map[item.product.section.name] = item_array
-      end
-      ticket_type_map
-    end
-
-    order_location_proc = Proc.new do |items|
-      order_location_map = {}
-      items.each do |item|
-        puts item.inspect
-        item_array = order_location_map[item.order.location]
-        item_array ||= []
-        item_array << item
-        order_location_map[item.order.location] = item_array
-      end
-      order_location_map
-    end
-
-    proc_hash = HashWithIndifferentAccess.new({
-      :payment_method   => payment_method_proc,
-      :ticket_type      => ticket_type_proc,
-      :order_location      => order_location_proc
-    })
-    
+  def data    
     # convert URL string slice[] into procs
-    slices = Array.wrap(params[:slice]).map { |s| proc_hash[s] }
-
-    data = Slicer.slice(nil, @show.items.all, slices, 0)
+    slices = Array.wrap(params[:slice]).map { |s| Slices.send(s) }
+    data = Slicer.slice(nil, @items, slices, 0)
 
     respond_to do |format|
       format.json { render :json => Array.wrap(data) }
@@ -72,9 +30,6 @@ class SlicesController < ArtfullyOseController
 
   def load_statement
     @show = Show.includes(:event => :venue, :items => :order).find(params[:statement_id])
-    authorize! :view, @show
-    @event = @show.event
-    @shows = @event.shows.includes(:event => :venue)
-    @statement = Statement.for_show(@show, @show.imported?)
+    @items = Item.includes(:product, :order, :show => :event).where(:show_id => params[:statement_id])
   end
 end
