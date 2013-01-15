@@ -24,15 +24,6 @@
     .controls
       = f.select :sections, options_for_select(@section_names, @discount.sections.to_a), {}, {'data-placeholder' => "All Prices", :class => 'input chosen', :multiple => true}
   %legend
-
-  .control-group
-    .controls
-      %label.radio
-        = f.radio_button :unlimited_capacity, true, :checked => true
-        Unlimited discounted tickets
-      %label.radio
-        = f.radio_button :unlimited_capacity, false
-        Only #{f.text_field :limit, :class => 'span1', :placeholder => 10} tickets can be sold at this discount
   
   .control-group
     .controls
