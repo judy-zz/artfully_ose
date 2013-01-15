@@ -6,8 +6,14 @@ module Ticket::Pricing
   end
 
   def reset_price!
-    update_column(:cart_price, self.price)
-    update_column(:discount_id, nil)
+    if sold?
+      false
+    else
+      self.cart_price = self.price
+      self.discount = nil
+      self.sold_price = nil
+      self.save
+    end
   end 
 
   def set_cart_price

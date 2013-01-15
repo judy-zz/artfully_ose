@@ -395,6 +395,50 @@ describe Ticket do
       subject.cart_price.should == subject.price
     end
   end
+
+  describe "reset_price" do
+    describe "when a ticket is unsold" do
+      before(:each) do
+        @ticket = FactoryGirl.build(:ticket, :price => 9999, :cart_price => 1000, :sold_price => 3333, :discount_id => 4)
+        @ticket.reset_price!
+      end
+
+      it "should set cart_price to price" do
+        @ticket.cart_price.should eq @ticket.price
+      end
+
+      it "should set the discount to nil" do
+        @ticket.discount_id.should be_nil
+      end
+
+      it "should set the sold_price to nil" do
+        @ticket.sold_price.should be_nil
+      end
+    end
+
+    describe "when a ticket has been sold" do
+      before(:each) do
+        @ticket = FactoryGirl.build(:sold_ticket, :price => 9999, :cart_price => 1000, :sold_price => 3333, :discount_id => 4)
+        @ticket.reset_price!
+      end
+
+      it "should return false" do
+        @ticket.reset_price!.should be_false
+      end
+
+      it "should set cart_price to price" do
+        @ticket.cart_price.should eq 1000
+      end
+
+      it "should set the discount to nil" do
+        @ticket.discount_id.should eq 4
+      end
+
+      it "should set the sold_price to nil" do
+        @ticket.sold_price.should eq 3333
+      end
+    end
+  end
   
   describe "create_many" do
     let(:organization) { FactoryGirl.create(:organization) }
