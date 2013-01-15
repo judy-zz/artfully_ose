@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130114212408) do
+ActiveRecord::Schema.define(:version => 20121130004314) do
 
   create_table "actions", :force => true do |t|
     t.integer  "organization_id"
@@ -27,8 +27,6 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.integer  "subject_id"
     t.string   "subject_type"
     t.integer  "creator_id"
-    t.datetime "deleted_at"
-    t.integer  "import_id"
   end
 
   create_table "addresses", :force => true do |t|
@@ -51,7 +49,6 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "type"
-    t.integer  "discount_id"
   end
 
   create_table "charts", :force => true do |t|
@@ -76,27 +73,6 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
   end
 
   add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
-
-  create_table "discounts", :force => true do |t|
-    t.string   "code",                                   :null => false
-    t.boolean  "active",               :default => true, :null => false
-    t.string   "promotion_type",                         :null => false
-    t.text     "properties"
-    t.integer  "event_id",                               :null => false
-    t.integer  "organization_id",                        :null => false
-    t.integer  "user_id",                                :null => false
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.datetime "deleted_at"
-    t.integer  "minimum_ticket_count"
-    t.text     "sections"
-    t.integer  "limit"
-  end
-
-  create_table "discounts_shows", :force => true do |t|
-    t.integer "discount_id", :null => false
-    t.integer "show_id",     :null => false
-  end
 
   create_table "donations", :force => true do |t|
     t.integer  "amount"
@@ -123,7 +99,6 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.integer  "image_file_size"
     t.string   "special_instructions_caption", :default => "Special Instructions"
     t.boolean  "show_special_instructions",    :default => false
-    t.integer  "import_id"
   end
 
   create_table "import_errors", :force => true do |t|
@@ -149,7 +124,6 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.string   "status",          :default => "pending"
     t.text     "import_headers"
     t.integer  "organization_id"
-    t.string   "type"
   end
 
   create_table "items", :force => true do |t|
@@ -171,12 +145,9 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.integer  "show_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.datetime "deleted_at"
-    t.integer  "discount_id"
   end
 
   add_index "items", ["created_at"], :name => "index_items_on_created_at"
-  add_index "items", ["discount_id"], :name => "index_items_on_discount_id"
   add_index "items", ["order_id"], :name => "index_items_on_order_id"
   add_index "items", ["show_id"], :name => "index_items_on_show_id"
 
@@ -217,8 +188,6 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.string   "type"
     t.string   "payment_method"
     t.text     "special_instructions"
-    t.datetime "deleted_at"
-    t.integer  "import_id"
   end
 
   add_index "orders", ["created_at"], :name => "index_orders_on_created_at"
@@ -254,7 +223,6 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.integer  "import_id"
     t.datetime "deleted_at"
     t.integer  "lifetime_value",  :default => 0
-    t.string   "salutation"
     t.boolean  "do_not_email",    :default => false
   end
 
@@ -349,12 +317,9 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.datetime "updated_at"
     t.integer  "cart_id"
     t.integer  "section_id"
-    t.integer  "cart_price"
-    t.integer  "discount_id"
   end
 
   add_index "tickets", ["cart_id"], :name => "index_tickets_on_cart_id"
-  add_index "tickets", ["discount_id"], :name => "index_tickets_on_discount_id"
   add_index "tickets", ["organization_id"], :name => "index_tickets_on_organization_id"
   add_index "tickets", ["section_id", "show_id", "state"], :name => "index_tickets_on_section_id_and_show_id_and_state"
   add_index "tickets", ["show_id"], :name => "index_tickets_on_show_id"

@@ -16,6 +16,14 @@ module Ticket::Pricing
     end
   end 
 
+  def exchange_prices_from(old_ticket)
+    self.sold_price = old_ticket.sold_price
+    self.cart_price = old_ticket.sold_price
+    self.discount_id= old_ticket.discount_id
+    self.cart_id = nil
+    self.save
+  end
+
   def set_cart_price
     self.cart_price ||= self.price
   end

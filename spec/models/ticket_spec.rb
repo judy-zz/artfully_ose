@@ -200,11 +200,6 @@ describe Ticket do
        subject.sold_at.should eq when_it_got_sold
      end
    
-     it "sets sold_price to price" do
-       subject.sell_to(buyer)
-       subject.sold_price.should eq subject.price
-     end
-   
      it "marks the ticket as sold" do
        subject.sell_to(buyer)
        subject.should be_sold

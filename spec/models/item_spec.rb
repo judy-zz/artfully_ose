@@ -228,4 +228,16 @@ describe Item do
       end
     end
   end
+
+  describe "to_exchange!" do
+    let(:item1) { FactoryGirl.build(:item, :original_price => 1000, :price => 500, :realized_price => 100, :net => 3, :state => "purchased")}
+    let(:item2) { FactoryGirl.build(:item) }
+
+    it "should transfer prices and state" do
+      item2.to_exchange!(item1)
+      [:original_price, :price, :realized_price, :net, :state].each do |field|
+        item1.send(field).should eq item2.send(field)
+      end
+    end
+  end
 end

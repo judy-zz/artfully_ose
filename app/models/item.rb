@@ -113,7 +113,10 @@ class Item < ActiveRecord::Base
   #
   def refund!
     self.state = "refunded"
-    product.remove_from_cart if self.ticket?
+    if self.ticket?
+      product.remove_from_cart
+      product.reset_price!
+    end
     self.save
   end
 
@@ -135,7 +138,7 @@ class Item < ActiveRecord::Base
     
     if self.ticket?
       product.remove_from_cart
-      product.update_column(:sold_price,item_that_this_is_being_exchanged_for.product.sold_price)
+      product.exchange_prices_from(item_that_this_is_being_exchanged_for.product)
     end
     
     self.state = item_that_this_is_being_exchanged_for.state

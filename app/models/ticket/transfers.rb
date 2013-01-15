@@ -11,10 +11,12 @@ module Ticket::Transfers
     end
   end
   
+  #
+  # Deals solely with changing the buyer.  Pricing should be handled in exchange_prices_from
+  #
   def exchange_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
-      self.sold_price = 0
       self.sold_at = time
       self.exchange!
     rescue Transitions::InvalidTransition => e
