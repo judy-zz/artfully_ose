@@ -4,7 +4,6 @@ module Ticket::Transfers
   def sell_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
-      self.sold_price = self.price
       self.sold_at = time
       self.sell!
     rescue Transitions::InvalidTransition
