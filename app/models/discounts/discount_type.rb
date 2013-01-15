@@ -42,6 +42,17 @@ class DiscountType
     true
   end
 
+  def tickets
+    @discount.cart.tickets
+  end
+
+  def eligible_tickets
+    is_in = ->(element, list){list.blank? || !! list.find_index(element)}
+    tix = tickets.find_all {|t| is_in.call(t.show.id, @discount.show_ids)}
+    tix = tix.find_all{|t| is_in.call(t.section.name, @discount.sections)}
+    return tix
+  end
+
   def apply_discount_to_cart(*args)
     raise "This method has not been defined in child class!"
   end

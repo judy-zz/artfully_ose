@@ -1,5 +1,6 @@
 class DiscountsController < ApplicationController
   before_filter :authorize_event
+  before_filter :grab_section_names, :only => [:new, :edit]
 
   def index
     @discounts = @event.discounts
@@ -53,5 +54,9 @@ private
   def authorize_event
     @event = Event.find params[:event_id]
     authorize! :edit, @event
+  end
+
+  def grab_section_names
+    @section_names = @event.charts.collect{|c| c.sections.collect{|s| s.name}}.flatten.uniq.sort
   end
 end
