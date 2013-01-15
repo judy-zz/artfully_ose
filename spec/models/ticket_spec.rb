@@ -398,7 +398,7 @@ describe Ticket do
         @ticket.reset_price!
       end
 
-      it "should set cart_price to price" do
+      it "should set cart_price to nil" do
         @ticket.cart_price.should eq @ticket.price
       end
 
