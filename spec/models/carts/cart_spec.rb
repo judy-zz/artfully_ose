@@ -112,6 +112,39 @@ describe Cart do
         subject.should be_approved
       end
 
+      it "should mark the tickets sold_price with the current cart_price when approved" do
+        subject.tickets = 2.times.collect { FactoryGirl.build(:ticket, :cart_price => 400) }
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:purchase).and_return(successful_response)
+        subject.pay_with(payment)
+        subject.should be_approved
+        subject.tickets.each do |ticket|
+          ticket.reload.sold_price.should eq 400
+        end
+      end
+
+      it "should mark the tickets sold_price with the current cart_price when approved even if cart_price is 0" do
+        subject.tickets = 2.times.collect { FactoryGirl.build(:ticket, :cart_price => 0) }
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:purchase).and_return(successful_response)
+        subject.pay_with(payment)
+        subject.should be_approved
+        subject.tickets.each do |ticket|
+          ticket.sold_price.should eq 0
+        end
+      end
+
+      it "should mark the tickets sold_price with the ticket.price is cart_price is nil when approved" do
+        subject.tickets = 2.times.collect { FactoryGirl.build(:ticket, :price => 32, :cart_price => nil) }
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:purchase).and_return(successful_response)
+        subject.pay_with(payment)
+        subject.should be_approved
+        subject.tickets.each do |ticket|
+          ticket.sold_price.should eq 32
+        end
+      end
+
       it "should tranisition to rejected when the Payment is rejected" do
         payment.stub(:requires_authorization?).and_return(true)
         payment.stub(:purchase).and_return(false)

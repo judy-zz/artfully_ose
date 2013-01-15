@@ -47,11 +47,11 @@ describe Item do
     end
   
     it "sets the realized price to the price of the ticket" do
-      subject.realized_price.should eq(product.price - product.class.fee)
+      subject.realized_price.should eq(product.sold_price - product.class.fee)
     end
   
     it "sets the net to whatever lambda was passed in to calculate the processing" do
-      realized = (product.price - product.class.fee)
+      realized = (product.sold_price - product.class.fee)
       net = (realized - (0.035 * realized)).floor
       subject.net.should eq net
     end
@@ -111,7 +111,7 @@ describe Item do
       subject.state.should eq "purchased"
     end
   
-    it "sets the realized price to the price of the ticket" do
+    it "sets the realized price to the sold price of the ticket" do
       subject.realized_price.should eq(ticket.price - ticket.class.fee)
     end
   

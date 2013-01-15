@@ -13,7 +13,7 @@ class Cart < ActiveRecord::Base
     state :approved
     state :rejected
 
-    event(:approve) { transitions :from => [ :started, :rejected ], :to => :approved }
+    event(:approve, :success => :record_sold_price) { transitions :from => [ :started, :rejected ], :to => :approved }
     event(:reject)  { transitions :from => [ :started, :rejected ], :to => :rejected }
   end
 
@@ -156,6 +156,13 @@ class Cart < ActiveRecord::Base
   end
 
   private
+
+    def record_sold_price
+      self.tickets.each do |ticket|
+        ticket.sold_price = ticket.cart_price || ticket.price
+        ticket.save
+      end
+    end
 
     def pay_with_authorization(payment, options)
       payment.purchase(options) ? approve! : reject!

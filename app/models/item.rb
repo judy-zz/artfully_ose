@@ -226,8 +226,8 @@ class Item < ActiveRecord::Base
 
     def set_prices_from(prod)
       self.original_price = prod.price
-      self.price          = (prod.sold_price || 0)
-      self.realized_price = prod.price - prod.class.fee
+      self.price          = (prod.sold_price || prod.price)
+      self.realized_price = self.price - prod.class.fee
       self.net            = (self.realized_price - (per_item_processing_charge || lambda { |item| 0 }).call(self)).floor
     end
 
