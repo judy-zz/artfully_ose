@@ -19,7 +19,7 @@ class Discount < ActiveRecord::Base
 
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
   validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
-  validates_numericality_of :limit, :minimum_ticket_count, :only_integer => true
+  validates_numericality_of :limit, :minimum_ticket_count, :only_integer => true, :allow_nil => true
   
   serialize :properties, HashWithIndifferentAccess
 
@@ -94,7 +94,7 @@ class Discount < ActiveRecord::Base
 
   def tickets_left
     if limit.present?
-      limit - redeemed
+      limit - redeemed > 0 ? limit - redeemed : 0 # Any negative numbers become 0.
     else
       raise "Infinite tickets left in discount when there's no limit."
     end

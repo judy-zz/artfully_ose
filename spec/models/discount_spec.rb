@@ -85,7 +85,36 @@ describe Discount do
     it "should return a unique list of sections" do
       subject.sections.should == Set.new([@section.name])
     end
+  end
 
+  context "with a limit" do
+    before { subject.limit = 10 }
+    context "when tickets has been redeemed" do
+      before { subject.stub(:redeemed) { 6 } }
+      describe "#tickets_left" do
+        it "should return 4" do
+          subject.tickets_left.should == 4
+        end
+      end
+      describe "#tickets_fit_within_limit" do
+        context "when eligible_tickets has 4 elements" do
+          before { subject.stub(:eligible_tickets) { [1, 2, 3, 4] } }
+          specify { subject.tickets_fit_within_limit.should == true }
+        end
+        context "when eligible_tickets has 5 elements" do
+          before { subject.stub(:eligible_tickets) { [1, 2, 3, 4, 5] } }
+          specify { subject.tickets_fit_within_limit.should == false }
+        end
+      end
+    end
+    context "when too many tickets have been redeemed" do
+      before { subject.stub(:redeemed) { 11 } }
+      describe "#tickets_left" do
+        it "should return 0" do
+          subject.tickets_left.should == 0
+        end
+      end
+    end
   end
 
   describe "#apply_discount_to_cart" do
