@@ -19,6 +19,7 @@ class Discount < ActiveRecord::Base
 
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
   validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
+  validates_numericality_of :limit, :minimum_ticket_count, :only_integer => true
   
   serialize :properties, HashWithIndifferentAccess
 
@@ -91,6 +92,18 @@ class Discount < ActiveRecord::Base
     type.eligible_tickets
   end
 
+  def tickets_left
+    if limit.present?
+      limit - redeemed
+    else
+      raise "Infinite tickets left in discount when there's no limit."
+    end
+  end
+
+  def tickets_fit_within_limit
+    limit.blank? || eligible_tickets.count <= tickets_left
+  end
+
 private
 
   def ensure_discount_is_allowed
@@ -98,6 +111,7 @@ private
     raise "Discount won't work for this show." unless @cart.tickets.first.try(:event) == self.event
     raise "You need at least #{self.minimum_ticket_count} tickets for this discount." unless @cart.tickets.count >= self.minimum_ticket_count
     raise "Discount won't work for these shows or prices." unless eligible_tickets.count > 0
+    raise "Discount has been maxed out." unless tickets_fit_within_limit
   end
 
   def discount_class
