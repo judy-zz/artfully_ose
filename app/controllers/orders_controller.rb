@@ -12,7 +12,7 @@ class OrdersController < ArtfullyOseController
   end
 
   def show
-    @order = Order.find(params[:id])
+    @order = Order.includes(:items => :discount).find(params[:id])
     authorize! :view, @order
     @person = Person.find(@order.person_id)
     @total = @order.total
