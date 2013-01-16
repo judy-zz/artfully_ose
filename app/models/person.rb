@@ -3,7 +3,7 @@ class Person < ActiveRecord::Base
   include Valuation::LifetimeDonations
 
   attr_accessor :skip_sync_to_mailchimp
-  attr_accessible :type, :email, :salutation, :dummy, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
+  attr_accessible :type, :email, :salutation, :title, :dummy, :first_name, :last_name, :company_name, :website, :twitter_handle, :linked_in_url, :facebook_url, :person_type
   attr_accessible :subscribed_lists, :do_not_email, :skip_sync_to_mailchimp
   attr_accessible :organization_id
   
@@ -97,6 +97,7 @@ class Person < ActiveRecord::Base
     salutation
     first_name
     last_name
+    title
     company_name
     address("Address 1") { |address| address && address.address1 }
     address("Address 2") { |address| address && address.address2 }

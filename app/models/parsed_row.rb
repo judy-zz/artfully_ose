@@ -13,6 +13,7 @@ class ParsedRow
 
   PEOPLE_FIELDS = SHARED_FIELDS.merge( {
     :salutation       => [ "Salutation" ],     
+    :title            => [ "Title" ],
     :company          => [ "Company name", "Company" ],
     :address1         => [ "Address 1", "Address1" ],
     :address2         => [ "Address 2", "Address2" ],
@@ -151,6 +152,7 @@ class ParsedRow
       {
         :email           => self.email,
         :salutation      => self.salutation,
+        :title      => self.title,
         :first_name      => self.first,
         :last_name       => self.last,
         :company_name    => self.company,
