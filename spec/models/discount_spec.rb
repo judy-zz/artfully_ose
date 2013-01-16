@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'set'
 
 describe Discount do
   disconnect_sunspot
@@ -47,10 +48,11 @@ describe Discount do
   end
 
   describe "#destroyable?" do
-    it "should return true when the ticket hasn't been used" do
+    it "should return true when the discount hasn't been used" do
+      subject.stub(:redeemed) { 0 }
       subject.destroyable?.should be_true
     end
-    it "should return false when the ticket has been used" do
+    it "should return false when the discount has been used" do
       subject.stub(:redeemed) { 1 }
       subject.destroyable?.should be_false
     end
@@ -69,22 +71,35 @@ describe Discount do
       @show = FactoryGirl.create(:show)
       subject.shows << @show
     end
-    it "should return a list of shows that this discount is applicable to" do
-      subject.shows.should include(@show)
+    it "should return a list of shows" do
+      subject.shows.should =~ [@show]
     end
+  end
+
+  describe "#sections" do
+    before(:each) do
+      @section = FactoryGirl.create(:section)
+      subject.sections << @section.name
+      subject.sections << @section.name # Duplicate, should be removed in the set.
+    end
+    it "should return a unique list of sections" do
+      subject.sections.should == Set.new([@section.name])
+    end
+
   end
 
   describe "#apply_discount_to_cart" do
     before(:each) do
       @cart = FactoryGirl.create(:cart_with_items)
       subject.event = @cart.tickets.first.event
+      subject.cart = @cart
       subject.save!
     end
     context "with ten percent off" do
       before(:each) do
         subject.promotion_type = "PercentageOffTickets"
         subject.properties[:percentage] = 0.1
-        subject.apply_discount_to_cart(@cart)
+        subject.apply_discount_to_cart
       end
       it "should take ten percent off the cost of each ticket" do
         @cart.total.should == 15100 # 14500 + 600 in ticket fees that still apply
@@ -97,7 +112,7 @@ describe Discount do
       before(:each) do
         subject.promotion_type = "DollarsOffTickets"
         subject.properties[:amount] = 1000
-        subject.apply_discount_to_cart(@cart)
+        subject.apply_discount_to_cart
       end
       it "should take ten dollars off the cost of each ticket" do
         @cart.total.should == 13600
@@ -111,7 +126,7 @@ describe Discount do
         # Add two more tickets
         @cart.tickets << 2.times.collect { FactoryGirl.create(:ticket) }
         subject.promotion_type = "BuyOneGetOneFree"
-        subject.apply_discount_to_cart(@cart)
+        subject.apply_discount_to_cart
       end
       it "should take the cost of every other ticket out of the total" do
         @cart.total.should == 17000

@@ -1,6 +1,9 @@
 class Ticket < ActiveRecord::Base
   include ActiveRecord::Transitions
   include Ext::Resellable::Ticket
+  include Ticket::Pricing
+  include Ticket::Transfers
+  include Ticket::SaleTransitions
   
   attr_accessible :section_id, :section, :price, :venue, :cart_price
 
@@ -16,14 +19,6 @@ class Ticket < ActiveRecord::Base
   delegate :event, :to => :show
 
   before_validation :set_cart_price
-
-  def set_cart_price
-    self.cart_price ||= self.price
-  end
-
-  def cart_price
-    self[:cart_price] || self.price
-  end
 
   def self.sold_after(datetime)
     sold.where("sold_at > ?", datetime)
@@ -43,13 +38,13 @@ class Ticket < ActiveRecord::Base
     state :sold
     state :comped
 
-    event(:on_sale)   { transitions :from => [ :on_sale, :off_sale ],   :to => :on_sale   }
-    event(:off_sale)  { transitions :from => [ :on_sale, :off_sale ],   :to => :off_sale  }
-    event(:exchange, :success => :metric_exchanged)  { transitions :from => [ :on_sale, :off_sale ],   :to => :sold    }
-    event(:sell, :success => :metric_sold)      { transitions :from => :on_sale,                  :to => :sold      }
-    event(:comp)      { transitions :from => [ :on_sale, :off_sale ],   :to => :comped    }
-    event(:return_to_inventory)   { transitions :from => [ :comped, :sold ],        :to => :on_sale   }
-    event(:return_off_sale)       { transitions :from => [ :comped, :sold ],        :to => :off_sale  }
+    event(:on_sale)                                   { transitions :from => [ :on_sale, :off_sale ],   :to => :on_sale   }
+    event(:off_sale)                                  { transitions :from => [ :on_sale, :off_sale ],   :to => :off_sale  }
+    event(:exchange, :success => :metric_exchanged)   { transitions :from => [ :on_sale, :off_sale ],   :to => :sold      }
+    event(:sell, :success => :metric_sold)            { transitions :from => [ :on_sale ],              :to => :sold      }
+    event(:comp)                                      { transitions :from => [ :on_sale, :off_sale ],   :to => :comped    }
+    event(:return_to_inventory)                       { transitions :from => [ :comped, :sold ],        :to => :on_sale   }
+    event(:return_off_sale)                           { transitions :from => [ :comped, :sold ],        :to => :off_sale  }
   end
 
   def datetime
@@ -69,10 +64,6 @@ class Ticket < ActiveRecord::Base
     conditions[:state] ||= :on_sale
     conditions[:cart_id] = nil
     where(conditions).limit(limit)
-  end
-
-  def remove_from_cart
-    self.update_column(:cart_id, nil)
   end
 
   def settlement_id
@@ -113,66 +104,6 @@ class Ticket < ActiveRecord::Base
     !expired?
   end
 
-  def take_off_sale
-    begin
-      off_sale!
-    rescue Transitions::InvalidTransition
-      return false
-    end
-  end
-
-  def put_on_sale
-    begin
-      on_sale!
-    rescue Transitions::InvalidTransition
-      return false
-    end
-  end
-
-  def sell_to(buyer, time=Time.now)
-    begin
-      self.buyer = buyer
-      self.sold_price = self.price
-      self.sold_at = time
-      self.sell!
-    rescue Transitions::InvalidTransition
-      return false
-    end
-  end
-  
-  def exchange_to(buyer, time=Time.now)
-    begin
-      self.buyer = buyer
-      self.sold_price = 0
-      self.sold_at = time
-      self.exchange!
-    rescue Transitions::InvalidTransition => e
-      puts e
-      return false
-    end
-  end
-
-  def comp_to(buyer, time=Time.now)
-    begin
-      self.buyer = buyer
-      self.sold_price = 0
-      self.sold_at = time
-      self.comp!
-    rescue Transitions::InvalidTransition => e
-      puts e
-      return false
-    end
-  end
-
-  def change_price(new_price)
-    unless self.committed? or new_price.to_i < 0
-      self.price = new_price
-      self.save!
-    else
-      return false
-    end
-  end
-
   def committed?
     sold? or comped?
   end
@@ -199,30 +130,6 @@ class Ticket < ActiveRecord::Base
 
   def destroy
     super if destroyable?
-  end
-
-  def return!(and_return_to_inventory = true)
-    remove_from_cart
-    self.buyer = nil
-    self.sold_price = nil
-    self.sold_at = nil
-    self.buyer_id = nil
-    save
-    and_return_to_inventory ? return_to_inventory! : return_off_sale!
-  end
-
-  def self.put_on_sale(tickets)
-    return false if tickets.blank?
-    attempt_transition(tickets, :on_sale) do
-      Ticket.update_all({ :state => :on_sale }, { :id => tickets.collect(&:id)})
-    end
-  end
-
-  def self.take_off_sale(tickets)
-    return false if tickets.blank?
-    attempt_transition(tickets, :off_sale) do
-      Ticket.update_all({ :state => :off_sale }, { :id => tickets.collect(&:id)})
-    end
   end
 
   def repriceable?
@@ -253,22 +160,7 @@ class Ticket < ActiveRecord::Base
     t
   end
 
-  def reset_price!
-    update_column(:cart_price, self.price)
-    update_column(:discount_id, nil)
-  end
-
   private
-
-    def self.attempt_transition(tickets, state)
-      begin
-        tickets.map(&state)
-        yield
-      rescue Transitions::InvalidTransition
-        logger.info "Trying to transition ticket [#{}] on_sale, transition failed"
-      end
-    end
-
     def metric_sold
       RestfulMetrics::Client.add_metric(ENV["RESTFUL_METRICS_APP"], "ticket_sold", 1)
     end

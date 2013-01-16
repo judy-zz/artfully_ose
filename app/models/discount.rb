@@ -1,11 +1,18 @@
 class Discount < ActiveRecord::Base
-  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count
+  require 'set'
+
+  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count, :show_ids, :sections
+  attr_accessor :cart
+
   include OhNoes::Destroy
-  include ShowsAndSections
 
   belongs_to :event
   belongs_to :organization
   belongs_to :creator, :class_name => "User", :foreign_key => "user_id"
+
+  has_and_belongs_to_many :shows
+  accepts_nested_attributes_for :shows
+  serialize :sections, Set
 
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
   validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
@@ -14,6 +21,7 @@ class Discount < ActiveRecord::Base
 
   before_validation :set_organization_from_event
   before_validation :ensure_properties_are_set
+  before_validation :cast_sections_to_clean_set
 
   before_destroy :ensure_discount_is_destroyable
 
@@ -24,13 +32,14 @@ class Discount < ActiveRecord::Base
     self.organization ||= self.event.try(:organization)
   end
 
-  def apply_discount_to_cart(cart)
+  def apply_discount_to_cart(cart=nil)
+    @cart ||= cart unless cart.nil?
     transaction do
-      cart.discount = self
-      ensure_discount_is_allowed(cart)
-      clear_existing_discount(cart)
-      type.apply_discount_to_cart(cart)
-      cart.save!
+      @cart.discount = self
+      ensure_discount_is_allowed
+      clear_existing_discount
+      type.apply_discount_to_cart
+      @cart.save!
     end
   end
 
@@ -63,8 +72,8 @@ class Discount < ActiveRecord::Base
     self[:minimum_ticket_count] || 0
   end
 
-  def clear_existing_discount(cart)
-    cart.reset_prices_on_tickets
+  def clear_existing_discount
+    @cart.reset_prices_on_tickets
   end
 
   def redeemed
@@ -75,17 +84,27 @@ class Discount < ActiveRecord::Base
     redeemed == 0
   end
 
+  def eligible_tickets
+    type.eligible_tickets
+  end
+
 private
 
-  def ensure_discount_is_allowed(cart)
+  def ensure_discount_is_allowed
     raise "Discount is not active." unless self.active?
-    raise "Discount won't work for this show." unless cart.tickets.first.try(:event) == self.event
-    raise "You need at least #{self.minimum_ticket_count} tickets for this discount." unless cart.tickets.count >= self.minimum_ticket_count
+    raise "Discount won't work for this show." unless @cart.tickets.first.try(:event) == self.event
+    raise "You need at least #{self.minimum_ticket_count} tickets for this discount." unless @cart.tickets.count >= self.minimum_ticket_count
+    raise "Discount won't work for these shows or prices." unless eligible_tickets.count > 0
   end
 
   def discount_class
     "#{self.promotion_type}DiscountType".constantize
   rescue NameError
     raise "#{self.promotion_type} Discount Type has not been defined!"
+  end
+
+  def cast_sections_to_clean_set
+    self[:sections] = Set.new(self[:sections]) unless self[:sections].kind_of?(Set)
+    self[:sections].reject!{|s| s.blank? }
   end
 end

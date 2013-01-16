@@ -19,6 +19,8 @@ class Show < ActiveRecord::Base
 
   has_many :reseller_attachments, :as => :attachable
 
+  has_and_belongs_to_many :discounts
+
   validates_presence_of :datetime
   validates_presence_of :chart_id
   validates_datetime :datetime, :after => lambda { Time.now }

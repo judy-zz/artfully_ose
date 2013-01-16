@@ -84,11 +84,11 @@ class Statement
   def build_discount_rows(items)
     self.discount_rows         = {}
     items.each do |item|
-      unless item.product.discount.nil?
-        row = self.discount_rows[item.product.discount.code] || DiscountRow.new(item.product.discount.code, item.product.discount.promotion_type)
+      unless item.discount.nil?
+        row = self.discount_rows[item.discount.code] || DiscountRow.new(item.discount.code, item.discount.promotion_type)
         row << item
-        row.discount += (item.product.price - item.product.sold_price)
-        self.discount_rows[item.product.discount.code] = row
+        row.discount += (item.original_price - item.price)
+        self.discount_rows[item.discount.code] = row
       end
     end
   end

@@ -47,11 +47,11 @@ describe Item do
     end
   
     it "sets the realized price to the price of the ticket" do
-      subject.realized_price.should eq(product.price - product.class.fee)
+      subject.realized_price.should eq(product.sold_price - product.class.fee)
     end
   
     it "sets the net to whatever lambda was passed in to calculate the processing" do
-      realized = (product.price - product.class.fee)
+      realized = (product.sold_price - product.class.fee)
       net = (realized - (0.035 * realized)).floor
       subject.net.should eq net
     end
@@ -111,7 +111,7 @@ describe Item do
       subject.state.should eq "purchased"
     end
   
-    it "sets the realized price to the price of the ticket" do
+    it "sets the realized price to the sold price of the ticket" do
       subject.realized_price.should eq(ticket.price - ticket.class.fee)
     end
   
@@ -226,6 +226,43 @@ describe Item do
         subject.product.should_not_receive(:return!)
         subject.return!
       end
+    end
+  end
+
+  describe "exchanging items" do
+    let(:item1) { FactoryGirl.build(:item, :original_price => 1000, :price => 500, :realized_price => 100, :net => 3, :state => "purchased", :discount => FactoryGirl.build(:discount))}
+    let(:item2) { FactoryGirl.build(:item) }
+
+    before(:each) do
+      item1.stub(:ticket?).and_return(true)
+      item2.to_exchange!(item1)
+    end
+
+    it "should transfer prices, state, and discount to the exchangee" do
+
+      
+      [:original_price, 
+       :price, 
+       :realized_price, 
+       :net, 
+       :state, 
+       :discount_id].each do |field|
+        item1.send(field).should eq item2.send(field)
+      end
+    end
+
+    it "should blank prices, state, and discount on the exchanged item" do
+
+      item1.exchange!
+      [:original_price, 
+       :price, 
+       :realized_price, 
+       :net].each do |field|
+        item1.send(field).should eq 0
+      end      
+
+      item1.state.should eq "exchanged"
+      item1.discount.should be_nil
     end
   end
 end

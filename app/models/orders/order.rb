@@ -28,8 +28,10 @@ class Order < ActiveRecord::Base
   validates_presence_of :person_id
   validates_presence_of :organization_id
 
+  # Both of these are handle_asynchronously
   after_create :create_purchase_action, :unless => :skip_actions
   after_create :create_donation_actions, :unless => :skip_actions
+
   after_create :sell_tickets
 
   default_scope :order => 'orders.created_at DESC'
@@ -189,8 +191,19 @@ class Order < ActiveRecord::Base
     all_donations.collect{|item| item.total_price.to_i}.sum
   end
 
+  #
+  # Will return an array of all discount codes on all items on this order
+  #
+  def discounts_used
+    items.map{|i| i.discount.try(:code)}.reject(&:blank?).uniq
+  end
+
   def ticket_details
-    pluralize(num_tickets, "ticket") + " to " + all_tickets.first.show.event.name
+    discount_string = ""
+    unless discounts_used.empty?
+      discount_string = ", used #{'discount'.pluralize(discounts_used.length)} " + discounts_used.join(",")
+    end
+    pluralize(num_tickets, "ticket") + " to " + all_tickets.first.show.event.name + discount_string
   end
   
   def to_comp!
@@ -261,6 +274,7 @@ class Order < ActiveRecord::Base
       action
     end
   end
+  handle_asynchronously :create_donation_actions
 
   private
 
@@ -284,4 +298,5 @@ class Order < ActiveRecord::Base
         action
       end
     end
+    handle_asynchronously :create_purchase_action
 end

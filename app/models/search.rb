@@ -1,8 +1,5 @@
 class Search < ActiveRecord::Base
-  attr_accessible :zip, :state, :event_id, :tagging,
-                  :min_lifetime_value, :max_lifetime_value,
-                  :min_donations_amount, :max_donations_amount,
-                  :min_donations_date, :max_donations_date
+
   belongs_to :organization
   belongs_to :event
   validates_presence_of :organization_id
@@ -31,6 +28,10 @@ class Search < ActiveRecord::Base
       conditions << "Have a minimum lifetime value of $#{min_lifetime_value}."
     elsif max_lifetime_value.present?
       conditions << "Have a maximum lifetime value of $#{max_lifetime_value}."
+    end
+
+    unless discount_code.blank?
+      conditions << "Used discount code #{discount_code}."
     end
 
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
@@ -79,6 +80,12 @@ class Search < ActiveRecord::Base
     people = people.where("addresses.state" => state) unless state.blank?
     people = people.where("people.lifetime_value >= ?", min_lifetime_value * 100.0) unless min_lifetime_value.blank?
     people = people.where("people.lifetime_value <= ?", max_lifetime_value * 100.0) unless max_lifetime_value.blank?
+
+    unless discount_code.blank?
+      people = people.joins(:orders => [:items => [:discount]])
+      people = people.where("discounts.code = ?", discount_code)
+    end
+
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
       people = people.joins(:orders => :items)
       people = people.where("orders.created_at >= ?", min_donations_date) unless min_donations_date.blank?
