@@ -1,7 +1,10 @@
 class Discount < ActiveRecord::Base
   require 'set'
 
-  attr_accessible :active, :code, :promotion_type, :event, :organization, :creator, :properties, :minimum_ticket_count, :show_ids, :sections
+  attr_accessible :active, :code, :promotion_type, :event,
+                  :organization, :creator, :properties,
+                  :minimum_ticket_count, :show_ids, :sections,
+                  :limit
   attr_accessor :cart
 
   include OhNoes::Destroy
