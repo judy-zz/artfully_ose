@@ -15,7 +15,7 @@ module Ticket::Pricing
     self.cart_price = self.price
     self.discount = nil
     self.sold_price = nil
-    puts self.save
+    self.save
   end 
 
   def exchange_prices_from(old_ticket)
