@@ -316,17 +316,19 @@ describe Ticket do
      
    end
    
-   describe "return!" do
-     subject { FactoryGirl.create(:sold_ticket) }
+   describe "returning a ticket to inventory" do
+     subject { FactoryGirl.create(:sold_ticket, :cart_price => 300, :discount => FactoryGirl.create(:discount)) }
    
      it "removes the buyer from the item" do
        subject.return!
        subject.buyer_id.should be_nil
      end
    
-     it "removes the sold price and sold time" do
+     it "removes the sold price, sold time, cart_price, and discounts" do
        subject.return!
        subject.sold_at.should be_nil
+       subject.cart_price.should eq subject.price
+       subject.discount.should be_nil
        subject.sold_price.should be_nil
      end
    

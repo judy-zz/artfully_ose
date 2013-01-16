@@ -5,15 +5,17 @@ module Ticket::Pricing
     self.update_column(:cart_id, nil)
   end
 
+  #
+  # This is guarded with sold? Because of the DelayedJob that expires tickets.  The job 
+  # Removes them from cart regardless of state.  If they've been sold, we want that information retained
+  #
   def reset_price!
-    if sold?
-      false
-    else
-      self.cart_price = self.price
-      self.discount = nil
-      self.sold_price = nil
-      self.save
-    end
+    return false if sold?
+    
+    self.cart_price = self.price
+    self.discount = nil
+    self.sold_price = nil
+    puts self.save
   end 
 
   def exchange_prices_from(old_ticket)

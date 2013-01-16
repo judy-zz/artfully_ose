@@ -38,13 +38,13 @@ module Ticket::Transfers
   end
 
   def return!(and_return_to_inventory = true)
+    and_return_to_inventory ? return_to_inventory! : return_off_sale!
     remove_from_cart
     self.buyer = nil
-    self.sold_price = nil
     self.sold_at = nil
     self.buyer_id = nil
+    self.reset_price!
     save
-    and_return_to_inventory ? return_to_inventory! : return_off_sale!
   end
 
 end
