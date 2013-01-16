@@ -2,8 +2,10 @@ class OrdersController < ArtfullyOseController
   def index
     authorize! :manage, Order
     if params[:search]
-      @results = search(params[:search]).paginate(:page => params[:page], :per_page => 25)
-      redirect_to order_path(@results.first.id) if @results.length == 1
+      @results = search(params[:search]).sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
+      if @results.length == 1
+        redirect_to order_path(@results.first.id)
+      end
     else
       @results = current_organization.orders.includes(:person, :items).all.sort{|a,b| b.created_at <=> a.created_at }.paginate(:page => params[:page], :per_page => 25)
     end
@@ -50,15 +52,7 @@ class OrdersController < ArtfullyOseController
   private
 
   def search(query)
-    begin
-      orders = []
-      orders << Order.find(query)
-    rescue ActiveResource::ResourceNotFound
-      ##TODO: Implement search by first name, last name, email, last four of CC number
-      []
-    rescue ActiveResource::ForbiddenAccess #occurs when search string == ""
-      []
-    end
+    Order.search_index(query, current_user.current_organization)
   end
 
 end

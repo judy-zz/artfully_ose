@@ -176,51 +176,6 @@ describe Person do
         @winner.should be_do_not_email
       end
     end
-
-    context "mailchimp kit enabled" do
-      include_context :mailchimp
-
-      let(:organization) { FactoryGirl.create(:organization) }
-      let!(:winner) { FactoryGirl.create(:person, :organization => organization, :subscribed_lists => ["one"]) }
-      let!(:loser) { FactoryGirl.create(:person, :organization => organization, :subscribed_lists => ["two"]) }
-      let(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => organization) }
-
-      it "should sync the losers deletion" do
-        mailchimp_kit
-        expect {
-          Person.merge(winner, loser)
-        }.to change {
-          Delayed::Job.count
-        }.by(1)
-      end
-
-      it "should copy the subscribed lists over" do
-        mailchimp_kit
-
-        Person.merge(winner, loser)
-
-        winner.subscribed_lists.should == ["one", "two"]
-      end
-
-      it "should not sync if the mailchimp kit is cancelled" do
-        mailchimp_kit.state = "cancelled"
-        mailchimp_kit.save
-
-        expect {
-          Person.merge(winner, loser)
-        }.to_not change {
-          Delayed::Job.count
-        }
-      end
-
-      it "should not sync if no mailchimp kit set up" do
-        expect {
-          Person.merge(winner, loser)
-        }.to_not change {
-          Delayed::Job.count
-        }
-      end
-    end
   end
   
   context "updating address" do
@@ -396,87 +351,6 @@ describe Person do
     it "creates the dummy record if one does not yet exist" do
       person = Person.dummy_for(organization)
       person.dummy.should be_true
-    end
-  end
-
-  describe "#sync_update_to_mailchimp" do
-    subject { FactoryGirl.build(:person) }
-
-    context "mailchimp kit is setup" do
-      include_context :mailchimp
-
-      let!(:mailchimp_kit) { FactoryGirl.create(:mailchimp_kit, :organization => subject.organization) }
-
-      def expect_to_enqueue(&block)
-        expect(&block).to change {
-          Delayed::Job.count
-        }.by(1)
-      end
-
-      it "should fire when a person record is saved" do
-        subject.save
-        expect_to_enqueue {
-          subject.update_attributes(:email => "new@example.com")
-        }
-      end
-
-      it "should include do_not_email when syncing" do
-        subject.save
-        expect_to_enqueue {
-          subject.update_attributes(:do_not_email => true)
-        }
-      end
-
-      it "should include subscribed_lists when syncing" do
-        subject.save
-        expect_to_enqueue {
-          subject.update_attributes(:subscribed_lists => [1])
-        }
-      end
-
-      it "should not sync when nothing is changed" do
-        subject.save
-
-        expect {
-          subject.update_attributes(:first_name => subject.first_name)
-        }.to_not change {
-          Delayed::Job.count
-        }
-      end
-
-      it "should not sync if the kit is cancelled" do
-        mailchimp_kit.activate!
-        mailchimp_kit.cancel!
-
-        subject.save
-
-        expect {
-          subject.update_attributes(:email => "new@example.com")
-        }.to_not change {
-          Delayed::Job.count
-        }
-      end
-
-      it "should not re-enqueue an update to mailchimp if mailchimp sent the update" do
-        subject.save
-        subject.skip_sync_to_mailchimp = true
-
-        expect {
-          subject.update_attributes(:first_name => subject.first_name + subject.last_name)
-        }.to_not change {
-          Delayed::Job.count
-        }
-      end
-    end
-
-    context "no mailchimp kit" do
-      it "should not enqueue a sync" do
-        expect {
-          subject.update_attributes(:email => "new@example.com")
-        }.to_not change {
-          Delayed::Job.count
-        }
-      end
     end
   end
 

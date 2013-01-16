@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe Exchange do
   disconnect_sunspot
-  let(:order)       { FactoryGirl.build(:order) }
-  let(:items)       { 3.times.collect { FactoryGirl.build(:item) } }
+  let(:items)       { 3.times.collect { FactoryGirl.build(:item) }}
+  let(:order)       { FactoryGirl.build(:order, :items => items, :service_fee => 600) }
   let(:event)       { FactoryGirl.build(:event, :organization => order.organization) }
-  let(:tickets)     { 3.times.collect { FactoryGirl.build(:ticket, :state => :on_sale, :organization => order.organization) } }
+  let(:tickets)     { 3.times.collect { FactoryGirl.create(:ticket, :state => :on_sale, :organization => order.organization) } }
 
   subject { Exchange.new(order, items, tickets) }
 
@@ -46,6 +46,54 @@ describe Exchange do
     it "should not be valid if any of the tickets belong to another organization" do
       subject.tickets.first.organization = FactoryGirl.build(:organization)
       subject.should_not be_valid
+    end
+  end
+
+  describe "service fees" do
+    it "should calculate the service fee" do
+      order.service_fee = 600
+      subject.service_fee.should eq 600
+    end
+
+    it "should transfer the relevant service fees" do
+      order.service_fee = 600
+      subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+      subject.submit
+      exchange_order = subject.order.children.first
+      exchange_order.service_fee.should eq 600
+      order.reload.service_fee.should eq 0
+    end
+
+    it "should transfer the relevant service fees for the correct number of items" do
+      order.service_fee = 600
+      items = Array.wrap(FactoryGirl.build(:item))
+      tickets = Array.wrap(FactoryGirl.create(:ticket, :state => :on_sale, :organization => order.organization))
+
+      subject = Exchange.new(order, items, tickets)
+
+      subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+      subject.submit
+      exchange_order = subject.order.children.first
+      exchange_order.service_fee.should eq 200
+      order.reload.service_fee.should eq 400
+    end
+
+    it "should account for free items" do
+      free_ticket = FactoryGirl.create(:free_ticket, :state => :on_sale, :organization => order.organization)
+      free_item = Item.for(free_ticket)
+      order.items << free_item
+      items = Array.wrap(FactoryGirl.build(:item))
+      items << free_item
+      tickets = Array.wrap(FactoryGirl.create(:ticket, :state => :on_sale, :organization => order.organization))
+      tickets << free_ticket
+
+      subject = Exchange.new(order, items, tickets)
+
+      subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+      subject.submit
+      exchange_order = subject.order.children.first
+      exchange_order.service_fee.should eq 200
+      order.reload.service_fee.should eq 400      
     end
   end
 

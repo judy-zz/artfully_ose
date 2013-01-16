@@ -36,7 +36,7 @@
   color: #FFFFFF;
 }
 
-.navbar a.brand {
+.navbar a.artfully-brand {
   background-image: url('/assets/pages/logo-white-topbar.png');
   background-repeat: no-repeat;
   background-position: 18px 7px;
@@ -44,6 +44,7 @@
   display: block;
   width: 85px;
 }
+
 .navbar .divider-vertical {
   background-color: #175c71;
   border-color: #2086a6;

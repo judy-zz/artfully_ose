@@ -61,6 +61,14 @@ class CreditCardPayment < ::Payment
   def requires_settlement?
     true
   end
+
+  def refund(refund_amount, transaction_id)
+    return true if (refund_amount <= 0)
+    response = gateway.refund(refund_amount, transaction_id)
+    self.transaction_id = response.authorization
+    self.errors.add(:base, response.message) unless response.message.blank?
+    response.success?
+  end
   
   #purchase submits for auth and passes a flag to merchant to settle immediately
   def purchase(options={})

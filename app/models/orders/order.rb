@@ -39,6 +39,42 @@ class Order < ActiveRecord::Base
   scope :not_imported, where("fa_id IS NULL")
   scope :artfully, where("transaction_id IS NOT NULL")
 
+  searchable do
+    text :details, :id, :type, :location, :transaction_id, :payment_method, :special_instructions
+
+    [:first_name, :last_name, :email].each do |person_field|
+      text person_field do
+        person.send(person_field) unless person.nil?
+      end
+    end
+
+    text :organization_id do
+      organization.id
+    end
+
+    text :organization_name do
+      organization.name
+    end
+
+    text :event_name do
+      items.map{ |item| item.show.event.name unless item.show.nil? }
+    end
+
+    string :details, :id, :type, :location, :transaction_id, :payment_method, :special_instructions
+    string :organization_id do
+      organization.id
+    end
+
+    string :organization_name do
+      organization.name
+    end
+
+    string :event_name, :multiple => true do
+      items.map{ |item| item.show.event.name unless item.show.nil? }
+    end
+  end
+  include Ext::DelayedIndexing
+
   def self.in_range(start, stop, organization_id = nil)
     query = after(start).before(stop).includes(:items, :person, :organization).order("created_at DESC")
     if organization_id.present?
@@ -125,11 +161,16 @@ class Order < ActiveRecord::Base
   end
 
   def refundable_items
+    return [] unless Payment.create(payment_method).refundable?
     items.select(&:refundable?)
   end
 
   def exchangeable_items
     items.select(&:exchangeable?)
+  end
+
+  def returnable_items
+    items.select { |i| i.returnable? and not i.refundable? }
   end
 
   def num_tickets
@@ -172,10 +213,6 @@ class Order < ActiveRecord::Base
       "#{number_as_cents sum_donations} donation"
     end
   end
-
-  def returnable_items
-    items.select { |i| i.returnable? and not i.refundable? }
-  end
   
   def ticket_summary
     summary = TicketSummary.new
@@ -187,6 +224,14 @@ class Order < ActiveRecord::Base
 
   def credit?
     payment_method.eql? CreditCardPayment.payment_method
+  end
+
+  #
+  # If this order has no transaction_id, run up the parent chain until we hit one
+  # This is needed for exchanges that ultimately need to be refunded
+  #
+  def transaction_id
+    read_attribute(:transaction_id) || self.parent.try(:transaction_id)
   end
   
   def sell_tickets

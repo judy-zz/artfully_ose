@@ -54,9 +54,11 @@ class SalesController < ArtfullyOseController
       ticket.reload
       if ticket.sold? || ticket.comped?
         door_list_rows[i] = {}
-        door_list_rows[i]['buyer'] = @sale.buyer.to_s
+        door_list_rows[i]['first_name'] = @sale.buyer.first_name
+        door_list_rows[i]['last_name'] = @sale.buyer.last_name
         door_list_rows[i]['email'] = @sale.buyer.email
         door_list_rows[i]['section'] = ticket.section.name
+        door_list_rows[i]['payment_method'] = ticket.sold_item.order.payment_method
         door_list_rows[i]['price'] = ticket.sold_price
       end
     end
