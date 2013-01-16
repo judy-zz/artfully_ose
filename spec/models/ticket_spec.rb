@@ -200,11 +200,6 @@ describe Ticket do
        subject.sold_at.should eq when_it_got_sold
      end
    
-     it "sets sold_price to price" do
-       subject.sell_to(buyer)
-       subject.sold_price.should eq subject.price
-     end
-   
      it "marks the ticket as sold" do
        subject.sell_to(buyer)
        subject.should be_sold
@@ -321,17 +316,19 @@ describe Ticket do
      
    end
    
-   describe "return!" do
-     subject { FactoryGirl.create(:sold_ticket) }
+   describe "returning a ticket to inventory" do
+     subject { FactoryGirl.create(:sold_ticket, :cart_price => 300, :discount => FactoryGirl.create(:discount)) }
    
      it "removes the buyer from the item" do
        subject.return!
        subject.buyer_id.should be_nil
      end
    
-     it "removes the sold price and sold time" do
+     it "removes the sold price, sold time, cart_price, and discounts" do
        subject.return!
        subject.sold_at.should be_nil
+       subject.cart_price.should eq subject.price
+       subject.discount.should be_nil
        subject.sold_price.should be_nil
      end
    
@@ -393,6 +390,50 @@ describe Ticket do
     it "should automatically be set when created" do
       subject.save!
       subject.cart_price.should == subject.price
+    end
+  end
+
+  describe "reset_price" do
+    describe "when a ticket is unsold" do
+      before(:each) do
+        @ticket = FactoryGirl.build(:ticket, :price => 9999, :cart_price => 1000, :sold_price => 3333, :discount_id => 4)
+        @ticket.reset_price!
+      end
+
+      it "should set cart_price to nil" do
+        @ticket.cart_price.should eq @ticket.price
+      end
+
+      it "should set the discount to nil" do
+        @ticket.discount_id.should be_nil
+      end
+
+      it "should set the sold_price to nil" do
+        @ticket.sold_price.should be_nil
+      end
+    end
+
+    describe "when a ticket has been sold" do
+      before(:each) do
+        @ticket = FactoryGirl.build(:sold_ticket, :price => 9999, :cart_price => 1000, :sold_price => 3333, :discount_id => 4)
+        @ticket.reset_price!
+      end
+
+      it "should return false" do
+        @ticket.reset_price!.should be_false
+      end
+
+      it "should set cart_price to price" do
+        @ticket.cart_price.should eq 1000
+      end
+
+      it "should set the discount to nil" do
+        @ticket.discount_id.should eq 4
+      end
+
+      it "should set the sold_price to nil" do
+        @ticket.sold_price.should eq 3333
+      end
     end
   end
   

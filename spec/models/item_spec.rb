@@ -228,4 +228,41 @@ describe Item do
       end
     end
   end
+
+  describe "exchanging items" do
+    let(:item1) { FactoryGirl.build(:item, :original_price => 1000, :price => 500, :realized_price => 100, :net => 3, :state => "purchased", :discount => FactoryGirl.build(:discount))}
+    let(:item2) { FactoryGirl.build(:item) }
+
+    before(:each) do
+      item1.stub(:ticket?).and_return(true)
+      item2.to_exchange!(item1)
+    end
+
+    it "should transfer prices, state, and discount to the exchangee" do
+
+      
+      [:original_price, 
+       :price, 
+       :realized_price, 
+       :net, 
+       :state, 
+       :discount_id].each do |field|
+        item1.send(field).should eq item2.send(field)
+      end
+    end
+
+    it "should blank prices, state, and discount on the exchanged item" do
+
+      item1.exchange!
+      [:original_price, 
+       :price, 
+       :realized_price, 
+       :net].each do |field|
+        item1.send(field).should eq 0
+      end      
+
+      item1.state.should eq "exchanged"
+      item1.discount.should be_nil
+    end
+  end
 end

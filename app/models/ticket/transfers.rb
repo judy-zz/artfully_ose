@@ -4,7 +4,6 @@ module Ticket::Transfers
   def sell_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
-      self.sold_price = self.price
       self.sold_at = time
       self.sell!
     rescue Transitions::InvalidTransition
@@ -12,10 +11,12 @@ module Ticket::Transfers
     end
   end
   
+  #
+  # Deals solely with changing the buyer.  Pricing should be handled in exchange_prices_from
+  #
   def exchange_to(buyer, time=Time.now)
     begin
       self.buyer = buyer
-      self.sold_price = 0
       self.sold_at = time
       self.exchange!
     rescue Transitions::InvalidTransition => e
@@ -37,13 +38,13 @@ module Ticket::Transfers
   end
 
   def return!(and_return_to_inventory = true)
+    and_return_to_inventory ? return_to_inventory! : return_off_sale!
     remove_from_cart
     self.buyer = nil
-    self.sold_price = nil
     self.sold_at = nil
     self.buyer_id = nil
+    self.reset_price!
     save
-    and_return_to_inventory ? return_to_inventory! : return_off_sale!
   end
 
 end

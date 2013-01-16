@@ -81,6 +81,7 @@ class Item < ActiveRecord::Base
   def product=(product)
     set_product_details_from product
     set_prices_from product
+    set_discount_from product if product.respond_to? :discount
     set_show_from product if product.respond_to? :show_id
     self.state = "purchased"
     self.product_id = if product then product.id end
@@ -113,7 +114,10 @@ class Item < ActiveRecord::Base
   #
   def refund!
     self.state = "refunded"
-    product.remove_from_cart if self.ticket?
+    if self.ticket?
+      product.remove_from_cart
+      product.reset_price!
+    end
     self.save
   end
 
@@ -134,8 +138,9 @@ class Item < ActiveRecord::Base
     self.net              = item_that_this_is_being_exchanged_for.net
     
     if self.ticket?
+      self.discount = item_that_this_is_being_exchanged_for.discount
       product.remove_from_cart
-      product.update_column(:sold_price,item_that_this_is_being_exchanged_for.product.sold_price)
+      product.exchange_prices_from(item_that_this_is_being_exchanged_for.product)
     end
     
     self.state = item_that_this_is_being_exchanged_for.state
@@ -160,6 +165,7 @@ class Item < ActiveRecord::Base
     self.price = 0
     self.realized_price = 0
     self.net = 0 
+    self.discount = nil
     save   
   end
 
@@ -222,6 +228,10 @@ class Item < ActiveRecord::Base
     def set_product_details_from(prod)
       self.product_id = prod.id
       self.product_type = prod.class.to_s
+    end
+
+    def set_discount_from(prod)
+      self.discount = prod.discount
     end
 
     def set_prices_from(prod)

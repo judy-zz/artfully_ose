@@ -58,11 +58,9 @@ class ShowsController < ArtfullyOseController
   end
 
   def show
-    @show = Show.find(params[:id])
+    @show = Show.includes(:event => :venue, :tickets => :section).find(params[:id])
     authorize! :view, @show
-
-    @show.tickets = @show.tickets
-    @tickets = @show.tickets.includes(:section)
+    @tickets = @show.tickets
   end
 
   def edit
@@ -192,7 +190,7 @@ class ShowsController < ArtfullyOseController
 
   private
     def find_event
-      @event = Event.includes(:shows).find(params[:event_id])
+      @event = Event.includes(:shows => [:event => :venue]).find(params[:event_id])
     end
 
     def upcoming_shows
