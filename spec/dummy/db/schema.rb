@@ -173,6 +173,7 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.datetime "updated_at"
     t.datetime "deleted_at"
     t.integer  "discount_id"
+    t.integer  "original_price"
   end
 
   add_index "items", ["created_at"], :name => "index_items_on_created_at"
@@ -283,6 +284,7 @@ ActiveRecord::Schema.define(:version => 20130114212408) do
     t.string   "tagging"
     t.datetime "created_at",           :null => false
     t.datetime "updated_at",           :null => false
+    t.string   "discount_code"
   end
 
   add_index "searches", ["organization_id"], :name => "index_searches_on_organization_id"
