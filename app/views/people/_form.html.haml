@@ -11,6 +11,9 @@
       = form.text_field :email
     - unless person.new_record?
       %li
+        = form.label :title, "Title"
+        = form.text_field :title
+      %li
         = form.label :company_name, "Company"
         = form.text_field :company_name
       %li
