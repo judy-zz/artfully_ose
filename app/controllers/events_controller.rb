@@ -72,7 +72,7 @@ class EventsController < ArtfullyOseController
     if @event.update_attributes(params[:event])
       if user_requesting_next_step?
         if user_just_uploaded_an_image?
-          redirect_to event_discounts_path(@event)
+          redirect_to event_messages_path(@event)
         elsif user_set_special_instructions?
           redirect_to event_shows_path(@event)
         else

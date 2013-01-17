@@ -7,7 +7,6 @@
       = active_link_to 'Venue', edit_event_venue_path(@event)
       = active_link_to 'Prices', prices_event_path(@event)
       = active_link_to 'Image', image_event_path(@event)
-      = active_link_to 'Discounts', event_discounts_path(@event)
       = active_link_to 'Messages', messages_event_path(@event)
   %li.accordian{:class => active?(:shows)}
     = link_to 'Shows List', event_shows_path(@event)
