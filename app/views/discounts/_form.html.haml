@@ -1,6 +1,5 @@
 %fieldset
   %legend Discount
-
   .control-group
     = f.label :code, "Discount Code", :class => 'control-label'
     .controls
@@ -14,7 +13,6 @@
         Discount is active and can be used now.
 
 %fieldset
-  %legend
   .control-group
     = f.label :show_ids, "Discount is valid for these shows", :class => 'control-label'
     .controls
@@ -24,8 +22,8 @@
     .controls
       = f.select :sections, options_for_select(@section_names, @discount.sections.to_a), {}, {'data-placeholder' => "All Prices", :class => 'input chosen', :multiple => true}
 
-  %legend
-  %h3 Inventory
+%fieldset
+  %legend Inventory
   .control-group
     .controls
       .radio
