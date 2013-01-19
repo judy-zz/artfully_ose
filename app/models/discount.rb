@@ -110,7 +110,7 @@ private
     raise "Discount is not active." unless self.active?
     raise "Discount won't work for this show." unless @cart.tickets.first.try(:event) == self.event
     raise "You need at least #{self.minimum_ticket_count} tickets for this discount." unless @cart.tickets.count >= self.minimum_ticket_count
-    raise "Discount won't work for these shows or prices." unless eligible_tickets.count > 0
+    raise "Discount not valid for these shows or tickets." unless eligible_tickets.count > 0
     raise "Discount has been maxed out." unless tickets_fit_within_limit
   end
 
