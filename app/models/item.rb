@@ -1,4 +1,5 @@
 class Item < ActiveRecord::Base
+  audited
   include Ext::Integrations::Item
   include OhNoes::Destroy
 
