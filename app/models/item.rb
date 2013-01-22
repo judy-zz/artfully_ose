@@ -1,5 +1,8 @@
 class Item < ActiveRecord::Base
   audited
+  handle_asynchronously :write_audit
+
+
   include Ext::Integrations::Item
   include OhNoes::Destroy
 
