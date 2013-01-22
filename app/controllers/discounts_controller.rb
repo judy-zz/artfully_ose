@@ -4,6 +4,10 @@ class DiscountsController < ApplicationController
 
   def index
     @discounts = @event.discounts
+    if @discounts.blank?
+      flash[:info] = "You don't have any discounts yet. Please create your first one here."
+      redirect_to new_event_discount_path(@event)
+    end
   end
 
   def new
