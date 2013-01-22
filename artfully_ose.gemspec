@@ -49,6 +49,8 @@ Gem::Specification.new do |s|
   s.add_dependency "restful_metrics", "1.1.4"
   
   s.add_dependency "uuid", "2.3.5"
+
+  s.add_dependency "geocoder"
   
   s.add_development_dependency "sunspot_solr", "1.3.3"
 end
