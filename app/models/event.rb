@@ -5,9 +5,11 @@ class Event < ActiveRecord::Base
   include Ticket::Reporting
   include EventPresenter
   require 'email_validator'
+
+  CATEGORIES = ["Dance", "Film & Electronic Media", "Literary Arts", "Music", "Theater", "Visual Arts"]
   
   attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes,
-                  :show_special_instructions, :special_instructions_caption, :public
+                  :show_special_instructions, :special_instructions_caption, :public, :primary_category
   
   belongs_to :organization
   belongs_to :venue
