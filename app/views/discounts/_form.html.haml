@@ -14,13 +14,40 @@
 
 %fieldset
   .control-group
-    = f.label :show_ids, "Discount is valid for these shows", :class => 'control-label'
+    = f.label :show_ids, "Shows", :class => 'control-label'
     .controls
       = f.select :show_ids, options_for_select(@event.shows.collect {|s| [l(s.datetime_local_to_event, :format => :day_time), s.id] }, @discount.show_ids), {}, {'data-placeholder' => "All Shows", :class => 'input chosen', :multiple => true}
   .control-group
-    = f.label :sections, "Discount is valid for these ticket types", :class => 'control-label'
+    = f.label :sections, "Ticket Types", :class => 'control-label'
     .controls
       = f.select :sections, options_for_select(@section_names, @discount.sections.to_a), {}, {'data-placeholder' => "All Prices", :class => 'input chosen', :multiple => true}
+
+%fieldset
+  .control-group
+    = f.label :promotion_type, "Promotion Type", :class => 'control-label'
+    .controls
+      %label.radio
+        = f.radio_button :promotion_type, 'DollarsOffTickets', :class => 'promotion-type-radio'
+        X dollars off each ticket
+      %label.radio
+        = f.radio_button :promotion_type, 'BuyOneGetOneFree', :class => 'promotion-type-radio'
+        Buy one get one free
+
+%fieldset
+  = f.fields_for :properties, discount.properties do |p|
+    .control-group.promotion-type-properties#DollarsOffTickets{:style => "display: none;"}
+      = p.label :amount, "Amount off each ticket", :class => 'control-label'
+      .controls
+        = p.text_field :amount, :class => 'input-small section-price currency', :value => discount.properties[:amount]
+        
+    .control-group.promotion-type-properties#BuyOneGetOneFree
+
+%fieldset
+  .control-group
+    = f.label :minimum_ticket_count, "Minimum purchase of", :class => 'control-label'
+    .controls
+      = f.text_field :minimum_ticket_count, :class => 'input input-mini', :placeholder => "1"
+      tickets.
 
 %fieldset
   %legend Inventory
@@ -34,34 +61,6 @@
         Only
         = f.text_field :limit, :class => 'span1', :placeholder => 10
         tickets can be sold with this discount per event.
-
-
-%fieldset
-  .control-group
-    = f.label :promotion_type, :class => 'control-label'
-    .controls
-      %label.radio
-        = f.radio_button :promotion_type, 'DollarsOffTickets', :class => 'promotion-type-radio'
-        X Dollars Off Each Ticket
-      %label.radio
-        = f.radio_button :promotion_type, 'BuyOneGetOneFree', :class => 'promotion-type-radio'
-        Buy One Get One Free
-
-%fieldset
-  = f.fields_for :properties, discount.properties do |p|
-    .control-group.promotion-type-properties#DollarsOffTickets{:style => "display: none;"}
-      = p.label :amount, "Amount off each ticket", :class => 'control-label'
-      .controls
-        = p.text_field :amount, :class => 'input-small section-price currency', :value => discount.properties[:amount]
-        
-    .control-group.promotion-type-properties#BuyOneGetOneFree
-
-%fieldset
-  .control-group
-    .controls
-      Discount requires a minimum purchase of
-      = f.text_field :minimum_ticket_count, :class => 'input input-mini', :placeholder => "1"
-      tickets.
       
 - content_for :custom_js do
   = stylesheet_link_tag 'jquery/chosen'
