@@ -5,9 +5,12 @@ class Event < ActiveRecord::Base
   include Ticket::Reporting
   include EventPresenter
   require 'email_validator'
+
+  CATEGORIES = ["Dance", "Film & Electronic Media", "Literary Arts", "Music", "Theater", "Visual Arts", "Other"]
   
   attr_accessible :name, :producer, :description, :contact_email, :contact_phone, :image, :venue_attributes,
-                  :show_special_instructions, :special_instructions_caption, :public
+                  :show_special_instructions, :special_instructions_caption, :public, :primary_category,
+                  :secondary_categories, :primary_category_other, :secondary_category_other
   
   belongs_to :organization
   belongs_to :venue
@@ -37,6 +40,8 @@ class Event < ActiveRecord::Base
   validates_attachment_content_type :image, :content_type => ["image/jpeg", "image/gif", "image/png"]
 
   after_create :create_default_chart
+
+  serialize :secondary_categories, Array
 
   default_scope where(:deleted_at => nil).order("events.created_at DESC")
   scope :published, includes(:shows).where(:shows => { :state => "published" })
