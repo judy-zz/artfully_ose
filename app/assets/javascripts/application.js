@@ -344,3 +344,23 @@ function togglePrintPreview(){
       printStyles.attr("media","all");
   }
 }
+
+$(function() {
+  $("#event_primary_category").on("change", function(e) {
+    selectedOption = $(e.target).find("option:selected").text();
+    if (selectedOption == "Other") {
+      $("#event_primary_category_other").prop("disabled", false);
+    } else {
+      $("#event_primary_category_other").prop("disabled", true);
+    }
+  });
+  $(".event_categories input[type=checkbox]").on("change", function(e) {
+    selectedOption = $(e.target).parents("label").text().trim();
+    console.log(selectedOption);
+
+    if (selectedOption == "Other") {
+      checked = $(e.target).prop("checked");
+      $("#event_secondary_category_other").prop("disabled", !checked);
+    }
+  });
+});
