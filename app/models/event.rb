@@ -79,7 +79,7 @@ class Event < ActiveRecord::Base
   end
 
   def set_primary_category
-    self.primary_category = "Other"
+    self.primary_category ||= "Other"
   end
   
   def create_default_chart
