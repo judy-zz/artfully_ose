@@ -36,7 +36,7 @@ class DiscountsReport
 
     build_header
 
-    self.tickets_sold     = @counts.values.inject{ |total, ct| total = total + ct}
+    self.tickets_sold     = @counts.values.inject(0){ |total, ct| total = total + ct}
     self.original_price   = @items.inject(0) { |total, item| total + item.original_price }
     self.discounted       = @items.inject(0) { |total, item| total + (item.original_price - item.price) }
     self.gross            = @items.inject(0) { |total, item| total + item.price }
