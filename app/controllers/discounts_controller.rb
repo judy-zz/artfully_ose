@@ -1,6 +1,5 @@
 class DiscountsController < ApplicationController
-  before_filter :authorize_event
-  before_filter :grab_section_names, :only => [:new, :edit]
+  before_filter :authorize_event, :grab_section_names
 
   def index
     @discounts = @event.discounts
