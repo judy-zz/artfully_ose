@@ -39,6 +39,7 @@ class Event < ActiveRecord::Base
   validates_attachment_size :image, :less_than => 1.megabytes, :unless => Proc.new {|model| model.image }
   validates_attachment_content_type :image, :content_type => ["image/jpeg", "image/gif", "image/png"]
 
+  before_create :set_primary_category
   after_create :create_default_chart
 
   serialize :secondary_categories, Array
@@ -75,6 +76,10 @@ class Event < ActiveRecord::Base
 
   def filter_charts(charts)
     charts.reject { |chart| already_has_chart(chart) }
+  end
+
+  def set_primary_category
+    self.primary_category ||= "Other"
   end
   
   def create_default_chart
