@@ -63,14 +63,14 @@
         %tbody
           -@rows.each do |row|
             %tr
-              %td=row.item.discount.code
-              %td=link_to row.item.order.id, order_path(row.item.order)
-              %td=l row.item.order.created_at, :format => :slashed_date
-              %td=link_to row.item.order.person, person_path(row.item.order.person)
-              %td=link_to row.item.show.event.name, event_path(row.item.show.event)
+              %td=row.discount_code
+              %td=link_to row.order.id, order_path(row.order)
+              %td=l row.order.created_at, :format => :slashed_date
+              %td=link_to row.order.person, person_path(row.order.person)
+              %td=link_to row.show.event.name, event_path(row.show.event)
               %td=row.ticket_count
-              %td.right=number_as_cents row.item.original_price
-              %td.right=number_as_cents (row.item.original_price - row.item.price)
-              %td.right=number_as_cents row.item.price
+              %td.right=number_as_cents row.original_price
+              %td.right=number_as_cents row.discounted
+              %td.right=number_as_cents row.gross
 
     = will_paginate(@rows)
