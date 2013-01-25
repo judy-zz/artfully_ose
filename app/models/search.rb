@@ -31,7 +31,7 @@ class Search < ActiveRecord::Base
     end
 
     unless discount_code.blank?
-      conditions << "Used discount code #{discount_code}."
+      conditions << ((discount_code == Discount::ALL_DISCOUNTS_STRING) ? "Used any discount code" : "Used discount code #{discount_code}.")
     end
 
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)
@@ -83,7 +83,7 @@ class Search < ActiveRecord::Base
 
     unless discount_code.blank?
       people = people.joins(:orders => [:items => [:discount]])
-      people = people.where("discounts.code = ?", discount_code)
+      people = (discount_code == Discount::ALL_DISCOUNTS_STRING) ? people.where("items.discount_id is not null") : people.where("discounts.code = ?", discount_code)
     end
 
     unless [min_donations_amount, max_donations_amount, min_donations_date, max_donations_date].all?(&:blank?)

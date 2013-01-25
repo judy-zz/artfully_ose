@@ -9,6 +9,8 @@ class Discount < ActiveRecord::Base
 
   include OhNoes::Destroy
 
+  ALL_DISCOUNTS_STRING = "ALL DISCOUNTS"
+
   belongs_to :event
   belongs_to :organization
   belongs_to :creator, :class_name => "User", :foreign_key => "user_id"

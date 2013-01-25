@@ -4,7 +4,7 @@ class DiscountsReportsController < ArtfullyOseController
     @end_date = params[:end_date]
     @organization = current_user.current_organization
     @codes = Discount.where(:organization_id => current_user.current_organization)
-    code = params[:code]=="ALL DISCOUNTS" ? nil : params[:code]
+    code = params[:code]==Discount::ALL_DISCOUNTS_STRING ? nil : params[:code]
     @report = nil
     @report = DiscountsReport.new(@organization, code, @start_date, @end_date) unless params[:code].nil?
     @rows = @report.rows.paginate(:page => params[:page], :per_page => 100) unless @report.nil?
