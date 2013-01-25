@@ -21,6 +21,7 @@ class Store::CheckoutsController < Store::StoreController
     message = "Please make sure all fields are filled out accurately."
     render :json => message, :status => :unprocessable_entity
   rescue Exception => e
+    Exceptional.context(:payment => @payment.inspect, :current_cart => current_cart.inspect, :checkout => @checkout.inspect)
     Exceptional.handle(e, "Checkout failed!")
     message = "We're sorry but we could not process the sale.  Please make sure all fields are filled out accurately"
     render :json => message, :status => :unprocessable_entity
