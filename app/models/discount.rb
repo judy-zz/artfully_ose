@@ -20,8 +20,8 @@ class Discount < ActiveRecord::Base
   serialize :sections, Set
 
   validates_presence_of :code, :promotion_type, :event, :organization, :creator
-  validates :code, :length => { :minimum => 4, :maximum => 15 }, :uniqueness => {:scope => :event_id}
-  validates_numericality_of :limit, :minimum_ticket_count, :only_integer => true, :allow_nil => true
+  validates :code, :length => { :minimum => 4, :maximum => 15, :allow_blank => true }, :uniqueness => {:scope => :event_id}
+  validates_numericality_of :limit, :minimum_ticket_count, :only_integer => true, :allow_blank => true
   
   serialize :properties, HashWithIndifferentAccess
 
