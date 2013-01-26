@@ -24,7 +24,7 @@ class SlicesController < ArtfullyOseController
   def data    
     # convert URL string slice[] into procs
     slices = Array.wrap(params[:slice]).map { |s| Slices.send(s) }
-    data = Slicer.slice(nil, @items, slices, 0)
+    data = Slicer.slice(Slice.new("All Sales"), @items, slices)
 
     respond_to do |format|
       format.json { render :json => Array.wrap(data) }

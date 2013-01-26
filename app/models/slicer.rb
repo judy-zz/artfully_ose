@@ -21,11 +21,8 @@ class Slicer
     @@color = @@color + 0x001C07
   end
 
-  def self.slice(root_slice, things, blocks, current_depth)
-    
-    if root_slice.nil?
-      root_slice = Slice.new("All Sales")
-    end
+  def self.slice(root_slice, things, blocks, current_depth=0)
+    root_slice ||= Slice.new("Root")
     root_slice.children ||= []
 
     unless blocks.length == current_depth
