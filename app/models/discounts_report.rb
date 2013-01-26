@@ -18,28 +18,25 @@ class DiscountsReport
     self.start_date = start_date
     self.end_date = end_date
 
-    @items = Item.includes(:discount, :order => :person, :show => :event)
-                 .where(:discount_id => self.discount)
-                 .select('items.*, sum(items.price) as price, sum(items.original_price) as original_price')
-                 .group('items.order_id')
-                 .order('orders.created_at desc')
+    #
+    # This used to select on items with a sum on price, original_price and a group by order_id
+    # but ARel simply would not select the sums, they'd be overwritten by the actual values
+    #
+    @orders = Order.includes(:person, :items => [:discount, [:show => :event]]).where("items.discount_id" => self.discount).order('orders.created_at desc')
+    @orders = @orders.where('orders.created_at > ?',self.start_date)  unless start_date.blank?
+    @orders = @orders.where('orders.created_at < ?',self.end_date)    unless end_date.blank?
 
-    @items = @items.where('orders.created_at > ?',self.start_date)  unless start_date.blank?
-    @items = @items.where('orders.created_at < ?',self.end_date)    unless end_date.blank?
-
-    @counts = @items.count
     self.rows = []
-
-    @items.each do |item|
-      self.rows << Row.new(item, @counts[item.order.id])
+    @orders.each do |order|
+      self.rows << Row.new(order)
     end
 
     build_header
 
-    self.tickets_sold     = @counts.values.inject{ |total, ct| total = total + ct}
-    self.original_price   = @items.inject(0) { |total, item| total + item.original_price }
-    self.discounted       = @items.inject(0) { |total, item| total + (item.original_price - item.price) }
-    self.gross            = @items.inject(0) { |total, item| total + item.price }
+    self.tickets_sold     = self.rows.inject(0) { |total, row| total + row.ticket_count}
+    self.original_price   = self.rows.inject(0) { |total, row| total + row.original_price }
+    self.discounted       = self.rows.inject(0) { |total, row| total + row.discounted }
+    self.gross            = self.rows.inject(0) { |total, row| total + row.gross }
   end
 
   def build_header
@@ -55,26 +52,30 @@ class DiscountsReport
   end
 
   class Row
-    attr_accessor :item, :ticket_count, :discounted
+    attr_accessor :order, :show, :discount_code, :ticket_count, :original_price, :gross, :discounted
 
-    def initialize(item, ticket_count)
-      self.item = item
-      self.discounted = item.original_price - item.price
-      self.ticket_count = ticket_count
+    def initialize(order)
+      self.order = order
+      self.discount_code  = order.items.first.discount.code
+      self.show           = order.items.first.show
+      self.original_price = order.items.inject(0) { |total, item| total + item.original_price }
+      self.gross          = order.items.inject(0) { |total, item| total + item.price }
+      self.discounted     = self.original_price - self.gross
+      self.ticket_count   = order.items.length
     end
 
     comma do
-      item("Discount Code")   { |item| item.discount.code }
-      item("Order")           { |item| item.order.id }
-      item("Order Date")      { |item| item.order.created_at }
-      item("First Name")      { |item| item.order.person.first_name }
-      item("Last Name")       { |item| item.order.person.last_name }
-      item("Email")           { |item| item.order.person.email }
-      item("Event")           { |item| item.show.event.name }
+      discount_code
+      order("Order")          { |order| order.id }
+      order("Order Date")     { |order| order.created_at }
+      order("First Name")     { |order| order.person.first_name }
+      order("Last Name")      { |order| order.person.last_name }
+      order("Email")          { |order| order.person.email }
+      show("Event")           { |show| show.event.name }
       ticket_count
-      item("Original Price")  { |item| DiscountsReport.number_as_cents item.original_price }
+      original_price  { |original_price| DiscountsReport.number_as_cents original_price }
       discounted              { |discounted| DiscountsReport.number_as_cents discounted }
-      item("Price")           { |item| DiscountsReport.number_as_cents item.price }
+      gross           { |gross| DiscountsReport.number_as_cents gross }
     end
 
   end

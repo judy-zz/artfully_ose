@@ -8,9 +8,10 @@ class Store::CheckoutsController < Store::StoreController
 
     @payment = CreditCardPayment.new(params[:payment])
     @payment.user_agreement = params[:payment][:user_agreement]
-    current_cart.special_instructions = params[:special_instructions] 
+    current_cart.special_instructions = params[:special_instructions]
     
     @checkout = Checkout.new(current_cart, @payment)
+
     if @checkout.valid? && @checkout.finish
       render :json => @checkout.to_json
     else      
@@ -19,7 +20,9 @@ class Store::CheckoutsController < Store::StoreController
   rescue ActiveRecord::RecordInvalid
     message = "Please make sure all fields are filled out accurately."
     render :json => message, :status => :unprocessable_entity
-  Exceptional.rescue Exception => e
+  rescue Exception => e
+    Exceptional.context(:payment => @payment.inspect, :current_cart => current_cart.inspect, :checkout => @checkout.inspect)
+    Exceptional.handle(e, "Checkout failed!")
     message = "We're sorry but we could not process the sale.  Please make sure all fields are filled out accurately"
     render :json => message, :status => :unprocessable_entity
   end

@@ -1,9 +1,12 @@
 class DiscountsController < ApplicationController
-  before_filter :authorize_event
-  before_filter :grab_section_names, :only => [:new, :edit]
+  before_filter :authorize_event, :grab_section_names
 
   def index
     @discounts = @event.discounts
+    if @discounts.blank?
+      flash[:info] = "You don't have any discounts yet. Please create your first one here."
+      redirect_to new_event_discount_path(@event)
+    end
   end
 
   def new
