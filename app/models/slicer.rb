@@ -1,7 +1,7 @@
 class Slicer
 
   #
-  # Pass an array of things and an array of blocks to operate on those things
+  # Pass an array of things and an array of Proc objects to operate on those things
   # The block should yeild a hasmap where keys are names, values are the array of things that apply, such as
   # { :general_admission => some_things, :vip => some_other_things }
   #
@@ -21,20 +21,20 @@ class Slicer
     @@color = @@color + 0x001C07
   end
 
-  def self.slice(root_slice, things, blocks, current_depth=0)
+  def self.slice(root_slice, things, procs, current_depth=0)
     root_slice ||= Slice.new("Root")
     root_slice.children ||= []
 
-    unless blocks.length == current_depth
-      map = blocks[current_depth].call(things)
+    unless procs.length == current_depth
+      map = procs[current_depth].call(things)
       Array.wrap(map.keys).each do |kee|
         current_slice = Slice.new(kee)
-        if(blocks.length == current_depth+1)
+        if(procs.length == current_depth+1)
           current_slice.color = html_color(@@color)
           lighter
           current_slice.value = map[kee].length
         end
-        root_slice.children << slice(current_slice, map[kee], blocks, current_depth+1)
+        root_slice.children << slice(current_slice, map[kee], procs, current_depth+1)
       end
     end
     root_slice.children = nil if root_slice.children.empty?

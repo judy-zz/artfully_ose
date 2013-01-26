@@ -13,7 +13,6 @@ class SlicesController < ArtfullyOseController
   #
   # TODO TODO TODO
   # - Color finishing
-  # - Get rid of "root"
   # - Add percentages or display value on graph?
   # - Dollar amounts on ticket types
   # - Select all drop downs then de-select them
