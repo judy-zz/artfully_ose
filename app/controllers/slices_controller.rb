@@ -4,10 +4,11 @@ class SlicesController < ArtfullyOseController
   def index
     @select_options = [ 
                         ["", ""],
-                        ["Location",       "order_location_proc"],
-                        ["Payment Method", "payment_method_proc"],
-                        ["Ticket Type",    "ticket_type_proc"],
-                        ["Discount",       "discount_code_proc"]
+                        ["Location",                "order_location_proc"],
+                        ["Payment Method",          "payment_method_proc"],
+                        ["Ticket Type",             "ticket_type_proc"],
+                        ["Discount",                "discount_code_proc"],
+                        ["First time/Repeat",       "first_time_buyer_proc"]
                       ]
   end
 
@@ -26,7 +27,7 @@ class SlicesController < ArtfullyOseController
     data = Slicer.slice(Slice.new("All Sales"), @items, slices)
 
     respond_to do |format|
-      format.json { render :json => Array.wrap(data) }
+      format.json { render :json => data.children }
     end
   end
 
