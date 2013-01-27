@@ -6,7 +6,8 @@ class SlicesController < ArtfullyOseController
                         ["", ""],
                         ["Location",       "order_location_proc"],
                         ["Payment Method", "payment_method_proc"],
-                        ["Ticket Type",    "ticket_type_proc"]
+                        ["Ticket Type",    "ticket_type_proc"],
+                        ["Discount",       "discount_code_proc"]
                       ]
   end
 
@@ -16,7 +17,6 @@ class SlicesController < ArtfullyOseController
   # - Add percentages or display value on graph?
   # - Dollar amounts on ticket types
   # - Select all drop downs then de-select them
-  # - Gem
   # - Publish to /artfully/opensource/slicer, d3 examples?  
   #
 

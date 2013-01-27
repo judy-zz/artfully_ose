@@ -38,6 +38,7 @@ require "gibbon"
 
 require "set_watch_for"
 require "swiper"
+require "slicer"
 require "restful_metrics"
 
 module ArtfullyOse

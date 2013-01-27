@@ -1,5 +1,8 @@
 class Slices
-  cattr_accessor :payment_method_proc, :ticket_type_proc, :order_location_proc
+  cattr_accessor :payment_method_proc, 
+                 :ticket_type_proc, 
+                 :order_location_proc,
+                 :discount_code_proc
 
   self.payment_method_proc = Proc.new do |items|
     payment_method_map = {}
@@ -32,5 +35,17 @@ class Slices
       order_location_map[item.order.location] = item_array
     end
     order_location_map
+  end
+
+  self.discount_code_proc = Proc.new do |items|
+    discounts_code_map = {}
+    items.each do |item|
+      code = item.discount.try(:code) || "NO DISCOUNT"
+      item_array = discounts_code_map[code]
+      item_array ||= []
+      item_array << item
+      discounts_code_map[code] = item_array
+    end
+    discounts_code_map
   end
 end
