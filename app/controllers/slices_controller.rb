@@ -32,7 +32,8 @@ class SlicesController < ArtfullyOseController
   end
 
   def load_statement
-    @show = Show.includes(:event => :venue, :items => :order).find(params[:statement_id])
+    @show = Show.includes(:event).find(params[:statement_id])
+    authorize! :view, @show.event
     @items = Item.includes(:product, :order, :show => :event).where(:show_id => params[:statement_id])
   end
 end
