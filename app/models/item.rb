@@ -31,6 +31,11 @@ class Item < ActiveRecord::Base
     order("First Name")                     { |order| order.person.first_name if order.person }
     order("Last Name")                      { |order| order.person.last_name if order.person }
     order("Company Name")                   { |order| order.person.company_name if order.person }
+    order("Address1")                       { |order| order.person.address.address1 if (order.person && order.person.address) }
+    order("Address2")                       { |order| order.person.address.address2 if (order.person && order.person.address) }
+    order("City")                           { |order| order.person.address.city if (order.person && order.person.address) }
+    order("State")                          { |order| order.person.address.state if (order.person && order.person.address) }
+    order("Zip")                            { |order| order.person.address.zip if (order.person && order.person.address) }
     order("Date")                           { |order| order.created_at }
     order("Payment Method")                 { |order| order.payment_method }
     order("Donation Type")                  { |order| order.actions.where(:type => "GiveAction").first.try(:subtype) }
@@ -39,14 +44,19 @@ class Item < ActiveRecord::Base
   end
 
   comma :ticket_sale do
-    order("Date of Purchase") { |order| order.created_at }
-    order("Email") { |order| order.person.email if order.person }
-    order("First Name") { |order| order.person.first_name if order.person }
-    order("Last Name") { |order| order.person.last_name if order.person }
-    show("Performance Title") { |show| show.event.name if show }
-    show("Performance Date-Time") { |show| show.datetime_local_to_event if show }
-    price("Ticket Price") { |cents| number_to_currency(cents.to_f/100) if cents }
-    order("Special Instructions") { |order| order.special_instructions }
+    order("Date of Purchase")               { |order| order.created_at }
+    order("Email")                          { |order| order.person.email if order.person }
+    order("First Name")                     { |order| order.person.first_name if order.person }
+    order("Last Name")                      { |order| order.person.last_name if order.person }
+    order("Address1")                       { |order| order.person.address.address1 if (order.person && order.person.address) }
+    order("Address2")                       { |order| order.person.address.address2 if (order.person && order.person.address) }
+    order("City")                           { |order| order.person.address.city if (order.person && order.person.address) }
+    order("State")                          { |order| order.person.address.state if (order.person && order.person.address) }
+    order("Zip")                            { |order| order.person.address.zip if (order.person && order.person.address) }
+    show("Performance Title")               { |show| show.event.name if show }
+    show("Performance Date-Time")           { |show| show.datetime_local_to_event if show }
+    price("Ticket Price")                   { |cents| number_to_currency(cents.to_f/100) if cents }
+    order("Special Instructions")           { |order| order.special_instructions }
   end
 
   def ticket?
