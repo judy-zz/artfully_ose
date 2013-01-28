@@ -276,27 +276,27 @@ class Order < ActiveRecord::Base
   end
   handle_asynchronously :create_donation_actions
 
+  def create_purchase_action
+    unless all_tickets.empty?
+      action                  = GetAction.new
+      action.person           = person
+      action.subject          = self
+      action.organization     = organization
+      action.details          = ticket_details
+      action.occurred_at      = created_at
+      action.subtype          = "Purchase"
+      action.import           = self.import if self.import
+
+      action.save!
+      action
+    end
+  end
+  handle_asynchronously :create_purchase_action
+
   private
 
     #this used to do more.  Now it only does this
     def merge_and_sort_items
       items
     end
-
-    def create_purchase_action
-      unless all_tickets.empty?
-        action                  = GetAction.new
-        action.person           = person
-        action.subject          = self
-        action.organization     = organization
-        action.details          = ticket_details
-        action.occurred_at      = created_at
-        action.subtype          = "Purchase"
-        action.import           = self.import if self.import
-
-        action.save!
-        action
-      end
-    end
-    handle_asynchronously :create_purchase_action
 end

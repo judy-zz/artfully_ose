@@ -184,8 +184,10 @@ class EventsImport < Import
     item = Item.for(ticket)
     item.state = "settled"
     order.items << item
+    order.skip_actions = true
     order.save
     order.update_attribute(:created_at, time_zone_parser.parse(parsed_row.order_date)) unless parsed_row.order_date.blank?
+    order.create_purchase_action_without_delay
     order.actions.where(:type => "GetAction").first.update_attribute(:occurred_at, parsed_row.order_date) unless parsed_row.order_date.blank?
     @imported_orders[order_key] = order
     order
