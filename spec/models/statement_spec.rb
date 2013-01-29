@@ -49,6 +49,7 @@ describe Statement do
   
   describe "three credit card sales and three comps" do    
     before(:each) do
+      setup_discounts
       setup_show
       Settlement.new.tap do |settlement|
         settlement.net = 1000
@@ -62,20 +63,20 @@ describe Statement do
       @statement.tickets_sold.should eq 3
       @statement.potential_revenue.should eq 10000
       @statement.tickets_comped.should eq 3
-      @statement.gross_revenue.should eq 3000
-      @statement.processing.should be_within(0.00001).of(3000 * 0.035)
+      @statement.gross_revenue.should eq 2500
+      @statement.processing.should be_within(0.00001).of((2500 * 0.035).round)
       @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
       
-      @statement.cc_net.should eq 2895
+      @statement.cc_net.should eq 2412
       @statement.settled.should eq 0
       
       @statement.payment_method_rows.length.should eq 3
       
       @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].should_not be_nil
       @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].tickets.should eq 3
-      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].gross.should eq 3000
-      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].processing.should be_within(0.00001).of(3000 * 0.035)
-      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].net.should eq 2895
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].gross.should eq 2500
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].processing.should be_within(0.00001).of((2500 * 0.035).round)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].net.should eq 2412
       
       @statement.payment_method_rows[::CompPayment.payment_method.downcase].should_not be_nil
       @statement.payment_method_rows[::CompPayment.payment_method.downcase].tickets.should eq 3
@@ -179,6 +180,18 @@ describe Statement do
     end  
   end
   
+  def setup_discounts
+    paid_show.tickets[0].discount = super_code
+    paid_show.tickets[0].sold_price = paid_show.tickets[0].price - super_code.properties[:amount]
+    paid_show.tickets[0].save
+    paid_show.tickets[1].discount = super_code
+    paid_show.tickets[1].sold_price = paid_show.tickets[1].price - super_code.properties[:amount]
+    paid_show.tickets[1].save
+    paid_show.tickets[2].discount = other_code
+    paid_show.tickets[2].sold_price = paid_show.tickets[2].price - other_code.properties[:amount]
+    paid_show.tickets[2].save
+  end
+
   def setup_show
     @orders = []
 
@@ -193,16 +206,6 @@ describe Statement do
     Comp.new(paid_show, paid_show.tickets[3..5], FactoryGirl.create(:person), FactoryGirl.create(:user_in_organization)).submit
     
     paid_show.tickets.reload
-
-    paid_show.tickets[0].discount = super_code
-    paid_show.tickets[0].sold_price = paid_show.tickets[0].price - super_code.properties[:amount]
-    paid_show.tickets[0].save
-    paid_show.tickets[1].discount = super_code
-    paid_show.tickets[1].sold_price = paid_show.tickets[1].price - super_code.properties[:amount]
-    paid_show.tickets[1].save
-    paid_show.tickets[2].discount = other_code
-    paid_show.tickets[2].sold_price = paid_show.tickets[2].price - other_code.properties[:amount]
-    paid_show.tickets[2].save
   end
   
   def setup_exchange
