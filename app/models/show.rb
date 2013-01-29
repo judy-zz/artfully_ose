@@ -113,7 +113,7 @@ class Show < ActiveRecord::Base
   end
 
   def dup!
-    copy = Show.new(self.attributes.reject { |key, value| key == 'id' || key == 'state' })
+    copy = Show.new(self.attributes.reject { |key, value| key == 'id' || key == 'uuid' || key == 'state' })
     copy.event = self.event
     copy.datetime = copy.datetime + 1.day
     copy
