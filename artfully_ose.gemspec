@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">= 3.2.11"
   s.add_dependency "transitions", "0.0.11"
-  s.add_dependency "devise", "=2.0.4"
+  s.add_dependency "devise", "=2.0.5"
   s.add_dependency "devise_invitable", "=1.0.2"
   s.add_dependency "devise_suspendable", "=0.6.1"
   
