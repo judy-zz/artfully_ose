@@ -75,10 +75,26 @@ describe Refund do
     end
     
   end
+
+  describe "refunding an order that has been discounted to 0" do
+    before(:each) do
+      @fully_discounted_order = FactoryGirl.build(:order, :service_fee => 200, :items => [FactoryGirl.create(:fully_discounted_item)], :payment_method => :credit_card)
+      @fully_discounted_order.items.each { |i| i.stub(:return!) }
+      @fully_discounted_order.items.each { |i| i.stub(:refund!) }
+      gateway.should_receive(:refund).with(200, order.transaction_id).and_return(successful_response)
+    end
+
+    it "should still refund the ticket fee" do
+      refund = Refund.new(@fully_discounted_order, @fully_discounted_order.items)
+      refund.refund_amount.should eq 200
+      refund.submit
+      refund.should be_successful
+    end
+  end
   
   describe "refunding an item from an order with just free items" do
     before(:each) do
-      @free_order = FactoryGirl.build(:order, :service_fee => 0, :items => free_items)
+      @free_order = FactoryGirl.build(:order, :service_fee => 0, :items => free_items, :payment_method => :credit_card)
       @free_order.items.each { |i| i.stub(:return!) }
       @free_order.items.each { |i| i.stub(:refund!) } 
     end
