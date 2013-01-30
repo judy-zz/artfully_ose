@@ -19,7 +19,7 @@ class DiscountsReport
     self.end_date = end_date
 
     #
-    # This used to select on items with a sum on price, original_price and a group by order_id
+    # This used to select on Items with a sum on price, original_price and a group by order_id
     # but ARel simply would not select the sums, they'd be overwritten by the actual values
     #
     @orders = Order.includes(:person, :items => [:discount, [:show => :event]]).where("items.discount_id" => self.discount).order('orders.created_at desc')
@@ -62,6 +62,7 @@ class DiscountsReport
       self.gross          = order.items.inject(0) { |total, item| total + item.price }
       self.discounted     = self.original_price - self.gross
       self.ticket_count   = order.items.length
+      self.ticket_count   = self.ticket_count * -1 if !order.items.select(&:refund?).empty?
     end
 
     comma do
