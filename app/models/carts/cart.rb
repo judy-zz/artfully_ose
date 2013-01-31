@@ -109,6 +109,7 @@ class Cart < ActiveRecord::Base
 
     #TODO: Move the requires_authorization? check into the payments classes.  Cart shouldn't care
     if payment.requires_authorization?
+      options[:service_fee] = fee_in_cents
       pay_with_authorization(payment, options)
     else
       approve!

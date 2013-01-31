@@ -73,7 +73,8 @@ class CreditCardPayment < ::Payment
   #purchase submits for auth and passes a flag to merchant to settle immediately
   def purchase(options={})
     ::Rails.logger.debug("Sending purchase request to Braintree")
-    response = gateway.purchase(self.amount, credit_card, options)
+    response = gateway.purchase(self.amount, credit_card, options.except(:service_fee))
+    record_gateway_transaction(options[:service_fee], self.amount, response)
     ::Rails.logger.debug("Received response: #{response.message}")
     ::Rails.logger.debug(response.inspect)
     self.transaction_id = response.authorization
@@ -102,4 +103,19 @@ class CreditCardPayment < ::Payment
     gateway.capture(self.amount, authorization, options)
   end
   alias :settle :capture
+
+  #
+  # Don't change this method to be asynchronous.  That will cause this class to be serialized
+  # and likely serialize the credit card number
+  #
+  def record_gateway_transaction(service_fee, amount, response)
+    transaction = GatewayTransaction.new
+    transaction.transaction_id  = response.authorization
+    transaction.success         = response.success?
+    transaction.service_fee     = service_fee
+    transaction.amount          = amount
+    transaction.message         = response.message
+    transaction.response        = response
+    transaction.save
+  end
 end

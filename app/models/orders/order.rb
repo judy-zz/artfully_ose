@@ -16,6 +16,7 @@ class Order < ActiveRecord::Base
   belongs_to :organization
   belongs_to :import
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
+  belongs_to :gateway_transaction, :primary_key => :transaction_id, :foreign_key => :transaction_id
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
   has_many :items, :dependent => :destroy
   has_many :actions, :foreign_key => "subject_id", :dependent => :destroy
