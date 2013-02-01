@@ -62,9 +62,10 @@ class CreditCardPayment < ::Payment
     true
   end
 
-  def refund(refund_amount, transaction_id)
+  def refund(refund_amount, transaction_id, options = {})
     return true if (refund_amount <= 0)
     response = gateway.refund(refund_amount, transaction_id)
+    record_gateway_transaction((options[:service_fee] * -1), (refund_amount * -1), response)
     self.transaction_id = response.authorization
     self.errors.add(:base, response.message) unless response.message.blank?
     response.success?

@@ -14,7 +14,7 @@ class Refund
     return_items_to_inventory = options[:and_return] || false
 
     @payment = Payment.create(@order.payment_method)
-    @success = @payment.refund(refund_amount, order.transaction_id)
+    @success = @payment.refund(refund_amount, order.transaction_id, options.merge({:service_fee => order.service_fee}))
     @gateway_error_message = format_message(@payment)
     
     if @success
