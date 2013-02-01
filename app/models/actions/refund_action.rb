@@ -1,6 +1,7 @@
-class GetAction < Action
+class RefundAction < GetAction
+  
   def subtype
-    "Purchase"
+    "Refund"
   end
 
   def action_type
@@ -8,6 +9,6 @@ class GetAction < Action
   end
   
   def verb
-    "purchased"
+    ""
   end
 end
