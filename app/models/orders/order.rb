@@ -240,6 +240,10 @@ class Order < ActiveRecord::Base
     payment_method.eql? CreditCardPayment.payment_method
   end
 
+  def cash?
+    payment_method.eql? CashPayment.payment_method
+  end
+
   #
   # If this order has no transaction_id, run up the parent chain until we hit one
   # This is needed for exchanges that ultimately need to be refunded
