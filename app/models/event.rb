@@ -84,13 +84,13 @@ class Event < ActiveRecord::Base
   end
 
   def upcoming_shows(limit = 5)
-    upcoming = shows.select { |show| show.datetime > DateTime.now.beginning_of_day }
+    upcoming = shows.select { |show| show.datetime_local_to_event > (DateTime.now - 1.hours) }
     return upcoming if limit == :all
     upcoming.take(limit)
   end
 
   def played_shows(limit = 5)
-    played = shows.select { |show| show.datetime < DateTime.now.beginning_of_day }
+    played = shows.select { |show| show.datetime_local_to_event < (DateTime.now - 1.hours) }
     return played if limit == :all
     played.take(limit)
   end

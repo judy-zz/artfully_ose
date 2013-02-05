@@ -6,7 +6,6 @@ class Section < ActiveRecord::Base
 
   belongs_to :chart
   has_many :tickets
-  has_and_belongs_to_many :discounts
 
   validates :name, :presence => true
 

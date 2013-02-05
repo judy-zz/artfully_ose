@@ -283,20 +283,25 @@ class Order < ActiveRecord::Base
 
   def create_purchase_action
     unless all_tickets.empty?
-      action                  = GetAction.new
+      action                  = purchase_action_class.new
       action.person           = person
       action.subject          = self
       action.organization     = organization
       action.details          = ticket_details
       action.occurred_at      = created_at
-      action.subtype          = "Purchase"
-      action.import           = self.import if self.import
 
+      #Weird, but Rails can't initialize these is the bubtype is hardcoded in the model
+      action.subtype          = action.subtype
+      action.import           = self.import if self.import
       action.save!
       action
     end
   end
   handle_asynchronously :create_purchase_action
+
+  def purchase_action_class
+    GetAction
+  end
 
   private
 
