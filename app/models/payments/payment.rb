@@ -67,7 +67,7 @@ class Payment
     true
   end
 
-  def refund(refund_amount, transaction_id)
+  def refund(refund_amount, transaction_id, options = {})
     true
   end
   
