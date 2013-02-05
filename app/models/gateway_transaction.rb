@@ -5,4 +5,11 @@ class GatewayTransaction < ActiveRecord::Base
   serialize :response
   
   set_watch_for :created_at, :local_to => :self, :as => :admins
+
+  #
+  # For delayed_job
+  #
+  def perform
+    self.save
+  end
 end

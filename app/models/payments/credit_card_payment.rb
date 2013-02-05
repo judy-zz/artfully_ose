@@ -117,6 +117,6 @@ class CreditCardPayment < ::Payment
     transaction.amount          = amount
     transaction.message         = response.message
     transaction.response        = response
-    transaction.save
+    Delayed::Job.enqueue transaction
   end
 end
