@@ -110,13 +110,13 @@ class CreditCardPayment < ::Payment
   # and likely serialize the credit card number
   #
   def record_gateway_transaction(service_fee, amount, response)
-    transaction = GatewayTransaction.new
-    transaction.transaction_id  = response.authorization
-    transaction.success         = response.success?
-    transaction.service_fee     = service_fee
-    transaction.amount          = amount
-    transaction.message         = response.message
-    transaction.response        = response
-    Delayed::Job.enqueue transaction
+    attrs = {}
+    attrs[:transaction_id] = response.authorization
+    attrs[:success]        = response.success?
+    attrs[:service_fee]    = service_fee
+    attrs[:amount]         = amount
+    attrs[:message]        = response.message
+    attrs[:response]       = response
+    Delayed::Job.enqueue GatewayTransaction.create(attrs)
   end
 end
