@@ -6,10 +6,12 @@ class GatewayTransaction < ActiveRecord::Base
   
   set_watch_for :created_at, :local_to => :self, :as => :admins
 
-  #
-  # For delayed_job
-  #
-  def perform
-    self.save
+  before_create :clean
+
+  def clean
+    unless self.response.params.fetch("braintree_transaction",{}).fetch("credit_card_details", {}).fetch("masked_number", nil).nil?
+      self.response.params["braintree_transaction"]["credit_card_details"]["masked_number"] = nil
+      self.response.params["braintree_transaction"]["credit_card_details"]["bin"] = nil
+    end
   end
 end

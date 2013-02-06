@@ -106,17 +106,21 @@ class CreditCardPayment < ::Payment
   alias :settle :capture
 
   #
-  # Don't change this method to be asynchronous.  That will cause this class to be serialized
-  # and likely serialize the credit card number
+  # This can't be delayed_job'd because DJ can't deserialize ARs that haven't been persisted
   #
   def record_gateway_transaction(service_fee, amount, response)
-    attrs = {}
-    attrs[:transaction_id] = response.authorization
-    attrs[:success]        = response.success?
-    attrs[:service_fee]    = service_fee
-    attrs[:amount]         = amount
-    attrs[:message]        = response.message
-    attrs[:response]       = response
-    Delayed::Job.enqueue GatewayTransaction.create(attrs)
+    begin 
+      attrs = {}
+      attrs[:transaction_id] = response.authorization
+      attrs[:success]        = response.success?
+      attrs[:service_fee]    = service_fee
+      attrs[:amount]         = amount
+      attrs[:message]        = response.message
+      attrs[:response]       = response
+      @gateway_transaction = GatewayTransaction.create(attrs)
+    rescue Exception => e
+      Exceptional.context(:gateway_transaction => @gateway_transaction)
+      Exceptional.handle(e, "Failed to persist Gateway Transaction")
+    end
   end
 end
