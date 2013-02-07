@@ -290,7 +290,7 @@ class Order < ActiveRecord::Base
       action.details          = ticket_details
       action.occurred_at      = created_at
 
-      #Weird, but Rails can't initialize these is the bubtype is hardcoded in the model
+      #Weird, but Rails can't initialize these so the subtype is hardcoded in the model
       action.subtype          = action.subtype
       action.import           = self.import if self.import
       action.save!
