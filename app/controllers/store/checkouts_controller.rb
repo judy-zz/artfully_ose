@@ -17,9 +17,6 @@ class Store::CheckoutsController < Store::StoreController
     else      
       render :json => @checkout.message, :status => :unprocessable_entity
     end
-  rescue ActiveRecord::RecordInvalid
-    message = "Please make sure all fields are filled out accurately."
-    render :json => message, :status => :unprocessable_entity
   rescue Exception => e
     Exceptional.context(:params => filter(params))
     Exceptional.handle(e, "Checkout failed!")
