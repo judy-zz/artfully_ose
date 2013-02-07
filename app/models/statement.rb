@@ -10,6 +10,7 @@ class Statement
                 :settled,
                 :payment_method_rows,
                 :order_location_rows,
+                :ticket_type_rows,
                 :discount_rows
   
   def self.for_show(show, imported=false)
@@ -78,6 +79,24 @@ class Statement
       end
 
       statement.build_discount_rows(show.items)
+      statement.build_ticket_type_rows(show, show.items)
+    end
+  end
+
+  #
+  # TODO: These are super-related to the procs in class Slices.  Get these two on the same page and DRY it up
+  #
+  def build_ticket_type_rows(show, items)
+    self.ticket_type_rows         = {}
+
+    show.chart.sections.each do |section|
+      self.ticket_type_rows[section.name] = TicketTypeRow.new(section.name)
+    end
+
+    items.each do |item|
+      row = self.ticket_type_rows[item.product.section.name] || TicketTypeRow.new(item.product.section.name)
+      row << item
+      self.ticket_type_rows[item.product.section.name] = row
     end
   end
 
@@ -111,6 +130,19 @@ class Statement
       self.gross        = self.gross + item.price
       self.processing   = self.processing + (item.realized_price - item.net)
       self.net          = self.net + item.net
+    end
+  end
+  
+  class TicketTypeRow
+    include Row
+    attr_accessor   :ticket_type
+    
+    def initialize(ticket_type)
+      self.ticket_type = ticket_type
+      self.tickets = 0
+      self.gross = 0
+      self.processing = 0
+      self.net = 0
     end
   end
   

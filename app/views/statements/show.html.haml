@@ -23,6 +23,8 @@
         = render :partial => 'top_stats', :locals => { :statement => @statement }
         #statement_table
           = render :partial => 'payment_method_table', :locals => { :statement => @statement }
+        #statement_table
+          = render :partial => 'ticket_type_table', :locals => { :statement => @statement }
         #order_location
           = render :partial => 'order_location_table', :locals => { :statement => @statement }
         #discounts_table
