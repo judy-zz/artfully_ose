@@ -38,7 +38,6 @@
             %select
               %option
                 SOLD OUT
-            = submit_tag 'Add to cart', :class => 'btn'
           - else
             = select_tag :ticket_count, options_for_select((1..[10, section.available].min).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
             = submit_tag 'Add to cart', :class => 'btn btn-primary'
