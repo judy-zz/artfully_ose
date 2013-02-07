@@ -55,6 +55,10 @@ class Section < ActiveRecord::Base
     end
   end
   
+  def available
+    Ticket.on_sale.where(:section_id => self.id).where(:cart_id => nil).count
+  end
+
   def summary
     @summary || summarize
   end

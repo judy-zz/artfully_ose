@@ -59,6 +59,10 @@ class Ticket < ActiveRecord::Base
     where(:state => [:off_sale, :on_sale])
   end
 
+  #
+  # Unfortunately named.  This will return available tickets, not a count of available tickets
+  # as is the idiom elsewhere in the app
+  #
   def self.available(params = {}, limit = 4)
     conditions = params.dup
     conditions[:state] ||= :on_sale

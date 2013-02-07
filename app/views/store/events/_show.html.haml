@@ -34,5 +34,11 @@
           = hidden_field_tag :section_name, section.name
           = hidden_field_tag :ticket_price, section.price / 100.0
           = hidden_field_tag :showing_name, "#{show.datetime_local_to_event.strftime("%A, %B")} #{show.datetime_local_to_event.strftime("%e").to_i.ordinalize} at #{show.datetime_local_to_event.strftime("%l:%M %p")}" # Monday, January, 23rd at 3:15 pm
-          = select_tag :ticket_count, options_for_select((1..10).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
-          = submit_tag 'Add to cart', :class => 'btn btn-primary'
+          - if section.available == 0
+            %select
+              %option
+                SOLD OUT
+            = submit_tag 'Add to cart', :class => 'btn'
+          - else
+            = select_tag :ticket_count, options_for_select((1..[10, section.available].min).to_a.map {|i| [pluralize(i, 'Ticket'), i]})
+            = submit_tag 'Add to cart', :class => 'btn btn-primary'
