@@ -14,7 +14,7 @@ class Refund
     return_items_to_inventory = options[:and_return] || false
 
     @payment = Payment.create(@order.payment_method)
-    @success = @payment.refund(refund_amount, order.transaction_id, options.merge({:service_fee => order.service_fee}))
+    @success = @payment.refund(refund_amount, order.transaction_id, options.merge({:service_fee => service_fee}))
     @gateway_error_message = format_message(@payment)
     
     if @success
@@ -35,8 +35,15 @@ class Refund
     end
   end
 
+  #
+  # The gross amount of the refund.  This is the total amount of money we are returning to the patron
+  #
   def refund_amount
-    item_total + (number_of_non_free_items(items) * service_fee_per_item(order.items))
+    item_total + service_fee
+  end
+
+  def service_fee
+    (number_of_non_free_items(items) * service_fee_per_item(order.items))
   end
 
   private
@@ -53,6 +60,7 @@ class Refund
       @refund_order.parent = order
       @refund_order.for_organization order.organization
       @refund_order.items = items.collect(&:to_refund)
+      @refund_order.service_fee = -1 * service_fee
       @refund_order.save!
       @refund_order
     end

@@ -46,7 +46,8 @@ describe Refund do
       items.each do |original_item|
         original_item.order.should eq order     
       end
-      subject.refund_order.parent.should eq order   
+      subject.refund_order.parent.should eq order
+      subject.refund_order.service_fee.should eq -600   
     end
   end
   
@@ -162,7 +163,7 @@ describe Refund do
     
     it "should issue a refund for the amount being refunded" do
       refundable_items = items[0..1]
-      gateway.should_receive(:refund).with(10400, order.transaction_id).and_return(successful_response)
+      CreditCardPayment.any_instance.should_receive(:refund).with(10400, order.transaction_id, {:service_fee => 400}).and_return(true)
       partial_refund = Refund.new(order, refundable_items)
       partial_refund.submit
       partial_refund.items.length.should eq 2

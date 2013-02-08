@@ -62,6 +62,12 @@ class CreditCardPayment < ::Payment
     true
   end
 
+  #
+  # refund_amount: The total amount of money to be sent to the patron
+  # transaction_id: The transaction_id of the original transaction
+  # options:
+  #   :service_fee: The service fees being refunded.  This is for record keeping *only*  It WILL NOT be added to refund_amount
+  #
   def refund(refund_amount, transaction_id, options = {})
     return true if (refund_amount <= 0)
     response = gateway.refund(refund_amount, transaction_id)
