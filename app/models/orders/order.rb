@@ -244,6 +244,14 @@ class Order < ActiveRecord::Base
     payment_method.eql? CashPayment.payment_method
   end
 
+  def original_order
+    if self.parent.nil?
+      return self
+    else
+      return self.parent.original_order
+    end
+  end
+
   #
   # If this order has no transaction_id, run up the parent chain until we hit one
   # This is needed for exchanges that ultimately need to be refunded
