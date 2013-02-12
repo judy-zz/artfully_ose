@@ -3,6 +3,7 @@
 # This is NOT the persisted item that is attached to the order
 #
 class Donation < ActiveRecord::Base
+  include Itemable
   belongs_to :cart
   belongs_to :organization
 
@@ -12,6 +13,7 @@ class Donation < ActiveRecord::Base
   def price
     amount
   end
+  alias_method :cart_price, :price
 
   def self.fee
     0 # $0 fee

@@ -29,28 +29,39 @@ class ShowsController < ArtfullyOseController
   def create
     @event = Event.find(params[:event_id])
     @show = @event.next_show
-    
-    chart_params = params[:show].delete(:chart)    
-    if(chart_params.nil? || chart_params.empty?)
-      flash[:error] = "Please specify at least one price level for your show."
-      render :new and return
-    end
-    
-    #clear the sections and replace them with whatever they entered
-    @show.chart.sections = []
-    @show.chart.update_attributes_from_params(chart_params)
-    @show.update_attributes(params[:show])
-    @show.organization = current_organization
-    @show.chart_id = @show.chart.id
-    @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
+    (render :new and return) unless valid_datetime?
+    ActiveRecord::Base.transaction do
+      chart_params = params[:show].delete(:chart) 
+      if(chart_params.nil? || chart_params.empty?)
+        flash[:error] = "Please specify at least one price level for your show."
+        render :new and return
+      end
+      
+      #clear the sections and replace them with whatever they entered
+      @show.chart.sections = []
+      @show.chart.update_attributes_from_params(chart_params)
+      @show.update_attributes(params[:show])
+      @show.organization = current_organization
+      @show.chart_id = @show.chart.id
+      @show.datetime = ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime])
 
-    if @show.go!(publishing_show?)      
-      flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
-      redirect_to event_show_path(@event, @show)
-    else  
-      flash[:error] = "There was a problem creating your show: #{@show.errors.full_messages.reject{|e| e.end_with? "be blank"}.to_sentence}"
-      render :new
+      if @show.go!(publishing_show?)      
+        flash[:notice] = "Show created on #{l @show.datetime_local_to_event, :format => :date_at_time}"
+        redirect_to event_show_path(@event, @show)
+      else      
+        flash[:error] = "There was a problem creating your show: #{@show.errors.full_messages.reject{|e| e.end_with? "be blank"}.to_sentence}"
+        render :new
+        raise ActiveRecord::Rollback
+      end
     end
+  end
+
+  def valid_datetime?
+    if ActiveSupport::TimeZone.create(@event.time_zone).parse(params[:show][:datetime]) < Time.now
+      flash[:error] = "Please pick a date and time that is in the future."
+      return false
+    end
+    true
   end
   
   def publishing_show?
@@ -58,11 +69,9 @@ class ShowsController < ArtfullyOseController
   end
 
   def show
-    @show = Show.find(params[:id])
+    @show = Show.includes(:event => :venue, :tickets => :section).find(params[:id])
     authorize! :view, @show
-
-    @show.tickets = @show.tickets
-    @tickets = @show.tickets.includes(:section)
+    @tickets = @show.tickets
   end
 
   def edit
@@ -192,7 +201,7 @@ class ShowsController < ArtfullyOseController
 
   private
     def find_event
-      @event = Event.includes(:shows).find(params[:event_id])
+      @event = Event.includes(:shows => [:event => :venue]).find(params[:event_id])
     end
 
     def upcoming_shows

@@ -244,9 +244,9 @@ $(document).ready(function() {
     $(this).editable(url, {
       method: "PUT",
       submit: "OK",
-      cssclass: "jeditable",
+      cssclass: "jeditable form-inline",
       height: "15px",
-      width: "90px",
+      width: "150px",
       name: "person[" + name + "]",
       callback: function(value, settings){
         $(this).html(value[name]);
@@ -257,6 +257,7 @@ $(document).ready(function() {
       }
     });
   });
+
 });
 
 

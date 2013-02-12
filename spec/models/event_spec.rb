@@ -66,8 +66,8 @@ describe Event do
     end
   
     it "should fetch performances that occur after today at the beginning of the day" do
-      test_performances = 3.times.collect { mock(:show, :datetime => (DateTime.now + 1.day)) }
-      test_performances += 2.times.collect { mock(:show, :datetime => (DateTime.now - 1.day)) }
+      test_performances = 3.times.collect { mock(:show, :datetime => (DateTime.now + 1.day), :datetime_local_to_event => (DateTime.now + 1.day)) }
+      test_performances += 2.times.collect { mock(:show, :datetime => (DateTime.now - 1.day), :datetime_local_to_event => (DateTime.now - 1.day)) }
       subject.stub(:shows).and_return(test_performances)
       subject.upcoming_shows.should have(3).shows
     end

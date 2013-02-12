@@ -3,6 +3,8 @@ require 'spec_helper'
 describe Statement do
   disconnect_sunspot 
   
+  let(:super_code)      { FactoryGirl.create(:discount, :code => "SUPER", :properties => HashWithIndifferentAccess.new( amount: 200 )) }
+  let(:other_code)      { FactoryGirl.create(:discount, :code => "OTHER", :properties => HashWithIndifferentAccess.new( amount: 100 )) }
   let(:organization)    { FactoryGirl.create(:organization) } 
   let(:event)           { FactoryGirl.create(:event) }
   let(:paid_chart)      { FactoryGirl.create(:assigned_chart, :event => event) }
@@ -10,7 +12,7 @@ describe Statement do
   let(:exchangee_show)  { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => paid_chart, :event => event) }
   let(:paid_show)       { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => paid_chart, :event => event) }
   let(:free_show)       { FactoryGirl.create(:show_with_tickets, :organization => organization, :chart => free_chart, :event => event) }
-  
+
   describe "nil show" do
     it "should return an empty @statement if the show is nil" do
       st = Statement.for_show(nil)
@@ -39,12 +41,15 @@ describe Statement do
       @statement.cc_net.should eq 0
       @statement.settled.should eq 0
       
-      @statement.payment_method_rows.length.should eq 3      
+      @statement.payment_method_rows.length.should eq 3 
+
+      @statement.discount_rows.length.should eq 0     
     end    
   end
   
   describe "three credit card sales and three comps" do    
     before(:each) do
+      setup_discounts
       setup_show
       Settlement.new.tap do |settlement|
         settlement.net = 1000
@@ -58,20 +63,20 @@ describe Statement do
       @statement.tickets_sold.should eq 3
       @statement.potential_revenue.should eq 10000
       @statement.tickets_comped.should eq 3
-      @statement.gross_revenue.should eq 3000
-      @statement.processing.should be_within(0.00001).of(3000 * 0.035)
+      @statement.gross_revenue.should eq 2500
+      @statement.processing.should be_within(0.00001).of((2500 * 0.035).round)
       @statement.net_revenue.should eq (@statement.gross_revenue - @statement.processing)
       
-      @statement.cc_net.should eq 2895
+      @statement.cc_net.should eq 2412
       @statement.settled.should eq 0
       
       @statement.payment_method_rows.length.should eq 3
       
       @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].should_not be_nil
       @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].tickets.should eq 3
-      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].gross.should eq 3000
-      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].processing.should be_within(0.00001).of(3000 * 0.035)
-      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].net.should eq 2895
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].gross.should eq 2500
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].processing.should be_within(0.00001).of((2500 * 0.035).round)
+      @statement.payment_method_rows[::CreditCardPayment.payment_method.downcase].net.should eq 2412
       
       @statement.payment_method_rows[::CompPayment.payment_method.downcase].should_not be_nil
       @statement.payment_method_rows[::CompPayment.payment_method.downcase].tickets.should eq 3
@@ -93,7 +98,13 @@ describe Statement do
       
       @statement.order_location_rows[CompOrder.location].should_not be_nil   
       @statement.order_location_rows[CompOrder.location].tickets.should eq 3
-      
+
+      @statement.discount_rows.length.should eq 2
+      @statement.discount_rows[super_code.code].tickets.should eq 2
+      @statement.discount_rows[super_code.code].discount.should eq 400
+
+      @statement.discount_rows[other_code.code].tickets.should eq 1
+      @statement.discount_rows[other_code.code].discount.should eq 100
     end
   end
   
@@ -104,9 +115,8 @@ describe Statement do
     end
       
     it "should not show a cc_net for imported events" do
-      paid_show.event.should_receive(:imported?).at_least(1).times.and_return(true)
-      paid_show.should_receive(:unscoped_event).at_least(1).times.and_return(paid_show.event)
-      @statement = Statement.for_show(paid_show)
+      paid_show.event.stub(:imported?).and_return(true)
+      @statement = Statement.for_show(paid_show, true)
       @statement.cc_net.should eq 0
     end  
   end
@@ -170,8 +180,21 @@ describe Statement do
     end  
   end
   
+  def setup_discounts
+    paid_show.tickets[0].discount = super_code
+    paid_show.tickets[0].sold_price = paid_show.tickets[0].price - super_code.properties[:amount]
+    paid_show.tickets[0].save
+    paid_show.tickets[1].discount = super_code
+    paid_show.tickets[1].sold_price = paid_show.tickets[1].price - super_code.properties[:amount]
+    paid_show.tickets[1].save
+    paid_show.tickets[2].discount = other_code
+    paid_show.tickets[2].sold_price = paid_show.tickets[2].price - other_code.properties[:amount]
+    paid_show.tickets[2].save
+  end
+
   def setup_show
     @orders = []
+
     0.upto(2) do |i|
       (paid_show.tickets[i]).sell_to(FactoryGirl.create(:person))
       order = FactoryGirl.create(:credit_card_order, :organization => organization)

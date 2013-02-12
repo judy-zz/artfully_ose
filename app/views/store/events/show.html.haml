@@ -85,6 +85,25 @@
             %td.price
               %h5.formatCurrency
 
+          %tr#discount-link{:style => 'display:none'}
+            %td
+            %td= link_to "Apply Discount Code", "#"
+            %td#discount-error
+
+          %tr#discount-input{:style => 'display:none'}
+            %td
+            %td= text_field_tag 'discount', params[:discount], :placeholder => "Enter discount here, eg. COWBELL"
+            %td= button_tag "Apply", :class => 'btn btn-primary', :disable_with => "Applying..."
+
+          %tr#discount-display{:style => 'display:none'}
+            %td
+            %td.details
+              Discount code
+              %span BLANK
+            %td= button_tag "Change", :class => 'btn btn-primary'
+            %td.amount
+              %h5.formatCurrency
+
         .form-actions
           = link_to 'Checkout Now', '#contact-info', 'data-toggle' => 'tab', :class => 'btn btn-primary btn-large pull-right disabled'
           %h4#cart-total.formatCurrency

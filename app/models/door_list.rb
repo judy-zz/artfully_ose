@@ -24,7 +24,7 @@ class DoorList
         buyer("Last Name") { |buyer| buyer.last_name }
         buyer("Email") { |buyer| buyer.email }
         ticket("Section") { |ticket| ticket.section.name }
-        ticket("Price") { |ticket| DoorList.number_as_cents ticket.price }
+        ticket("Price") { |ticket| DoorList.number_as_cents ticket.sold_price }
         ticket("Special Instructions") { |ticket| ticket.special_instructions }
       end
 

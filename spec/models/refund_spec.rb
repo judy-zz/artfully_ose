@@ -34,9 +34,10 @@ describe Refund do
       subject.refund_order.items.size.should eq 3
       subject.refund_order.items.each do |item|
         item.order.should eq subject.refund_order
-        item.price.should eq (items.first.price * -1)
-        item.realized_price.should eq (items.first.realized_price * -1)
-        item.net.should eq (items.first.net * -1)
+        item.original_price.should  eq (items.first.original_price * -1)
+        item.price.should           eq (items.first.price * -1)
+        item.realized_price.should  eq (items.first.realized_price * -1)
+        item.net.should             eq (items.first.net * -1)
       end
       
       subject.refund_order.transaction_id.should eq '3e4r5q'
@@ -45,7 +46,8 @@ describe Refund do
       items.each do |original_item|
         original_item.order.should eq order     
       end
-      subject.refund_order.parent.should eq order   
+      subject.refund_order.parent.should eq order
+      subject.refund_order.service_fee.should eq -600   
     end
   end
   
@@ -74,10 +76,26 @@ describe Refund do
     end
     
   end
+
+  describe "refunding an order that has been discounted to 0" do
+    before(:each) do
+      @fully_discounted_order = FactoryGirl.build(:order, :service_fee => 200, :items => [FactoryGirl.create(:fully_discounted_item)], :payment_method => :credit_card)
+      @fully_discounted_order.items.each { |i| i.stub(:return!) }
+      @fully_discounted_order.items.each { |i| i.stub(:refund!) }
+      gateway.should_receive(:refund).with(200, order.transaction_id).and_return(successful_response)
+    end
+
+    it "should still refund the ticket fee" do
+      refund = Refund.new(@fully_discounted_order, @fully_discounted_order.items)
+      refund.refund_amount.should eq 200
+      refund.submit
+      refund.should be_successful
+    end
+  end
   
   describe "refunding an item from an order with just free items" do
     before(:each) do
-      @free_order = FactoryGirl.build(:order, :service_fee => 0, :items => free_items)
+      @free_order = FactoryGirl.build(:order, :service_fee => 0, :items => free_items, :payment_method => :credit_card)
       @free_order.items.each { |i| i.stub(:return!) }
       @free_order.items.each { |i| i.stub(:refund!) } 
     end
@@ -145,7 +163,7 @@ describe Refund do
     
     it "should issue a refund for the amount being refunded" do
       refundable_items = items[0..1]
-      gateway.should_receive(:refund).with(10400, order.transaction_id).and_return(successful_response)
+      CreditCardPayment.any_instance.should_receive(:refund).with(10400, order.transaction_id, {:service_fee => 400}).and_return(true)
       partial_refund = Refund.new(order, refundable_items)
       partial_refund.submit
       partial_refund.items.length.should eq 2

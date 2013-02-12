@@ -62,9 +62,16 @@ class CreditCardPayment < ::Payment
     true
   end
 
-  def refund(refund_amount, transaction_id)
+  #
+  # refund_amount: The total amount of money to be sent to the patron
+  # transaction_id: The transaction_id of the original transaction
+  # options:
+  #   :service_fee: The service fees being refunded.  This is for record keeping *only*  It WILL NOT be added to refund_amount
+  #
+  def refund(refund_amount, transaction_id, options = {})
     return true if (refund_amount <= 0)
     response = gateway.refund(refund_amount, transaction_id)
+    record_gateway_transaction((options[:service_fee] * -1), (refund_amount * -1), response)
     self.transaction_id = response.authorization
     self.errors.add(:base, response.message) unless response.message.blank?
     response.success?
@@ -73,7 +80,8 @@ class CreditCardPayment < ::Payment
   #purchase submits for auth and passes a flag to merchant to settle immediately
   def purchase(options={})
     ::Rails.logger.debug("Sending purchase request to Braintree")
-    response = gateway.purchase(self.amount, credit_card, options)
+    response = gateway.purchase(self.amount, credit_card, options.except(:service_fee))
+    record_gateway_transaction(options[:service_fee], self.amount, response)
     ::Rails.logger.debug("Received response: #{response.message}")
     ::Rails.logger.debug(response.inspect)
     self.transaction_id = response.authorization
@@ -102,4 +110,23 @@ class CreditCardPayment < ::Payment
     gateway.capture(self.amount, authorization, options)
   end
   alias :settle :capture
+
+  #
+  # This can't be delayed_job'd because DJ can't deserialize ARs that haven't been persisted
+  #
+  def record_gateway_transaction(service_fee, amount, response)
+    begin 
+      attrs = {}
+      attrs[:transaction_id] = response.authorization
+      attrs[:success]        = response.success?
+      attrs[:service_fee]    = service_fee
+      attrs[:amount]         = amount
+      attrs[:message]        = response.message
+      attrs[:response]       = response
+      @gateway_transaction = GatewayTransaction.create(attrs)
+    rescue Exception => e
+      Exceptional.context(:gateway_transaction => @gateway_transaction)
+      Exceptional.handle(e, "Failed to persist Gateway Transaction")
+    end
+  end
 end

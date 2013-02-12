@@ -5,6 +5,6 @@ module Adjustments
   end
 
   def number_of_non_free_items(itmz)
-    itmz.reject{|item| item.price == 0}.size
+    itmz.reject{|item| item.original_price == 0}.size
   end
 end

@@ -116,7 +116,7 @@ describe Order do
     it "generates a valid donation action for each donation" do
       donations = 2.times.collect { FactoryGirl.build(:donation) }
       subject << donations
-      actions = subject.send(:create_donation_actions)
+      actions = subject.send(:create_donation_actions_without_delay)
       actions.should have(2).donation_actions
       actions.each do |action|
         action.should be_valid

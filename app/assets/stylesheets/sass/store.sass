@@ -74,6 +74,18 @@ h4
     line-height: 1.4em
     margin-bottom: 5px
 
+#discount-display
+  color: green
+
+#discount-error
+  color: red
+
+#shopping-cart #cart table tr#discount-display
+  h5
+    color: green
+  h5:before
+    content: "-"
+
 #description
   img
     float: left
@@ -190,7 +202,7 @@ table.calendar
     padding: 50px
     padding-top: 10px
     padding-bottom: 0
-    height: 350px
+    height: 380px
     ul#nav
       width: 650px
       margin: 0 auto
@@ -261,7 +273,7 @@ table.calendar
             color: #fff
             text-decoration: none
         td.edit-item
-        td.price
+        td.price, td.amount
           text-align: right
         .over-limit
           color: red

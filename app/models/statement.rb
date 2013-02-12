@@ -9,9 +9,11 @@ class Statement
                 :cc_net,
                 :settled,
                 :payment_method_rows,
-                :order_location_rows
+                :order_location_rows,
+                :ticket_type_rows,
+                :discount_rows
   
-  def self.for_show(show)
+  def self.for_show(show, imported=false)
     if show.nil?
       return new
     end
@@ -34,12 +36,16 @@ class Statement
       #
       
       statement.cc_net = 0
-      show.items.each do |item|
-        statement.cc_net += item.net if (item.order.credit? && !show.imported?)
+      show.items.includes(:order).each do |item|
+        statement.cc_net += item.net if (item.order.credit? && !imported)
       end
       statement.settled           = show.settlements.successful.inject(0) { |settled, settlement| settled += settlement.net }
       payment_method_hash         = show.items.group_by { |item| item.order.payment_method }
       
+      #
+      # PAYMENT METHOD
+      #
+
       statement.payment_method_rows         = {}
       
       # Initialize with the three common payment types
@@ -54,6 +60,9 @@ class Statement
         statement.payment_method_rows[payment_method] = row
       end
       
+      #
+      # ORDER LOCATION
+      #  
       order_location_hash         = show.items.group_by do |item| 
         order = item.order
         order.parent.nil? ? order.location : order.parent.location 
@@ -67,6 +76,38 @@ class Statement
         row = statement.order_location_rows[order_location] || OrderLocationRow.new(order_location)
         items.each {|item| row << item}
         statement.order_location_rows[order_location] = row
+      end
+
+      statement.build_discount_rows(show.items)
+      statement.build_ticket_type_rows(show, show.items)
+    end
+  end
+
+  #
+  # TODO: These are super-related to the procs in class Slices.  Get these two on the same page and DRY it up
+  #
+  def build_ticket_type_rows(show, items)
+    self.ticket_type_rows         = {}
+
+    show.chart.sections.each do |section|
+      self.ticket_type_rows[section.name] = TicketTypeRow.new(section.name)
+    end
+
+    items.each do |item|
+      row = self.ticket_type_rows[item.product.section.name] || TicketTypeRow.new(item.product.section.name)
+      row << item
+      self.ticket_type_rows[item.product.section.name] = row
+    end
+  end
+
+  def build_discount_rows(items)
+    self.discount_rows         = {}
+    items.each do |item|
+      unless item.discount.nil?
+        row = self.discount_rows[item.discount.code] || DiscountRow.new(item.discount.code, item.discount.promotion_type)
+        row << item
+        row.discount += (item.original_price - item.price)
+        self.discount_rows[item.discount.code] = row
       end
     end
   end
@@ -89,6 +130,34 @@ class Statement
       self.gross        = self.gross + item.price
       self.processing   = self.processing + (item.realized_price - item.net)
       self.net          = self.net + item.net
+    end
+  end
+  
+  class TicketTypeRow
+    include Row
+    attr_accessor   :ticket_type
+    
+    def initialize(ticket_type)
+      self.ticket_type = ticket_type
+      self.tickets = 0
+      self.gross = 0
+      self.processing = 0
+      self.net = 0
+    end
+  end
+  
+  class DiscountRow
+    include Row
+    attr_accessor   :discount_code, :type, :discount
+    
+    def initialize(discount_code, type)
+      self.discount_code = discount_code
+      self.type = type
+      self.tickets = 0
+      self.gross = 0
+      self.processing = 0
+      self.net = 0
+      self.discount = 0
     end
   end
   

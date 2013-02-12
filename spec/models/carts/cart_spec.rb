@@ -24,9 +24,17 @@ describe Cart do
     end
   end
 
+  describe "#subtotal" do
+    let(:items) { 10.times.collect{ mock(:item, :price => 10, :cart_price => 20) }}
+    it "should sum up the price of the tickets" do
+      subject.stub(:items) { items }
+      subject.subtotal.should eq 100
+    end
+  end
+
   describe "#total" do
-    let(:items) { 10.times.collect{ mock(:item, :price => 10) }}
-    it "should sum up the price of the tickets via total" do
+    let(:items) { 10.times.collect{ mock(:item, :cart_price => 10, :price => 20) }}
+    it "should sum up the price of the tickets" do
       subject.stub(:items) { items }
       subject.total.should eq 100
     end
@@ -58,6 +66,12 @@ describe Cart do
       subject.fee_in_cents.should eq 0
       subject << tickets
       subject.fee_in_cents.should eq 400
+    end
+
+    it "should not include the fee in the subtotal" do
+      subject << tickets
+      subject.fee_in_cents.should eq 400
+      subject.subtotal.should eq 10000
     end
 
     it "should include the fee in the total" do
@@ -96,6 +110,39 @@ describe Cart do
         payment.stub(:purchase).and_return(successful_response)
         subject.pay_with(payment)
         subject.should be_approved
+      end
+
+      it "should mark the tickets sold_price with the current cart_price when approved" do
+        subject.tickets = 2.times.collect { FactoryGirl.build(:ticket, :cart_price => 400) }
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:purchase).and_return(successful_response)
+        subject.pay_with(payment)
+        subject.should be_approved
+        subject.tickets.each do |ticket|
+          ticket.reload.sold_price.should eq 400
+        end
+      end
+
+      it "should mark the tickets sold_price with the current cart_price when approved even if cart_price is 0" do
+        subject.tickets = 2.times.collect { FactoryGirl.build(:ticket, :cart_price => 0) }
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:purchase).and_return(successful_response)
+        subject.pay_with(payment)
+        subject.should be_approved
+        subject.tickets.each do |ticket|
+          ticket.sold_price.should eq 0
+        end
+      end
+
+      it "should mark the tickets sold_price with the ticket.price is cart_price is nil when approved" do
+        subject.tickets = 2.times.collect { FactoryGirl.build(:ticket, :price => 32, :cart_price => nil) }
+        payment.stub(:requires_authorization?).and_return(true)
+        payment.stub(:purchase).and_return(successful_response)
+        subject.pay_with(payment)
+        subject.should be_approved
+        subject.tickets.each do |ticket|
+          ticket.sold_price.should eq 32
+        end
       end
 
       it "should tranisition to rejected when the Payment is rejected" do
@@ -163,6 +210,19 @@ describe Cart do
       donations.size.should eq 2
       donations.first.should eq donation
       donations[1].should eq donation2
+    end
+  end
+
+  describe "#reset_prices_on_tickets" do
+    let(:discount_amount) { 10 }
+    let(:price) { 20 }
+    let(:ticket) { FactoryGirl.build(:ticket, :price => price, :cart_price => price - discount_amount) }
+    before(:each) do
+      subject.tickets << ticket
+    end
+
+    it "should set tickets back to their original prices" do
+      expect {subject.reset_prices_on_tickets}.to change(subject, :total).by(discount_amount)
     end
   end
 

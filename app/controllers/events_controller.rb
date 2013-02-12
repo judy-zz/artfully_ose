@@ -66,7 +66,7 @@ class EventsController < ArtfullyOseController
     redirect_to event_url(@event)
   end
 
-  def update    
+  def update
     authorize! :edit, @event
 
     if @event.update_attributes(params[:event])
@@ -104,6 +104,24 @@ class EventsController < ArtfullyOseController
   end
   
   def prices
+  end
+
+  def temp_discounts_index
+    find_event
+  end
+
+  def temp_discount_form
+    find_event
+
+    @discount = TempDiscount.new
+    @discount.promotion_type = 'two-for-one'
+
+    @event.charts.collect(&:sections).flatten.each do |section|
+      @discount.discount_sections.new(
+        :section => section,
+        :price => section.price
+      )
+    end
   end
   
   def messages

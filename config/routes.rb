@@ -58,7 +58,13 @@ Rails.application.routes.draw do
   end
 
   resources :reports, :only => :index
-  resources :statements, :only => [ :index, :show ]
+  resources :statements, :only => [ :index, :show ] do
+    resources :slices, :only => [ :index ] do
+      collection do
+        get :data
+      end
+    end
+  end
 
   resources :people, :except => :destroy do
     resources :actions
@@ -70,13 +76,16 @@ Rails.application.routes.draw do
   resources :segments, :only => [:index, :show, :create, :destroy]
 
   resources :events do
-    get :widget,  :on => :member
-    get :storefront_link,  :on => :member
-    get :resell, :on => :member
-    get :wp_plugin, :on => :member
-    get :prices,  :on => :member
-    get :image,   :on => :member
-    get :messages,   :on => :member
+    member do
+      get :widget
+      get :storefront_link
+      get :resell
+      get :wp_plugin
+      get :prices
+      get :image
+      get :messages
+    end
+    resources :discounts
     resources :shows do
       resource :sales, :only => [:new, :create, :show, :update]
       member do
@@ -142,6 +151,8 @@ Rails.application.routes.draw do
       get :template
     end
   end
+
+  resources :discounts_reports, :only => [:index]
 
   match '/events/:event_id/charts/' => 'events#assign', :as => :assign_chart, :via => "post"
   match '/people/:id/star/:type/:action_id' => 'people#star', :as => :star, :via => "post"

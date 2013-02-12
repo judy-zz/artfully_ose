@@ -6,7 +6,8 @@ describe DonationsImport do
       before :each do      
         Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
   
-        @csv_filename = Rails.root.join("spec", "support", "donations-import-full-test.csv")
+        @csv_filename = "#{File.dirname(__FILE__)}/../support/donations-import-full-test.csv"
+
         @import = FactoryGirl.create(:donations_import, :organization => FactoryGirl.create(:organization_with_timezone), :s3_key => @csv_filename)
         @import.organization.time_zone = 'Eastern Time (US & Canada)'
         @import.organization.save

@@ -16,6 +16,7 @@ class Order < ActiveRecord::Base
   belongs_to :organization
   belongs_to :import
   belongs_to :parent, :class_name => "Order", :foreign_key => "parent_id"
+  belongs_to :gateway_transaction, :primary_key => :transaction_id, :foreign_key => :transaction_id
   has_many :children, :class_name => "Order", :foreign_key => "parent_id"
   has_many :items, :dependent => :destroy
   has_many :actions, :foreign_key => "subject_id", :dependent => :destroy
@@ -28,8 +29,10 @@ class Order < ActiveRecord::Base
   validates_presence_of :person_id
   validates_presence_of :organization_id
 
+  # Both of these are handle_asynchronously
   after_create :create_purchase_action, :unless => :skip_actions
   after_create :create_donation_actions, :unless => :skip_actions
+
   after_create :sell_tickets
 
   default_scope :order => 'orders.created_at DESC'
@@ -189,8 +192,19 @@ class Order < ActiveRecord::Base
     all_donations.collect{|item| item.total_price.to_i}.sum
   end
 
+  #
+  # Will return an array of all discount codes on all items on this order
+  #
+  def discounts_used
+    items.map{|i| i.discount.try(:code)}.reject(&:blank?).uniq
+  end
+
   def ticket_details
-    pluralize(num_tickets, "ticket") + " to " + all_tickets.first.show.event.name
+    discount_string = ""
+    unless discounts_used.empty?
+      discount_string = ", used #{'discount'.pluralize(discounts_used.length)} " + discounts_used.join(",")
+    end
+    pluralize(num_tickets, "ticket") + " to " + all_tickets.first.show.event.name + discount_string
   end
   
   def to_comp!
@@ -224,6 +238,18 @@ class Order < ActiveRecord::Base
 
   def credit?
     payment_method.eql? CreditCardPayment.payment_method
+  end
+
+  def cash?
+    payment_method.eql? CashPayment.payment_method
+  end
+
+  def original_order
+    if self.parent.nil?
+      return self
+    else
+      return self.parent.original_order
+    end
   end
 
   #
@@ -261,27 +287,34 @@ class Order < ActiveRecord::Base
       action
     end
   end
+  handle_asynchronously :create_donation_actions
+
+  def create_purchase_action
+    unless all_tickets.empty?
+      action                  = purchase_action_class.new
+      action.person           = person
+      action.subject          = self
+      action.organization     = organization
+      action.details          = ticket_details
+      action.occurred_at      = created_at
+
+      #Weird, but Rails can't initialize these so the subtype is hardcoded in the model
+      action.subtype          = action.subtype
+      action.import           = self.import if self.import
+      action.save!
+      action
+    end
+  end
+  handle_asynchronously :create_purchase_action
+
+  def purchase_action_class
+    GetAction
+  end
 
   private
 
     #this used to do more.  Now it only does this
     def merge_and_sort_items
       items
-    end
-
-    def create_purchase_action
-      unless all_tickets.empty?
-        action                  = GetAction.new
-        action.person           = person
-        action.subject          = self
-        action.organization     = organization
-        action.details          = ticket_details
-        action.occurred_at      = created_at
-        action.subtype          = "Purchase"
-        action.import           = self.import if self.import
-
-        action.save!
-        action
-      end
     end
 end

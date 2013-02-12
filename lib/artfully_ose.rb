@@ -11,6 +11,7 @@ require "braintree"
 
 require "delayed_job"
 require "delayed_job_active_record"
+require "audited-activerecord"
 require "activerecord-import"
 require "acts-as-taggable-on"
 
@@ -37,6 +38,7 @@ require "gibbon"
 
 require "set_watch_for"
 require "swiper"
+require "slicer"
 require "restful_metrics"
 
 module ArtfullyOse

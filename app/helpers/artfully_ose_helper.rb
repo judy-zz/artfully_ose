@@ -230,17 +230,17 @@ module ArtfullyOseHelper
   end
 
   def link_to_remove_fields(name, f)
-    f.hidden_field(:_destroy) + link_to(name, "#", :onclick => "remove_fields(this)")
+    f.hidden_field(:_destroy) + link_to(name, "#", :onclick => "remove_fields(this); return false;")
   end
   
-  def link_to_add_fields(name, f, association, view_path = '')
+  def link_to_add_fields(name, f, association, view_path = '', additional_javascript=nil)
     new_object = f.object.class.reflect_on_association(association).klass.new
     fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
       view_path = view_path + '/' unless view_path.blank?
       template_path = view_path + association.to_s.singularize + "_fields"
       render(template_path, :f => builder)
     end
-    link_to name, "#", :onclick => "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")"
+    link_to name, "#", :onclick => "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\"); #{additional_javascript} return false;"
   end
   
   def ticket_seller_name(ticket)

@@ -3,15 +3,17 @@ class Cart < ActiveRecord::Base
   
   has_many :donations, :dependent => :destroy
   has_many :tickets, :after_add => :set_timeout
-  after_destroy :release_tickets
+  after_destroy :clear!
   attr_accessor :special_instructions
+
+  belongs_to :discount
 
   state_machine do
     state :started
     state :approved
     state :rejected
 
-    event(:approve) { transitions :from => [ :started, :rejected ], :to => :approved }
+    event(:approve, :success => :record_sold_price) { transitions :from => [ :started, :rejected ], :to => :approved }
     event(:reject)  { transitions :from => [ :started, :rejected ], :to => :rejected }
   end
 
@@ -25,6 +27,7 @@ class Cart < ActiveRecord::Base
   end
 
   def clear!
+    reset_prices_on_tickets
     clear_tickets
     clear_donations
   end
@@ -51,6 +54,7 @@ class Cart < ActiveRecord::Base
   end
 
   def expire_ticket(ticket)
+    ticket.reset_price!
     tickets.delete(ticket)
   end
 
@@ -76,8 +80,20 @@ class Cart < ActiveRecord::Base
     self.tickets << tkts
   end
 
-  def total
+  def subtotal
+    items.sum(&:price)
+  end
+
+  def total_before_discount
     items.sum(&:price) + fee_in_cents
+  end
+
+  def total
+    items.sum(&:cart_price) + fee_in_cents
+  end
+
+  def discount_amount
+    total_before_discount - total
   end
 
   def unfinished?
@@ -93,6 +109,7 @@ class Cart < ActiveRecord::Base
 
     #TODO: Move the requires_authorization? check into the payments classes.  Cart shouldn't care
     if payment.requires_authorization?
+      options[:service_fee] = fee_in_cents
       pay_with_authorization(payment, options)
     else
       approve!
@@ -133,7 +150,20 @@ class Cart < ActiveRecord::Base
     reseller == nil
   end
 
+  def reset_prices_on_tickets
+    transaction do
+      tickets.each {|ticket| ticket.reset_price! }
+    end
+  end
+
   private
+
+    def record_sold_price
+      self.tickets.each do |ticket|
+        ticket.sold_price = ticket.cart_price || ticket.price
+        ticket.save
+      end
+    end
 
     def pay_with_authorization(payment, options)
       payment.purchase(options) ? approve! : reject!

@@ -1,12 +1,17 @@
 class Item < ActiveRecord::Base
+  audited
+  handle_asynchronously :write_audit
+
+
   include Ext::Integrations::Item
   include OhNoes::Destroy
-  
+
   belongs_to :order
   belongs_to :show
   belongs_to :settlement
   belongs_to :reseller_order, :class_name => "Reseller::Order"
   belongs_to :product, :polymorphic => true
+  belongs_to :discount
 
   attr_accessible :order_id, :product_type, :state, :price, :realized_price, :net, :nongift_amount
   
@@ -26,6 +31,11 @@ class Item < ActiveRecord::Base
     order("First Name")                     { |order| order.person.first_name if order.person }
     order("Last Name")                      { |order| order.person.last_name if order.person }
     order("Company Name")                   { |order| order.person.company_name if order.person }
+    order("Address1")                       { |order| order.person.address.address1 if (order.person && order.person.address) }
+    order("Address2")                       { |order| order.person.address.address2 if (order.person && order.person.address) }
+    order("City")                           { |order| order.person.address.city if (order.person && order.person.address) }
+    order("State")                          { |order| order.person.address.state if (order.person && order.person.address) }
+    order("Zip")                            { |order| order.person.address.zip if (order.person && order.person.address) }
     order("Date")                           { |order| order.created_at }
     order("Payment Method")                 { |order| order.payment_method }
     order("Donation Type")                  { |order| order.actions.where(:type => "GiveAction").first.try(:subtype) }
@@ -34,14 +44,19 @@ class Item < ActiveRecord::Base
   end
 
   comma :ticket_sale do
-    order("Date of Purchase") { |order| order.created_at }
-    order("Email") { |order| order.person.email if order.person }
-    order("First Name") { |order| order.person.first_name if order.person }
-    order("Last Name") { |order| order.person.last_name if order.person }
-    show("Performance Title") { |show| show.event.name if show }
-    show("Performance Date-Time") { |show| show.datetime_local_to_event if show }
-    price("Ticket Price") { |cents| number_to_currency(cents.to_f/100) if cents }
-    order("Special Instructions") { |order| order.special_instructions }
+    order("Date of Purchase")               { |order| order.created_at }
+    order("Email")                          { |order| order.person.email if order.person }
+    order("First Name")                     { |order| order.person.first_name if order.person }
+    order("Last Name")                      { |order| order.person.last_name if order.person }
+    order("Address1")                       { |order| order.person.address.address1 if (order.person && order.person.address) }
+    order("Address2")                       { |order| order.person.address.address2 if (order.person && order.person.address) }
+    order("City")                           { |order| order.person.address.city if (order.person && order.person.address) }
+    order("State")                          { |order| order.person.address.state if (order.person && order.person.address) }
+    order("Zip")                            { |order| order.person.address.zip if (order.person && order.person.address) }
+    show("Performance Title")               { |show| show.event.name if show }
+    show("Performance Date-Time")           { |show| show.datetime_local_to_event if show }
+    price("Ticket Price")                   { |cents| number_to_currency(cents.to_f/100) if cents }
+    order("Special Instructions")           { |order| order.special_instructions }
   end
 
   def ticket?
@@ -80,6 +95,7 @@ class Item < ActiveRecord::Base
   def product=(product)
     set_product_details_from product
     set_prices_from product
+    set_discount_from product if product.respond_to? :discount
     set_show_from product if product.respond_to? :show_id
     self.state = "purchased"
     self.product_id = if product then product.id end
@@ -112,27 +128,35 @@ class Item < ActiveRecord::Base
   #
   def refund!
     self.state = "refunded"
-    product.remove_from_cart if self.ticket?
+    if self.ticket?
+      product.remove_from_cart
+      product.reset_price!
+    end
     self.save
   end
 
   def to_refund
     dup!.tap do |item|
-      item.price = item.price.to_i * -1
-      item.realized_price = item.realized_price.to_i * -1
-      item.net = item.net.to_i * -1
-      item.state = "refund"
+      item.original_price   = item.original_price.to_i * -1
+      item.price            = item.price.to_i * -1
+      item.realized_price   = item.realized_price.to_i * -1
+      item.net              = item.net.to_i * -1
+      item.state            = "refund"
     end
   end
 
   def to_exchange!(item_that_this_is_being_exchanged_for)
-    self.price = item_that_this_is_being_exchanged_for.price
-    self.realized_price = item_that_this_is_being_exchanged_for.realized_price
-    self.net = item_that_this_is_being_exchanged_for.net
+    self.original_price   = item_that_this_is_being_exchanged_for.original_price
+    self.price            = item_that_this_is_being_exchanged_for.price
+    self.realized_price   = item_that_this_is_being_exchanged_for.realized_price
+    self.net              = item_that_this_is_being_exchanged_for.net
+    
     if self.ticket?
+      self.discount = item_that_this_is_being_exchanged_for.discount
       product.remove_from_cart
-      product.update_column(:sold_price,item_that_this_is_being_exchanged_for.product.sold_price)
+      product.exchange_prices_from(item_that_this_is_being_exchanged_for.product)
     end
+    
     self.state = item_that_this_is_being_exchanged_for.state
   end
 
@@ -151,9 +175,11 @@ class Item < ActiveRecord::Base
   def exchange!(return_items_to_inventory = true)
     product.return!(return_items_to_inventory) if product.returnable?
     self.state = "exchanged"
+    self.original_price = 0
     self.price = 0
     self.realized_price = 0
     self.net = 0 
+    self.discount = nil
     save   
   end
 
@@ -218,9 +244,14 @@ class Item < ActiveRecord::Base
       self.product_type = prod.class.to_s
     end
 
+    def set_discount_from(prod)
+      self.discount = prod.discount
+    end
+
     def set_prices_from(prod)
-      self.price          = prod.price
-      self.realized_price = prod.price - prod.class.fee
+      self.original_price = prod.price
+      self.price          = (prod.sold_price || prod.price)
+      self.realized_price = self.price - prod.class.fee
       self.net            = (self.realized_price - (per_item_processing_charge || lambda { |item| 0 }).call(self)).floor
     end
 

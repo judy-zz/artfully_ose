@@ -51,8 +51,27 @@ $(document).ready(function(){
     donationAmount = $(this).find('#donation_amount').asNumber();
     if (donationAmount > 0) {
       $('#shopping-cart #steps').slideDown(); // not sure why this isn't slideUp
-      addItemToCart('donation', { donationAmount: donationAmount});
+      addItemToCart('donation', {donationAmount: donationAmount});
     }
+  });
+
+  $('#discount-link a').click(function(e) {
+    e.preventDefault();
+    $('tr#discount-link').hide();
+    $('tr#discount-display').hide();
+    $('tr#discount-input').show();
+  });
+
+  $('#discount-input button').click(function(e) {
+    e.preventDefault();
+    updateOrderOnServer();
+  });
+
+  $('#discount-display button').click(function(e) {
+    e.preventDefault();
+    $('tr#discount-link').hide();
+    $('tr#discount-display').hide();
+    $('tr#discount-input').show();
   });
 
   // click "complete purchase" to submit payment
@@ -138,11 +157,14 @@ function updateOrderOnServer() {
     };
   }
 
+  params.discount = $('#shopping-cart-form #discount').val();
+
   $.ajax({
     url: sync_store_order_path,
     type: "POST",
     data: params,
     success: function(data) {
+      $('#discount-error').html(null);
       // we dont have enough tickets available
       if (data.over_section_limit) {
         jQuery.each(data.over_section_limit, function(index, section) {
@@ -167,6 +189,10 @@ function updateOrderOnServer() {
         $('.formatCurrency').formatCurrency();
       }
 
+      if (data.discount_error) {
+        $('#discount-error').html(data.discount_error);
+      }
+
       // add service charge line item
       $('tr#service-charge td.price h5').html(data.service_charge / 100.0);
       $('tr#service-charge td.price').attr('data-price', data.service_charge / 100.0);
@@ -174,6 +200,19 @@ function updateOrderOnServer() {
         $('tr#service-charge').show();
       } else {
         $('tr#service-charge').hide();
+      }
+
+      // add discount line item
+      if (data.discount_name) {
+        $('tr#discount-link').hide();
+        $('tr#discount-input').hide();
+        $('tr#discount-display td.details span').html(data.discount_name);
+        $('tr#discount-display td.amount h5').html(data.discount_amount / 100.0);
+        $('tr#discount-display').show();
+      } else {
+        $('tr#discount-display').hide();
+        $('tr#discount-link').show();
+        $('tr#discount-input').hide();
       }
       
       // todo validate amount

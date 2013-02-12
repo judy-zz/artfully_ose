@@ -11,6 +11,9 @@
           %h6.key Email
           .value{"data-name" => "email", "data-url" => person_url(@person, :format => :json)}= @person.email
         %li
+          %h6.key Title
+          .value{"data-name" => "title", "data-url" => person_url(@person, :format => :json)}= @person.title
+        %li
           %h6.key Company
           .value{"data-name" => "company_name", "data-url" => person_url(@person, :format => :json)}= @person.company_name
         %li

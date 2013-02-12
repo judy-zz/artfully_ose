@@ -26,4 +26,9 @@ FactoryGirl.define do
       ticket.sell_to(FactoryGirl.create(:person))
     end
   end
+
+  factory :fully_discounted_ticket, :parent => :ticket do
+    state :sold
+    sold_price 0
+  end
 end

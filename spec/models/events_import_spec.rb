@@ -4,10 +4,8 @@ describe EventsImport do
   context "importing event history" do
     context "event-import-full-test.csv" do
       before do
-        
         Sunspot.session = Sunspot::Rails::StubSessionProxy.new(Sunspot.session)
-  
-        @csv_filename = Rails.root.join("spec", "support", "event-import-full-test.csv")
+        @csv_filename = "#{File.dirname(__FILE__)}/../support/event-import-full-test.csv"
         @import = FactoryGirl.create(:events_import, s3_key: @csv_filename)
         @import.cache_data
         @import.import

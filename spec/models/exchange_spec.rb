@@ -102,6 +102,7 @@ describe Exchange do
       it "should mark the exchanged items net as zero" do
         subject.submit
         subject.items.each do |item| 
+          item.original_price.should eq 0
           item.price.should eq 0
           item.realized_price.should eq 0
           item.net.should eq 0
@@ -133,6 +134,7 @@ describe Exchange do
       
       it "should mark the exchangees items price/realized/net as equal to the previous items" do
         subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+        subject.tickets.each { |ticket| ticket.stub(:sold_price).and_return(ticket.price) }
         subject.submit
         exchange_order = subject.order.children.first
         
@@ -140,6 +142,7 @@ describe Exchange do
         fake_item.product= tickets.first
         
         exchange_order.items.each do |item|
+          item.original_price.should  eq fake_item.original_price
           item.price.should           eq fake_item.price
           item.realized_price.should  eq fake_item.realized_price
           item.net.should             eq fake_item.net
@@ -156,6 +159,7 @@ describe Exchange do
       
       it "should mark the exchangees items price/realized/net/state as equal to the previous items" do
         subject.tickets.each { |ticket| ticket.stub(:exchange_to).and_return(true) }
+        subject.tickets.each { |ticket| ticket.stub(:sold_price).and_return(ticket.price) }
         original_state = items.first.state
         subject.submit
         exchange_order = subject.order.children.first
@@ -164,6 +168,7 @@ describe Exchange do
         fake_item.product= tickets.first
                 
         exchange_order.items.each do |item|
+          item.original_price.should  eq fake_item.original_price
           item.price.should           eq fake_item.price
           item.realized_price.should  eq fake_item.realized_price
           item.net.should             eq fake_item.net

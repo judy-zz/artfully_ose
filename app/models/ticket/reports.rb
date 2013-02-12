@@ -55,19 +55,19 @@ module Ticket::Reports
 
   class Sales < Base
     def total
-      tickets.sold.sum(:price)
+      tickets.sold.sum(:sold_price)
     end
 
     def today
-      tickets.sold_after(Time.now.beginning_of_day).sum(:price)
+      tickets.sold_after(Time.now.beginning_of_day).sum(:sold_price)
     end
 
     def played
-      tickets.sold.played.sum(:price)
+      tickets.sold.played.sum(:sold_price)
     end
 
     def advance
-      tickets.sold.unplayed.sum(:price)
+      tickets.sold.unplayed.sum(:sold_price)
     end
   end
 

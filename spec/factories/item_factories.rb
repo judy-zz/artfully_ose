@@ -9,6 +9,10 @@ FactoryGirl.define do
     association :order
   end
 
+  factory :fully_discounted_item, :parent => :item do
+    product { FactoryGirl.create(:fully_discounted_ticket) }
+    association :discount
+  end
 
   factory :settled_item, :class => Item do
     product { FactoryGirl.create(:ticket, :state => :sold) }
